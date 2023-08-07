@@ -1,0 +1,16 @@
+{
+    "name": "crew/crew-hrm",
+    "license": "gpl-v2",
+    "autoload": {
+        "psr-4": {
+            "CrewHRM\\": "classes/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Crew",
+            "email": "crew@example.com"
+        }
+    ],
+    "require": {}
+}
