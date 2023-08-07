@@ -1,0 +1,11 @@
+.button{
+	border: 0;
+	outline: none;
+	padding: 10px 15px;
+	border-radius: 5px;
+
+	&.button-primary {
+		background-color: var(--crewhrm-color-primary);
+		color: var(--crewhrm-color-reverse-primary);
+	}
+}
