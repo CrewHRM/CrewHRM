@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 
 import style_library from '../styles/index.module.scss';
+import icons from '../icons/crewhrm/style.module.scss';
 
 export function MountPoint(props){
 	const [ready, setReady] = useState(false);
@@ -18,12 +19,14 @@ export function MountPoint(props){
 
 			// Apply dynamic classes
 			cls = cls.map(c=>{
-				let class_name = (style || style_library)[c];
-				if ( ! class_name ) {
+				let source = style || (c.indexOf('ch-icon')>-1 ? icons : style_library);
+				
+				// Log if the class not found
+				if ( ! source[c] ) {
 					dump += ' ' + c;
 				}
 
-				return class_name || c;
+				return (source[c] || '') + ' ' + 'crewhrm-'+c;
 			});
 
 			if ( dump ) {
