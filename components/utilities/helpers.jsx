@@ -13,3 +13,8 @@ export const getRandomString=()=>{
   const randomPortion = Math.random().toString(36).substring(2);
   return timestamp + randomPortion;
 }
+
+export function __( txt ) {
+	const {__} = window.wp?.i18n || {};
+    return typeof __ == 'function' ? __( txt, 'crewhrm' ) : txt;
+}

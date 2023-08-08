@@ -19,7 +19,7 @@ class Scripts extends Main {
 
 	public function adminScripts() {
 		if ( Utilities::isCrewDashboard()  ) {
-			wp_enqueue_script( 'crewhrm-backend-dashboard-script', self::$configs->dist_url . 'backend-dashboard.js', array( 'jquery' ), self::$configs->version, true );
+			wp_enqueue_script( 'crewhrm-backend-dashboard-script', self::$configs->dist_url . 'backend-dashboard.js', array( 'jquery', 'wp-i18n' ), self::$configs->version, true );
 		}
 	}
 

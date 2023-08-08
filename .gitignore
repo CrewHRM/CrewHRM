@@ -2,3 +2,6 @@
 node_modules/
 dist/
 vendor/
+build/
+*.zip
+languages/
