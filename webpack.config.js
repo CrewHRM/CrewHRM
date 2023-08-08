@@ -21,6 +21,10 @@ module.exports = (env, options) => {
 					test: /\.css$/i,
 					include: path.resolve(__dirname, './'),
 					use: ['style-loader', 'css-loader', 'postcss-loader'],
+				},
+				{
+					test: /\.(png|jp(e*)g|svg|gif)$/,
+					type: "asset/resource",
 				}
 			],
 		},
@@ -35,7 +39,7 @@ module.exports = (env, options) => {
 		{
 			dest_path: './dist',
 			src_files: {
-				'backend-dashboard': './components/backend-dashboard/index.jsx'
+				'backend-dashboard': './components/views/backend-dashboard/index.jsx'
 			},
 		}
 	];

@@ -39,8 +39,10 @@ class Scripts extends Main {
 
 		// Load css variables. Ideally from dashboard settings. For now statically written though.
 		$colors = array(
-			'primary'         => '#1A1A1A',
-			'reverse-primary' => '#FFFFFF',
+			'primary'              => '#1A1A1A',
+			'reverse-primary'      => '#FFFFFF',
+			'text-color-primary'   => '#1A1A1A',
+			'text-color-secondary' => '#72777B',
 		);
 
 		$css = '';

@@ -1,0 +1,13 @@
+
+@font-face {
+  font-family: 'CrewHRM-Figtree';
+  src: url('./Figtree/Figtree-VariableFont_wght.ttf') format('truetype');
+}
+
+.font-family-figtree{
+	&, * {
+		&:not(.ch-icon){
+			font-family: CrewHRM-Figtree;
+		}
+	}
+}

@@ -1,0 +1,37 @@
+.card-wrapper{
+	.card{
+		background-color: white;
+		width: 176px;
+		height: 176px;
+		padding: 25px;
+		box-sizing: border-box;
+		border-radius: 5px;
+		box-shadow: 0px 1px 2px 0px rgba(16, 39, 68, 0.08);
+		margin-bottom: 20px;
+		float: left;
+
+		&:nth-child(odd) {
+			margin-right: 10px;
+		}
+
+		&:nth-child(even) {
+			margin-left: 10px;
+		}
+
+		strong, span, img{
+			display: block;
+		}
+
+		strong{
+			margin-top: 50px;
+    		margin-bottom: 12px;
+			font-size: 28px;
+			font-weight: 700;
+		}
+
+		span {
+			font-size: 15px;
+			font-weight: 500;
+		}
+	}
+}

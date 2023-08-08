@@ -1,18 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
+
+import { DoAction } from "./hooks.jsx";
 
 import style_library from '../styles/index.module.scss';
 import icons from '../icons/crewhrm/style.module.scss';
-import { DoAction } from "./hooks.jsx";
+import font_family from '../fonts/loader.module.scss';
 
 export function MountPoint(props){
 	const [ready, setReady] = useState(false);
 
 	useEffect(()=>{
-		String.prototype.classNames = function(style, append_raw='') {
-			if ( append_raw ) {
-				append_raw = ' ' + append_raw;
-			}
-
+		String.prototype.classNames = function(style) {
 			let dump = '';
 			let cls  = this.split(' '); 		// Split multiples by space
 			cls      = cls.map(c=>c.trim()); // Trim leading and trailing slashes
@@ -34,16 +32,16 @@ export function MountPoint(props){
 				console.error(dump);
 			}
 			
-			return cls.join(' ') + append_raw; // Join back to single string and include raw. Then return.
+			return cls.join(' ') + ' '; // Join back to single string and include raw. Then return.
 		}
 
-		String.prototype.idNames = function(style, append_raw='') {
-			return this.classNames(style, append_raw); // Because both uses same style object. Added two to avoid confusion.
+		String.prototype.idNames = function(style) {
+			return this.classNames(style); // Because both uses same style object. Added two to avoid confusion.
 		}
 
 		// Replace the mount point styles
 		if ( props.element ) {
-			props.element.className = (props.element.className || '').classNames();
+			props.element.className = (props.element.className || '').classNames() + 'font-family-figtree'.classNames(font_family);
 			props.element.id = (props.element.id || '').idNames();
 		}
 		

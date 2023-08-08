@@ -4,8 +4,7 @@
   "description": "HR Management System",
   "main": "index.js",
   "scripts": {
-    "build": "webpack --env=build --mode=production && gulp build",
-    "build-dev": "webpack --mode=development && gulp build",
+    "build": "rm -rf ./dist && webpack --env=build --mode=production && gulp build",
     "watch": "webpack --watch --mode=development"
   },
   "repository": {
@@ -38,6 +37,7 @@
     "path": "^0.12.7",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-router-dom": "^6.14.2",
     "sass-loader": "^13.3.2",
     "style-loader": "^3.3.3",
     "uglifyjs-webpack-plugin": "^2.2.0",
