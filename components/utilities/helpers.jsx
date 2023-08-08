@@ -7,3 +7,9 @@ export const getElementDataSet = element => {
 
 	return data;
 }
+
+export const getRandomString=()=>{
+  const timestamp = new Date().getTime().toString();
+  const randomPortion = Math.random().toString(36).substring(2);
+  return timestamp + randomPortion;
+}

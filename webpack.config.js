@@ -10,7 +10,8 @@ module.exports = (env, options) => {
 				{
 					test: /\.(js|jsx)$/,
 					exclude: /node_modules/,
-					use: 'babel-loader',
+					loader: 'babel-loader',
+					options: { presets: ['@babel/env','@babel/preset-react'] }
 				},
 				{
 					test: /\.(s(a|c)ss)$/,

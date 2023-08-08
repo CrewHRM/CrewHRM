@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import style_library from '../styles/index.module.scss';
 import icons from '../icons/crewhrm/style.module.scss';
+import { DoAction } from "./hooks.jsx";
 
 export function MountPoint(props){
 	const [ready, setReady] = useState(false);
@@ -50,4 +51,15 @@ export function MountPoint(props){
 	}, []);
 
 	return ready ? props.children : null;
+}
+
+
+export function Slot(props) {
+	const {children, name} = props;
+
+	return <>
+		<DoAction position="before" action={name}/>
+		{children}
+		<DoAction position="after" action={name}/>
+	</>
 }

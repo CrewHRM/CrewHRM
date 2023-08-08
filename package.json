@@ -1,12 +1,12 @@
 {
   "name": "crewhrm",
   "version": "1.0.0",
-  "description": "",
+  "description": "HR Management System",
   "main": "index.js",
   "scripts": {
-	"build": "webpack --env=build --mode=production",
-	"build-dev": "webpack --mode=development",
-	"watch": "webpack --watch --mode=development"
+    "build": "webpack --env=build --mode=production",
+    "build-dev": "webpack --mode=development",
+    "watch": "webpack --watch --mode=development"
   },
   "repository": {
     "type": "git",
@@ -14,7 +14,7 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
+  "license": "GPL-2.0",
   "bugs": {
     "url": "https://github.com/CrewHRM/CrewHRM/issues"
   },
@@ -32,10 +32,10 @@
     "react-dom": "^18.2.0",
     "sass-loader": "^13.3.2",
     "style-loader": "^3.3.3",
-    "sweetalert2": "^11.7.20",
     "uglifyjs-webpack-plugin": "^2.2.0",
     "webpack": "^5.88.2",
     "webpack-cli": "^5.1.4",
     "webpack-dev-server": "^4.15.1"
-  }
+  },
+  "devDependencies": {}
 }
