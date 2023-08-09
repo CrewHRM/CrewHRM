@@ -1,7 +1,11 @@
 .text-color-primary {
-	color: var(--crewhrm-color-text-color-primary);
+	color: var(--crewhrm-text-color-primary);
 }
 
 .text-color-secondary {
-	color: var(--crewhrm-color-text-color-secondary);
+	color: var(--crewhrm-text-color-secondary);
+}
+
+.text-color-tertiary {
+	color: var(--crewhrm-text-color-tertiary);
 }

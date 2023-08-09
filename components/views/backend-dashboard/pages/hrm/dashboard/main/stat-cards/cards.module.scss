@@ -1,8 +1,10 @@
 .card-wrapper{
+	overflow: auto;
+
 	.card{
 		background-color: white;
-		width: 176px;
-		height: 176px;
+		width: 184px;
+		height: 165px;
 		padding: 25px;
 		box-sizing: border-box;
 		border-radius: 5px;
@@ -23,7 +25,7 @@
 		}
 
 		strong{
-			margin-top: 50px;
+			margin-top: 45px;
     		margin-bottom: 12px;
 			font-size: 28px;
 			font-weight: 700;

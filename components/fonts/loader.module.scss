@@ -6,8 +6,6 @@
 
 .font-family-figtree{
 	&, * {
-		&:not(.ch-icon){
-			font-family: CrewHRM-Figtree;
-		}
+		font-family: CrewHRM-Figtree;
 	}
 }

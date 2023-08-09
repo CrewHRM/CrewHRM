@@ -5,7 +5,7 @@
 	border-radius: 5px;
 
 	&.button-primary {
-		background-color: var(--crewhrm-color-primary);
-		color: var(--crewhrm-color-reverse-primary);
+		background-color: var(--crewhrm-background-color-primary);
+		color: var(--crewhrm-foreground-color-primary);
 	}
 }

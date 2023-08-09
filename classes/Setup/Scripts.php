@@ -39,15 +39,23 @@ class Scripts extends Main {
 
 		// Load css variables. Ideally from dashboard settings. For now statically written though.
 		$colors = array(
-			'primary'              => '#1A1A1A',
-			'reverse-primary'      => '#FFFFFF',
-			'text-color-primary'   => '#1A1A1A',
-			'text-color-secondary' => '#72777B',
+			'background-color-primary'   => '#1A1A1A', // Active state
+			'background-color-secondary' => '#BBBFC3', // Disabled state
+
+			'foreground-color-primary'   => '#FFFFFF', // Primary text with a primary background
+			'foreground-color-secondary' => '#BBBFC3', // Scondary text with a primary background
+			'foreground-color-tertiary'  => '#72777B', // Tertiary text with a primary background
+
+			'text-color-primary'         => '#1A1A1A', // Primary text color with a white background ideally
+			'text-color-secondary'       => '#72777B', // Secondary text color with a white backogrund ideally
+			'text-color-tertiary'        => '#BBBFC3', // Secondary text color with a white backogrund ideally
+
+			'border-color-primary'       => '#E3E5E8', // Border color with a white background ideally
 		);
 
 		$css = '';
 		foreach ( $colors as $key => $color ) {
-			$css .= '--crewhrm-color-' . $key . ':' . $color . ';';
+			$css .= '--crewhrm-' . $key . ':' . $color . ';';
 		}
 		echo '<style>:root{' . $css . '}</style>';
 

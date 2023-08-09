@@ -1,0 +1,146 @@
+.calendar {
+	box-sizing: border-box;
+	padding: 20px;
+	background-color: white;
+	border-radius: 5px;
+	box-shadow: 0px 1px 2px 0px rgba(16, 39, 68, 0.08);
+
+	.header {
+		margin-bottom: 30px;
+
+		&>div {
+			&:first-child {
+				font-size: 24px;
+				font-weight: 600;
+			}
+
+			&:last-child {
+				font-size: 17px;
+				font-weight: 600;
+			}
+		}
+	}
+
+	.dates {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+
+		&>div{
+			padding: 8px 10px;
+
+			strong, span{
+				display: block;
+				text-align: center;
+				letter-spacing: 0.3px;
+			}
+
+			strong {
+				font-size: 17px;
+				font-weight: 600;
+				letter-spacing: 0.3px;
+			}
+
+			span {
+				font-size: 14px;
+				font-weight: 400;
+			}
+
+			&.active{
+				border-radius: 6px;
+				background-color: var(--crewhrm-background-color-primary);
+
+				strong {
+					font-weight: 700;
+				}
+
+				span {
+					font-weight: 500;
+				}
+
+				strong, span{
+					color: var(--crewhrm-foreground-color-primary);
+				}
+			}
+		}
+	}
+
+	.schedules {
+		&>div {
+			padding: 10px 15px;
+			border-radius: 6px;
+			border: 1.5px solid var(--crewhrm-border-color-primary);
+			background: var(--white, #FFF);
+			margin-bottom: 15px;
+			overflow: hidden;
+			cursor: pointer;
+
+			.calendar-icon, .arrow-icon {
+				color: var(--crewhrm-text-color-secondary);
+
+				&.calendar-icon {
+					font-size: 20px;
+				}
+
+				&.arrow-icon {
+					font-size: 24px;
+				}
+			}
+			
+			div.content {
+				margin: 0 13px;
+
+				strong, span, small {
+					display: block;
+				}
+
+				strong {
+					font-size: 17px;
+					font-weight: 600;
+					color: var(--crewhrm-text-color-primary);
+					margin-bottom: 2px;
+				}
+
+				span {
+					font-size: 14px;
+					font-weight: 400;
+					color: var(--crewhrm-text-color-secondary);
+					margin-bottom: 1px;
+				}
+
+				small {
+					font-size: 14px;
+					font-weight: 400;
+					color: var(--crewhrm-text-color-secondary);
+				}
+			}
+
+			&:hover, &.active {
+				background-color: var(--crewhrm-background-color-primary);
+				border-color: var(--crewhrm-background-color-primary);
+
+				.content {
+					.calendar-icon {
+						color: var(--crewhrm-foreground-color-secondary);
+					}
+
+					strong{
+						color: var(--crewhrm-foreground-color-primary);
+					}
+
+					span {
+						color: var(--crewhrm-foreground-color-secondary);
+					}
+
+					small {
+						color: var(--crewhrm-foreground-color-tertiary);
+					}
+				}
+
+				.arrow-icon {
+					color: var(--crewhrm-foreground-color-primary);
+				}
+			}
+		}
+	}
+}
