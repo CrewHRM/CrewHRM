@@ -6,6 +6,7 @@ import { Calendar } from "./calendar/calendar.jsx";
 
 import style from './main.module.scss';
 import { JobOpenings } from "../job-openings/jobs.jsx";
+import { IntroCard } from "../../../../../../materials/intro-card/intro-card.jsx";
 
 export function DahboardMain() {
 	return <div className={'h-full'.classNames() + 'wrapper'.classNames(style)}>
@@ -14,7 +15,60 @@ export function DahboardMain() {
 			<Calendar/>
 		</div>
 		<div className={'content-area'.classNames(style)}>
+			<IntroCard image="megaphone" className={'margin-bottom-20'.classNames()}>
+				<strong className={'d-block text-color-primary font-size-28 font-weight margin-bottom-15'.classNames()}>
+					{__( 'Find the person you want to hire ' )}
+				</strong>
+				<small className={'text-color-secondary font-size-15 font-weight-400 margin-bottom-30 d-block'.classNames()}>
+					{__( 'Candidates see your logo and description on job posts, and more' )}
+				</small>
+				<button className={'button button-primary button-medium'.classNames()}>
+					{__( 'Create A New Job' )}
+				</button>
+			</IntroCard>
+
 			<JobOpenings is_overview={true}/>
+			
+			<div className={'d-flex align-items-center margin-bottom-20'.classNames()}>
+				<div className={'flex-1'.classNames()}>
+					<strong className={'text-color-primary font-size-17 font-weight-500'.classNames()}>
+						{__( 'Suggested Action' )}
+					</strong>
+				</div>
+				<div>
+					<span className={'text-color-primary font-size-14 font-weight-400'.classNames()}>
+						{__( 'Don’t show again' )}
+					</span>
+				</div>
+			</div>
+			<div className={'column'.classNames()}>
+				<div>
+					<IntroCard image="designer_working">
+						<strong className={'d-block font-size-20 font-weight-600 text-color-primary margin-bottom-8'.classNames()}>
+							{__( 'Question Bank' )}
+						</strong>
+						<span className={"d-block font-size-14 font-weight-400 text-color-secondary margin-bottom-26".classNames()}>
+							<span dangerouslySetInnerHTML={{__html: __('Let’s create a questionnaire for <br/> hiring the right people.')}}></span>
+						</span>
+						<a href="#" className={'button button-primary button-outlined button-medium'.classNames()}>
+							{__( 'Choose Templates' )}
+						</a>
+					</IntroCard>
+				</div>
+				<div>
+					<IntroCard image="being_creative">
+						<strong className={'d-block font-size-20 font-weight-600 text-color-primary margin-bottom-8'.classNames()}>
+							{__( 'Design your page' )}
+						</strong>
+						<span className={"d-block font-size-14 font-weight-400 text-color-secondary margin-bottom-26".classNames()}>
+							{__('Keep your great talented candidate on file in the Talent Pool.')}
+						</span>
+						<a href="#" className={'button button-primary button-outlined button-medium'.classNames()}>
+							{__( 'Choose Templates' )}
+						</a>
+					</IntroCard>
+				</div>
+			</div>
 		</div>
 	</div>
 }

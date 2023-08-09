@@ -58,7 +58,7 @@ export function Calendar(props) {
 			<div className={'text-color-primary'.classNames()}>
 				{__( 'Calendar' )}
 			</div>
-			<div className={'flex-1 text-right text-color-primary'.classNames()}>
+			<div className={'flex-1 text-align-right text-color-primary'.classNames()}>
 				{state.date.getFullYear()}
 			</div>
 		</div>

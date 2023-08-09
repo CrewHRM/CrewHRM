@@ -15,7 +15,7 @@ export function Dashboard() {
 				<div>
 					{__( 'Menu' )}
 				</div>
-				<div className={'flex-1 text-right'.classNames()}>
+				<div className={'flex-1 text-align-right'.classNames()}>
 					<div className={'d-inline-block'.classNames()}>
 						<button className={'button button-primary'.classNames()}>
 							Create A New Job

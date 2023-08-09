@@ -1,0 +1,21 @@
+.intro {
+	padding: 35px;
+	display: flex;
+	background-repeat: no-repeat;
+	background-position: right;
+	background-size: contain;
+
+	&.small {
+		padding: 25px;
+	}
+
+	&>div {
+		&:first-child {
+			flex: 7;
+		}
+
+		&:last-child {
+			flex: 3;
+		}
+	}
+}

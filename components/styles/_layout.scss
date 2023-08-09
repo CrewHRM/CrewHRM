@@ -18,6 +18,7 @@ $attrs: 'font-size', 'margin', 'margin-top', 'margin-bottom', 'margin-left', 'ma
 	@if $i >= 5 and $i <= 10 {
 		.border-radius-#{$i} {
 			border-radius: #{$i}px;
+			overflow: hidden;
 		}
 	}
 }
@@ -46,6 +47,14 @@ $cursors: 'pointer', 'default';
 	}
 }
 
+// Text alignments
+$alignments: 'left', 'right', 'center';
+@each $alignment in $alignments {
+	.text-align-#{$alignment} {
+		text-align: #{$alignment};
+	}
+}
+
 // Other randoms
 .flex-1{
 	flex: 1;
@@ -55,14 +64,27 @@ $cursors: 'pointer', 'default';
 	align-items: center;
 }
 
-.text-right{
-	text-align: right;
-}
-
 .h-full {
 	min-height: 100%;
 }
 
 .w-full {
 	min-width: 100%;
+}
+
+.background-color-white {
+	background-color: white;
+}
+
+// Grid
+.column {
+	display: flex;
+	align-items: stretch;
+	margin-left: -10px;
+	margin-right: -10px;
+
+	&>div{
+		margin: 0 10px;
+		flex: 1;
+	}
 }
