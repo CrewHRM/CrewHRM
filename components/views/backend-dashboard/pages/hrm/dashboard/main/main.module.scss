@@ -4,7 +4,6 @@
 	display: flex;
 
 	.sidebar, .content-area {
-		box-sizing: border-box;
 		float: left;
 	}
 
@@ -16,8 +15,6 @@
 
 	.content-area {
 		flex: 1;
-		box-sizing: border-box;
 		padding: 36px;
-		
 	}
 }

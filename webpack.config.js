@@ -1,4 +1,5 @@
 const path = require('path');
+const TerserPlugin = require("terser-webpack-plugin");
 
 module.exports = (env, options) => {
 	const mode = options.mode || 'development';
@@ -33,6 +34,17 @@ module.exports = (env, options) => {
 
 	if ('production' === mode) {
 		config.devtool = false;
+		config.optimization = {
+			minimize: true,
+			minimizer: [new TerserPlugin({
+				terserOptions: {
+					format: {
+						comments: false,
+					},
+				},
+				extractComments: false,
+			})],
+		}
 	}
 
 	var react_blueprints = [

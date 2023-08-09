@@ -24,6 +24,14 @@
 			color: var(--crewhrm-background-color-primary);
 		}
 	}
+
+	&.button-full-width {
+		padding: 10px 15px;
+		width: 100%;
+		text-align: center;
+		font-size: 15px;
+		font-weight: 600;
+	}
 	
 	&.button-medium {
 		font-weight: 500;

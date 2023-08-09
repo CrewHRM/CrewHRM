@@ -16,7 +16,7 @@ export function DahboardMain() {
 		</div>
 		<div className={'content-area'.classNames(style)}>
 			<IntroCard image="megaphone" className={'margin-bottom-20'.classNames()}>
-				<strong className={'d-block text-color-primary font-size-28 font-weight margin-bottom-15'.classNames()}>
+				<strong className={'d-block text-color-primary font-size-28 font-weight-600 margin-bottom-15'.classNames()}>
 					{__( 'Find the person you want to hire ' )}
 				</strong>
 				<small className={'text-color-secondary font-size-15 font-weight-400 margin-bottom-30 d-block'.classNames()}>
@@ -27,7 +27,7 @@ export function DahboardMain() {
 				</button>
 			</IntroCard>
 
-			<JobOpenings is_overview={true}/>
+			<JobOpenings is_overview={true} className={"margin-bottom-20".classNames()}/>
 			
 			<div className={'d-flex align-items-center margin-bottom-20'.classNames()}>
 				<div className={'flex-1'.classNames()}>

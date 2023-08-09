@@ -4,6 +4,7 @@ import { __ } from "../../../../../../utilities/helpers.jsx";
 import style from './jobs.module.scss';
 import { StatusDot } from "../../../../../../materials/status-dota/status-dots.jsx";
 import { NoJob } from "./no-job.jsx";
+import { Link } from "react-router-dom";
 
 const statuses = {
 	publish: '#73BF45',
@@ -48,11 +49,14 @@ const stat_labels = {
 }
 
 export function JobOpenings(props) {
-	let {is_overview} = props;
+	let {is_overview, className} = props;
 
-	return <div className={'jobs'.classNames(style)}>
-		<div className={'d-flex align-items-center margin-bottom-20'.classNames()}>
-			<div className={'flex-1'.classNames()}>
+	return <div className={'jobs'.classNames(style) + className}>
+		<div className={'d-flex align-items-center margin-bottom-20'.classNames() + 'filter'.classNames(style)}>
+			<div className={'flex-1 d-flex align-items-center'.classNames()}>
+				{!is_overview && <Link to="/dashboard/main/">
+					<i className={'ch-icon ch-icon-arrow-left text-color-primary cursor-pointer'.classNames() + 'back-icon'.classNames(style)}></i>
+				</Link>}
 				<strong className={'text-color-primary '+(is_overview ? 'font-size-17 font-weight-500' : 'font-size-24 font-weight-600').classNames()}>
 					{__( 'Job Openings' )}
 				</strong>
@@ -128,5 +132,15 @@ export function JobOpenings(props) {
 				})}
 			</div>
 		}
+
+		{is_overview && jobs.length && <Link to="/dashboard/job-openings" className={'button button-primary button-outlined button-full-width'.classNames()}>
+			{__( 'View All Jobs' )}
+		</Link>}
+	</div>
+}
+
+export function JobOpeningsFullView(props) {
+	return <div className={'padding-30'.classNames()} style={{maxWidth: '988px', margin: '0 auto'}}>
+		<JobOpenings/>
 	</div>
 }
