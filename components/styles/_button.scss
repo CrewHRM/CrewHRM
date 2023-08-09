@@ -1,11 +1,29 @@
 .button{
-	border: 0;
 	outline: none;
 	padding: 10px 15px;
 	border-radius: 5px;
+	font-size: 15px;
+	font-weight: 500;
+	letter-spacing: -0.3px;
+	&:not(:disabled) {
+		cursor: pointer;
+	}
 
 	&.button-primary {
 		background-color: var(--crewhrm-background-color-primary);
 		color: var(--crewhrm-foreground-color-primary);
+		border: 1px solid var(--crewhrm-background-color-primary);
+	}
+
+	&.button-outlined {
+		&:not(:hover) {
+			background-color: transparent;
+			color: var(--crewhrm-background-color-primary);
+		}
+	}
+	
+	&.button-small {
+		font-weight: 400;
+		padding: 5px 12px;
 	}
 }

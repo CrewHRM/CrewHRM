@@ -1,6 +1,6 @@
 import React from "react";
 import {HashRouter, Route, Navigate, Routes} from 'react-router-dom';
-import { WpDashboardFullPage } from "../../templates/full-page-container/full-page-container.jsx";
+import { WpDashboardFullPage } from "../../../../materials/backend-dashboard-container/full-page-container.jsx";
 
 import { JobEditor } from "./job-editor/index.jsx";
 import { Dashboard } from "./dashboard/index.jsx";

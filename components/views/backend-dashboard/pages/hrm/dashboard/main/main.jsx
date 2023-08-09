@@ -5,6 +5,7 @@ import { StatCards } from "./stat-cards/stat-cards.jsx";
 import { Calendar } from "./calendar/calendar.jsx";
 
 import style from './main.module.scss';
+import { JobOpenings } from "../job-openings/jobs.jsx";
 
 export function DahboardMain() {
 	return <div className={'h-full'.classNames() + 'wrapper'.classNames(style)}>
@@ -13,7 +14,7 @@ export function DahboardMain() {
 			<Calendar/>
 		</div>
 		<div className={'content-area'.classNames(style)}>
-			Here you go
+			<JobOpenings is_overview={true}/>
 		</div>
 	</div>
 }

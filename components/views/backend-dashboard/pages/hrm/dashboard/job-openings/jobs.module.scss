@@ -1,0 +1,29 @@
+.jobs {
+	.job-list {
+
+		// Single job
+		&>div {
+			background-color: white;
+			border-radius: 5px;
+			margin-bottom: 20px;
+
+			// Top and Bottom section devided by horizontal border
+			&>div {
+				padding: 15px 20px;
+
+				// Top part that contains job title, meta data and action buttons
+				&:first-child {
+					border-bottom: 1px solid var(--crewhrm-border-color-primary);
+
+					.meta-data {
+						&>span {
+							&:not(:last-child) {
+								margin-right: 30px;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}

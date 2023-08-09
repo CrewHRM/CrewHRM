@@ -4,6 +4,7 @@ import { __ } from "../../../../../utilities/helpers.jsx";
 import { useParams } from "react-router-dom";
 import { DahboardMain } from "./main/main.jsx";
 import { SingleProfile } from "./single-profile/profile.jsx";
+import { JobOpenings } from "./job-openings/jobs.jsx";
 
 export function Dashboard() {
 	const {page, sub_page} = useParams();
@@ -12,7 +13,7 @@ export function Dashboard() {
 		<StickyBar>
 			<div className={'d-flex align-items-center'.classNames()}>
 				<div>
-					{__( 'Menu' )} <span className={'ch-icon ch-icon-envelope'.classNames()}></span>
+					{__( 'Menu' )}
 				</div>
 				<div className={'flex-1 text-right'.classNames()}>
 					<div className={'d-inline-block'.classNames()}>
@@ -24,7 +25,8 @@ export function Dashboard() {
 			</div>
 		</StickyBar>
 
-		{page=='main' && <DahboardMain/> || null}
-		{page=='profile' && <SingleProfile profile_id={sub_page}/> || null}
+		{page=='main' && <DahboardMain/>}
+		{page=='job-openings' && <JobOpenings/>}
+		{page=='profile' && <SingleProfile profile_id={sub_page}/>}
 	</> 
 }

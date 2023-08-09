@@ -1,7 +1,52 @@
-.d-flex{
-	display: flex;
+// Displays
+$displays: 'block', 'flex', 'inline', 'inline-block', 'contents';
+@each $display in $displays {
+	.d-#{$display} {
+		display: #{$display};
+	}
 }
 
+// Sizings
+$attrs: 'font-size', 'margin', 'margin-top', 'margin-bottom', 'margin-left', 'margin-right', 'padding', 'padding-top', 'padding-bottom', 'padding-left', 'padding-right';
+@for $i from 1 through 30 {
+	@each $attr in $attrs {
+		.#{$attr}-#{$i} {
+			#{$attr}: #{$i}px;
+		}
+	}
+
+	@if $i >= 5 and $i <= 10 {
+		.border-radius-#{$i} {
+			border-radius: #{$i}px;
+		}
+	}
+}
+
+// Font weights
+$weights: 400, 500, 600, 700;
+@each $weight in $weights {
+	.font-weight-#{$weight} {
+		font-weight: $weight;
+	}
+}
+
+// Flex content justify
+$justifications: 'space-between', 'space-around';
+@each $justfication in $justifications {
+	.#{$justfication} {
+		justify-content: #{$justfication};
+	}
+}
+
+// Cursors
+$cursors: 'pointer', 'default';
+@each $cursor in $cursors {
+	.cursor-#{$cursor} {
+		cursor: #{$cursor};
+	}
+}
+
+// Other randoms
 .flex-1{
 	flex: 1;
 }
@@ -12,10 +57,6 @@
 
 .text-right{
 	text-align: right;
-}
-
-.d-inline-block{
-	display: inline-block;
 }
 
 .h-full {
