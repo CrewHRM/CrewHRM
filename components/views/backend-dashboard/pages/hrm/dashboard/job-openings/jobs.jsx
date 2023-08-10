@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { __ } from "../../../../../../utilities/helpers.jsx";
 
 import style from './jobs.module.scss';
-import { StatusDot } from "../../../../../../materials/status-dota/status-dots.jsx";
+import { StatusDot } from "../../../../../../materials/status-dot/status-dots.jsx";
 import { NoJob } from "./no-job.jsx";
 import { Link } from "react-router-dom";
 import { DropDown } from "../../../../../../materials/dropdown/dropdown.jsx";
@@ -86,6 +86,7 @@ export function JobOpenings(props) {
 			<div>
 				<div className={'d-inline-block'.classNames()}>
 					<DropDown
+						transparent={is_overview}
 						value={state.filter.job_status} 
 						options={filter_status_options} 
 						onChange={(v)=>onChange('job_status', v)}/>
@@ -158,7 +159,7 @@ export function JobOpenings(props) {
 			</div>
 		}
 
-		{is_overview && jobs.length && <Link to="/dashboard/job-openings" className={'button button-primary button-outlined button-full-width'.classNames()}>
+		{is_overview && jobs.length && <Link to="/dashboard/job-openings" className={'button button-primary button-outlined button-full-width-2'.classNames()}>
 			{__( 'View All Jobs' )}
 		</Link>}
 	</div>

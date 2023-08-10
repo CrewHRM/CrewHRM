@@ -14,14 +14,14 @@ export function DropDown(props) {
 		mouseEnterDelay={0}
 		contentStyle={{ padding: '0px', border: 'none' }}
 		arrow={false}
-		trigger={<div className={'dropdown ' + (transparent ? 'transparent' : '') .classNames(style) + 'cursor-pointer d-inline-flex align-items-center border-radius-5'.classNames() + className}>
+		trigger={<div className={`dropdown ${transparent ? 'transparent' : ''}`.classNames(style) + 'cursor-pointer d-inline-flex align-items-center border-radius-5'.classNames() + className}>
 				<span className={'font-size-15 font-weight-400 text-color-primary'.classNames()}>
 					{options.find(o=>o.value==selected_value).label}
 				</span>
 				<i className={'ch-icon ch-icon-arrow-down margin-left-10 font-size-18 text-color-secondary'.classNames()}></i>
 			</div>
 		}>
-		<div className={"dropdown-popup".classNames(style)}>
+		<div className={"dropdown-popup".classNames(style) + 'border-radius-6'.classNames()}>
 			{options.map(option=>{
 				let {value, label} = option;
 				let active_class = value == selected_value ? 'active' : '';

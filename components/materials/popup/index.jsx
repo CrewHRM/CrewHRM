@@ -249,7 +249,7 @@ export const Popup = forwardRef(
                 .map(c => `${c}-content`)
                 .join(" ")
             : ""
-        }`.classNames(style),
+        }`.classNames(style) + 'root'.classNames(),
         style: {
           ...popupContentStyle,
           ...contentStyle,

@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from "react";
 
 import { DoAction } from "../../utilities/hooks.jsx";
 
-import style from './mount.module.scss';
 import style_library from '../../styles/index.module.scss';
 import icons from '../../icons/crewhrm/style.module.scss';
 import font_family from '../../fonts/loader.module.scss';
@@ -49,7 +48,7 @@ export function MountPoint(props){
 		setReady(true);
 	}, []);
 
-	return ready && <div className={'crew'.classNames(style)}>
+	return ready && <div className={'root'.classNames()}>
 		{props.children}
 	</div>
 }

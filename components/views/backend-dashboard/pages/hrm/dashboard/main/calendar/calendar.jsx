@@ -2,10 +2,12 @@ import React, { useState } from "react";
 import { __ } from "../../../../../../../utilities/helpers.jsx";
 
 import style from './calendar.module.scss';
+import { Popup } from "../../../../../../../materials/popup/index.jsx";
+import { ScheduleCard } from "../../../../../../../materials/schedule-card/schedule-card.jsx";
 
 const schadule = {
 	schedule_id: 1,
-	title: 'Job Interview with Kristin',
+	schedule_title: 'Job Interview with Kristin',
 	time_frame: '01:00 - 02:00',
 	excerpt: 'Account Manager',
 	note: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore ',
@@ -25,11 +27,8 @@ const schadule = {
 			email: 'jk@example.com'
 		}
 	],
-	meeting: {
-		type: 'online',
-		platform: 'meet',
-		link: 'http://google.com',
-	}
+	type: 'meet',
+	link: 'http://google.com',
 };
 
 const schedules = Array(5).fill(schadule).map((s, i)=>{
@@ -79,22 +78,34 @@ export function Calendar(props) {
 		
 		<div className={'schedules'.classNames(style)}>
 			{schedules.map((schedule, index)=>{
-				let {title, time_frame, excerpt, schedule_id} = schedule;
+				let {schedule_title, time_frame, excerpt, schedule_id} = schedule;
 				let active_class = schedule_id && schedule_id == state.opened_schedule && 'active' || '';
 
-				return <div key={schedule_id} className={'d-flex align-items-center'.classNames() + active_class.classNames(style)} onClick={()=>setState({...state, opened_schedule: schedule_id})}>
-					<div>
-						<i className={'ch-icon ch-icon-note-favorite'.classNames() + 'calendar-icon'.classNames(style)}></i>
-					</div>
-					<div className={'flex-1'.classNames() + 'content'.classNames(style)}>
-						<strong>{title}</strong>
-						<span>{time_frame}</span>
-						<small>{excerpt}</small>
-					</div>
-					<div>
-						<i className={'ch-icon ch-icon-arrow-right-1'.classNames() + 'arrow-icon'.classNames(style)}></i>
-					</div>
-				</div>
+				return <Popup
+					key={schedule_id}
+					position="right center"
+					on="click"
+					closeOnDocumentClick={true}
+					mouseLeaveDelay={300}
+					mouseEnterDelay={0}
+					contentStyle={{ padding: '0px', border: 'none', width: '333px' }}
+					arrow={true}
+					trigger={<div className={'d-flex align-items-center'.classNames() + active_class.classNames(style)} onClick={()=>setState({...state, opened_schedule: schedule_id})}>
+							<div>
+								<i className={'ch-icon ch-icon-note-favorite'.classNames() + 'calendar-icon'.classNames(style)}></i>
+							</div>
+							<div className={'flex-1'.classNames() + 'content'.classNames(style)}>
+								<strong>{schedule_title}</strong>
+								<span>{time_frame}</span>
+								<small>{excerpt}</small>
+							</div>
+							<div>
+								<i className={'ch-icon ch-icon-arrow-right-1'.classNames() + 'arrow-icon'.classNames(style)}></i>
+							</div>
+						</div>
+					}>
+					<ScheduleCard {...schedule} channel=""/>
+				</Popup> 
 			})}
 		</div>
 	</div>

@@ -7,8 +7,8 @@ $displays: 'block', 'flex', 'inline', 'inline-block', 'inline-flex', 'contents';
 }
 
 // Sizings
-$attrs: 'font-size', 'margin', 'margin-top', 'margin-bottom', 'margin-left', 'margin-right', 'padding', 'padding-top', 'padding-bottom', 'padding-left', 'padding-right';
-@for $i from 1 through 30 {
+$attrs: 'font-size', 'margin', 'margin-top', 'margin-bottom', 'margin-left', 'margin-right', 'padding', 'padding-top', 'padding-bottom', 'padding-left', 'padding-right', 'width', 'height';
+@for $i from 1 through 40 {
 	@each $attr in $attrs {
 		.#{$attr}-#{$i} {
 			#{$attr}: #{$i}px;
@@ -52,6 +52,21 @@ $alignments: 'left', 'right', 'center';
 @each $alignment in $alignments {
 	.text-align-#{$alignment} {
 		text-align: #{$alignment};
+	}
+}
+
+.root {
+	&, * {
+		box-sizing: border-box;
+
+		a {
+			text-decoration: none;
+			cursor: pointer;
+
+			&:hover, &:active, &:focus {
+				outline: none;
+			}
+		}
 	}
 }
 
