@@ -1,0 +1,28 @@
+.dropdown {
+	padding: 8px 15px;	
+
+	&:not(.transparent) {
+		background-color: white;
+		border: 1px solid var(--crewhrm-border-color-primary);
+	}
+	
+	&:hover {
+		border-color: var(--crewhrm-foreground-color-secondary);
+	}
+}
+
+.dropdown-popup {
+	&>div{
+		padding: 8px 10px;
+		cursor: pointer;
+
+		&:not(:last-child) {
+			border-bottom: 1px solid var(--crewhrm-border-color-primary);
+		}
+
+		&.active, &:hover {
+			background-color: var(--crewhrm-background-color-primary);
+			color: var(--crewhrm-foreground-color-primary);
+		}
+	}
+}

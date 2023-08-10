@@ -1,16 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import { __ } from "../../../../../../utilities/helpers.jsx";
 
 import style from './jobs.module.scss';
 import { StatusDot } from "../../../../../../materials/status-dota/status-dots.jsx";
 import { NoJob } from "./no-job.jsx";
 import { Link } from "react-router-dom";
+import { DropDown } from "../../../../../../materials/dropdown/dropdown.jsx";
 
 const statuses = {
-	publish: '#73BF45',
-	draft: '#BBBFC3',
-	expired: '#EE940D',
-	completed: '#FF180A'
+	publish: {color: '#73BF45', label: __( 'Active' )},
+	draft: {color: '#BBBFC3', label: __( 'Draft' )},
+	expired: {color: '#EE940D', label: __( 'Expired' )},
+	completed: {color: '#FF180A', label: __( 'Completed' )}
 }
 
 const job = {
@@ -50,6 +51,27 @@ const stat_labels = {
 
 export function JobOpenings(props) {
 	let {is_overview, className} = props;
+	const [state, setState] = useState({
+		filter: {
+			job_status: 'all',
+			page: 1
+		}
+	});
+
+	const onChange=(key, value)=>{
+		setState({
+			...state,
+			filter: {
+				...state.filter,
+				[key]: value
+			}
+		});
+	}
+
+	const filter_status_options = [
+		{value: 'all', label: __( 'All' )},
+		...status_keys.map(key=>{return {value: key, label: statuses[key].label}})
+	];
 
 	return <div className={'jobs'.classNames(style) + className}>
 		<div className={'d-flex align-items-center margin-bottom-20'.classNames() + 'filter'.classNames(style)}>
@@ -63,7 +85,10 @@ export function JobOpenings(props) {
 			</div>
 			<div>
 				<div className={'d-inline-block'.classNames()}>
-					Filter
+					<DropDown
+						value={state.filter.job_status} 
+						options={filter_status_options} 
+						onChange={(v)=>onChange('job_status', v)}/>
 				</div>
 			</div>
 		</div>
@@ -86,7 +111,7 @@ export function JobOpenings(props) {
 							<div className={'flex-1'.classNames()}>
 								<div className={'d-flex align-items-center margin-bottom-15'.classNames()}>
 									<div className={"d-inline-block margin-right-8".classNames()}>
-										<StatusDot color={statuses[job_status]}/>
+										<StatusDot color={statuses[job_status].color}/>
 									</div>
 									<strong className={"job-title".classNames(style) + 'd-block text-color-primary font-size-20 font-weight-600'.classNames()}>
 										{job_title}

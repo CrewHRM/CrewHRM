@@ -1,0 +1,39 @@
+$color_1: rgb(255, 255, 255);
+$color_2: #fff;
+
+/*
+default style for popup
+
+*/
+.popup-content {
+	margin: auto;
+	background: rgb(255, 255, 255);
+	width: 50%;
+	padding: 5px;
+	border: 1px solid #d7d7d7;
+}
+.popup-arrow {
+	color: $color_1;
+	filter: drop-shadow(0 -3px 3px rgba(0, 0, 0, 0.16));
+	color: $color_2;
+	stroke-width: 2px;
+	stroke: #d7d7d7;
+	stroke-dasharray: 30px;
+	stroke-dashoffset: -54px;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+}
+[role='tooltip'].popup-content {
+	width: 200px;
+	box-shadow: rgba(0, 0, 0, 0.16) 0px 0px 3px;
+	border-radius: 5px;
+	overflow: hidden;
+}
+.popup-overlay {
+	background: transparent;
+	&.darken {
+		background: rgba(0, 0, 0, 0.1);
+	}
+}

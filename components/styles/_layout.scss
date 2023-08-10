@@ -1,5 +1,5 @@
 // Displays
-$displays: 'block', 'flex', 'inline', 'inline-block', 'contents';
+$displays: 'block', 'flex', 'inline', 'inline-block', 'inline-flex', 'contents';
 @each $display in $displays {
 	.d-#{$display} {
 		display: #{$display};
