@@ -3,7 +3,7 @@ import { Tabs } from "../../../../../../../materials/tabs/tabs.jsx";
 import { __ } from "../../../../../../../utilities/helpers.jsx";
 import { TextField } from "../../../../../../../materials/text-field/text-field.jsx";
 
-import dummy_avatar from '../../../../../../../images/meet.svg';
+import dummy_avatar from '../../../../../../../images/avatar.svg';
 
 import style from './sidebar.module.scss';
 import { Line } from "../../../../../../../materials/line/line.jsx";
@@ -26,11 +26,11 @@ export function Sidebar() {
 	const steps = [
 		{
 			id: 'q',
-			label: <span className={'font-size-13 font-weight-500'.classNames()}>{__( 'Qualified' )}</span>
+			label: <span className={'font-size-13 font-weight-500 line-height-24'.classNames()}>{__( 'Qualified' )}</span>
 		},
 		{
 			id: 'dq',
-			label: <span className={'font-size-13 font-weight-500'.classNames()}>{__( 'Disqualified' )}</span>
+			label: <span className={'font-size-13 font-weight-500 line-height-24'.classNames()}>{__( 'Disqualified' )}</span>
 		}
 	];
 
@@ -68,10 +68,10 @@ export function Sidebar() {
 						<input type="checkbox"/>
 						<CoverImage src={src} width={48} circle={true} className={'margin-left-15'.classNames()}/>
 						<div className={'flex-1 margin-left-10'.classNames()}>
-							<strong className={'d-block font-size-17 font-weight-600 text-color-primary margin-bottom-2'.classNames()}>
+							<strong className={'d-block font-size-17 font-weight-600 letter-spacing--17 text-color-primary margin-bottom-2'.classNames()}>
 								{name}
 							</strong>
-							<span className={'font-size-13 font-weight-400 text-color-secondary'.classNames()}>
+							<span className={'font-size-13 font-weight-400 line-height-24 text-color-secondary'.classNames()}>
 								{action_time}
 							</span>
 						</div>

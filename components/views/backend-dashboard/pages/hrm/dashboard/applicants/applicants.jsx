@@ -4,7 +4,7 @@ import style from './applicants.module.scss';
 import { __ } from "../../../../../../utilities/helpers.jsx";
 import { Header } from "./header/header.jsx";
 import { Sidebar } from "./sidebar/sidebar.jsx";
-import { Profile } from "./profile/Profile.jsx";
+import { Profile } from "./profile/profile.jsx";
 
 const jobs = [
 	'Account Manager',

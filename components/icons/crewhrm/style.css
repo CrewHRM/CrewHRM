@@ -1,9 +1,9 @@
 @font-face {
   font-family: 'crewhrm';
   src:
-    url('fonts/crewhrm.ttf?inmqs3') format('truetype'),
-    url('fonts/crewhrm.woff?inmqs3') format('woff'),
-    url('fonts/crewhrm.svg?inmqs3#crewhrm') format('svg');
+    url('fonts/crewhrm.ttf?4kmhg9') format('truetype'),
+    url('fonts/crewhrm.woff?4kmhg9') format('woff'),
+    url('fonts/crewhrm.svg?4kmhg9#crewhrm') format('svg');
   font-weight: normal;
   font-style: normal;
   font-display: block;
@@ -24,6 +24,18 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.ch-icon-anchor:before {
+  content: "\ec9a";
+}
+.ch-icon-behance:before {
+  content: "\ec9b";
+}
+.ch-icon-linkedin:before {
+  content: "\ec9c";
+}
+.ch-icon-twitter:before {
+  content: "\ec9d";
+}
 .ch-icon-filter:before {
   content: "\ec99";
 }
@@ -882,7 +894,7 @@
 .ch-icon-dollar-square:before {
   content: "\ea1b";
 }
-.ch-icon-dribbble:before {
+.ch-icon-dribble:before {
   content: "\ea1c";
 }
 .ch-icon-driver-2:before {

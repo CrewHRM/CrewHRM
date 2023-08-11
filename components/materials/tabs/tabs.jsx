@@ -3,9 +3,9 @@ import React from "react";
 import style from './tabs.module.scss';
 
 export function Tabs(props) {
-	const {active, tabs=[], onNavigate, theme} = props;
+	const {active, tabs=[], onNavigate, theme, className=''} = props;
 
-	return <div className={`tabs ${theme}`.classNames(style)}>
+	return <div className={`tabs ${theme}`.classNames(style) + className}>
 		{
 			tabs.map(tab=>{
 				let {id, label} = tab;

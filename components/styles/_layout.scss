@@ -7,7 +7,7 @@ $displays: 'block', 'flex', 'inline', 'inline-block', 'inline-flex', 'contents';
 }
 
 // Sizings
-$attrs: 'font-size', 'margin', 'margin-top', 'margin-bottom', 'margin-left', 'margin-right', 'padding', 'padding-top', 'padding-bottom', 'padding-left', 'padding-right', 'width', 'height';
+$attrs: 'font-size', 'margin', 'margin-top', 'margin-bottom', 'margin-left', 'margin-right', 'padding', 'padding-top', 'padding-bottom', 'padding-left', 'padding-right', 'width', 'height', 'line-height';
 @for $i from 1 through 40 {
 	@each $attr in $attrs {
 		.#{$attr}-#{$i} {
@@ -15,7 +15,7 @@ $attrs: 'font-size', 'margin', 'margin-top', 'margin-bottom', 'margin-left', 'ma
 		}
 	}
 
-	@if $i >= 5 and $i <= 10 {
+	@if $i <= 10 {
 		.border-radius-#{$i} {
 			border-radius: #{$i}px;
 			overflow: hidden;
@@ -60,6 +60,16 @@ $v_alignments: 'middle', 'top';
 @each $v_alignment in $v_alignments {
 	.vertical-align-#{$v_alignment} {
 		vertical-align: #{$v_alignment};
+	}
+}
+
+// Letter spacing
+@for $i from 1 through 20 {
+	.letter-spacing--#{$i} {
+		letter-spacing: -#{$i/100}px;
+	}
+	.letter-spacing-#{$i} {
+		letter-spacing: #{$i/100}px;
 	}
 }
 

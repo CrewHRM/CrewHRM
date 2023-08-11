@@ -1,3 +1,5 @@
+import icons from '../icons/crewhrm/style.module.scss';
+
 export function getElementDataSet(element){
 	let {dataset = {}} = element;
 	let data = {};
@@ -32,4 +34,34 @@ export function sprintf(str, ...params) {
 	}
 
 	return str;
+}
+
+export function getFlag(countryCode) {
+  const codePoints = countryCode.toUpperCase().split('').map(char =>  127397 + char.charCodeAt());
+  return String.fromCodePoint(...codePoints);
+}
+
+export function prepareTexts(inputText, props={}) {
+	let {className=''} = props;
+
+	// Regular expression to match URLs
+	let urlRegex = /((https?|ftp):\/\/[^\s/$.?#].[^\s]*)/g;
+	
+	// Replace URLs with anchor tags
+	let replacedText = inputText.replace(urlRegex, function(url) {
+		return `<a href="${url}" rel="noopener noreferrer nofollow" target="_blank" class="${className}">${url}</a>`;
+	});
+
+	replacedText = replacedText.replaceAll('\n', '<br/>');
+
+	return replacedText;
+}
+
+export function getSocialIcon(url) {
+	const {host}      = new URL(url);
+	const brand       = host.slice(0, host.indexOf( '.' ));
+	const class_name  = 'ch-icon-' + brand;
+	const final_class = `ch-icon ${icons[class_name] ? class_name : 'ch-icon-anchor'}`.classNames();
+
+	return final_class;
 }
