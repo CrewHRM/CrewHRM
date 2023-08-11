@@ -1,0 +1,22 @@
+$container_width: 990px;
+
+.applicants {
+	.content-area {
+		margin-top: 34px;
+		max-width: 990px;
+		margin-left: auto;
+		margin-right: auto;
+		display: flex;
+		align-items: stretch;
+		
+		.sidebar-wrapper {
+			width: 276px;
+			background: white;
+			border-radius: 5px;
+		}
+
+		.profile-wrapper {
+			flex: 1;
+		}
+	}
+}

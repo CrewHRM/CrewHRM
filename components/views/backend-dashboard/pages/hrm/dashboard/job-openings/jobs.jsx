@@ -6,6 +6,7 @@ import { StatusDot } from "../../../../../../materials/status-dot/status-dots.js
 import { NoJob } from "./no-job.jsx";
 import { Link } from "react-router-dom";
 import { DropDown } from "../../../../../../materials/dropdown/dropdown.jsx";
+import { Line } from "../../../../../../materials/line/line.jsx";
 
 const statuses = {
 	publish: {color: '#73BF45', label: __( 'Active' )},
@@ -127,7 +128,9 @@ export function JobOpenings(props) {
 								</div>
 							</div>
 							<div>
-								<button className={'button button-primary button-outlined button-small'.classNames()}>{__( 'Details' )}</button>
+								<Link to={`/dashboard/applicants/${job_id}/`} className={'button button-primary button-outlined button-small'.classNames()}>
+									{__( 'Details' )}
+								</Link>
 							</div>
 							<div className={'d-contents'.classNames()}>
 								<i className={'ch-icon ch-icon-more-1 text-color-secondary font-size-20 cursor-pointer d-inline-block margin-left-15'.classNames()}></i>
@@ -149,7 +152,7 @@ export function JobOpenings(props) {
 												</strong>
 											</div>
 										</div>,
-										!is_last && <div  key={key+'_separator'} style={{borderLeft: '1px solid var(--crewhrm-border-color-primary)', alignSelf: 'stretch'}}></div>
+										!is_last && <Line key={key+'_separator'} orientation="vertical"/>
 									]
 								})
 							}

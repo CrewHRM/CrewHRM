@@ -4,10 +4,19 @@ import style from './dropdown.module.scss';
 import {Popup} from "../popup/index.jsx";
 
 export function DropDown(props) {
-	const {value: selected_value, options, onChange, transparent, className=''} = props;
+	const {
+		value: selected_value, 
+		options, 
+		onChange, 
+		transparent, 
+		className='',
+		textClassName='font-size-15 font-weight-400 text-color-primary'.classNames(),
+		iconClassName='ch-icon ch-icon-arrow-down margin-left-10 font-size-18 text-color-secondary'.classNames(),
+		position="bottom right"
+	} = props;
 
 	return <Popup
-		position="bottom right"
+		position={position}
 		on="click"
 		closeOnDocumentClick
 		mouseLeaveDelay={300}
@@ -15,10 +24,10 @@ export function DropDown(props) {
 		contentStyle={{ padding: '0px', border: 'none' }}
 		arrow={false}
 		trigger={<div className={`dropdown ${transparent ? 'transparent' : ''}`.classNames(style) + 'cursor-pointer d-inline-flex align-items-center border-radius-5'.classNames() + className}>
-				<span className={'font-size-15 font-weight-400 text-color-primary'.classNames()}>
+				<span className={textClassName}>
 					{options.find(o=>o.value==selected_value).label}
 				</span>
-				<i className={'ch-icon ch-icon-arrow-down margin-left-10 font-size-18 text-color-secondary'.classNames()}></i>
+				<i className={iconClassName}></i>
 			</div>
 		}>
 		<div className={"dropdown-popup".classNames(style) + 'border-radius-6'.classNames()}>

@@ -1,0 +1,39 @@
+.text-field {
+	display: flex;
+	align-items: center;
+	padding: 10px 11px;
+	border: 1px solid var(--crewhrm-border-color-primary);
+	border-radius: 5px;
+	background-color: #F9F9F9;
+
+	&:focus, &:hover {
+		background-color: white;
+	}
+
+	&.icon-right {
+		flex-direction: row-reverse;
+	}
+
+	.ch-icon {
+		color: var(--crewhrm-text-color-secondary);
+		font-size: 16px;
+	}
+
+	input {
+		margin: 0;
+		padding: 0;
+		height: auto;
+		font-size: 15px;
+		font-style: normal;
+		font-weight: 400;
+		letter-spacing: -0.15px;
+		flex: 1;
+
+		&, &:hover, &:active, &:focus {
+			border: 0;
+			outline: none;
+			box-shadow: none;
+			background: transparent;
+		}
+	}
+}

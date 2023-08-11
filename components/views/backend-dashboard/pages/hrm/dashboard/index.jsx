@@ -3,7 +3,7 @@ import { StickyBar } from "../../../../../materials/sticky-bar/sticky-bar.jsx";
 import { __ } from "../../../../../utilities/helpers.jsx";
 import { useParams } from "react-router-dom";
 import { DahboardMain } from "./main/main.jsx";
-import { SingleProfile } from "./single-profile/profile.jsx";
+import { Applicants } from "./applicants/applicants.jsx";
 import { JobOpeningsFullView } from "./job-openings/jobs.jsx";
 
 export function Dashboard() {
@@ -27,6 +27,6 @@ export function Dashboard() {
 
 		{page=='main' && <DahboardMain/>}
 		{page=='job-openings' && <JobOpeningsFullView/>}
-		{page=='profile' && <SingleProfile profile_id={sub_page}/>}
+		{page=='applicants' && <Applicants job_id={sub_page}/>}
 	</> 
 }
