@@ -7,6 +7,7 @@ import { Calendar } from "./calendar/calendar.jsx";
 import style from './main.module.scss';
 import { JobOpenings } from "../job-openings/jobs.jsx";
 import { IntroCard } from "../../../../../../materials/intro-card/intro-card.jsx";
+import { DangerouslySet } from "../../../../../../materials/dangerously-set/DangerouslySet.jsx";
 
 export function DahboardMain() {
 	return <div className={'h-full'.classNames() + 'wrapper'.classNames(style)}>
@@ -47,9 +48,9 @@ export function DahboardMain() {
 						<strong className={'d-block font-size-20 font-weight-600 text-color-primary margin-bottom-8'.classNames()}>
 							{__( 'Question Bank' )}
 						</strong>
-						<span className={"d-block font-size-14 font-weight-400 text-color-secondary margin-bottom-26".classNames()}>
-							<span dangerouslySetInnerHTML={{__html: __('Let’s create a questionnaire for <br/> hiring the right people.')}}></span>
-						</span>
+						<DangerouslySet className={"d-block font-size-14 font-weight-400 text-color-secondary margin-bottom-26".classNames()}>
+							{__('Let’s create a questionnaire for <br/> hiring the right people.')}
+						</DangerouslySet>
 						<a href="#" className={'button button-primary button-outlined button-medium'.classNames()}>
 							{__( 'Choose Templates' )}
 						</a>

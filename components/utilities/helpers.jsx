@@ -42,7 +42,13 @@ export function getFlag(countryCode) {
 }
 
 export function prepareTexts(inputText, props={}) {
+	if ( typeof inputText !== 'string' ) {
+		return inputText;
+	}
+
 	let {className=''} = props;
+
+	// To Do: Fix malformed url if comma, dot is right after the url without space in between.
 
 	// Regular expression to match URLs
 	let urlRegex = /((https?|ftp):\/\/[^\s/$.?#].[^\s]*)/g;

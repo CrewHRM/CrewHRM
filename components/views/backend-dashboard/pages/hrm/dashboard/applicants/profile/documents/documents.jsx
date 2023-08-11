@@ -1,5 +1,27 @@
-import React from "react";
+import React, { useContext } from "react";
+import { ContextApplicantProfile } from "../profile-wrapper.jsx";
+import { ExpandableContent } from "../../../../../../../../materials/ExpandableContent/expandable-content.jsx";
+import { __, prepareTexts } from "../../../../../../../../utilities/helpers.jsx";
+import { Line } from "../../../../../../../../materials/line/line.jsx";
+import { DangerouslySet } from "../../../../../../../../materials/dangerously-set/DangerouslySet.jsx";
 
 export function Documents() {
-	return <div>This is documents</div>
+	const {applicant} = useContext(ContextApplicantProfile);
+	const {cover_letter} = applicant;
+
+	return <div>
+		<strong className={'d-block font-size-17 font-weight-600 line-height-24 letter-spacing--17 text-color-primary margin-bottom-10'.classNames()}>
+			{__( 'COVER LETTER' )}
+		</strong>
+		<ExpandableContent>
+			<DangerouslySet className={'d-block font-size-15 font-weight-400 line-height-22 letter-spacing--15 text-color-primary'.classNames()}>
+				{prepareTexts(cover_letter)}
+			</DangerouslySet>
+		</ExpandableContent>
+
+		<Line className={'margin-top-20 margin-bottom-20'.classNames()}/>
+		<strong className={'d-block font-size-17 font-weight-600 line-height-24 letter-spacing--17 text-color-primary margin-bottom-10'.classNames()}>
+			{__( 'RESUME' )}
+		</strong>
+	</div>
 }

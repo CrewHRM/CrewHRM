@@ -1,7 +1,8 @@
 import React, { useContext } from "react";
-import { ContextApplicantProfile } from "../profile.jsx";
+import { ContextApplicantProfile } from "../profile-wrapper.jsx";
 import { __, getSocialIcon, prepareTexts } from "../../../../../../../../utilities/helpers.jsx";
 import { Line } from "../../../../../../../../materials/line/line.jsx";
+import { DangerouslySet } from "../../../../../../../../materials/dangerously-set/DangerouslySet.jsx";
 
 // To Do: Output contents should be converted html entities from PHP using htmlspecialchars function.
 
@@ -14,7 +15,9 @@ export function OverView() {
 			{__( 'SUMMARY' )}
 		</strong>
 		<div>
-			<div className={'font-size-15 font-weight-400 line-height-22 letter-spacing-15 text-color-primary'.classNames()} dangerouslySetInnerHTML={{__html: prepareTexts(summary)}}></div>
+			<DangerouslySet className={'font-size-15 font-weight-400 line-height-22 letter-spacing-15 text-color-primary'.classNames()}>
+				{prepareTexts(summary)}
+			</DangerouslySet>
 		</div>
 
 		{education.length && <>
@@ -64,8 +67,10 @@ export function OverView() {
 					<strong className={'d-block font-size-17 font-weight-500 line-height-24 letter-spacing--17 text-color-primary margin-bottom-1'.classNames()}>
 						{question}
 					</strong>
-					<div className={'d-block font-size-15 font-weight-400 line-height-22 letter-spacing--15 text-color-primary'.classNames()} dangerouslySetInnerHTML={{__html: prepareTexts( answer )}}></div>
-				
+					<DangerouslySet className={'d-block font-size-15 font-weight-400 line-height-22 letter-spacing--15 text-color-primary'.classNames()}>
+						{prepareTexts( answer )}
+					</DangerouslySet>
+					
 					<Line className={'margin-top-20 margin-bottom-20'.classNames()} show={i < qna.length-1}/>
 				</div>
 			})}

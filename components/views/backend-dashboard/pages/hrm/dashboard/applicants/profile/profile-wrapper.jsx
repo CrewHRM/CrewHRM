@@ -19,7 +19,8 @@ const applicant = {
 	phone        : '(480) 555-0103',
 	avatar_url   : avatar,
 	country_code : 'US',
-	summary      : 'I am an experienced, organised and focused manager with a background in on and offline services. Highly motivated, I love learning new technology and sharing that knowledge to nurture and enhance the skills of the team.',
+	summary      : 'I am an experienced developer at https://google.com. organised and focused manager with a background in on and offline services. Highly motivated, I love learning new technology and sharing that knowledge to nurture and enhance the skills of the team.',
+	cover_letter : 'Dear [Recipient\'s Name],\nI am writing to express my strong interest in the Account Manager position at [Company Name]. With my extensive experience in account management and a proven track record of driving customer satisfaction and revenue growth, I am confident in my ability to contribute to your organization\'s success.\nOver the past [X] years, I have built a solid foundation in account management, working with diverse clients across various industries. I have successfully nurtured long-term relationships with key accounts, consistently exceeding sales targets and delivering exceptional. Dear [Recipient\'s Name],\nI am writing to express my strong interest in the Account Manager position at [Company Name]. With my extensive experience in account management and a proven track record of driving customer satisfaction and revenue growth, I am confident in my ability to contribute to your organization\'s success.\nOver the past [X] years, I have built a solid foundation in account management, working with diverse clients across various industries. I have successfully nurtured long-term relationships with key accounts, consistently exceeding sales targets and delivering exceptional.',
 	education    : [
 		{
 			education_id : 'k1',
