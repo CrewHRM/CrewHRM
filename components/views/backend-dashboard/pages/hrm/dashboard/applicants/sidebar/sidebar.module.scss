@@ -2,4 +2,13 @@
 	.filter {
 		padding: 10px 15px;
 	}
+
+	.list {
+		&>div {
+			padding: 15px 10px 15px 15px;
+			&:not(:last-child) {
+				border-bottom: 1px solid var(--crewhrm-border-color-primary);
+			}
+		}
+	}
 }

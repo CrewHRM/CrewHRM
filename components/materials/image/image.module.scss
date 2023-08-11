@@ -1,0 +1,9 @@
+.cover-image {
+	background-repeat: no-repeat;
+	background-size: cover;
+	overflow: hidden;
+
+	&.circle {
+		border-radius: 50%;
+	}
+}
