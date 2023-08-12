@@ -23,7 +23,7 @@ export function Comment(props) {
 		<textarea 
 			className={'margin-top-15 margin-bottom-15 border-radius-5 border-1-5 border-color-tertiary padding-15 font-size-15 font-weight-500 d-block'.classNames()} 
 			placeholder={__( 'Write your comments' )} 
-			style={{width: '100%', height: '69%', resize: 'none'}}></textarea>
+			style={{width: '100%', height: '69%', resize: 'vertical'}}></textarea>
 
 		<div className={'d-flex align-items-center'.classNames()}>
 			<div className={'flex-1'.classNames()}>

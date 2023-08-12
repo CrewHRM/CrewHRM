@@ -1,0 +1,21 @@
+.email-fields {
+	.label {
+		width: 70px;
+		margin-right: 10px;
+	}
+
+	input, textarea {
+		width: 100%;
+		padding: 10px 15px;
+		border: 1.5px solid var(--crewhrm-border-color-tertiary);
+	}
+
+	input {
+		border-radius: 10px;
+	}
+
+	textarea {
+		resize: vertical;
+		border-radius: 5px;
+	}
+}
