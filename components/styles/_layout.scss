@@ -106,3 +106,21 @@ $v_alignments: 'middle', 'top';
 		flex: 1;
 	}
 }
+
+// Borders
+$borders: 'border', 'border-bottom', 'border-top', 'border-left', 'border-right';
+@each $border in $borders {
+	.#{$border}-1 {
+		border-width: 1px;
+		border-style: solid;
+	}
+
+	.#{$border}-1-5 {
+		border-width: 1.5px;
+		border-style: solid;
+	}
+}
+
+.border-color-tertiary {
+	border-color: var(--crewhrm-border-color-tertiary);
+}

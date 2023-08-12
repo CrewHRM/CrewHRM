@@ -34,7 +34,7 @@ export function StatCards() {
 
 			return <div key={label} className={'card'.classNames(style)}>
 				<img src={icon}/>
-				<span className={'strong'.classNames() + 'text-color-primary'.classNames()}>
+				<span className={'strong'.classNames(style) + 'text-color-primary'.classNames()}>
 					{count}
 				</span>
 				<span className={'text-color-secondary'.classNames()}>

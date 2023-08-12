@@ -3,7 +3,7 @@
 
 	&:not(.transparent) {
 		background-color: white;
-		border: 1px solid var(--crewhrm-border-color-primary);
+		border: 1px solid var(--crewhrm-border-color-tertiary);
 	}
 	
 	&:hover {
@@ -17,7 +17,7 @@
 		cursor: pointer;
 
 		&:not(:last-child) {
-			border-bottom: 1px solid var(--crewhrm-border-color-primary);
+			border-bottom: 1px solid var(--crewhrm-border-color-tertiary);
 		}
 
 		&.active, &:hover {

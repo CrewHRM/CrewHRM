@@ -4,11 +4,11 @@
 
 	&.horizontal {
 		width: 100%;
-		border-bottom: 1px solid var(--crewhrm-border-color-primary);
+		border-bottom: 1px solid var(--crewhrm-border-color-tertiary);
 	}
 
 	&.vertical {
 		width: 0;
-		border-right: 1px solid var(--crewhrm-border-color-primary);
+		border-right: 1px solid var(--crewhrm-border-color-tertiary);
 	}
 }
