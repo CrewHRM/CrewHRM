@@ -24,7 +24,7 @@ module.exports = (env, options) => {
 					use: ['style-loader', 'css-loader', 'postcss-loader'],
 				},
 				{
-					test: /\.(png|jp(e*)g|svg|gif)$/,
+					test: /\.(png|jp(e*)g|svg|gif|pdf)$/,
 					type: "asset/resource",
 				}
 			],

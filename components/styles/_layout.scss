@@ -15,7 +15,7 @@ $attrs: 'font-size', 'margin', 'margin-top', 'margin-bottom', 'margin-left', 'ma
 		}
 	}
 
-	@if $i <= 10 {
+	@if $i <= 20 {
 		.border-radius-#{$i} {
 			border-radius: #{$i}px;
 			overflow: hidden;

@@ -10,6 +10,9 @@ import { CoverImage } from "../../../../../../../materials/image/image.jsx";
 import { Line } from "../../../../../../../materials/line/line.jsx";
 
 import avatar from '../../../../../../../images/avatar.svg';
+import pdf from '../../../../../../../images/sample.pdf';
+import attachment from '../../../../../../../images/attachment.png';
+
 import style from './profile.module.scss';
 
 const applicant = {
@@ -74,6 +77,33 @@ const applicant = {
 		'http://dribble.com',
 		'http://behance.com',
 		'http://external.com'
+	],
+	resume_url: pdf,
+	attachments: [
+		{
+			mime_type: 'image/png',
+			url: attachment
+		},
+		{
+			mime_type: 'image/png',
+			url: attachment
+		},
+		{
+			mime_type: 'image/png',
+			url: attachment
+		},
+		{
+			mime_type: 'image/png',
+			url: attachment
+		},
+		{
+			mime_type: 'image/png',
+			url: attachment
+		},
+		{
+			mime_type: 'image/png',
+			url: attachment
+		}
 	]
 }
 
