@@ -25,8 +25,8 @@ export function Dashboard() {
 			</div>
 		</StickyBar>
 
-		{page=='main' && <DahboardMain/>}
-		{page=='job-openings' && <JobOpeningsFullView/>}
-		{page=='applicants' && <Applicants job_id={sub_page}/>}
+		{page=='main' && <DahboardMain/> || null}
+		{page=='job-openings' && <JobOpeningsFullView/> || null}
+		{page=='applicants' && <Applicants job_id={sub_page}/> || null}
 	</> 
 }

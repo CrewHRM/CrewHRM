@@ -159,9 +159,9 @@ export function Profile() {
 				className={'margin-bottom-20'.classNames()}/>
 
 			<ContextApplicantProfile.Provider value={{applicant}}>
-				{state.active_tab == 'overview' && <OverView/>}
-				{state.active_tab == 'documents' && <Documents/>}
-				{state.active_tab == 'activity' && <Activity/>}
+				{state.active_tab == 'overview' && <OverView/> || null}
+				{state.active_tab == 'documents' && <Documents/> || null}
+				{state.active_tab == 'activity' && <Activity/> || null}
 			</ContextApplicantProfile.Provider>
 		</div>
 	</div>

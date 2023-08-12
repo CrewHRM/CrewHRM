@@ -2,6 +2,7 @@ import React from "react";
 
 import style from './image.module.scss';
 
+// To Do: Add a mode to to determine height based on ratio automatically.
 export function CoverImage(props) {
 	const {src, height, width, circle, className=''} = props;
 	

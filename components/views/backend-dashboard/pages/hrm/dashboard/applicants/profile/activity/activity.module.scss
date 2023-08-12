@@ -1,0 +1,8 @@
+.activities {
+	.comment-attachments {
+		display: grid;
+		grid-template-columns: auto auto auto auto auto auto auto auto;
+		gap: 15px;
+		margin-top: 5px;
+	}
+}

@@ -13,7 +13,7 @@ export function TextField(props) {
 		{icon && <>
 			<i className={icons[icon].classNames()}></i>
 			<span className={'d-inline-block width-6'.classNames()}></span>
-		</>}
+		</> || null}
 		
 		<input 
 			type={type} 

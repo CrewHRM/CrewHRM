@@ -43,7 +43,7 @@ export function OverView() {
 					</div>
 				})}
 			</div>
-		</>}
+		</> || null}
 
 		{skills.length && <>
 			<Line className={'margin-top-20 margin-bottom-20'.classNames()}/>
@@ -57,7 +57,7 @@ export function OverView() {
 					</div>
 				})}
 			</div>
-		</>}
+		</> || null}
 		
 		{qna.length && <>
 			<Line className={'margin-top-20 margin-bottom-20'.classNames()}/>
@@ -74,7 +74,7 @@ export function OverView() {
 					<Line className={'margin-top-20 margin-bottom-20'.classNames()} show={i < qna.length-1}/>
 				</div>
 			})}
-		</>}
+		</> || null}
 
 		{social_links.length && <>
 			<Line className={'margin-top-20 margin-bottom-20'.classNames()}/>
@@ -83,6 +83,6 @@ export function OverView() {
 					<i className={getSocialIcon(link) + 'font-size-20 text-color-primary'.classNames()}></i>
 				</a>
 			})}
-		</>}
+		</> || null}
 	</div>
 }

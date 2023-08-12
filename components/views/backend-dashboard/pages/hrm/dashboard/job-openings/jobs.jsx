@@ -79,7 +79,7 @@ export function JobOpenings(props) {
 			<div className={'flex-1 d-flex align-items-center'.classNames()}>
 				{!is_overview && <Link to="/dashboard/main/">
 					<i className={'ch-icon ch-icon-arrow-left text-color-primary cursor-pointer'.classNames() + 'back-icon'.classNames(style)}></i>
-				</Link>}
+				</Link> || null}
 				<strong className={'text-color-primary '+(is_overview ? 'font-size-17 font-weight-500' : 'font-size-24 font-weight-600').classNames()}>
 					{__( 'Job Openings' )}
 				</strong>
@@ -123,7 +123,7 @@ export function JobOpenings(props) {
 									{meta_data.map((data, index)=>{
 										return data && <span key={data} className={'d-inline-block font-size-15 font-weight-400 text-color-secondary'.classNames()}>
 											{data}
-										</span>
+										</span> || null
 									})}
 								</div>
 							</div>
@@ -136,7 +136,7 @@ export function JobOpenings(props) {
 								<i className={'ch-icon ch-icon-more-1 text-color-secondary font-size-20 cursor-pointer d-inline-block margin-left-15'.classNames()}></i>
 							</div>
 						</div>
-						<div className={'d-flex align-items-center space-between'.classNames()}>
+						<div className={'d-flex align-items-center justify-content-space-between'.classNames()}>
 							{
 								Object.keys(stats).map((key, index)=>{
 									let is_last = index == Object.keys(stats).length-1;
@@ -152,7 +152,7 @@ export function JobOpenings(props) {
 												</strong>
 											</div>
 										</div>,
-										!is_last && <Line key={key+'_separator'} orientation="vertical"/>
+										!is_last && <Line key={key+'_separator'} orientation="vertical"/> || null
 									]
 								})
 							}
@@ -164,7 +164,7 @@ export function JobOpenings(props) {
 
 		{is_overview && jobs.length && <Link to="/dashboard/job-openings" className={'button button-primary button-outlined button-full-width-2'.classNames()}>
 			{__( 'View All Jobs' )}
-		</Link>}
+		</Link> || null}
 	</div>
 }
 

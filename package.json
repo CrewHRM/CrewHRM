@@ -33,6 +33,7 @@
     "gulp-plumber": "^1.2.1",
     "gulp-wp-pot": "^2.5.0",
     "gulp-zip": "^5.1.0",
+    "javascript-time-ago": "^2.5.9",
     "node-sass": "^9.0.0",
     "path": "^0.12.7",
     "react": "^18.2.0",

@@ -30,7 +30,7 @@ export function Documents() {
 			<object data={resume_url} type="application/pdf" width="100%" height="700px">
 				<p>Unable to display PDF file. <a href={resume_url}>Download</a> instead.</p>
 			</object>
-		</>}
+		</> || null}
 		
 		{attachments.length && <>
 			<Line className={'margin-top-20 margin-bottom-20'.classNames()}/>
@@ -47,6 +47,6 @@ export function Documents() {
 								height={125}/>
 				})}
 			</div>
-		</>}
+		</> || null}
 	</div>
 }

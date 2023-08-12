@@ -47,10 +47,12 @@ export function Sidebar() {
 
 		<div className={'filter'.classNames(style) + 'd-flex align-items-center'.classNames()}>
 			<div className={'flex-1'.classNames()}>
-				<input type="checkbox"/>
-				<span className={'font-size-15 font-weight-400 text-color-secondary vertical-align-middle margin-left-10'.classNames()}>
-					{__( 'Select All' )}
-				</span>
+				<label>
+					<input type="checkbox"/>
+					<span className={'font-size-15 font-weight-400 text-color-secondary vertical-align-middle margin-left-10'.classNames()}>
+						{__( 'Select All' )}
+					</span>
+				</label>
 			</div>
 			<div>
 				<i className={'ch-icon ch-icon-filter font-size-20 text-color-secondary'.classNames()}></i>

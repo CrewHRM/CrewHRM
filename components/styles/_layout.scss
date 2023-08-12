@@ -34,8 +34,16 @@ $weights: 400, 500, 600, 700;
 // Flex content justify
 $justifications: 'space-between', 'space-around';
 @each $justfication in $justifications {
-	.#{$justfication} {
+	.justify-content-#{$justfication} {
 		justify-content: #{$justfication};
+	}
+}
+
+// Align self
+$align_selfs: 'center', 'auto';
+@each $align_self in $align_selfs {
+	.align-self-#{$align_self} {
+		align-self: #{$align_self};
 	}
 }
 

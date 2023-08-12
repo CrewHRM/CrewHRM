@@ -50,7 +50,7 @@ export function MountPoint(props){
 
 	return ready && <div className={'root'.classNames()}>
 		{props.children}
-	</div>
+	</div> || null
 }
 
 
