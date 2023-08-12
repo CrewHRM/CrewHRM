@@ -1,3 +1,5 @@
+@import '../../../../../../../styles/mixins';
+
 .calendar {
 	padding: 20px;
 	background-color: white;
@@ -10,12 +12,12 @@
 		&>div {
 			&:first-child {
 				font-size: 24px;
-				font-weight: 600;
+				@include fontWeight(600);
 			}
 
 			&:last-child {
 				font-size: 17px;
-				font-weight: 600;
+				@include fontWeight(600);
 			}
 		}
 	}
@@ -38,13 +40,13 @@
 
 			.strong {
 				font-size: 17px;
-				font-weight: 600;
+				@include fontWeight(600);
 				letter-spacing: 0.3px;
 			}
 
 			span {
 				font-size: 14px;
-				font-weight: 400;
+				@include fontWeight(400);
 			}
 
 			&.active{
@@ -52,11 +54,11 @@
 				background-color: var(--crewhrm-background-color-primary);
 
 				.strong {
-					font-weight: 700;
+					@include fontWeight(700);
 				}
 
 				span {
-					font-weight: 500;
+					@include fontWeight(500);
 				}
 
 				.strong, span{
@@ -97,21 +99,21 @@
 
 				.strong {
 					font-size: 17px;
-					font-weight: 600;
+					@include fontWeight(600);
 					color: var(--crewhrm-text-color-primary);
 					margin-bottom: 2px;
 				}
 
 				span {
 					font-size: 14px;
-					font-weight: 400;
+					@include fontWeight(400);
 					color: var(--crewhrm-text-color-secondary);
 					margin-bottom: 1px;
 				}
 
 				small {
 					font-size: 14px;
-					font-weight: 400;
+					@include fontWeight(400);
 					color: var(--crewhrm-text-color-secondary);
 				}
 			}

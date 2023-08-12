@@ -1,3 +1,4 @@
+@import './mixins';
 
 @font-face {
 	font-family: 'CrewHRM-Figtree-Regular';
@@ -21,17 +22,17 @@
 
 // Font weights
 .font-weight-400 {
-	font-family: CrewHRM-Figtree-Regular;
+	@include fontWeight(400);
 }
 
 .font-weight-500 {
-	font-family: CrewHRM-Figtree-Medium;
+	@include fontWeight(500);
 }
 
 .font-weight-600 {
-	font-family: CrewHRM-Figtree-SemiBold;
+	@include fontWeight(600);
 }
 
 .font-weight-700 {
-	font-family: CrewHRM-Figtree-Bold;
+	@include fontWeight(700);
 }

@@ -1,9 +1,11 @@
+@import '../styles/mixins';
+
 .button{
 	outline: none;
 	padding: 10px 15px;
 	border-radius: 5px;
 	font-size: 15px;
-	font-weight: 500;
+	@include fontWeight(500);
 	letter-spacing: -0.3px;
 	text-decoration: none;
 	display: inline-block;
@@ -35,17 +37,17 @@
 		width: 100%;
 		text-align: center;
 		font-size: 15px;
-		font-weight: 600;
+		@include fontWeight(600);
 	}
 	
 	
 	&.button-medium {
-		font-weight: 500;
+		@include fontWeight(500);
 		padding: 10px 15px;
 	}
 
 	&.button-small {
-		font-weight: 400;
+		@include fontWeight(400);
 		padding: 5px 12px;
 	}
 }
@@ -58,7 +60,7 @@
 	display: inline-block;
 	white-space: nowrap;
 	font-size: 15px;
-	font-weight: 500;
+	@include fontWeight(500);
 	line-height: 24px;
 	letter-spacing: -0.15px;
 	color: var(--crewhrm-text-color-primary);

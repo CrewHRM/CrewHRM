@@ -1,3 +1,5 @@
+@import '../../../../../../../styles/mixins';
+
 .card-wrapper{
 	overflow: auto;
 
@@ -27,12 +29,12 @@
 			margin-top: 45px;
     		margin-bottom: 12px;
 			font-size: 28px;
-			font-weight: 700;
+			@include fontWeight(700);
 		}
 
 		span {
 			font-size: 15px;
-			font-weight: 500;
+			@include fontWeight(500);
 		}
 	}
 }
