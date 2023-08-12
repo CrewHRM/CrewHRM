@@ -69,7 +69,7 @@ export function Calendar(props) {
 				const dt           = d.toLocaleDateString('en-US', { day: '2-digit' });
 
 				return <div key={d.getTime()} className={active_class.classNames(style) }>
-					<strong className={'text-color-secondary'.classNames()}>{dt}</strong>
+					<span className={'strong'.classNames(style) + 'text-color-secondary'.classNames()}>{dt}</span>
 					<span className={'text-color-tertiary'.classNames()}>{day}</span>
 				</div>
 			})}
@@ -95,7 +95,7 @@ export function Calendar(props) {
 								<i className={'ch-icon ch-icon-note-favorite'.classNames() + 'calendar-icon'.classNames(style)}></i>
 							</div>
 							<div className={'flex-1'.classNames() + 'content'.classNames(style)}>
-								<strong>{schedule_title}</strong>
+								<span className={'strong'.classNames(style)}>{schedule_title}</span>
 								<span>{time_frame}</span>
 								<small>{excerpt}</small>
 							</div>

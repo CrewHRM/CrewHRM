@@ -17,9 +17,9 @@ export function DahboardMain() {
 		</div>
 		<div className={'content-area'.classNames(style)}>
 			<IntroCard image="megaphone" className={'margin-bottom-20'.classNames()}>
-				<strong className={'d-block text-color-primary font-size-28 font-weight-600 margin-bottom-15'.classNames()}>
+				<span className={'d-block text-color-primary font-size-28 font-weight-600 margin-bottom-15'.classNames()}>
 					{__( 'Find the person you want to hire ' )}
-				</strong>
+				</span>
 				<small className={'text-color-secondary font-size-15 font-weight-400 margin-bottom-30 d-block'.classNames()}>
 					{__( 'Candidates see your logo and description on job posts, and more' )}
 				</small>
@@ -32,9 +32,9 @@ export function DahboardMain() {
 			
 			<div className={'d-flex align-items-center margin-bottom-20'.classNames()}>
 				<div className={'flex-1'.classNames()}>
-					<strong className={'text-color-primary font-size-17 font-weight-500'.classNames()}>
+					<span className={'text-color-primary font-size-17 font-weight-500'.classNames()}>
 						{__( 'Suggested Action' )}
-					</strong>
+					</span>
 				</div>
 				<div>
 					<span className={'text-color-primary font-size-14 font-weight-400'.classNames()}>
@@ -45,9 +45,9 @@ export function DahboardMain() {
 			<div className={'column'.classNames()}>
 				<div>
 					<IntroCard image="designer_working">
-						<strong className={'d-block font-size-20 font-weight-600 text-color-primary margin-bottom-8'.classNames()}>
+						<span className={'d-block font-size-20 font-weight-600 text-color-primary margin-bottom-8'.classNames()}>
 							{__( 'Question Bank' )}
-						</strong>
+						</span>
 						<DangerouslySet className={"d-block font-size-14 font-weight-400 text-color-secondary margin-bottom-26".classNames()}>
 							{__('Let’s create a questionnaire for <br/> hiring the right people.')}
 						</DangerouslySet>
@@ -58,9 +58,9 @@ export function DahboardMain() {
 				</div>
 				<div>
 					<IntroCard image="being_creative">
-						<strong className={'d-block font-size-20 font-weight-600 text-color-primary margin-bottom-8'.classNames()}>
+						<span className={'d-block font-size-20 font-weight-600 text-color-primary margin-bottom-8'.classNames()}>
 							{__( 'Design your page' )}
-						</strong>
+						</span>
 						<span className={"d-block font-size-14 font-weight-400 text-color-secondary margin-bottom-26".classNames()}>
 							{__('Keep your great talented candidate on file in the Talent Pool.')}
 						</span>

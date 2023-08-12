@@ -30,9 +30,9 @@ export function ScheduleCard(props) {
 					<i className={'ch-icon ch-icon-more-1 font-size-20 text-color-secondary cursor-pointer'.classNames()}></i>
 				</div>
 			</div>
-			<strong className={'d-block font-size-20 font-weight-600 foreground-color-primary'.classNames()}>
+			<span className={'d-block font-size-20 font-weight-600 foreground-color-primary'.classNames()}>
 				{schedule_title}
-			</strong>
+			</span>
 		</div>
 		<div className={'details'.classNames(style)}>
 			<div className={flex_class}>
@@ -40,7 +40,7 @@ export function ScheduleCard(props) {
 					<i className={'ch-icon ch-icon-clock-1'.classNames() + icon_class}></i>
 				</div>
 				<div className={flex_1}>
-					<strong className={legend_class}>{date}</strong>
+					<span className={legend_class}>{date}</span>
 					<span className={sub_text_class}>{time_frame}</span>
 				</div>
 			</div>
@@ -50,7 +50,7 @@ export function ScheduleCard(props) {
 					<i className={'ch-icon ch-icon-flag'.classNames() + icon_class}></i>
 				</div>
 				<div className={flex_1}>
-					<strong className={legend_class}>{__( 'Agenda' )}</strong>
+					<span className={legend_class}>{__( 'Agenda' )}</span>
 					<span className={sub_text_class}>{agenda}</span>
 				</div>
 			</div>
@@ -60,9 +60,9 @@ export function ScheduleCard(props) {
 					<i className={'ch-icon ch-icon-profile-2user'.classNames() + icon_class}></i>
 				</div>
 				<div className={flex_1}>
-					<strong className={legend_class}>
+					<span className={legend_class}>
 						{guests.length > 1 ? sprintf( __( '%s Guests' ), guests.length ) : __( '1 Guest' )}
-					</strong>
+					</span>
 					{guests.map(guest=>{
 						let {name, email} = guest;
 						return <span className={sub_text_class + 'margin-bottom-4'.classNames()}>
@@ -77,9 +77,9 @@ export function ScheduleCard(props) {
 					<i className={'ch-icon ch-icon-textalign-left'.classNames() + icon_class}></i>
 				</div>
 				<div className={flex_1}>
-					<strong className={legend_class}>
+					<span className={legend_class}>
 						{__( 'Note' )}
-					</strong>
+					</span>
 					<span className={sub_text_class + 'margin-bottom-4'.classNames()}>
 						{note}
 					</span>

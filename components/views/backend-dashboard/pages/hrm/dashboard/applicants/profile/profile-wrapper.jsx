@@ -128,15 +128,16 @@ export function Profile() {
 
 	const [state, setState] = useState({active_tab: 'overview'});
 
-	return <div>
+	return <>
 		<HeadActions/>
+
 		<div className={'applicant-data'.classNames(style) + 'border-radius-5'.classNames()}>
 			<div className={'d-flex align-items-center padding-20'.classNames()}>
 				<CoverImage src={avatar} width={109} height={124} className={'border-radius-3'.classNames()}/>
 				<div className={'flex-1 margin-left-13'.classNames()}>
-					<strong className={'d-block font-size-24 font-weight-600 line-height-24 text-color-primary margin-bottom-2'.classNames()}>
+					<span className={'d-block font-size-24 font-weight-600 line-height-24 text-color-primary margin-bottom-2'.classNames()}>
 						{applicant.name} <span className={'font-size-15 vertical-align-middle'.classNames()}>{getFlag(applicant.country_code)}</span>
-					</strong>
+					</span>
 					<span className={'d-block font-size-15 font-weight-400 line-height-24 text-color-secondary margin-bottom-2'.classNames()}>
 						{applicant.address}
 					</span>
@@ -164,5 +165,5 @@ export function Profile() {
 				{state.active_tab == 'activity' && <Activity/> || null}
 			</ContextApplicantProfile.Provider>
 		</div>
-	</div>
+	</>
 }

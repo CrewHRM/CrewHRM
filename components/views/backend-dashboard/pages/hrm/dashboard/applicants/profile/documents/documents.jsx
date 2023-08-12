@@ -13,9 +13,9 @@ export function Documents() {
 	const {cover_letter, resume_url, attachments=[]} = applicant;
 
 	return <div className={'documents'.classNames(style)}>
-		<strong className={'d-block font-size-17 font-weight-600 line-height-24 letter-spacing--17 text-color-primary margin-bottom-10'.classNames()}>
+		<span className={'d-block font-size-17 font-weight-600 line-height-24 letter-spacing--17 text-color-primary margin-bottom-10'.classNames()}>
 			{__( 'COVER LETTER' )}
-		</strong>
+		</span>
 		<ExpandableContent>
 			<DangerouslySet className={'d-block font-size-15 font-weight-400 line-height-22 letter-spacing--15 text-color-primary'.classNames()}>
 				{prepareTexts(cover_letter)}
@@ -24,9 +24,9 @@ export function Documents() {
 
 		{resume_url && <>
 			<Line className={'margin-top-20 margin-bottom-20'.classNames()}/>
-			<strong className={'d-block font-size-17 font-weight-600 line-height-24 letter-spacing--17 text-color-primary margin-bottom-10'.classNames()}>
+			<span className={'d-block font-size-17 font-weight-600 line-height-24 letter-spacing--17 text-color-primary margin-bottom-10'.classNames()}>
 				{__( 'RESUME' )}
-			</strong>
+			</span>
 			<object data={resume_url} type="application/pdf" width="100%" height="700px">
 				<p>Unable to display PDF file. <a href={resume_url}>Download</a> instead.</p>
 			</object>
@@ -34,9 +34,9 @@ export function Documents() {
 		
 		{attachments.length && <>
 			<Line className={'margin-top-20 margin-bottom-20'.classNames()}/>
-			<strong className={'d-block font-size-17 font-weight-600 line-height-24 letter-spacing--17 text-color-primary margin-bottom-10'.classNames()}>
+			<span className={'d-block font-size-17 font-weight-600 line-height-24 letter-spacing--17 text-color-primary margin-bottom-10'.classNames()}>
 				{__( 'ATTACHMENTS' )}
-			</strong>
+			</span>
 			<div className={'attachments'.classNames(style)}>
 				{attachments.map((attachment, i2)=>{
 					let {url, mime_type} = attachment

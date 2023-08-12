@@ -23,14 +23,6 @@ $attrs: 'font-size', 'margin', 'margin-top', 'margin-bottom', 'margin-left', 'ma
 	}
 }
 
-// Font weights
-$weights: 400, 500, 600, 700;
-@each $weight in $weights {
-	.font-weight-#{$weight} {
-		font-weight: $weight;
-	}
-}
-
 // Flex content justify
 $justifications: 'space-between', 'space-around';
 @each $justfication in $justifications {

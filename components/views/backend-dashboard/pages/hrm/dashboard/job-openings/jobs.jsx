@@ -80,9 +80,9 @@ export function JobOpenings(props) {
 				{!is_overview && <Link to="/dashboard/main/">
 					<i className={'ch-icon ch-icon-arrow-left text-color-primary cursor-pointer'.classNames() + 'back-icon'.classNames(style)}></i>
 				</Link> || null}
-				<strong className={'text-color-primary '+(is_overview ? 'font-size-17 font-weight-500' : 'font-size-24 font-weight-600').classNames()}>
+				<span className={'text-color-primary '+(is_overview ? 'font-size-17 font-weight-500' : 'font-size-24 font-weight-600').classNames()}>
 					{__( 'Job Openings' )}
-				</strong>
+				</span>
 			</div>
 			<div>
 				<div className={'d-inline-block'.classNames()}>
@@ -115,9 +115,9 @@ export function JobOpenings(props) {
 									<div className={"d-inline-block margin-right-8".classNames()}>
 										<StatusDot color={statuses[job_status].color}/>
 									</div>
-									<strong className={"job-title".classNames(style) + 'd-block text-color-primary font-size-20 font-weight-600'.classNames()}>
+									<span className={"job-title".classNames(style) + 'd-block text-color-primary font-size-20 font-weight-600'.classNames()}>
 										{job_title}
-									</strong>
+									</span>
 								</div>
 								<div className={"meta-data".classNames(style)}>
 									{meta_data.map((data, index)=>{
@@ -147,9 +147,9 @@ export function JobOpenings(props) {
 												<span className={'d-block text-color-secondary font-size-14 font-weight-400 margin-bottom-7'.classNames()}>
 													{stat_labels[key]}
 												</span>
-												<strong className={'d-block text-color-primary font-size-17 font-weight-600'}>
+												<span className={'d-block text-color-primary font-size-17 font-weight-600'}>
 													{stats[key]}
-												</strong>
+												</span>
 											</div>
 										</div>,
 										!is_last && <Line key={key+'_separator'} orientation="vertical"/> || null

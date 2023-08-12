@@ -30,13 +30,13 @@
 		&>div{
 			padding: 8px 10px;
 
-			strong, span{
+			.strong, span{
 				display: block;
 				text-align: center;
 				letter-spacing: 0.3px;
 			}
 
-			strong {
+			.strong {
 				font-size: 17px;
 				font-weight: 600;
 				letter-spacing: 0.3px;
@@ -51,7 +51,7 @@
 				border-radius: 6px;
 				background-color: var(--crewhrm-background-color-primary);
 
-				strong {
+				.strong {
 					font-weight: 700;
 				}
 
@@ -59,7 +59,7 @@
 					font-weight: 500;
 				}
 
-				strong, span{
+				.strong, span{
 					color: var(--crewhrm-foreground-color-primary);
 				}
 			}
@@ -91,11 +91,11 @@
 			div.content {
 				margin: 0 13px;
 
-				strong, span, small {
+				.strong, span, small {
 					display: block;
 				}
 
-				strong {
+				.strong {
 					font-size: 17px;
 					font-weight: 600;
 					color: var(--crewhrm-text-color-primary);
@@ -125,7 +125,7 @@
 						color: var(--crewhrm-foreground-color-secondary);
 					}
 
-					strong{
+					.strong{
 						color: var(--crewhrm-foreground-color-primary);
 					}
 

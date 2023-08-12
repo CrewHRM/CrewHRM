@@ -4,7 +4,6 @@ import { DoAction } from "../../utilities/hooks.jsx";
 
 import style_library from '../../styles/index.module.scss';
 import icons from '../../icons/crewhrm/style.module.scss';
-import font_family from '../../fonts/loader.module.scss';
 
 export function MountPoint(props){
 	const [ready, setReady] = useState(false);
@@ -41,7 +40,7 @@ export function MountPoint(props){
 
 		// Replace the mount point styles
 		if ( props.element ) {
-			props.element.className = (props.element.className || '').classNames() + 'font-family-figtree'.classNames(font_family);
+			props.element.className = (props.element.className || '').classNames();
 			props.element.id = (props.element.id || '').idNames();
 		}
 		

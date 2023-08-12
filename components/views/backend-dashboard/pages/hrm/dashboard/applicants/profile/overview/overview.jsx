@@ -11,9 +11,9 @@ export function OverView() {
 	const {summary, education=[], skills=[], qna=[], social_links=[]} = applicant;
 
 	return <div>
-		<strong className={'d-block font-size-17 font-weight-600 line-height-24 letter-spacing--17 text-color-primary margin-bottom-10'.classNames()}>
+		<span className={'d-block font-size-17 font-weight-600 line-height-24 letter-spacing--17 text-color-primary margin-bottom-10'.classNames()}>
 			{__( 'SUMMARY' )}
-		</strong>
+		</span>
 		<div>
 			<DangerouslySet className={'font-size-15 font-weight-400 line-height-22 letter-spacing-15 text-color-primary'.classNames()}>
 				{prepareTexts(summary)}
@@ -22,9 +22,9 @@ export function OverView() {
 
 		{education.length && <>
 			<Line className={'margin-top-20 margin-bottom-20'.classNames()}/>
-			<strong className={'d-block font-size-17 font-weight-600 line-height-24 letter-spacing--17 text-color-primary margin-bottom-10'.classNames()}>
+			<span className={'d-block font-size-17 font-weight-600 line-height-24 letter-spacing--17 text-color-primary margin-bottom-10'.classNames()}>
 				{__( 'EDUCATION' )}
-			</strong>
+			</span>
 			<div>
 				{education.map(ed=>{
 					let {education_id, date_from, date_to, degree, institute} = ed;
@@ -47,9 +47,9 @@ export function OverView() {
 
 		{skills.length && <>
 			<Line className={'margin-top-20 margin-bottom-20'.classNames()}/>
-			<strong className={'d-block font-size-17 font-weight-600 line-height-24 letter-spacing--17 text-color-primary margin-bottom-10'.classNames()}>
+			<span className={'d-block font-size-17 font-weight-600 line-height-24 letter-spacing--17 text-color-primary margin-bottom-10'.classNames()}>
 				{__( 'SKILLS' )}
-			</strong>
+			</span>
 			<div style={{marginBottom: '-15px'}}>
 				{skills.map(skill=>{
 					return <div key={skill} className={'tag margin-right-15 margin-bottom-15'.classNames()}>
@@ -64,9 +64,9 @@ export function OverView() {
 			{qna.map((q, i)=>{
 				let {qna_id, question, answer} = q;
 				return <div key={qna_id}>
-					<strong className={'d-block font-size-17 font-weight-500 line-height-24 letter-spacing--17 text-color-primary margin-bottom-1'.classNames()}>
+					<span className={'d-block font-size-17 font-weight-500 line-height-24 letter-spacing--17 text-color-primary margin-bottom-1'.classNames()}>
 						{question}
-					</strong>
+					</span>
 					<DangerouslySet className={'d-block font-size-15 font-weight-400 line-height-22 letter-spacing--15 text-color-primary'.classNames()}>
 						{prepareTexts( answer )}
 					</DangerouslySet>

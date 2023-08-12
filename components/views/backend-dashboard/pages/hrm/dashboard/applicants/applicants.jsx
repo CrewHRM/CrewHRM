@@ -1,4 +1,4 @@
-import React, { createContext } from "react";
+import React, { createContext, useEffect, useState } from "react";
 
 import style from './applicants.module.scss';
 import { __ } from "../../../../../../utilities/helpers.jsx";
@@ -54,8 +54,45 @@ export const ContextApplicants = createContext();
 
 export function Applicants( props ) {
 	const {job_id} = props;
+	const [state, setState] = useState({
+		job: {
+			job_id: job_id,
+			job_title: 'Sampel Job Title',
+			application_stages: [
+				{
+					id: 'id1',
+					label: 'Screening'
+				},
+				{
+					id: 'id2',
+					label: 'Assessment'
+				},
+				{
+					id: 'id3',
+					label: 'Interview'
+				},
+				{
+					id: 'id4',
+					label: 'Make an offer'
+				},
+				{
+					id: 'id5',
+					label: 'Hired'
+				},
+			],
+			current_stage: 'id2'
+		}
+	});
 
-	return <ContextApplicants.Provider value={{job_id, jobs, steps}}>
+	const getJobData=()=>{
+
+	}
+
+	useEffect(()=>{
+
+	}, []);
+
+	return <ContextApplicants.Provider value={{job_id, jobs, steps, job: state.job}}>
 		<div className={'applicants'.classNames(style)}>
 			<Header/>
 			<div className={'content-area'.classNames(style)}>
