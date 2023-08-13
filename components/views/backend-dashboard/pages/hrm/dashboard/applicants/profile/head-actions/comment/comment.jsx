@@ -5,21 +5,6 @@ export function Comment(props) {
 	const {onClose} = props;
 
 	return <>
-		<div className={'d-flex align-items-center'.classNames()}>
-			<div className={'flex-1'.classNames()}>
-				<span className={'d-inline-block ch-icon ch-icon ch-icon-message font-size-20 text-color-primary margin-right-10 vertical-align-middle'.classNames()}>
-
-				</span> <span className={'font-size-15 font-weight-500 text-color-primary'.classNames()}>
-					{(__( 'Add a comment' ))}
-				</span> <span className={'font-size-13 font-weight-400 text-color-secondary'}>
-					{__( 'Candidates never see comments.' )}
-				</span>
-			</div>
-			<div>
-				<i className={'ch-icon ch-icon-times font-size-24 text-color-secondary margin-left-10 cursor-pointer'.classNames()} onClick={onClose}></i>
-			</div>
-		</div>
-
 		<textarea 
 			className={'margin-top-15 margin-bottom-15 border-radius-5 border-1-5 border-color-tertiary padding-15 font-size-15 font-weight-500 d-block'.classNames()} 
 			placeholder={__( 'Write your comments' )} 

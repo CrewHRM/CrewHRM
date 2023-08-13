@@ -63,7 +63,7 @@ $v_alignments: 'middle', 'top';
 	}
 }
 
-// Letter spacing
+// Letter spacing and flex
 @for $i from 1 through 20 {
 	.letter-spacing--#{$i} {
 		letter-spacing: -#{$i/100}px;
@@ -71,11 +71,10 @@ $v_alignments: 'middle', 'top';
 	.letter-spacing-#{$i} {
 		letter-spacing: #{$i/100}px;
 	}
-}
 
-// Other randoms
-.flex-1{
-	flex: 1;
+	.flex-#{$i}{
+		flex: #{$i};
+	}
 }
 
 .align-items-center {

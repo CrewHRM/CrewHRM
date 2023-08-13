@@ -1,23 +1,27 @@
-.email-fields {
+.schedule{
 	.label {
-		width: 70px;
-		margin-right: 10px;
 		color: black;
 	}
 
-	input, textarea {
+	.text-input {
 		width: 100%;
 		padding: 10px 15px;
 		border: 1.5px solid var(--crewhrm-border-color-tertiary);
 		color: var(--crewhrm-text-color-primary);
 	}
 
-	input {
+	input.text-input {
 		border-radius: 10px;
 	}
 
-	textarea {
-		resize: vertical;
+	textarea.text-input {
 		border-radius: 5px;
+	}
+
+	.guests {
+		display: grid;
+		grid-template-columns: auto auto auto;
+		gap: 25px;
+		align-items: center;
 	}
 }

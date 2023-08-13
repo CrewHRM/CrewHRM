@@ -11,15 +11,28 @@ import { ContextApplicants } from "../../applicants.jsx";
 const segments = [
 	{
 		icon     : 'ch-icon ch-icon-sms',
-		renderer : Email
+		renderer : Email,
+		tagline  : <span className={'font-size-15 font-weight-500 text-color-primary'.classNames()}>
+					{__( 'Email' )}
+				</span>
 	},
 	{
 		icon     : 'ch-icon ch-icon-note-favorite',
-		renderer : Schedule
+		renderer : Schedule,
+		tagline  : <span className={'font-size-15 font-weight-500 text-color-primary'.classNames()}>
+					{__( 'Schedule and event' )}
+				</span>
 	},
 	{
 		icon     : 'ch-icon ch-icon-message',
-		renderer : Comment
+		renderer : Comment,
+		tagline  : <>
+					<span className={'font-size-15 font-weight-500 text-color-primary'.classNames()}>
+						{(__( 'Add a comment' ))}
+					</span> <span className={'font-size-13 font-weight-400 text-color-secondary'}>
+						{__( 'Candidates never see comments.' )}
+					</span>
+				</>
 	}
 ];
 
@@ -32,14 +45,19 @@ export function HeadActions() {
 		current_application_stage: current_stage
 	});
 
-	const toggleSegment=(index)=>{
+	// To Do: Retain form data even after segment switch
+	const toggleSegment=(index=null)=>{
 		setState({
 			...state,
 			active_segment: state.active_segment===index ? null : index
 		});
 	}
 
-	const {renderer: ActiveComp} = segments[state.active_segment] || {};
+	const {
+		renderer: ActiveComp, 
+		icon: active_icon, 
+		tagline
+	} = segments[state.active_segment] || {};
 	
 	return <div className={'head'.classNames(style) + 'margin-bottom-13'.classNames()}>
 		<div className={'nav'.classNames(style) + 'd-flex align-items-center'.classNames()}>
@@ -70,7 +88,17 @@ export function HeadActions() {
 		
 		{ActiveComp && <>
 			<div className={'content-area'.classNames(style)}>
-				<ActiveComp onClose={()=>setState({...state, active_segment: null})}/>
+				<div className={'d-flex align-items-center margin-bottom-15'.classNames()}>
+					<div className={'flex-1'.classNames()}>
+						<span className={`d-inline-block ch-icon ${active_icon} font-size-20 text-color-primary margin-right-10 vertical-align-middle`.classNames()}>
+
+						</span> {tagline}
+					</div>
+					<div>
+						<i className={'ch-icon ch-icon-times font-size-24 text-color-secondary margin-left-10 cursor-pointer'.classNames()} onClick={()=>toggleSegment()}></i>
+					</div>
+				</div>
+				<ActiveComp onClose={toggleSegment}/>
 			</div>
 		</> || null}
 	</div>

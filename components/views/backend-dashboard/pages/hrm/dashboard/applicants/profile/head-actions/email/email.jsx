@@ -43,19 +43,6 @@ export function Email(props) {
 	}
 
 	return <>
-		<div className={'d-flex align-items-center margin-bottom-15'.classNames()}>
-			<div className={'flex-1'.classNames()}>
-				<span className={'d-inline-block ch-icon ch-icon-sms font-size-20 text-color-primary margin-right-10 vertical-align-middle'.classNames()}>
-
-				</span> <span className={'font-size-15 font-weight-500 text-color-primary'.classNames()}>
-					{(__( 'Email' ))}
-				</span>
-			</div>
-			<div>
-				<i className={'ch-icon ch-icon-times font-size-24 text-color-secondary margin-left-10 cursor-pointer'.classNames()} onClick={onClose}></i>
-			</div>
-		</div>
-
 		{Object.keys(fields).map(field=>{
 			let {label, placeholder} = fields[field];
 			return <div key={field} className={'d-flex margin-bottom-15'.classNames() + 'email-fields'.classNames(style)}>
@@ -91,7 +78,7 @@ export function Email(props) {
 			</div>
 			<div>
 				<button className={'button button-primary'.classNames()}>
-					{__( 'Submit Comment' )}
+					{__( 'Send Email' )}
 				</button>
 			</div>
 		</div>

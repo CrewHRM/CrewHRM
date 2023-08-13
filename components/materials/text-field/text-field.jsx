@@ -2,22 +2,34 @@ import React from "react";
 
 import style from './text-field.module.scss';
 
-const icons = {
-	search: 'ch-icon ch-icon-search-normal-1'
-}
-
 export function TextField(props) {
-	const {icon, icon_position='left', type='text', onChange, placeholder} = props;
-
-	return <div className={`text-field icon-${icon_position}`.classNames(style)} tabIndex={-1}>
+	const {
+		icon, 
+		image, 
+		icon_position='left', 
+		type='text', 
+		onChange, 
+		placeholder, 
+		className='', 
+		inputClassName='', 
+		pattern } = props;
+	
+	return <div className={`text-field icon-${icon_position}`.classNames(style) + className}>
 		{icon && <>
-			<i className={icons[icon].classNames()}></i>
+			<i className={icon.classNames()}></i>
 			<span className={'d-inline-block width-6'.classNames()}></span>
 		</> || null}
 		
+		{image && <>
+			<img src={image} className={'image'.classNames(style)}/>
+			<span className={'d-inline-block width-6'.classNames()}></span>
+		</> || null}
+
 		<input 
 			type={type} 
 			onChange={e=>onChange(e.currentTarget.value)}
-			placeholder={placeholder}/>
+			placeholder={placeholder}
+			className={inputClassName}
+			pattern={pattern}/>
 	</div>
 }

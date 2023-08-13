@@ -71,16 +71,3 @@ export function getSocialIcon(url) {
 
 	return final_class;
 }
-
-export function arrayChunk(inputArray, chunkSize) {
-  if (!Array.isArray(inputArray) || !Number.isInteger(chunkSize) || chunkSize <= 0) {
-    throw new Error('Invalid input');
-  }
-
-  const result = [];
-  for (let i = 0; i < inputArray.length; i += chunkSize) {
-    result.push(inputArray.slice(i, i + chunkSize));
-  }
-
-  return result;
-}

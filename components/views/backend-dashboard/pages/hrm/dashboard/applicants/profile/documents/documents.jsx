@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { ContextApplicantProfile } from "../profile-wrapper.jsx";
 import { ExpandableContent } from "../../../../../../../../materials/ExpandableContent/expandable-content.jsx";
-import { __, arrayChunk, prepareTexts } from "../../../../../../../../utilities/helpers.jsx";
+import { __, prepareTexts } from "../../../../../../../../utilities/helpers.jsx";
 import { Line } from "../../../../../../../../materials/line/line.jsx";
 import { DangerouslySet } from "../../../../../../../../materials/dangerously-set/DangerouslySet.jsx";
 import { CoverImage } from "../../../../../../../../materials/image/image.jsx";

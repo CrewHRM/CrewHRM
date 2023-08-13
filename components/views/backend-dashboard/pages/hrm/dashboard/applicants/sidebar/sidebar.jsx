@@ -20,19 +20,23 @@ const applicants = Array(5).fill(applicant).map((a, i)=>{
 	return {...a, application_id: a.application_id+i}
 });
 
+const steps = [
+	{
+		id: 'q',
+		label: <span className={'font-size-13 font-weight-500 line-height-24'.classNames()}>
+				{__( 'Qualified' )}
+			</span>
+	},
+	{
+		id: 'dq',
+		label: <span className={'font-size-13 font-weight-500 line-height-24'.classNames()}>
+				{__( 'Disqualified' )}
+			</span>
+	}
+];
+
 export function Sidebar() {
 	const [state, setState] = useState({active_tab: 'q'});
-
-	const steps = [
-		{
-			id: 'q',
-			label: <span className={'font-size-13 font-weight-500 line-height-24'.classNames()}>{__( 'Qualified' )}</span>
-		},
-		{
-			id: 'dq',
-			label: <span className={'font-size-13 font-weight-500 line-height-24'.classNames()}>{__( 'Disqualified' )}</span>
-		}
-	];
 
 	return <div className={'sidebar'.classNames(style)}>
 		<Tabs 
@@ -42,7 +46,10 @@ export function Sidebar() {
 			theme="transparent"/>
 
 		<div className={'padding-15'.classNames()}>
-			<TextField icon="search" placeholder={__( 'Search by name' )}/>
+			<TextField 
+				icon="ch-icon ch-icon-search-normal-1" 
+				placeholder={__( 'Search by name' )}
+				className={'border-radius-5'.classNames()}/>
 		</div>
 
 		<div className={'filter'.classNames(style) + 'd-flex align-items-center'.classNames()}>
