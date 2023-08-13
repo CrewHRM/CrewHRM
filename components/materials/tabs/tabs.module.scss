@@ -5,13 +5,13 @@
 	align-items: center;
 	justify-content: space-between;
 
-	&>div {
+	&>.single-step {
 		flex: 1;
 		text-align: center;
 		cursor: pointer;
 	}
 	
-	&.button {
+	&.theme-button {
 		background-color: #F9F9F9;
 		border-radius: 6px;
 		padding: 2px;
@@ -29,7 +29,7 @@
 		}
 	}
 
-	&.transparent {
+	&.theme-transparent {
 		&>div {
 			padding-top: 10px;
 			padding-bottom: 10px;
@@ -42,6 +42,60 @@
 			&.active {
 				color: black;
 				border-color: black;
+			}
+		}
+	}
+
+	&.theme-sequence {
+		.single-step {
+			.sequence-line-wrapper {
+				display: flex;
+				align-items: center;
+				margin-top: 10px;
+				
+				&>div {
+					&:not(.circle) {
+						flex: 1;
+
+						.hr {
+							display: block;
+							width: 100%;
+							height: 1px;
+							background-color: var(--crewhrm-background-color-secondary);
+						}
+					}
+
+					&.circle {
+						width: 13px;
+						height: 13px;
+						border-radius: 50%;
+						background-color: white;
+						border: 2px solid var(--crewhrm-background-color-secondary);
+					}
+				}
+
+				&.fill-left {
+					.hr-1 {
+						background-color: var(--crewhrm-background-color-primary) !important;
+					}
+				}
+
+				&.fill-right {
+					.hr-2, .circle {
+						border-color: var(--crewhrm-background-color-primary) !important;
+						background-color: var(--crewhrm-background-color-primary) !important;
+					}
+				}
+
+				&.fill-right-gradient {
+					.circle {
+						border-color: var(--crewhrm-background-color-primary) !important;
+					}
+
+					.hr-2 {
+						background-image: linear-gradient(to right, black , transparent) !important;
+					}
+				}
 			}
 		}
 	}

@@ -2,16 +2,49 @@ import React, { useState } from "react";
 import { useParams } from "react-router-dom";
 import { StickyBar } from "../../../../../materials/sticky-bar/sticky-bar.jsx";
 import { __ } from "../../../../../utilities/helpers.jsx";
+import { Tabs } from "../../../../../materials/tabs/tabs.jsx";
 
 import logo_extended from '../../../../../images/logo-extended.svg';
+import style from './editor.module.scss';
+
+const steps = [
+	{
+		id    : 'job_details',
+		label : __( 'Job Details' )
+	},
+	{
+		id    : 'hiring_flow',
+		label : __( 'Hiring Flow' )
+	},
+	{
+		id    : 'application_form',
+		label : __( 'Application Form' )
+	},
+	{
+		id    : 'assesments',
+		label : __( 'Assessments' )
+	},
+	{
+		id    : 'team_members',
+		label : __( 'Team Members' )
+	},
+];
 
 export function JobEditor() {
 	let {job_id: id} = useParams();
 	const job_id = id==='new' ? 0 : id;
 
 	const [state, setState] = useState({
-		is_auto_saving: true
+		is_auto_saving: true,
+		active_tab: 'job_details'
 	});
+
+	const navigateTab=(tab)=>{
+		setState({
+			...state,
+			active_tab: tab
+		})
+	}
 
 	return <>
 		<StickyBar>
@@ -40,6 +73,20 @@ export function JobEditor() {
 				</div>
 			</div>
 		</StickyBar>
+		<div className={'tabs-wrapper'.classNames(style)}>
+			<div>
+				<Tabs 
+					theme="sequence"
+					onNavigate={navigateTab}
+					active={state.active_tab} 
+					tabs={steps.map(s=>{return {
+						...s,
+						label: <span className={`font-size-15 font-weight-400 letter-spacing--3 text-color-${s.id==state.active_tab ? 'primary' : 'secondary'}`.classNames()}>
+							{s.label}
+						</span>
+					}})}/>
+			</div>
+		</div>
 		<div>This is job editor {job_id}</div>
 	</>
 }
