@@ -9,10 +9,7 @@
 	letter-spacing: -0.3px;
 	text-decoration: none;
 	display: inline-block;
-	
-	&:not(:disabled) {
-		cursor: pointer;
-	}
+	cursor: pointer;
 
 	&.button-primary {
 		background-color: var(--crewhrm-background-color-primary);
@@ -24,6 +21,15 @@
 		&:not(:hover) {
 			background-color: transparent;
 			color: var(--crewhrm-background-color-primary);
+		}
+	}
+
+	&.disabled, &:disabled{
+		cursor: default;
+		
+		&.button-primary {
+			background-color: var(--crewhrm-background-color-tertiary);
+			border-color: var(--crewhrm-background-color-tertiary);
 		}
 	}
 

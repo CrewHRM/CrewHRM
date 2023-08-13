@@ -1,10 +1,13 @@
 import React, { createContext, useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 
-import style from './applicants.module.scss';
 import { __ } from "../../../../../../utilities/helpers.jsx";
 import { Header } from "./header/header.jsx";
 import { Sidebar } from "./sidebar/sidebar.jsx";
 import { Profile } from "./profile/profile-wrapper.jsx";
+import { DashboardBar } from "../../hrm.jsx";
+
+import style from './applicants.module.scss';
 
 const jobs = [
 	'Account Manager',
@@ -53,7 +56,7 @@ const steps = [
 export const ContextApplicants = createContext();
 
 export function Applicants( props ) {
-	const {job_id} = props;
+	const {job_id, applicant_id} = useParams();
 	const [state, setState] = useState({
 		job: {
 			job_id: job_id,
@@ -93,6 +96,7 @@ export function Applicants( props ) {
 	}, []);
 
 	return <ContextApplicants.Provider value={{job_id, jobs, steps, job: state.job}}>
+		<DashboardBar/>
 		<div className={'applicants'.classNames(style)}>
 			<Header/>
 			<div className={'content-area'.classNames(style)}>

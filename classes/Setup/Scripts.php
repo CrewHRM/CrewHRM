@@ -41,6 +41,7 @@ class Scripts extends Main {
 		$colors = array(
 			'background-color-primary'   => '#1A1A1A', // Active state
 			'background-color-secondary' => '#BBBFC3', // Disabled state
+			'background-color-tertiary'  => '#E3E5E8', // Disabled state
 
 			'foreground-color-primary'   => '#FFFFFF', // Primary text with a primary background
 			'foreground-color-secondary' => '#BBBFC3', // Scondary text with a primary background

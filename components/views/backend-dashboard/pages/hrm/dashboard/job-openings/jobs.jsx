@@ -7,6 +7,7 @@ import { NoJob } from "./no-job.jsx";
 import { Link } from "react-router-dom";
 import { DropDown } from "../../../../../../materials/dropdown/dropdown.jsx";
 import { Line } from "../../../../../../materials/line/line.jsx";
+import { DashboardBar } from "../../hrm.jsx";
 
 const statuses = {
 	publish: {color: '#73BF45', label: __( 'Active' )},
@@ -77,7 +78,7 @@ export function JobOpenings(props) {
 	return <div className={'jobs'.classNames(style) + className}>
 		<div className={'d-flex align-items-center margin-bottom-20'.classNames() + 'filter'.classNames(style)}>
 			<div className={'flex-1 d-flex align-items-center'.classNames()}>
-				{!is_overview && <Link to="/dashboard/main/">
+				{!is_overview && <Link to="/dashboard/">
 					<i className={'ch-icon ch-icon-arrow-left text-color-primary cursor-pointer'.classNames() + 'back-icon'.classNames(style)}></i>
 				</Link> || null}
 				<span className={'text-color-primary '+(is_overview ? 'font-size-17 font-weight-500' : 'font-size-24 font-weight-600').classNames()}>
@@ -128,7 +129,7 @@ export function JobOpenings(props) {
 								</div>
 							</div>
 							<div>
-								<Link to={`/dashboard/applicants/${job_id}/`} className={'button button-primary button-outlined button-small'.classNames()}>
+								<Link to={`/dashboard/jobs/${job_id}/applicants/`} className={'button button-primary button-outlined button-small'.classNames()}>
 									{__( 'Details' )}
 								</Link>
 							</div>
@@ -162,14 +163,17 @@ export function JobOpenings(props) {
 			</div>
 		}
 
-		{is_overview && jobs.length && <Link to="/dashboard/job-openings" className={'button button-primary button-outlined button-full-width-2'.classNames()}>
+		{is_overview && jobs.length && <Link to="/dashboard/jobs/" className={'button button-primary button-outlined button-full-width-2'.classNames()}>
 			{__( 'View All Jobs' )}
 		</Link> || null}
 	</div>
 }
 
 export function JobOpeningsFullView(props) {
-	return <div className={'padding-30'.classNames()} style={{maxWidth: '988px', margin: '0 auto'}}>
-		<JobOpenings/>
-	</div>
+	return <>
+		<DashboardBar/>
+		<div className={'padding-30'.classNames()} style={{maxWidth: '988px', margin: '0 auto'}}>
+			<JobOpenings/>
+		</div>
+	</>
 }
