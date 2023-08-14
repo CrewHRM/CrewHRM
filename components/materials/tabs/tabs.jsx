@@ -3,10 +3,10 @@ import React from "react";
 import style from './tabs.module.scss';
 
 export function Tabs(props) {
-	const {active, tabs=[], onNavigate, theme, className=''} = props;
+	const {active, tabs=[], onNavigate, theme, className='', style: cssStyle={}} = props;
 	const active_index = tabs.findIndex(tab=>tab.id==active);
 
-	return <div className={`tabs theme-${theme}`.classNames(style) + className}>
+	return <div className={`tabs theme-${theme}`.classNames(style) + className} style={cssStyle}>
 		{
 			tabs.map((tab, index)=>{
 				let {id, label} = tab;

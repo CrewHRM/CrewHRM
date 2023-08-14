@@ -23,8 +23,8 @@ export function DropDown(props) {
 		mouseEnterDelay={0}
 		contentStyle={{ padding: '0px', border: 'none' }}
 		arrow={false}
-		trigger={<div className={`dropdown ${transparent ? 'transparent' : ''}`.classNames(style) + 'cursor-pointer d-inline-flex align-items-center border-radius-5'.classNames() + className}>
-				<span className={textClassName}>
+		trigger={<div className={`dropdown ${transparent ? 'transparent' : ''}`.classNames(style) + 'cursor-pointer d-flex align-items-center border-radius-5'.classNames() + className}>
+				<span className={'flex-1'.classNames() + textClassName}>
 					{options.find(o=>o.value==selected_value).label}
 				</span>
 				<i className={iconClassName}></i>

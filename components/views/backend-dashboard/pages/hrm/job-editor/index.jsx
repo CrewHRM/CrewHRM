@@ -6,6 +6,7 @@ import { Tabs } from "../../../../../materials/tabs/tabs.jsx";
 
 import logo_extended from '../../../../../images/logo-extended.svg';
 import style from './editor.module.scss';
+import { JobDetails } from "./job-details/job-details.jsx";
 
 const steps = [
 	{
@@ -46,6 +47,8 @@ export function JobEditor() {
 		})
 	}
 
+	const {active_tab} = state;
+
 	return <>
 		<StickyBar>
 			<div className={'d-flex align-items-center'.classNames()}>
@@ -73,20 +76,29 @@ export function JobEditor() {
 				</div>
 			</div>
 		</StickyBar>
-		<div className={'tabs-wrapper'.classNames(style)}>
-			<div>
-				<Tabs 
-					theme="sequence"
-					onNavigate={navigateTab}
-					active={state.active_tab} 
-					tabs={steps.map(s=>{return {
-						...s,
-						label: <span className={`font-size-15 font-weight-400 letter-spacing--3 text-color-${s.id==state.active_tab ? 'primary' : 'secondary'}`.classNames()}>
-							{s.label}
-						</span>
-					}})}/>
+
+		<div className={'editor-wrapper'.classNames(style)}>
+			<div className={'tabs'.classNames(style)}>
+				<div>
+					<Tabs 
+						theme="sequence"
+						onNavigate={navigateTab}
+						active={state.active_tab} 
+						style={{marginLeft: '-60px', marginRight: '-55px'}}
+						tabs={steps.map(s=>{return {
+							...s,
+							label: <span className={`font-size-15 font-weight-400 letter-spacing--3 text-color-${s.id==state.active_tab ? 'primary' : 'secondary'}`.classNames()}>
+								{s.label}
+							</span>
+						}})}/>
+				</div>
+			</div>
+			
+			<div className={'form'.classNames(style) + 'margin-top-40'.classNames()}>
+				<div>
+					{active_tab=='job_details' && <JobDetails/> || null}
+				</div>
 			</div>
 		</div>
-		<div>This is job editor {job_id}</div>
 	</>
 }
