@@ -7,6 +7,7 @@ import { Tabs } from "../../../../../materials/tabs/tabs.jsx";
 import logo_extended from '../../../../../images/logo-extended.svg';
 import style from './editor.module.scss';
 import { JobDetails } from "./job-details/job-details.jsx";
+import { HiringFlow } from "./hiring-flow/hiring-flow.jsx";
 
 const steps = [
 	{
@@ -97,6 +98,8 @@ export function JobEditor() {
 			<div className={'form'.classNames(style) + 'margin-top-40'.classNames()}>
 				<div>
 					{active_tab=='job_details' && <JobDetails/> || null}
+
+					{active_tab=='hiring_flow' && <HiringFlow/> || null}
 				</div>
 			</div>
 		</div>

@@ -21,6 +21,11 @@
 		&:not(:hover) {
 			background-color: transparent;
 			color: var(--crewhrm-background-color-primary);
+
+			&.button-outlined-secondary {
+				border-color: var(--crewhrm-text-color-secondary);
+				color: var(--crewhrm-text-color-secondary);
+			}
 		}
 	}
 
