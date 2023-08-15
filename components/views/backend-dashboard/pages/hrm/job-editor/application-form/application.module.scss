@@ -1,0 +1,23 @@
+.application {
+	max-width: 582px;
+	margin: 0 auto;
+	overflow: auto;
+
+	.section-container {
+		margin-bottom: 30px;
+		
+		.list-container {
+			border: 1.5px solid var(--crewhrm-border-color-tertiary);
+			border-radius: 10px;
+			overflow: hidden;
+
+
+			&>div {
+				padding: 10px 15px;
+				&:not(:last-child) {
+					border-bottom: 1.5px solid  var(--crewhrm-border-color-tertiary);
+				}
+			}
+		}
+	}
+}

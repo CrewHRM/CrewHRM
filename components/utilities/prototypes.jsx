@@ -20,6 +20,7 @@ String.prototype.classNames = function(style) {
 	});
 
 	if ( dump ) {
+		console.log('Unresolved Class:');
 		console.error(dump);
 	}
 	

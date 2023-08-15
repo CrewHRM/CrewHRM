@@ -132,6 +132,8 @@ export function Profile() {
 		<HeadActions/>
 
 		<div className={'applicant-data'.classNames(style) + 'border-radius-5'.classNames()}>
+
+			{/* Basic Personal Info Heading */}
 			<div className={'d-flex align-items-center padding-20'.classNames()}>
 				<CoverImage src={avatar} width={109} height={124} className={'border-radius-3'.classNames()}/>
 				<div className={'flex-1 margin-left-13'.classNames()}>
@@ -152,6 +154,7 @@ export function Profile() {
 
 			<Line/>
 
+			{/* Profile Contents Tab */}
 			<Tabs 
 				active={state.active_tab} 
 				tabs={tabs} 
@@ -159,6 +162,7 @@ export function Profile() {
 				theme={'transparent'}
 				className={'margin-bottom-20'.classNames()}/>
 
+			{/* Profile contents per selected tab */}
 			<ContextApplicantProfile.Provider value={{applicant}}>
 				{state.active_tab == 'overview' && <OverView/> || null}
 				{state.active_tab == 'documents' && <Documents/> || null}

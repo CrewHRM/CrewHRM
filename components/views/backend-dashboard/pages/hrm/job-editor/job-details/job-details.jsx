@@ -4,6 +4,7 @@ import { __ } from "../../../../../../utilities/helpers.jsx";
 
 import style from './details.module.scss';
 import { DropDown } from "../../../../../../materials/dropdown/dropdown.jsx";
+import { ActionButtons } from "../index.jsx";
 
 const employments_types = {
 	full_type : __( 'Full Time' ),
@@ -22,6 +23,8 @@ const salary_types = {
 }
 
 export function JobDetails(props) {
+	const {navigateTab} = props;
+
 	const setVal=(name, value)=>{
 
 	}
@@ -121,8 +124,6 @@ export function JobDetails(props) {
 		</div>
 
 
-
-
 		{/* Employment details */}
 		<div className={'d-flex margin-bottom-30'.classNames()}>
 			<div className={'flex-1'.classNames()}>
@@ -139,8 +140,8 @@ export function JobDetails(props) {
 		<div className={'d-flex margin-bottom-30'.classNames()}>
 			<div className={'flex-1'.classNames() + 'type-selection'.classNames(style)}>
 				{Object.keys(employments_types).map(type=>{
-					return <div>
-						<button key={type} className={'button button-primary button-outlined'.classNames()}>
+					return <div key={type}>
+						<button className={'button button-primary button-outlined'.classNames()}>
 							{employments_types[type]}
 						</button>
 					</div>
@@ -153,8 +154,10 @@ export function JobDetails(props) {
 			</div>
 		</div>
 
-		<div className={'d-flex'.classNames()}>
-			<div className={'flex-1'.classNames()}></div>
+		<div className={'d-flex margin-bottom-10'.classNames()}>
+			<div className={'flex-1'.classNames()}>
+				<ActionButtons onNext={()=>navigateTab(1)}/>
+			</div>
 			<div className={'right-col'.classNames(style)}></div>
 		</div>
 	</div>
