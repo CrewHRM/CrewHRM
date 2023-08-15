@@ -32,7 +32,7 @@ export function StatCards() {
 		{card_stats.map(stat=>{
 			let {label, count, icon} = stat;
 
-			return <div key={label} className={'card'.classNames(style)}>
+			return <div key={label} className={'card'.classNames(style) + 'box-shadow-thin border-radius-5 padding-25 margin-bottom-20'.classNames()}>
 				<img src={icon}/>
 				<span className={'strong'.classNames(style) + 'text-color-primary'.classNames()}>
 					{count}

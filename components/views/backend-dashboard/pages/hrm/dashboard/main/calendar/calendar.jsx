@@ -52,7 +52,7 @@ export function Calendar(props) {
 		return dates;
 	}
 
-	return <div className={'calendar'.classNames(style)}>
+	return <div className={'calendar'.classNames(style) + 'padding-20 box-shadow-thin border-radius-5'.classNames()}>
 		<div className={'d-flex align-items-center'.classNames() + 'header'.classNames(style)}>
 			<div className={'text-color-primary'.classNames()}>
 				{__( 'Calendar' )}

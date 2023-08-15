@@ -8,6 +8,7 @@ import style from './main.module.scss';
 import { JobOpenings } from "../job-openings/jobs.jsx";
 import { IntroCard } from "../../../../../../materials/intro-card/intro-card.jsx";
 import { DangerouslySet } from "../../../../../../materials/dangerously-set/DangerouslySet.jsx";
+import { Link } from "react-router-dom";
 
 export function DahboardMain() {
 	return <div className={'h-full'.classNames() + 'wrapper'.classNames(style)}>
@@ -23,9 +24,9 @@ export function DahboardMain() {
 				<small className={'text-color-secondary font-size-15 font-weight-400 margin-bottom-30 d-block'.classNames()}>
 					{__( 'Candidates see your logo and description on job posts, and more' )}
 				</small>
-				<button className={'button button-primary button-medium'.classNames()}>
+				<Link to="/dashboard/jobs/editor/new/" className={'button button-primary button-medium'.classNames()}>
 					{__( 'Create A New Job' )}
-				</button>
+				</Link>
 			</IntroCard>
 
 			<JobOpenings is_overview={true} className={"margin-bottom-20".classNames()}/>
