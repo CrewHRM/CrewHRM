@@ -1,22 +1,10 @@
-import React, {
-  useState,
-  useRef,
-  useEffect,
-  forwardRef,
-  useImperativeHandle
-} from "react"
+import React, {useState, useRef, useEffect, forwardRef, useImperativeHandle} from "react"
 import ReactDOM from "react-dom"
-import {
-  useOnEscape,
-  useRepositionOnResize,
-  useOnClickOutside,
-  useTabbing,
-  useIsomorphicLayoutEffect
-} from "./hooks.jsx"
 
-import styles from "./styles.jsx";
+import { useOnEscape, useRepositionOnResize, useOnClickOutside, useTabbing, useIsomorphicLayoutEffect} from "./hooks.jsx"
 import calculatePosition from "./Utils.jsx";
 
+import styles from "./styles.jsx";
 import style from './index.module.scss';
 
 let popupIdCounter = 0

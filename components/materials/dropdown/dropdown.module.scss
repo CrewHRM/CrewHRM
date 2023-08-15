@@ -13,9 +13,6 @@
 
 .dropdown-popup {
 	&>div{
-		padding: 8px 10px;
-		cursor: pointer;
-
 		&:not(:last-child) {
 			border-bottom: 1px solid var(--crewhrm-border-color-tertiary);
 		}

@@ -20,7 +20,7 @@ export function ScheduleCard(props) {
 	const flex_1 = 'flex-1'.classNames();
 	const width = 'width-39'.classNames();
 
-	return <div className={'schedule'.classNames(style) + 'border-radius-6'.classNames()}>
+	return <div className={'schedule'.classNames(style) + 'border-radius-6 background-color-white'.classNames()}>
 		<div className={'header'.classNames(style)}>
 			<div className={'d-flex'.classNames()}>
 				<div className={'flex-1'.classNames()}>
