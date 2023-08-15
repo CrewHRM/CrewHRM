@@ -7,15 +7,40 @@ $displays: 'block', 'flex', 'inline', 'inline-block', 'inline-flex', 'contents';
 }
 
 // Sizings
-$attrs: 'font-size', 'margin', 'margin-top', 'margin-bottom', 'margin-left', 'margin-right', 'padding', 'padding-top', 'padding-bottom', 'padding-left', 'padding-right', 'width', 'height', 'line-height';
-@for $i from 1 through 40 {
+$attrs: 'font-size', 'margin', 'margin-top', 'margin-bottom', 'margin-left', 'margin-right', 'padding', 'padding-top', 'padding-bottom', 'padding-left', 'padding-right', 'padding-vertical', 'padding-horizontal', 'width', 'height', 'line-height';
+@for $i from 1 through 50 {
+
 	@each $attr in $attrs {
-		.#{$attr}-#{$i} {
-			#{$attr}: #{$i}px;
+		@if $attr == 'padding-vertical' {
+			.padding-vertical-#{$i} {
+				padding-top: #{$i}px;
+				padding-bottom: #{$i}px;
+			} 
+
+		} @else if $attr == 'padding-horizontal' {
+			.padding-horizontal-#{$i} {
+				padding-left: #{$i}px;
+				padding-right: #{$i}px;
+			} 
+
+		} @else {
+			.#{$attr}-#{$i} {
+				#{$attr}: #{$i}px;
+			}
 		}
 	}
 
-	@if $i <= 20 {
+	// Letter spacing and flex
+	@if $i >= 1 && $i <= 20 {
+		.letter-spacing--#{$i} {
+			letter-spacing: -#{$i/100}px;
+		}
+		.letter-spacing-#{$i} {
+			letter-spacing: #{$i/100}px;
+		}
+		.flex-#{$i}{
+			flex: #{$i};
+		}
 		.border-radius-#{$i} {
 			border-radius: #{$i}px;
 			overflow: hidden;
@@ -63,20 +88,6 @@ $v_alignments: 'middle', 'top';
 	}
 }
 
-// Letter spacing and flex
-@for $i from 1 through 20 {
-	.letter-spacing--#{$i} {
-		letter-spacing: -#{$i/100}px;
-	}
-	.letter-spacing-#{$i} {
-		letter-spacing: #{$i/100}px;
-	}
-
-	.flex-#{$i}{
-		flex: #{$i};
-	}
-}
-
 .align-items-center {
 	align-items: center;
 }
@@ -110,13 +121,13 @@ $v_alignments: 'middle', 'top';
 $borders: 'border', 'border-bottom', 'border-top', 'border-left', 'border-right';
 @each $border in $borders {
 	.#{$border}-1 {
-		border-width: 1px;
-		border-style: solid;
+		#{$border}-width: 1px;
+		#{$border}-style: solid;
 	}
 
 	.#{$border}-1-5 {
-		border-width: 1.5px;
-		border-style: solid;
+		#{$border}-width: 1.5px;
+		#{$border}-style: solid;
 	}
 }
 

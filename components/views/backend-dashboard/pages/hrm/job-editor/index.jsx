@@ -10,6 +10,7 @@ import { HiringFlow } from "./hiring-flow/hiring-flow.jsx";
 import { ApplicationForm } from "./application-form/application-form.jsx";
 
 import style from './editor.module.scss';
+import { TeamMembers } from "./team-members/team-members.jsx";
 
 const steps = [
 	{
@@ -33,7 +34,7 @@ const steps = [
 export function ActionButtons(props) {
 	const {onBack, onNext, backText=__( 'Back' ), nextText=__( 'Next' )} = props;
 
-	return <div className={'d-flex margin-top-25 margin-bottom-30'.classNames() + 'action-buttons'.classNames(style)}>
+	return <div className={'d-flex margin-bottom-30'.classNames() + 'action-buttons'.classNames(style)}>
 		{onBack && <div className={'back-button-container'.classNames(style)}>
 			<button className={'d-inline-block button button-primary button-outlined button-outlined-secondary button-full-width'.classNames() + 'back'.classNames(style)} onClick={onBack}>
 				{backText}
@@ -124,6 +125,8 @@ export function JobEditor() {
 					{active_tab=='hiring-flow' && <HiringFlow navigateTab={navigateTab}/> || null}
 
 					{active_tab=='application-form' && <ApplicationForm navigateTab={navigateTab}/> || null}
+
+					{active_tab=='team-members' && <TeamMembers navigateTab={navigateTab}/> || null}
 				</div>
 			</div>
 		</div>

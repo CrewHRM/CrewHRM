@@ -191,7 +191,6 @@ export function ApplicationForm(props) {
 			</div>
 		})}
 
-
 		<strong className={'d-block font-size-17 font-weight-600 text-color-primary margin-bottom-10'.classNames()}>
 			{__( 'Add Questions' )}
 		</strong>

@@ -137,7 +137,7 @@ export function JobDetails(props) {
 		<span className={'d-block font-size-15 font-weight-500 text-color-primary margin-bottom-10'.classNames()}>
 			{__( 'Choose employment type' )}
 		</span>
-		<div className={'d-flex margin-bottom-30'.classNames()}>
+		<div className={'d-flex margin-bottom-50'.classNames()}>
 			<div className={'flex-1'.classNames() + 'type-selection'.classNames(style)}>
 				{Object.keys(employments_types).map(type=>{
 					return <div key={type}>

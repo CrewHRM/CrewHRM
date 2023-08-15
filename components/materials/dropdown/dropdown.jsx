@@ -30,16 +30,16 @@ export function DropDown(props) {
 				<i className={iconClassName}></i>
 			</div>
 		}>
-			{close=>(
-				<div className={"dropdown-popup".classNames(style) + 'border-radius-6'.classNames()}>
-				{options.map(option=>{
-					let {value, label} = option;
-					let active_class = value == selected_value ? 'active' : '';
-					return <div key={value} className={active_class.classNames(style)} onClick={()=>{onChange(value); close();}}>
-						{label}
-					</div>
-				})}
-			</div>)
-			}
+			{close=>{
+				return <div className={"dropdown-popup".classNames(style) + 'border-radius-10'.classNames()}>
+					{options.map(option=>{
+						let {value, label} = option;
+						let active_class = value == selected_value ? 'active' : '';
+						return <div key={value} className={active_class.classNames(style)} onClick={()=>{onChange(value); close();}}>
+							{label}
+						</div>
+					})}
+				</div>
+			}}
     </Popup>	
 }

@@ -90,7 +90,7 @@ export function HiringFlow(props) {
 				}
 			})}/>
 
-		<div className={'d-flex align-items-center margin-bottom-25'.classNames() + 'add-stage'.classNames(style)} onClick={addStage}>
+		<div className={'d-flex align-items-center margin-bottom-50'.classNames() + 'add-stage'.classNames(style)} onClick={addStage}>
 			<div>
 				<i className={'ch-icon ch-icon-add-circle font-size-24'.classNames()}></i>
 			</div>
