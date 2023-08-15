@@ -5,32 +5,48 @@ import { __ } from "../../../../../utilities/helpers.jsx";
 import { Tabs } from "../../../../../materials/tabs/tabs.jsx";
 
 import logo_extended from '../../../../../images/logo-extended.svg';
-import style from './editor.module.scss';
 import { JobDetails } from "./job-details/job-details.jsx";
 import { HiringFlow } from "./hiring-flow/hiring-flow.jsx";
+import { ApplicationForm } from "./application-form/application-form.jsx";
+
+import style from './editor.module.scss';
 
 const steps = [
 	{
-		id    : 'job_details',
+		id    : 'job-details',
 		label : __( 'Job Details' )
 	},
 	{
-		id    : 'hiring_flow',
+		id    : 'hiring-flow',
 		label : __( 'Hiring Flow' )
 	},
 	{
-		id    : 'application_form',
+		id    : 'application-form',
 		label : __( 'Application Form' )
 	},
 	{
-		id    : 'assesments',
-		label : __( 'Assessments' )
-	},
-	{
-		id    : 'team_members',
+		id    : 'team-members',
 		label : __( 'Team Members' )
 	},
 ];
+
+export function ActionButtons(props) {
+	const {onBack, onNext, backText=__( 'Back' ), nextText=__( 'Next' )} = props;
+
+	return <div className={'d-flex margin-top-25 margin-bottom-30'.classNames() + 'action-buttons'.classNames(style)}>
+		{onBack && <div className={'back-button-container'.classNames(style)}>
+			<button className={'d-inline-block button button-primary button-outlined button-outlined-secondary button-full-width'.classNames() + 'back'.classNames(style)} onClick={onBack}>
+				{backText}
+			</button>
+		</div> || null}
+
+		{onNext && <div className={'flex-1'.classNames()}>
+			<button className={'button button-primary button-full-width'.classNames() + 'next'.classNames(style)} onClick={onNext}>
+				{nextText}
+			</button>
+		</div> || null}
+	</div>
+}
 
 export function JobEditor() {
 	let {job_id: id} = useParams();
@@ -38,14 +54,20 @@ export function JobEditor() {
 
 	const [state, setState] = useState({
 		is_auto_saving: true,
-		active_tab: 'job_details'
+		active_tab: 'job-details'
 	});
 
 	const navigateTab=(tab)=>{
+		const current_index = steps.findIndex(s=>s.id==state.active_tab);
+
+		if ( tab === 1 || tab === -1 ) {
+			tab = steps[current_index+tab].id;
+		}
+
 		setState({
 			...state,
 			active_tab: tab
-		})
+		});
 	}
 
 	const {active_tab} = state;
@@ -97,9 +119,11 @@ export function JobEditor() {
 			
 			<div className={'form'.classNames(style) + 'margin-top-40'.classNames()}>
 				<div>
-					{active_tab=='job_details' && <JobDetails/> || null}
+					{active_tab=='job-details' && <JobDetails navigateTab={navigateTab}/> || null}
 
-					{active_tab=='hiring_flow' && <HiringFlow/> || null}
+					{active_tab=='hiring-flow' && <HiringFlow navigateTab={navigateTab}/> || null}
+
+					{active_tab=='application-form' && <ApplicationForm navigateTab={navigateTab}/> || null}
 				</div>
 			</div>
 		</div>

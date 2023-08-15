@@ -3,6 +3,7 @@ import { __, getRandomString } from "../../../../../../utilities/helpers.jsx";
 
 import style from './hiring.module.scss';
 import { SortableList } from "../../../../../../materials/dnd/sortable-list.jsx";
+import { ActionButtons } from "../index.jsx";
 
 const sequences = [
 	__( 'Screening' ),
@@ -18,6 +19,8 @@ const sequences = [
 });
 
 export function HiringFlow(props) {
+	const {navigateTab} = props;
+
 	const [state, setState] = useState({
 		sequences: sequences
 	});
@@ -46,6 +49,17 @@ export function HiringFlow(props) {
 		});
 	}
 
+	const renameStage=(id, label)=>{
+		const {sequences} = state;
+		const index = sequences.findIndex(s=>s.id==id);
+		sequences[index].label = label;
+
+		setState({
+			...state,
+			sequences
+		});
+	}
+
 	return <div className={'hiring'.classNames(style)}>
 		<span className={'d-block font-size-20 font-weight-600 text-color-primary margin-bottom-40'.classNames()}>
 			{__( 'Hiring stage' )}
@@ -62,7 +76,10 @@ export function HiringFlow(props) {
 							<i className={'ch-icon ch-icon-drag font-size-26 text-color-secondary'.classNames()}></i>
 						</div>
 						<div className={'flex-1'.classNames()}>
-							<input type="text" value={sequence.label}/>
+							<input 
+								type="text" 
+								value={sequence.label} 
+								onChange={e=>renameStage(sequence.id, e.currentTarget.value)}/>
 						</div>
 						<div>
 							<i 
@@ -82,17 +99,6 @@ export function HiringFlow(props) {
 			</div>
 		</div>
 
-		<div className={'d-flex margin-top-25 margin-bottom-30'.classNames() + 'action-buttons'.classNames(style)}>
-			<div>
-				<button className={'d-inline-block button button-primary button-outlined button-outlined-secondary button-full-width'.classNames() + 'back'.classNames(style)}>
-					{__( 'Back' )}
-				</button>
-			</div>
-			<div className={'flex-1'.classNames()}>
-				<button className={'button button-primary button-full-width'.classNames() + 'next'.classNames(style)}>
-					{__( 'Next' )}
-				</button>
-			</div>
-		</div>
+		<ActionButtons onBack={()=>navigateTab(-1)} onNext={()=>navigateTab(1)}/>
 	</div>
 }

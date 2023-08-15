@@ -44,18 +44,4 @@
 		padding: 10px 15px;
 		cursor: pointer;
 	}
-
-	.action-buttons {
-		button {
-			padding: 10px 15px;
-			width: 100%;
-		}
-		
-		&>div {
-			&:first-child {
-				width: 138px;
-				margin-right: 40px;
-			}
-		}
-	}
 }
