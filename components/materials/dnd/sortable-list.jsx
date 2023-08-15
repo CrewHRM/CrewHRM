@@ -22,7 +22,10 @@ export function SortableList(props) {
 			result.destination.index
 		);
 
-		props.onReorder(items);
+		props.onReorder(items.map(item=>{
+			delete item.rendered;
+			return item;
+		}));
 	}
 
 	return (
@@ -35,7 +38,7 @@ export function SortableList(props) {
 							<Draggable key={item.id} draggableId={item.id} index={index}>
 								{(provided, snapshot) => (
 									<div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
-										{item.content}
+										{item.rendered}
 									</div>
 								)}
 							</Draggable>

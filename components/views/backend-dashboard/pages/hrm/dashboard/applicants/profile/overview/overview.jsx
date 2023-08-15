@@ -52,7 +52,7 @@ export function OverView() {
 			</span>
 			<div style={{marginBottom: '-15px'}}>
 				{skills.map(skill=>{
-					return <div key={skill} className={'tag margin-right-15 margin-bottom-15'.classNames()}>
+					return <div key={skill} className={'tag d-inline-block padding-vertical-5 padding-horizontal-20 margin-right-15 margin-bottom-15 font-size-15 font-weight-500 line-height-24 letter-spacing--15 text-color-primary'.classNames()}>
 						{skill}
 					</div>
 				})}

@@ -176,7 +176,7 @@ export function ApplicationForm(props) {
 							</div>
 							<div>
 								{
-									read_only && <span className={'tag margin-right-15 margin-bottom-15'.classNames()}>
+									read_only && <span className={'tag padding-vertical-8 padding-horizontal-15'.classNames()}>
 										{__( 'Mandatory' )}
 									</span> ||
 									<div className={'d-inline-flex align-items-center'.classNames()}>

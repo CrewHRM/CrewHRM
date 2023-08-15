@@ -60,7 +60,7 @@ export function HeadActions() {
 	} = segments[state.active_segment] || {};
 	
 	return <div className={'head'.classNames(style) + 'margin-bottom-13'.classNames()}>
-		<div className={'nav'.classNames(style) + 'd-flex align-items-center'.classNames()}>
+		<div className={'d-flex align-items-center box-shadow-thin padding-vertical-15 padding-horizontal-30'.classNames()}>
 			<div className={'flex-1'.classNames()}>
 				{segments.map((segment, i)=>{
 					let {icon, renderer: Comp} = segment;

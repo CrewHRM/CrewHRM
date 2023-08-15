@@ -20,8 +20,7 @@ String.prototype.classNames = function(style) {
 	});
 
 	if ( dump ) {
-		console.log('Unresolved Class:');
-		console.error(dump);
+		console.warn('Unresolved Class: ' + dump);
 	}
 	
 	return cls.join(' ') + ' '; // Join back to single string and include raw. Then return.

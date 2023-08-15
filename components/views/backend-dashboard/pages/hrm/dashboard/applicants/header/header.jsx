@@ -29,7 +29,7 @@ export function Header(props) {
 		}
 	})
 
-	return <div className={'header'.classNames(style)}>
+	return <div className={'header'.classNames(style) + 'box-shadow-thin'.classNames()}>
 		<div className={'d-flex margin-bottom-20'.classNames()}>
 			<div className={'flex-1 d-flex align-items-center'.classNames()}>
 				<div>

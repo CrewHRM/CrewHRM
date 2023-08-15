@@ -70,8 +70,8 @@ export function HiringFlow(props) {
 			items={
 				state.sequences.map(sequence=>{
 				return {
-					id: sequence.id,
-					content: <div className={'d-flex align-items-center border-radius-10 border-1-5 border-color-tertiary padding-15 margin-bottom-15'.classNames() + 'single'.classNames(style)}>
+					...sequence,
+					rendered: <div className={'d-flex align-items-center border-radius-10 border-1-5 border-color-tertiary padding-15 margin-bottom-15'.classNames() + 'single'.classNames(style)}>
 						<div>
 							<i className={'ch-icon ch-icon-drag font-size-26 text-color-secondary'.classNames()}></i>
 						</div>

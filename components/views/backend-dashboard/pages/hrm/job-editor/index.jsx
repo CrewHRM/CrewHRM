@@ -102,7 +102,7 @@ export function JobEditor() {
 		</StickyBar>
 
 		<div className={'editor-wrapper'.classNames(style)}>
-			<div className={'tabs'.classNames(style)}>
+			<div className={'box-shadow-thin padding-20'.classNames()}>
 				<div>
 					<Tabs 
 						theme="sequence"

@@ -64,15 +64,8 @@
 }
 
 .tag{
-	padding: 5px 20px;
 	border: 1px solid var(--crewhrm-border-color-tertiary);
 	background-color: #F9F9F9;
 	border-radius: 50px;
-	display: inline-block;
 	white-space: nowrap;
-	font-size: 15px;
-	@include fontWeight(500);
-	line-height: 24px;
-	letter-spacing: -0.15px;
-	color: var(--crewhrm-text-color-primary);
 }
