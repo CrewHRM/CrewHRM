@@ -52,7 +52,7 @@ export function Header(props) {
 				<button className={'button button-primary button-outlined button-small margin-left-15'.classNames()}>
 					{__( 'Add Candidates' )}
 				</button>
-				<i className={'ch-icon ch-icon-more-1 font-size-20 text-color-secondary cursor-pointer margin-left-15'.classNames()}></i>
+				<i className={'ch-icon ch-icon-more font-size-20 text-color-secondary cursor-pointer margin-left-15'.classNames()}></i>
 			</div>
 		</div>
 		<div>

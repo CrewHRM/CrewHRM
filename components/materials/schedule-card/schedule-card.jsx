@@ -27,7 +27,7 @@ export function ScheduleCard(props) {
 					<img src={icons[type]} className={'d-inline-block width-30 margin-bottom-9'.classNames()}/>
 				</div>
 				<div>
-					<i className={'ch-icon ch-icon-more-1 font-size-20 text-color-secondary cursor-pointer'.classNames()}></i>
+					<i className={'ch-icon ch-icon-more font-size-20 text-color-secondary cursor-pointer'.classNames()}></i>
 				</div>
 			</div>
 			<span className={'d-block font-size-20 font-weight-600 foreground-color-primary'.classNames()}>

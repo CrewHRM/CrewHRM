@@ -74,7 +74,7 @@ export function HeadActions() {
 					options={application_stages.map(s=>{return {value: s.id, label: s.label}})}
 					onChange={s=>setState({...state, current_application_stage: s})}/>
 
-				<i className={'ch-icon ch-icon-more-1 font-size-20 text-color-secondary cursor-pointer'.classNames()}></i>
+				<i className={'ch-icon ch-icon-more font-size-20 text-color-secondary cursor-pointer'.classNames()}></i>
 			</div>
 		</div>
 		

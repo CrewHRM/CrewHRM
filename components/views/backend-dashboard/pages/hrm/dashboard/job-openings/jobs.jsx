@@ -133,7 +133,7 @@ export function JobOpenings(props) {
 								</Link>
 							</div>
 							<div className={'d-contents'.classNames()}>
-								<i className={'ch-icon ch-icon-more-1 text-color-secondary font-size-20 cursor-pointer d-inline-block margin-left-15'.classNames()}></i>
+								<i className={'ch-icon ch-icon-more text-color-secondary font-size-20 cursor-pointer d-inline-block margin-left-15'.classNames()}></i>
 							</div>
 						</div>
 						<div className={'d-flex align-items-center justify-content-space-between'.classNames()}>

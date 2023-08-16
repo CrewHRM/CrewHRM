@@ -85,7 +85,7 @@ export function Sidebar() {
 							</span>
 						</div>
 						<div>
-							<i className={'ch-icon ch-icon-more-1 font-size-20 text-color-secondary margin-left-15'.classNames()}></i>
+							<i className={'ch-icon ch-icon-more font-size-20 text-color-secondary margin-left-15'.classNames()}></i>
 						</div>
 					</div>
 				</div>

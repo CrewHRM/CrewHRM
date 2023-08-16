@@ -3,9 +3,9 @@
 @font-face {
   font-family: '#{$icomoon-font-family}';
   src:
-    url('#{$icomoon-font-path}/#{$icomoon-font-family}.ttf?2eqr8o') format('truetype'),
-    url('#{$icomoon-font-path}/#{$icomoon-font-family}.woff?2eqr8o') format('woff'),
-    url('#{$icomoon-font-path}/#{$icomoon-font-family}.svg?2eqr8o##{$icomoon-font-family}') format('svg');
+    url('#{$icomoon-font-path}/#{$icomoon-font-family}.ttf?3458qr') format('truetype'),
+    url('#{$icomoon-font-path}/#{$icomoon-font-family}.woff?3458qr') format('woff'),
+    url('#{$icomoon-font-path}/#{$icomoon-font-family}.svg?3458qr##{$icomoon-font-family}') format('svg');
   font-weight: normal;
   font-style: normal;
   font-display: block;
@@ -2924,7 +2924,8 @@
 }
 .ch-icon-more {
   &:before {
-    content: $ch-icon-more; 
+    content: $ch-icon-more;     
+    color: #72777b;
   }
 }
 .ch-icon-mouse {
