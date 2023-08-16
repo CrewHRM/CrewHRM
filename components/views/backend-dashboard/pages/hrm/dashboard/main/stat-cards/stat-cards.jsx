@@ -32,14 +32,16 @@ export function StatCards() {
 		{card_stats.map(stat=>{
 			let {label, count, icon} = stat;
 
-			return <div key={label} className={'card'.classNames(style) + 'box-shadow-thin border-radius-5 padding-25 margin-bottom-20'.classNames()}>
-				<img src={icon}/>
-				<span className={'strong'.classNames(style) + 'text-color-primary'.classNames()}>
-					{count}
-				</span>
-				<span className={'text-color-secondary'.classNames()}>
-					{label}
-				</span>
+			return <div key={label} className={'card'.classNames(style) + 'd-flex flex-flow-column justify-content-space-between box-shadow-thin border-radius-5 padding-25'.classNames()}>
+				<img src={icon} className={'width-24'.classNames()}/>
+				<div>
+					<span className={'d-block margin-bottom-12 font-size-28 font-weight-700 text-color-primary'.classNames()}>
+						{count}
+					</span>
+					<span className={'d-block font-size-15 font-weight-500 text-color-secondary'.classNames()}>
+						{label}
+					</span>
+				</div>
 			</div>
 		})}
 	</div>

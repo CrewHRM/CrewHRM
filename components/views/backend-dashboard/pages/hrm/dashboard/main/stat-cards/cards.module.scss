@@ -1,36 +1,10 @@
-@import '../../../../../../../styles/mixins';
-
 .card-wrapper{
-	overflow: auto;
+	display: grid;
+	grid-template-columns: 50% 50%; /* Single flexible column */
+	gap: 20px;
 
 	.card{
 		background-color: white;
-		width: 184px;
-		height: 165px;
-		float: left;
-
-		&:nth-child(odd) {
-			margin-right: 10px;
-		}
-
-		&:nth-child(even) {
-			margin-left: 10px;
-		}
-
-		.strong, span, img{
-			display: block;
-		}
-
-		.strong{
-			margin-top: 45px;
-    		margin-bottom: 12px;
-			font-size: 28px;
-			@include fontWeight(700);
-		}
-
-		span {
-			font-size: 15px;
-			@include fontWeight(500);
-		}
+		aspect-ratio: 176 / 155;
 	}
 }

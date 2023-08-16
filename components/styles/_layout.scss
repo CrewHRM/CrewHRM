@@ -117,6 +117,14 @@ $borders: 'border', 'border-bottom', 'border-top', 'border-left', 'border-right'
 	}
 }
 
+// Flex flows
+$flows: 'column', 'row';
+@each $flow in $flows {
+	.flex-flow-#{$flow} {
+		flex-flow: #{$flow};
+	}
+}
+
 .align-items-center {
 	align-items: center;
 }

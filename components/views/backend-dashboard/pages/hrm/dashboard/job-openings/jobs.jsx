@@ -7,7 +7,6 @@ import { NoJob } from "./no-job.jsx";
 import { Link } from "react-router-dom";
 import { DropDown } from "../../../../../../materials/dropdown/dropdown.jsx";
 import { Line } from "../../../../../../materials/line/line.jsx";
-import { DashboardBar } from "../../hrm.jsx";
 
 const statuses = {
 	publish: {color: '#73BF45', label: __( 'Active' )},
@@ -170,10 +169,7 @@ export function JobOpenings(props) {
 }
 
 export function JobOpeningsFullView(props) {
-	return <>
-		<DashboardBar/>
-		<div className={'padding-30'.classNames()} style={{maxWidth: '988px', margin: '0 auto'}}>
-			<JobOpenings/>
-		</div>
-	</>
+	return <div className={'padding-30'.classNames()} style={{maxWidth: '988px', margin: '0 auto'}}>
+		<JobOpenings/>
+	</div>
 }

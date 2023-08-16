@@ -85,9 +85,21 @@ export function HRM(props) {
 		<WpDashboardFullPage>
 			<HashRouter>
 				<Routes>
-					<Route path="/dashboard/" element={<><DashboardBar/><DahboardMain/></>}/>
-					<Route path="/dashboard/jobs/" element={<JobOpeningsFullView/>}/>
-					<Route path="/dashboard/jobs/:job_id/applicants/:applicant_id?/" element={<Applicants/>}/>
+					<Route path="/dashboard/" element={<>
+						<DashboardBar/>
+						<DahboardMain/>
+					</>}/>
+
+					<Route path="/dashboard/jobs/" element={<>
+						<DashboardBar/>
+						<JobOpeningsFullView/>
+					</>}/>
+
+					<Route path="/dashboard/jobs/:job_id/applicants/:applicant_id?/" element={<>
+						<DashboardBar/>
+						<Applicants/>
+					</>}/>
+					
 					<Route path="/dashboard/jobs/editor/:job_id?/" element={<JobEditor/>}/>
 					
 					<Route path={"*"} element={<Navigate to="/dashboard/" replace />} />

@@ -5,7 +5,6 @@ import { __ } from "../../../../../../utilities/helpers.jsx";
 import { Header } from "./header/header.jsx";
 import { Sidebar } from "./sidebar/sidebar.jsx";
 import { Profile } from "./profile/profile-wrapper.jsx";
-import { DashboardBar } from "../../hrm.jsx";
 
 import style from './applicants.module.scss';
 
@@ -98,7 +97,6 @@ export function Applicants( props ) {
 	}, []);
 
 	return <ContextApplicants.Provider value={{job_id, jobs, steps, job: state.job}}>
-		<DashboardBar/>
 		<div className={'applicants'.classNames(style)}>
 			<Header/>
 			<div className={'content-area'.classNames(style)}>
