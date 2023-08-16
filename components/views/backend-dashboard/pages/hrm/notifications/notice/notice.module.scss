@@ -1,0 +1,13 @@
+.notice {
+	&.success {
+		background-color: #5B9215;
+	}
+
+	&.warning {
+		background-color: #F57A08;
+	}
+
+	&.error {
+		background-color: #EA4545;
+	}
+}

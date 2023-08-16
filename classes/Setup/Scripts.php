@@ -70,6 +70,7 @@ class Scripts extends Main {
 			'action_hooks' => array(),
 			'filter_hooks' => array(),
 			'ajaxurl'      => admin_url('admin-ajax.php'),
+			'colors'       => $colors,
 		);
 		echo '<script>window.CrewHRM=' . json_encode( $data ) . '</script>';
 	}

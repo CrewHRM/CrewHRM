@@ -7,7 +7,7 @@ $displays: 'block', 'flex', 'inline', 'inline-block', 'inline-flex', 'contents';
 }
 
 // Sizings
-$attrs: 'font-size', 'margin', 'margin-top', 'margin-bottom', 'margin-left', 'margin-right', 'padding', 'padding-top', 'padding-bottom', 'padding-left', 'padding-right', 'padding-vertical', 'padding-horizontal', 'width', 'height', 'line-height';
+$attrs: 'font-size', 'margin', 'margin-top', 'margin-bottom', 'margin-left', 'margin-right', 'padding', 'padding-top', 'padding-bottom', 'padding-left', 'padding-right', 'padding-vertical', 'padding-horizontal', 'width', 'height', 'line-height', 'column-gap', 'row-gap', 'left', 'right', 'top', 'bottom';
 @for $i from 1 through 50 {
 
 	@each $attr in $attrs {
@@ -59,7 +59,7 @@ $attrs: 'font-size', 'margin', 'margin-top', 'margin-bottom', 'margin-left', 'ma
 }
 
 // Flex content justify
-$justifications: 'space-between', 'space-around';
+$justifications: 'space-between', 'space-around', 'center';
 @each $justfication in $justifications {
 	.justify-content-#{$justfication} {
 		justify-content: #{$justfication};
@@ -90,6 +90,33 @@ $v_alignments: 'middle', 'top';
 	}
 }
 
+// Positions
+$positions: 'absolute', 'fixed', 'static';
+@each $position in $positions {
+	.position-#{$position} {
+		position: #{$position};
+	}
+}
+
+// Borders
+$borders: 'border', 'border-bottom', 'border-top', 'border-left', 'border-right';
+@each $border in $borders {
+	.#{$border}-1 {
+		&, &[type] {
+			#{$border}-width: 1px;
+			#{$border}-style: solid;
+		}
+		
+	}
+
+	.#{$border}-1-5 {
+		&, &[type] {
+			#{$border}-width: 1.5px;
+			#{$border}-style: solid;
+		}
+	}
+}
+
 .align-items-center {
 	align-items: center;
 }
@@ -116,25 +143,6 @@ $v_alignments: 'middle', 'top';
 	&>div{
 		margin: 0 10px;
 		flex: 1;
-	}
-}
-
-// Borders
-$borders: 'border', 'border-bottom', 'border-top', 'border-left', 'border-right';
-@each $border in $borders {
-	.#{$border}-1 {
-		&, &[type] {
-			#{$border}-width: 1px;
-			#{$border}-style: solid;
-		}
-		
-	}
-
-	.#{$border}-1-5 {
-		&, &[type] {
-			#{$border}-width: 1.5px;
-			#{$border}-style: solid;
-		}
 	}
 }
 

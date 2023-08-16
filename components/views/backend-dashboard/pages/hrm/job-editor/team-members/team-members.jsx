@@ -5,7 +5,7 @@ import { __ } from "../../../../../../utilities/helpers.jsx";
 import avatar from '../../../../../../images/avatar.svg';
 import { CoverImage } from "../../../../../../materials/image/image.jsx";
 import { ActionButtons } from "../index.jsx";
-import { DropDownUnanaged } from "../../../../../../materials/dropdown/dropdown.jsx";
+import { DropDownUnmanaged } from "../../../../../../materials/dropdown/dropdown.jsx";
 import { SortableList } from "../../../../../../materials/dnd/sortable-list.jsx";
 
 import style from './team.module.scss';
@@ -79,7 +79,7 @@ export function TeamMembers(props) {
 		</span>
 		
 		<div className={'margin-bottom-15'.classNames()} ref={search_ref}>
-			<DropDownUnanaged content={renderSuggestion()}>
+			<DropDownUnmanaged rendered={renderSuggestion()}>
 				<TextField 
 					placeholder={__( 'Search a team member' )}
 					icon="ch-icon ch-icon-search-normal-1"
@@ -87,7 +87,7 @@ export function TeamMembers(props) {
 					className={'border-1-5 border-radius-10 border-color-tertiary padding-vertical-12 padding-horizontal-20'.classNames()}
 					inputClassName={'font-size-15 font-weight-400 line-height-25 text-color-secondary'.classNames()}
 					onChange={searchUsers}/>
-			</DropDownUnanaged>
+			</DropDownUnmanaged>
 		</div>
 		
 		<div className={'border-1 border-color-tertiary border-radius-10 margin-bottom-40'.classNames()}>

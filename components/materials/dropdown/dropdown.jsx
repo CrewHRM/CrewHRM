@@ -72,12 +72,12 @@ export function DropDown(props) {
 	</div>
 }
 
-export function DropDownUnanaged(props) {
+export function DropDownUnmanaged(props) {
 	const {
 		className='',
 		position="bottom right",
 		children,
-		content,
+		rendered,
 		style: cssStyle={}
 	} = props;
 
@@ -86,13 +86,13 @@ export function DropDownUnanaged(props) {
 		closeOnDocumentClick={false}
 		on={[]}
 		arrow={false}
-		open={content ? true : false}
+		open={rendered ? true : false}
 		darken={false}
 		contentStyle={{...content_style, ...cssStyle}}
 		trigger={<div className={className}>
 				{children}
 			</div>
 		}>
-		{content}
+		{rendered}
     </Popup>	
 }

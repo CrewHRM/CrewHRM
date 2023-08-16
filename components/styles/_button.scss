@@ -27,6 +27,11 @@
 				color: var(--crewhrm-text-color-secondary);
 			}
 		}
+
+		&.button-foreground {
+			border-color: white;
+			color: white;
+		}
 	}
 
 	&.disabled, &:disabled{
@@ -55,6 +60,11 @@
 	&.button-medium {
 		@include fontWeight(500);
 		padding: 10px 15px;
+	}
+
+	&.button-medium-2 {
+		@include fontWeight(500);
+		padding: 8px 15px;
 	}
 
 	&.button-small {
