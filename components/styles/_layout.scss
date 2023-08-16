@@ -13,19 +13,27 @@ $attrs: 'font-size', 'margin', 'margin-top', 'margin-bottom', 'margin-left', 'ma
 	@each $attr in $attrs {
 		@if $attr == 'padding-vertical' {
 			.padding-vertical-#{$i} {
-				padding-top: #{$i}px;
-				padding-bottom: #{$i}px;
+				&, &[type] {
+					padding-top: #{$i}px;
+					padding-bottom: #{$i}px;
+				}
+				
 			} 
 
 		} @else if $attr == 'padding-horizontal' {
 			.padding-horizontal-#{$i} {
-				padding-left: #{$i}px;
-				padding-right: #{$i}px;
+				&, &[type] {
+					padding-left: #{$i}px;
+					padding-right: #{$i}px;
+				}
+				
 			} 
 
 		} @else {
 			.#{$attr}-#{$i} {
-				#{$attr}: #{$i}px;
+				&, &[type] {
+					#{$attr}: #{$i}px;
+				}
 			}
 		}
 	}
@@ -42,8 +50,10 @@ $attrs: 'font-size', 'margin', 'margin-top', 'margin-bottom', 'margin-left', 'ma
 			flex: #{$i};
 		}
 		.border-radius-#{$i} {
-			border-radius: #{$i}px;
-			overflow: hidden;
+			&, &[type] {
+				border-radius: #{$i}px;
+				overflow: hidden;
+			}
 		}
 	}
 }
@@ -69,14 +79,6 @@ $cursors: 'pointer', 'default';
 @each $cursor in $cursors {
 	.cursor-#{$cursor} {
 		cursor: #{$cursor};
-	}
-}
-
-// Text alignments
-$alignments: 'left', 'right', 'center';
-@each $alignment in $alignments {
-	.text-align-#{$alignment} {
-		text-align: #{$alignment};
 	}
 }
 
@@ -121,16 +123,27 @@ $v_alignments: 'middle', 'top';
 $borders: 'border', 'border-bottom', 'border-top', 'border-left', 'border-right';
 @each $border in $borders {
 	.#{$border}-1 {
-		#{$border}-width: 1px;
-		#{$border}-style: solid;
+		&, &[type] {
+			#{$border}-width: 1px;
+			#{$border}-style: solid;
+		}
+		
 	}
 
 	.#{$border}-1-5 {
-		#{$border}-width: 1.5px;
-		#{$border}-style: solid;
+		&, &[type] {
+			#{$border}-width: 1.5px;
+			#{$border}-style: solid;
+		}
 	}
 }
 
 .border-color-tertiary {
-	border-color: var(--crewhrm-border-color-tertiary);
+	&, &[type] {
+		border-color: var(--crewhrm-border-color-tertiary);
+
+		&:focus {
+			border-color: var(--crewhrm-border-color-primary);
+		}
+	}
 }

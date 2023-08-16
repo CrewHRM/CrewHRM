@@ -1,0 +1,30 @@
+// Text alignments
+$alignments: 'left', 'right', 'center';
+@each $alignment in $alignments {
+	.text-align-#{$alignment} {
+		text-align: #{$alignment};
+	}
+}
+
+// Whitespaces
+$whitespaces: 'normal', 'pre', 'nowrap';
+@each $whitespace in $whitespaces {
+	.white-space-#{$whitespace} {
+		white-space: #{$whitespace};
+	}
+}
+
+.text-field-flat {
+	padding: 0;
+	margin: 0;
+	width: 100%;
+	height: 100%;
+	display: block;
+
+	&, &:hover, &:active, &:focus {
+		border: none !important;
+		outline: none !important;
+		box-shadow: none !important;
+		background-color: transparent;
+	}
+}
