@@ -2,7 +2,6 @@ import React, { useContext, useState } from "react";
 
 import style from './head.module.scss';
 import { Comment } from "./comment/comment.jsx";
-import { Schedule } from "./schedule/schedule.jsx";
 import { Email } from "./email/email.jsx";
 import { __ } from "../../../../../../../../utilities/helpers.jsx";
 import { DropDown } from "../../../../../../../../materials/dropdown/dropdown.jsx";
@@ -14,13 +13,6 @@ const segments = [
 		renderer : Email,
 		tagline  : <span className={'font-size-15 font-weight-500 text-color-primary'.classNames()}>
 					{__( 'Email' )}
-				</span>
-	},
-	{
-		icon     : 'ch-icon ch-icon-note-favorite',
-		renderer : Schedule,
-		tagline  : <span className={'font-size-15 font-weight-500 text-color-primary'.classNames()}>
-					{__( 'Schedule and event' )}
 				</span>
 	},
 	{
