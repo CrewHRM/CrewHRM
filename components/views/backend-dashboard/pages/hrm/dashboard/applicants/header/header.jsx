@@ -39,7 +39,7 @@ export function Header(props) {
 					<DropDown 
 						value={job_id} 
 						options={jobs} 
-						onChange={v=>navigate(`/dashboard/applicants/${v}/`)}
+						onChange={v=>navigate(`/dashboard/jobs/${v}/applicants/`)}
 						transparent={true}
 						position="bottom right"
 						textClassName={'font-size-24 font-weight-600 text-color-primary'.classNames()}/>

@@ -8,6 +8,6 @@ export function ToggleSwitch(props) {
 	const id = getRandomString();
 	return <div className={'d-inline-block'.classNames() + 'switch'.classNames(style) + className}>
 		<input type="checkbox" id={id} data-checkbox-type="toggle"/>
-		<label for={id}></label>
+		<label htmlFor={id}></label>
 	</div>
 }

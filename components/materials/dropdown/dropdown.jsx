@@ -31,7 +31,7 @@ export function DropDown(props) {
 	const ref = useRef();
 	const triggerPoint= <div tabIndex={tabindex} className={`dropdown ${transparent ? 'transparent' : ''}`.classNames(style) + 'cursor-pointer d-flex align-items-center border-radius-5'.classNames() + className}>
 		<span className={'flex-1'.classNames() + textClassName}>
-			{selected_value && options.find(o=>o.value===selected_value).label || initialLabel}
+			{selected_value!==undefined ? (options.find(o=>o.value===selected_value)?.label || initialLabel) : initialLabel}
 		</span>
 		<i className={iconClassName}></i>
 	</div>

@@ -56,7 +56,9 @@ const steps = [
 export const ContextApplicants = createContext();
 
 export function Applicants( props ) {
-	const {job_id, applicant_id} = useParams();
+	const {job_id: raw_job_id, applicant_id} = useParams();
+	const job_id = parseInt(raw_job_id);
+	
 	const [state, setState] = useState({
 		job: {
 			job_id: job_id,

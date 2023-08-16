@@ -49,7 +49,7 @@ export function Location() {
 					{__( 'Job Location type' )}
 				</span>
 				{Object.keys(location_types).map(type=>{
-					return <div className={'d-inline-block margin-right-20'.classNames()}>
+					return <div key={type} className={'d-inline-block margin-right-20'.classNames()}>
 						<label key={type} className={input_class}>
 							<input type="checkbox"/> {location_types[type]}
 						</label>
