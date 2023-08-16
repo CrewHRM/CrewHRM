@@ -79,7 +79,8 @@ export function HiringFlow(props) {
 							<input 
 								type="text" 
 								value={sequence.label} 
-								onChange={e=>renameStage(sequence.id, e.currentTarget.value)}/>
+								onChange={e=>renameStage(sequence.id, e.currentTarget.value)}
+								className={'text-field-flat margin-left-5'.classNames()}/>
 						</div>
 						<div>
 							<i 

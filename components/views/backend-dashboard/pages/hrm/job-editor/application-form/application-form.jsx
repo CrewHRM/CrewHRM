@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import style from './application.module.scss';
 import { __, getRandomString } from "../../../../../../utilities/helpers.jsx";
@@ -144,12 +144,16 @@ const questions = [
 
 export function ApplicationForm(props) {
 	const {navigateTab} = props;
+	const [state, setState] = useState({
+		questions: questions
+	});
 
 	return <div className={'application'.classNames(style)}>
 		<span className={'d-block font-size-20 font-weight-600 text-color-primary margin-bottom-40'.classNames()}>
 			{__( 'Customize your application form' )}
 		</span>
 
+		{/* General fields with toggle switch */}
 		{Object.keys(sections_fields).map(field_name=>{
 			const {label, fields: input_fields} = sections_fields[field_name];
 
@@ -191,9 +195,11 @@ export function ApplicationForm(props) {
 			</div>
 		})}
 
+		{/* Question builder */}
 		<strong className={'d-block font-size-17 font-weight-600 text-color-primary margin-bottom-10'.classNames()}>
 			{__( 'Add Questions' )}
 		</strong>
+		
 
 		<ActionButtons onBack={()=>navigateTab(-1)} onNext={()=>navigateTab(1)}/>
 	</div>

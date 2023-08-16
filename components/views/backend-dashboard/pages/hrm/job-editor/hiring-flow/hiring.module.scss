@@ -6,27 +6,10 @@
 	.single {
 		height: 56px;
 		
-
-		&, input {
+		& {
 			background-color: white;
-		}
-
-		&:hover {
-			&, input {
+			&:hover {
 				background-color: #F9F9F9;
-			}
-		}
-
-		input[type=text] {
-			padding: 0;
-			margin: 0;
-			margin-left: 5px;
-			width: 100%;
-
-			&, &:active, &:focus, &:hover {
-				border: none;
-				outline: none;
-				box-shadow: none;
 			}
 		}
 

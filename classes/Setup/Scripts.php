@@ -52,6 +52,7 @@ class Scripts extends Main {
 			'text-color-tertiary'        => '#BBBFC3', // Secondary text color with a white backogrund ideally
 			'text-color-danger'          => 'rgb(252, 82, 118)',
 
+			'border-color-primary'       => '#1A1A1A', // Border color with a white background ideally
 			'border-color-secondary'     => '#72777B', // Border color with a white background ideally
 			'border-color-tertiary'      => '#E3E5E8', // Border color with a white background ideally
 		);
