@@ -1,6 +1,4 @@
 .dropdown {
-	padding: 8px 15px;	
-
 	&:not(.transparent) {
 		background-color: white;
 	}
@@ -14,7 +12,6 @@
 			border-bottom: 1px solid var(--crewhrm-border-color-tertiary);
 		}
 	}
-
 
 	.list-wrapper {
 		max-height: 300px;
@@ -30,7 +27,7 @@
 
 	.list-item, .add-item {
 		&.active, &:hover {
-			background-color: var(--crewhrm-background-color-tertiary);
+			background-color: #F9F9F9;
 		}
 	}
 }

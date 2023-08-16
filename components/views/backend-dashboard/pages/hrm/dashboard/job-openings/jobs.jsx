@@ -5,14 +5,59 @@ import style from './jobs.module.scss';
 import { StatusDot } from "../../../../../../materials/status-dot/status-dots.jsx";
 import { NoJob } from "./no-job.jsx";
 import { Link } from "react-router-dom";
-import { DropDown } from "../../../../../../materials/dropdown/dropdown.jsx";
+import { DropDown, Options } from "../../../../../../materials/dropdown/dropdown.jsx";
 import { Line } from "../../../../../../materials/line/line.jsx";
 
+const options = [
+	{
+		name  : 'preview',
+		label : __( 'Preview' ),
+		icon  : 'ch-icon ch-icon-eye',
+		for   : ['draft']
+	},
+	{
+		name  : 'duplicate',
+		label : __( 'Duplicate' ),
+		icon  : 'ch-icon ch-icon-copy',
+		for   : 'all'
+	},
+	{
+		name  : 'archive',
+		label : __( 'Archive' ),
+		icon  : 'ch-icon ch-icon-archive',
+		for   : ['publish', 'draft', 'expired']
+	},
+	{
+		name  : 'share',
+		label : __( 'Share Job' ),
+		icon  : 'ch-icon ch-icon-share',
+		for   : ['publish']
+	},
+	{
+		name  : 'delete',
+		label : __( 'Delete' ),
+		icon  : 'ch-icon ch-icon-trash',
+		for   : 'all'
+	}
+];
+
 const statuses = {
-	publish: {color: '#73BF45', label: __( 'Active' )},
-	draft: {color: '#BBBFC3', label: __( 'Draft' )},
-	expired: {color: '#EE940D', label: __( 'Expired' )},
-	completed: {color: '#FF180A', label: __( 'Completed' )}
+	publish: {
+		color : '#73BF45', 
+		label : __( 'Published' )
+	},
+	draft: {
+		color : '#EE940D', 
+		label : __( 'Draft' )
+	},
+	archive: {
+		color : '#BBBFC3', 
+		label : __( 'Archived' )
+	},
+	expired: {
+		color : '#FF180A', 
+		label : __( 'Expired' )
+	}
 }
 
 const job = {
@@ -69,6 +114,10 @@ export function JobOpenings(props) {
 		});
 	}
 
+	const onActionClick=(action, job_id)=>{
+		console.log(action, job_id)
+	}
+
 	const filter_status_options = [
 		{value: 'all', label: __( 'All' )},
 		...status_keys.map(key=>{return {value: key, label: statuses[key].label}})
@@ -87,6 +136,7 @@ export function JobOpenings(props) {
 			<div>
 				<div className={'d-inline-block'.classNames()}>
 					<DropDown
+						className={'padding-vertical-8 padding-horizontal-15'.classNames()}
 						transparent={is_overview}
 						value={state.filter.job_status} 
 						options={filter_status_options} 
@@ -100,6 +150,8 @@ export function JobOpenings(props) {
 				{jobs.map(job=>{
 					const {job_id, job_title, job_status, department, location, job_type, application_deadline} = job;
 					const meta_data = [department, location, job_type, application_deadline];
+					const {color: status_color, label: status_label} = statuses[job_status];
+
 					const stats = {
 						candidates           : job.candidates,
 						qualified_candidates : job.qualified_candidates,
@@ -108,12 +160,24 @@ export function JobOpenings(props) {
 						hired                : job.hired+'/'+job.vacancy
 					};
 
+					const actions = options.filter(o=>o.for==='all' || o.for.indexOf(job_status)>-1).map(o=>{
+						return {
+							value: o.name,
+							label: <span className={'d-inline-flex align-items-center column-gap-10'.classNames()}>
+								<i className={o.icon.classNames() + 'font-size-24 text-color-primary'.classNames()}></i>
+								<span className={'font-size-15 font-weight-500 line-height-25 text-color-primary'.classNames()}>
+									{o.label}
+								</span>
+							</span>
+						}
+					})
+
 					return <div key={job_id}>
 						<div className={'d-flex align-items-center'.classNames()}>
 							<div className={'flex-1'.classNames()}>
 								<div className={'d-flex align-items-center margin-bottom-15'.classNames()}>
-									<div className={"d-inline-block margin-right-8".classNames()}>
-										<StatusDot color={statuses[job_status].color}/>
+									<div className={"d-inline-block margin-right-8".classNames()} title={status_label}>
+										<StatusDot color={status_color}/>
 									</div>
 									<span className={"job-title".classNames(style) + 'd-block text-color-primary font-size-20 font-weight-600'.classNames()}>
 										{job_title}
@@ -133,7 +197,9 @@ export function JobOpenings(props) {
 								</Link>
 							</div>
 							<div className={'d-contents'.classNames()}>
-								<i className={'ch-icon ch-icon-more text-color-secondary font-size-20 cursor-pointer d-inline-block margin-left-15'.classNames()}></i>
+								<Options options={actions} onCLick={action=>onActionClick(action, job_id)}>
+									<i className={'ch-icon ch-icon-more text-color-secondary font-size-20 cursor-pointer d-inline-block margin-left-15'.classNames()}></i>
+								</Options>
 							</div>
 						</div>
 						<div className={'d-flex align-items-center justify-content-space-between'.classNames()}>

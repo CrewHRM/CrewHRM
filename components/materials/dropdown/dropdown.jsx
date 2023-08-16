@@ -36,7 +36,6 @@ export function DropDown(props) {
 		<i className={iconClassName}></i>
 	</div>
 
-
 	return <div ref={ref}> 
 		<Popup
 			position={position}
@@ -70,6 +69,44 @@ export function DropDown(props) {
 				}}
 		</Popup>
 	</div>
+}
+
+export function Options(props) {
+	const {
+		options, 
+		onClick, 
+		className='',
+		position="bottom right",
+		style: cssStyle={},
+		children
+	} = props;
+
+	return <Popup
+		position={position}
+		on="click"
+		closeOnDocumentClick
+		mouseLeaveDelay={300}
+		mouseEnterDelay={0}
+		contentStyle={{...content_style, ...cssStyle}}
+		arrow={false}
+		trigger={
+			<div className={`dropdown transparent`.classNames(style) + 'cursor-pointer'.classNames() + className}>
+				{children}
+			</div>
+		}>
+			{close=>{
+				return <div className={"dropdown-popup".classNames(style) + 'box-shadow-thick border-radius-10 border-1-5 border-color-tertiary background-color-white'.classNames()} style={{minWidth: '176px'}}>
+					<div className={'list-wrapper'.classNames(style)}>
+						{options.map(option=>{
+							let {value, label} = option;
+							return <div key={value} className={'list-item'.classNames(style) + list_class} onClick={()=>{onClick(value); close();}}>
+								{label}
+							</div>
+						})}
+					</div>
+				</div>
+			}}
+	</Popup>
 }
 
 export function DropDownUnmanaged(props) {

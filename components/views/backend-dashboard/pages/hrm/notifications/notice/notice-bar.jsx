@@ -4,7 +4,7 @@ import { ContextBackendDashboard } from "../../hrm.jsx";
 import style from './notice.module.scss';
 
 export function NoticeBar() {
-	const {notices=[]} = useContext(ContextBackendDashboard);
+	const {notices=[], deleteNotice} = useContext(ContextBackendDashboard);
 	
 	return !notices.length && null || <>
 		{notices.map(notice=>{
@@ -14,7 +14,7 @@ export function NoticeBar() {
 				<div>
 					{content}
 				</div>
-				<i className={'ch-icon ch-icon-times font-size-24 text-color-white cursor-pointer position-absolute right-18'.classNames()}></i>
+				<i className={'ch-icon ch-icon-times font-size-24 text-color-white cursor-pointer position-absolute right-18'.classNames()} onClick={()=>deleteNotice(id)}></i>
 			</div>
 		})}
 	</>

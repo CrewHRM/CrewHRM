@@ -81,7 +81,17 @@ export function HRM(props) {
 
 	}
 
-	return <ContextBackendDashboard.Provider value={{notices: state.notices, showNotice}}>
+	const deleteNotice=id=>{
+		const {notices} = state;
+		const index = notices.findIndex(n=>n.id===id);
+		notices.splice(index, 1);
+		setState({
+			...state,
+			notices
+		});
+	}
+
+	return <ContextBackendDashboard.Provider value={{notices: state.notices, showNotice, deleteNotice}}>
 		<WpDashboardFullPage>
 			<HashRouter>
 				<Routes>
