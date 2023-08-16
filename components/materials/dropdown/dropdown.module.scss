@@ -3,23 +3,34 @@
 
 	&:not(.transparent) {
 		background-color: white;
-		border: 1px solid var(--crewhrm-border-color-tertiary);
-	}
-	
-	&:hover {
-		border-color: var(--crewhrm-foreground-color-secondary);
 	}
 }
 
 .dropdown-popup {
-	&>div{
-		&:not(:last-child) {
+	.trigger-point {
+		&>div {
+			border: none;
+			border-radius: 0;
 			border-bottom: 1px solid var(--crewhrm-border-color-tertiary);
 		}
+	}
 
+
+	.list-wrapper {
+		max-height: 300px;
+		overflow-x: hidden;
+		overflow-y: auto;
+
+		&, .list-item {
+			&:not(:last-child) {
+				border-bottom: 1px solid var(--crewhrm-border-color-tertiary);
+			}
+		}
+	}
+
+	.list-item, .add-item {
 		&.active, &:hover {
-			background-color: var(--crewhrm-background-color-primary);
-			color: var(--crewhrm-foreground-color-primary);
+			background-color: var(--crewhrm-background-color-tertiary);
 		}
 	}
 }

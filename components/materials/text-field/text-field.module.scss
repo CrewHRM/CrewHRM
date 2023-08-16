@@ -22,20 +22,4 @@
 		max-height: 16px;
 		display: inline-block;
 	}
-
-	input {
-		margin: 0;
-		padding: 0;
-		height: auto;
-		font-size: 15px;
-		font-style: normal;
-		@include fontWeight(400);
-		letter-spacing: -0.15px;
-		flex: 1;
-
-		&, &:hover, &:active, &:focus {
-			border: 0;
-			background: transparent;
-		}
-	}
 }

@@ -29,7 +29,7 @@ export function TextField(props) {
 			type={type} 
 			onChange={e=>onChange(e.currentTarget.value)}
 			placeholder={placeholder}
-			className={inputClassName}
+			className={'text-field-flat font-size-15 font-weight-500 letter-spacing--15 flex-1'.classNames() + inputClassName}
 			pattern={pattern}/>
 	</div>
 }
