@@ -26,10 +26,9 @@
 	}
 
 	.type-selection {
-		display: grid;
-		grid-template-columns: auto auto auto auto auto;
-		gap: 20px;
-
+		column-gap: 20px;
+		row-gap: 0;
+		
 		button {
 			padding: 8px 15px;
 			height: 40px;
