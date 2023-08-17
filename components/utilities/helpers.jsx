@@ -88,3 +88,13 @@ export function getCountries(lang = 'en') {
     }
     return countries
 }
+
+export function copyToClipboard(text, addToast) {
+  navigator.clipboard.writeText(text)
+    .then(() => {
+		addToast( __( 'Copied to clipboard' ) );
+    })
+    .catch((error) => {
+		addToast( __( 'Error copying to clipboard' ) );
+    });
+}

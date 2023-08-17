@@ -7,6 +7,7 @@ import { NoJob } from "./no-job.jsx";
 import { Link } from "react-router-dom";
 import { DropDown, Options } from "../../../../../../materials/dropdown/dropdown.jsx";
 import { Line } from "../../../../../../materials/line/line.jsx";
+import { ShareModal } from "../../../../../../materials/share-modal/share-modal.jsx";
 
 const options = [
 	{
@@ -62,6 +63,7 @@ const statuses = {
 
 const job = {
 	job_id: 1,
+	job_permalink: 'https://example.com/jobs/1',
 	job_status: 'publish',
 	job_title: 'Account Manager',
 	department: 'Sales',
@@ -98,6 +100,7 @@ const stat_labels = {
 export function JobOpenings(props) {
 	let {is_overview, className} = props;
 	const [state, setState] = useState({
+		share_link: null,
 		filter: {
 			job_status: 'all',
 			page: 1
@@ -115,7 +118,16 @@ export function JobOpenings(props) {
 	}
 
 	const onActionClick=(action, job_id)=>{
-		console.log(action, job_id)
+		const job = jobs.find(j=>j.job_id==job_id);
+
+		switch(action) {
+			case 'share' :
+				setState({
+					...state, 
+					share_link: job.job_permalink
+				});
+				break;
+		}
 	}
 
 	const filter_status_options = [
@@ -124,6 +136,11 @@ export function JobOpenings(props) {
 	];
 
 	return <div className={'jobs'.classNames(style) + className}>
+		{
+			state.share_link && 
+			<ShareModal url={state.share_link} onClose={()=>setState({...state, share_link: null})}/> || null
+		}
+		
 		<div className={'d-flex align-items-center margin-bottom-20'.classNames() + 'filter'.classNames(style)}>
 			<div className={'flex-1 d-flex align-items-center'.classNames()}>
 				{!is_overview && <Link to="/dashboard/">
@@ -197,7 +214,7 @@ export function JobOpenings(props) {
 								</Link>
 							</div>
 							<div className={'d-contents'.classNames()}>
-								<Options options={actions} onCLick={action=>onActionClick(action, job_id)}>
+								<Options options={actions} onClick={action=>onActionClick(action, job_id)}>
 									<i className={'ch-icon ch-icon-more text-color-secondary font-size-20 cursor-pointer d-inline-block margin-left-15'.classNames()}></i>
 								</Options>
 							</div>
