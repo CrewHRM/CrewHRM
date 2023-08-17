@@ -1,9 +1,9 @@
 @font-face {
   font-family: 'crewhrm';
   src:
-    url('fonts/crewhrm.ttf?3458qr') format('truetype'),
-    url('fonts/crewhrm.woff?3458qr') format('woff'),
-    url('fonts/crewhrm.svg?3458qr#crewhrm') format('svg');
+    url('fonts/crewhrm.ttf?hg99q') format('truetype'),
+    url('fonts/crewhrm.woff?hg99q') format('woff'),
+    url('fonts/crewhrm.svg?hg99q#crewhrm') format('svg');
   font-weight: normal;
   font-style: normal;
   font-display: block;
@@ -24,6 +24,9 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.ch-icon-share:before {
+  content: "\eca4";
+}
 .ch-icon-add-square:before {
   content: "\eca2";
 }
