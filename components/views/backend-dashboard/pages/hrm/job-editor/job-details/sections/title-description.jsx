@@ -4,6 +4,8 @@ import { DropDown } from "../../../../../../../materials/dropdown/dropdown.jsx";
 import { __ } from "../../../../../../../utilities/helpers.jsx";
 
 import style from '../details.module.scss';
+import { TextField } from "../../../../../../../materials/text-field/text-field.jsx";
+import { CircularProgress } from "../../../../../../../materials/progress/circular.jsx";
 
 export function TitleAndDescription(props) {
 	const {
@@ -16,8 +18,11 @@ export function TitleAndDescription(props) {
 		setVal} = useContext(ContextJobDetails);
 
 	const [state, setState] = useState({
-		show_new_department_modal: false
+		show_new_department_modal: false,
+		title_allowed_length: 200
 	});
+
+	const job_title_length = values.job_title?.length || 0;
 
 	return <>
 		{/* Form intro */}
@@ -45,17 +50,23 @@ export function TitleAndDescription(props) {
 							{__( 'Job Title' )}<span className={"text-color-danger".classNames()}>*</span>
 						</span>
 					</div>
-					<div>
-						<span className={'font-size-13 font-weight-500 line-height-21 text-color-secondary'.classNames()}>
-							200
+					<div className={'d-flex align-items-center'.classNames()}>
+						<CircularProgress percentage={(job_title_length/state.title_allowed_length)*100}/>
+						<span className={'d-inline-block font-size-13 font-weight-500 line-height-21 text-color-secondary margin-left-5'.classNames()}>
+							{state.title_allowed_length - job_title_length}
 						</span>
 					</div>
 				</div>
 				<div>
-					<input 
-						type="text" 
-						placeholder={__( 'ex. Product designer, Account manager' )} 
-						className={input_class}/>
+					<TextField 
+						icon="ch-icon ch-icon-times cursor-pointer"
+						icon_position="right"
+						placeholder={__( 'ex. Product designer, Account manager' )}
+						value={values.job_title}
+						onChange={v=>setVal('job_title', v)}
+						onIconClick={()=>setVal('job_title', '')}
+						className={input_class}
+						maxLength={state.title_allowed_length}/>
 				</div>
 			</div>
 			<div className={'right-col'.classNames(style)}>
