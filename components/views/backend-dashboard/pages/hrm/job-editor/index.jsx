@@ -10,7 +10,6 @@ import { HiringFlow } from "./hiring-flow/hiring-flow.jsx";
 import { ApplicationForm } from "./application-form/application-form.jsx";
 
 import style from './editor.module.scss';
-import { TeamMembers } from "./team-members/team-members.jsx";
 
 const steps = [
 	{
@@ -24,10 +23,6 @@ const steps = [
 	{
 		id    : 'application-form',
 		label : __( 'Application Form' )
-	},
-	{
-		id    : 'team-members',
-		label : __( 'Team Members' )
 	},
 ];
 
@@ -125,8 +120,6 @@ export function JobEditor() {
 					{active_tab=='hiring-flow' && <HiringFlow navigateTab={navigateTab}/> || null}
 
 					{active_tab=='application-form' && <ApplicationForm navigateTab={navigateTab}/> || null}
-
-					{active_tab=='team-members' && <TeamMembers navigateTab={navigateTab}/> || null}
 				</div>
 			</div>
 		</div>
