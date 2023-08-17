@@ -4,8 +4,9 @@ import { __, getRandomString } from "../../../../../../utilities/helpers.jsx";
 import style from './hiring.module.scss';
 import { SortableList } from "../../../../../../materials/dnd/sortable-list.jsx";
 import { ActionButtons } from "../index.jsx";
+import { DeletionConfirm } from "./modal-confirm/model-to-confirm.jsx";
 
-const sequences = [
+export const sequences = [
 	__( 'Screening' ),
 	__( 'Assesment' ),
 	__( 'Interview' ),
@@ -22,7 +23,8 @@ export function HiringFlow(props) {
 	const {navigateTab} = props;
 
 	const [state, setState] = useState({
-		sequences: sequences
+		confirm_modal_for : null,
+		sequences         : sequences
 	});
 
 	const addStage=()=>{
@@ -60,11 +62,18 @@ export function HiringFlow(props) {
 		});
 	}
 
+	const closeModals=()=>{
+		setState({
+			...state,
+			confirm_modal_for : null
+		})
+	}
+
 	return <div className={'hiring'.classNames(style)}>
+		{state.confirm_modal_for && <DeletionConfirm onClose={closeModals}/> || null}
 		<span className={'d-block font-size-20 font-weight-600 text-color-primary margin-bottom-40'.classNames()}>
 			{__( 'Hiring stage' )}
 		</span>
-		
 		<SortableList
 			onReorder={sequences=>setState({...state, sequences})}
 			items={
@@ -84,8 +93,8 @@ export function HiringFlow(props) {
 						</div>
 						<div>
 							<i 
-								className={'ch-icon ch-icon-trash font-size-24 text-color-danger margin-left-20'.classNames() + 'trash'.classNames(style)}
-								onClick={()=>deleteStage(sequence.id)}></i>
+								className={'ch-icon ch-icon-trash font-size-24 text-color-danger margin-left-20 cursor-pointer'.classNames() + 'trash'.classNames(style)}
+								onClick={()=>setState({...state, confirm_modal_for: sequence.id})}></i>
 						</div>
 					</div>
 				}

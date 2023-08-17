@@ -1,0 +1,37 @@
+.confirm {
+	width: 619px;
+	max-width: 100%;
+	padding: 70px 80px;
+	
+	.cancel-button {
+		width: 118px;
+		color: var(--crewhrm-text-color-secondary);
+		border-color: var(--crewhrm-text-color-tertiary);
+		background-color: white;
+
+		&:hover, &:focus {
+			border-color: var(--crewhrm-text-color-tertiary);
+			color: var(--crewhrm-text-color-primary);
+			outline: none;
+			box-shadow: none;
+		}
+	}
+
+	.delete-button {
+		width: 224px;
+		background-color: #EA4545;
+		border-color: #EA4545;
+		color: white;
+
+		&:hover {
+			background-color: #ae1c1c;
+			border-color: #ae1c1c;
+		}
+	}
+}
+
+.move {
+	padding: 70px 80px;
+	width: 619px;
+	max-width: 100%;
+}
