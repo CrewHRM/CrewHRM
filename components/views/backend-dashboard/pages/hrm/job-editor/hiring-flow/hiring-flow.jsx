@@ -82,7 +82,7 @@ export function HiringFlow(props) {
 					...sequence,
 					rendered: <div className={'d-flex align-items-center border-radius-10 border-1-5 border-color-tertiary padding-15 margin-bottom-15'.classNames() + 'single'.classNames(style)}>
 						<div>
-							<i className={'ch-icon ch-icon-drag font-size-26 text-color-secondary'.classNames()}></i>
+							<i className={'ch-icon ch-icon-drag font-size-26 text-color-light'.classNames()}></i>
 						</div>
 						<div className={'flex-1'.classNames()}>
 							<input 

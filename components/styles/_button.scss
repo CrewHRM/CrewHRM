@@ -12,19 +12,19 @@
 	cursor: pointer;
 
 	&.button-primary {
-		background-color: var(--crewhrm-background-color-primary);
-		color: var(--crewhrm-foreground-color-primary);
-		border: 1px solid var(--crewhrm-background-color-primary);
+		background-color: var(--crewhrm-color-primary);
+		color: white;
+		border: 1px solid var(--crewhrm-color-primary);
 	}
 
 	&.button-outlined {
 		&:not(:hover) {
 			background-color: transparent;
-			color: var(--crewhrm-background-color-primary);
+			color: var(--crewhrm-color-primary);
 
 			&.button-outlined-secondary {
-				border-color: var(--crewhrm-text-color-secondary);
-				color: var(--crewhrm-text-color-secondary);
+				border-color: var(--crewhrm-color-text-light);
+				color: var(--crewhrm-color-text-light);
 			}
 		}
 
@@ -36,11 +36,8 @@
 
 	&.disabled, &:disabled{
 		cursor: default;
-		
-		&.button-primary {
-			background-color: var(--crewhrm-background-color-tertiary);
-			border-color: var(--crewhrm-background-color-tertiary);
-		}
+		background-color: var(--crewhrm-color-text-lighter);
+		border-color: var(--crewhrm-color-text-lighter);
 	}
 
 	&.button-full-width {
@@ -74,7 +71,7 @@
 }
 
 .tag{
-	border: 1px solid var(--crewhrm-border-color-tertiary);
+	border: 1px solid var(--crewhrm-color-tertiary);
 	background-color: #F9F9F9;
 	border-radius: 50px;
 	white-space: nowrap;

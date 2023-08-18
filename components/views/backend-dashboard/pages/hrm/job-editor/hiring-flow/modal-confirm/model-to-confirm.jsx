@@ -30,7 +30,7 @@ function MoveContent({total, users=[]}) {
 	const more = total-users.length;
 	
 	return <div className={'move'.classNames(style) + 'background-color-white border-radius-10 text-align-center position-relative'.classNames()}>
-		<i className={'ch-icon ch-icon-times font-size-24 text-color-secondary position-absolute right-22 top-22 cursor-pointer'.classNames()} onClick={()=>close()}></i>
+		<i className={'ch-icon ch-icon-times font-size-24 text-color-light position-absolute right-22 top-22 cursor-pointer'.classNames()} onClick={()=>close()}></i>
 		
 		<div className={'d-inline-flex align-items-center'.classNames()}>
 			{users.map(({user_id, avatar_url}, index)=>{
@@ -49,7 +49,7 @@ function MoveContent({total, users=[]}) {
 		</div>
 		
 		<div className={'margin-top-20 margin-bottom-20'.classNames()}>
-			<span className={'d-block font-size-15 font-weight-400 letter-spacing--3 text-color-secondary margin-bottom-5'.classNames()}>
+			<span className={'d-block font-size-15 font-weight-400 letter-spacing--3 text-color-light margin-bottom-5'.classNames()}>
 				{__( 'About 51 candidates are in the interview stage. ' )}
 			</span>
 
@@ -59,7 +59,7 @@ function MoveContent({total, users=[]}) {
 		</div>
 
 		<div>
-			<span className={"d-block font-size-15 font-weight-400 letter-spacing--3 text-color-secondary margin-bottom-10".classNames()}>
+			<span className={"d-block font-size-15 font-weight-400 letter-spacing--3 text-color-light margin-bottom-10".classNames()}>
 				{__( 'Move to' )}
 			</span>
 

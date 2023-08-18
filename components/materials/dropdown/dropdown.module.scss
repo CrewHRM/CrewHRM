@@ -9,7 +9,7 @@
 		&>div {
 			border: none;
 			border-radius: 0;
-			border-bottom: 1px solid var(--crewhrm-border-color-tertiary);
+			border-bottom: 1px solid var(--crewhrm-color-tertiary);
 		}
 	}
 
@@ -20,7 +20,7 @@
 
 		&, .list-item {
 			&:not(:last-child) {
-				border-bottom: 1px solid var(--crewhrm-border-color-tertiary);
+				border-bottom: 1px solid var(--crewhrm-color-tertiary);
 			}
 		}
 	}

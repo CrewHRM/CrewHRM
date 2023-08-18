@@ -184,7 +184,7 @@ export function ApplicationForm(props) {
 										{__( 'Mandatory' )}
 									</span> ||
 									<div className={'d-inline-flex align-items-center'.classNames()}>
-										<span className={'d-inline-block margin-right-8 font-size-15 font-weight-400 text-color-secondary'.classNames()}>{__( 'Mandatory' )}</span>
+										<span className={'d-inline-block margin-right-8 font-size-15 font-weight-400 text-color-light'.classNames()}>{__( 'Mandatory' )}</span>
 										<ToggleSwitch/>
 									</div>
 								}

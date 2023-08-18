@@ -52,7 +52,7 @@ export function TitleAndDescription(props) {
 					</div>
 					<div className={'d-flex align-items-center'.classNames()}>
 						<CircularProgress percentage={(job_title_length/state.title_allowed_length)*100}/>
-						<span className={'d-inline-block font-size-13 font-weight-500 line-height-21 text-color-secondary margin-left-5'.classNames()}>
+						<span className={'d-inline-block font-size-13 font-weight-500 line-height-21 text-color-light margin-left-5'.classNames()}>
 							{state.title_allowed_length - job_title_length}
 						</span>
 					</div>
@@ -73,7 +73,7 @@ export function TitleAndDescription(props) {
 				<span className={field_label_class}>
 					&nbsp;
 				</span>
-				<span className={'font-size-13 font-weight-400 text-color-secondary'.classNames()}>
+				<span className={'font-size-13 font-weight-400 text-color-light'.classNames()}>
 					{__( 'Use common job titles for searchability' )}
 				</span>
 			</div>
@@ -95,7 +95,7 @@ export function TitleAndDescription(props) {
 							tabindex={2}
 							addText={__( 'Add Depertment' )}
 							onAddClick={()=>setState({show_new_department_modal: true})}
-							textClassName={'font-size-17 font-weight-500 line-height-25 text-color-secondary'.classNames()}/>
+							textClassName={'font-size-17 font-weight-500 line-height-25 text-color-light'.classNames()}/>
 					</div>
 					<div className={'flex-1 margin-left-10'.classNames()}>
 						<span className={field_label_class}>
@@ -128,10 +128,10 @@ export function TitleAndDescription(props) {
 				></textarea>
 			</div>
 			<div className={'right-col'.classNames(style)}>
-				<span className={'d-block font-size-13 font-weight-400 text-color-secondary margin-bottom-36'.classNames()}>
+				<span className={'d-block font-size-13 font-weight-400 text-color-light margin-bottom-36'.classNames()}>
 					{__( 'Format into sections and lists to improve readability' )}
 				</span>
-				<span className={'font-size-13 font-weight-400 text-color-secondary'.classNames()}>
+				<span className={'font-size-13 font-weight-400 text-color-light'.classNames()}>
 					{__( 'Avoid targeting specific demographics e.g. gender, nationality and age' )}
 				</span>
 			</div>

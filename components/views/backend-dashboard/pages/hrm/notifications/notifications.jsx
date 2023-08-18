@@ -20,7 +20,7 @@ export function NotificationsEmail() {
 	return <DropDownUnmanaged rendered={renderModal()}>
 		<div className={'d-flex align-items-center cursor-pointer'.classNames()}>
 			{unopened_count && <IconEmailHasUpdate/> || <IconEmail/>}
-			<span className={'d-inline-block margin-left-5 font-size-14 font-weight-500 letter-spacing--3 text-color-secondary'.classNames()}>
+			<span className={'d-inline-block margin-left-5 font-size-14 font-weight-500 letter-spacing--3 text-color-light'.classNames()}>
 				({!unopened_count ? 0 : unopened_count.toString().padStart(2, '0')})
 			</span>
 		</div>
@@ -42,7 +42,7 @@ export function NotificationsOnSite() {
 	return <DropDownUnmanaged rendered={renderModal()}>
 		<div className={'d-flex align-items-center cursor-pointer'.classNames()}>
 			{unopened_count && <IconNotificationHasUpdate/> || <IconNotification/>}
-			<span className={'d-inline-block margin-left-5 font-size-14 font-weight-500 letter-spacing--3 text-color-secondary'.classNames()}>
+			<span className={'d-inline-block margin-left-5 font-size-14 font-weight-500 letter-spacing--3 text-color-light'.classNames()}>
 				({!unopened_count ? 0 : unopened_count.toString().padStart(2, '0')})
 			</span>
 		</div>

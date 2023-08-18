@@ -16,7 +16,7 @@ export function ScheduleCard(props) {
 	const flex_class = "d-flex margin-bottom-15".classNames();
 	const icon_class = 'font-size-24'.classNames();
 	const legend_class = 'd-block font-size-17 font-weight-600 text-color-primary margin-bottom-4'.classNames();
-	const sub_text_class = 'd-block font-size-15 font-weight-400 text-color-secondary'.classNames();
+	const sub_text_class = 'd-block font-size-15 font-weight-400 text-color-light'.classNames();
 	const flex_1 = 'flex-1'.classNames();
 	const width = 'width-39'.classNames();
 
@@ -27,10 +27,10 @@ export function ScheduleCard(props) {
 					<img src={icons[type]} className={'d-inline-block width-30 margin-bottom-9'.classNames()}/>
 				</div>
 				<div>
-					<i className={'ch-icon ch-icon-more font-size-20 text-color-secondary cursor-pointer'.classNames()}></i>
+					<i className={'ch-icon ch-icon-more font-size-20 text-color-light cursor-pointer'.classNames()}></i>
 				</div>
 			</div>
-			<span className={'d-block font-size-20 font-weight-600 foreground-color-primary'.classNames()}>
+			<span className={'d-block font-size-20 font-weight-600'.classNames()} style={{background: 'white'}}>
 				{schedule_title}
 			</span>
 		</div>

@@ -156,10 +156,6 @@ $flows: 'column', 'row';
 
 .border-color-tertiary {
 	&, &[type] {
-		border-color: var(--crewhrm-border-color-tertiary);
-
-		&:focus {
-			border-color: var(--crewhrm-border-color-primary);
-		}
+		border-color: var(--crewhrm-color-tertiary);
 	}
 }

@@ -31,13 +31,13 @@ export function OverView() {
 
 					return <div key={education_id} className={'d-flex margin-bottom-10'.classNames()}>
 						<div style={{width: '150px'}}>
-							<span className={'font-size-15 font-weight-400 line-height-24 letter-spacing--15 text-color-secondary'.classNames()}>
+							<span className={'font-size-15 font-weight-400 line-height-24 letter-spacing--15 text-color-light'.classNames()}>
 								{new Date(date_from).getFullYear()} - {new Date(date_to).getFullYear()}
 							</span>
 						</div>
 						<div className={'flex-1'.classNames()}>
 							<span className={'font-size-15 font-weight-400 line-height-24 letter-spacing--15 text-color-primary'.classNames()}>
-								{degree} <span className={'text-color-secondary'.classNames()}>at</span> {institute}
+								{degree} <span className={'text-color-light'.classNames()}>at</span> {institute}
 							</span>
 						</div>
 					</div>

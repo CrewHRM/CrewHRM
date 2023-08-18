@@ -22,7 +22,7 @@ export function NumberField(props) {
 	return <div className={'d-flex align-items-center'.classNames() + className}>
 		<div className={'height-20'.classNames()}>
 			<i 
-				className={"ch-icon ch-icon-minus-square font-size-20 text-color-secondary cursor-pointer".classNames()}
+				className={"ch-icon ch-icon-minus-square font-size-20 text-color-light cursor-pointer".classNames()}
 				onClick={()=>changeValue(-1)}></i>
 		</div>
 		<div className={'flex-1'.classNames()}>
@@ -35,7 +35,7 @@ export function NumberField(props) {
 		</div>
 		<div className={'height-20'.classNames()}>
 			<i 
-				className={"ch-icon ch-icon-add-square font-size-20 text-color-secondary cursor-pointer".classNames()} 
+				className={"ch-icon ch-icon-add-square font-size-20 text-color-light cursor-pointer".classNames()} 
 				onClick={()=>changeValue(1)}></i>
 		</div>
 	</div>

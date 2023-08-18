@@ -20,7 +20,7 @@ export function DropDown(props) {
 		className='',
 		tabindex,
 		textClassName='font-size-15 font-weight-400 text-color-primary'.classNames(),
-		iconClassName='ch-icon ch-icon-arrow-down margin-left-10 font-size-18 text-color-secondary'.classNames(),
+		iconClassName='ch-icon ch-icon-arrow-down margin-left-10 font-size-18 text-color-light'.classNames(),
 		position="center top",
 		initialLabel=__( 'Select' ),
 		addText,

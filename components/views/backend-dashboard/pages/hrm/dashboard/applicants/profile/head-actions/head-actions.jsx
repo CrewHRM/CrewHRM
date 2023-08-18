@@ -21,7 +21,7 @@ const segments = [
 		tagline  : <>
 					<span className={'font-size-15 font-weight-500 text-color-primary'.classNames()}>
 						{(__( 'Add a comment' ))}
-					</span> <span className={'font-size-13 font-weight-400 text-color-secondary'}>
+					</span> <span className={'font-size-13 font-weight-400 text-color-light'}>
 						{__( 'Candidates never see comments.' )}
 					</span>
 				</>
@@ -58,7 +58,7 @@ export function HeadActions() {
 					let {icon, renderer: Comp} = segment;
 
 					let classes = 'font-size-20 cursor-pointer margin-right-24 ';
-					classes += state.active_segment===i ? 'text-color-primary' : 'text-color-tertiary';
+					classes += state.active_segment===i ? 'text-color-primary' : 'text-color-lighter';
 
 					return <i key={i} className={icon.classNames() + classes.classNames()} onClick={()=>toggleSegment(i)}></i>
 				})}
@@ -74,7 +74,7 @@ export function HeadActions() {
 					options={application_stages.map(s=>{return {value: s.id, label: s.label}})}
 					onChange={s=>setState({...state, current_application_stage: s})}/>
 
-				<i className={'ch-icon ch-icon-more font-size-20 text-color-secondary cursor-pointer'.classNames()}></i>
+				<i className={'ch-icon ch-icon-more font-size-20 text-color-light cursor-pointer'.classNames()}></i>
 			</div>
 		</div>
 		
@@ -87,7 +87,7 @@ export function HeadActions() {
 						</span> {tagline}
 					</div>
 					<div>
-						<i className={'ch-icon ch-icon-times font-size-24 text-color-secondary margin-left-10 cursor-pointer'.classNames()} onClick={()=>toggleSegment()}></i>
+						<i className={'ch-icon ch-icon-times font-size-24 text-color-light margin-left-10 cursor-pointer'.classNames()} onClick={()=>toggleSegment()}></i>
 					</div>
 				</div>
 				<ActiveComp onClose={toggleSegment}/>

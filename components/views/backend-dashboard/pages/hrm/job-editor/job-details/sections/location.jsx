@@ -77,7 +77,7 @@ export function Location() {
 				<span className={field_label_class}>
 					&nbsp;
 				</span>
-				<span className={'font-size-13 font-weight-400 text-color-secondary'.classNames()}>
+				<span className={'font-size-13 font-weight-400 text-color-light'.classNames()}>
 					{__( 'Use a location to attract the most appropriate candidates' )}
 				</span>
 			</div>

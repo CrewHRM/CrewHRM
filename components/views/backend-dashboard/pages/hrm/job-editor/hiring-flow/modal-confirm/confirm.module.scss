@@ -5,13 +5,13 @@
 	
 	.cancel-button {
 		width: 118px;
-		color: var(--crewhrm-text-color-secondary);
-		border-color: var(--crewhrm-text-color-tertiary);
+		color: var(--crewhrm-color-text-light);
+		border-color: var(--crewhrm-color-text-lighter);
 		background-color: white;
 
 		&:hover, &:focus {
-			border-color: var(--crewhrm-text-color-tertiary);
-			color: var(--crewhrm-text-color-primary);
+			border-color: var(--crewhrm-color-text-lighter);
+			color: var(--crewhrm-color-text);
 			outline: none;
 			box-shadow: none;
 		}
@@ -19,14 +19,9 @@
 
 	.delete-button {
 		width: 224px;
-		background-color: #EA4545;
-		border-color: #EA4545;
+		background-color: var(--crewhrm-color-danger);
+		border-color: var(--crewhrm-color-danger);
 		color: white;
-
-		&:hover {
-			background-color: #ae1c1c;
-			border-color: #ae1c1c;
-		}
 	}
 }
 

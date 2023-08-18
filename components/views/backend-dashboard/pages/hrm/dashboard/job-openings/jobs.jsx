@@ -202,7 +202,7 @@ export function JobOpenings(props) {
 								</div>
 								<div className={"meta-data".classNames(style)}>
 									{meta_data.map((data, index)=>{
-										return data && <span key={data} className={'d-inline-block font-size-15 font-weight-400 text-color-secondary'.classNames()}>
+										return data && <span key={data} className={'d-inline-block font-size-15 font-weight-400 text-color-light'.classNames()}>
 											{data}
 										</span> || null
 									})}
@@ -215,7 +215,7 @@ export function JobOpenings(props) {
 							</div>
 							<div className={'d-contents'.classNames()}>
 								<Options options={actions} onClick={action=>onActionClick(action, job_id)}>
-									<i className={'ch-icon ch-icon-more text-color-secondary font-size-20 cursor-pointer d-inline-block margin-left-15'.classNames()}></i>
+									<i className={'ch-icon ch-icon-more text-color-light font-size-20 cursor-pointer d-inline-block margin-left-15'.classNames()}></i>
 								</Options>
 							</div>
 						</div>
@@ -227,7 +227,7 @@ export function JobOpenings(props) {
 									return [
 										<div key={key} style={!is_last ? {} : {paddingRight: '5%'}}>
 											<div>
-												<span className={'d-block text-color-secondary font-size-14 font-weight-400 margin-bottom-7'.classNames()}>
+												<span className={'d-block text-color-light font-size-14 font-weight-400 margin-bottom-7'.classNames()}>
 													{stat_labels[key]}
 												</span>
 												<span className={'d-block text-color-primary font-size-17 font-weight-600'}>

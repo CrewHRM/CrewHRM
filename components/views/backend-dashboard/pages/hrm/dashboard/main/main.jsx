@@ -19,7 +19,7 @@ export function DahboardMain() {
 				<span className={'d-block text-color-primary font-size-28 font-weight-600 margin-bottom-15'.classNames()}>
 					{__( 'Find the person you want to hire ' )}
 				</span>
-				<small className={'text-color-secondary font-size-15 font-weight-400 margin-bottom-30 d-block'.classNames()}>
+				<small className={'text-color-light font-size-15 font-weight-400 margin-bottom-30 d-block'.classNames()}>
 					{__( 'Candidates see your logo and description on job posts, and more' )}
 				</small>
 				<Link to="/dashboard/jobs/editor/new/" className={'button button-primary button-medium'.classNames()}>
@@ -47,7 +47,7 @@ export function DahboardMain() {
 						<span className={'d-block font-size-20 font-weight-600 text-color-primary margin-bottom-8'.classNames()}>
 							{__( 'Question Bank' )}
 						</span>
-						<DangerouslySet className={"d-block font-size-14 font-weight-400 text-color-secondary margin-bottom-26".classNames()}>
+						<DangerouslySet className={"d-block font-size-14 font-weight-400 text-color-light margin-bottom-26".classNames()}>
 							{__('Let’s create a questionnaire for <br/> hiring the right people.')}
 						</DangerouslySet>
 						<a href="#" className={'button button-primary button-outlined button-medium'.classNames()}>
@@ -60,7 +60,7 @@ export function DahboardMain() {
 						<span className={'d-block font-size-20 font-weight-600 text-color-primary margin-bottom-8'.classNames()}>
 							{__( 'Design your page' )}
 						</span>
-						<span className={"d-block font-size-14 font-weight-400 text-color-secondary margin-bottom-26".classNames()}>
+						<span className={"d-block font-size-14 font-weight-400 text-color-light margin-bottom-26".classNames()}>
 							{__('Keep your great talented candidate on file in the Talent Pool.')}
 						</span>
 						<a href="#" className={'button button-primary button-outlined button-medium'.classNames()}>

@@ -2,7 +2,7 @@ import React from "react";
 
 export function IconEmail(props) {
 	const {
-		color = window.CrewHRM.colors['text-color-primary'],
+		color = window.CrewHRM.colors['text'],
 		size  = 24
 	} = props;
 

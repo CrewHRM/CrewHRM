@@ -1,27 +1,22 @@
 .text-color-primary {
-	color: var(--crewhrm-text-color-primary);
+	color: var(--crewhrm-color-text);
 }
 
-.text-color-secondary {
-	color: var(--crewhrm-text-color-secondary);
+.text-color-light {
+	color: var(--crewhrm-color-text-light);
 }
 
-.text-color-tertiary {
-	color: var(--crewhrm-text-color-tertiary);
+.text-color-lighter {
+	color: var(--crewhrm-color-text-lighter);
 }
 
 .text-color-danger {
-	color: var(--crewhrm-text-color-danger);
+	color: var(--crewhrm-color-danger);
 }
 
 .text-color-white {
 	color: white;
 }
-
-.foreground-color-primary {
-	color: var(--crewhrm-foreground-color-primary);
-}
-
 .box-shadow-thin {
 	box-shadow: 0px 1px 2px 0px rgba(16, 39, 68, 0.08);
 }

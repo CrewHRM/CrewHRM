@@ -2,7 +2,7 @@ import React from "react";
 
 export function IconNotification(props) {
 	const {
-		color = window.CrewHRM.colors['text-color-primary'],
+		color = window.CrewHRM.colors['text'],
 		size  = 24
 	} = props;
 

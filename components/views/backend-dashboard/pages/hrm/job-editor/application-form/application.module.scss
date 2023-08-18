@@ -7,7 +7,7 @@
 		margin-bottom: 30px;
 		
 		.list-container {
-			border: 1.5px solid var(--crewhrm-border-color-tertiary);
+			border: 1.5px solid var(--crewhrm-color-tertiary);
 			border-radius: 10px;
 			overflow: hidden;
 
@@ -15,7 +15,7 @@
 			&>div {
 				padding: 10px 15px;
 				&:not(:last-child) {
-					border-bottom: 1.5px solid  var(--crewhrm-border-color-tertiary);
+					border-bottom: 1.5px solid  var(--crewhrm-color-tertiary);
 				}
 			}
 		}

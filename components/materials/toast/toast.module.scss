@@ -6,7 +6,7 @@
 	z-index: 1000;
 
 	&>div {
-		background-color: var(--crewhrm-background-color-primary);
+		background-color: var(--crewhrm-color-primary);
 		&:not(:last-child) {
 			margin-bottom: 20px;
 		}

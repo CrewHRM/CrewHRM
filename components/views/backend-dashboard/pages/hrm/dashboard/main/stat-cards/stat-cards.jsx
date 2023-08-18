@@ -38,7 +38,7 @@ export function StatCards() {
 					<span className={'d-block margin-bottom-12 font-size-28 font-weight-700 text-color-primary'.classNames()}>
 						{count}
 					</span>
-					<span className={'d-block font-size-15 font-weight-500 text-color-secondary'.classNames()}>
+					<span className={'d-block font-size-15 font-weight-500 text-color-light'.classNames()}>
 						{label}
 					</span>
 				</div>

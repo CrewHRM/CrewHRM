@@ -140,13 +140,13 @@ export function Profile() {
 					<span className={'d-block font-size-24 font-weight-600 line-height-24 text-color-primary margin-bottom-2'.classNames()}>
 						{applicant.name} <span className={'font-size-15 vertical-align-middle'.classNames()}>{getFlag(applicant.country_code)}</span>
 					</span>
-					<span className={'d-block font-size-15 font-weight-400 line-height-24 text-color-secondary margin-bottom-2'.classNames()}>
+					<span className={'d-block font-size-15 font-weight-400 line-height-24 text-color-light margin-bottom-2'.classNames()}>
 						{applicant.address}
 					</span>
-					<span className={'d-block font-size-15 font-weight-400 line-height-24 text-color-secondary margin-bottom-2'.classNames()}>
+					<span className={'d-block font-size-15 font-weight-400 line-height-24 text-color-light margin-bottom-2'.classNames()}>
 						{applicant.email}
 					</span>
-					<span className={'d-block font-size-15 font-weight-400 line-height-24 text-color-secondary margin-bottom-2'.classNames()}>
+					<span className={'d-block font-size-15 font-weight-400 line-height-24 text-color-light margin-bottom-2'.classNames()}>
 						{applicant.phone}
 					</span>
 				</div>

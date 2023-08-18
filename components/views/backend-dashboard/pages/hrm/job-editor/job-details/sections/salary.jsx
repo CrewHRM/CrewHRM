@@ -74,7 +74,7 @@ export function Salary() {
 				</div>
 			</div>
 			<div className={'right-col'.classNames(style)}>
-				<span className={'font-size-13 font-weight-400 text-color-secondary'.classNames()}>
+				<span className={'font-size-13 font-weight-400 text-color-light'.classNames()}>
 					{__( 'Adding the salary here will improve performance on some job boards. You can also include the salary in the job description' )}
 				</span>
 			</div>

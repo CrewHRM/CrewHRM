@@ -1,13 +1,13 @@
 .notice {
 	&.success {
-		background-color: #5B9215;
+		background-color: var(--crewhrm-color-success);
 	}
 
 	&.warning {
-		background-color: #F57A08;
+		background-color: var(--crewhrm-color-warning);
 	}
 
 	&.error {
-		background-color: #EA4545;
+		background-color: var(--crewhrm-color-danger);
 	}
 }

@@ -4,14 +4,14 @@
 	display: flex;
 	align-items: center;
 	padding: 10px 11px;
-	border: 1px solid var(--crewhrm-border-color-tertiary);
+	border: 1px solid var(--crewhrm-color-tertiary);
 	
 	&.icon-right {
 		flex-direction: row-reverse;
 	}
 
 	.ch-icon {
-		color: var(--crewhrm-text-color-secondary);
+		color: var(--crewhrm-color-text-light);
 		font-size: 16px;
 	}
 

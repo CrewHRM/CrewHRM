@@ -12,7 +12,7 @@ TimeAgo.addDefaultLocale(en)
 const timeAgo = new TimeAgo();
 
 function Ago(props) {
-	return <span className={'d-inline-block font-size-15 font-weight-400 line-height-24 letter-spacing--15 text-color-secondary'.classNames()}>
+	return <span className={'d-inline-block font-size-15 font-weight-400 line-height-24 letter-spacing--15 text-color-light'.classNames()}>
 		&middot; {timeAgo.format(new Date(props.date))}
 	</span>
 }
@@ -74,15 +74,15 @@ function LayoutApply(props) {
 
 const activity_handlers = {
 	apply      : {
-		icon     : 'ch-icon ch-icon-user-tick font-size-24 text-color-secondary',
+		icon     : 'ch-icon ch-icon-user-tick font-size-24 text-color-light',
 		renderer : LayoutApply
 	},
 	comment    : {
-		icon     : 'ch-icon ch-icon-message-text-1 font-size-24 text-color-secondary',
+		icon     : 'ch-icon ch-icon-message-text-1 font-size-24 text-color-light',
 		renderer : LayoutComment
 	},
 	move       : {
-		icon     : 'ch-icon ch-icon-trello font-size-24 text-color-secondary',
+		icon     : 'ch-icon ch-icon-trello font-size-24 text-color-light',
 		renderer : LayoutMove
 	},
 	disqualify : {

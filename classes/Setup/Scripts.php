@@ -2,6 +2,7 @@
 
 namespace CrewHRM\Setup;
 
+use CrewHRM\Helpers\Colors;
 use CrewHRM\Helpers\Utilities;
 use CrewHRM\Main;
 
@@ -9,8 +10,6 @@ class Scripts extends Main {
 	function __construct() {
 		add_action( 'admin_enqueue_scripts', array( $this, 'adminScripts' ), 11 );
 		add_action( 'wp_enqueue_scripts', array( $this, 'frontendScripts' ), 11 );
-		add_action( 'admin_enqueue_scripts', array( $this, 'commonScripts' ), 11 );
-		add_action( 'wp_enqueue_scripts', array( $this, 'commonScripts' ), 11 );
 
 		// Color pallete
 		add_action( 'wp_head', array( $this, 'loadVariables' ), 1000 );
@@ -27,50 +26,26 @@ class Scripts extends Main {
 
 	}
 
-	public function commonScripts() {
-
-	}
-
 	public function loadVariables() {
 		// Check if it's our page and needs resources to load
 		if ( ( is_admin() && ! Utilities::isCrewDashboard() ) ) {
 			return;
 		}
 
-		// Load css variables. Ideally from dashboard settings. For now statically written though.
-		$colors = array(
-			'background-color-primary'   => '#1A1A1A', // Active state
-			'background-color-secondary' => '#BBBFC3', // Disabled state
-			'background-color-tertiary'  => '#E3E5E8', // Disabled state
-
-			'foreground-color-primary'   => '#FFFFFF', // Primary text with a primary background
-			'foreground-color-secondary' => '#BBBFC3', // Scondary text with a primary background
-			'foreground-color-tertiary'  => '#72777B', // Tertiary text with a primary background
-
-			'text-color-primary'         => '#1A1A1A', // Primary text color with a white background ideally
-			'text-color-secondary'       => '#72777B', // Secondary text color with a white backogrund ideally
-			'text-color-tertiary'        => '#BBBFC3', // Secondary text color with a white backogrund ideally
-			'text-color-danger'          => 'rgb(252, 82, 118)',
-
-			'border-color-primary'       => '#1A1A1A', // Border color with a white background ideally
-			'border-color-secondary'     => '#72777B', // Border color with a white background ideally
-			'border-color-tertiary'      => '#E3E5E8', // Border color with a white background ideally
-		);
-
-		$css = '';
-		foreach ( $colors as $key => $color ) {
-			$css .= '--crewhrm-' . $key . ':' . $color . ';';
+		// Load dynamic colors
+		$dynamic_colors = Colors::getColors();
+		$_colors = '';
+		foreach ( $dynamic_colors as $name => $code ) {
+			$_colors .= '--crewhrm-color-' . $name . ':' . $code . ';';
 		}
-		echo '<style>:root{' . $css . '}</style>';
+		echo '<style>:root{' . $_colors . '}</style>';
 
 		// Load JS variables
-
-		// Common data
 		$data = array(
 			'action_hooks' => array(),
 			'filter_hooks' => array(),
 			'ajaxurl'      => admin_url('admin-ajax.php'),
-			'colors'       => $colors,
+			'colors'       => $dynamic_colors
 		);
 		echo '<script>window.CrewHRM=' . json_encode( $data ) . '</script>';
 	}

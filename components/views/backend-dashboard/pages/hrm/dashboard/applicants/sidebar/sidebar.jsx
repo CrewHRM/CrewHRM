@@ -56,13 +56,13 @@ export function Sidebar() {
 			<div className={'flex-1'.classNames()}>
 				<label>
 					<input type="checkbox"/>
-					<span className={'font-size-15 font-weight-400 text-color-secondary vertical-align-middle margin-left-10'.classNames()}>
+					<span className={'font-size-15 font-weight-400 text-color-light vertical-align-middle margin-left-10'.classNames()}>
 						{__( 'Select All' )}
 					</span>
 				</label>
 			</div>
 			<div>
-				<i className={'ch-icon ch-icon-filter font-size-20 text-color-secondary'.classNames()}></i>
+				<i className={'ch-icon ch-icon-filter font-size-20 text-color-light'.classNames()}></i>
 			</div>
 		</div>
 
@@ -80,12 +80,12 @@ export function Sidebar() {
 							<span className={'d-block font-size-17 font-weight-600 letter-spacing--17 text-color-primary margin-bottom-2'.classNames()}>
 								{name}
 							</span>
-							<span className={'font-size-13 font-weight-400 line-height-24 text-color-secondary'.classNames()}>
+							<span className={'font-size-13 font-weight-400 line-height-24 text-color-light'.classNames()}>
 								{action_time}
 							</span>
 						</div>
 						<div>
-							<i className={'ch-icon ch-icon-more font-size-20 text-color-secondary margin-left-15'.classNames()}></i>
+							<i className={'ch-icon ch-icon-more font-size-20 text-color-light margin-left-15'.classNames()}></i>
 						</div>
 					</div>
 				</div>

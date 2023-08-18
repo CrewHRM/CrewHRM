@@ -75,7 +75,7 @@ export function JobEditor() {
 					<span className={'cursor-pointer'.classNames()} onClick={()=>window.history.back()}>
 						<i className={'ch-icon ch-icon-arrow-left font-size-15 text-color-primary margin-right-5 vertical-align-middle'.classNames()}>
 
-						</i> <span className={'font-size-15 font-weight-500 letter-spacing--3 text-color-secondary vertical-align-middle'.classNames()}>
+						</i> <span className={'font-size-15 font-weight-500 letter-spacing--3 text-color-light vertical-align-middle'.classNames()}>
 							{__( 'Back' )}
 						</span>
 					</span>
@@ -85,7 +85,7 @@ export function JobEditor() {
 				</div>
 				<div className={'flex-1 text-align-right'.classNames()}>
 					{
-						state.is_auto_saving && <span className={'font-size-15 font-weight-400 letter-spacing--3 text-color-secondary margin-right-20'.classNames()}>
+						state.is_auto_saving && <span className={'font-size-15 font-weight-400 letter-spacing--3 text-color-light margin-right-20'.classNames()}>
 							{__( 'Auto saving ...' )}
 						</span> || null
 					}
