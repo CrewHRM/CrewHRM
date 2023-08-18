@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { __ } from "../../../../../../utilities/helpers.jsx";
+import { __, getCountries } from "../../../../../../utilities/helpers.jsx";
 
 import style from './jobs.module.scss';
 import { StatusDot } from "../../../../../../materials/status-dot/status-dots.jsx";
@@ -8,6 +8,7 @@ import { Link } from "react-router-dom";
 import { DropDown, Options } from "../../../../../../materials/dropdown/dropdown.jsx";
 import { Line } from "../../../../../../materials/line/line.jsx";
 import { ShareModal } from "../../../../../../materials/share-modal/share-modal.jsx";
+import { TextField } from "../../../../../../materials/text-field/text-field.jsx";
 
 const options = [
 	{
@@ -103,6 +104,7 @@ export function JobOpenings(props) {
 		share_link: null,
 		filter: {
 			job_status: 'all',
+			country_code: null,
 			page: 1
 		}
 	});
@@ -130,10 +132,7 @@ export function JobOpenings(props) {
 		}
 	}
 
-	const filter_status_options = [
-		{value: 'all', label: __( 'All' )},
-		...status_keys.map(key=>{return {value: key, label: statuses[key].label}})
-	];
+	const filter_status_options = status_keys.map(key=>{return {value: key, label: statuses[key].label}});
 
 	return <div className={'jobs'.classNames(style) + className}>
 		{
@@ -150,14 +149,33 @@ export function JobOpenings(props) {
 					{__( 'Job Openings' )}
 				</span>
 			</div>
-			<div>
-				<div className={'d-inline-block'.classNames()}>
+			<div className={'d-flex align-items-center column-gap-15'.classNames()}>
+				<div className={'d-inline-block'.classNames()} style={{minWidth: '113px'}}>
 					<DropDown
 						className={'padding-vertical-8 padding-horizontal-15'.classNames()}
 						transparent={is_overview}
+						labelFallback={__( 'All Location' )}
+						value={state.filter.country_code} 
+						options={getCountries(true)} 
+						onChange={(v)=>onChange('country_code', v)}/>
+				</div>
+				<div className={'d-inline-block'.classNames()} style={{minWidth: '113px'}}>
+					<DropDown
+						className={'padding-vertical-8 padding-horizontal-15'.classNames()}
+						transparent={is_overview}
+						labelFallback={__( 'Department' )}
 						value={state.filter.job_status} 
 						options={filter_status_options} 
 						onChange={(v)=>onChange('job_status', v)}/>
+				</div>
+				<div className={'d-inline-block'.classNames()}>
+					<TextField 
+						className={`border-radius-5 border-1 height-34 padding-8 border-color-tertiary ${is_overview ? 'background-color-transparent' : ' background-color-white'}`.classNames()}
+						iconClass={"ch-icon ch-icon-search-normal-1 font-size-18 text-color-primary cursor-pointer".classNames()} 
+						icon_position="right" 
+						expandable={true}
+						value={state.filter.search}
+						onChange={v=>onChange('search', v)}/>
 				</div>
 			</div>
 		</div>

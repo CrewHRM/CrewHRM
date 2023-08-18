@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef } from "react";
 
 import {Popup} from "../popup/index.jsx";
 import style from './dropdown.module.scss';
@@ -22,16 +22,16 @@ export function DropDown(props) {
 		textClassName='font-size-15 font-weight-400 text-color-primary'.classNames(),
 		iconClassName='ch-icon ch-icon-arrow-down margin-left-10 font-size-18 text-color-light'.classNames(),
 		position="center top",
-		initialLabel=__( 'Select' ),
+		labelFallback=__( 'Select' ),
 		addText,
 		onAddClick,
 		style: cssStyle={}
 	} = props;
 
 	const ref = useRef();
-	const triggerPoint= <div tabIndex={tabindex} className={`dropdown ${transparent ? 'transparent' : ''}`.classNames(style) + 'cursor-pointer d-flex align-items-center border-radius-5'.classNames() + className}>
+	const triggerPoint= <div tabIndex={tabindex} className={`select-dropdown ${transparent ? 'transparent' : ''}`.classNames(style) + 'cursor-pointer d-flex align-items-center border-radius-5'.classNames() + className}>
 		<span className={'flex-1'.classNames() + textClassName}>
-			{selected_value!==undefined ? (options.find(o=>o.value===selected_value)?.label || initialLabel) : initialLabel}
+			{selected_value!==undefined ? (options.find(o=>o.value===selected_value)?.label || labelFallback) : labelFallback}
 		</span>
 		<i className={iconClassName}></i>
 	</div>
@@ -47,7 +47,7 @@ export function DropDown(props) {
 			arrow={false}
 			trigger={triggerPoint}>
 				{close=>{
-					return <div className={"dropdown-popup".classNames(style) + 'box-shadow-thick border-radius-10 border-1-5 border-color-tertiary background-color-white'.classNames()} style={ref.current ? {width: ref.current.clientWidth+'px'} : {}}>
+					return <div className={"select-dropdown-popup".classNames(style) + 'box-shadow-thick border-radius-10 border-1-5 border-color-tertiary background-color-white'.classNames()} style={ref.current ? {width: ref.current.clientWidth+'px'} : {}}>
 						<div className={'trigger-point'.classNames(style)}>
 							{triggerPoint}
 						</div>
@@ -90,12 +90,12 @@ export function Options(props) {
 		contentStyle={{...content_style, ...cssStyle}}
 		arrow={false}
 		trigger={
-			<div className={`dropdown transparent`.classNames(style) + 'cursor-pointer'.classNames() + className}>
+			<div className={'d-inline-block cursor-pointer'.classNames() + className}>
 				{children}
 			</div>
 		}>
 			{close=>{
-				return <div className={"dropdown-popup".classNames(style) + 'box-shadow-thick border-radius-10 border-1-5 border-color-tertiary background-color-white'.classNames()} style={{minWidth: '176px'}}>
+				return <div className={"options-popup".classNames(style) + 'box-shadow-thick border-radius-10 border-1-5 border-color-tertiary background-color-white'.classNames()}>
 					<div className={'list-wrapper'.classNames(style)}>
 						{options.map(option=>{
 							let {value, label} = option;

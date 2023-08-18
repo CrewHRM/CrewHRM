@@ -137,10 +137,6 @@ $flows: 'column', 'row';
 	min-width: 100%;
 }
 
-.background-color-white {
-	background-color: white;
-}
-
 // Grid
 .column {
 	display: flex;
@@ -151,11 +147,5 @@ $flows: 'column', 'row';
 	&>div{
 		margin: 0 10px;
 		flex: 1;
-	}
-}
-
-.border-color-tertiary {
-	&, &[type] {
-		border-color: var(--crewhrm-color-tertiary);
 	}
 }

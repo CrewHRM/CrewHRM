@@ -59,7 +59,7 @@ export function TitleAndDescription(props) {
 				</div>
 				<div>
 					<TextField 
-						icon="ch-icon ch-icon-times cursor-pointer"
+						iconClass={job_title_length && "ch-icon ch-icon-times font-size-20 text-color-tertiary cursor-pointer".classNames() || null}
 						icon_position="right"
 						placeholder={__( 'ex. Product designer, Account manager' )}
 						value={values.job_title}

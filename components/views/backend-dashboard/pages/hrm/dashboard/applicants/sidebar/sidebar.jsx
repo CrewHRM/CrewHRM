@@ -47,9 +47,9 @@ export function Sidebar() {
 
 		<div className={'padding-15'.classNames()}>
 			<TextField 
-				icon="ch-icon ch-icon-search-normal-1" 
-				placeholder={__( 'Search by name' )}
-				className={'border-radius-5'.classNames()}/>
+				className={'border-1 border-color-tertiary border-radius-5 padding-vertical-10 padding-horizontal-11 height-40'.classNames()}
+				iconClass={"ch-icon ch-icon-search-normal-1 font-size-16 text-color-secondary".classNames()} 
+				placeholder={__( 'Search by name' )}/>
 		</div>
 
 		<div className={'filter'.classNames(style) + 'd-flex align-items-center'.classNames()}>

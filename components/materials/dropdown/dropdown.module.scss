@@ -1,10 +1,12 @@
-.dropdown {
+/* Select Drop down and popup */
+.select-dropdown {
 	&:not(.transparent) {
 		background-color: white;
 	}
 }
 
-.dropdown-popup {
+.select-dropdown-popup {
+	
 	.trigger-point {
 		&>div {
 			border: none;
@@ -12,6 +14,34 @@
 			border-bottom: 1px solid var(--crewhrm-color-tertiary);
 		}
 	}
+
+	.list-wrapper {
+		max-height: 300px;
+		overflow-x: hidden;
+		overflow-y: auto;
+
+		&, .list-item {
+			&:not(:last-child) {
+				border-bottom: 1px solid var(--crewhrm-color-tertiary);
+			}
+		}
+	}
+
+	.list-item, .add-item {
+		&:hover {
+			background-color: var(--crewhrm-color-tertiary);
+		}
+
+		&.active {
+			color: white;
+			background-color: var(--crewhrm-color-primary);
+		}
+	}
+}
+
+/* Options popup */
+.options-popup {
+	width: 176px;
 
 	.list-wrapper {
 		max-height: 300px;

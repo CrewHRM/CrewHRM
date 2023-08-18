@@ -2,8 +2,6 @@ import React, {useContext} from "react";
 
 import { __, getCountries } from "../../../../../../../utilities/helpers.jsx";
 import { ContextJobDetails } from "../job-details.jsx";
-import { NumberField } from "../../../../../../../materials/number-field/number-field.jsx";
-import { DateField } from "../../../../../../../materials/date-time/date-time.jsx";
 import style from '../details.module.scss';
 import { DropDown } from "../../../../../../../materials/dropdown/dropdown.jsx";
 
@@ -13,13 +11,7 @@ const location_types = {
 	hybrid  : __( 'Hybrid' )
 }
 
-const countries = getCountries();
-const country_options = Object.keys(countries).map(code=>{
-	return {
-		value: code,
-		label: countries[code]
-	}
-});
+const country_options = getCountries(true);
 
 export function Location() {
 
