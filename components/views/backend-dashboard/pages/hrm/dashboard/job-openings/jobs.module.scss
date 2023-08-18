@@ -38,4 +38,10 @@
 			}
 		}
 	}
+
+	.view-all-button {
+		&:not(:hover) {
+			border-color: var(--crewhrm-color-text-lighter);
+		}
+	}
 }

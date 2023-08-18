@@ -245,7 +245,7 @@ export function JobOpenings(props) {
 			</div>
 		}
 
-		{is_overview && jobs.length && <Link to="/dashboard/jobs/" className={'button button-primary button-outlined button-full-width-2'.classNames()}>
+		{is_overview && jobs.length && <Link to="/dashboard/jobs/" className={'button button-primary button-outlined button-full-width-2'.classNames() + 'view-all-button'.classNames(style)}>
 			{__( 'View All Jobs' )}
 		</Link> || null}
 	</div>

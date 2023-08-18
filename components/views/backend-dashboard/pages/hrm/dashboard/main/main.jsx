@@ -12,11 +12,10 @@ import { Link } from "react-router-dom";
 export function DahboardMain() {
 	return <div className={'h-full'.classNames() + 'wrapper'.classNames(style)}>
 		<div className={'sidebar'.classNames(style)}>
-			<StatCards/>
-		</div>
-		<div className={'content-area'.classNames(style)}>
-			<IntroCard image="megaphone" className={'margin-bottom-20'.classNames()}>
-				<span className={'d-block text-color-primary font-size-28 font-weight-600 margin-bottom-15'.classNames()}>
+			<StatCards className={'margin-bottom-20'.classNames()}/>
+			
+			<IntroCard image="megaphone" orientation="vertical" className={'margin-bottom-20'.classNames()}>
+				<span className={'d-block text-color-primary font-size-28 font-weight-600 line-height-32 margin-bottom-15'.classNames()}>
 					{__( 'Find the person you want to hire ' )}
 				</span>
 				<small className={'text-color-light font-size-15 font-weight-400 margin-bottom-30 d-block'.classNames()}>
@@ -26,9 +25,10 @@ export function DahboardMain() {
 					{__( 'Create A New Job' )}
 				</Link>
 			</IntroCard>
+		</div>
 
+		<div className={'content-area'.classNames(style)}>
 			<JobOpenings is_overview={true} className={"margin-bottom-20".classNames()}/>
-			
 			<div className={'d-flex align-items-center margin-bottom-20'.classNames()}>
 				<div className={'flex-1'.classNames()}>
 					<span className={'text-color-primary font-size-17 font-weight-500'.classNames()}>

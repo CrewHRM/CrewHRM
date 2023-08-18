@@ -13,12 +13,17 @@ const images = {
 }
 
 export function IntroCard(props) {
-	const {image, className=''} = props;
+	const {image, className='', orientation="horizontal"} = props;
 
-	return <div className={'intro'.classNames(style) + 'background-color-white border-radius-5'.classNames() + className} style={{backgroundImage: 'url('+images[image]+')'}}>
-		<div>
+	const is_horizontal = orientation=='horizontal';
+	const image_url     = images[image];
+
+	return <div className={`intro orientation-${orientation}`.classNames(style) + 'background-color-white border-radius-5'.classNames() + className} style={{backgroundImage: 'url('+image_url+')'}}>
+		<div className={'content'.classNames(style)}>
 			{props.children}
 		</div>
-		<div></div>
+		<div className={"image".classNames(style)}>
+			{!is_horizontal && <img src={image_url}/> || null}
+		</div>
 	</div>
 }

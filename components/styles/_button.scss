@@ -1,5 +1,11 @@
 @import '../styles/mixins';
 
+/* 
+	Buttons have two main variations. 
+	Outlined and not outlined/primary. 
+	Outlined actually overrides primary little bit in colors.
+*/
+
 .button{
 	outline: none;
 	padding: 10px 15px;
@@ -10,34 +16,67 @@
 	text-decoration: none;
 	display: inline-block;
 	cursor: pointer;
-
+	
 	&.button-primary {
 		background-color: var(--crewhrm-color-primary);
 		color: white;
 		border: 1px solid var(--crewhrm-color-primary);
+
+		// Set light colors if disabled
+		&.disabled, &:disabled{
+			background-color: var(--crewhrm-color-text-lighter);
+			border-color: var(--crewhrm-color-text-lighter);
+		}
+
+		// Make little bit darker on hover
+		&:not(.button-outlined):not(:disabled):not(.disabled) {
+			&:hover {
+				filter: brightness(0.85);
+			}
+		}
 	}
 
 	&.button-outlined {
+		// Hovering outlined button is merely showing the primary button colors. When not hovered, it'll who outlined withour primary background color. 
 		&:not(:hover) {
 			background-color: transparent;
 			color: var(--crewhrm-color-primary);
 
+			// It's little bit lighter variation for 'back' action buttons
 			&.button-outlined-secondary {
 				border-color: var(--crewhrm-color-text-light);
 				color: var(--crewhrm-color-text-light);
 			}
 		}
 
+		// This variation is for placing button inside elements that has colored background other than white. 
+		// Especially in notice bar at the top of dashboard.
 		&.button-foreground {
 			border-color: white;
 			color: white;
 		}
+
+		// Set styles for disabled state
+		&.disabled, &:disabled{
+			background-color: transparent;
+			border-color: var(--crewhrm-color-text-lighter);
+			color: var(--crewhrm-color-text-lighter);
+		}
 	}
 
-	&.disabled, &:disabled{
-		cursor: default;
-		background-color: var(--crewhrm-color-text-lighter);
-		border-color: var(--crewhrm-color-text-lighter);
+	&.button-small {
+		@include fontWeight(400);
+		padding: 5px 12px;
+	}
+		
+	&.button-medium {
+		@include fontWeight(500);
+		padding: 10px 15px;
+	}
+
+	&.button-medium-2 {
+		@include fontWeight(500);
+		padding: 8px 15px;
 	}
 
 	&.button-full-width {
@@ -51,22 +90,6 @@
 		text-align: center;
 		font-size: 15px;
 		@include fontWeight(600);
-	}
-	
-	
-	&.button-medium {
-		@include fontWeight(500);
-		padding: 10px 15px;
-	}
-
-	&.button-medium-2 {
-		@include fontWeight(500);
-		padding: 8px 15px;
-	}
-
-	&.button-small {
-		@include fontWeight(400);
-		padding: 5px 12px;
 	}
 }
 

@@ -27,8 +27,8 @@ const card_stats = [
 	},
 ];
 
-export function StatCards() {
-	return <div className={'card-wrapper'.classNames(style)}>
+export function StatCards({className=''}) {
+	return <div className={'card-wrapper'.classNames(style) + className}>
 		{card_stats.map(stat=>{
 			let {label, count, icon} = stat;
 

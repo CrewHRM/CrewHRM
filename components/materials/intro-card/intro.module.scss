@@ -5,17 +5,30 @@
 	background-position: right;
 	background-size: contain;
 
-	&.small {
-		padding: 25px;
-	}
+	&.orientation-horizontal {
+		flex-flow: row;
 
-	&>div {
-		&:first-child {
+		.content {
 			flex: 7;
 		}
 
-		&:last-child {
+		.image {
 			flex: 3;
+		}
+	}
+
+	&.orientation-vertical {
+		flex-flow: column;
+		background-position: bottom;
+
+		.image {
+			margin-top: 60px;
+
+			img {
+				width: 100%;
+				height: auto;
+				visibility: hidden;
+			}
 		}
 	}
 }

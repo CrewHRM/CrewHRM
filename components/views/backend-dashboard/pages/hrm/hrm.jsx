@@ -18,7 +18,7 @@ export function DashboardBar(props) {
 		<StickyBar>
 			<div className={'d-flex align-items-center'.classNames()}>
 				<div className={'flex-1'.classNames()}>
-					Menu
+					{__( 'Dashboard' )}
 				</div>
 				<div className={'d-flex align-items-center column-gap-30'.classNames()}>
 					<NotificationsOnSite/>
