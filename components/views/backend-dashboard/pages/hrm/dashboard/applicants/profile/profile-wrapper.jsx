@@ -81,27 +81,48 @@ const applicant = {
 	resume_url: pdf,
 	attachments: [
 		{
+			name: 'Sample.png',
 			mime_type: 'image/png',
 			url: attachment
 		},
 		{
+			name: 'How to build.jpg',
+			mime_type: 'image/jpeg',
+			url: attachment
+		},
+		{
+			name: 'Demo App.jpg',
+			mime_type: 'application/zip',
+			url: attachment
+		},
+		{
+			name: 'Banner Design.jpg',
 			mime_type: 'image/png',
 			url: attachment
 		},
 		{
-			mime_type: 'image/png',
+			name: 'Banner Design.jpg',
+			mime_type: 'video/mp4',
 			url: attachment
 		},
 		{
-			mime_type: 'image/png',
+			name: 'Beats Pattern',
+			mime_type: 'audio/mp3',
 			url: attachment
 		},
 		{
-			mime_type: 'image/png',
+			name: 'How to build.pdf',
+			mime_type: 'application/pdf',
 			url: attachment
 		},
 		{
-			mime_type: 'image/png',
+			name: 'Piano Melodic.mp3',
+			mime_type: 'audio/mp3',
+			url: attachment
+		},
+		{
+			name: 'Rock Notes Sample',
+			mime_type: 'audio/mp3',
 			url: attachment
 		}
 	]
@@ -110,7 +131,7 @@ const applicant = {
 export const ContextApplicantProfile = createContext();
 
 export function Profile() {
-	const tab_class = 'font-size-15 font-weight-500 line-height-24'.classNames();
+	const tab_class = 'd-flex align-items-center justify-content-center font-size-15 font-weight-500 line-height-24'.classNames();
 	const tabs = [
 		{
 			id: 'overview',
@@ -122,7 +143,14 @@ export function Profile() {
 		},
 		{
 			id: 'activity',
-			label: <span className={tab_class}>{__( 'Activity' )}</span>
+			label: <span className={tab_class}>
+				<span className={'d-inline-block vertical-align-middle'.classNames()}>
+					{__( 'Activity' )}
+				</span>
+				<span className={'d-inline-block vertical-align-middle background-color-secondary border-radius-30 text-color-white font-size-13 font-weight-500 line-height-24 letter-spacing--13 padding-horizontal-7 margin-left-10'.classNames()}>
+					12
+				</span>
+			</span>
 		}
 	];
 

@@ -15,6 +15,6 @@ export function CoverImage(props) {
 	}
 
 	return <div className={`cover-image ${circle ? 'circle' : ''}`.classNames(style) + 'd-flex align-items-center justify-content-center'.classNames() + className} style={css}>
-		{children && <div className={'d-inline-block'.classNames()}>{children}</div> || null}
+		{children}
 	</div>
 }

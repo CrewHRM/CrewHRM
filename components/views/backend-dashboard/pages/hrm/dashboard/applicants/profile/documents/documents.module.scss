@@ -1,7 +1,22 @@
 .documents {
 	.attachments {
 		display: grid;
-		grid-template-columns: auto auto auto auto;
+		grid-template-columns: repeat(4, 1fr);
 		gap: 15px;
+
+		.single-attachment {
+			.attachment-overlay {
+				&.has-thumbnail {
+					display: none;
+					background-color: rgba(26, 26, 26, 0.80);
+				}
+			}
+
+			&:hover {
+				.has-thumbnail{
+					display: flex;
+				}
+			}
+		}
 	}
 }

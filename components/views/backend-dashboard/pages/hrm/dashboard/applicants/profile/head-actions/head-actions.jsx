@@ -7,28 +7,36 @@ import { __ } from "../../../../../../../../utilities/helpers.jsx";
 import { DropDown } from "../../../../../../../../materials/dropdown/dropdown.jsx";
 import { ContextApplicants } from "../../applicants.jsx";
 
-const segments = [
-	{
-		icon     : 'ch-icon ch-icon-sms',
-		renderer : Email,
-		tagline  : <span className={'font-size-15 font-weight-500 text-color-primary'.classNames()}>
-					{__( 'Email' )}
-				</span>
-	},
-	{
-		icon     : 'ch-icon ch-icon-message',
-		renderer : Comment,
-		tagline  : <>
-					<span className={'font-size-15 font-weight-500 text-color-primary'.classNames()}>
-						{(__( 'Add a comment' ))}
-					</span> <span className={'font-size-13 font-weight-400 text-color-light'}>
-						{__( 'Candidates never see comments.' )}
-					</span>
-				</>
-	}
-];
-
 export function HeadActions() {
+
+	const segments = [
+		{
+			icon     : 'ch-icon ch-icon-sms text-color-lighter',
+			title    : __( 'Send Email' ),
+			renderer : Email,
+			tagline  : <span className={'font-size-15 font-weight-500 text-color-primary'.classNames()}>
+						{__( 'Email' )}
+					</span>
+		},
+		{
+			icon     : 'ch-icon ch-icon-message text-color-lighter',
+			title    : __( 'Internal Comment' ),
+			renderer : Comment,
+			tagline  : <>
+						<span className={'font-size-15 font-weight-500 text-color-primary'.classNames()}>
+							{(__( 'Add a comment' ))}
+						</span> <span className={'font-size-13 font-weight-400 text-color-light'}>
+							{__( 'Candidates never see comments.' )}
+						</span>
+					</>
+		},
+		{
+			icon     : 'ch-icon ch-icon-slash text-color-danger',
+			title    : __( 'Disqualify' ),
+			onClick  : disqualifyApplicant,
+		}
+	];
+
 	const {job} = useContext(ContextApplicants);
 	const {application_stages=[], current_stage} = job;
 
@@ -45,6 +53,10 @@ export function HeadActions() {
 		});
 	}
 
+	const disqualifyApplicant=()=>{
+
+	}
+
 	const {
 		renderer: ActiveComp, 
 		icon: active_icon, 
@@ -55,12 +67,16 @@ export function HeadActions() {
 		<div className={'d-flex align-items-center box-shadow-thin padding-vertical-15 padding-horizontal-30'.classNames()}>
 			<div className={'flex-1'.classNames()}>
 				{segments.map((segment, i)=>{
-					let {icon, renderer: Comp} = segment;
+					let {icon, onClick, title} = segment;
 
 					let classes = 'font-size-20 cursor-pointer margin-right-24 ';
-					classes += state.active_segment===i ? 'text-color-primary' : 'text-color-lighter';
+					classes += state.active_segment===i ? 'text-color-primary' : '';
 
-					return <i key={i} className={icon.classNames() + classes.classNames()} onClick={()=>toggleSegment(i)}></i>
+					return <i 
+						key={i} 
+						title={title}
+						className={icon.classNames() + classes.classNames()} 
+						onClick={()=>onClick ? onClick() : toggleSegment(i)}></i>
 				})}
 			</div>
 			<div className={'d-flex align-items-center'.classNames()}>

@@ -1,3 +1,4 @@
+/* Text colors */
 .text-color-primary {
 	color: var(--crewhrm-color-text);
 }
@@ -18,12 +19,17 @@
 	color: white;
 }
 
-.box-shadow-thin {
-	box-shadow: 0px 1px 2px 0px rgba(16, 39, 68, 0.08);
+/* Background colors */
+.background-color-primary {
+	background-color: var(--crewhrm-color-primary);
 }
 
-.box-shadow-thick {
-	box-shadow: 0px 10px 20px 0px rgba(16, 39, 68, 0.10);
+.background-color-secondary {
+	background-color: var(--crewhrm-color-secondary);
+}
+
+.background-color-tertiary {
+	background-color: var(--crewhrm-color-tertiary);
 }
 
 .background-color-white {
@@ -34,6 +40,7 @@
 	background-color: transparent;
 }
 
+/* Border colors */
 .border-color-tertiary {
 	&, &[type] {
 		border-color: var(--crewhrm-color-tertiary);
@@ -44,4 +51,13 @@
 	&, &[type] {
 		border-color: transparent;
 	}
+}
+
+/* Box shadows */
+.box-shadow-thin {
+	box-shadow: 0px 1px 2px 0px rgba(16, 39, 68, 0.08);
+}
+
+.box-shadow-thick {
+	box-shadow: 0px 10px 20px 0px rgba(16, 39, 68, 0.10);
 }
