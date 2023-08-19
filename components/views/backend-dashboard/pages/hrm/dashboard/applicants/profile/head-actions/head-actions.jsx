@@ -85,7 +85,7 @@ export function HeadActions() {
 				</span>
 
 				<DropDown 
-					className={'margin-left-10 margin-right-10'.classNames()}
+					className={'padding-vertical-5 padding-horizontal-12 margin-left-10 margin-right-10 border-1 border-color-primary border-radius-5'.classNames()}
 					value={state.current_application_stage}
 					options={application_stages.map(s=>{return {value: s.id, label: s.label}})}
 					onChange={s=>setState({...state, current_application_stage: s})}/>

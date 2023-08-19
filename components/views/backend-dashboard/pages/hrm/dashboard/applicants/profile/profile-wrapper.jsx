@@ -166,7 +166,10 @@ export function Profile() {
 				<CoverImage src={avatar} width={109} height={124} className={'border-radius-3'.classNames()}/>
 				<div className={'flex-1 margin-left-13'.classNames()}>
 					<span className={'d-block font-size-24 font-weight-600 line-height-24 text-color-primary margin-bottom-2'.classNames()}>
-						{applicant.name} <span className={'font-size-15 vertical-align-middle'.classNames()}>{getFlag(applicant.country_code)}</span>
+						{applicant.name}
+						<span className={'d-inline-block margin-left-4 font-size-15 vertical-align-middle'.classNames()}>
+							{getFlag(applicant.country_code)}
+						</span>
 					</span>
 					<span className={'d-block font-size-15 font-weight-400 line-height-24 text-color-light margin-bottom-2'.classNames()}>
 						{applicant.address}

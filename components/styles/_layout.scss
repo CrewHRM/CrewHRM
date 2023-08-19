@@ -125,6 +125,14 @@ $flows: 'column', 'row';
 	}
 }
 
+// Flex wrap
+$wraps: 'wrap', 'nowrap';
+@each $wrap in $wraps {
+	.flex-wrap-#{$wrap} {
+		flex-wrap: #{$wrap};
+	}
+}
+
 .align-items-center {
 	align-items: center;
 }

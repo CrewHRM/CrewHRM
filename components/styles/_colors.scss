@@ -41,6 +41,12 @@
 }
 
 /* Border colors */
+.border-color-primary {
+	&, &[type] {
+		border-color: var(--crewhrm-color-primary);
+	}
+}
+
 .border-color-tertiary {
 	&, &[type] {
 		border-color: var(--crewhrm-color-tertiary);

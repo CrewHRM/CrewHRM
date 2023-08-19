@@ -165,23 +165,26 @@ export function ApplicationForm(props) {
 				<div className={'list-container'.classNames(style)}>
 					{input_fields.map(field=>{
 						const {label: field_label, checked, read_only, id: field_id} = field;
+						const checkbox_id = 'crewhrm-checkbox-'+field_id;
 
-						return <div key={field_id} className={'d-flex align-items-center'.classNames()}>
+						return <div key={field_id} className={'single-row'.classNames(style) + 'd-flex align-items-center'.classNames()}>
 							<div>
 								<input 
+									id={checkbox_id}
+									className={'checkbox-secondary'.classNames()}
 									type="checkbox" 
 									checked={checked || read_only} 
 									disabled={read_only}/>
 							</div>
 							<div className={'flex-1'.classNames()}>
-								<span className={'d-block font-size-15 font-weight-500 line-height-25 text-color-primary margin-left-10'.classNames()}>
+								<label className={'d-block font-size-15 font-weight-500 line-height-25 text-color-primary margin-left-10'.classNames()} htmlFor={checkbox_id}>
 									{field_label}
-								</span>
+								</label>
 							</div>
 							<div>
 								{
-									read_only && <span className={'tag padding-vertical-8 padding-horizontal-15'.classNames()}>
-										{__( 'Mandatory' )}
+									read_only && <span className={'required'.classNames(style) + 'font-size-13 font-weight-500 padding-vertical-8 padding-horizontal-15 border-radius-50'.classNames()}>
+										{__( 'Required' )}
 									</span> ||
 									<div className={'d-inline-flex align-items-center'.classNames()}>
 										<span className={'d-inline-block margin-right-8 font-size-15 font-weight-400 text-color-light'.classNames()}>{__( 'Mandatory' )}</span>
@@ -194,12 +197,6 @@ export function ApplicationForm(props) {
 				</div>
 			</div>
 		})}
-
-		{/* Question builder */}
-		<strong className={'d-block font-size-17 font-weight-600 text-color-primary margin-bottom-10'.classNames()}>
-			{__( 'Add Questions' )}
-		</strong>
-		
 
 		<ActionButtons onBack={()=>navigateTab(-1)} onNext={()=>navigateTab(1)}/>
 	</div>

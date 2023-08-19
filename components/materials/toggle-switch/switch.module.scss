@@ -8,7 +8,7 @@
 		text-indent: -9999px;
 		width: 38.9px;
 		height: 22px;
-		background: grey;
+		background-color: var(--crewhrm-color-tertiary);
 		display: block;
 		border-radius: 100px;
 		position: relative;
@@ -27,7 +27,7 @@
 	}
 
 	input:checked + label {
-		background: #bada55;
+		background-color: var(--crewhrm-color-secondary);
 	}
 
 	input:checked + label:after {
@@ -37,5 +37,9 @@
 
 	label:active:after {
 		width: 38.9px;
+	}
+
+	&.disabled {
+		opacity: .4;
 	}
 }

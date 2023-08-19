@@ -12,10 +12,15 @@
 			overflow: hidden;
 
 
-			&>div {
+			&>.single-row {
 				padding: 10px 15px;
 				&:not(:last-child) {
 					border-bottom: 1.5px solid  var(--crewhrm-color-tertiary);
+				}
+
+				.required{
+					color: var(--crewhrm-color-secondary);
+					background-color: var(--crewhrm-color-secondary-15);
 				}
 			}
 		}

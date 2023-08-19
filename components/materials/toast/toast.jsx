@@ -1,8 +1,8 @@
 import React, { createContext, useEffect, useRef, useState } from "react";
 
 import { __, getRandomString } from "../../utilities/helpers.jsx";
-import ripple from '../../images/ripple.svg';
 import style from './toast.module.scss';
+import { Ripple } from "../dynamic-svg/ripple.jsx";
 
 export const ContextToast = createContext();
 
@@ -88,7 +88,9 @@ export function ToastWrapper(props) {
 
 				return <div key={id} className={'d-flex align-items-center border-radius-5'.classNames()}>
 					<div className={'flex-1 d-flex align-items-center row-gap-10 padding-15'.classNames()}>
-						<img src={ripple} className={'width-28 height-28'.classNames()}/>
+						<div className={'d-inline-block'.classNames()}>
+							<Ripple/>
+						</div>
 						<span className={'d-inline-block margin-left-10 font-size-15 font-weight-500 line-height-18 text-color-white'.classNames()}>
 							{message}
 						</span>

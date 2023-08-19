@@ -4,13 +4,15 @@ import { __, getSocialIcon, prepareTexts } from "../../../../../../../../utiliti
 import { Line } from "../../../../../../../../materials/line/line.jsx";
 import { DangerouslySet } from "../../../../../../../../materials/dangerously-set/DangerouslySet.jsx";
 
+import style from './overview.module.scss';
+
 // To Do: Output contents should be converted html entities from PHP using htmlspecialchars function.
 
 export function OverView() {
 	const {applicant={}} = useContext(ContextApplicantProfile);
 	const {summary, education=[], skills=[], qna=[], social_links=[]} = applicant;
 
-	return <div>
+	return <div className={'overview'.classNames(style)}>
 		<span className={'d-block font-size-17 font-weight-600 line-height-24 letter-spacing--17 text-color-primary margin-bottom-10'.classNames()}>
 			{__( 'SUMMARY' )}
 		</span>
@@ -50,9 +52,9 @@ export function OverView() {
 			<span className={'d-block font-size-17 font-weight-600 line-height-24 letter-spacing--17 text-color-primary margin-bottom-10'.classNames()}>
 				{__( 'SKILLS' )}
 			</span>
-			<div style={{marginBottom: '-15px'}}>
+			<div className={'d-flex flex-wrap-wrap flex-flow-row row-gap-15 column-gap-15'.classNames()}>
 				{skills.map(skill=>{
-					return <div key={skill} className={'tag d-inline-block padding-vertical-5 padding-horizontal-20 margin-right-15 margin-bottom-15 font-size-15 font-weight-500 line-height-24 letter-spacing--15 text-color-primary'.classNames()}>
+					return <div key={skill} className={'single-skill'.classNames(style) + 'd-inline-block padding-vertical-5 padding-horizontal-20 font-size-15 font-weight-500 line-height-24 letter-spacing--15 text-color-primary'.classNames()}>
 						{skill}
 					</div>
 				})}
