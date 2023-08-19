@@ -64,7 +64,7 @@ export function TitleAndDescription(props) {
 						placeholder={__( 'ex. Product designer, Account manager' )}
 						value={values.job_title}
 						onChange={v=>setVal('job_title', v)}
-						onIconClick={()=>setVal('job_title', '')}
+						onIconClick={refocus=>{setVal('job_title', ''); refocus();}}
 						className={input_class}
 						maxLength={state.title_allowed_length}/>
 				</div>

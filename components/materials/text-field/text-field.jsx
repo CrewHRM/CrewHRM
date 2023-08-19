@@ -19,7 +19,8 @@ export function TextField(props) {
 		expandable=false} = props;
 
 	const [state, setState] = useState({
-		expanded: !expandable
+		expanded: !expandable,
+		focused: false
 	});
 
 	const input_ref = useRef();
@@ -34,7 +35,11 @@ export function TextField(props) {
 
 	const onIconClick=()=>{
 		if ( clickHandler ) {
-			clickHandler();
+			clickHandler(()=>{
+				if ( input_ref?.current ) {
+					input_ref.current.focus();
+				}
+			});
 			return;
 		}
 
@@ -45,6 +50,13 @@ export function TextField(props) {
 		setState({
 			...state,
 			expanded: true
+		});
+	}
+
+	const toggleFocusState=focused=>{
+		setState({
+			...state,
+			focused
 		});
 	}
 
@@ -59,7 +71,7 @@ export function TextField(props) {
 	
 	const separator = state.expanded && <span className={'d-inline-block width-6'.classNames()}></span> || null
 
-	return <div className={`text-field icon-${icon_position}`.classNames(style) + className}>
+	return <div className={`text-field icon-${icon_position}`.classNames(style) + `${state.focused ? 'focused' : ''}`.classNames() + className}>
 		{iconClass && <>
 			<i className={iconClass} onClick={()=>onIconClick()}></i>
 			{separator}
@@ -75,6 +87,8 @@ export function TextField(props) {
 			type={type} 
 			value={value}
 			onChange={e=>dispatchChange(e.currentTarget.value)}
+			onFocus={()=>toggleFocusState(true)}
+			onBlur={()=>toggleFocusState(false)}
 			placeholder={placeholder}
 			className={'text-field-flat font-size-15 font-weight-500 letter-spacing--15 flex-1'.classNames() + inputClassName}
 			pattern={pattern}/> || null}

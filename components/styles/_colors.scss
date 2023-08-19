@@ -51,6 +51,14 @@
 	&, &[type] {
 		border-color: var(--crewhrm-color-tertiary);
 	}
+
+	&.border-focus-color-primary {
+		&:focus, &.focused {
+			&, &[type] {
+				border-color: var(--crewhrm-color-primary);
+			}
+		}
+	}
 }
 
 .border-color-transparent {

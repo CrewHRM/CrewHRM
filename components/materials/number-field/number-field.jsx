@@ -1,41 +1,65 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 
 export function NumberField(props) {
 	const {onChange, className='', value, max, min} = props;
 	const ref = useRef();
+	const [state, setState] = useState({
+		focused: false
+	});
+	
+	const changeValue=(shift, val)=>{
 
-	const changeValue=v=>{
-		let {value} = ref.current;
-		value = parseInt( value ) || 0;
+		// Focu the field to apply styles
+		ref.current.focus();
 
+		// Collect value and dispatch
+		let value = parseInt( val===undefined ? ref?.current?.value : val ) || 0;
+
+		// Apply controller action
+		if ( shift === 1 || shift === -1 ) {
+			value = value + shift;
+		}
+
+		// Apply validation
 		if( !isNaN(min) && value<min ) {
 			value = min;
 		}
-
 		if( !isNaN(max) && value>max ) {
 			value = max;
 		}
 
+		// Dispatch to parent level caller
 		onChange(value);
 	}
 
-	return <div className={'d-flex align-items-center'.classNames() + className}>
+	const toggleFocusState=focused=>{
+		setState({
+			...state,
+			focused
+		});
+	}
+
+	const controller_class = `font-size-20 cursor-pointer ${state.focused ? 'text-color-primary' : 'text-color-light'}`.classNames();
+
+	return <div className={`d-flex align-items-center ${state.focused ? 'focused'  : ''}`.classNames() + className}>
 		<div className={'height-20'.classNames()}>
 			<i 
-				className={"ch-icon ch-icon-minus-square font-size-20 text-color-light cursor-pointer".classNames()}
+				className={"ch-icon ch-icon-minus-square".classNames() + controller_class}
 				onClick={()=>changeValue(-1)}></i>
 		</div>
 		<div className={'flex-1'.classNames()}>
 			<input 
 				ref={ref}
 				type="text" 
-				onChange={e=>onChange(parseInt(e.currentTarget.value) || 0)} 
+				onChange={e=>changeValue(null, e.currentTarget.value)} 
 				value={value}
+				onFocus={()=>toggleFocusState(true)}
+				onBlur={()=>toggleFocusState(false)}
 				className={'text-field-flat text-align-center'.classNames()}/>
 		</div>
 		<div className={'height-20'.classNames()}>
 			<i 
-				className={"ch-icon ch-icon-add-square font-size-20 text-color-light cursor-pointer".classNames()} 
+				className={"ch-icon ch-icon-add-square".classNames() + controller_class} 
 				onClick={()=>changeValue(1)}></i>
 		</div>
 	</div>

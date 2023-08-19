@@ -29,8 +29,8 @@ const departments = [
 	}
 ];
 
-const textarea_class      = 'padding-vertical-15 padding-horizontal-20 border-radius-10 border-1-5 border-color-tertiary w-full d-block font-size-15 font-weight-400 line-height-25 text-color-primary'.classNames();
-const input_class         = 'padding-15 border-radius-10 border-1-5 border-color-tertiary w-full d-block height-50 font-size-15 font-weight-400 line-height-25 text-color-primary'.classNames();
+const textarea_class      = 'padding-vertical-15 padding-horizontal-20 border-radius-10 border-1-5 border-color-tertiary border-focus-color-primary w-full d-block font-size-15 font-weight-400 line-height-25 text-color-primary'.classNames();
+const input_class         = 'padding-15 border-radius-10 border-1-5 border-color-tertiary border-focus-color-primary w-full d-block height-50 font-size-15 font-weight-400 line-height-25 text-color-primary'.classNames();
 const section_title_class = 'font-size-20 font-weight-600 text-color-primary text-color-primary'.classNames();
 const field_label_class   = 'd-block font-size-15 font-weight-500 text-color-primary margin-bottom-10'.classNames();
 

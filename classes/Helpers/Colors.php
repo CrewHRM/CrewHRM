@@ -40,19 +40,9 @@ class Colors {
 	public static function getColors() {
 		$colors = self::$base_colors;
 
-		// Loop through the colors
-		foreach ( $colors as $name => $code ) {
-
-			// Loop through the opacity levels
-			for ( $i = 0.05; $i <= 1; $i += 0.05 ) {
-				$_name = (string) number_format( $i, 2 );
-				$_name = explode( '.', $_name );
-				$_name = $name . '-' . end( $_name );
-
-				$colors[ $_name ] = self::hexToRgba( $code, $i );
-			}
-		}
-
+		// Provide some necessary opacity
+		$colors['secondary-15'] = self::hexToRgba( $colors['secondary'], 0.15 );
+		
 		return $colors;
 	}
 }

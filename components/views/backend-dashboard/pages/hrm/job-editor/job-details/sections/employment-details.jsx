@@ -43,8 +43,9 @@ export function EmploymentDetails(props) {
 				{/* Employment type */}
 				<div className={'d-flex margin-bottom-30'.classNames() + 'type-selection'.classNames(style)}>
 					{Object.keys(employments_types).map(type=>{
+						const is_selected = values.employment_type===type;
 						return <div key={type} className={'flex-1'.classNames()}>
-							<button className={'button button-primary button-outlined w-full'.classNames()}>
+							<button className={`button button-primary ${is_selected ? '' : 'button-outlined'} w-full`.classNames() + `${is_selected ? 'selected' : ''}`.classNames(style)} onClick={()=>setVal('employment_type', type)}>
 								{employments_types[type]}
 							</button>
 						</div>
@@ -58,9 +59,9 @@ export function EmploymentDetails(props) {
 							{__( 'Number of Vacancy' )}
 						</span>
 						<NumberField 
+							className={input_class}
 							value={values.vacancy}
-							onChange={v=>setVal('vacancy', v)}
-							className={input_class}/>
+							onChange={v=>setVal('vacancy', v)}/>
 					</div>
 					<div className={'flex-1'.classNames()}>
 						<span className={field_label_class}>

@@ -11,7 +11,7 @@ export function HeadActions() {
 
 	const segments = [
 		{
-			icon     : 'ch-icon ch-icon-sms text-color-lighter',
+			icon     : 'ch-icon ch-icon-sms',
 			title    : __( 'Send Email' ),
 			renderer : Email,
 			tagline  : <span className={'font-size-15 font-weight-500 text-color-primary'.classNames()}>
@@ -19,7 +19,7 @@ export function HeadActions() {
 					</span>
 		},
 		{
-			icon     : 'ch-icon ch-icon-message text-color-lighter',
+			icon     : 'ch-icon ch-icon-message',
 			title    : __( 'Internal Comment' ),
 			renderer : Comment,
 			tagline  : <>
@@ -29,11 +29,6 @@ export function HeadActions() {
 							{__( 'Candidates never see comments.' )}
 						</span>
 					</>
-		},
-		{
-			icon     : 'ch-icon ch-icon-slash text-color-danger',
-			title    : __( 'Disqualify' ),
-			onClick  : disqualifyApplicant,
 		}
 	];
 
@@ -67,17 +62,22 @@ export function HeadActions() {
 		<div className={'d-flex align-items-center box-shadow-thin padding-vertical-15 padding-horizontal-30'.classNames()}>
 			<div className={'flex-1'.classNames()}>
 				{segments.map((segment, i)=>{
-					let {icon, onClick, title} = segment;
+					let {icon, title} = segment;
 
 					let classes = 'font-size-20 cursor-pointer margin-right-24 ';
-					classes += state.active_segment===i ? 'text-color-primary' : '';
+					classes += state.active_segment===i ? 'text-color-primary' : 'text-color-lighter';
 
 					return <i 
 						key={i} 
 						title={title}
 						className={icon.classNames() + classes.classNames()} 
-						onClick={()=>onClick ? onClick() : toggleSegment(i)}></i>
+						onClick={()=>toggleSegment(i)}></i>
 				})}
+
+				<i 
+					title={__( 'Disqualify' )} 
+					className={'ch-icon ch-icon-slash text-color-danger font-size-20 cursor-pointer'.classNames()} 
+					onClick={()=>disqualifyApplicant()}></i>
 			</div>
 			<div className={'d-flex align-items-center'.classNames()}>
 				<span className={'font-size-15 font-weight-400 text-color-primary'.classNames()}>

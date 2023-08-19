@@ -63,10 +63,19 @@ function MoveContent({total, users=[]}) {
 				{__( 'Move to' )}
 			</span>
 
-			<DropDown value="assessment" options={sequences.map(s=>{return {value: s.id, label: s.label}})}/> 
-			<button className={'button button-primary'.classNames()}>
-				{__( 'Move' )}
-			</button>
+			<div className={'d-flex align-items-center column-gap-10'.classNames()} style={{width: '400px'}}>
+				<div className={'flex-1'.classNames()}>
+					<DropDown 
+						className={'w-full padding-vertical-5 padding-horizontal-12 border-1 border-color-primary'.classNames()}
+						value="assessment" 
+						options={sequences.map(s=>{return {value: s.id, label: s.label}})}/> 
+				</div>
+				<div style={{width: '110px'}}>
+					<button className={'button button-primary'.classNames()}>
+						{__( 'Move' )}
+					</button>
+				</div>
+			</div>
 		</div>
 	</div>
 }
