@@ -48,7 +48,7 @@ export function Sidebar() {
 		<div className={'padding-15'.classNames()}>
 			<TextField 
 				className={'border-1 border-color-tertiary border-radius-5 padding-vertical-10 padding-horizontal-11 height-40'.classNames()}
-				iconClass={"ch-icon ch-icon-search-normal-1 font-size-16 text-color-secondary".classNames()} 
+				iconClass={"ch-icon ch-icon-search-normal-1 font-size-16 text-color-light".classNames()} 
 				placeholder={__( 'Search by name' )}/>
 		</div>
 

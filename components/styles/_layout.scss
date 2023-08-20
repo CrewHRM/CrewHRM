@@ -59,7 +59,7 @@ $attrs: 'font-size', 'margin', 'margin-top', 'margin-bottom', 'margin-left', 'ma
 }
 
 // Flex content justify
-$justifications: 'space-between', 'space-around', 'center';
+$justifications: 'space-between', 'space-around', 'center', 'end', 'flex-end';
 @each $justfication in $justifications {
 	.justify-content-#{$justfication} {
 		justify-content: #{$justfication};

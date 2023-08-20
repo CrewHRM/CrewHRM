@@ -7,6 +7,10 @@
 	color: var(--crewhrm-color-text-light);
 }
 
+.text-color-secondary, .text-color-hover-secondary:hover {
+	color: var(--crewhrm-color-secondary);
+}
+
 .text-color-lighter {
 	color: var(--crewhrm-color-text-lighter);
 }
@@ -44,6 +48,12 @@
 .border-color-primary {
 	&, &[type] {
 		border-color: var(--crewhrm-color-primary);
+	}
+}
+
+.border-color-secondary {
+	&, &[type] {
+		border-color: var(--crewhrm-color-secondary);
 	}
 }
 

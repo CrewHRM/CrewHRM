@@ -16,7 +16,7 @@ function Content({stage_id, openMoveDiloague}) {
 		<span className={'d-block font-size-24 font-weight-500 line-height-32 letter-spacing--3 text-color-primary margin-bottom-30'.classNames()}>
 			{__( 'Are you sure, you want to delete this item. We won\'t be able to recover it.' )}
 		</span>
-		<button className={'cancel-button'.classNames(style) + btn_class + 'margin-right-20'.classNames()} onClick={()=>close()}>
+		<button className={'cancel-button'.classNames(style) + btn_class + 'margin-right-20'.classNames()} onClick={close}>
 			{__( 'Cancel' )}
 		</button>
 		<button className={'delete-button'.classNames(style) + btn_class} onClick={openMoveDiloague}>
@@ -30,7 +30,7 @@ function MoveContent({total, users=[]}) {
 	const more = total-users.length;
 	
 	return <div className={'move'.classNames(style) + 'background-color-white border-radius-10 text-align-center position-relative'.classNames()}>
-		<i className={'ch-icon ch-icon-times font-size-24 text-color-light position-absolute right-22 top-22 cursor-pointer'.classNames()} onClick={()=>close()}></i>
+		<i className={'ch-icon ch-icon-times font-size-24 text-color-light position-absolute right-22 top-22 cursor-pointer'.classNames()} onClick={close}></i>
 		
 		<div className={'d-inline-flex align-items-center'.classNames()}>
 			{users.map(({user_id, avatar_url}, index)=>{

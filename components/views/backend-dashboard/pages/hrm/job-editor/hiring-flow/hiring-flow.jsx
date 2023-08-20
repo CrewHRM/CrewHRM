@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { __, getRandomString } from "../../../../../../utilities/helpers.jsx";
 
 import style from './hiring.module.scss';
@@ -24,16 +24,21 @@ export function HiringFlow(props) {
 
 	const [state, setState] = useState({
 		confirm_modal_for : null,
+		last_id           : null,
+		exclude_focus     : sequences.map(s=>s.id),
 		sequences         : sequences
 	});
 
 	const addStage=()=>{
+		const id = getRandomString();
+
 		setState({
 			...state,
+			last_id: id,
 			sequences: [
 				...state.sequences,
 				{
-					id: getRandomString(),
+					id,
 					label: __( 'Untitled' )
 				}
 			]
@@ -69,6 +74,29 @@ export function HiringFlow(props) {
 		})
 	}
 
+	useEffect(()=>{
+		const {last_id, exclude_focus} = state;
+		if ( !last_id || exclude_focus.indexOf( last_id )>-1 ) {
+			return;
+		}
+
+		const input = document.getElementById('crewhrm-flow-option-'+last_id);
+		
+		if (input) {
+			input.focus();
+			input.select();
+
+			setState({
+				...state, 
+				exclude_focus:[
+					...exclude_focus, 
+					last_id
+				]
+			});
+		}
+
+	}, [state.sequences]);
+
 	return <div className={'hiring'.classNames(style)}>
 		{state.confirm_modal_for && <DeletionConfirm onClose={closeModals}/> || null}
 		<span className={'d-block font-size-20 font-weight-600 text-color-primary margin-bottom-40'.classNames()}>
@@ -86,6 +114,7 @@ export function HiringFlow(props) {
 						</div>
 						<div className={'flex-1'.classNames()}>
 							<input 
+								id={'crewhrm-flow-option-'+sequence.id}
 								type="text" 
 								value={sequence.label} 
 								onChange={e=>renameStage(sequence.id, e.currentTarget.value)}

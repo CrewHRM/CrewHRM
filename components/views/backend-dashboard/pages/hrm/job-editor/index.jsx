@@ -31,13 +31,13 @@ export function ActionButtons(props) {
 
 	return <div className={'d-flex margin-bottom-30'.classNames() + 'action-buttons'.classNames(style)}>
 		{onBack && <div className={'back-button-container'.classNames(style)}>
-			<button className={'d-inline-block button button-primary button-outlined button-outlined-secondary button-full-width'.classNames() + 'back'.classNames(style)} onClick={onBack}>
+			<button className={'d-inline-block button button-primary button-outlined button-outlined-secondary button-full-width'.classNames()} onClick={onBack}>
 				{backText}
 			</button>
 		</div> || null}
 
 		{onNext && <div className={'flex-1'.classNames()}>
-			<button className={'button button-primary button-full-width'.classNames() + 'next'.classNames(style)} onClick={onNext}>
+			<button className={'button button-primary button-full-width'.classNames()} onClick={onNext}>
 				{nextText}
 			</button>
 		</div> || null}
@@ -106,7 +106,7 @@ export function JobEditor() {
 						style={{marginLeft: '-60px', marginRight: '-55px'}}
 						tabs={steps.map(s=>{return {
 							...s,
-							label: <span className={`font-size-15 font-weight-400 letter-spacing--3 text-color-${s.id==state.active_tab ? 'primary' : 'secondary'}`.classNames()}>
+							label: <span className={`font-size-15 font-weight-400 letter-spacing--3 text-color-${s.id==state.active_tab ? 'primary' : 'light'}`.classNames()}>
 								{s.label}
 							</span>
 						}})}/>

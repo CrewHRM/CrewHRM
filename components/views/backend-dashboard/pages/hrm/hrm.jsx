@@ -8,7 +8,7 @@ import { JobOpeningsFullView } from "./dashboard/job-openings/jobs.jsx";
 import { Applicants } from "./dashboard/applicants/applicants.jsx";
 import { StickyBar } from '../../../../materials/sticky-bar/sticky-bar.jsx';
 import { __, getRandomString } from "../../../../utilities/helpers.jsx";
-import { NotificationsEmail, NotificationsOnSite } from "./notifications/notifications.jsx";
+// import { NotificationsEmail, NotificationsOnSite } from "./notifications/notifications.jsx";
 import { NoticeBar } from "./notifications/notice/notice-bar.jsx";
 
 export const ContextBackendDashboard = createContext();
@@ -21,8 +21,8 @@ export function DashboardBar(props) {
 					{__( 'Dashboard' )}
 				</div>
 				<div className={'d-flex align-items-center column-gap-30'.classNames()}>
-					<NotificationsOnSite/>
-					<NotificationsEmail/>
+					{/* <NotificationsOnSite/>
+					<NotificationsEmail/> */}
 					<div className={'d-inline-block'.classNames()}>
 						<Link to="/dashboard/jobs/editor/new/" className={'button button-primary'.classNames()}>
 							{__( 'Create A New Job' )}
