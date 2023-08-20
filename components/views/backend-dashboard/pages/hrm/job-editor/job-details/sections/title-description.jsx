@@ -2,12 +2,13 @@ import React, { useContext, useState } from "react";
 import { ContextJobDetails } from "../job-details.jsx";
 import { DropDown } from "../../../../../../../materials/dropdown/dropdown.jsx";
 import { __ } from "../../../../../../../utilities/helpers.jsx";
-
-import style from '../details.module.scss';
 import { TextField } from "../../../../../../../materials/text-field/text-field.jsx";
 import { CircularProgress } from "../../../../../../../materials/progress/circular.jsx";
+import { AddDepartmentModal } from "./add-department.jsx";
 
-export function TitleAndDescription(props) {
+import style from '../details.module.scss';
+
+export function TitleAndDescription() {
 	const {
 		textarea_class, 
 		input_class, 
@@ -15,16 +16,19 @@ export function TitleAndDescription(props) {
 		field_label_class,
 		departments,
 		values,
-		setVal} = useContext(ContextJobDetails);
+		setVal,
+		addDepartMent} = useContext(ContextJobDetails);
 
 	const [state, setState] = useState({
-		show_new_department_modal: false,
+		department_modal: false,
 		title_allowed_length: 200
 	});
 
 	const job_title_length = values.job_title?.length || 0;
 
 	return <>
+		{state.department_modal && <AddDepartmentModal addDepartMent={d=>{addDepartMent(d); setState({department_modal: false});}}/> || null}
+
 		{/* Form intro */}
 		<div className={'d-flex margin-bottom-30'.classNames()}>
 			<div className={'flex-1'.classNames()}>
@@ -94,7 +98,7 @@ export function TitleAndDescription(props) {
 							className={input_class}
 							tabindex={2}
 							addText={__( 'Add Depertment' )}
-							onAddClick={()=>setState({show_new_department_modal: true})}
+							onAddClick={()=>setState({department_modal: true})}
 							textClassName={'font-size-17 font-weight-500 line-height-25 text-color-light'.classNames()}/>
 					</div>
 					<div className={'flex-1 margin-left-10'.classNames()}>

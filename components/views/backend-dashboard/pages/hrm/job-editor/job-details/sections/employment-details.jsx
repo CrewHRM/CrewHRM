@@ -16,11 +16,9 @@ const employments_types = {
 
 export function EmploymentDetails(props) {
 	const {
-		textarea_class, 
 		input_class, 
 		section_title_class, 
 		field_label_class,
-		departments,
 		values,
 		setVal} = useContext(ContextJobDetails);
 
@@ -59,6 +57,7 @@ export function EmploymentDetails(props) {
 							{__( 'Number of Vacancy' )}
 						</span>
 						<NumberField 
+							min={1}
 							className={input_class}
 							value={values.vacancy}
 							onChange={v=>setVal('vacancy', v)}/>
@@ -67,7 +66,9 @@ export function EmploymentDetails(props) {
 						<span className={field_label_class}>
 							{__( 'Submission Deadline' )}
 						</span>
-						<DateField className={'border-radius-10 border-1-5 border-color-tertiary padding-15'.classNames()}/>
+						<DateField 
+							className={input_class}
+							onChange={v=>{}}/>
 					</div>
 				</div>
 			</div>

@@ -13,11 +13,9 @@ const experience_levels = {
 
 export function Experience() {
 	const {
-		textarea_class, 
 		input_class, 
 		section_title_class, 
 		field_label_class,
-		departments,
 		values,
 		setVal} = useContext(ContextJobDetails);
 
@@ -40,7 +38,7 @@ export function Experience() {
 					</span>
 					<DropDown 
 						value={values.experience_level}
-						options={Object.keys(experience_levels).map(l=>{return {value: l, label: experience_levels[l]}})}
+						options={Object.keys(experience_levels).map(l=>{return {id: l, label: experience_levels[l]}})}
 						onChage={v=>setVal('experience_level', v)}
 						className={input_class}/>
 				</div>

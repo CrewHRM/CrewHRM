@@ -1,6 +1,6 @@
 import React, {useContext} from "react";
 
-import { __, getCountries } from "../../../../../../../utilities/helpers.jsx";
+import { __, countries_array } from "../../../../../../../utilities/helpers.jsx";
 import { ContextJobDetails } from "../job-details.jsx";
 import style from '../details.module.scss';
 import { DropDown } from "../../../../../../../materials/dropdown/dropdown.jsx";
@@ -11,16 +11,12 @@ const location_types = {
 	hybrid  : __( 'Hybrid' )
 }
 
-const country_options = getCountries(true);
-
 export function Location() {
 
 	const {
-		textarea_class, 
 		input_class, 
 		section_title_class, 
 		field_label_class,
-		departments,
 		values,
 		setVal} = useContext(ContextJobDetails);
 
@@ -42,8 +38,9 @@ export function Location() {
 				</span>
 				{Object.keys(location_types).map(type=>{
 					return <div key={type} className={'d-inline-block margin-right-20'.classNames()}>
-						<label key={type} className={input_class}>
-							<input type="checkbox"/> {location_types[type]}
+						<label key={type} className={input_class + 'd-flex align-items-center column-gap-8'.classNames()} style={{paddingTop: 0, paddingBottom: 0}}>
+							<input type="checkbox"/>
+							<span>{location_types[type]}</span>
 						</label>
 					</div>
 				})}
@@ -90,7 +87,7 @@ export function Location() {
 					</span>
 					<DropDown
 						value={values.country_code}
-						options={country_options}
+						options={countries_array}
 						onChange={v=>setVal('country_code', v)}
 						className={input_class}/>
 				</div>

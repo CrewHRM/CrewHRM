@@ -2,8 +2,6 @@ import React, {useContext} from "react";
 
 import { __ } from "../../../../../../../utilities/helpers.jsx";
 import { ContextJobDetails } from "../job-details.jsx";
-import { NumberField } from "../../../../../../../materials/number-field/number-field.jsx";
-import { DateField } from "../../../../../../../materials/date-time/date-time.jsx";
 import style from '../details.module.scss';
 import { DropDown } from "../../../../../../../materials/dropdown/dropdown.jsx";
 
@@ -18,11 +16,9 @@ const salary_types = {
 export function Salary() {
 
 	const {
-		textarea_class, 
 		input_class, 
 		section_title_class, 
 		field_label_class,
-		departments,
 		values,
 		setVal} = useContext(ContextJobDetails);
 
@@ -45,15 +41,16 @@ export function Salary() {
 				{/* Employment type */}
 				<div className={'d-flex margin-bottom-30'.classNames() + 'type-selection'.classNames(style)}>
 					{Object.keys(salary_types).map(type=>{
+						const is_selected = values.salary_type===type;
 						return <div key={type} className={'flex-1'.classNames()}>
-							<button className={'button button-primary button-outlined w-full'.classNames()}>
+							<button className={`button button-primary ${is_selected ? '' : 'button-outlined'} button-outlined w-full`.classNames()} onClick={()=>setVal('salary_type', type)}>
 								{salary_types[type]}
 							</button>
 						</div>
 					})}
 				</div>
 
-				{/* Vacancy and Deadline */}
+				{/* Salary and Currency */}
 				<div className={'d-flex'.classNames()}>
 					<div className={'flex-1 margin-right-10'.classNames()}>
 						<span className={field_label_class + 'white-space-nowrap'.classNames()}>
@@ -61,7 +58,7 @@ export function Salary() {
 						</span>
 						<DropDown
 							value={values.currency}
-							options={Intl.supportedValuesOf('currency').map(c=>{return {value: c, label: c}})}
+							options={Intl.supportedValuesOf('currency').map(c=>{return {id: c, label: c}})}
 							onChange={v=>setVal('currency', v)}
 							className={input_class}/>
 					</div>
