@@ -45,7 +45,7 @@ function ShareModalHandler(props) {
 				</span>
 			</div>
 			<div>
-				<i className={'ch-icon ch-icon-times font-size-18 text-color-light cursor-pointer'.classNames()} onClick={()=>close()}></i>
+				<i className={'ch-icon ch-icon-times font-size-18 text-color-light cursor-pointer'.classNames()} onClick={close}></i>
 			</div>
 		</div>
 		<div className={'d-flex align-items-center justify-content-space-between padding-vertical-40'.classNames()}>

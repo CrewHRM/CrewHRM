@@ -7,6 +7,21 @@ default style for popup
 */
 .popup-content {
 	margin: auto;
+
+	&.popup {
+		width: auto;
+	}
+
+	&.modal {
+		height: 100%;
+		display: flex;
+		align-items: center;
+
+		&>div{
+			max-height: 80%;
+			overflow: auto;
+		}
+	}
 }
 
 .popup-arrow {

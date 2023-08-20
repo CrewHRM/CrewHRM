@@ -14,6 +14,7 @@ const list_class = 'padding-vertical-8 padding-horizontal-20 cursor-pointer'.cla
 export function DropDown(props) {
 	const {
 		value: selected_value, 
+		nested=false,
 		options, 
 		onChange, 
 		transparent, 
@@ -45,6 +46,7 @@ export function DropDown(props) {
 			mouseEnterDelay={0}
 			contentStyle={{...content_style, ...cssStyle}}
 			arrow={false}
+			nested={nested}
 			trigger={triggerPoint}>
 				{close=>{
 					return <div className={"select-dropdown-popup".classNames(style) + 'box-shadow-thick border-radius-10 border-1-5 border-color-tertiary background-color-white'.classNames()} style={ref.current ? {width: ref.current.clientWidth+'px'} : {}}>
@@ -98,8 +100,9 @@ export function Options(props) {
 				return <div className={"options-popup".classNames(style) + 'box-shadow-thick border-radius-10 border-1-5 border-color-tertiary background-color-white'.classNames()}>
 					<div className={'list-wrapper'.classNames(style)}>
 						{options.map(option=>{
-							let {value, label} = option;
+							let {value, label, icon} = option;
 							return <div key={value} className={'list-item'.classNames(style) + list_class} onClick={()=>{onClick(value); close();}}>
+								{icon && <i className={icon + 'margin-right-10'.classNames()}></i> || null}
 								{label}
 							</div>
 						})}

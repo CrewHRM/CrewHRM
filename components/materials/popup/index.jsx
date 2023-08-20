@@ -180,7 +180,7 @@ export const Popup = forwardRef(
       }
     }
     // hooks
-    useOnEscape(closePopup, closeOnEscape) // can be optimized if we disabled for hover
+    // useOnEscape(closePopup, closeOnEscape) // can be optimized if we disabled for hover
     useTabbing(contentRef, isOpen && isModal)
     useRepositionOnResize(setPosition, repositionOnResize)
     useOnClickOutside(
@@ -230,7 +230,7 @@ export const Popup = forwardRef(
         : styles.popupContent.tooltip
 
       const childrenElementProps = {
-        className: `popup-content ${
+        className: `popup-content ${isModal ? 'modal' : 'popup'} ${
           className !== ""
             ? className
                 .split(" ")
