@@ -45,17 +45,6 @@ export function HiringFlow(props) {
 		})
 	}
 
-	const deleteStage=(id)=>{
-		const index = state.sequences.findIndex(stage=>stage.id===id);
-		const {sequences} = state;
-		sequences.splice( index, 1 );
-		
-		setState({
-			...state,
-			sequences
-		});
-	}
-
 	const renameStage=(id, label)=>{
 		const {sequences} = state;
 		const index = sequences.findIndex(s=>s.id==id);
@@ -67,11 +56,19 @@ export function HiringFlow(props) {
 		});
 	}
 
-	const closeModals=()=>{
+	const deleteFlow=(id)=>{
+		const {sequences=[]} = state;
+
+		if (id!==null) {
+			const index = sequences.findIndex(s=>s.id===id);
+			sequences.splice(index, 1);
+		}
+		
 		setState({
 			...state,
+			sequences,
 			confirm_modal_for : null
-		})
+		});
 	}
 
 	useEffect(()=>{
@@ -98,7 +95,13 @@ export function HiringFlow(props) {
 	}, [state.sequences]);
 
 	return <div className={'hiring'.classNames(style)}>
-		{state.confirm_modal_for && <DeletionConfirm onClose={closeModals}/> || null}
+		{state.confirm_modal_for && 
+			<DeletionConfirm 
+				stage={state.sequences.find(s=>s.id==state.confirm_modal_for)}
+				closeModal={()=>deleteFlow(null)} 
+				deleteFlow={()=>deleteFlow(state.confirm_modal_for)}/> || null
+		}
+		
 		<span className={'d-block font-size-20 font-weight-600 text-color-primary margin-bottom-40'.classNames()}>
 			{__( 'Hiring stage' )}
 		</span>

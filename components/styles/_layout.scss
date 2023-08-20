@@ -91,7 +91,7 @@ $v_alignments: 'middle', 'top';
 }
 
 // Positions
-$positions: 'absolute', 'fixed', 'static';
+$positions: 'absolute', 'fixed', 'static', 'relative';
 @each $position in $positions {
 	.position-#{$position} {
 		position: #{$position};
@@ -133,6 +133,14 @@ $wraps: 'wrap', 'nowrap';
 	}
 }
 
+// Autos
+$autos: 'width', 'height', 'margin';
+@each $auto in $autos {
+	.#{$auto}-auto {
+		#{$auto}: auto;
+	}
+}
+
 .align-items-center {
 	align-items: center;
 }
@@ -170,4 +178,10 @@ $wraps: 'wrap', 'nowrap';
 
 .line-clamp-2 {
   -webkit-line-clamp: 2;
+}
+
+.appearance-none {
+	appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
 }

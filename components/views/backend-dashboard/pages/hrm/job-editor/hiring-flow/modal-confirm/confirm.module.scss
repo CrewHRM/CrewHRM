@@ -1,8 +1,9 @@
-.confirm {
+.move, .confirm {
 	width: 619px;
-	max-width: 100%;
-	padding: 70px 80px;
-	
+	padding: 40px 50px;
+}
+
+.confirm {
 	.cancel-button {
 		width: 118px;
 		color: var(--crewhrm-color-text-light);
@@ -23,10 +24,4 @@
 		border-color: var(--crewhrm-color-danger);
 		color: white;
 	}
-}
-
-.move {
-	padding: 70px 80px;
-	width: 619px;
-	max-width: 100%;
 }

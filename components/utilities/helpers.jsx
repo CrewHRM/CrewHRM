@@ -11,9 +11,9 @@ export function getElementDataSet(element){
 }
 
 export function getRandomString(){
-  const timestamp = new Date().getTime().toString();
-  const randomPortion = Math.random().toString(36).substring(2);
-  return timestamp + randomPortion;
+	const timestamp = new Date().getTime().toString();
+	const randomPortion = Math.random().toString(36).substring(2);
+	return '_' + timestamp + randomPortion;
 }
 
 export function __( txt ) {
@@ -86,7 +86,7 @@ export function getCountries(ret_array=false, lang = 'en') {
             if (code !== name) {
 				if (ret_array) {
 					countries_array.push({
-						value: code,
+						id: code,
 						label: name
 					});
 				} else {
@@ -108,3 +108,5 @@ export function copyToClipboard(text, addToast) {
 		addToast( __( 'Error copying to clipboard' ) );
     });
 }
+
+export const countries_array = getCountries(true);

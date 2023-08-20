@@ -186,6 +186,7 @@ export function ApplicationForm(props) {
 			// This block means it's new, so assign an ID and then push to state
 			fields[section_name].fields.push({
 				...updated_field, 
+				enabled: true,
 				id: getRandomString()
 			})
 		} else {
@@ -232,7 +233,7 @@ export function ApplicationForm(props) {
 
 				const options_array = Object.keys(options).map(option_name=>{
 						return {
-							value : option_name, 
+							id    : option_name, 
 							label : options[option_name].label, 
 							icon  : options[option_name].icon.classNames() + 'font-size-24 text-color-primary'.classNames()
 						}

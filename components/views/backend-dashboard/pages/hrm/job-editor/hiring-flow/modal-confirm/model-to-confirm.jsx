@@ -1,6 +1,6 @@
-import React, { useContext, useState } from "react";
-import { ContextModal, Modal } from "../../../../../../../materials/modal/modal.jsx";
-import { __ } from "../../../../../../../utilities/helpers.jsx";
+import React, { useState } from "react";
+import { Modal } from "../../../../../../../materials/modal/modal.jsx";
+import { __, sprintf } from "../../../../../../../utilities/helpers.jsx";
 
 import avatar from '../../../../../../../images/avatar.svg';
 import style from './confirm.module.scss';
@@ -8,15 +8,14 @@ import { CoverImage } from "../../../../../../../materials/image/image.jsx";
 import { DropDown } from "../../../../../../../materials/dropdown/dropdown.jsx";
 import { sequences } from "../hiring-flow.jsx";
 
-function Content({stage_id, openMoveDiloague}) {
-	const {close}    = useContext(ContextModal);
+function Content({stage, openMoveDiloague, closeModal}) {
 	const btn_class  = 'font-size-15 font-weight-400 letter-spacing--3 padding-vertical-10 padding-horizontal-15 border-radius-5 border-1-5 border-color-tertiary cursor-pointer'.classNames();
 
-	return <div className={'confirm'.classNames(style) + 'background-color-white border-radius-10 text-align-center'.classNames()}>
+	return <div className={'confirm'.classNames(style) + 'text-align-center'.classNames()}>
 		<span className={'d-block font-size-24 font-weight-500 line-height-32 letter-spacing--3 text-color-primary margin-bottom-30'.classNames()}>
 			{__( 'Are you sure, you want to delete this item. We won\'t be able to recover it.' )}
 		</span>
-		<button className={'cancel-button'.classNames(style) + btn_class + 'margin-right-20'.classNames()} onClick={close}>
+		<button className={'cancel-button'.classNames(style) + btn_class + 'margin-right-20'.classNames()} onClick={closeModal}>
 			{__( 'Cancel' )}
 		</button>
 		<button className={'delete-button'.classNames(style) + btn_class} onClick={openMoveDiloague}>
@@ -25,14 +24,18 @@ function Content({stage_id, openMoveDiloague}) {
 	</div>
 }
 
-function MoveContent({total, users=[]}) {
-	const {close}  = useContext(ContextModal);
+function MoveContent({stage, total, users=[], closeModal, deleteFlow}) {
 	const more = total-users.length;
+	const [state, setState] = useState({
+		move_to: null
+	});
 	
-	return <div className={'move'.classNames(style) + 'background-color-white border-radius-10 text-align-center position-relative'.classNames()}>
-		<i className={'ch-icon ch-icon-times font-size-24 text-color-light position-absolute right-22 top-22 cursor-pointer'.classNames()} onClick={close}></i>
+	return <div className={'move'.classNames(style) + 'position-relative'.classNames()}>
+		<i 
+			className={'ch-icon ch-icon-times font-size-24 text-color-light position-absolute right-0 top-0 cursor-pointer'.classNames()} 
+			onClick={closeModal}></i>
 		
-		<div className={'d-inline-flex align-items-center'.classNames()}>
+		<div className={'d-flex align-items-center justify-content-center'.classNames()}>
 			{users.map(({user_id, avatar_url}, index)=>{
 				return <div key={user_id} className={'d-inline-block'.classNames()} style={index ? {marginLeft: '-12px'} : {}}>
 					<CoverImage src={avatar_url} circle={true} width={42}/>
@@ -48,9 +51,13 @@ function MoveContent({total, users=[]}) {
 			</div> || null}
 		</div>
 		
-		<div className={'margin-top-20 margin-bottom-20'.classNames()}>
+		<div className={'margin-top-20 margin-bottom-20 text-align-center'.classNames()}>
 			<span className={'d-block font-size-15 font-weight-400 letter-spacing--3 text-color-light margin-bottom-5'.classNames()}>
-				{__( 'About 51 candidates are in the interview stage. ' )}
+				{
+					total>1 ? 
+						sprintf( __( 'About %s candidates are in the %s stage.' ), total, stage.label ) : 
+						sprintf( __( '1 candidate is in the %s stage.' ), stage.label )
+				}
 			</span>
 
 			<span className={'d-block font-size-24 font-weight-500 line-height-32 letter-spacing--3 text-color-primary'.classNames()}>
@@ -58,20 +65,22 @@ function MoveContent({total, users=[]}) {
 			</span>
 		</div>
 
-		<div>
+		<div className={'margin-auto'.classNames()} style={{maxWidth: '356px'}}>
 			<span className={"d-block font-size-15 font-weight-400 letter-spacing--3 text-color-light margin-bottom-10".classNames()}>
 				{__( 'Move to' )}
 			</span>
 
-			<div className={'d-flex align-items-center column-gap-10'.classNames()} style={{width: '400px'}}>
+			<div className={'d-flex align-items-center column-gap-10'.classNames()}>
 				<div className={'flex-1'.classNames()}>
 					<DropDown 
-						className={'w-full padding-vertical-5 padding-horizontal-12 border-1 border-color-primary'.classNames()}
-						value="assessment" 
-						options={sequences.map(s=>{return {value: s.id, label: s.label}})}/> 
+						className={'w-full padding-vertical-5 padding-horizontal-12 border-1 border-color-primary height-40'.classNames()}
+						value={state.move_to}
+						options={sequences}
+						onChange={move_to=>setState({move_to})}
+						labelFallback={__( 'Select Stage' )}/> 
 				</div>
-				<div style={{width: '110px'}}>
-					<button className={'button button-primary'.classNames()}>
+				<div>
+					<button className={'button button-primary'.classNames()} onClick={deleteFlow} disabled={!state.move_to}>
 						{__( 'Move' )}
 					</button>
 				</div>
@@ -102,12 +111,14 @@ export function DeletionConfirm(props) {
 
 	return <>
 		{/* Confirm Modal */}
-		{!state.show_move_modal && <Modal onClose={props.onClose}>
-			<Content {...props} openMoveDiloague={()=>setState({...state, show_move_modal: true})}/>
+		{!state.show_move_modal && <Modal>
+			<Content 
+				{...props} 
+				openMoveDiloague={()=>setState({...state, show_move_modal: true})}/>
 		</Modal> || null}
 
 		{/* Move Modal */}
-		{state.show_move_modal && <Modal onClose={props.onClose}>
+		{state.show_move_modal && <Modal>
 			<MoveContent 
 				{...props} 
 				total={state.total_users} 
