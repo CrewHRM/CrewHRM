@@ -52,20 +52,6 @@ export function Sidebar() {
 				placeholder={__( 'Search by name' )}/>
 		</div>
 
-		<div className={'filter'.classNames(style) + 'd-flex align-items-center'.classNames()}>
-			<div className={'flex-1'.classNames()}>
-				<label>
-					<input type="checkbox"/>
-					<span className={'font-size-15 font-weight-400 text-color-light vertical-align-middle margin-left-10'.classNames()}>
-						{__( 'Select All' )}
-					</span>
-				</label>
-			</div>
-			<div>
-				<i className={'ch-icon ch-icon-filter font-size-20 text-color-light'.classNames()}></i>
-			</div>
-		</div>
-
 		<Line/>
 
 		<div className={'list'.classNames(style)}>
@@ -74,8 +60,7 @@ export function Sidebar() {
 
 				return <div key={application_id}>
 					<div className={'d-flex align-items-center'.classNames()}>
-						<input type="checkbox"/>
-						<CoverImage src={src} width={48} circle={true} className={'margin-left-15'.classNames()}/>
+						<CoverImage src={src} width={48} circle={true}/>
 						<div className={'flex-1 margin-left-10'.classNames()}>
 							<span className={'d-block font-size-17 font-weight-600 letter-spacing--17 text-color-primary margin-bottom-2'.classNames()}>
 								{name}
@@ -83,9 +68,6 @@ export function Sidebar() {
 							<span className={'font-size-13 font-weight-400 line-height-24 text-color-light'.classNames()}>
 								{action_time}
 							</span>
-						</div>
-						<div>
-							<i className={'ch-icon ch-icon-more font-size-20 text-color-light margin-left-15'.classNames()}></i>
 						</div>
 					</div>
 				</div>

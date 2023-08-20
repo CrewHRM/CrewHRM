@@ -45,14 +45,13 @@ export function Header(props) {
 						textClassName={'font-size-24 font-weight-600 text-color-primary'.classNames()}/>
 				</div>
 			</div>
-			<div className={'d-flex align-items-center'.classNames()}>
+			<div className={'d-flex align-items-center column-gap-15'.classNames()}>
 				<a href="#" className={'font-size-15 font-weight-400 text-color-primary'.classNames()}>
 					{__( 'View Post' )}
 				</a>
-				<button className={'button button-primary button-outlined button-small margin-left-15'.classNames()}>
+				<button className={'button button-primary button-outlined button-small'.classNames()}>
 					{__( 'Add Candidates' )}
 				</button>
-				<i className={'ch-icon ch-icon-more font-size-20 text-color-light cursor-pointer margin-left-15'.classNames()}></i>
 			</div>
 		</div>
 		<div>

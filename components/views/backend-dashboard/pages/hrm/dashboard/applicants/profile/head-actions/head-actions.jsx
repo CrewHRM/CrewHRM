@@ -79,18 +79,16 @@ export function HeadActions() {
 					className={'ch-icon ch-icon-slash text-color-danger font-size-20 cursor-pointer'.classNames()} 
 					onClick={()=>disqualifyApplicant()}></i>
 			</div>
-			<div className={'d-flex align-items-center'.classNames()}>
+			<div className={'d-flex align-items-center column-gap-10'.classNames()}>
 				<span className={'font-size-15 font-weight-400 text-color-primary'.classNames()}>
 					{__( 'Move to' )}
 				</span>
 
 				<DropDown 
-					className={'padding-vertical-5 padding-horizontal-12 margin-left-10 margin-right-10 border-1 border-color-primary border-radius-5'.classNames()}
+					className={'padding-vertical-5 padding-horizontal-12 border-1 border-color-primary border-radius-5'.classNames()}
 					value={state.current_application_stage}
-					options={application_stages.map(s=>{return {value: s.id, label: s.label}})}
+					options={application_stages}
 					onChange={s=>setState({...state, current_application_stage: s})}/>
-
-				<i className={'ch-icon ch-icon-more font-size-20 text-color-light cursor-pointer'.classNames()}></i>
 			</div>
 		</div>
 		

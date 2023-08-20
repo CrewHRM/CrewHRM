@@ -14,7 +14,7 @@ const jobs = [
 	'Junior React Developer'
 ].map((j, i)=>{
 	return {
-		value: i+1,
+		id: i+1,
 		label: j
 	}
 });

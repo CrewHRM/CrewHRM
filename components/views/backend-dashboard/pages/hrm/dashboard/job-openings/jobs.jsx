@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { __, getCountries } from "../../../../../../utilities/helpers.jsx";
+import { __, countries_array } from "../../../../../../utilities/helpers.jsx";
 
 import style from './jobs.module.scss';
 import { StatusDot } from "../../../../../../materials/status-dot/status-dots.jsx";
@@ -132,12 +132,14 @@ export function JobOpenings(props) {
 		}
 	}
 
-	const filter_status_options = status_keys.map(key=>{return {value: key, label: statuses[key].label}});
+	const filter_status_options = status_keys.map(key=>{return {id: key, label: statuses[key].label}});
 
 	return <div className={'jobs'.classNames(style) + className}>
 		{
 			state.share_link && 
-			<ShareModal url={state.share_link} onClose={()=>setState({...state, share_link: null})}/> || null
+			<ShareModal 
+				url={state.share_link} 
+				closeModal={()=>setState({...state, share_link: null})}/> || null
 		}
 		
 		<div className={'d-flex align-items-center margin-bottom-20'.classNames() + 'filter'.classNames(style)}>
@@ -156,7 +158,7 @@ export function JobOpenings(props) {
 						transparent={is_overview}
 						labelFallback={__( 'All Location' )}
 						value={state.filter.country_code} 
-						options={getCountries(true)} 
+						options={countries_array} 
 						onChange={(v)=>onChange('country_code', v)}/>
 				</div>
 				<div className={'d-inline-block'.classNames()} style={{minWidth: '113px'}}>
@@ -197,7 +199,7 @@ export function JobOpenings(props) {
 
 					const actions = options.filter(o=>o.for==='all' || o.for.indexOf(job_status)>-1).map(o=>{
 						return {
-							value: o.name,
+							id: o.name,
 							label: <span className={'d-inline-flex align-items-center column-gap-10'.classNames()}>
 								<i className={o.icon.classNames() + 'font-size-24 text-color-primary'.classNames()}></i>
 								<span className={'font-size-15 font-weight-500 line-height-25 text-color-primary'.classNames()}>
@@ -214,7 +216,7 @@ export function JobOpenings(props) {
 									<div className={"d-inline-block margin-right-8".classNames()} title={status_label}>
 										<StatusDot color={status_color}/>
 									</div>
-									<span className={"job-title".classNames(style) + 'd-block text-color-primary font-size-20 font-weight-600'.classNames()}>
+									<span className={'d-block text-color-primary font-size-20 font-weight-600'.classNames()}>
 										{job_title}
 									</span>
 								</div>
