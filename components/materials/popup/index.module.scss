@@ -20,6 +20,11 @@ default style for popup
 		&>div{
 			max-height: 80%;
 			overflow: auto;
+			background-color: white;
+			border-radius: 10px; 
+			padding: 30px;
+			min-width: 586px;
+			max-width: 100%;
 		}
 	}
 }

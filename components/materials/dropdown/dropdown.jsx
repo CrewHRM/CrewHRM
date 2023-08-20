@@ -32,7 +32,7 @@ export function DropDown(props) {
 	const ref = useRef();
 	const triggerPoint= <div tabIndex={tabindex} className={`select-dropdown ${transparent ? 'transparent' : ''}`.classNames(style) + 'cursor-pointer d-flex align-items-center border-radius-5'.classNames() + className}>
 		<span className={'flex-1'.classNames() + textClassName}>
-			{selected_value!==undefined ? (options.find(o=>o.value===selected_value)?.label || labelFallback) : labelFallback}
+			{selected_value!==undefined ? (options.find(o=>o.id===selected_value)?.label || labelFallback) : labelFallback}
 		</span>
 		<i className={iconClassName}></i>
 	</div>
@@ -55,9 +55,9 @@ export function DropDown(props) {
 						</div>
 						<div className={'list-wrapper'.classNames(style)}>
 							{options.map(option=>{
-								let {value, label} = option;
-								let classes = `list-item ${value == selected_value ? 'active' : ''}`;
-								return <div key={value} className={classes.classNames(style) + list_class} onClick={()=>{onChange(value); close();}}>
+								let {id, label} = option;
+								let classes = `list-item ${id == selected_value ? 'active' : ''}`;
+								return <div key={id} className={classes.classNames(style) + list_class} onClick={()=>{onChange(id); close();}}>
 									{label}
 								</div>
 							})}
@@ -100,8 +100,8 @@ export function Options(props) {
 				return <div className={"options-popup".classNames(style) + 'box-shadow-thick border-radius-10 border-1-5 border-color-tertiary background-color-white'.classNames()}>
 					<div className={'list-wrapper'.classNames(style)}>
 						{options.map(option=>{
-							let {value, label, icon} = option;
-							return <div key={value} className={'list-item'.classNames(style) + list_class} onClick={()=>{onClick(value); close();}}>
+							let {id, label, icon} = option;
+							return <div key={id} className={'list-item'.classNames(style) + list_class} onClick={()=>{onClick(id); close();}}>
 								{icon && <i className={icon + 'margin-right-10'.classNames()}></i> || null}
 								{label}
 							</div>

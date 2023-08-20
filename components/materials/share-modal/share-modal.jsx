@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { ContextModal, Modal } from "../modal/modal.jsx";
+import { Modal } from "../modal/modal.jsx";
 import { __, copyToClipboard } from "../../utilities/helpers.jsx";
 
 import facebook from '../../images/brands/facebook.svg';
@@ -32,12 +32,11 @@ const targets = [
 	},
 ];
 
-function ShareModalHandler(props) {
-	const {url} = props;
-	const {close} = useContext(ContextModal);
+export function ShareModal(props) {
+	const {url, closeModal} = props;
 	const {addToast} = useContext(ContextToast);
 
-	return <div className={'background-color-white border-radius-10 padding-30'.classNames()} style={{width: '586px', maxWidth: '100%'}}>
+	return <Modal>
 		<div className={'d-flex align-items-center'.classNames()}>
 			<div className={'flex-1'.classNames()}>
 				<span className={'font-size-20 font-weight-500 text-color-primary'.classNames()}>
@@ -45,7 +44,7 @@ function ShareModalHandler(props) {
 				</span>
 			</div>
 			<div>
-				<i className={'ch-icon ch-icon-times font-size-18 text-color-light cursor-pointer'.classNames()} onClick={close}></i>
+				<i className={'ch-icon ch-icon-times font-size-18 text-color-light cursor-pointer'.classNames()} onClick={closeModal}></i>
 			</div>
 		</div>
 		<div className={'d-flex align-items-center justify-content-space-between padding-vertical-40'.classNames()}>
@@ -69,11 +68,5 @@ function ShareModalHandler(props) {
 				</span>
 			</span>
 		</div>
-	</div>
-}
-
-export function ShareModal(props) {
-	return <Modal onClose={props.onClose}>
-		<ShareModalHandler {...props}/>
 	</Modal>
 }

@@ -6,7 +6,7 @@ export function DateField(props) {
 	let {onChange, className, inputClassName} = props;
 
 	return <TextField
-		iconClass={"ch-icon ch-icon-calendar".classNames()}
+		/* iconClass={"ch-icon ch-icon-calendar".classNames()} */
 		type="date"
 		pattern="\d{4}-\d{2}-\d{2}"
 		icon_position="right"

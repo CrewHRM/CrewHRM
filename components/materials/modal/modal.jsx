@@ -1,15 +1,12 @@
 import React, { createContext } from "react";
 import { Popup } from "../popup/index.jsx";
 
-export const ContextModal = createContext();
-
 export function Modal(props) {
 	const {
 		trigger,
 		children,
 		nested = false,
 		open = true,
-		closeOnDocumentClick=true,
 		onClose = () => {},
 		style: cssStyle={}
 	} = props;
@@ -20,13 +17,12 @@ export function Modal(props) {
 		darken={true}
 		arrow={false}
 		nested={nested}
-		closeOnDocumentClick={closeOnDocumentClick}
+		closeOnDocumentClick={false}
 		trigger={trigger}
 		onClose={onClose}
-		lockScroll={true}
 		contentStyle={{...cssStyle}}>
-			{close=><ContextModal.Provider value={{close: ()=>close()}}>
+			<div>
 				{children}
-			</ContextModal.Provider>}
+			</div>
     </Popup>	
 }
