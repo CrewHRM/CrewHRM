@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 
 import '../../utilities/prototypes.jsx';
-import { HRM } from "./pages/hrm/hrm.jsx";
+import { HRM } from "./hrm.jsx";
 import { getElementDataSet } from "../../utilities/helpers.jsx";
 import { MountPoint } from "../../materials/mount-points/templates.jsx";
 
