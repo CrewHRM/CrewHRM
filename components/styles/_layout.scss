@@ -115,6 +115,13 @@ $borders: 'border', 'border-bottom', 'border-top', 'border-left', 'border-right'
 			#{$border}-style: solid;
 		}
 	}
+
+	.#{$border}-5 {
+		&, &[type] {
+			#{$border}-width: 5px;
+			#{$border}-style: solid;
+		}
+	}
 }
 
 // Flex flows
@@ -141,8 +148,11 @@ $autos: 'width', 'height', 'margin';
 	}
 }
 
-.align-items-center {
-	align-items: center;
+$aligns: 'center', 'start', 'end', 'flex-start', 'flex-end', 'stretch';
+@each $align in $aligns {
+	.align-items-#{$align} {
+		align-items: #{$align};
+	}
 }
 
 .h-full {

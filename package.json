@@ -34,6 +34,7 @@
     "gulp-wp-pot": "^2.5.0",
     "gulp-zip": "^5.1.0",
     "javascript-time-ago": "^2.5.9",
+    "moment-timezone": "^0.5.43",
     "node-sass": "^9.0.0",
     "path": "^0.12.7",
     "react": "^18.2.0",

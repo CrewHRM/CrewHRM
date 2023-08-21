@@ -15,8 +15,6 @@ function getPopupStyle(classNames) {
 	classNames = classNames.split(' ').map(c=>c.trim()).filter(c=>c.indexOf('crewhrm-')===0).map(c=>c.replace('crewhrm-', ''));
 	const styles = {};
 
-	console.log(classNames );
-
 	for( let i=0; i<classNames.length; i++ ) {
 		// Get border radius
 		if (classNames[i].indexOf('border-radius-')===0) {
@@ -32,7 +30,7 @@ export function DropDown(props) {
 	const {
 		value: selected_value, 
 		nested=false,
-		options, 
+		options=[], 
 		onChange, 
 		transparent, 
 		className='',

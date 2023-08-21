@@ -51,7 +51,9 @@ module.exports = (env, options) => {
 		{
 			dest_path: './dist',
 			src_files: {
-				'backend-dashboard': './components/views/hrm/index.jsx'
+				'hrm'      : './components/views/hrm/index.jsx',
+				'careers'  : './components/views/careers/index.jsx',
+				'settings' : './components/views/settings/index.jsx'
 			},
 		}
 	];

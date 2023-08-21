@@ -14,6 +14,14 @@ $whitespaces: 'normal', 'pre', 'nowrap';
 	}
 }
 
+// Transforms
+$transforms: 'uppercase', 'lowercase';
+@each $transform in $transforms {
+	.text-transform-#{$transform} {
+		text-transform: #{$transform};
+	}
+}
+
 .text-field-flat {
 	padding: 0 !important;
 	margin: 0 !important;

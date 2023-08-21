@@ -1,3 +1,4 @@
+import {tz} from 'moment-timezone';
 import icons from '../icons/crewhrm/style.module.scss';
 
 export function getElementDataSet(element){
@@ -110,3 +111,4 @@ export function copyToClipboard(text, addToast) {
 }
 
 export const countries_array = getCountries(true);
+export const timezones_array = tz.names().map(z=>{return {id: z, label: z}});

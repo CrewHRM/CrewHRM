@@ -6,7 +6,7 @@ import { HRM } from "./hrm.jsx";
 import { getElementDataSet } from "../../utilities/helpers.jsx";
 import { MountPoint } from "../../materials/mount-points/templates.jsx";
 
-const hrm = document.getElementById('crewhrm_backend_main_page');
+const hrm = document.getElementById('crewhrm_dashboard');
 if ( hrm ) {
 	ReactDOM.createRoot(hrm).render(
 		<MountPoint element={hrm}>
