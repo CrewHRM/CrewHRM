@@ -1,11 +1,11 @@
 import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { __ } from "../../../../../../../utilities/helpers.jsx";
-import { StatusDot } from "../../../../../../../materials/status-dot/status-dots.jsx";
-import { DropDown } from "../../../../../../../materials/dropdown/dropdown.jsx";
+import { __ } from "../../../../../utilities/helpers.jsx";
+import { StatusDot } from "../../../../../materials/status-dot/status-dots.jsx";
+import { DropDown } from "../../../../../materials/dropdown/dropdown.jsx";
 import { ContextApplicants } from "../applicants.jsx";
-import { Tabs } from "../../../../../../../materials/tabs/tabs.jsx";
+import { Tabs } from "../../../../../materials/tabs/tabs.jsx";
 
 import style from './header.module.scss';
 

@@ -1,9 +1,9 @@
 import React, {useContext} from "react";
 
-import { __, countries_array } from "../../../../../../../utilities/helpers.jsx";
+import { __, countries_array } from "../../../../../utilities/helpers.jsx";
 import { ContextJobDetails } from "../job-details.jsx";
 import style from '../details.module.scss';
-import { DropDown } from "../../../../../../../materials/dropdown/dropdown.jsx";
+import { DropDown } from "../../../../../materials/dropdown/dropdown.jsx";
 
 const location_types = {
 	on_site : __( 'On-Site' ),

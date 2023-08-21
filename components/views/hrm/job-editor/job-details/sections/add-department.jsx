@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { Modal } from "../../../../../../../materials/modal/modal.jsx";
-import { __, getRandomString } from "../../../../../../../utilities/helpers.jsx";
+import { Modal } from "../../../../../materials/modal/modal.jsx";
+import { __, getRandomString } from "../../../../../utilities/helpers.jsx";
 
 export function AddDepartmentModal({addDepartMent}) {
 	const [state, setState] = useState({

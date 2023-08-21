@@ -1,7 +1,7 @@
 import React, { createContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 
-import { __ } from "../../../../../../utilities/helpers.jsx";
+import { __ } from "../../../../utilities/helpers.jsx";
 import { Header } from "./header/header.jsx";
 import { Sidebar } from "./sidebar/sidebar.jsx";
 import { Profile } from "./profile/profile-wrapper.jsx";

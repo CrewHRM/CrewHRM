@@ -1,9 +1,9 @@
 import React, {useContext} from "react";
 
-import { __ } from "../../../../../../../utilities/helpers.jsx";
+import { __ } from "../../../../../utilities/helpers.jsx";
 import { ContextJobDetails } from "../job-details.jsx";
 import style from '../details.module.scss';
-import { DropDown } from "../../../../../../../materials/dropdown/dropdown.jsx";
+import { DropDown } from "../../../../../materials/dropdown/dropdown.jsx";
 
 const salary_types = {
 	hourly  : __( 'Hourly' ),

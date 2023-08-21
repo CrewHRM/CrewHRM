@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 
 import style from './application.module.scss';
-import { __, getRandomString } from "../../../../../../utilities/helpers.jsx";
-import { ToggleSwitch } from "../../../../../../materials/toggle-switch/ToggleSwitch.jsx";
+import { __, getRandomString } from "../../../../utilities/helpers.jsx";
+import { ToggleSwitch } from "../../../../materials/toggle-switch/ToggleSwitch.jsx";
 import { ActionButtons } from "../index.jsx";
-import { Options } from "../../../../../../materials/dropdown/dropdown.jsx";
+import { Options } from "../../../../materials/dropdown/dropdown.jsx";
 import { FieldEditorModal } from "./field-editor/field-editor-modal.jsx";
 
 const sections_fields = {

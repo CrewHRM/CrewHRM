@@ -1,7 +1,7 @@
 import React from "react";
 
-import img from '../../../../../../images/no-job.svg';
-import { __ } from "../../../../../../utilities/helpers.jsx";
+import img from '../../../../images/no-job.svg';
+import { __ } from "../../../../utilities/helpers.jsx";
 
 export function NoJob() {
 	return <div className={'background-color-white text-align-center padding-30 border-radius-5'.classNames()}>

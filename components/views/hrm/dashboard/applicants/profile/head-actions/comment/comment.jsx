@@ -1,5 +1,5 @@
 import React from "react";
-import { __ } from "../../../../../../../../../utilities/helpers.jsx";
+import { __ } from "../../../../../../../utilities/helpers.jsx";
 
 export function Comment(props) {
 	const {onClose} = props;

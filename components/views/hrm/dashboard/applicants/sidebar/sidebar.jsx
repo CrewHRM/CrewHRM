@@ -1,13 +1,13 @@
 import React, { useState } from "react";
-import { Tabs } from "../../../../../../../materials/tabs/tabs.jsx";
-import { __ } from "../../../../../../../utilities/helpers.jsx";
-import { TextField } from "../../../../../../../materials/text-field/text-field.jsx";
+import { Tabs } from "../../../../../materials/tabs/tabs.jsx";
+import { __ } from "../../../../../utilities/helpers.jsx";
+import { TextField } from "../../../../../materials/text-field/text-field.jsx";
 
-import dummy_avatar from '../../../../../../../images/avatar.svg';
+import dummy_avatar from '../../../../../images/avatar.svg';
 
 import style from './sidebar.module.scss';
-import { Line } from "../../../../../../../materials/line/line.jsx";
-import { CoverImage } from "../../../../../../../materials/image/image.jsx";
+import { Line } from "../../../../../materials/line/line.jsx";
+import { CoverImage } from "../../../../../materials/image/image.jsx";
 
 const applicant = {
 	application_id: 1,

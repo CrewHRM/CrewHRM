@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { __ } from "../../../../../../../../../utilities/helpers.jsx";
+import { __ } from "../../../../../../../utilities/helpers.jsx";
 
 import style from './email.module.scss';
 

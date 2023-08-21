@@ -2,10 +2,10 @@ import React from "react";
 import TimeAgo from 'javascript-time-ago'
 import en from 'javascript-time-ago/locale/en'
 
-import avatar from '../../../../../../../../images/avatar.svg';
-import attachment from '../../../../../../../../images/attachment.png';
-import { CoverImage } from "../../../../../../../../materials/image/image.jsx";
-import { Line } from "../../../../../../../../materials/line/line.jsx";
+import avatar from '../../../../../../images/avatar.svg';
+import attachment from '../../../../../../images/attachment.png';
+import { CoverImage } from "../../../../../../materials/image/image.jsx";
+import { Line } from "../../../../../../materials/line/line.jsx";
 import style from './activity.module.scss';
 
 TimeAgo.addDefaultLocale(en)

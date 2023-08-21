@@ -1,10 +1,10 @@
 import React, { useContext } from "react";
 import { ContextJobDetails } from "../job-details.jsx";
 
-import { __ } from "../../../../../../../utilities/helpers.jsx";
+import { __ } from "../../../../../utilities/helpers.jsx";
 import style from '../details.module.scss';
-import { NumberField } from "../../../../../../../materials/number-field/number-field.jsx";
-import { DateField } from "../../../../../../../materials/date-time/date-time.jsx";
+import { NumberField } from "../../../../../materials/number-field/number-field.jsx";
+import { DateField } from "../../../../../materials/date-time/date-time.jsx";
 
 const employments_types = {
 	full_type : __( 'Full Time' ),

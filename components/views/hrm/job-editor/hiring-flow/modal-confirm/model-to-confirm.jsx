@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import { Modal } from "../../../../../../../materials/modal/modal.jsx";
-import { __, sprintf } from "../../../../../../../utilities/helpers.jsx";
+import { Modal } from "../../../../../materials/modal/modal.jsx";
+import { __, sprintf } from "../../../../../utilities/helpers.jsx";
 
-import avatar from '../../../../../../../images/avatar.svg';
+import avatar from '../../../../../images/avatar.svg';
 import style from './confirm.module.scss';
-import { CoverImage } from "../../../../../../../materials/image/image.jsx";
-import { DropDown } from "../../../../../../../materials/dropdown/dropdown.jsx";
+import { CoverImage } from "../../../../../materials/image/image.jsx";
+import { DropDown } from "../../../../../materials/dropdown/dropdown.jsx";
 import { sequences } from "../hiring-flow.jsx";
 
 function Content({stage, openMoveDiloague, closeModal}) {

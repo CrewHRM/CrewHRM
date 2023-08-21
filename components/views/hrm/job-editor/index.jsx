@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { useParams } from "react-router-dom";
-import { StickyBar } from "../../../../../materials/sticky-bar/sticky-bar.jsx";
-import { __ } from "../../../../../utilities/helpers.jsx";
-import { Tabs } from "../../../../../materials/tabs/tabs.jsx";
+import { StickyBar } from "../../../materials/sticky-bar/sticky-bar.jsx";
+import { __ } from "../../../utilities/helpers.jsx";
+import { Tabs } from "../../../materials/tabs/tabs.jsx";
 
-import logo_extended from '../../../../../images/logo-extended.svg';
+import logo_extended from '../../../images/logo-extended.svg';
 import { JobDetails } from "./job-details/job-details.jsx";
 import { HiringFlow } from "./hiring-flow/hiring-flow.jsx";
 import { ApplicationForm } from "./application-form/application-form.jsx";

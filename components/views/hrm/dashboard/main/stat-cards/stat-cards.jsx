@@ -1,8 +1,8 @@
 import React from "react";
 
-import curtains from '../../../../../../../images/curtains.svg';
+import curtains from '../../../../../images/curtains.svg';
 import style from './cards.module.scss';
-import { __ } from "../../../../../../../utilities/helpers.jsx";
+import { __ } from "../../../../../utilities/helpers.jsx";
 
 const card_stats = [
 	{

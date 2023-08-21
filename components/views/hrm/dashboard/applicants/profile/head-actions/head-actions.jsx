@@ -3,8 +3,8 @@ import React, { useContext, useState } from "react";
 import style from './head.module.scss';
 import { Comment } from "./comment/comment.jsx";
 import { Email } from "./email/email.jsx";
-import { __ } from "../../../../../../../../utilities/helpers.jsx";
-import { DropDown } from "../../../../../../../../materials/dropdown/dropdown.jsx";
+import { __ } from "../../../../../../utilities/helpers.jsx";
+import { DropDown } from "../../../../../../materials/dropdown/dropdown.jsx";
 import { ContextApplicants } from "../../applicants.jsx";
 
 export function HeadActions() {

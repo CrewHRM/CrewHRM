@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { __, getRandomString } from "../../../../../../utilities/helpers.jsx";
+import { __, getRandomString } from "../../../../utilities/helpers.jsx";
 
 import style from './hiring.module.scss';
-import { SortableList } from "../../../../../../materials/dnd/sortable-list.jsx";
+import { SortableList } from "../../../../materials/dnd/sortable-list.jsx";
 import { ActionButtons } from "../index.jsx";
 import { DeletionConfirm } from "./modal-confirm/model-to-confirm.jsx";
 

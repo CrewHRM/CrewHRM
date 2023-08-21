@@ -1,17 +1,17 @@
 import React, { createContext, useState } from "react";
 
-import {__, getFlag} from '../../../../../../../utilities/helpers.jsx';
+import {__, getFlag} from '../../../../../utilities/helpers.jsx';
 import { HeadActions } from "./head-actions/head-actions.jsx";
-import { Tabs } from "../../../../../../../materials/tabs/tabs.jsx";
+import { Tabs } from "../../../../../materials/tabs/tabs.jsx";
 import { OverView } from "./overview/overview.jsx";
 import { Documents } from "./documents/documents.jsx";
 import { Activity } from "./activity/activity.jsx";
-import { CoverImage } from "../../../../../../../materials/image/image.jsx";
-import { Line } from "../../../../../../../materials/line/line.jsx";
+import { CoverImage } from "../../../../../materials/image/image.jsx";
+import { Line } from "../../../../../materials/line/line.jsx";
 
-import avatar from '../../../../../../../images/avatar.svg';
-import pdf from '../../../../../../../images/sample.pdf';
-import attachment from '../../../../../../../images/attachment.png';
+import avatar from '../../../../../images/avatar.svg';
+import pdf from '../../../../../images/sample.pdf';
+import attachment from '../../../../../images/attachment.png';
 
 import style from './profile.module.scss';
 

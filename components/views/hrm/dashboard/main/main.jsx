@@ -1,12 +1,12 @@
 import React from "react";
-import { __ } from "../../../../../../utilities/helpers.jsx";
+import { __ } from "../../../../utilities/helpers.jsx";
 
 import { StatCards } from "./stat-cards/stat-cards.jsx";
 
 import style from './main.module.scss';
 import { JobOpenings } from "../job-openings/jobs.jsx";
-import { IntroCard } from "../../../../../../materials/intro-card/intro-card.jsx";
-import { DangerouslySet } from "../../../../../../materials/dangerously-set/DangerouslySet.jsx";
+import { IntroCard } from "../../../../materials/intro-card/intro-card.jsx";
+import { DangerouslySet } from "../../../../materials/dangerously-set/DangerouslySet.jsx";
 import { Link } from "react-router-dom";
 
 export function DahboardMain() {

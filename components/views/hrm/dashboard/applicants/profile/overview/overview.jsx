@@ -1,8 +1,8 @@
 import React, { useContext } from "react";
 import { ContextApplicantProfile } from "../profile-wrapper.jsx";
-import { __, getSocialIcon, prepareTexts } from "../../../../../../../../utilities/helpers.jsx";
-import { Line } from "../../../../../../../../materials/line/line.jsx";
-import { DangerouslySet } from "../../../../../../../../materials/dangerously-set/DangerouslySet.jsx";
+import { __, getSocialIcon, prepareTexts } from "../../../../../../utilities/helpers.jsx";
+import { Line } from "../../../../../../materials/line/line.jsx";
+import { DangerouslySet } from "../../../../../../materials/dangerously-set/DangerouslySet.jsx";
 
 import style from './overview.module.scss';
 

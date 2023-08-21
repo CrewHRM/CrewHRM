@@ -1,16 +1,16 @@
 import React, { useContext } from "react";
 import { ContextApplicantProfile } from "../profile-wrapper.jsx";
-import { ExpandableContent } from "../../../../../../../../materials/ExpandableContent/expandable-content.jsx";
-import { __, prepareTexts } from "../../../../../../../../utilities/helpers.jsx";
-import { Line } from "../../../../../../../../materials/line/line.jsx";
-import { DangerouslySet } from "../../../../../../../../materials/dangerously-set/DangerouslySet.jsx";
-import { CoverImage } from "../../../../../../../../materials/image/image.jsx";
+import { ExpandableContent } from "../../../../../../materials/ExpandableContent/expandable-content.jsx";
+import { __, prepareTexts } from "../../../../../../utilities/helpers.jsx";
+import { Line } from "../../../../../../materials/line/line.jsx";
+import { DangerouslySet } from "../../../../../../materials/dangerously-set/DangerouslySet.jsx";
+import { CoverImage } from "../../../../../../materials/image/image.jsx";
 
-import { IconImage } from "../../../../../../../../materials/dynamic-svg/icon-image.jsx";
-import { IconAudio } from "../../../../../../../../materials/dynamic-svg/icon-audio.jsx";
-import { IconVideo } from "../../../../../../../../materials/dynamic-svg/icon-video.jsx";
-import { IconPDF } from "../../../../../../../../materials/dynamic-svg/icon-pdf.jsx";
-import { IconZip } from "../../../../../../../../materials/dynamic-svg/icon-zip.jsx";
+import { IconImage } from "../../../../../../materials/dynamic-svg/icon-image.jsx";
+import { IconAudio } from "../../../../../../materials/dynamic-svg/icon-audio.jsx";
+import { IconVideo } from "../../../../../../materials/dynamic-svg/icon-video.jsx";
+import { IconPDF } from "../../../../../../materials/dynamic-svg/icon-pdf.jsx";
+import { IconZip } from "../../../../../../materials/dynamic-svg/icon-zip.jsx";
 
 import style from './documents.module.scss';
 

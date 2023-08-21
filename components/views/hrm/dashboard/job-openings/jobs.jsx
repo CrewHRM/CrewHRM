@@ -1,14 +1,14 @@
 import React, { useState } from "react";
-import { __, countries_array } from "../../../../../../utilities/helpers.jsx";
+import { __, countries_array } from "../../../../utilities/helpers.jsx";
 
 import style from './jobs.module.scss';
-import { StatusDot } from "../../../../../../materials/status-dot/status-dots.jsx";
+import { StatusDot } from "../../../../materials/status-dot/status-dots.jsx";
 import { NoJob } from "./no-job.jsx";
 import { Link } from "react-router-dom";
-import { DropDown, Options } from "../../../../../../materials/dropdown/dropdown.jsx";
-import { Line } from "../../../../../../materials/line/line.jsx";
-import { ShareModal } from "../../../../../../materials/share-modal/share-modal.jsx";
-import { TextField } from "../../../../../../materials/text-field/text-field.jsx";
+import { DropDown, Options } from "../../../../materials/dropdown/dropdown.jsx";
+import { Line } from "../../../../materials/line/line.jsx";
+import { ShareModal } from "../../../../materials/share-modal/share-modal.jsx";
+import { TextField } from "../../../../materials/text-field/text-field.jsx";
 
 const options = [
 	{

@@ -1,9 +1,9 @@
 import React, { useContext, useState } from "react";
 import { ContextJobDetails } from "../job-details.jsx";
-import { DropDown } from "../../../../../../../materials/dropdown/dropdown.jsx";
-import { __ } from "../../../../../../../utilities/helpers.jsx";
-import { TextField } from "../../../../../../../materials/text-field/text-field.jsx";
-import { CircularProgress } from "../../../../../../../materials/progress/circular.jsx";
+import { DropDown } from "../../../../../materials/dropdown/dropdown.jsx";
+import { __ } from "../../../../../utilities/helpers.jsx";
+import { TextField } from "../../../../../materials/text-field/text-field.jsx";
+import { CircularProgress } from "../../../../../materials/progress/circular.jsx";
 import { AddDepartmentModal } from "./add-department.jsx";
 
 import style from '../details.module.scss';

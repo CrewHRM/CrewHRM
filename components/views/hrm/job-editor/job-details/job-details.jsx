@@ -1,6 +1,6 @@
 import React, { createContext, useState } from "react";
 
-import { __ } from "../../../../../../utilities/helpers.jsx";
+import { __ } from "../../../../utilities/helpers.jsx";
 import { ActionButtons } from "../index.jsx";
 import { TitleAndDescription } from "./sections/title-description.jsx";
 import { EmploymentDetails } from "./sections/employment-details.jsx";
