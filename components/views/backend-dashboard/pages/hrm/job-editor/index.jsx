@@ -103,7 +103,6 @@ export function JobEditor() {
 						theme="sequence"
 						onNavigate={navigateTab}
 						active={state.active_tab} 
-						style={{marginLeft: '-60px', marginRight: '-55px'}}
 						tabs={steps.map(s=>{return {
 							...s,
 							label: <span className={`font-size-15 font-weight-400 letter-spacing--3 text-color-${s.id==state.active_tab ? 'primary' : 'light'}`.classNames()}>

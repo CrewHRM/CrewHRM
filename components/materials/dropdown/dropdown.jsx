@@ -11,6 +11,23 @@ const content_style = {
 
 const list_class = 'padding-vertical-8 padding-horizontal-20 cursor-pointer'.classNames();
 
+function getPopupStyle(classNames) {
+	classNames = classNames.split(' ').map(c=>c.trim()).filter(c=>c.indexOf('crewhrm-')===0).map(c=>c.replace('crewhrm-', ''));
+	const styles = {};
+
+	console.log(classNames );
+
+	for( let i=0; i<classNames.length; i++ ) {
+		// Get border radius
+		if (classNames[i].indexOf('border-radius-')===0) {
+			styles.borderRadius = classNames[i].replace(/\D/g, '') + 'px';
+			break;
+		}
+	}
+
+	return styles;
+}
+
 export function DropDown(props) {
 	const {
 		value: selected_value, 
@@ -30,8 +47,9 @@ export function DropDown(props) {
 	} = props;
 
 	const ref = useRef();
+
 	const triggerPoint= <div tabIndex={tabindex} className={`select-dropdown ${transparent ? 'transparent' : ''}`.classNames(style) + 'cursor-pointer d-flex align-items-center border-radius-5'.classNames() + className}>
-		<span className={'flex-1'.classNames() + textClassName}>
+		<span className={'flex-1 white-space-nowrap'.classNames() + textClassName}>
 			{selected_value!==undefined ? (options.find(o=>o.id===selected_value)?.label || labelFallback) : labelFallback}
 		</span>
 		<i className={iconClassName}></i>
@@ -49,7 +67,11 @@ export function DropDown(props) {
 			nested={nested}
 			trigger={triggerPoint}>
 				{close=>{
-					return <div className={"select-dropdown-popup".classNames(style) + 'box-shadow-thick border-radius-10 border-1-5 border-color-tertiary background-color-white'.classNames()} style={ref.current ? {width: ref.current.clientWidth+'px'} : {}}>
+					// Determine border width, color and radius from the class name to sync the popup accordingly
+					let popup_styles = ref.current ? {width: ref.current.clientWidth+'px'} : {};
+					popup_styles = {...popup_styles, ...getPopupStyle(className)};
+
+					return <div className={"select-dropdown-popup".classNames(style) + 'box-shadow-thick border-radius-10 border-1-5 border-color-tertiary background-color-white'.classNames()} style={popup_styles}>
 						<div className={'trigger-point'.classNames(style)}>
 							{triggerPoint}
 						</div>

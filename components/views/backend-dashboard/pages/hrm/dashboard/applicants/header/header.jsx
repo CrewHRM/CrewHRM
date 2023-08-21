@@ -42,6 +42,7 @@ export function Header(props) {
 						onChange={v=>navigate(`/dashboard/jobs/${v}/applicants/`)}
 						transparent={true}
 						position="bottom right"
+						className={'padding-vertical-8 padding-horizontal-15'.classNames()}
 						textClassName={'font-size-24 font-weight-600 text-color-primary'.classNames()}/>
 				</div>
 			</div>
