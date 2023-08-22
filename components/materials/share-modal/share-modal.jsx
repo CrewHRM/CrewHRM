@@ -62,7 +62,7 @@ export function ShareModal(props) {
 				{url}
 			</span>
 			<span className={'cursor-pointer'.classNames()} onClick={()=>copyToClipboard(url, addToast)}>
-				<i className={'ch-icon ch-icon-document-copy1 font-size-24 text-color-light margin-right-8 vertical-align-middle'.classNames()}></i>
+				<i className={'ch-icon ch-icon-copy font-size-24 text-color-light margin-right-8 vertical-align-middle'.classNames()}></i>
 				<span className={'font-size-16 font-weight-400 letter-spacing--3 text-color-light vertical-align-middle'.classNames()}>
 					{__( 'Copy' )}
 				</span>
