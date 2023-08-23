@@ -7,7 +7,7 @@ import { NumberField } from "../../../../../materials/number-field/number-field.
 import { DateField } from "../../../../../materials/date-time/date-time.jsx";
 
 const employments_types = {
-	full_type : __( 'Full Time' ),
+	full_time : __( 'Full Time' ),
 	part_time : __( 'Part Time' ),
 	contract  : __( 'Contract' ),
 	temporary : __( 'Temporary' ),

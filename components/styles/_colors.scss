@@ -5,6 +5,12 @@
 
 .text-color-light {
 	color: var(--crewhrm-color-text-light);
+
+	&.cursor-pointer {
+		&:hover {
+			color: var(--crewhrm-color-text);
+		}
+	}
 }
 
 .text-color-secondary, .text-color-hover-secondary:hover {

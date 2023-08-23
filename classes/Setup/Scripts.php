@@ -9,7 +9,7 @@ use CrewHRM\Main;
 class Scripts extends Main {
 	function __construct() {
 		add_action( 'admin_enqueue_scripts', array( $this, 'adminScripts' ), 11 );
-		add_action( 'wp_enqueue_scripts', array( $this, 'frontendScripts' ), 11 );
+		add_action( 'careers_page_shortcode', array( $this, 'frontendScripts' ), 11 );
 
 		// Color pallete
 		add_action( 'wp_head', array( $this, 'loadVariables' ), 1000 );
@@ -29,7 +29,9 @@ class Scripts extends Main {
 	}
 
 	public function frontendScripts() {
-
+		if ( ! is_admin() ) {
+			wp_enqueue_script( 'crewhrm-careers', self::$configs->dist_url . 'careers.js', array( 'jquery', 'wp-i18n' ), self::$configs->version, true );
+		}
 	}
 
 	public function loadVariables() {

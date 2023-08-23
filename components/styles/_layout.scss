@@ -39,7 +39,7 @@ $attrs: 'font-size', 'margin', 'margin-top', 'margin-bottom', 'margin-left', 'ma
 	}
 
 	// Letter spacing and flex
-	@if $i >= 1 && $i <= 30 {
+	@if $i >= 1 && $i <= 40 {
 		.letter-spacing--#{$i} {
 			letter-spacing: -#{$i/100}px;
 		}
@@ -152,6 +152,13 @@ $aligns: 'center', 'start', 'end', 'flex-start', 'flex-end', 'stretch';
 @each $align in $aligns {
 	.align-items-#{$align} {
 		align-items: #{$align};
+	}
+}
+
+$overflows: 'auto', 'hidden';
+@each $overflow in $overflows {
+	.overflow-#{$overflow} {
+		overflow: #{$overflow};
 	}
 }
 

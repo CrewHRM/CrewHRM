@@ -4,6 +4,7 @@ namespace CrewHRM;
 
 use CrewHRM\Setup\Admin;
 use CrewHRM\Setup\Scripts;
+use CrewHRM\Setup\Shortcode;
 
 class Main {
 	/**
@@ -27,5 +28,6 @@ class Main {
 
 		new Scripts();
 		new Admin();
+		new Shortcode();
 	}
 }
