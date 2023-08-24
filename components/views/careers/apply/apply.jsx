@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import { Tabs } from "../../../materials/tabs/tabs.jsx";
-import { __, countries_array } from "../../../utilities/helpers.jsx";
-import { ContextForm, FormFields } from "../../../materials/form/form.jsx";
+import { __ } from "../../../utilities/helpers.jsx";
+import { ContextForm, FormFields } from "../../../materials/form.jsx";
 import { sections_fields } from "../../hrm/job-editor/application-form/form-structure.jsx";
 
 import style from './apply.module.scss';
+import { FormActionButtons } from "../../../materials/form-action.jsx";
 
 const steps = [
 	{
@@ -43,11 +44,19 @@ const fields = {
 	]
 }
 
-export function Apply() {
+export function Apply({job}) {
+	const {settings: {application_form_layout}} = window.CrewHRM;
+	const {job_title, location} = job;
+	
 	const [state, setState] = useState({
 		active_tab: 'personal',
 		values: {}
 	});
+
+	const step_index  = steps.findIndex(s=>s.id===state.active_tab);
+	const step        = steps[step_index];
+	const is_segment  = application_form_layout!=='single';
+	const is_last_tab = step_index>=steps.length-1;
 
 	const onChange = (name, v) => {
 		setState({
@@ -59,27 +68,82 @@ export function Apply() {
 		});
 	}
 
-	const step = steps.find(s=>s.id===state.active_tab);
+	const navigateTab=(to)=>{
+		let index = steps.findIndex(s=>s.id===state.active_tab);
+		
+		if ( to === -1 ) {
+			if (index > 0) {
+				// Navigate to previous tab
+				index -= 1;
+			} else {
+				// Navigate to previous page as the tab is the first one
+				window.history.back();
+				return;
+			}
+		}
+
+		if ( to === 1 ) {
+			// Navigate to next tab. This function will not be called on last, so check is not necessary.
+			index += 1;
+		}
+
+		setState({
+			...state,
+			active_tab: typeof to === 'string' ? to : steps[index].id
+		});
+	}
+
+	const submitApplication=()=>{
+		console.log('Submit now');
+	}
 
 	return <div data-crewhrm-selector="job-application" className={'apply'.classNames(style)}>
-		<div className={'sequence'.classNames(style) + 'padding-vertical-20 box-shadow-thin margin-bottom-50'.classNames()}>
+		<div className={'header'.classNames(style) + 'background-color-tertiary'.classNames()}>
+			<div className={'container'.classNames(style) + 'padding-30'.classNames()}>
+				<span className={'d-block font-size-24 font-weight-600 line-height-24 letter-spacing--24 text-color-primary'.classNames()}>
+					{job_title}
+				</span>
+				<span className={'d-block font-size-17 font-weight-500 line-height-25 text-color-primary margin-bottom-10'.classNames()}>
+					{location}
+				</span>
+			</div>
+		</div>
+		{is_segment && <div className={'sequence'.classNames(style) + 'padding-vertical-20 box-shadow-thin margin-bottom-50'.classNames()}>
 			<div>
 				<Tabs 
 					active={state.active_tab} 
 					tabs={steps} 
 					theme="sequence"
-					onNavigate={active_tab=>setState({...state, active_tab})}/>
+					onNavigate={tab=>navigateTab(tab)}/>
 			</div>
-		</div>
+		</div> || null}
 		
 		<div data-crewhrm-selector="job-application-form" className={'form'.classNames(style)}>
-			<span className={'d-block font-size-20 font-weight-600 text-color-primary margin-bottom-30'.classNames()}>
+			{is_segment && <span className={'d-block font-size-20 font-weight-600 text-color-primary margin-bottom-30'.classNames()}>
 				{step.label}
-			</span>
-
+			</span> || <div className={'margin-top-48'.classNames()}>
+				<span className={'d-block font-size-20 font-weight-600 text-color-primary margin-bottom-8'.classNames()}>
+					{ __( 'Apply for this job' ) }
+				</span>
+				<span className={'d-block font-size-15 font-weight-400 line-height-24 text-color-light margin-bottom-30'.classNames()}>
+					{__( 'Fields marked with * are required.' )}
+				</span>
+			</div>}
+			
 			<ContextForm.Provider value={{values: state.values, onChange}}>
-				<FormFields fields={fields[state.active_tab] || []}/>
+				<FormFields fields={is_segment ? fields[state.active_tab] : Object.keys(fields).map(key=>fields[key]).flat()}/>
 			</ContextForm.Provider>
+
+			{is_segment && <div>
+				<FormActionButtons
+					onBack={()=>navigateTab(-1)} 
+					onNext={()=>is_last_tab ? submitApplication() : navigateTab(1)}
+					nextText={is_last_tab ? __( 'Submit Application' ) : __( 'Save & Continue' ) }/>
+			</div> || <div>
+				<button className={'button button-primary button-full-width'.classNames()} onClick={submitApplication}>
+					{__( 'Submit Application' )}
+				</button>	
+			</div>}
 		</div>
 	</div>
 }

@@ -1,4 +1,13 @@
 .apply{
+	.header {
+		background-color: #F9F9F9;
+		
+		.container {
+			max-width: 786px;
+			margin: 0 auto;
+		}
+	}
+
 	.sequence>div, .form {
 		max-width: 552px;
 		margin: 0 auto;
