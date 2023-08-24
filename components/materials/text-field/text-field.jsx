@@ -65,7 +65,9 @@ export function TextField(props) {
 			return;
 		}
 
-		input_ref.current.focus();
+		if (props.expandable) {
+			input_ref.current.focus();
+		}
 
 	}, [state.expanded]);
 	

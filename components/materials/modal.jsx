@@ -1,5 +1,5 @@
 import React, { createContext } from "react";
-import { Popup } from "../popup/index.jsx";
+import { Popup } from "./popup/index.jsx";
 
 export function Modal(props) {
 	const {

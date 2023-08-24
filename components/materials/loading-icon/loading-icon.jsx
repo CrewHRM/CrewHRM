@@ -1,5 +1,5 @@
 import React from "react";
-import { CircularProgress } from "../progress/circular.jsx";
+import { CircularProgress } from "../circular.jsx";
 
 import style from './loading.module.scss';
 

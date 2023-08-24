@@ -1,9 +1,10 @@
 import React, { createContext, useContext } from "react";
-import { DropDown } from "../dropdown/dropdown.jsx";
-import { FileUpload } from "../file-ipload/file-upload.jsx";
-import { __ } from "../../utilities/helpers.jsx";
-import { DateField } from "../date-time/date-time.jsx";
-import { ExpandableContent } from "../ExpandableContent/expandable-content.jsx";
+import { DropDown } from "./dropdown/dropdown.jsx";
+import { FileUpload } from "./file-ipload/file-upload.jsx";
+import { __ } from "../utilities/helpers.jsx";
+import { DateField } from "./date-time.jsx";
+import { ExpandableContent } from "./ExpandableContent/expandable-content.jsx";
+import { TextEditor } from "./text-editor/text-editor.jsx";
 
 const section_label_class = 'd-block font-size-17 font-weight-600 line-height-24 letter-spacing--17 text-color-light text-transform-uppercase margin-bottom-20'.classNames();
 const label_class         = 'd-block font-size-15 font-weight-500 margin-bottom-10 text-color-primary'.classNames();
@@ -61,6 +62,8 @@ export function RenderField({field}) {
 		{type=='text' && <input type="text" className={input_text_class} placeholder={placeholder}/> || null}
 		
 		{type=='textarea' && <textarea className={text_area_class} placeholder={placeholder}></textarea> || null}
+
+		{type=='textarea_rich' && <TextEditor onChange={onChange} value={values[name]} placeholder={placeholder}/> || null}
 
 		{type=='dropdown' && <DropDown options={options} className={input_text_class}/> || null}
 		

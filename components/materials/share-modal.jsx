@@ -1,13 +1,13 @@
 import React, { useContext } from "react";
-import { Modal } from "../modal/modal.jsx";
-import { __, copyToClipboard } from "../../utilities/helpers.jsx";
+import { Modal } from "./modal.jsx";
+import { __, copyToClipboard } from "../utilities/helpers.jsx";
 
-import facebook from '../../images/brands/facebook.svg';
-import linkedin from '../../images/brands/linkedin.svg';
-import twitter from '../../images/brands/twitter.svg';
-import reddit from '../../images/brands/reddit.svg';
-import email from '../../images/brands/email.svg';
-import { ContextToast } from "../toast/toast.jsx";
+import facebook from '../images/brands/facebook.svg';
+import linkedin from '../images/brands/linkedin.svg';
+import twitter from '../images/brands/twitter.svg';
+import reddit from '../images/brands/reddit.svg';
+import email from '../images/brands/email.svg';
+import { ContextToast } from "./toast/toast.jsx";
 
 const targets = [
 	{
