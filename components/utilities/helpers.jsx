@@ -56,7 +56,9 @@ export function prepareTexts(inputText, props={}) {
 	
 	// Replace URLs with anchor tags
 	let replacedText = inputText.replace(urlRegex, function(url) {
-		return `<a href="${url}" rel="noopener noreferrer nofollow" target="_blank" class="${className}">${url}</a>`;
+		return `<a href="${url}" rel="noopener noreferrer nofollow" target="_blank" class="${className}">
+			${url}
+		</a>`;
 	});
 
 	replacedText = replacedText.replaceAll('\n', '<br/>');
@@ -110,5 +112,6 @@ export function copyToClipboard(text, addToast) {
     });
 }
 
+export const is_production = process.env.NODE_ENV === 'production';
 export const countries_array = getCountries(true);
 export const timezones_array = tz.names().map(z=>{return {id: z, label: z}});

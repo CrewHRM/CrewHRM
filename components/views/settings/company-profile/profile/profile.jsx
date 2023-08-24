@@ -1,14 +1,9 @@
 import React from "react";
 import { __, countries_array, timezones_array } from "../../../../utilities/helpers.jsx";
-import { DropDown } from "../../../../materials/dropdown/dropdown.jsx";
 import { CoverImage } from "../../../../materials/image/image.jsx";
 
 import logo from '../../../../images/attachment.png';
-
-const section_label_class = 'd-block font-size-17 font-weight-600 line-height-24 letter-spacing--17 text-color-light text-transform-uppercase margin-bottom-20'.classNames();
-const label_class = 'd-block font-size-15 font-weight-500 margin-bottom-10 text-color-primary'.classNames();
-const input_text_class = 'd-block w-full height-48 padding-15 border-1-5 border-radius-10 border-color-tertiary border-focus-color-primary font-size-15 font-weight-400 line-height-24 letter-spacing--15 text-color-primary'.classNames();
-const text_area_class = 'd-block w-full padding-vertical-15 padding-horizontal-20 border-1-5 border-radius-10 border-color-tertiary border-focus-color-primary font-size-15 font-weight-400 line-height-25 text-color-primary'.classNames();
+import { Form } from "../../../../materials/form/form.jsx";
 
 // Do not edit or delete keys. Only can add more. 
 const business_types = {
@@ -65,11 +60,8 @@ const sections = {
 					flex      : 2,
 					options   : Object.keys(business_types).map(type=>{return {id: type, label: business_types[type]}})
 				}
-			]
-		]
-	},
-	about_comp: {
-		fields: [
+			],
+			null,
 			{
 				name        : 'about_company',
 				label       : __( 'About Company' ),
@@ -110,11 +102,8 @@ const sections = {
 					type        : 'dropdown',
 					options     : countries_array
 				}
-			]
-		]
-	},
-	phone: {
-		fields: [
+			],
+			null,
 			[
 				{
 					name        : 'phone_number',
@@ -128,11 +117,8 @@ const sections = {
 					type        : 'text',
 					placeholder : '123 456 789'
 				}
-			]
-		]
-	},
-	email: {
-		fields: [
+			],
+			null,
 			[
 				{
 					name        : 'recruiter_email',
@@ -147,11 +133,8 @@ const sections = {
 					type        : 'text',
 					placeholder : '@company.com'
 				}
-			]
-		]
-	},
-	website: {
-		fields: [
+			],
+			null,
 			{
 				name        : 'website',
 				label       : __( 'Website' ),
@@ -189,21 +172,6 @@ const sections = {
 
 export function CompanyProfile() {
 
-	function RenderField({field}) {
-		const {name, label, type, placeholder, flex=1, options} = field;
-
-		return <div className={('flex-'+flex).classNames()}>
-			
-			<span className={label_class}>{label}</span>
-			
-			{type=='text' && <input type="text" className={input_text_class} placeholder={placeholder}/> || null}
-			
-			{type=='textarea' && <textarea className={text_area_class} placeholder={placeholder}></textarea> || null}
-
-			{type=='dropdown' && <DropDown options={options} className={input_text_class}/> || null}
-		</div>
-	}
-
 	return <>
 
 		<div className={'d-flex align-items-end column-gap-28 margin-bottom-32'.classNames()} style={{marginTop: '-70px'}}>
@@ -221,23 +189,6 @@ export function CompanyProfile() {
 			</div>
 		</div>
 
-		{Object.keys(sections).map(section_key=>{
-			const {section_label, fields=[]} = sections[section_key];
-			return <div key={section_key} className={'profile'.classNames() + 'margin-bottom-30'.classNames()}>
-
-				<span className={section_label_class}>
-					{section_label}
-				</span>
-
-				{fields.map((field, index)=>{
-					if ( !Array.isArray(field) ) {
-						return <RenderField key={index} field={field}/>
-					}
-					return <div key={index} className={'d-flex column-gap-20'.classNames()}>
-						{field.map((f, i)=><RenderField key={i} field={f}/>)}
-					</div>		
-				})}
-			</div>
-		})}
+		<Form fields={sections}/>
 	</>
 }

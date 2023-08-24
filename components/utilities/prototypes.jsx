@@ -1,5 +1,6 @@
 import style_library from '../styles/index.module.scss';
 import icons from '../icons/crewhrm/style.module.scss';
+import { is_production } from './helpers.jsx';
 
 String.prototype.classNames = function(style) {
 	let dump = '';
@@ -16,7 +17,7 @@ String.prototype.classNames = function(style) {
 			dump += ' ' + c;
 		}
 
-		return (source[c] || '') + ' ' + 'crewhrm-'+c;
+		return (source[c] || '') + (!is_production ? ' '+'crewhrm-'+c : '');
 	});
 
 	if ( dump ) {

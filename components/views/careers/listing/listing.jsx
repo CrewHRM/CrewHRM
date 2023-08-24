@@ -4,6 +4,7 @@ import style from './listing.module.scss';
 import { Link } from "react-router-dom";
 import { __ } from "../../../utilities/helpers.jsx";
 import { LoadingIcon } from "../../../materials/loading-icon/loading-icon.jsx";
+import { TextField } from "../../../materials/text-field/text-field.jsx";
 
 const job = {
 	job_id    : 1,
@@ -92,12 +93,12 @@ const filters = {
 		selection_type: 'list',
 		options: [
 			{
-				type: 'full_time',
-				labe: 'Full Time',
+				id: 'full_time',
+				label: 'Full Time',
 			},
 			{
-				type: 'part_time',
-				labe: 'Part Time',
+				id: 'part_time',
+				label: 'Part Time',
 			}
 		]
 	}
@@ -122,7 +123,7 @@ export function Listing(props) {
 		<div className={'sidebar'.classNames(style)}>
 			<div className={'margin-right-50'.classNames()}>
 				{Object.keys(filters).map(filter_key=>{
-					let {section_label, selection_type, options=[]} = filter[filter_key];
+					let {section_label, selection_type, options=[]} = filters[filter_key];
 
 					return <div key={filter_key} className={'margin-bottom-23 overflow-auto'.classNames()}>
 						<span className={"d-block font-size-14 font-weight-700 line-height-24 letter-spacing--14 text-color-light margin-bottom-16".classNames()}>
@@ -131,7 +132,7 @@ export function Listing(props) {
 
 						{selection_type=='list' && options.map(option=>{
 							let {id, label, count} = option;
-							let is_active = state.active[filter_key] === id;
+							let is_active = state.filters[filter_key] === id;
 							return <span key={id} className={`d-block font-size-14 cursor-pointer margin-bottom-18 ${is_active ? 'font-weight-600 text-color-primary' : 'font-weight-500 text-color-light'}`.classNames()} onClick={()=>setFilter(filter_key, id)}>
 								{label} ({count})
 							</span>
@@ -141,6 +142,10 @@ export function Listing(props) {
 			</div>
 		</div>
 		<div className={'content-area'.classNames(style)}>
+			<TextField 
+				iconClass={'ch-icon ch-icon-search-normal-1'.classNames()} 
+				className={'padding-vertical-10 padding-horizontal-11 border-1 border-color-tertiary border-focus-color-primary border-radius-5'.classNames()}/>
+
 			{jobs.map(job=>{
 				const {job_id, job_title, location} = job;
 				const meta = [job_title, location].filter(m=>m!=undefined);
