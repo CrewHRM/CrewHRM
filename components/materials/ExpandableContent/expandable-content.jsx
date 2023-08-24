@@ -12,7 +12,12 @@ export function ExpandableContent(props) {
 	
 	const wrapper_ref = useRef();
 	const content_ref = useRef();
-	let {children, see_more_text=__( 'See full view' ), see_less_text=__( 'See short view' )} = props;
+	let {
+		children, 
+		see_more_text=__( 'See full view' ), 
+		see_less_text=__( 'See short view' ),
+		className=''
+	} = props;
 
 	const adjustLayout=()=>{
 		if ( !wrapper_ref.current || !content_ref.current ) {
@@ -46,7 +51,8 @@ export function ExpandableContent(props) {
 		}
 	}, []);
 
-	return <><div ref={wrapper_ref} className={`exp-wrapper ${state.expanded ? 'expanded' : ''}`.classNames( style )}>
+	return <div className={className}>
+		<div ref={wrapper_ref} className={`exp-wrapper ${state.expanded ? 'expanded' : ''}`.classNames( style )}>
 			<div ref={content_ref} className={'content'.classNames(style)}>
 				{children}
 			</div>
@@ -58,5 +64,5 @@ export function ExpandableContent(props) {
 				{state.expanded ? see_less_text : see_more_text}
 			</span> || null
 		}
-	</>
+	</div>
 }

@@ -38,7 +38,7 @@ export function DropDown(props) {
 		textClassName='font-size-15 font-weight-400 text-color-primary'.classNames(),
 		iconClassName='ch-icon ch-icon-arrow-down margin-left-10 font-size-18 text-color-light'.classNames(),
 		position="center top",
-		labelFallback=__( 'Select' ),
+		placeholder=__( 'Select' ),
 		addText,
 		onAddClick,
 		style: cssStyle={}
@@ -48,7 +48,7 @@ export function DropDown(props) {
 
 	const triggerPoint= <div tabIndex={tabindex} className={`select-dropdown ${transparent ? 'transparent' : ''}`.classNames(style) + 'cursor-pointer d-flex align-items-center border-radius-5'.classNames() + className}>
 		<span className={'flex-1 white-space-nowrap'.classNames() + textClassName}>
-			{selected_value!==undefined ? (options.find(o=>o.id===selected_value)?.label || labelFallback) : labelFallback}
+			{selected_value!==undefined ? (options.find(o=>o.id===selected_value)?.label || placeholder) : placeholder}
 		</span>
 		<i className={iconClassName}></i>
 	</div>
