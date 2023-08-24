@@ -33,7 +33,7 @@ export function SortableList(props) {
 			<Droppable droppableId="droppable">
 				{(provided, snapshot) => {
 					const {isDraggingOver, isDragging} = snapshot;
-					return <div {...provided.droppableProps} ref={provided.innerRef}>
+					return <div data-crewhrm-selector="sortable" {...provided.droppableProps} ref={provided.innerRef}>
 						{props.items.map((item, index) => (
 							<Draggable key={item.id} draggableId={item.id} index={index}>
 								{(provided, snapshot) => (

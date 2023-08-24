@@ -58,8 +58,8 @@ export function HeadActions() {
 		tagline
 	} = segments[state.active_segment] || {};
 	
-	return <div className={'head'.classNames(style) + 'margin-bottom-13'.classNames()}>
-		<div className={'d-flex align-items-center box-shadow-thin padding-vertical-15 padding-horizontal-30'.classNames()}>
+	return <div data-crewhrm-selector="applicant" className={'head'.classNames(style) + 'margin-bottom-13'.classNames()}>
+		<div data-crewhrm-selector="action" className={'d-flex align-items-center box-shadow-thin padding-vertical-15 padding-horizontal-30'.classNames()}>
 			<div className={'flex-1'.classNames()}>
 				{segments.map((segment, i)=>{
 					let {icon, title} = segment;
@@ -92,20 +92,18 @@ export function HeadActions() {
 			</div>
 		</div>
 		
-		{ActiveComp && <>
-			<div className={'content-area'.classNames(style)}>
-				<div className={'d-flex align-items-center margin-bottom-15'.classNames()}>
-					<div className={'flex-1'.classNames()}>
-						<span className={`d-inline-block ch-icon ${active_icon} font-size-20 text-color-primary margin-right-10 vertical-align-middle`.classNames()}>
+		{ActiveComp && <div data-crewhrm-selector="action-fields" className={'content-area'.classNames(style)}>
+			<div className={'d-flex align-items-center margin-bottom-15'.classNames()}>
+				<div className={'flex-1'.classNames()}>
+					<span className={`d-inline-block ch-icon ${active_icon} font-size-20 text-color-primary margin-right-10 vertical-align-middle`.classNames()}>
 
-						</span> {tagline}
-					</div>
-					<div>
-						<i className={'ch-icon ch-icon-times font-size-24 text-color-light margin-left-10 cursor-pointer'.classNames()} onClick={()=>toggleSegment()}></i>
-					</div>
+					</span> {tagline}
 				</div>
-				<ActiveComp onClose={toggleSegment}/>
+				<div>
+					<i className={'ch-icon ch-icon-times font-size-24 text-color-light margin-left-10 cursor-pointer'.classNames()} onClick={()=>toggleSegment()}></i>
+				</div>
 			</div>
-		</> || null}
+			<ActiveComp onClose={toggleSegment}/>
+		</div> || null}
 	</div>
 }

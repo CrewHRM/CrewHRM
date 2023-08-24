@@ -45,7 +45,7 @@ export function RenderField({field}) {
 		onChange(name, array);
 	}
 
-	return <div className={('flex-'+flex).classNames()}>
+	return <div data-crewhrm-selector="single-field" className={('flex-'+flex).classNames()}>
 
 		{disclaimer && <ExpandableContent className={'margin-bottom-30'.classNames()}>
 			<span className={'d-block font-size-20 font-weight-600 text-color-primary'.classNames()}>
@@ -68,7 +68,7 @@ export function RenderField({field}) {
 
 		{(type=='checkbox' || type=='radio') && <div className={'d-flex flex-flow-row column-gap-20'.classNames()}>
 			{options.map(({id:value, label})=>{
-				return <label key={value} className={'d-flex flex-flow-row align-items-center column-gap-7 cursor-pointer'.classNames()}>
+				return <label data-crewhrm-selector={"field-"+type} key={value} className={'d-flex flex-flow-row align-items-center column-gap-7 cursor-pointer'.classNames()}>
 					<input 
 						type={type} 
 						name={name} 
@@ -92,14 +92,14 @@ export function RenderField({field}) {
 export function FormFields({fields}) {
 	return fields.map((field, index)=>{
 		if ( field===null && fields[index-1]!==null ) {
-			return <div key={index} className={'margin-bottom-30'.classNames()}></div>
+			return <div data-crewhrm-selector="field-line-break" key={index} className={'margin-bottom-30'.classNames()}></div>
 		}
 		
-		return <div key={index}>
+		return <div data-crewhrm-selector="field-wrapper" key={index}>
 			{ 
 				!Array.isArray(field) && 
 				<RenderField field={field}/> || 
-				<div className={'d-flex column-gap-10'.classNames()}>
+				<div data-crewhrm-selector="field-group" className={'d-flex column-gap-10'.classNames()}>
 					{field.map((f, i)=><RenderField key={i} field={f}/>)}
 				</div>		
 			}
@@ -112,7 +112,7 @@ export function Form({fields: sections}) {
 	return <ContextForm.Provider value={{}}>
 		{Object.keys(sections).map(section_key=>{
 			const {section_label, fields=[]} = sections[section_key];
-			return <div key={section_key} className={'profile'.classNames() + 'margin-bottom-30'.classNames()}>
+			return <div data-crewhrm-selector="form-section" key={section_key} className={'profile'.classNames() + 'margin-bottom-30'.classNames()}>
 
 				<span className={section_label_class}>
 					{section_label}

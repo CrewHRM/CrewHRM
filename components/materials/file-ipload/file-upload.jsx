@@ -59,7 +59,7 @@ export function FileUpload(props) {
 		});
 	}
 
-	return <div className={'upload'.classNames(style)}>
+	return <div data-crewhrm-selector="file-upload" className={'upload'.classNames(style)}>
 		<div className={`drop-container ${state.highlight ? 'highlight' : ''}`.classNames(style)}
 			onDragOver={e=>setActionState(e, true)} 
 			onDragLeave={e=>setActionState(e, false)}
@@ -78,7 +78,7 @@ export function FileUpload(props) {
 			</span>
 
 			{stateFiles.map(({id, file})=>{
-				return <div key={id} className={'d-flex align-items-center column-gap-14 margin-auto'.classNames()} style={{maxWidth: '552px'}}>
+				return <div data-crewhrm-selector="items" key={id} className={'d-flex align-items-center column-gap-14 margin-auto'.classNames()} style={{maxWidth: '552px'}}>
 					<i className={'ch-icon ch-icon-trash cursor-pointer'.classNames()} onClick={e=>removeFile(e, id)}></i>
 					<span>
 						{file.name}

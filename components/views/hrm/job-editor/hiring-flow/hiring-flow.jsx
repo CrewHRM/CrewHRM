@@ -94,7 +94,7 @@ export function HiringFlow(props) {
 
 	}, [state.sequences]);
 
-	return <div className={'hiring'.classNames(style)}>
+	return <div data-crewhrm-selector="hiring-flow-builder" className={'hiring'.classNames(style)}>
 		{state.confirm_modal_for && 
 			<DeletionConfirm 
 				stage={state.sequences.find(s=>s.id==state.confirm_modal_for)}

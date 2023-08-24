@@ -41,7 +41,7 @@ export function NumberField(props) {
 
 	const controller_class = `font-size-20 cursor-pointer ${state.focused ? 'text-color-primary' : 'text-color-light'}`.classNames();
 
-	return <div className={`d-flex align-items-center ${state.focused ? 'focused'  : ''}`.classNames() + className}>
+	return <div data-crewhrm-selector="number-field" className={`d-flex align-items-center ${state.focused ? 'focused'  : ''}`.classNames() + className}>
 		<div className={'height-20'.classNames()}>
 			<i 
 				className={"ch-icon ch-icon-minus-square".classNames() + controller_class}

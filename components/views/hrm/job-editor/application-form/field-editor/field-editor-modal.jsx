@@ -100,7 +100,7 @@ export function FieldEditorModal(props) {
 	const btn_disabled = !state.field.type || !state.field.label || (need_options && !field_options.length);
 
 	return <Modal nested={true}>
-		<div className={'d-flex align-items-center margin-bottom-30'.classNames()}>
+		<div data-crewhrm-selector="question-head" className={'d-flex align-items-center margin-bottom-30'.classNames()}>
 			<div className={'flex-1'.classNames()}>
 				<span className={'font-size-24 font-weight-600 text-color-primary'.classNames()}>
 					{__( 'Add a question' )}
@@ -111,7 +111,7 @@ export function FieldEditorModal(props) {
 			</div>
 		</div>
 
-		<div className={'d-flex align-items-center margin-bottom-15'.classNames()}>
+		<div data-crewhrm-selector="question-type" className={'d-flex align-items-center margin-bottom-15'.classNames()}>
 			<div className={'flex-4'.classNames()}>
 				<DropDown 
 					className={'padding-vertical-14 padding-horizontal-15 border-radius-10 border-1 border-color-primary font-size-15 font-weight-600 text-color-primary'.classNames()}
@@ -142,7 +142,7 @@ export function FieldEditorModal(props) {
 				onChange={e=>onChange('label', e.currentTarget.value)}/>
 		</div>
 
-		{need_options && <div className={'margin-bottom-15'.classNames()}>
+		{need_options && <div data-crewhrm-selector="question-options" className={'margin-bottom-15'.classNames()}>
 			<span className={'d-block font-size-15 font-weight-500 text-color-primary margin-bottom-10'.classNames()}>
 				{__( 'Options' )}
 			</span>
@@ -178,7 +178,7 @@ export function FieldEditorModal(props) {
 			</div>
 		</div> || null}
 
-		<div className={"d-flex align-items-center justify-content-end column-gap-21".classNames()}>
+		<div data-crewhrm-selector="question-action" className={"d-flex align-items-center justify-content-end column-gap-21".classNames()}>
 			<span className={'font-size-15 font-weight-500 letter-spacing--3 text-color-light cursor-pointer'.classNames()} onClick={()=>props.updateField(null)}>
 				{__( 'Cancel' )}
 			</span>

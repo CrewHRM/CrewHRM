@@ -37,7 +37,7 @@ export function ShareModal(props) {
 	const {addToast} = useContext(ContextToast);
 
 	return <Modal>
-		<div className={'d-flex align-items-center'.classNames()}>
+		<div data-crewhrm-selector="share-close" className={'d-flex align-items-center'.classNames()}>
 			<div className={'flex-1'.classNames()}>
 				<span className={'font-size-20 font-weight-500 text-color-primary'.classNames()}>
 					{__( 'Share' )}
@@ -47,7 +47,7 @@ export function ShareModal(props) {
 				<i className={'ch-icon ch-icon-times font-size-18 text-color-light cursor-pointer'.classNames()} onClick={closeModal}></i>
 			</div>
 		</div>
-		<div className={'d-flex align-items-center justify-content-space-between padding-vertical-40'.classNames()}>
+		<div data-crewhrm-selector="share-targets" className={'d-flex align-items-center justify-content-space-between padding-vertical-40'.classNames()}>
 			{targets.map((target, index)=>{
 				return <div key={index} className={'text-align-center'.classNames()}>
 					<img src={target.icon} className={'width-44'.classNames()}/>
@@ -57,7 +57,7 @@ export function ShareModal(props) {
 				</div>
 			})}
 		</div>
-		<div className={'d-flex align-items-center border-1-5 border-color-tertiary padding-20 border-radius-10'.classNames()} style={{backgroundColor: '#F9F9F9'}}>
+		<div data-crewhrm-selector="share-link" className={'d-flex align-items-center border-1-5 border-color-tertiary padding-20 border-radius-10'.classNames()} style={{backgroundColor: '#F9F9F9'}}>
 			<span className={'flex-1 font-size-16 font-weight-400 letter-spacing--3 text-color-primary'.classNames()}>
 				{url}
 			</span>

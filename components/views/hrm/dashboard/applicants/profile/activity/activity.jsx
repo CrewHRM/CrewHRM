@@ -150,7 +150,7 @@ const acitivities= [
 ];
 
 export function Activity() {
-	return <div className={'activities'.classNames(style)}>
+	return <div data-crewhrm-selector="activity" className={'activities'.classNames(style)}>
 		{acitivities.map((activity, i)=>{
 			let {avatar_url, type} = activity;
 			let {renderer: Comp, icon} = activity_handlers[type];

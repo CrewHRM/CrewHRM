@@ -97,7 +97,7 @@ export function Applicants( props ) {
 	}, []);
 
 	return <ContextApplicants.Provider value={{job_id, jobs, steps, job: state.job}}>
-		<div className={'applicants'.classNames(style)}>
+		<div data-crewhrm-selector="applicant-wrapper" className={'applicants'.classNames(style)}>
 			<Header/>
 			<div className={'content-area'.classNames(style)}>
 				<div className={'sidebar-wrapper'.classNames(style)}>

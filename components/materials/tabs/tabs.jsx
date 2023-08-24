@@ -6,7 +6,7 @@ export function Tabs(props) {
 	const {active, tabs=[], onNavigate, theme, className='', style: cssStyle={}} = props;
 	const active_index = tabs.findIndex(tab=>tab.id==active);
 
-	return <div className={`tabs theme-${theme}`.classNames(style) + className} style={cssStyle}>
+	return <div data-crewhrm-selector={'tabs-'+theme} className={`tabs theme-${theme}`.classNames(style) + className} style={cssStyle}>
 		{
 			tabs.map((tab, index)=>{
 				let {id, label} = tab;

@@ -20,7 +20,7 @@ const pages = [
 export function CompanyProfileSidebar() {
 	const {sub_page} = useParams();
 	
-	return <div className={'d-flex flex-flow-column row-gap-25 margin-right-50'.classNames()}>
+	return <div data-crewhrm-selector="company-profile-sidebar" className={'d-flex flex-flow-column row-gap-25 margin-right-50'.classNames()}>
 		{pages.map(page=>{
 			const {id: page_id, permalink, label, icon} = page;
 			const is_active = sub_page === page_id;

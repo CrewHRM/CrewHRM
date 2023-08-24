@@ -10,7 +10,7 @@ export function NoticeBar() {
 		{notices.map(notice=>{
 			let {id, content, type} = notice;
 			
-			return <div key={id} className={'d-flex align-items-center justify-content-center padding-vertical-8 padding-horizontal-20 w-full margin-bottom-2'.classNames() + `notice ${type}`.classNames(style)}>
+			return <div data-crewhrm-selector="notice" key={id} className={'d-flex align-items-center justify-content-center padding-vertical-8 padding-horizontal-20 w-full margin-bottom-2'.classNames() + `notice ${type}`.classNames(style)}>
 				<div>
 					{content}
 				</div>

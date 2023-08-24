@@ -101,7 +101,7 @@ export function ApplicationForm(props) {
 				field={state.fields[state.pointer.section_name].fields[state.pointer.field_index] || {}} 
 				updateField={updateField}/> || null}
 
-		<div className={'application'.classNames(style)}>
+		<div data-crewhrm-selector="application-builder" className={'application'.classNames(style)}>
 			<span className={'d-block font-size-20 font-weight-600 text-color-primary margin-bottom-40'.classNames()}>
 				{__( 'Customize your application form' )}
 			</span>
@@ -119,7 +119,7 @@ export function ApplicationForm(props) {
 					}
 				);
 
-				return <div key={section_name} className={'section-container'.classNames(style)}>
+				return <div data-crewhrm-selector="section" key={section_name} className={'section-container'.classNames(style)}>
 					<strong className={'d-block font-size-17 font-weight-600 text-color-primary margin-bottom-10'.classNames()}>
 						{label}
 					</strong>
@@ -129,7 +129,7 @@ export function ApplicationForm(props) {
 							const {label: field_label, enabled, required, read_only, id: field_id} = field;
 							const checkbox_id   = 'crewhrm-checkbox-'+field_id;
 
-							return <div key={field_id} className={'single-row'.classNames(style) + 'd-flex align-items-center'.classNames()}>
+							return <div data-crewhrm-selector="fields" key={field_id} className={'single-row'.classNames(style) + 'd-flex align-items-center'.classNames()}>
 								<div>
 									<input 
 										id={checkbox_id}

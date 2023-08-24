@@ -62,7 +62,7 @@ export function Apply() {
 
 	const step = steps.find(s=>s.id===state.active_tab);
 
-	return <div className={'apply'.classNames(style)}>
+	return <div data-crewhrm-selector="job-application" className={'apply'.classNames(style)}>
 		<div className={'sequence'.classNames(style) + 'padding-vertical-20 box-shadow-thin margin-bottom-50'.classNames()}>
 			<div>
 				<Tabs 
@@ -73,7 +73,7 @@ export function Apply() {
 			</div>
 		</div>
 		
-		<div className={'form'.classNames(style)}>
+		<div data-crewhrm-selector="job-application-form" className={'form'.classNames(style)}>
 			<span className={'d-block font-size-20 font-weight-600 text-color-primary margin-bottom-30'.classNames()}>
 				{step.label}
 			</span>

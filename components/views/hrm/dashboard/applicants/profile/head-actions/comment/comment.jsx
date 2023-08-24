@@ -4,7 +4,7 @@ import { __ } from "../../../../../../../utilities/helpers.jsx";
 export function Comment(props) {
 	const {onClose} = props;
 
-	return <>
+	return <div data-crewhrm-selector="comment">
 		<textarea 
 			className={'margin-top-15 margin-bottom-15 border-radius-5 border-1-5 border-color-tertiary padding-15 font-size-15 font-weight-500 d-block'.classNames()} 
 			placeholder={__( 'Write your comments' )} 
@@ -24,5 +24,5 @@ export function Comment(props) {
 				</button>
 			</div>
 		</div>
-	</>
+	</div>
 }

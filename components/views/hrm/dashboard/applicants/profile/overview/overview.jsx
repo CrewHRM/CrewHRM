@@ -12,7 +12,7 @@ export function OverView() {
 	const {applicant={}} = useContext(ContextApplicantProfile);
 	const {summary, education=[], skills=[], qna=[], social_links=[]} = applicant;
 
-	return <div className={'overview'.classNames(style)}>
+	return <div data-crewhrm-selector="overview" className={'overview'.classNames(style)}>
 		<span className={'d-block font-size-17 font-weight-600 line-height-24 letter-spacing--17 text-color-primary margin-bottom-10'.classNames()}>
 			{__( 'SUMMARY' )}
 		</span>
@@ -31,7 +31,7 @@ export function OverView() {
 				{education.map(ed=>{
 					let {education_id, date_from, date_to, degree, institute} = ed;
 
-					return <div key={education_id} className={'d-flex margin-bottom-10'.classNames()}>
+					return <div data-crewhrm-selector="education" key={education_id} className={'d-flex margin-bottom-10'.classNames()}>
 						<div style={{width: '150px'}}>
 							<span className={'font-size-15 font-weight-400 line-height-24 letter-spacing--15 text-color-light'.classNames()}>
 								{new Date(date_from).getFullYear()} - {new Date(date_to).getFullYear()}
@@ -52,7 +52,7 @@ export function OverView() {
 			<span className={'d-block font-size-17 font-weight-600 line-height-24 letter-spacing--17 text-color-primary margin-bottom-10'.classNames()}>
 				{__( 'SKILLS' )}
 			</span>
-			<div className={'d-flex flex-wrap-wrap flex-flow-row row-gap-15 column-gap-15'.classNames()}>
+			<div data-crewhrm-selector="skills" className={'d-flex flex-wrap-wrap flex-flow-row row-gap-15 column-gap-15'.classNames()}>
 				{skills.map(skill=>{
 					return <div key={skill} className={'single-skill'.classNames(style) + 'd-inline-block padding-vertical-5 padding-horizontal-20 font-size-15 font-weight-500 line-height-24 letter-spacing--15 text-color-primary'.classNames()}>
 						{skill}

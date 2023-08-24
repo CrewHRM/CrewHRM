@@ -28,7 +28,7 @@ export function Documents() {
 	const {applicant} = useContext(ContextApplicantProfile);
 	const {cover_letter, resume_url, attachments=[]} = applicant;
 
-	return <div className={'documents'.classNames(style)}>
+	return <div data-crewhrm-selector="documents" className={'documents'.classNames(style)}>
 		<span className={'d-block font-size-17 font-weight-600 line-height-24 letter-spacing--17 text-color-primary margin-bottom-10'.classNames()}>
 			{__( 'COVER LETTER' )}
 		</span>

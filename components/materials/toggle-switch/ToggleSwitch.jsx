@@ -6,7 +6,7 @@ import style from './switch.module.scss';
 export function ToggleSwitch(props) {
 	const {className='', disabled=false, onChange, checked=false} = props;
 	const id = getRandomString();
-	return <div className={`d-inline-block ${disabled ? 'disabled' : ''}`.classNames() + `switch ${disabled ? 'disabled' : ''}`.classNames(style) + className}>
+	return <div data-crewhrm-selector="toggle-switch" className={`d-inline-block ${disabled ? 'disabled' : ''}`.classNames() + `switch ${disabled ? 'disabled' : ''}`.classNames(style) + className}>
 		<input 
 			id={id} 
 			checked={checked}

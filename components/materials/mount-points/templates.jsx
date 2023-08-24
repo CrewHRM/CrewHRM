@@ -4,7 +4,7 @@ import { ToastWrapper } from "../toast/toast.jsx";
 
 
 export function MountPoint(props){
-	return <div className={'root'.classNames()}>
+	return <div data-crewhrm-selector="root" className={'root'.classNames()}>
 		<ToastWrapper>
 			{props.children}
 		</ToastWrapper>

@@ -134,7 +134,7 @@ export function JobOpenings(props) {
 
 	const filter_status_options = status_keys.map(key=>{return {id: key, label: statuses[key].label}});
 
-	return <div className={'jobs'.classNames(style) + className}>
+	return <div data-crewhrm-selector="job-openings" className={'jobs'.classNames(style) + className}>
 		{
 			state.share_link && 
 			<ShareModal 
@@ -272,7 +272,7 @@ export function JobOpenings(props) {
 }
 
 export function JobOpeningsFullView(props) {
-	return <div className={'padding-30'.classNames()} style={{maxWidth: '988px', margin: '0 auto'}}>
+	return <div data-crewhrm-selector="job-openings-full-view" className={'padding-30'.classNames()} style={{maxWidth: '988px', margin: '0 auto'}}>
 		<JobOpenings/>
 	</div>
 }

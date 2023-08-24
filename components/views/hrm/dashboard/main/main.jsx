@@ -10,7 +10,7 @@ import { DangerouslySet } from "../../../../materials/dangerously-set/Dangerousl
 import { Link } from "react-router-dom";
 
 export function DahboardMain() {
-	return <div className={'h-full'.classNames() + 'wrapper'.classNames(style)}>
+	return <div data-crewhrm-selector="hrm-main" className={'h-full'.classNames() + 'wrapper'.classNames(style)}>
 		<div className={'sidebar'.classNames(style)}>
 			<StatCards className={'margin-bottom-20'.classNames()}/>
 			

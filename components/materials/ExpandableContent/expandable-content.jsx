@@ -51,16 +51,16 @@ export function ExpandableContent(props) {
 		}
 	}, []);
 
-	return <div className={className}>
-		<div ref={wrapper_ref} className={`exp-wrapper ${state.expanded ? 'expanded' : ''}`.classNames( style )}>
+	return <div data-crewhrm-selector="expandable-content" className={className}>
+		<div data-crewhrm-selector="content" ref={wrapper_ref} className={`exp-wrapper ${state.expanded ? 'expanded' : ''}`.classNames( style )}>
 			<div ref={content_ref} className={'content'.classNames(style)}>
 				{children}
 			</div>
 
-			{state.show_control && !state.expanded && <div className={'overlay'.classNames(style)}></div> || null}
+			{state.show_control && !state.expanded && <div data-crewhrm-selector="overlay" className={'overlay'.classNames(style)}></div> || null}
 		</div>
 		{
-			state.show_control && <span className={'d-inline-block font-size-15 font-weight-500 line-height-22 letter-spacing--15 text-color-primary cursor-pointer margin-top-10'.classNames()} onClick={toggleView}>
+			state.show_control && <span data-crewhrm-selector="controller" className={'d-inline-block font-size-15 font-weight-500 line-height-22 letter-spacing--15 text-color-primary cursor-pointer margin-top-10'.classNames()} onClick={toggleView}>
 				{state.expanded ? see_less_text : see_more_text}
 			</span> || null
 		}

@@ -38,7 +38,7 @@ const steps = [
 export function Sidebar() {
 	const [state, setState] = useState({active_tab: 'q'});
 
-	return <div className={'sidebar'.classNames(style)}>
+	return <div data-crewhrm-selector="applicant-sidebar" className={'sidebar'.classNames(style)}>
 		<Tabs 
 			active={state.active_tab} 
 			tabs={steps} 
@@ -54,7 +54,7 @@ export function Sidebar() {
 
 		<Line/>
 
-		<div className={'list'.classNames(style)}>
+		<div data-crewhrm-selector="list" className={'list'.classNames(style)}>
 			{applicants.map((applicant, i)=>{
 				let {src, name, action_time, application_id} = applicant;
 

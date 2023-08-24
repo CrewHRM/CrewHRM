@@ -53,7 +53,7 @@ export function DropDown(props) {
 		<i className={iconClassName}></i>
 	</div>
 
-	return <div ref={ref}> 
+	return <div data-crewhrm-selector="dropdown" ref={ref}> 
 		<Popup
 			position={position}
 			on="click"
@@ -69,7 +69,7 @@ export function DropDown(props) {
 					let popup_styles = ref.current ? {width: ref.current.clientWidth+'px'} : {};
 					popup_styles = {...popup_styles, ...getPopupStyle(className)};
 
-					return <div className={"select-dropdown-popup".classNames(style) + 'box-shadow-thick border-radius-10 border-1-5 border-color-tertiary background-color-white'.classNames()} style={popup_styles}>
+					return <div data-crewhrm-selector="dropdown-popup" className={"select-dropdown-popup".classNames(style) + 'box-shadow-thick border-radius-10 border-1-5 border-color-tertiary background-color-white'.classNames()} style={popup_styles}>
 						<div className={'trigger-point'.classNames(style)}>
 							{triggerPoint}
 						</div>
@@ -77,13 +77,13 @@ export function DropDown(props) {
 							{options.map(option=>{
 								let {id, label} = option;
 								let classes = `list-item ${id == selected_value ? 'active' : ''}`;
-								return <div key={id} className={classes.classNames(style) + list_class} onClick={()=>{onChange(id); close();}}>
+								return <div data-crewhrm-selector="dropdown-item" key={id} className={classes.classNames(style) + list_class} onClick={()=>{onChange(id); close();}}>
 									{label}
 								</div>
 							})}
 						</div>
 						
-						{addText && <div className={'add-item'.classNames(style) + list_class} style={{paddingTop: '10px', paddingBottom: '10px'}} onClick={()=>{onAddClick(); close();}}>
+						{addText && <div data-crewhrm-selector="dropdown-item-add" className={'add-item'.classNames(style) + list_class} style={{paddingTop: '10px', paddingBottom: '10px'}} onClick={()=>{onAddClick(); close();}}>
 							<i className={'ch-icon ch-icon-add-square vertical-align-middle d-inline-block margin-right-10'.classNames()}></i>
 							<span className={'vertical-align-middle'.classNames()}>{addText}</span>
 						</div>}
@@ -112,16 +112,16 @@ export function Options(props) {
 		contentStyle={{...content_style, ...cssStyle}}
 		arrow={false}
 		trigger={
-			<div className={'d-inline-block cursor-pointer'.classNames() + className}>
+			<div data-crewhrm-selector="options" className={'d-inline-block cursor-pointer'.classNames() + className}>
 				{children}
 			</div>
 		}>
 			{close=>{
-				return <div className={"options-popup".classNames(style) + 'box-shadow-thick border-radius-10 border-1-5 border-color-tertiary background-color-white'.classNames()}>
+				return <div data-crewhrm-selector="options-popup" className={"options-popup".classNames(style) + 'box-shadow-thick border-radius-10 border-1-5 border-color-tertiary background-color-white'.classNames()}>
 					<div className={'list-wrapper'.classNames(style)}>
 						{options.map(option=>{
 							let {id, label, icon} = option;
-							return <div key={id} className={'list-item'.classNames(style) + list_class} onClick={()=>{onClick(id); close();}}>
+							return <div data-crewhrm-selector="options-popup-item" key={id} className={'list-item'.classNames(style) + list_class} onClick={()=>{onClick(id); close();}}>
 								{icon && <i className={icon + 'margin-right-10'.classNames()}></i> || null}
 								{label}
 							</div>

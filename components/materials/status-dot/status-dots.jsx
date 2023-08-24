@@ -11,5 +11,5 @@ export function StatusDot(props) {
 		backgroundColor: color
 	}
 
-	return <div className={'d-inline-block'.classNames() + 'square'.classNames(style) + className} style={css}></div>
+	return <div data-crewhrm-selector="status-dot" className={'d-inline-block'.classNames() + 'square'.classNames(style) + className} style={css}></div>
 }

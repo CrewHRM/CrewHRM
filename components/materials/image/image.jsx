@@ -14,7 +14,7 @@ export function CoverImage(props) {
 		height: _height ? ( _height + ( ! isNaN( _height ) ? 'px' : '' ) ) : 'auto',
 	}
 
-	return <div className={`cover-image ${circle ? 'circle' : ''}`.classNames(style) + 'd-flex align-items-center justify-content-center'.classNames() + className} style={css}>
+	return <div data-crewhrm-selector="image" className={`cover-image ${circle ? 'circle' : ''}`.classNames(style) + 'd-flex align-items-center justify-content-center'.classNames() + className} style={css}>
 		{children}
 	</div>
 }

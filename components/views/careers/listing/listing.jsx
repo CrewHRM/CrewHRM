@@ -119,8 +119,8 @@ export function Listing(props) {
 		});
 	}
 
-	return <div className={'listing'.classNames(style)} style={{marginTop: '59px'}}>
-		<div className={'sidebar'.classNames(style)}>
+	return <div data-crewhrm-selector="job-listing" className={'listing'.classNames(style)} style={{marginTop: '59px'}}>
+		<div data-crewhrm-selector="sidebar" className={'sidebar'.classNames(style)}>
 			<div className={'margin-right-50'.classNames()}>
 				{Object.keys(filters).map(filter_key=>{
 					let {section_label, selection_type, options=[]} = filters[filter_key];
@@ -141,7 +141,7 @@ export function Listing(props) {
 				})}
 			</div>
 		</div>
-		<div className={'content-area'.classNames(style)}>
+		<div data-crewhrm-selector="listing" className={'content-area'.classNames(style)}>
 			<TextField 
 				iconClass={'ch-icon ch-icon-search-normal-1'.classNames()} 
 				className={'padding-vertical-10 padding-horizontal-11 border-1 border-color-tertiary border-focus-color-primary border-radius-5'.classNames()}/>
@@ -172,7 +172,7 @@ export function Listing(props) {
 				</div>
 			})}
 			
-			<div className={'text-align-center'.classNames()}>
+			<div data-crewhrm-selector="loading" className={'text-align-center'.classNames()}>
 				<LoadingIcon/>
 				<div className={'font-size-13 font-weight-400 line-height-21 text-color-light margin-top-8'.classNames()}>
 					{__( 'Loading More...' )}

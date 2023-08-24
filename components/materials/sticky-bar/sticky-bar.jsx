@@ -5,7 +5,7 @@ import style from './style.module.scss';
 export function StickyBar(props) {
 	const {children} = props;
 
-	return <div className={'sticky-bar'.classNames(style)}>
+	return <div data-crewhrm-selector="sticky-bar" className={'sticky-bar'.classNames(style)}>
 		{children}
 	</div>
 }

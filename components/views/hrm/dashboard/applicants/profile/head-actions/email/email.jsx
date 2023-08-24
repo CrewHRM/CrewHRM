@@ -42,7 +42,7 @@ export function Email(props) {
 		}
 	}
 
-	return <>
+	return <div data-crewhrm-selector="email">
 		{Object.keys(fields).map(field=>{
 			let {label, placeholder} = fields[field];
 			return <div key={field} className={'d-flex margin-bottom-15'.classNames() + 'email-fields'.classNames(style)}>
@@ -82,5 +82,5 @@ export function Email(props) {
 				</button>
 			</div>
 		</div>
-	</>
+	</div>
 }
