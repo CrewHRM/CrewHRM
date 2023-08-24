@@ -8,40 +8,6 @@ const genders = {
 	decline: __( 'Decline to self Identity' )
 }
 
-const ethnicities = {
-	american : __( 'American Indian or Alaskan Netive' ),
-	asian    : __( 'Asian' ),
-	afrikan  : __( 'Black or African American ' ),
-	hispanic : __( 'Hispanic or Latino' ),
-	white    : __( 'White' ),
-	hawaiian : __( 'Native Hawaiian or Other Pacific Islander' ),
-	multiple : __( 'Two or More Races' ),
-	decline  : __( 'Decline to self Identity' )
-}
-
-const marital_statuses = {
-	single               : __( 'Single' ),
-	married              : __( 'Married' ),
-	divorced             : __( 'Divorced' ),
-	widowed              : __( 'Widowed' ),
-	separated            : __( 'Separated' ),
-	common_law           : __( 'Common-law Marriage' ),
-	domestic_partnership : __( 'Domestic Partnership / Civil Union' ),
-	decline              : __( 'Prefer Not to Say' )
-}
-
-const disability_statuses = {
-	yes     : __( 'Yes, I have a disability (or previously had a disability)' ),
-	no      : __( 'No, I don\'t have a disability' ),
-	decline : __( 'I don\'t wish to answer' )
-}
-
-const veteran_statuses = {
-	no      : __( 'I am not a protected veteran' ),
-	yes     : __( 'I identify as one or more of the classifications of a protected veteran' ),
-	decline : __( 'I don\'t wish to answer' )
-}
-
 const gender_disclaimer = <>
 	{__( 'We are required by the law to collect certain race & ethnicity information. The categories are:' )}
 	<ul>
@@ -53,16 +19,6 @@ const gender_disclaimer = <>
 		<li>{__( 'Asian (Not Hispanic or Latino/Latinx) - A person having origins in any of the original peoples of the Far East, Southeast Asia, or the Indian Subcontinent, including, for example, Cambodia, China, India, Japan, Korea, Malaysia, Pakistan, the Philippine Islands, Thailand.' )}</li>
 	</ul>
 </> 
-
-const veteran_status = __( `Veteran Status
-We request certain information in order to measure the effectiveness of the outreach and positive recruitment efforts we undertake to comply with this law. If you believe you belong to any of the categories of protected veterans listed below, please indicate by making the appropriate selection.
-A "disabled veteran" is one of the following: a veteran of the U.S. military, ground, naval or air service who is entitled to compensation (or who but for the receipt of military retired pay would be entitled to compensation) under laws administered by the Secretary of Veterans Affairs; or a person who was discharged or released from active duty because of a service-connected disability.
-A "recently separated veteran" means any veteran during the three-year period beginning on the date of such veteran's discharge or release from active duty in the U.S. military, ground, naval, or air service.
-An "active duty wartime or campaign badge veteran" means a veteran who served on active duty in the U.S. military, ground, naval or air service during a war, or in a campaign or expedition for which a campaign badge has been authorized under the laws administered by the Department of Defense.
-An "Armed forces service medal veteran" means a veteran who, while serving on active duty in the U.S. military, ground, naval or air service, participated in a United States military operation for which an Armed Forces service medal was awarded pursuant to Executive Order 12985.` );
-
-const disability_status = __( `Disability Status
-We are also required to measure our progress toward having at least 7% of our workforce be individuals with disabilities. To do this, we must ask applicants and employees if they have a disability or have ever had a disability. Because a person may become disabled at any time, we ask all of our employees to update their information at least every five years.Identifying yourself as an individual with a disability is voluntary, and we hope that you will choose to do so. Your answer will be maintained confidentially and not be seen by selecting officials or anyone else involved in making personnel decisions. Completing the form will not negatively impact you in any way, regardless of whether you have self-identified in the past. For more information about this request to self-identify or the equal employment obligations of federal contractors under Section 503 of the Rehabilitation Act, visit the U.S. Department of Labor\'s Office of Federal Contract Compliance Programs (OFCCP) website at www.dol.gov/ofccp.` );
 
 export const sections_fields = {
 	personal_info: {
@@ -233,14 +189,6 @@ export const sections_fields = {
 						}
 					},
 					null,
-					{
-						name        : 'ethnicity',
-						label       : __( 'What race/ethnicity are you?' ),
-						placeholder : __( 'Select Ethnicity' ),
-						type        : 'dropdown',
-						options     : Object.keys(ethnicities).map(e=>{return {id: e, label: ethnicities[e]}}),
-					},
-					null
 				]
 			},
 			{
@@ -267,105 +215,6 @@ export const sections_fields = {
 					null
 				]
 			},
-			{
-				id        : 'nationality',
-				label     :  __( 'Nationality' ),
-				form      : [
-					{
-						name        : 'nationaloty',
-						label       : __( 'Nationaloty' ),
-						type        : 'text',
-					},
-					null
-				]
-			},
-			{
-				id        : 'marital_status',
-				label     :  __( 'Martial Status' ),
-				form      : [
-					{
-						name        : 'marital_status',
-						label       : __( 'Marital Status' ),
-						placeholder : __( 'Select Status' ),
-						type        : 'dropdown',
-						options     : Object.keys(marital_statuses).map(m=>{return {id: m, label: marital_statuses[m]}})
-					},
-					null
-				]
-			},
-			{
-				id        : 'hobbies',
-				label     :  __( 'Hobbies' ),
-				form      : [
-					{
-						name        : 'hobbies',
-						label       : __( 'Hobbies' ),
-						type        : 'text',
-					},
-					null
-				],
-			},
-			{
-				id        : 'driving_license',
-				label     :  __( 'Driving License' ),
-			},
-			{
-				id        : 'social_link',
-				label     :  __( 'Social Link' ),
-				form      : [
-					{
-						name        : 'social_link',
-						label       : __( 'Social Link (One per line)' ),
-						type        : 'textarea',
-					},
-					null
-				],
-			}
-		]
-	},
-	other_information: {
-		label: __( 'Other Information' ),
-		fields: [
-			{
-				id        : 'us_eeo',
-				label     :  __( 'U.S. Equal Employment Opportunity' ),
-			},
-			{
-				id        : 'veteran_status',
-				label     :  __( 'Veteran Status' ),
-				form      : [
-					{
-						name        : 'veteran_status',
-						label       : __( 'Veteran Status' ),
-						placeholder : __( '-Select-' ),
-						type        : 'dropdown',
-						options     : Object.keys(veteran_statuses).map(v=>{return {id: v, label: veteran_statuses[v]}}),
-						disclaimer  : {
-							heading : __( 'Veteran Status' ),
-							description : veteran_status
-						}
-					},
-					null,
-				]
-			},
-			{
-				id        : 'disability',
-				label     :  __( 'Identification of Disability' ),
-				form      : [
-					{
-						name        : 'disability',
-						label       : __( 'Disability Status*' ),
-						placeholder : __( '-Select-' ),
-						type        : 'dropdown',
-						options     : Object.keys(disability_statuses).map(d=>{return {id: d, label: disability_statuses[d]}}),
-						disclaimer  : {
-							heading : __( 'Disability Status*' ),
-							description : disability_status
-						}
-					},
-					null,
-				]
-			}
 		]
 	},
 	questions: {

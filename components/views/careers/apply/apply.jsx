@@ -30,7 +30,6 @@ const fields = {
 	],
 	other: [
 		...sections_fields.profile.fields.map(f=>f.form).filter(f=>f).flat(),
-		...sections_fields.other_information.fields.map(f=>f.form).filter(f=>f).flat(),
 		...sections_fields.questions.fields.map(question=>{
 			return [{
 				name     : question.id,
