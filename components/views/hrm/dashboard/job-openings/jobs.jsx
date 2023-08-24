@@ -156,7 +156,7 @@ export function JobOpenings(props) {
 					<DropDown
 						className={'padding-vertical-8 padding-horizontal-15'.classNames()}
 						transparent={is_overview}
-						labelFallback={__( 'All Location' )}
+						placeholder={__( 'All Location' )}
 						value={state.filter.country_code} 
 						options={countries_array} 
 						onChange={(v)=>onChange('country_code', v)}/>
@@ -165,7 +165,7 @@ export function JobOpenings(props) {
 					<DropDown
 						className={'padding-vertical-8 padding-horizontal-15'.classNames()}
 						transparent={is_overview}
-						labelFallback={__( 'Department' )}
+						placeholder={__( 'Department' )}
 						value={state.filter.job_status} 
 						options={filter_status_options} 
 						onChange={(v)=>onChange('job_status', v)}/>

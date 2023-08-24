@@ -6,130 +6,7 @@ import { ToggleSwitch } from "../../../../materials/toggle-switch/ToggleSwitch.j
 import { ActionButtons } from "../index.jsx";
 import { Options } from "../../../../materials/dropdown/dropdown.jsx";
 import { FieldEditorModal } from "./field-editor/field-editor-modal.jsx";
-
-const sections_fields = {
-	personal_info: {
-		label: __( 'Personal information' ),
-		fields: [
-			{
-				id        : 'name',
-				label     :  __( 'Name' ),
-				read_only : true
-			},
-			{
-				id        : 'address',
-				label     :  __( 'Address' ),
-				read_only : true
-			},
-			{
-				id        : 'mobile_number',
-				label     :  __( 'Mobile Number' ),
-				read_only : true
-			},
-			{
-				id        : 'email',
-				label     :  __( 'Email' ),
-				read_only : true
-			}
-		]
-	},
-	documents: {
-		label: __( 'Documents' ),
-		fields: [
-			{
-				id        : 'resume',
-				label     :  __( 'Resume' ),
-				read_only : true
-			},
-			{
-				id        : 'cover_letter',
-				label     :  __( 'Cover Letter' ),
-			},
-			{
-				id        : 'file_attachment',
-				label     :  __( 'File Attachment' ),
-			}
-		]
-	},
-	profile: {
-		label: __( 'Profile' ),
-		fields: [
-			{
-				id        : 'date_of_birth',
-				label     :  __( 'Date of Birth' ),
-			},
-			{
-				id        : 'gender',
-				label     :  __( 'Gender' ),
-			},
-			{
-				id        : 'education',
-				label     :  __( 'Education' ),
-			},
-			{
-				id        : 'experience',
-				label     :  __( 'Experience' ),
-			},
-			{
-				id        : 'nationality',
-				label     :  __( 'Nationality' ),
-			},
-			{
-				id        : 'martial_status',
-				label     :  __( 'Martial Status' ),
-			},
-			{
-				id        : 'hobbies',
-				label     :  __( 'Hobbies' ),
-			},
-			{
-				id        : 'driving_license',
-				label     :  __( 'Driving License' ),
-			},
-			{
-				id        : 'social_link',
-				label     :  __( 'Social Link' ),
-			}
-		]
-	},
-	other_information: {
-		label: __( 'Other Information' ),
-		fields: [
-			{
-				id        : 'us_eeo',
-				label     :  __( 'U.S. Equal Employment Opportunity' ),
-			},
-			{
-				id        : 'veteran_status',
-				label     :  __( 'Veteran Status' ),
-			},
-			{
-				id        : 'i_o_d',
-				label     :  __( 'Identification of Disability' ),
-			}
-		]
-	},
-	questions: {
-		label    : __( 'Add Questions' ),
-		sortable : true,
-		addLabel : __( 'Add a question' ),
-		options  : {
-			edit: {
-				label: __( 'Edit' ),
-				icon: 'ch-icon ch-icon-edit-2'
-			},
-			duplicate: {
-				label: __( 'Duplicate' ),
-				icon: 'ch-icon ch-icon-copy'
-			},
-			delete: {
-				label: __( 'Delete' ),
-				icon: 'ch-icon ch-icon-trash'
-			}
-		},
-		fields: []
-	}
-}
+import { sections_fields } from "./form-structure.jsx";
 
 export function ApplicationForm(props) {
 	const {navigateTab} = props;
@@ -193,6 +70,8 @@ export function ApplicationForm(props) {
 			// It's update request
 			fields[section_name].fields[field_index] = updated_field;
 		}
+
+		console.log(updated_field)
 		
 		// Update state 
 		setState({

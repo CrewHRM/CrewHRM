@@ -5,19 +5,17 @@ import { DropDown } from "../../../../../materials/dropdown/dropdown.jsx";
 import { ToggleSwitch } from "../../../../../materials/toggle-switch/ToggleSwitch.jsx";
 import { Line } from "../../../../../materials/line/line.jsx";
 
-import style from './field.module.scss';
-
 const question_types = {
-	paragraph       : __( 'Paragraph' ),
-	date            : __( 'Date' ),
-	short_answer    : __( 'Short Answer' ),
-	file_upload     : __( 'File Upload' ),
-	multiple_choice : __( 'Multiple Choice' ),
-	single_choice   : __( 'Single Choice' ),
-	dropdown        : __( 'Dropdown' ),
+	textarea : __( 'Paragraph' ),
+	date     : __( 'Date' ),
+	text     : __( 'Short Answer' ),
+	file     : __( 'File Upload' ),
+	checkbox : __( 'Multiple Choice' ),
+	radio    : __( 'Single Choice' ),
+	dropdown : __( 'Dropdown' ),
 }
 
-const option_able = ['multiple_choice', 'single_choice', 'dropdown'];
+const option_able = ['checkbox', 'radio', 'dropdown'];
 
 export function FieldEditorModal(props) {
 	const [state, setState] = useState({
@@ -118,7 +116,7 @@ export function FieldEditorModal(props) {
 				<DropDown 
 					className={'padding-vertical-14 padding-horizontal-15 border-radius-10 border-1 border-color-primary font-size-15 font-weight-600 text-color-primary'.classNames()}
 					nested={true}
-					labelFallback={__( 'Select Question Type' )}
+					placeholder={__( 'Select Question Type' )}
 					value={field_type}
 					options={Object.keys(question_types).map(t=>{return {id: t, label: question_types[t]}})}
 					onChange={value=>onChange('type', value)}/>

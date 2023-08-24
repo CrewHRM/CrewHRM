@@ -77,7 +77,7 @@ function MoveContent({stage, total, users=[], closeModal, deleteFlow}) {
 						value={state.move_to}
 						options={sequences}
 						onChange={move_to=>setState({move_to})}
-						labelFallback={__( 'Select Stage' )}/> 
+						placeholder={__( 'Select Stage' )}/> 
 				</div>
 				<div>
 					<button className={'button button-primary'.classNames()} onClick={deleteFlow} disabled={!state.move_to}>

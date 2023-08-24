@@ -13,6 +13,7 @@ import { IconPDF } from "../../../../../../materials/dynamic-svg/icon-pdf.jsx";
 import { IconZip } from "../../../../../../materials/dynamic-svg/icon-zip.jsx";
 
 import style from './documents.module.scss';
+import { PDFViewer } from "../../../../../../materials/pdf-viewer/pdf-viewer.jsx";
 
 const thumbnails = {
 	image : IconImage,
@@ -42,9 +43,7 @@ export function Documents() {
 			<span className={'d-block font-size-17 font-weight-600 line-height-24 letter-spacing--17 text-color-primary margin-bottom-10'.classNames()}>
 				{__( 'RESUME' )}
 			</span>
-			<object data={resume_url} type="application/pdf" width="100%" height="700px">
-				<p>Unable to display PDF file. <a href={resume_url}>Download</a> instead.</p>
-			</object>
+			<PDFViewer src={resume_url}/>
 		</> || null}
 		
 		{attachments.length && <>
