@@ -36,7 +36,7 @@ class Scripts extends Main {
 
 	public function loadVariables() {
 		// Check if it's our page and needs resources to load
-		if ( ( is_admin() && ! Utilities::isCrewDashboard() ) ) {
+		if ( ! Utilities::isCrewDashboard() && ! ( is_singular() && strpos( get_the_content(), '[' . Shortcode::SHORTCODE ) !== false ) ) {
 			return;
 		}
 
@@ -53,7 +53,10 @@ class Scripts extends Main {
 			'action_hooks' => array(),
 			'filter_hooks' => array(),
 			'ajaxurl'      => admin_url('admin-ajax.php'),
-			'colors'       => $dynamic_colors
+			'colors'       => $dynamic_colors,
+			'settings'     => array(
+				'application_form_layout' => 'single',
+			)
 		);
 		echo '<script>window.CrewHRM=' . json_encode( $data ) . '</script>';
 	}

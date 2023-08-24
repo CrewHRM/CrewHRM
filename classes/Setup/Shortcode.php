@@ -3,8 +3,13 @@
 namespace CrewHRM\Setup;
 
 class Shortcode {
+	/**
+	 * Short code name
+	 */
+	const SHORTCODE = 'crewhrm_careers';
+
 	function __construct() {
-		add_shortcode( 'crewhrm_careers', array( $this, 'careerPage' ) );
+		add_shortcode( self::SHORTCODE, array( $this, 'careerPage' ) );
 	}
 
 	/**

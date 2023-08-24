@@ -3,10 +3,10 @@ import React, { useState } from "react";
 import style from './application.module.scss';
 import { __, getRandomString } from "../../../../utilities/helpers.jsx";
 import { ToggleSwitch } from "../../../../materials/toggle-switch/ToggleSwitch.jsx";
-import { ActionButtons } from "../index.jsx";
 import { Options } from "../../../../materials/dropdown/dropdown.jsx";
 import { FieldEditorModal } from "./field-editor/field-editor-modal.jsx";
 import { sections_fields } from "./form-structure.jsx";
+import { FormActionButtons } from "../../../../materials/form-action.jsx";
 
 export function ApplicationForm(props) {
 	const {navigateTab} = props;
@@ -176,7 +176,7 @@ export function ApplicationForm(props) {
 				</div>
 			})}
 
-			<ActionButtons onBack={()=>navigateTab(-1)} onNext={()=>navigateTab(1)}/>
+			<FormActionButtons onBack={()=>navigateTab(-1)} onNext={()=>navigateTab(1)}/>
 		</div>
 	</>
 }

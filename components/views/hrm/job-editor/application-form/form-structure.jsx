@@ -108,7 +108,8 @@ export const sections_fields = {
 						type        : 'text',
 						required    : true,
 						placeholder : __( '@company.com' )
-					}
+					},
+					null
 				]
 			}
 		]
@@ -138,7 +139,8 @@ export const sections_fields = {
 					{
 						name        : 'cover_letter',
 						label       : __( 'Cover Letter' ),
-						type        : 'textarea',
+						type        : 'textarea_rich',
+						placeholder : __( 'Write your cover letter here' )
 					},
 					null
 				]
@@ -153,7 +155,8 @@ export const sections_fields = {
 						type        : 'file',
 						placeholder : __( 'Browse Files' ),
 						fileCount   : 3
-					}
+					},
+					null
 				]
 			}
 		]

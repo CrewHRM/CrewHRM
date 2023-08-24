@@ -4,7 +4,7 @@ import ReactDOM from "react-dom/client";
 import '../../utilities/prototypes.jsx';
 import { HRM } from "./hrm.jsx";
 import { getElementDataSet } from "../../utilities/helpers.jsx";
-import { MountPoint } from "../../materials/mount-points/templates.jsx";
+import { MountPoint } from "../../materials/templates.jsx";
 
 const hrm = document.getElementById('crewhrm_dashboard');
 if ( hrm ) {

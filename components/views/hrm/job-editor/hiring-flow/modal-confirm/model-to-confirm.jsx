@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Modal } from "../../../../../materials/modal/modal.jsx";
+import { Modal } from "../../../../../materials/modal.jsx";
 import { __, sprintf } from "../../../../../utilities/helpers.jsx";
 
 import avatar from '../../../../../images/avatar.svg';

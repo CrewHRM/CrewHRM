@@ -26,24 +26,6 @@ const steps = [
 	},
 ];
 
-export function ActionButtons(props) {
-	const {onBack, onNext, backText=__( 'Back' ), nextText=__( 'Next' )} = props;
-
-	return <div className={'d-flex margin-bottom-30'.classNames() + 'action-buttons'.classNames(style)}>
-		{onBack && <div className={'back-button-container'.classNames(style)}>
-			<button className={'d-inline-block button button-primary button-outlined button-outlined-secondary button-full-width'.classNames()} onClick={onBack}>
-				{backText}
-			</button>
-		</div> || null}
-
-		{onNext && <div className={'flex-1'.classNames()}>
-			<button className={'button button-primary button-full-width'.classNames()} onClick={onNext}>
-				{nextText}
-			</button>
-		</div> || null}
-	</div>
-}
-
 export function JobEditor() {
 	let {job_id: id} = useParams();
 	const job_id = id==='new' ? 0 : id;

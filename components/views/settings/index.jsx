@@ -3,7 +3,7 @@ import ReactDOM from "react-dom/client";
 
 import '../../utilities/prototypes.jsx';
 import { getElementDataSet } from "../../utilities/helpers.jsx";
-import { MountPoint } from "../../materials/mount-points/templates.jsx";
+import { MountPoint } from "../../materials/templates.jsx";
 import { Company } from "./company-profile/company.jsx";
 import { HRMSettings } from "./hrm-settings/hrm-settings.jsx";
 

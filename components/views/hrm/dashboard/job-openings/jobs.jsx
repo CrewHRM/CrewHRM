@@ -7,7 +7,7 @@ import { NoJob } from "./no-job.jsx";
 import { Link } from "react-router-dom";
 import { DropDown, Options } from "../../../../materials/dropdown/dropdown.jsx";
 import { Line } from "../../../../materials/line/line.jsx";
-import { ShareModal } from "../../../../materials/share-modal/share-modal.jsx";
+import { ShareModal } from "../../../../materials/share-modal.jsx";
 import { TextField } from "../../../../materials/text-field/text-field.jsx";
 
 const options = [

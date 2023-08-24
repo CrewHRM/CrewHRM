@@ -21,7 +21,7 @@ module.exports = (env, options) => {
 				{
 					test: /\.css$/i,
 					include: path.resolve(__dirname, './'),
-					use: ['style-loader', 'css-loader', 'postcss-loader'],
+					use: ['style-loader', 'css-loader'],
 				},
 				{
 					test: /\.(png|jp(e*)g|svg|gif|pdf)$/,

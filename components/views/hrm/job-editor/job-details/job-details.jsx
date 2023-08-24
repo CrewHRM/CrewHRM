@@ -1,7 +1,6 @@
 import React, { createContext, useState } from "react";
 
 import { __ } from "../../../../utilities/helpers.jsx";
-import { ActionButtons } from "../index.jsx";
 import { TitleAndDescription } from "./sections/title-description.jsx";
 import { EmploymentDetails } from "./sections/employment-details.jsx";
 import { Experience } from "./sections/required-experience.jsx";
@@ -9,6 +8,7 @@ import { Experience } from "./sections/required-experience.jsx";
 import style from './details.module.scss';
 import { Salary } from "./sections/salary.jsx";
 import { Location } from "./sections/location.jsx";
+import { FormActionButtons } from "../../../../materials/form-action.jsx";
 
 const textarea_class      = 'padding-vertical-15 padding-horizontal-20 border-radius-10 border-1-5 border-color-tertiary border-focus-color-primary w-full d-block font-size-15 font-weight-400 line-height-25 text-color-primary'.classNames();
 const input_class         = 'padding-15 border-radius-10 border-1-5 border-color-tertiary border-focus-color-primary w-full d-block height-48 font-size-15 font-weight-400 line-height-25 text-color-primary'.classNames();
@@ -96,7 +96,7 @@ export function JobDetails(props) {
 
 		<div className={'d-flex margin-bottom-10'.classNames()}>
 			<div className={'flex-1'.classNames()}>
-				<ActionButtons onNext={()=>navigateTab(1)}/>
+				<FormActionButtons onNext={()=>navigateTab(1)}/>
 			</div>
 			<div className={'right-col'.classNames(style)}></div>
 		</div>

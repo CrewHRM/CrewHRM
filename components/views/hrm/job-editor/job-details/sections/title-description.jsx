@@ -3,8 +3,9 @@ import { ContextJobDetails } from "../job-details.jsx";
 import { DropDown } from "../../../../../materials/dropdown/dropdown.jsx";
 import { __ } from "../../../../../utilities/helpers.jsx";
 import { TextField } from "../../../../../materials/text-field/text-field.jsx";
-import { CircularProgress } from "../../../../../materials/progress/circular.jsx";
+import { CircularProgress } from "../../../../../materials/circular.jsx";
 import { AddDepartmentModal } from "./add-department.jsx";
+import { TextEditor } from "../../../../../materials/text-editor/text-editor.jsx";
 
 import style from '../details.module.scss';
 
@@ -118,18 +119,13 @@ export function TitleAndDescription() {
 			</div>
 		</div>
 
-
 		{/* Job Description* */}
 		<span className={field_label_class}>
 			{__( 'Job Description' )}<span className={"text-color-danger".classNames()}>*</span>
 		</span>
 		<div className={'d-flex margin-bottom-30'.classNames()}>
 			<div className={'flex-1'.classNames()}>
-				<textarea 
-					className={textarea_class}
-					style={{height: '300px'}} 
-					placeholder={__( 'Enter your job description here; include key areas responsibility and specific qualification needed to perform the role. ' )}
-				></textarea>
+				<TextEditor onChange={v=>console.log(v)} placeholder={__( 'Enter your job description here; include key areas responsibility and specific qualification needed to perform the role. ' )}/>
 			</div>
 			<div className={'right-col'.classNames(style)}>
 				<span className={'d-block font-size-13 font-weight-400 text-color-light margin-bottom-36'.classNames()}>

@@ -3,7 +3,7 @@ import { __, countries_array, timezones_array } from "../../../../utilities/help
 import { CoverImage } from "../../../../materials/image/image.jsx";
 
 import logo from '../../../../images/attachment.png';
-import { Form } from "../../../../materials/form/form.jsx";
+import { Form } from "../../../../materials/form.jsx";
 
 // Do not edit or delete keys. Only can add more. 
 const business_types = {

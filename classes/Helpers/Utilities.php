@@ -12,7 +12,7 @@ class Utilities extends Main {
 	 * @return boolean
 	 */
 	public static function isCrewDashboard( $page = null ) {
-		$is_dashboard = get_admin_page_parent() == self::$configs->root_menu_slug;
+		$is_dashboard = is_admin() && get_admin_page_parent() == self::$configs->root_menu_slug;
 		
 		if ( $is_dashboard && $page !== null ) {
 			$pages        = ! is_array( $page ) ? array( $page ) : $page;

@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Modal } from "../../../../../materials/modal/modal.jsx";
+import { Modal } from "../../../../../materials/modal.jsx";
 import { __, getRandomString } from "../../../../../utilities/helpers.jsx";
 import { DropDown } from "../../../../../materials/dropdown/dropdown.jsx";
 import { ToggleSwitch } from "../../../../../materials/toggle-switch/ToggleSwitch.jsx";

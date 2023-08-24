@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 import { __, getRandomString } from "../../../../utilities/helpers.jsx";
 
 import style from './hiring.module.scss';
-import { SortableList } from "../../../../materials/dnd/sortable-list.jsx";
-import { ActionButtons } from "../index.jsx";
+import { SortableList } from "../../../../materials/sortable-list.jsx";
 import { DeletionConfirm } from "./modal-confirm/model-to-confirm.jsx";
+import { FormActionButtons } from "../../../../materials/form-action.jsx";
 
 export const sequences = [
 	__( 'Screening' ),
@@ -141,6 +141,6 @@ export function HiringFlow(props) {
 			</div>
 		</div>
 
-		<ActionButtons onBack={()=>navigateTab(-1)} onNext={()=>navigateTab(1)}/>
+		<FormActionButtons onBack={()=>navigateTab(-1)} onNext={()=>navigateTab(1)}/>
 	</div>
 }

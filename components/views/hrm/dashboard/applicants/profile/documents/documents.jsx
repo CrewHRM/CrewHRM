@@ -3,7 +3,7 @@ import { ContextApplicantProfile } from "../profile-wrapper.jsx";
 import { ExpandableContent } from "../../../../../../materials/ExpandableContent/expandable-content.jsx";
 import { __, prepareTexts } from "../../../../../../utilities/helpers.jsx";
 import { Line } from "../../../../../../materials/line/line.jsx";
-import { DangerouslySet } from "../../../../../../materials/dangerously-set/DangerouslySet.jsx";
+import { DangerouslySet } from "../../../../../../materials/DangerouslySet.jsx";
 import { CoverImage } from "../../../../../../materials/image/image.jsx";
 
 import { IconImage } from "../../../../../../materials/dynamic-svg/icon-image.jsx";
