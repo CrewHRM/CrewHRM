@@ -11,7 +11,8 @@ import style from './editor.module.scss';
 export function TextEditor({onChange: dispatchTo, value: html, placeholder}) {
     const contentBlock = html ? htmlToDraft(html) : null;
 	const [state, setState] = useState({
-		editorState: contentBlock ? EditorState.createWithContent(ContentState.createFromBlockArray(contentBlock.contentBlocks)) : EditorState.createEmpty()
+		editorState: contentBlock ? EditorState.createWithContent(ContentState.createFromBlockArray(contentBlock.contentBlocks)) : EditorState.createEmpty(),
+		focus: false,
 	});
 
 	const onChange=(editorState)=>{
@@ -20,9 +21,11 @@ export function TextEditor({onChange: dispatchTo, value: html, placeholder}) {
 	}
 
 	return <Editor 
+			onFocus={()=>setState({...state, focus: true})}
+    		onBlur={()=>setState({...state, focus: false})}
 			placeholder={placeholder}
 			editorState={state.editorState}
-			wrapperClassName={'wrapper'.classNames(style) + 'border-radius-10 border-1 border-color-tertiary border-focus-color-primary'.classNames()}
+			wrapperClassName={'wrapper'.classNames(style) + `border-radius-10 border-1 b-color-tertiary b-color-active-primary ${state.focus ? 'active' : ''}`.classNames()}
         	editorClassName={'editor'.classNames(style)}
 			toolbarClassName={'toolbar'.classNames(style)}
 			toolbar={{

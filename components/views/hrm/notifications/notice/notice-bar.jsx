@@ -14,7 +14,7 @@ export function NoticeBar() {
 				<div>
 					{content}
 				</div>
-				<i className={'ch-icon ch-icon-times font-size-24 text-color-white cursor-pointer position-absolute right-18'.classNames()} onClick={()=>deleteNotice(id)}></i>
+				<i className={'ch-icon ch-icon-times font-size-24 color-white cursor-pointer position-absolute right-18'.classNames()} onClick={()=>deleteNotice(id)}></i>
 			</div>
 		})}
 	</>

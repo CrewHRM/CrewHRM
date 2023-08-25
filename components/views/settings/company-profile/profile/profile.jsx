@@ -178,9 +178,9 @@ export function CompanyProfile() {
 			<CoverImage 
 				src={logo}
 				width={120}
-				className={'border-5 border-color-tertiary border-radius-10'.classNames()}/>
+				className={'border-5 b-color-tertiary border-radius-10'.classNames()}/>
 			<div>
-				<span className={'d-block font-size-15 font-weight-500 text-color-light margin-bottom-10'.classNames()}>
+				<span className={'d-block font-size-15 font-weight-500 color-text-light margin-bottom-10'.classNames()}>
 					{__( 'Company Logo' )}
 				</span>
 				<button className={'button button-primary button-outlined button-small margin-bottom-5'.classNames()}>

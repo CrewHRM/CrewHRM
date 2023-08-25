@@ -47,8 +47,8 @@ export function Sidebar() {
 
 		<div className={'padding-15'.classNames()}>
 			<TextField 
-				className={'border-1 border-color-tertiary border-radius-5 padding-vertical-10 padding-horizontal-11 height-40'.classNames()}
-				iconClass={"ch-icon ch-icon-search-normal-1 font-size-16 text-color-light".classNames()} 
+				className={'border-1 b-color-tertiary border-radius-5 padding-vertical-10 padding-horizontal-11 height-40'.classNames()}
+				iconClass={"ch-icon ch-icon-search-normal-1 font-size-16 color-text-light".classNames()} 
 				placeholder={__( 'Search by name' )}/>
 		</div>
 
@@ -62,10 +62,10 @@ export function Sidebar() {
 					<div className={'d-flex align-items-center'.classNames()}>
 						<CoverImage src={src} width={48} circle={true}/>
 						<div className={'flex-1 margin-left-10'.classNames()}>
-							<span className={'d-block font-size-17 font-weight-600 letter-spacing--17 text-color-primary margin-bottom-2'.classNames()}>
+							<span className={'d-block font-size-17 font-weight-600 letter-spacing--17 color-primary margin-bottom-2'.classNames()}>
 								{name}
 							</span>
-							<span className={'font-size-13 font-weight-400 line-height-24 text-color-light'.classNames()}>
+							<span className={'font-size-13 font-weight-400 line-height-24 color-text-light'.classNames()}>
 								{action_time}
 							</span>
 						</div>

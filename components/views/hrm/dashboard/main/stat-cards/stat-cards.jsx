@@ -35,10 +35,10 @@ export function StatCards({className=''}) {
 			return <div key={label} className={'card'.classNames(style) + 'd-flex flex-flow-column justify-content-space-between box-shadow-thin border-radius-5 padding-25'.classNames()}>
 				<img src={icon} className={'width-24'.classNames()}/>
 				<div>
-					<span className={'d-block margin-bottom-12 font-size-28 font-weight-700 text-color-primary'.classNames()}>
+					<span className={'d-block margin-bottom-12 font-size-28 font-weight-700 color-primary'.classNames()}>
 						{count}
 					</span>
-					<span className={'d-block font-size-15 font-weight-500 text-color-light'.classNames()}>
+					<span className={'d-block font-size-15 font-weight-500 color-text-light'.classNames()}>
 						{label}
 					</span>
 				</div>

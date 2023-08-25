@@ -145,9 +145,9 @@ export function JobOpenings(props) {
 		<div className={'d-flex align-items-center margin-bottom-20'.classNames() + 'filter'.classNames(style)}>
 			<div className={'flex-1 d-flex align-items-center'.classNames()}>
 				{!is_overview && <Link to="/dashboard/">
-					<i className={'ch-icon ch-icon-arrow-left text-color-primary cursor-pointer'.classNames() + 'back-icon'.classNames(style)}></i>
+					<i className={'ch-icon ch-icon-arrow-left color-primary cursor-pointer'.classNames() + 'back-icon'.classNames(style)}></i>
 				</Link> || null}
-				<span className={'text-color-primary '+(is_overview ? 'font-size-17 font-weight-500' : 'font-size-24 font-weight-600').classNames()}>
+				<span className={'color-primary '+(is_overview ? 'font-size-17 font-weight-500' : 'font-size-24 font-weight-600').classNames()}>
 					{__( 'Job Openings' )}
 				</span>
 			</div>
@@ -172,8 +172,8 @@ export function JobOpenings(props) {
 				</div>
 				<div className={'d-inline-block'.classNames()}>
 					<TextField 
-						className={`border-radius-5 border-1 height-34 padding-8 border-color-tertiary ${is_overview ? 'background-color-transparent' : ' background-color-white'}`.classNames()}
-						iconClass={"ch-icon ch-icon-search-normal-1 font-size-18 text-color-primary cursor-pointer".classNames()} 
+						className={`border-radius-5 border-1 height-34 padding-8 b-color-tertiary ${is_overview ? 'bg-color-transparent' : ' bg-color-white'}`.classNames()}
+						iconClass={"ch-icon ch-icon-search-normal-1 font-size-18 color-primary cursor-pointer".classNames()} 
 						icon_position="right" 
 						expandable={true}
 						value={state.filter.search}
@@ -201,8 +201,8 @@ export function JobOpenings(props) {
 						return {
 							id: o.name,
 							label: <span className={'d-inline-flex align-items-center column-gap-10'.classNames()}>
-								<i className={o.icon.classNames() + 'font-size-24 text-color-primary'.classNames()}></i>
-								<span className={'font-size-15 font-weight-500 line-height-25 text-color-primary'.classNames()}>
+								<i className={o.icon.classNames() + 'font-size-24 color-primary'.classNames()}></i>
+								<span className={'font-size-15 font-weight-500 line-height-25 color-primary'.classNames()}>
 									{o.label}
 								</span>
 							</span>
@@ -216,13 +216,13 @@ export function JobOpenings(props) {
 									<div className={"d-inline-block margin-right-8".classNames()} title={status_label}>
 										<StatusDot color={status_color}/>
 									</div>
-									<span className={'d-block text-color-primary font-size-20 font-weight-600'.classNames()}>
+									<span className={'d-block color-primary font-size-20 font-weight-600'.classNames()}>
 										{job_title}
 									</span>
 								</div>
 								<div className={"meta-data".classNames(style)}>
 									{meta_data.map((data, index)=>{
-										return data && <span key={data} className={'d-inline-block font-size-15 font-weight-400 text-color-light'.classNames()}>
+										return data && <span key={data} className={'d-inline-block font-size-15 font-weight-400 color-text-light'.classNames()}>
 											{data}
 										</span> || null
 									})}
@@ -235,7 +235,7 @@ export function JobOpenings(props) {
 							</div>
 							<div className={'d-contents'.classNames()}>
 								<Options options={actions} onClick={action=>onActionClick(action, job_id)}>
-									<i className={'ch-icon ch-icon-more text-color-light font-size-20 cursor-pointer d-inline-block margin-left-15'.classNames()}></i>
+									<i className={'ch-icon ch-icon-more color-text-light font-size-20 cursor-pointer d-inline-block margin-left-15'.classNames()}></i>
 								</Options>
 							</div>
 						</div>
@@ -247,10 +247,10 @@ export function JobOpenings(props) {
 									return [
 										<div key={key} style={!is_last ? {} : {paddingRight: '5%'}}>
 											<div>
-												<span className={'d-block text-color-light font-size-14 font-weight-400 margin-bottom-7'.classNames()}>
+												<span className={'d-block color-text-light font-size-14 font-weight-400 margin-bottom-7'.classNames()}>
 													{stat_labels[key]}
 												</span>
-												<span className={'d-block text-color-primary font-size-17 font-weight-600'}>
+												<span className={'d-block color-primary font-size-17 font-weight-600'}>
 													{stats[key]}
 												</span>
 											</div>

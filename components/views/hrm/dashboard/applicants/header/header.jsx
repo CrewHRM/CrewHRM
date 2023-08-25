@@ -19,10 +19,10 @@ export function Header(props) {
 		return {
 			id: s.id,
 			label: <>
-				<span className={'d-inline-block font-size-15 font-weight-600 text-color-primary margin-right-3'.classNames()}>
+				<span className={'d-inline-block font-size-15 font-weight-600 color-primary margin-right-3'.classNames()}>
 					{s.count}
 				</span>
-				<span className={'d-inline-block font-size-14 font-weight-400 text-color-primary'.classNames()}>
+				<span className={'d-inline-block font-size-14 font-weight-400 color-primary'.classNames()}>
 					{s.label}
 				</span>
 			</>
@@ -43,11 +43,11 @@ export function Header(props) {
 						transparent={true}
 						position="bottom right"
 						className={'padding-vertical-8 padding-horizontal-15'.classNames()}
-						textClassName={'font-size-24 font-weight-600 text-color-primary'.classNames()}/>
+						textClassName={'font-size-24 font-weight-600 color-primary'.classNames()}/>
 				</div>
 			</div>
 			<div className={'d-flex align-items-center column-gap-15'.classNames()}>
-				<a href="#" className={'font-size-15 font-weight-400 text-color-primary'.classNames()}>
+				<a href="#" className={'font-size-15 font-weight-400 color-primary'.classNames()}>
 					{__( 'View Post' )}
 				</a>
 				<button className={'button button-primary button-outlined button-small'.classNames()}>

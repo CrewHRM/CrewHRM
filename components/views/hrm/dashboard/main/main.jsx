@@ -15,10 +15,10 @@ export function DahboardMain() {
 			<StatCards className={'margin-bottom-20'.classNames()}/>
 			
 			<IntroCard image="megaphone" orientation="vertical" className={'margin-bottom-20'.classNames()}>
-				<span className={'d-block text-color-primary font-size-28 font-weight-600 line-height-32 margin-bottom-15'.classNames()}>
+				<span className={'d-block color-primary font-size-28 font-weight-600 line-height-32 margin-bottom-15'.classNames()}>
 					{__( 'Find the person you want to hire ' )}
 				</span>
-				<small className={'text-color-light font-size-15 font-weight-400 margin-bottom-30 d-block'.classNames()}>
+				<small className={'color-text-light font-size-15 font-weight-400 margin-bottom-30 d-block'.classNames()}>
 					{__( 'Candidates see your logo and description on job posts, and more' )}
 				</small>
 				<Link to="/dashboard/jobs/editor/new/" className={'button button-primary button-medium'.classNames()}>
@@ -31,12 +31,12 @@ export function DahboardMain() {
 			<JobOpenings is_overview={true} className={"margin-bottom-20".classNames()}/>
 			<div className={'d-flex align-items-center margin-bottom-20'.classNames()}>
 				<div className={'flex-1'.classNames()}>
-					<span className={'text-color-primary font-size-17 font-weight-500'.classNames()}>
+					<span className={'color-primary font-size-17 font-weight-500'.classNames()}>
 						{__( 'Suggested Action' )}
 					</span>
 				</div>
 				<div>
-					<span className={'text-color-primary font-size-14 font-weight-400'.classNames()}>
+					<span className={'color-primary font-size-14 font-weight-400'.classNames()}>
 						{__( 'Don’t show again' )}
 					</span>
 				</div>
@@ -44,10 +44,10 @@ export function DahboardMain() {
 			<div className={'column'.classNames()}>
 				<div>
 					<IntroCard image="designer_working">
-						<span className={'d-block font-size-20 font-weight-600 text-color-primary margin-bottom-8'.classNames()}>
+						<span className={'d-block font-size-20 font-weight-600 color-primary margin-bottom-8'.classNames()}>
 							{__( 'Question Bank' )}
 						</span>
-						<DangerouslySet className={"d-block font-size-14 font-weight-400 text-color-light margin-bottom-26".classNames()}>
+						<DangerouslySet className={"d-block font-size-14 font-weight-400 color-text-light margin-bottom-26".classNames()}>
 							{__('Let’s create a questionnaire for <br/> hiring the right people.')}
 						</DangerouslySet>
 						<a href="#" className={'button button-primary button-outlined button-medium'.classNames()}>
@@ -57,10 +57,10 @@ export function DahboardMain() {
 				</div>
 				<div>
 					<IntroCard image="being_creative">
-						<span className={'d-block font-size-20 font-weight-600 text-color-primary margin-bottom-8'.classNames()}>
+						<span className={'d-block font-size-20 font-weight-600 color-primary margin-bottom-8'.classNames()}>
 							{__( 'Design your page' )}
 						</span>
-						<span className={"d-block font-size-14 font-weight-400 text-color-light margin-bottom-26".classNames()}>
+						<span className={"d-block font-size-14 font-weight-400 color-text-light margin-bottom-26".classNames()}>
 							{__('Keep your great talented candidate on file in the Talent Pool.')}
 						</span>
 						<a href="#" className={'button button-primary button-outlined button-medium'.classNames()}>

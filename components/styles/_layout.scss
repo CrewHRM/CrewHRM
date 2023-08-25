@@ -211,3 +211,17 @@ $overflows: 'auto', 'hidden';
     -webkit-appearance: none;
     -moz-appearance: none;
 }
+
+.fade-in {
+  opacity: 0;
+  animation: crewFadeInAnimation 0.6s ease-in-out forwards 1; /* Added "1" for iteration count */
+}
+
+@keyframes crewFadeInAnimation {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

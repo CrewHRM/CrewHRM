@@ -35,8 +35,8 @@ export function DropDown(props) {
 		transparent, 
 		className='',
 		tabindex,
-		textClassName='font-size-15 font-weight-400 text-color-primary'.classNames(),
-		iconClassName='ch-icon ch-icon-arrow-down margin-left-10 font-size-18 text-color-light'.classNames(),
+		textClassName='font-size-15 font-weight-400 color-primary'.classNames(),
+		iconClassName='ch-icon ch-icon-arrow-down margin-left-10 font-size-18 color-text-light'.classNames(),
 		position="center top",
 		placeholder=__( 'Select' ),
 		addText,
@@ -69,7 +69,7 @@ export function DropDown(props) {
 					let popup_styles = ref.current ? {width: ref.current.clientWidth+'px'} : {};
 					popup_styles = {...popup_styles, ...getPopupStyle(className)};
 
-					return <div data-crewhrm-selector="dropdown-popup" className={"select-dropdown-popup".classNames(style) + 'box-shadow-thick border-radius-10 border-1-5 border-color-tertiary background-color-white'.classNames()} style={popup_styles}>
+					return <div data-crewhrm-selector="dropdown-popup" className={"select-dropdown-popup".classNames(style) + 'box-shadow-thick border-radius-10 border-1-5 b-color-tertiary bg-color-white'.classNames()} style={popup_styles}>
 						<div className={'trigger-point'.classNames(style)}>
 							{triggerPoint}
 						</div>
@@ -117,7 +117,7 @@ export function Options(props) {
 			</div>
 		}>
 			{close=>{
-				return <div data-crewhrm-selector="options-popup" className={"options-popup".classNames(style) + 'box-shadow-thick border-radius-10 border-1-5 border-color-tertiary background-color-white'.classNames()}>
+				return <div data-crewhrm-selector="options-popup" className={"options-popup".classNames(style) + 'box-shadow-thick border-radius-10 border-1-5 b-color-tertiary bg-color-white'.classNames()}>
 					<div className={'list-wrapper'.classNames(style)}>
 						{options.map(option=>{
 							let {id, label, icon} = option;

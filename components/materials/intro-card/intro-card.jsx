@@ -18,7 +18,7 @@ export function IntroCard(props) {
 	const is_horizontal = orientation=='horizontal';
 	const image_url     = images[image];
 
-	return <div data-crewhrm-selector={"intro-card-"+orientation} className={`intro orientation-${orientation}`.classNames(style) + 'background-color-white border-radius-5'.classNames() + className} style={{backgroundImage: 'url('+image_url+')'}}>
+	return <div data-crewhrm-selector={"intro-card-"+orientation} className={`intro orientation-${orientation}`.classNames(style) + 'bg-color-white border-radius-5'.classNames() + className} style={{backgroundImage: 'url('+image_url+')'}}>
 		<div className={'content'.classNames(style)}>
 			{props.children}
 		</div>

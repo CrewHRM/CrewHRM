@@ -102,7 +102,7 @@ export function ApplicationForm(props) {
 				updateField={updateField}/> || null}
 
 		<div data-crewhrm-selector="application-builder" className={'application'.classNames(style)}>
-			<span className={'d-block font-size-20 font-weight-600 text-color-primary margin-bottom-40'.classNames()}>
+			<span className={'d-block font-size-20 font-weight-600 color-primary margin-bottom-40'.classNames()}>
 				{__( 'Customize your application form' )}
 			</span>
 
@@ -114,13 +114,13 @@ export function ApplicationForm(props) {
 						return {
 							id    : option_name, 
 							label : options[option_name].label, 
-							icon  : options[option_name].icon.classNames() + 'font-size-24 text-color-primary'.classNames()
+							icon  : options[option_name].icon.classNames() + 'font-size-24 color-primary'.classNames()
 						}
 					}
 				);
 
 				return <div data-crewhrm-selector="section" key={section_name} className={'section-container'.classNames(style)}>
-					<strong className={'d-block font-size-17 font-weight-600 text-color-primary margin-bottom-10'.classNames()}>
+					<strong className={'d-block font-size-17 font-weight-600 color-primary margin-bottom-10'.classNames()}>
 						{label}
 					</strong>
 
@@ -139,7 +139,7 @@ export function ApplicationForm(props) {
 										onChange={e=>onToggle('enabled', e.currentTarget.checked, section_name, field_id)}/>
 								</div>
 								<div className={'flex-1'.classNames()}>
-									<label className={'d-block font-size-15 font-weight-500 line-height-25 text-color-primary margin-left-10'.classNames()} htmlFor={checkbox_id}>
+									<label className={'d-block font-size-15 font-weight-500 line-height-25 color-primary margin-left-10'.classNames()} htmlFor={checkbox_id}>
 										{field_label}
 									</label>
 								</div>
@@ -149,7 +149,7 @@ export function ApplicationForm(props) {
 											{__( 'Required' )}
 										</span> ||
 										<div className={'d-inline-flex align-items-center column-gap-10'.classNames()}>
-											<span className={'d-inline-block font-size-15 font-weight-400 text-color-light'.classNames()}>
+											<span className={'d-inline-block font-size-15 font-weight-400 color-text-light'.classNames()}>
 												{__( 'Required' )}
 											</span>
 											
@@ -158,7 +158,7 @@ export function ApplicationForm(props) {
 												onChange={required=>onToggle('required', required, section_name, field_id)}/>
 
 											{options_array.length && <Options options={options_array} onClick={action=>onOptionClick(action, section_name, field_id)}>
-												<i className={'ch-icon ch-icon-more font-size-20 text-color-light'.classNames()}></i>
+												<i className={'ch-icon ch-icon-more font-size-20 color-text-light'.classNames()}></i>
 											</Options> || null}
 										</div>
 									}
@@ -167,9 +167,9 @@ export function ApplicationForm(props) {
 						})}
 					</div> || null}
 					
-					{addLabel && <div className={`d-flex align-items-center column-gap-10 padding-vertical-10 padding-horizontal-15 border-1 border-radius-10 border-color-secondary cursor-pointer ${input_fields.length ? 'margin-top-10' : ''}`.classNames()} onClick={()=>setState({...state, pointer:{section_name}})}>
-						<i className={'ch-icon ch-icon-add-circle font-size-24 text-color-secondary'.classNames()}></i>
-						<span className={'font-size-15 font-weight-500 text-color-secondary'.classNames()}>
+					{addLabel && <div className={`d-flex align-items-center column-gap-10 padding-vertical-10 padding-horizontal-15 border-1 border-radius-10 b-color-secondary cursor-pointer ${input_fields.length ? 'margin-top-10' : ''}`.classNames()} onClick={()=>setState({...state, pointer:{section_name}})}>
+						<i className={'ch-icon ch-icon-add-circle font-size-24 color-secondary'.classNames()}></i>
+						<span className={'font-size-15 font-weight-500 color-secondary'.classNames()}>
 							{addLabel}
 						</span>
 					</div>}

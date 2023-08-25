@@ -98,12 +98,12 @@ export function Apply({job}) {
 	}
 
 	return <div data-crewhrm-selector="job-application" className={'apply'.classNames(style)}>
-		<div className={'header'.classNames(style) + 'background-color-tertiary'.classNames()}>
+		<div className={'header'.classNames(style) + 'bg-color-tertiary'.classNames()}>
 			<div className={'container'.classNames(style) + 'padding-30'.classNames()}>
-				<span className={'d-block font-size-24 font-weight-600 line-height-24 letter-spacing--24 text-color-primary'.classNames()}>
+				<span className={'d-block font-size-24 font-weight-600 line-height-24 letter-spacing--24 color-primary'.classNames()}>
 					{job_title}
 				</span>
-				<span className={'d-block font-size-17 font-weight-500 line-height-25 text-color-primary margin-bottom-10'.classNames()}>
+				<span className={'d-block font-size-17 font-weight-500 line-height-25 color-primary margin-bottom-10'.classNames()}>
 					{location}
 				</span>
 			</div>
@@ -119,13 +119,13 @@ export function Apply({job}) {
 		</div> || null}
 		
 		<div data-crewhrm-selector="job-application-form" className={'form'.classNames(style)}>
-			{is_segment && <span className={'d-block font-size-20 font-weight-600 text-color-primary margin-bottom-30'.classNames()}>
+			{is_segment && <span className={'d-block font-size-20 font-weight-600 color-primary margin-bottom-30'.classNames()}>
 				{step.label}
 			</span> || <div className={'margin-top-48'.classNames()}>
-				<span className={'d-block font-size-20 font-weight-600 text-color-primary margin-bottom-8'.classNames()}>
+				<span className={'d-block font-size-20 font-weight-600 color-primary margin-bottom-8'.classNames()}>
 					{ __( 'Apply for this job' ) }
 				</span>
-				<span className={'d-block font-size-15 font-weight-400 line-height-24 text-color-light margin-bottom-30'.classNames()}>
+				<span className={'d-block font-size-15 font-weight-400 line-height-24 color-text-light margin-bottom-30'.classNames()}>
 					{__( 'Fields marked with * are required.' )}
 				</span>
 			</div>}

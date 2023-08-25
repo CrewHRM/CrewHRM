@@ -15,19 +15,14 @@ export const ContextBackendDashboard = createContext();
 
 export function DashboardBar(props) {
 	return <>
-		<StickyBar>
-			<div className={'d-flex align-items-center'.classNames()}>
-				<div className={'flex-1'.classNames()}>
-					{__( 'Dashboard' )}
-				</div>
-				<div className={'d-flex align-items-center column-gap-30'.classNames()}>
-					{/* <NotificationsOnSite/>
-					<NotificationsEmail/> */}
-					<div className={'d-inline-block'.classNames()}>
-						<Link to="/dashboard/jobs/editor/new/" className={'button button-primary'.classNames()}>
-							{__( 'Create A New Job' )}
-						</Link>
-					</div>
+		<StickyBar title="Dashboard">
+			<div className={'d-flex align-items-center column-gap-30'.classNames()}>
+				{/* <NotificationsOnSite/>
+				<NotificationsEmail/> */}
+				<div className={'d-inline-block'.classNames()}>
+					<Link to="/dashboard/jobs/editor/new/" className={'button button-primary'.classNames()}>
+						{__( 'Create A New Job' )}
+					</Link>
 				</div>
 			</div>
 		</StickyBar>
@@ -42,7 +37,7 @@ export function HRM(props) {
 				id: getRandomString(),
 				type: 'success',
 				content: <div className={'d-flex align-items-center column-gap-30'.classNames()}>
-					<span className={'font-size-15 font-weight-500 line-height-18 text-color-white'.classNames()}>
+					<span className={'font-size-15 font-weight-500 line-height-18 color-white'.classNames()}>
 						Your file is over the 5MB limit of the free plan
 					</span>
 					<button className={'button button-primary button-medium-2 button-outlined button-foreground'.classNames()}>
@@ -54,7 +49,7 @@ export function HRM(props) {
 				id: getRandomString(),
 				type: 'warning',
 				content: <div className={'d-flex align-items-center column-gap-30'.classNames()}>
-					<span className={'font-size-15 font-weight-500 line-height-18 text-color-white'.classNames()}>
+					<span className={'font-size-15 font-weight-500 line-height-18 color-white'.classNames()}>
 						Your file is over the 5MB limit of the free plan
 					</span>
 					<button className={'button button-primary button-medium-2 button-outlined button-foreground'.classNames()}>
@@ -66,7 +61,7 @@ export function HRM(props) {
 				id: getRandomString(),
 				type: 'error',
 				content: <div className={'d-flex align-items-center column-gap-30'.classNames()}>
-					<span className={'font-size-15 font-weight-500 line-height-18 text-color-white'.classNames()}>
+					<span className={'font-size-15 font-weight-500 line-height-18 color-white'.classNames()}>
 						Your file is over the 5MB limit of the free plan
 					</span>
 					<button className={'button button-primary button-medium-2 button-outlined button-foreground'.classNames()}>

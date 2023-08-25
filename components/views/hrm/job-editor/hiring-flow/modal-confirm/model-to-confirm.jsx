@@ -9,10 +9,10 @@ import { DropDown } from "../../../../../materials/dropdown/dropdown.jsx";
 import { sequences } from "../hiring-flow.jsx";
 
 function Content({stage, openMoveDiloague, closeModal}) {
-	const btn_class  = 'font-size-15 font-weight-400 letter-spacing--3 padding-vertical-10 padding-horizontal-15 border-radius-5 border-1-5 border-color-tertiary cursor-pointer'.classNames();
+	const btn_class  = 'font-size-15 font-weight-400 letter-spacing--3 padding-vertical-10 padding-horizontal-15 border-radius-5 border-1-5 b-color-tertiary cursor-pointer'.classNames();
 
 	return <div className={'confirm'.classNames(style) + 'text-align-center'.classNames()}>
-		<span className={'d-block font-size-24 font-weight-500 line-height-32 letter-spacing--3 text-color-primary margin-bottom-30'.classNames()}>
+		<span className={'d-block font-size-24 font-weight-500 line-height-32 letter-spacing--3 color-primary margin-bottom-30'.classNames()}>
 			{__( 'Are you sure, you want to delete this item. We won\'t be able to recover it.' )}
 		</span>
 		<button className={'cancel-button'.classNames(style) + btn_class + 'margin-right-20'.classNames()} onClick={closeModal}>
@@ -32,7 +32,7 @@ function MoveContent({stage, total, users=[], closeModal, deleteFlow}) {
 	
 	return <div className={'move'.classNames(style) + 'position-relative'.classNames()}>
 		<i 
-			className={'ch-icon ch-icon-times font-size-24 text-color-light position-absolute right-0 top-0 cursor-pointer'.classNames()} 
+			className={'ch-icon ch-icon-times font-size-24 color-text-light position-absolute right-0 top-0 cursor-pointer'.classNames()} 
 			onClick={closeModal}></i>
 		
 		<div className={'d-flex align-items-center justify-content-center'.classNames()}>
@@ -44,7 +44,7 @@ function MoveContent({stage, total, users=[], closeModal, deleteFlow}) {
 			
 			{more && <div className={'d-inline-block'.classNames()} style={{marginLeft: '-12px'}}>
 				<CoverImage circle={true} width={42} backgroundColor="#236BFE">
-					<span className={'font-size-15 font-weight-700 line-height-32 letter-spacing--3 text-color-white'.classNames()}>
+					<span className={'font-size-15 font-weight-700 line-height-32 letter-spacing--3 color-white'.classNames()}>
 						{more}+
 					</span>
 				</CoverImage>
@@ -52,7 +52,7 @@ function MoveContent({stage, total, users=[], closeModal, deleteFlow}) {
 		</div>
 		
 		<div className={'margin-top-20 margin-bottom-20 text-align-center'.classNames()}>
-			<span className={'d-block font-size-15 font-weight-400 letter-spacing--3 text-color-light margin-bottom-5'.classNames()}>
+			<span className={'d-block font-size-15 font-weight-400 letter-spacing--3 color-text-light margin-bottom-5'.classNames()}>
 				{
 					total>1 ? 
 						sprintf( __( 'About %s candidates are in the %s stage.' ), total, stage.label ) : 
@@ -60,20 +60,20 @@ function MoveContent({stage, total, users=[], closeModal, deleteFlow}) {
 				}
 			</span>
 
-			<span className={'d-block font-size-24 font-weight-500 line-height-32 letter-spacing--3 text-color-primary'.classNames()}>
+			<span className={'d-block font-size-24 font-weight-500 line-height-32 letter-spacing--3 color-primary'.classNames()}>
 				{__( 'To remove this stage, candidates must be moved to another stage.' )}
 			</span>
 		</div>
 
 		<div className={'margin-auto'.classNames()} style={{maxWidth: '356px'}}>
-			<span className={"d-block font-size-15 font-weight-400 letter-spacing--3 text-color-light margin-bottom-10".classNames()}>
+			<span className={"d-block font-size-15 font-weight-400 letter-spacing--3 color-text-light margin-bottom-10".classNames()}>
 				{__( 'Move to' )}
 			</span>
 
 			<div className={'d-flex align-items-center column-gap-10'.classNames()}>
 				<div className={'flex-1'.classNames()}>
 					<DropDown 
-						className={'w-full padding-vertical-5 padding-horizontal-12 border-1 border-color-primary height-40'.classNames()}
+						className={'w-full padding-vertical-5 padding-horizontal-12 border-1 b-color-primary height-40'.classNames()}
 						value={state.move_to}
 						options={sequences}
 						onChange={move_to=>setState({move_to})}

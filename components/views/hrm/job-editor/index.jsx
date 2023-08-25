@@ -51,23 +51,14 @@ export function JobEditor() {
 	const {active_tab} = state;
 
 	return <>
-		<StickyBar>
-			<div className={'d-flex align-items-center'.classNames()}>
-				<div className={'flex-1'.classNames()}>
-					<span className={'cursor-pointer'.classNames()} onClick={()=>window.history.back()}>
-						<i className={'ch-icon ch-icon-arrow-left font-size-15 text-color-primary margin-right-5 vertical-align-middle'.classNames()}>
-
-						</i> <span className={'font-size-15 font-weight-500 letter-spacing--3 text-color-light vertical-align-middle'.classNames()}>
-							{__( 'Back' )}
-						</span>
-					</span>
-				</div>
-				<div className={'flex-1 text-align-center'.classNames()}>
+		<StickyBar title="Job Editor">
+			{[
+				<div key="log" className={'text-align-center'.classNames()}>
 					<img src={logo_extended} style={{width: 'auto', height: '16px'}} className={'d-inline-block'.classNames()}/> 
-				</div>
-				<div className={'flex-1 text-align-right'.classNames()}>
+				</div>,
+				<div key="action" className={'text-align-right'.classNames()}>
 					{
-						state.is_auto_saving && <span className={'font-size-15 font-weight-400 letter-spacing--3 text-color-light margin-right-20'.classNames()}>
+						state.is_auto_saving && <span className={'font-size-15 font-weight-400 letter-spacing--3 color-text-light margin-right-20'.classNames()}>
 							{__( 'Auto saving ...' )}
 						</span> || null
 					}
@@ -75,7 +66,7 @@ export function JobEditor() {
 						{__( 'Save and Continue' )}
 					</button>
 				</div>
-			</div>
+			]}
 		</StickyBar>
 
 		<div className={'editor-wrapper'.classNames(style)}>
@@ -87,7 +78,7 @@ export function JobEditor() {
 						active={state.active_tab} 
 						tabs={steps.map(s=>{return {
 							...s,
-							label: <span className={`font-size-15 font-weight-400 letter-spacing--3 text-color-${s.id==state.active_tab ? 'primary' : 'light'}`.classNames()}>
+							label: <span className={`font-size-15 font-weight-400 letter-spacing--3 color-${s.id==state.active_tab ? 'primary' : 'light'}`.classNames()}>
 								{s.label}
 							</span>
 						}})}/>

@@ -37,7 +37,7 @@ export function PDFViewer({src}) {
 				}/>
 		</Worker>
 
-		{state.error && <div className={'text-color-danger'.classNames()}>
+		{state.error && <div className={'color-danger'.classNames()}>
 			{__( 'Failed to open here.' )} <a href={src} target='_blank'>{__( 'Download Instead.' )}</a>
 		</div> || null}
 	</div>

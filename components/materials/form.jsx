@@ -6,10 +6,10 @@ import { DateField } from "./date-time.jsx";
 import { ExpandableContent } from "./ExpandableContent/expandable-content.jsx";
 import { TextEditor } from "./text-editor/text-editor.jsx";
 
-const section_label_class = 'd-block font-size-17 font-weight-600 line-height-24 letter-spacing--17 text-color-light text-transform-uppercase margin-bottom-20'.classNames();
-const label_class         = 'd-block font-size-15 font-weight-500 margin-bottom-10 text-color-primary'.classNames();
-const input_text_class    = 'd-block w-full height-48 padding-15 border-1-5 border-radius-10 border-color-tertiary border-focus-color-primary font-size-15 font-weight-400 line-height-24 letter-spacing--15 text-color-primary'.classNames();
-const text_area_class     = 'd-block w-full padding-vertical-15 padding-horizontal-20 border-1-5 border-radius-10 border-color-tertiary border-focus-color-primary font-size-15 font-weight-400 line-height-25 text-color-primary'.classNames();
+const section_label_class = 'd-block font-size-17 font-weight-600 line-height-24 letter-spacing--17 color-text-light text-transform-uppercase margin-bottom-20'.classNames();
+const label_class         = 'd-block font-size-15 font-weight-500 margin-bottom-10 color-primary'.classNames();
+const input_text_class    = 'd-block w-full height-48 padding-15 border-1-5 border-radius-10 b-color-tertiary b-color-active-primary font-size-15 font-weight-400 line-height-24 letter-spacing--15 color-primary'.classNames();
+const text_area_class     = 'd-block w-full padding-vertical-15 padding-horizontal-20 border-1-5 border-radius-10 b-color-tertiary b-color-active-primary font-size-15 font-weight-400 line-height-25 color-primary'.classNames();
 
 export const ContextForm = createContext();
 
@@ -49,10 +49,10 @@ export function RenderField({field}) {
 	return <div data-crewhrm-selector="single-field" className={('flex-'+flex).classNames()}>
 
 		{disclaimer && <ExpandableContent className={'margin-bottom-30'.classNames()}>
-			<span className={'d-block font-size-20 font-weight-600 text-color-primary'.classNames()}>
+			<span className={'d-block font-size-20 font-weight-600 color-primary'.classNames()}>
 				{disclaimer.heading}
 			</span>
-			<div className={'font-size-15 font-weight-400 line-height-24 letter-spacing--15 text-color-primary'.classNames()}>
+			<div className={'font-size-15 font-weight-400 line-height-24 letter-spacing--15 color-primary'.classNames()}>
 				{disclaimer.description}
 			</div>
 		</ExpandableContent> || null}

@@ -13,10 +13,15 @@ class Colors {
 		'text'         => '#1A1A1A',
 		'text-light'   => '#72777B',
 		'text-lighter' => '#BBBFC3',
+		'text-hint'    => '#757C8E',
 		
 		'danger'       => '#EA4545',
 		'success'      => '#5B9215',
-		'warning'      => '#F57A08'
+		'warning'      => '#F57A08',
+
+		'black'        => '#000000',
+		'white'        => '#FFFFFF',
+		'transparent'  => 'rgba(0, 0, 0, 0)',
 	);
 
 	private static function hexToRgba($hexColor, $opacity) {

@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { ContextJobDetails } from "../job-details.jsx";
+import { ContextJobDetails, input_class, section_title_class, field_label_class, } from "../job-details.jsx";
 
 import { __ } from "../../../../../utilities/helpers.jsx";
 import style from '../details.module.scss';
@@ -16,9 +16,6 @@ const employments_types = {
 
 export function EmploymentDetails(props) {
 	const {
-		input_class, 
-		section_title_class, 
-		field_label_class,
 		values,
 		setVal} = useContext(ContextJobDetails);
 
@@ -73,7 +70,7 @@ export function EmploymentDetails(props) {
 				</div>
 			</div>
 			<div className={'right-col'.classNames(style)}>
-				<span className={'font-size-13 font-weight-400 text-color-light'.classNames()}>
+				<span className={'font-size-13 font-weight-400 color-text-light'.classNames()}>
 					{__( 'Include as many details as possible to boost the job’s performance on some job boards' )}
 				</span>
 			</div>

@@ -67,13 +67,13 @@ export function FileUpload(props) {
 			onClick={()=>input_ref.current.click()}
 			>
 			<div className={'margin-bottom-5'.classNames()}>
-				<i className={'ch-icon ch-icon-folder-add font-size-24 text-color-primary'.classNames()}></i>
+				<i className={'ch-icon ch-icon-folder-add font-size-24 color-primary'.classNames()}></i>
 			</div>
 
-			<span className={'d-block font-size-15 font-weight-600 line-height-20 text-color-primary'.classNames()}>
+			<span className={'d-block font-size-15 font-weight-600 line-height-20 color-primary'.classNames()}>
 				{textPrimary}
 			</span>
-			<span className={'font-size-15 font-weight-400 line-height-20 text-color-primary'.classNames()}>
+			<span className={'font-size-15 font-weight-400 line-height-20 color-primary'.classNames()}>
 				{textSecondary}
 			</span>
 

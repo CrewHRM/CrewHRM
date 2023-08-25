@@ -27,9 +27,9 @@ export function CompanyProfileSidebar() {
 			
 			return <Link key={page_id} to={permalink} className={'d-flex align-items-center column-gap-10'.classNames()}>
 				<span className={'d-inline-block width-24'.classNames()}>
-					<span className={icon.classNames() + `font-size-24 ${is_active ? 'text-color-secondary' : 'text-color-light'}`.classNames()}></span>
+					<span className={icon.classNames() + `font-size-24 ${is_active ? 'color-secondary' : 'color-text-light'}`.classNames()}></span>
 				</span>
-				<span className={`font-size-15 font-weight-500 line-height-25 ${is_active ? 'text-color-primary' : 'text-color-light'}`.classNames()}>
+				<span className={`font-size-15 font-weight-500 line-height-25 ${is_active ? 'color-primary' : 'color-text-light'}`.classNames()}>
 					{label}
 				</span>
 			</Link>

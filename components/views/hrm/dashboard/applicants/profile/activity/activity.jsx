@@ -12,7 +12,7 @@ TimeAgo.addDefaultLocale(en)
 const timeAgo = new TimeAgo();
 
 function Ago(props) {
-	return <span className={'d-inline-block font-size-15 font-weight-400 line-height-24 letter-spacing--15 text-color-light'.classNames()}>
+	return <span className={'d-inline-block font-size-15 font-weight-400 line-height-24 letter-spacing--15 color-text-light'.classNames()}>
 		&middot; {timeAgo.format(new Date(props.date))}
 	</span>
 }
@@ -20,9 +20,9 @@ function Ago(props) {
 function LayoutDisqualify(props) {
 	let {by, date_time} = props.activity;
 	return <>
-		<span className={'font-size-17 font-weight-400 line-height-24 letter-spacing--17 text-color-primary'.classNames()}>
+		<span className={'font-size-17 font-weight-400 line-height-24 letter-spacing--17 color-primary'.classNames()}>
 			Disqualified by
-		</span> <span className={'font-size-17 font-weight-600 line-height-24 letter-spacing--17 text-color-primary'.classNames()}>
+		</span> <span className={'font-size-17 font-weight-600 line-height-24 letter-spacing--17 color-primary'.classNames()}>
 			{by}
 		</span> <Ago date={date_time}/>
 	</>
@@ -32,13 +32,13 @@ function LayoutComment(props) {
 	let {by, date_time, comment, attachments=[]} = props.activity;
 	return <>
 		<div className={'margin-bottom-5'.classNames()}>
-			<span className={'font-size-17 font-weight-600 line-height-24 letter-spacing--17 text-color-primary'.classNames()}>
+			<span className={'font-size-17 font-weight-600 line-height-24 letter-spacing--17 color-primary'.classNames()}>
 				{by}
-			</span> <span className={"font-size-17 font-weight-400 line-height-24 letter-spacing--17 text-color-primary".classNames()}>
+			</span> <span className={"font-size-17 font-weight-400 line-height-24 letter-spacing--17 color-primary".classNames()}>
 				added a comment
 			</span> <Ago date={date_time}/>
 		</div>
-		<div className={'font-size-15 font-weight-400 line-height-24 letter-spacing--15 text-color-primary'.classNames()}>
+		<div className={'font-size-15 font-weight-400 line-height-24 letter-spacing--15 color-primary'.classNames()}>
 			{comment}
 		</div>
 
@@ -53,9 +53,9 @@ function LayoutComment(props) {
 function LayoutMove(props) {
 	let {by, date_time, to} = props.activity;
 	return <>
-		<span className={'font-size-17 font-weight-400 line-height-24 letter-spacing--17 text-color-primary'.classNames()}>
+		<span className={'font-size-17 font-weight-400 line-height-24 letter-spacing--17 color-primary'.classNames()}>
 			Moved to {to} by 
-		</span> <span className={'font-size-17 font-weight-600 line-height-24 letter-spacing--17 text-color-primary'.classNames()}>
+		</span> <span className={'font-size-17 font-weight-600 line-height-24 letter-spacing--17 color-primary'.classNames()}>
 			{by}
 		</span> <Ago date={date_time}/>
 	</>
@@ -64,7 +64,7 @@ function LayoutMove(props) {
 function LayoutApply(props) {
 	let {by, date_time} = props.activity;
 	return <>
-		<span className={'font-size-17 font-weight-600 line-height-24 letter-spacing--17 text-color-primary'.classNames()}>
+		<span className={'font-size-17 font-weight-600 line-height-24 letter-spacing--17 color-primary'.classNames()}>
 			{by}
 		</span> <span className={"font-size-17 font-weight-400 line-height-24 letter-spacing--17".classNames()}>
 			applied
@@ -74,19 +74,19 @@ function LayoutApply(props) {
 
 const activity_handlers = {
 	apply      : {
-		icon     : 'ch-icon ch-icon-user-tick font-size-24 text-color-light',
+		icon     : 'ch-icon ch-icon-user-tick font-size-24 color-text-light',
 		renderer : LayoutApply
 	},
 	comment    : {
-		icon     : 'ch-icon ch-icon-message-text-1 font-size-24 text-color-light',
+		icon     : 'ch-icon ch-icon-message-text-1 font-size-24 color-text-light',
 		renderer : LayoutComment
 	},
 	move       : {
-		icon     : 'ch-icon ch-icon-trello font-size-24 text-color-light',
+		icon     : 'ch-icon ch-icon-trello font-size-24 color-text-light',
 		renderer : LayoutMove
 	},
 	disqualify : {
-		icon     : 'ch-icon ch-icon-slash text-color-danger font-size-24',
+		icon     : 'ch-icon ch-icon-slash color-danger font-size-24',
 		renderer : LayoutDisqualify
 	}
 }

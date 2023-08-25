@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 
 import { DropDown } from "../../../../../materials/dropdown/dropdown.jsx";
 import { __ } from "../../../../../utilities/helpers.jsx";
-import { ContextJobDetails } from "../job-details.jsx";
+import { ContextJobDetails, input_class, field_label_class, section_title_class } from "../job-details.jsx";
 import style from '../details.module.scss';
 
 const experience_levels = {
@@ -13,9 +13,6 @@ const experience_levels = {
 
 export function Experience() {
 	const {
-		input_class, 
-		section_title_class, 
-		field_label_class,
 		values,
 		setVal} = useContext(ContextJobDetails);
 

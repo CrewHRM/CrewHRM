@@ -14,7 +14,7 @@ export function HeadActions() {
 			icon     : 'ch-icon ch-icon-sms',
 			title    : __( 'Send Email' ),
 			renderer : Email,
-			tagline  : <span className={'font-size-15 font-weight-500 text-color-primary'.classNames()}>
+			tagline  : <span className={'font-size-15 font-weight-500 color-primary'.classNames()}>
 						{__( 'Email' )}
 					</span>
 		},
@@ -23,9 +23,9 @@ export function HeadActions() {
 			title    : __( 'Internal Comment' ),
 			renderer : Comment,
 			tagline  : <>
-						<span className={'font-size-15 font-weight-500 text-color-primary'.classNames()}>
+						<span className={'font-size-15 font-weight-500 color-primary'.classNames()}>
 							{(__( 'Add a comment' ))}
-						</span> <span className={'font-size-13 font-weight-400 text-color-light'}>
+						</span> <span className={'font-size-13 font-weight-400 color-text-light'}>
 							{__( 'Candidates never see comments.' )}
 						</span>
 					</>
@@ -65,7 +65,7 @@ export function HeadActions() {
 					let {icon, title} = segment;
 
 					let classes = 'font-size-20 cursor-pointer margin-right-24 ';
-					classes += state.active_segment===i ? 'text-color-primary' : 'text-color-lighter';
+					classes += state.active_segment===i ? 'color-primary' : 'color-text-lighter';
 
 					return <i 
 						key={i} 
@@ -76,16 +76,16 @@ export function HeadActions() {
 
 				<i 
 					title={__( 'Disqualify' )} 
-					className={'ch-icon ch-icon-slash text-color-danger font-size-20 cursor-pointer'.classNames()} 
+					className={'ch-icon ch-icon-slash color-danger font-size-20 cursor-pointer'.classNames()} 
 					onClick={()=>disqualifyApplicant()}></i>
 			</div>
 			<div className={'d-flex align-items-center column-gap-10'.classNames()}>
-				<span className={'font-size-15 font-weight-400 text-color-primary'.classNames()}>
+				<span className={'font-size-15 font-weight-400 color-primary'.classNames()}>
 					{__( 'Move to' )}
 				</span>
 
 				<DropDown 
-					className={'padding-vertical-5 padding-horizontal-12 border-1 border-color-primary border-radius-5'.classNames()}
+					className={'padding-vertical-5 padding-horizontal-12 border-1 b-color-primary border-radius-5'.classNames()}
 					value={state.current_application_stage}
 					options={application_stages}
 					onChange={s=>setState({...state, current_application_stage: s})}/>
@@ -95,12 +95,12 @@ export function HeadActions() {
 		{ActiveComp && <div data-crewhrm-selector="action-fields" className={'content-area'.classNames(style)}>
 			<div className={'d-flex align-items-center margin-bottom-15'.classNames()}>
 				<div className={'flex-1'.classNames()}>
-					<span className={`d-inline-block ch-icon ${active_icon} font-size-20 text-color-primary margin-right-10 vertical-align-middle`.classNames()}>
+					<span className={`d-inline-block ch-icon ${active_icon} font-size-20 color-primary margin-right-10 vertical-align-middle`.classNames()}>
 
 					</span> {tagline}
 				</div>
 				<div>
-					<i className={'ch-icon ch-icon-times font-size-24 text-color-light margin-left-10 cursor-pointer'.classNames()} onClick={()=>toggleSegment()}></i>
+					<i className={'ch-icon ch-icon-times font-size-24 color-text-light margin-left-10 cursor-pointer'.classNames()} onClick={()=>toggleSegment()}></i>
 				</div>
 			</div>
 			<ActiveComp onClose={toggleSegment}/>

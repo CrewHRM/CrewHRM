@@ -1,91 +1,55 @@
-/* Text colors */
-.text-color-primary {
-	color: var(--crewhrm-color-text);
-}
+// These colors are sent from PHP CrewHRM\Helpers\Colors class.
+$colors: 'primary', 'secondary', 'tertiary', 'text', 'text-light', 'text-lighter', 'text-hint', 'danger', 'success', 'warning', 'black', 'white', 'transparent';
+$color_for: 'color', 'bg-color';
 
-.text-color-light {
-	color: var(--crewhrm-color-text-light);
+// Loop through the colors
+@mixin colorGenerate( $class, $attr ) {
+	@each $color in $colors {
 
-	&.cursor-pointer {
-		&:hover {
-			color: var(--crewhrm-color-text);
+		// Generate text color classes
+		.#{$class}-#{$color} {
+			#{$attr}: var(--crewhrm-color-#{$color}); // Direct initial color
+
+			
 		}
 	}
-}
+	
+	// Loop through the colors again 
+	@each $color in $colors {
 
-.text-color-secondary, .text-color-hover-secondary:hover {
-	color: var(--crewhrm-color-secondary);
-}
+		&.#{$class}-hover-#{$color}:hover {
+			#{$attr}: var(--crewhrm-color-#{$color}); // Color on hover itself
+		}
 
-.text-color-lighter {
-	color: var(--crewhrm-color-text-lighter);
-}
+		&.#{$class}-hover-parent:hover {
+			.#{$class}-hover-child-#{$color} {
+				#{$attr}: var(--crewhrm-color-#{$color}); // Color for descendent on hovering it self
+			}
+		}
 
-.text-color-danger {
-	color: var(--crewhrm-color-danger);
-}
+		&.#{$class}-active-#{$color} {
+			&.active, &:focus {
+				&, &[type] {
+					#{$attr}: var(--crewhrm-color-#{$color}); // Active, focus color for itself
+				}
+			}
+		}
 
-.text-color-white {
-	color: white;
-}
-
-.text-color-black {
-	color: black;
-}
-
-/* Background colors */
-.background-color-primary {
-	background-color: var(--crewhrm-color-primary);
-}
-
-.background-color-secondary {
-	background-color: var(--crewhrm-color-secondary);
-}
-
-.background-color-tertiary {
-	background-color: var(--crewhrm-color-tertiary);
-}
-
-.background-color-white {
-	background-color: white;
-}
-
-.background-color-transparent {
-	background-color: transparent;
-}
-
-/* Border colors */
-.border-color-primary {
-	&, &[type] {
-		border-color: var(--crewhrm-color-primary);
-	}
-}
-
-.border-color-secondary {
-	&, &[type] {
-		border-color: var(--crewhrm-color-secondary);
-	}
-}
-
-.border-color-tertiary {
-	&, &[type] {
-		border-color: var(--crewhrm-color-tertiary);
-	}
-
-	&.border-focus-color-primary {
-		&:focus, &.focused {
-			&, &[type] {
-				border-color: var(--crewhrm-color-primary);
+		&.#{$class}-active-parent {
+			&.active, &:focus {
+				&, &[type] {
+					.#{$class}-active-child {
+						#{$attr}: var(--crewhrm-color-#{$color});  // Active, focus color for children
+					}
+				}
 			}
 		}
 	}
 }
 
-.border-color-transparent {
-	&, &[type] {
-		border-color: transparent;
-	}
-}
+@include colorGenerate( 'color', 'color' );
+@include colorGenerate( 'bg-color', 'background-color' );
+@include colorGenerate( 'b-color', 'border-color' );
 
 /* Box shadows */
 .box-shadow-thin {

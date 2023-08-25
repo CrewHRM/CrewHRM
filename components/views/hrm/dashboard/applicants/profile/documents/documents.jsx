@@ -29,18 +29,18 @@ export function Documents() {
 	const {cover_letter, resume_url, attachments=[]} = applicant;
 
 	return <div data-crewhrm-selector="documents" className={'documents'.classNames(style)}>
-		<span className={'d-block font-size-17 font-weight-600 line-height-24 letter-spacing--17 text-color-primary margin-bottom-10'.classNames()}>
+		<span className={'d-block font-size-17 font-weight-600 line-height-24 letter-spacing--17 color-primary margin-bottom-10'.classNames()}>
 			{__( 'COVER LETTER' )}
 		</span>
 		<ExpandableContent>
-			<DangerouslySet className={'d-block font-size-15 font-weight-400 line-height-22 letter-spacing--15 text-color-primary'.classNames()}>
+			<DangerouslySet className={'d-block font-size-15 font-weight-400 line-height-22 letter-spacing--15 color-primary'.classNames()}>
 				{prepareTexts(cover_letter)}
 			</DangerouslySet>
 		</ExpandableContent>
 
 		{resume_url && <>
 			<Line className={'margin-top-20 margin-bottom-20'.classNames()}/>
-			<span className={'d-block font-size-17 font-weight-600 line-height-24 letter-spacing--17 text-color-primary margin-bottom-10'.classNames()}>
+			<span className={'d-block font-size-17 font-weight-600 line-height-24 letter-spacing--17 color-primary margin-bottom-10'.classNames()}>
 				{__( 'RESUME' )}
 			</span>
 			<PDFViewer src={resume_url}/>
@@ -48,7 +48,7 @@ export function Documents() {
 		
 		{attachments.length && <>
 			<Line className={'margin-top-20 margin-bottom-20'.classNames()}/>
-			<span className={'d-block font-size-17 font-weight-600 line-height-24 letter-spacing--17 text-color-primary margin-bottom-10'.classNames()}>
+			<span className={'d-block font-size-17 font-weight-600 line-height-24 letter-spacing--17 color-primary margin-bottom-10'.classNames()}>
 				{__( 'ATTACHMENTS' )}
 			</span>
 			<div className={'attachments'.classNames(style)}>
@@ -70,10 +70,10 @@ export function Documents() {
 								src={thumb_image} 
 								height={125}>
 
-						<div className={`attachment-overlay ${thumb_image ? 'has-thumbnail' : ''}`.classNames(style) + `w-full h-full d-flex align-items-center justify-content-center padding-20 cursor-pointer ${thumb_image ? '' : 'border-1-5 border-color-tertiary border-radius-10'}`.classNames()}>
+						<div className={`attachment-overlay ${thumb_image ? 'has-thumbnail' : ''}`.classNames(style) + `w-full h-full d-flex align-items-center justify-content-center padding-20 cursor-pointer ${thumb_image ? '' : 'border-1-5 b-color-tertiary border-radius-10'}`.classNames()}>
 							<div className={'d-inline-block text-align-center'.classNames()}>
 								{CompIcon && <CompIcon color={thumb_image ? 'white' : window.CrewHRM.colors['text-lighter']}/> || null}
-								<span className={`d-block margin-top-5 font-size-13 font-weight-400 line-height-24 letter-spacing--13 line-clamp line-clamp-1 text-color-${is_image ? 'white' : 'light'}`.classNames()}>
+								<span className={`d-block margin-top-5 font-size-13 font-weight-400 line-height-24 letter-spacing--13 line-clamp line-clamp-1 color-${is_image ? 'white' : 'light'}`.classNames()}>
 									{name}
 								</span>
 							</div>

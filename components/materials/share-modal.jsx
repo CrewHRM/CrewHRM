@@ -39,31 +39,31 @@ export function ShareModal(props) {
 	return <Modal>
 		<div data-crewhrm-selector="share-close" className={'d-flex align-items-center'.classNames()}>
 			<div className={'flex-1'.classNames()}>
-				<span className={'font-size-20 font-weight-500 text-color-primary'.classNames()}>
+				<span className={'font-size-20 font-weight-500 color-primary'.classNames()}>
 					{__( 'Share' )}
 				</span>
 			</div>
 			<div>
-				<i className={'ch-icon ch-icon-times font-size-18 text-color-light cursor-pointer'.classNames()} onClick={closeModal}></i>
+				<i className={'ch-icon ch-icon-times font-size-18 color-text-light cursor-pointer'.classNames()} onClick={closeModal}></i>
 			</div>
 		</div>
 		<div data-crewhrm-selector="share-targets" className={'d-flex align-items-center justify-content-space-between padding-vertical-40'.classNames()}>
 			{targets.map((target, index)=>{
 				return <div key={index} className={'text-align-center'.classNames()}>
 					<img src={target.icon} className={'width-44'.classNames()}/>
-					<span className={'d-block margin-top-12 font-size-16 font-weight-400 text-color-light'.classNames()}>
+					<span className={'d-block margin-top-12 font-size-16 font-weight-400 color-text-light'.classNames()}>
 						{target.label}
 					</span>
 				</div>
 			})}
 		</div>
-		<div data-crewhrm-selector="share-link" className={'d-flex align-items-center border-1-5 border-color-tertiary padding-20 border-radius-10'.classNames()} style={{backgroundColor: '#F9F9F9'}}>
-			<span className={'flex-1 font-size-16 font-weight-400 letter-spacing--3 text-color-primary'.classNames()}>
+		<div data-crewhrm-selector="share-link" className={'d-flex align-items-center border-1-5 b-color-tertiary padding-20 border-radius-10'.classNames()} style={{backgroundColor: '#F9F9F9'}}>
+			<span className={'flex-1 font-size-16 font-weight-400 letter-spacing--3 color-primary'.classNames()}>
 				{url}
 			</span>
 			<span className={'cursor-pointer'.classNames()} onClick={()=>copyToClipboard(url, addToast)}>
-				<i className={'ch-icon ch-icon-copy font-size-24 text-color-light margin-right-8 vertical-align-middle'.classNames()}></i>
-				<span className={'font-size-16 font-weight-400 letter-spacing--3 text-color-light vertical-align-middle'.classNames()}>
+				<i className={'ch-icon ch-icon-copy font-size-24 color-text-light margin-right-8 vertical-align-middle'.classNames()}></i>
+				<span className={'font-size-16 font-weight-400 letter-spacing--3 color-text-light vertical-align-middle'.classNames()}>
 					{__( 'Copy' )}
 				</span>
 			</span>

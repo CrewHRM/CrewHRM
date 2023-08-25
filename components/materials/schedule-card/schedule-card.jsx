@@ -15,19 +15,19 @@ export function ScheduleCard(props) {
 	
 	const flex_class = "d-flex margin-bottom-15".classNames();
 	const icon_class = 'font-size-24'.classNames();
-	const legend_class = 'd-block font-size-17 font-weight-600 text-color-primary margin-bottom-4'.classNames();
-	const sub_text_class = 'd-block font-size-15 font-weight-400 text-color-light'.classNames();
+	const legend_class = 'd-block font-size-17 font-weight-600 color-primary margin-bottom-4'.classNames();
+	const sub_text_class = 'd-block font-size-15 font-weight-400 color-text-light'.classNames();
 	const flex_1 = 'flex-1'.classNames();
 	const width = 'width-39'.classNames();
 
-	return <div data-crewhrm-selector="schedule-card" className={'schedule'.classNames(style) + 'border-radius-6 background-color-white'.classNames()}>
+	return <div data-crewhrm-selector="schedule-card" className={'schedule'.classNames(style) + 'border-radius-6 bg-color-white'.classNames()}>
 		<div className={'header'.classNames(style)}>
 			<div className={'d-flex'.classNames()}>
 				<div className={'flex-1'.classNames()}>
 					<img src={icons[type]} className={'d-inline-block width-30 margin-bottom-9'.classNames()}/>
 				</div>
 				<div>
-					<i className={'ch-icon ch-icon-more font-size-20 text-color-light cursor-pointer'.classNames()}></i>
+					<i className={'ch-icon ch-icon-more font-size-20 color-text-light cursor-pointer'.classNames()}></i>
 				</div>
 			</div>
 			<span className={'d-block font-size-20 font-weight-600'.classNames()} style={{background: 'white'}}>

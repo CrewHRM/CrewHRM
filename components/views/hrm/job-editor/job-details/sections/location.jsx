@@ -1,7 +1,7 @@
 import React, {useContext} from "react";
 
 import { __, countries_array } from "../../../../../utilities/helpers.jsx";
-import { ContextJobDetails } from "../job-details.jsx";
+import { ContextJobDetails, input_class, section_title_class, field_label_class, } from "../job-details.jsx";
 import style from '../details.module.scss';
 import { DropDown } from "../../../../../materials/dropdown/dropdown.jsx";
 
@@ -14,9 +14,6 @@ const location_types = {
 export function Location() {
 
 	const {
-		input_class, 
-		section_title_class, 
-		field_label_class,
 		values,
 		setVal} = useContext(ContextJobDetails);
 
@@ -66,7 +63,7 @@ export function Location() {
 				<span className={field_label_class}>
 					&nbsp;
 				</span>
-				<span className={'font-size-13 font-weight-400 text-color-light'.classNames()}>
+				<span className={'font-size-13 font-weight-400 color-text-light'.classNames()}>
 					{__( 'Use a location to attract the most appropriate candidates' )}
 				</span>
 			</div>

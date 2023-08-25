@@ -147,7 +147,7 @@ export function Profile() {
 				<span className={'d-inline-block vertical-align-middle'.classNames()}>
 					{__( 'Activity' )}
 				</span>
-				<span className={'d-inline-block vertical-align-middle background-color-secondary border-radius-30 text-color-white font-size-13 font-weight-500 line-height-24 letter-spacing--13 padding-horizontal-7 margin-left-10'.classNames()}>
+				<span className={'d-inline-block vertical-align-middle bg-color-secondary border-radius-30 color-white font-size-13 font-weight-500 line-height-24 letter-spacing--13 padding-horizontal-7 margin-left-10'.classNames()}>
 					12
 				</span>
 			</span>
@@ -165,19 +165,19 @@ export function Profile() {
 			<div className={'d-flex align-items-center padding-20'.classNames()}>
 				<CoverImage src={avatar} width={109} height={124} className={'border-radius-3'.classNames()}/>
 				<div className={'flex-1 margin-left-13'.classNames()}>
-					<span className={'d-block font-size-24 font-weight-600 line-height-24 text-color-primary margin-bottom-2'.classNames()}>
+					<span className={'d-block font-size-24 font-weight-600 line-height-24 color-primary margin-bottom-2'.classNames()}>
 						{applicant.name}
 						<span className={'d-inline-block margin-left-4 font-size-15 vertical-align-middle'.classNames()}>
 							{getFlag(applicant.country_code)}
 						</span>
 					</span>
-					<span className={'d-block font-size-15 font-weight-400 line-height-24 text-color-light margin-bottom-2'.classNames()}>
+					<span className={'d-block font-size-15 font-weight-400 line-height-24 color-text-light margin-bottom-2'.classNames()}>
 						{applicant.address}
 					</span>
-					<span className={'d-block font-size-15 font-weight-400 line-height-24 text-color-light margin-bottom-2'.classNames()}>
+					<span className={'d-block font-size-15 font-weight-400 line-height-24 color-text-light margin-bottom-2'.classNames()}>
 						{applicant.email}
 					</span>
-					<span className={'d-block font-size-15 font-weight-400 line-height-24 text-color-light margin-bottom-2'.classNames()}>
+					<span className={'d-block font-size-15 font-weight-400 line-height-24 color-text-light margin-bottom-2'.classNames()}>
 						{applicant.phone}
 					</span>
 				</div>

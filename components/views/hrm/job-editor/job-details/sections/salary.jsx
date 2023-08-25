@@ -1,7 +1,7 @@
 import React, {useContext} from "react";
 
 import { __ } from "../../../../../utilities/helpers.jsx";
-import { ContextJobDetails } from "../job-details.jsx";
+import { ContextJobDetails, field_label_class, input_class, section_title_class } from "../job-details.jsx";
 import style from '../details.module.scss';
 import { DropDown } from "../../../../../materials/dropdown/dropdown.jsx";
 
@@ -14,11 +14,7 @@ const salary_types = {
 }
 
 export function Salary() {
-
 	const {
-		input_class, 
-		section_title_class, 
-		field_label_class,
 		values,
 		setVal} = useContext(ContextJobDetails);
 
@@ -71,7 +67,7 @@ export function Salary() {
 				</div>
 			</div>
 			<div className={'right-col'.classNames(style)}>
-				<span className={'font-size-13 font-weight-400 text-color-light'.classNames()}>
+				<span className={'font-size-13 font-weight-400 color-text-light'.classNames()}>
 					{__( 'Adding the salary here will improve performance on some job boards. You can also include the salary in the job description' )}
 				</span>
 			</div>

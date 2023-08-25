@@ -60,7 +60,7 @@ export function ExpandableContent(props) {
 			{state.show_control && !state.expanded && <div data-crewhrm-selector="overlay" className={'overlay'.classNames(style)}></div> || null}
 		</div>
 		{
-			state.show_control && <span data-crewhrm-selector="controller" className={'d-inline-block font-size-15 font-weight-500 line-height-22 letter-spacing--15 text-color-primary cursor-pointer margin-top-10'.classNames()} onClick={toggleView}>
+			state.show_control && <span data-crewhrm-selector="controller" className={'d-inline-block font-size-15 font-weight-500 line-height-22 letter-spacing--15 color-primary cursor-pointer margin-top-10'.classNames()} onClick={toggleView}>
 				{state.expanded ? see_less_text : see_more_text}
 			</span> || null
 		}

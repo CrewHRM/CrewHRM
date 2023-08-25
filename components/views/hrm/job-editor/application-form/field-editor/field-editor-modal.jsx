@@ -102,19 +102,19 @@ export function FieldEditorModal(props) {
 	return <Modal nested={true}>
 		<div data-crewhrm-selector="question-head" className={'d-flex align-items-center margin-bottom-30'.classNames()}>
 			<div className={'flex-1'.classNames()}>
-				<span className={'font-size-24 font-weight-600 text-color-primary'.classNames()}>
+				<span className={'font-size-24 font-weight-600 color-primary'.classNames()}>
 					{__( 'Add a question' )}
 				</span>
 			</div>
 			<div>
-				{/* <i className={'ch-icon ch-icon-more font-size-24 text-color-light cursor-pointer'.classNames()}></i> */}
+				{/* <i className={'ch-icon ch-icon-more font-size-24 color-text-light cursor-pointer'.classNames()}></i> */}
 			</div>
 		</div>
 
 		<div data-crewhrm-selector="question-type" className={'d-flex align-items-center margin-bottom-15'.classNames()}>
 			<div className={'flex-4'.classNames()}>
 				<DropDown 
-					className={'padding-vertical-14 padding-horizontal-15 border-radius-10 border-1 border-color-primary font-size-15 font-weight-600 text-color-primary'.classNames()}
+					className={'padding-vertical-14 padding-horizontal-15 border-radius-10 border-1 b-color-primary font-size-15 font-weight-600 color-primary'.classNames()}
 					nested={true}
 					placeholder={__( 'Select Question Type' )}
 					value={field_type}
@@ -122,7 +122,7 @@ export function FieldEditorModal(props) {
 					onChange={value=>onChange('type', value)}/>
 			</div>
 			<div className={'flex-5 d-flex align-items-center justify-content-end column-gap-8'.classNames()}>
-				<span className={'font-size-15 font-weight-400 text-color-light'.classNames()}>
+				<span className={'font-size-15 font-weight-400 color-text-light'.classNames()}>
 					{__( 'Required' )}
 				</span>
 				<ToggleSwitch checked={state.field.required} onChange={required=>onChange('required', required)}/>
@@ -132,25 +132,25 @@ export function FieldEditorModal(props) {
 		<Line className={'margin-bottom-15'.classNames()}/>
 
 		<div className={'margin-bottom-15'.classNames()}>
-			<span className={'d-block font-size-15 font-weight-500 text-color-primary margin-bottom-10'.classNames()}>
+			<span className={'d-block font-size-15 font-weight-500 color-primary margin-bottom-10'.classNames()}>
 				{__( 'Question' )}
 			</span>
 			<input 
 				value={state.field.label}
-				className={'d-block padding-15 border-1-5 border-color-tertiary border-focus-color-primary border-radius-10 font-size-15 font-weight-400 line-height-25 text-color-primary w-full height-48'.classNames()}
+				className={'d-block padding-15 border-1-5 b-color-tertiary b-color-active-primary border-radius-10 font-size-15 font-weight-400 line-height-25 color-primary w-full height-48'.classNames()}
 				placeholder={__( 'ex. How did you hear about this job?' )}
 				onChange={e=>onChange('label', e.currentTarget.value)}/>
 		</div>
 
 		{need_options && <div data-crewhrm-selector="question-options" className={'margin-bottom-15'.classNames()}>
-			<span className={'d-block font-size-15 font-weight-500 text-color-primary margin-bottom-10'.classNames()}>
+			<span className={'d-block font-size-15 font-weight-500 color-primary margin-bottom-10'.classNames()}>
 				{__( 'Options' )}
 			</span>
 
-			<div className={'border-1-5 border-color-tertiary border-radius-10'.classNames()}>
+			<div className={'border-1-5 b-color-tertiary border-radius-10'.classNames()}>
 				{field_options.map(option=>{
 					let {id, label} = option;
-					return <div key={id} className={'d-flex align-items-center column-gap-20 padding-vertical-10 padding-horizontal-15 border-bottom-1-5 border-color-tertiary'.classNames()}>
+					return <div key={id} className={'d-flex align-items-center column-gap-20 padding-vertical-10 padding-horizontal-15 border-bottom-1-5 b-color-tertiary'.classNames()}>
 						<div className={'flex-1'.classNames()}>
 							<input 
 								id={"crewhrm-field-option-"+id}
@@ -161,7 +161,7 @@ export function FieldEditorModal(props) {
 						</div>
 						<div>
 							<i 
-								className={'ch-icon ch-icon-trash font-size-24 text-color-danger cursor-pointer'.classNames()} 
+								className={'ch-icon ch-icon-trash font-size-24 color-danger cursor-pointer'.classNames()} 
 								onClick={()=>deleteOption(id)}></i>
 						</div>
 					</div>
@@ -169,8 +169,8 @@ export function FieldEditorModal(props) {
 				
 				<div className={'padding-vertical-10 padding-horizontal-10'.classNames()}>
 					<span className={'d-inline-flex align-items-center column-gap-10 cursor-pointer'.classNames()} onClick={addOption}>
-						<i className={'ch-icon ch-icon-add-square font-size-18 text-color-secondary'.classNames()}></i>
-						<span className={'font-size-15 font-weight-500 line-height-25 text-color-light text-color-hover-secondary'.classNames()}>
+						<i className={'ch-icon ch-icon-add-square font-size-18 color-secondary'.classNames()}></i>
+						<span className={'font-size-15 font-weight-500 line-height-25 color-text-light color-hover-secondary'.classNames()}>
 							{__( 'Add Option' )}
 						</span>
 					</span>
@@ -179,7 +179,7 @@ export function FieldEditorModal(props) {
 		</div> || null}
 
 		<div data-crewhrm-selector="question-action" className={"d-flex align-items-center justify-content-end column-gap-21".classNames()}>
-			<span className={'font-size-15 font-weight-500 letter-spacing--3 text-color-light cursor-pointer'.classNames()} onClick={()=>props.updateField(null)}>
+			<span className={'font-size-15 font-weight-500 letter-spacing--3 color-text-light cursor-pointer'.classNames()} onClick={()=>props.updateField(null)}>
 				{__( 'Cancel' )}
 			</span>
 			<button className={'button button-primary'.classNames()} disabled={btn_disabled} onClick={()=>props.updateField(state.field)}>

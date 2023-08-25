@@ -102,7 +102,7 @@ export function HiringFlow(props) {
 				deleteFlow={()=>deleteFlow(state.confirm_modal_for)}/> || null
 		}
 		
-		<span className={'d-block font-size-20 font-weight-600 text-color-primary margin-bottom-40'.classNames()}>
+		<span className={'d-block font-size-20 font-weight-600 color-primary margin-bottom-40'.classNames()}>
 			{__( 'Hiring stage' )}
 		</span>
 		<SortableList
@@ -111,9 +111,9 @@ export function HiringFlow(props) {
 				state.sequences.map(sequence=>{
 				return {
 					...sequence,
-					rendered: <div className={'d-flex align-items-center border-radius-10 border-1-5 border-color-tertiary padding-15 margin-bottom-15'.classNames() + 'single'.classNames(style)}>
+					rendered: <div className={'d-flex align-items-center border-radius-10 border-1-5 b-color-tertiary padding-15 margin-bottom-15'.classNames() + 'single'.classNames(style)}>
 						<div>
-							<i className={'ch-icon ch-icon-drag font-size-26 text-color-light'.classNames()}></i>
+							<i className={'ch-icon ch-icon-drag font-size-26 color-text-light'.classNames()}></i>
 						</div>
 						<div className={'flex-1'.classNames()}>
 							<input 
@@ -125,7 +125,7 @@ export function HiringFlow(props) {
 						</div>
 						<div>
 							<i 
-								className={'ch-icon ch-icon-trash font-size-24 text-color-danger margin-left-20 cursor-pointer'.classNames() + 'trash'.classNames(style)}
+								className={'ch-icon ch-icon-trash font-size-24 color-danger margin-left-20 cursor-pointer'.classNames() + 'trash'.classNames(style)}
 								onClick={()=>setState({...state, confirm_modal_for: sequence.id})}></i>
 						</div>
 					</div>

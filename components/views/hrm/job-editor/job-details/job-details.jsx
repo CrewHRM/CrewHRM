@@ -10,10 +10,10 @@ import { Salary } from "./sections/salary.jsx";
 import { Location } from "./sections/location.jsx";
 import { FormActionButtons } from "../../../../materials/form-action.jsx";
 
-const textarea_class      = 'padding-vertical-15 padding-horizontal-20 border-radius-10 border-1-5 border-color-tertiary border-focus-color-primary w-full d-block font-size-15 font-weight-400 line-height-25 text-color-primary'.classNames();
-const input_class         = 'padding-15 border-radius-10 border-1-5 border-color-tertiary border-focus-color-primary w-full d-block height-48 font-size-15 font-weight-400 line-height-25 text-color-primary'.classNames();
-const section_title_class = 'font-size-20 font-weight-600 text-color-primary text-color-primary'.classNames();
-const field_label_class   = 'd-block font-size-15 font-weight-500 text-color-primary margin-bottom-10'.classNames();
+export const textarea_class      = 'padding-vertical-15 padding-horizontal-20 border-radius-10 border-1-5 b-color-tertiary b-color-active-primary w-full d-block font-size-15 font-weight-400 line-height-25 color-primary'.classNames();
+export const input_class         = 'padding-15 border-radius-10 border-1-5 b-color-tertiary b-color-active-primary w-full d-block height-48 font-size-15 font-weight-400 line-height-25 color-primary'.classNames();
+export const section_title_class = 'font-size-20 font-weight-600 color-primary color-primary'.classNames();
+export const field_label_class   = 'd-block font-size-15 font-weight-500 color-primary margin-bottom-10'.classNames();
 
 export const ContextJobDetails = createContext();
 
@@ -76,7 +76,7 @@ export function JobDetails(props) {
 
 	return <div className={'job-details'.classNames(style)}>
 
-		<ContextJobDetails.Provider value={{textarea_class, input_class, section_title_class, field_label_class, departments: state.departments, setVal, values: state.values, addDepartMent}}>
+		<ContextJobDetails.Provider value={{departments: state.departments, setVal, values: state.values, addDepartMent}}>
 			<div className={'margin-bottom-40'.classNames()}>
 				<TitleAndDescription/>
 			</div>
