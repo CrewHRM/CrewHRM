@@ -39,7 +39,7 @@ $attrs: 'font-size', 'margin', 'margin-top', 'margin-bottom', 'margin-left', 'ma
 	}
 
 	// Letter spacing and flex
-	@if $i >= 1 && $i <= 40 {
+	@if $i >= 1 and $i <= 40 {
 		@if $i <=5 {
 			.letter-spacing_#{$i} {
 				letter-spacing: #{$i}px; // Full number posetive spacing: 2px, 3px...

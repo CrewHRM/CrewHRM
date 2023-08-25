@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-export function CircularProgress({ size=13, strokeWidth=2, percentage=0, color=window.CrewHRM.colors['primary'], colorSecondary=window.CrewHRM.colors['tertiary'], showPercent=false, className }) {
+export function CircularProgress({ size=13, strokeWidth=2, percentage=0, fontSize=6, color=window.CrewHRM.colors['primary'], colorSecondary=window.CrewHRM.colors['tertiary'], showPercent=false, className }) {
   const [progress, setProgress] = useState(0);
   useEffect(() => {
     setProgress(percentage);
@@ -36,10 +36,10 @@ export function CircularProgress({ size=13, strokeWidth=2, percentage=0, color=w
 
 	  {showPercent && <text
         fill="black"
-        fontSize="40px"
+        fontSize={fontSize+'px'}
         x="50%"
         y="50%"
-        dy="20px"
+        dy={(fontSize/2)+'px'}
         textAnchor="middle"
       >
         {`${percentage}%`}
