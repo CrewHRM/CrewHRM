@@ -97,7 +97,7 @@ export function ToastWrapper(props) {
 					</div>
 					{
 						(dismissible || onTryAgain) && 
-							<div data-crewhrm-selector="control" className={'d-flex flex-flow-column border-left-1'.classNames()}>
+							<div data-crewhrm-selector="control" className={'d-flex flex-direction-column border-left-1'.classNames()}>
 								{
 									onTryAgain && <div data-crewhrm-selector="try" className={`padding-vertical-10 padding-horizontal-20 ${dismissible ? 'border-bottom-1' : ''}`.classNames()}>
 										<span className={'font-size-13 font-weight-500 line-height-22 color-white cursor-pointer'.classNames()} onClick={()=>{dismissToast(id); onTryAgain();}}>

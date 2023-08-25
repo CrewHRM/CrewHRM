@@ -69,9 +69,9 @@ export function RenderField({field}) {
 		
 		{type=='date' && <DateField className={input_text_class}/> || null}
 
-		{(type=='checkbox' || type=='radio') && <div className={'d-flex flex-flow-row column-gap-20'.classNames()}>
+		{(type=='checkbox' || type=='radio') && <div className={'d-flex flex-direction-row column-gap-20'.classNames()}>
 			{options.map(({id:value, label})=>{
-				return <label data-crewhrm-selector={"field-"+type} key={value} className={'d-flex flex-flow-row align-items-center column-gap-7 cursor-pointer'.classNames()}>
+				return <label data-crewhrm-selector={"field-"+type} key={value} className={'d-flex flex-direction-row align-items-center column-gap-7 cursor-pointer'.classNames()}>
 					<input 
 						type={type} 
 						name={name} 

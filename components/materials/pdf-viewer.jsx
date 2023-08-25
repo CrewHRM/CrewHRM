@@ -22,7 +22,7 @@ export function PDFViewer({src}) {
 				plugins={[defaultLayoutPluginInstance]}
 				renderError={()=>setState({...state, error: true})}
 				onDocumentLoad={()=>setState({...state, loaded: true})}
-				renderLoader={percentages =><div className={'d-flex flex-flow-column row-gap-15 align-items-center justify-content-center'.classNames()}>
+				renderLoader={percentages =><div className={'d-flex flex-direction-column row-gap-15 align-items-center justify-content-center'.classNames()}>
 						<CircularProgress 
 							size={100} 
 							strokeWidth={5} 

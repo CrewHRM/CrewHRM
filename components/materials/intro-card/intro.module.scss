@@ -6,7 +6,7 @@
 	background-size: contain;
 
 	&.orientation-horizontal {
-		flex-flow: row;
+		flex-direction: row;
 
 		.content {
 			flex: 7;
@@ -18,7 +18,7 @@
 	}
 
 	&.orientation-vertical {
-		flex-flow: column;
+		flex-direction: column;
 		background-position: bottom;
 
 		.image {
