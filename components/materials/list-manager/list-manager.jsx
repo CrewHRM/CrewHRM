@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 
 import {SortableList} from '../sortable-list.jsx';
-import { __ } from "../../utilities/helpers.jsx";
+import { __, getRandomString } from "../../utilities/helpers.jsx";
 
 import style from './list.module.scss';
 
 export function ListManager(props) {
-	const {list, mode, className='', onChange, deleteItem} = props;
+	const {list, mode, className='', onChange, deleteItem, addText=__( 'Add New' )} = props;
+	const is_queue = mode==='queue';
 
 	const [state, setState] = useState({
 		last_id       : null,
@@ -22,14 +23,12 @@ export function ListManager(props) {
 			last_id: id
 		});
 
+		// Build array
+		let item = {id, label: __( 'Untitled' )}
+		let new_array = is_queue ? [...list, item] : [item, ...list];
+
 		// Send the changes to parent component
-		onChange([
-			...list,
-			{
-				id,
-				label: __( 'Untitled' )
-			}
-		]);
+		onChange(new_array);
 	}
 
 	const renameStage=(id, label)=>{
@@ -76,14 +75,14 @@ export function ListManager(props) {
 
 	}, [list]);
 
-	return <div className={'list-manager'.classNames(style) + `d-flex ${mode=='queue' ? 'flex-direction-column' : 'flex-flow-column-reverse'}`.classNames() + className}>
+	return <div className={'list-manager'.classNames(style) + `d-flex row-gap-15 ${is_queue ? 'flex-direction-column' : 'flex-direction-column-reverse'}`.classNames() + className}>
 		<SortableList
 			onReorder={list=>onChange(list)}
 			items={
 				list.map(list_item=>{
 				return {
 					...list_item,
-					rendered: <div className={'d-flex align-items-center border-radius-10 border-1-5 b-color-tertiary padding-15 margin-bottom-15'.classNames() + 'single'.classNames(style)}>
+					rendered: <div className={'d-flex align-items-center border-radius-10 border-1-5 b-color-tertiary padding-15'.classNames() + 'single'.classNames(style)}>
 						<i className={'ch-icon ch-icon-drag font-size-26 color-text-light'.classNames()}></i>
 						<div className={'flex-1'.classNames()}>
 							<input 
@@ -103,7 +102,7 @@ export function ListManager(props) {
 		<div className={'d-flex align-items-center darken-on-hover'.classNames() + 'add-stage'.classNames(style)} onClick={addStage}>
 			<i className={'ch-icon ch-icon-add-circle font-size-24'.classNames()}></i>
 			<div className={'flex-1 font-size-15 font-weight-500 margin-left-10'.classNames()}>
-				{__( 'Add stage' )}
+				{addText}
 			</div>
 		</div>
 	</div>

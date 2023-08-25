@@ -1,13 +1,6 @@
 @import '../../styles/mixins';
 
 .text-field {
-	display: flex;
-	align-items: center;
-
-	&.icon-right {
-		flex-direction: row-reverse;
-	}
-
 	.image {
 		width: auto;
 		height: auto;

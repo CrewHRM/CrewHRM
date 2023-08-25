@@ -60,7 +60,8 @@ export function HiringFlow(props) {
 			onChange={sequences=>setState({...state, sequences})}
 			mode="queue"
 			className={'margin-bottom-50'.classNames()}
-			deleteItem={(id)=>setState({...state, confirm_modal_for: id})}/>
+			deleteItem={(id)=>setState({...state, confirm_modal_for: id})}
+			addText={__( 'Add Stage' )}/>
 
 		<FormActionButtons onBack={()=>navigateTab(-1)} onNext={()=>navigateTab(1)}/>
 	</div>

@@ -33,14 +33,14 @@ export function SortableList(props) {
 			<Droppable droppableId="droppable">
 				{(provided, snapshot) => {
 					const {isDraggingOver, isDragging} = snapshot;
-					return <div data-crewhrm-selector="sortable" {...provided.droppableProps} ref={provided.innerRef}>
+					return <div data-crewhrm-selector="sortable" className={'d-flex flex-direction-column row-gap-15'.classNames()} {...provided.droppableProps} ref={provided.innerRef}>
 						{props.items.map((item, index) => (
 							<Draggable key={item.id} draggableId={item.id} index={index}>
-								{(provided, snapshot) => (
-									<div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
+								{(provided, snapshot) => {
+									return <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
 										{item.rendered}
 									</div>
-								)}
+								}}
 							</Draggable>
 						))}
 					

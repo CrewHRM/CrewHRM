@@ -18,8 +18,8 @@ function CompanyWrapper() {
 	return <>
 		<StickyBar backTo={sub_page ? true : false} title={pages.find(p=>p.id===page_id)?.label || __( 'Company Profile' )}>
 			<div className={'d-flex align-items-center column-gap-30'.classNames()}>
-				<i className={'ch-icon ch-icon-redo font-size-26 color-hint'.classNames()}></i>
-				<i className={'ch-icon ch-icon-undo font-size-26 color-hint'.classNames()}></i>
+				<i className={'ch-icon ch-icon-redo font-size-26 color-text-hint'.classNames()}></i>
+				<i className={'ch-icon ch-icon-undo font-size-26 color-text-hint'.classNames()}></i>
 				<button className={'button button-primary'.classNames()}>
 					{__( 'Save Changes' )}
 				</button>

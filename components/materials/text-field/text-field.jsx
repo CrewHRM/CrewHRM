@@ -73,7 +73,7 @@ export function TextField(props) {
 	
 	const separator = state.expanded && <span className={'d-inline-block width-6'.classNames()}></span> || null
 
-	return <div data-crewhrm-selector="text-field" className={`text-field icon-${icon_position}`.classNames(style) + `${state.focused ? 'active' : ''}`.classNames() + className}>
+	return <div data-crewhrm-selector="text-field" className={`text-field`.classNames(style) + `d-flex align-items-center ${icon_position=='right' ? 'flex-direction-row-reverse' : 'flex-direction-row'} ${state.focused ? 'active' : ''}`.classNames() + className}>
 		{iconClass && <>
 			<i className={iconClass} onClick={()=>onIconClick()}></i>
 			{separator}
