@@ -2,29 +2,4 @@
 	max-width: 582px;
 	margin: 0 auto;
 	overflow: auto;
-
-	.single {
-		height: 56px;
-		
-		& {
-			background-color: white;
-			&:hover {
-				background-color: #F9F9F9;
-			}
-		}
-
-		&:not(:hover) {
-			.trash {
-				display: none;
-			}
-		}
-	}
-
-	.add-stage {
-		color: var(--crewhrm-color-secondary);
-		border: 1.5px solid var(--crewhrm-color-secondary);
-		border-radius: 10px;
-		padding: 10px 15px;
-		cursor: pointer;
-	}
 }

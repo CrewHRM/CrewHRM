@@ -134,10 +134,10 @@ $borders: 'border', 'border-bottom', 'border-top', 'border-left', 'border-right'
 }
 
 // Flex flows
-$flows: 'column', 'row';
+$flows: 'column', 'row', 'row-reverse', 'column-reverse';
 @each $flow in $flows {
-	.flex-flow-#{$flow} {
-		flex-flow: #{$flow};
+	.flex-direction-#{$flow} {
+		flex-direction: #{$flow};
 	}
 }
 

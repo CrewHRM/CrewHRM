@@ -78,7 +78,7 @@ export function JobEditor() {
 						active={state.active_tab} 
 						tabs={steps.map(s=>{return {
 							...s,
-							label: <span className={`font-size-15 font-weight-400 letter-spacing--3 color-${s.id==state.active_tab ? 'primary' : 'light'}`.classNames()}>
+							label: <span className={`font-size-15 font-weight-400 letter-spacing--3 ${s.id==state.active_tab ? 'color-primary' : 'color-text-light'}`.classNames()}>
 								{s.label}
 							</span>
 						}})}/>

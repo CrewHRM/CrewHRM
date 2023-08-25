@@ -32,7 +32,7 @@ export function StatCards({className=''}) {
 		{card_stats.map(stat=>{
 			let {label, count, icon} = stat;
 
-			return <div key={label} className={'card'.classNames(style) + 'd-flex flex-flow-column justify-content-space-between box-shadow-thin border-radius-5 padding-25'.classNames()}>
+			return <div key={label} className={'card'.classNames(style) + 'd-flex flex-direction-column justify-content-space-between box-shadow-thin border-radius-5 padding-25'.classNames()}>
 				<img src={icon} className={'width-24'.classNames()}/>
 				<div>
 					<span className={'d-block margin-bottom-12 font-size-28 font-weight-700 color-primary'.classNames()}>

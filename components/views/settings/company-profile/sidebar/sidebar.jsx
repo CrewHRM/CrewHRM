@@ -2,7 +2,7 @@ import React from "react";
 import { __ } from "../../../../utilities/helpers.jsx";
 import { Link, useParams } from "react-router-dom";
 
-const pages = [
+export const pages = [
 	{
 		id        : 'profile',
 		permalink :  '/company/profile/',
@@ -17,19 +17,18 @@ const pages = [
 	}
 ];
 
-export function CompanyProfileSidebar() {
-	const {sub_page} = useParams();
+export function CompanyProfileSidebar({page_id: sub_page}) {
 	
-	return <div data-crewhrm-selector="company-profile-sidebar" className={'d-flex flex-flow-column row-gap-25 margin-right-50'.classNames()}>
+	return <div data-crewhrm-selector="company-profile-sidebar" className={'d-flex flex-direction-column row-gap-25 margin-right-50'.classNames()}>
 		{pages.map(page=>{
 			const {id: page_id, permalink, label, icon} = page;
 			const is_active = sub_page === page_id;
 			
-			return <Link key={page_id} to={permalink} className={'d-flex align-items-center column-gap-10'.classNames()}>
+			return <Link key={page_id} to={permalink} className={'d-flex align-items-center column-gap-10 color-hover-parent'.classNames()}>
 				<span className={'d-inline-block width-24'.classNames()}>
-					<span className={icon.classNames() + `font-size-24 ${is_active ? 'color-secondary' : 'color-text-light'}`.classNames()}></span>
+					<span className={icon.classNames() + `font-size-24 ${is_active ? 'color-secondary' : 'color-text-light'} color-hover-child-secondary`.classNames()}></span>
 				</span>
-				<span className={`font-size-15 font-weight-500 line-height-25 ${is_active ? 'color-primary' : 'color-text-light'}`.classNames()}>
+				<span className={`font-size-15 font-weight-500 line-height-25 ${is_active ? 'color-primary' : 'color-text-light'} color-hover-child-primary`.classNames()}>
 					{label}
 				</span>
 			</Link>

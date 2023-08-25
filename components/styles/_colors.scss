@@ -2,15 +2,15 @@
 $colors: 'primary', 'secondary', 'tertiary', 'text', 'text-light', 'text-lighter', 'text-hint', 'danger', 'success', 'warning', 'black', 'white', 'transparent';
 $color_for: 'color', 'bg-color';
 
-// Loop through the colors
+// Loop through the colors 
 @mixin colorGenerate( $class, $attr ) {
 	@each $color in $colors {
 
 		// Generate text color classes
 		.#{$class}-#{$color} {
-			#{$attr}: var(--crewhrm-color-#{$color}); // Direct initial color
-
-			
+			&, &[type] { // Here [type] is used  to override wp default styles for input fields
+				#{$attr}: var(--crewhrm-color-#{$color}); // Direct initial color
+			}
 		}
 	}
 	
@@ -18,12 +18,16 @@ $color_for: 'color', 'bg-color';
 	@each $color in $colors {
 
 		&.#{$class}-hover-#{$color}:hover {
-			#{$attr}: var(--crewhrm-color-#{$color}); // Color on hover itself
+			&, &[type] {
+				#{$attr}: var(--crewhrm-color-#{$color}); // Color on hover itself
+			}
 		}
 
 		&.#{$class}-hover-parent:hover {
 			.#{$class}-hover-child-#{$color} {
-				#{$attr}: var(--crewhrm-color-#{$color}); // Color for descendent on hovering it self
+				&, &[type] {
+					#{$attr}: var(--crewhrm-color-#{$color}); // Color for descendent on hovering it self
+				}
 			}
 		}
 
@@ -50,6 +54,12 @@ $color_for: 'color', 'bg-color';
 @include colorGenerate( 'color', 'color' );
 @include colorGenerate( 'bg-color', 'background-color' );
 @include colorGenerate( 'b-color', 'border-color' );
+
+.darken-on-hover {
+	&:hover {
+		filter: brightness(0.75);
+	}
+}
 
 /* Box shadows */
 .box-shadow-thin {

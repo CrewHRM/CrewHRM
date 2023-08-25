@@ -52,7 +52,7 @@ export function OverView() {
 			<span className={'d-block font-size-17 font-weight-600 line-height-24 letter-spacing--17 color-primary margin-bottom-10'.classNames()}>
 				{__( 'SKILLS' )}
 			</span>
-			<div data-crewhrm-selector="skills" className={'d-flex flex-wrap-wrap flex-flow-row row-gap-15 column-gap-15'.classNames()}>
+			<div data-crewhrm-selector="skills" className={'d-flex flex-wrap-wrap flex-direction-row row-gap-15 column-gap-15'.classNames()}>
 				{skills.map(skill=>{
 					return <div key={skill} className={'single-skill'.classNames(style) + 'd-inline-block padding-vertical-5 padding-horizontal-20 font-size-15 font-weight-500 line-height-24 letter-spacing--15 color-primary'.classNames()}>
 						{skill}
