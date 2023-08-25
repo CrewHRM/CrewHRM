@@ -5,6 +5,7 @@ import { __, prepareTexts } from "../../../../../../utilities/helpers.jsx";
 import { Line } from "../../../../../../materials/line/line.jsx";
 import { DangerouslySet } from "../../../../../../materials/DangerouslySet.jsx";
 import { CoverImage } from "../../../../../../materials/image/image.jsx";
+import { PDFViewer } from "../../../../../../materials/pdf-viewer.jsx";
 
 import { IconImage } from "../../../../../../materials/dynamic-svg/icon-image.jsx";
 import { IconAudio } from "../../../../../../materials/dynamic-svg/icon-audio.jsx";
@@ -13,7 +14,6 @@ import { IconPDF } from "../../../../../../materials/dynamic-svg/icon-pdf.jsx";
 import { IconZip } from "../../../../../../materials/dynamic-svg/icon-zip.jsx";
 
 import style from './documents.module.scss';
-import { PDFViewer } from "../../../../../../materials/pdf-viewer/pdf-viewer.jsx";
 
 const thumbnails = {
 	image : IconImage,
