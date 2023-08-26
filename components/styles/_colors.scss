@@ -11,7 +11,9 @@ $color_for: 'color', 'bg-color';
             &,
             &[type] {
                 // Here [type] is used  to override wp default styles for input fields
-                #{$attr}: var(--crewhrm-color-#{$color}); // Direct initial color
+                #{$attr}: var(
+                    --crewhrm-color-#{$color}
+                ); // Usage: bg-color-primary (Style will be applied to itself normally)
             }
         }
     }
@@ -21,7 +23,9 @@ $color_for: 'color', 'bg-color';
         &.#{$class}-hover-#{$color}:hover {
             &,
             &[type] {
-                #{$attr}: var(--crewhrm-color-#{$color}); // Color on hover itself
+                #{$attr}: var(
+                    --crewhrm-color-#{$color}
+                ); // Useage: bg-color-hover-primary (Style will be applied to itself on hover)
             }
         }
 
@@ -31,7 +35,7 @@ $color_for: 'color', 'bg-color';
                 &[type] {
                     #{$attr}: var(
                         --crewhrm-color-#{$color}
-                    ); // Color for descendent on hovering it self
+                    ); // Usage: bg-color-hover-parent > bg-color-hover-child-primary (Style will be applied upon hovering parent)
                 }
             }
         }
@@ -41,7 +45,9 @@ $color_for: 'color', 'bg-color';
             &:focus {
                 &,
                 &[type] {
-                    #{$attr}: var(--crewhrm-color-#{$color}); // Active, focus color for itself
+                    #{$attr}: var(
+                        --crewhrm-color-#{$color}
+                    ); // Usage: bg-color-active-primary (Style will be applied to itself when it is focused or has active class)
                 }
             }
         }
@@ -51,10 +57,10 @@ $color_for: 'color', 'bg-color';
             &:focus {
                 &,
                 &[type] {
-                    .#{$class}-active-child {
+                    .#{$class}-active-child-#{$color} {
                         #{$attr}: var(
                             --crewhrm-color-#{$color}
-                        ); // Active, focus color for children
+                        ); // Usage: bg-color-active-parent > bg-color-active-child-primary (Style will be applied when parent is focused or has active class)
                     }
                 }
             }

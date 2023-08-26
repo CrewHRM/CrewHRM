@@ -116,6 +116,40 @@ export function copyToClipboard(text, addToast) {
         });
 }
 
+export function getInitials(name) {
+    const words = name.trim().split(' ');
+
+    if (words.length === 0) {
+        return '';
+    }
+
+    const initials = words
+        .map((word) => word.charAt(0).toUpperCase())
+        .join('')
+        .substring(0, 2);
+
+    return initials;
+}
+
+export function generateBackgroundColor(name) {
+    const colors = [
+        '#FFC0CB', // Pink
+        '#87CEEB', // Sky Blue
+        '#98FB98', // Pale Green
+        '#FFD700', // Gold
+        '#FFA07A', // Light Salmon
+        '#7B68EE' // Medium Slate Blue
+    ];
+
+    const initials = name.trim().substring(0, 2).toUpperCase();
+    const charCodeSum = Array.from(initials)
+        .map((char) => char.charCodeAt(0))
+        .reduce((sum, charCode) => sum + charCode, 0);
+
+    const colorIndex = charCodeSum % colors.length;
+    return colors[colorIndex];
+}
+
 export const is_production = process.env.NODE_ENV === 'production';
 export const countries_array = getCountries(true);
 export const timezones_array = tz.names().map((z) => {

@@ -70,7 +70,7 @@ export function Sidebar() {
                     return (
                         <div key={application_id}>
                             <div className={'d-flex align-items-center'.classNames()}>
-                                <CoverImage src={src} width={48} circle={true} />
+                                <CoverImage src={null} width={48} circle={true} name={name} />
                                 <div className={'flex-1 margin-left-10'.classNames()}>
                                     <span
                                         className={'d-block font-size-17 font-weight-600 letter-spacing--17 color-primary margin-bottom-2'.classNames()}

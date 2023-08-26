@@ -1,0 +1,10 @@
+# Ignore node_modules directory
+node_modules/
+
+# Ignore build and dist directories
+build/
+dist/
+vendor/
+components/icons/
+components/fonts/
+components/images/

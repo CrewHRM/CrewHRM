@@ -1,14 +1,15 @@
 import React from 'react';
 
 import style from './image.module.scss';
+import { generateBackgroundColor, getInitials } from '../../utilities/helpers.jsx';
 
 // To Do: Add a mode to to determine height based on ratio automatically.
 export function CoverImage(props) {
-    const { src, children, backgroundColor, height, width, circle, className = '' } = props;
+    const { src, children, backgroundColor, height, width, circle, className = '', name } = props;
 
     const _height = height || width;
     const css = {
-        backgroundColor,
+        backgroundColor: backgroundColor || (name ? generateBackgroundColor(name) : null),
         backgroundImage: src ? 'url(' + src + ')' : null,
         width: width ? width + (!isNaN(width) ? 'px' : '') : 'auto',
         height: _height ? _height + (!isNaN(_height) ? 'px' : '') : 'auto'
@@ -24,7 +25,16 @@ export function CoverImage(props) {
             }
             style={css}
         >
-            {children}
+            {children ? (
+                children
+            ) : !src && name ? (
+                <span
+                    className={'font-weight-500 text-transform-uppercase'.classNames()}
+                    style={{ fontSize: (width / 3) * 1.1 + 'px', color: 'inherit' }}
+                >
+                    {getInitials(name)}
+                </span>
+            ) : null}
         </div>
     );
 }

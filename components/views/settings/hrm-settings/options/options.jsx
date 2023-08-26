@@ -8,9 +8,14 @@ import { ToggleSwitch } from '../../../../materials/toggle-switch/ToggleSwitch.j
 import { TextField } from '../../../../materials/text-field/text-field.jsx';
 import { input_class } from '../../../hrm/job-editor/job-details/job-details.jsx';
 import { FileUpload } from '../../../../materials/file-ipload/file-upload.jsx';
+import { __ } from '../../../../utilities/helpers.jsx';
+import { NumberField } from '../../../../materials/number-field.jsx';
 
 const label_class =
     'd-block font-size-17 font-weight-500 line-height-24 letter-spacing--17 color-primary'.classNames();
+
+const hint_class =
+    'd-block margin-top-3 font-size-15 font-weight-400 line-height-24 letter-spacing--15 color-text-light'.classNames();
 
 export function Options(props) {
     const { segment, sub_segment } = useParams();
@@ -56,26 +61,35 @@ export function Options(props) {
                 </span>
 
                 {field_keys.map((key, index) => {
-                    const { label, type, options = [], when } = fields[key];
+                    const { label, type, options = [], when, direction, hint } = fields[key];
                     const is_last = index == field_keys.length - 1;
 
                     if (when && !satisfyLogic(when)) {
                         return null;
                     }
 
+                    const label_text = (
+                        <>
+                            <span className={label_class}>{label}</span>
+                            {(hint && <span className={hint_class}>{hint}</span>) || null}
+                        </>
+                    );
+
                     return (
                         <div
                             key={key}
-                            className={`d-flex align-items-center padding-vertical-25 ${
+                            className={`d-flex ${
+                                direction === 'column'
+                                    ? 'flex-direction-column'
+                                    : 'flex-direction-row align-items-center'
+                            } flex-wrap-wrap padding-vertical-25 ${
                                 !is_last ? 'border-bottom-1 b-color-tertiary' : ''
                             } ${when ? 'fade-in' : ''}`.classNames()}
                         >
                             {/* Toggle switch option */}
-                            {(type == 'switch' && (
+                            {(type === 'switch' && (
                                 <>
-                                    <div className={'flex-1'.classNames()}>
-                                        <span className={label_class}>{label}</span>
-                                    </div>
+                                    <div className={'flex-1'.classNames()}>{label_text}</div>
                                     <div>
                                         <ToggleSwitch
                                             checked={values[key] ? true : false}
@@ -87,11 +101,9 @@ export function Options(props) {
                                 null}
 
                             {/* Text input field */}
-                            {(type == 'text' && (
+                            {(type === 'text' && (
                                 <>
-                                    <div className={'flex-1'.classNames()}>
-                                        <span className={label_class}>{label}</span>
-                                    </div>
+                                    <div className={'flex-1'.classNames()}>{label_text}</div>
                                     <div className={'flex-1'.classNames()}>
                                         <TextField className={input_class} />
                                     </div>
@@ -100,16 +112,55 @@ export function Options(props) {
                                 null}
 
                             {/* Image upload */}
-                            {type == 'image' && (
+                            {(type === 'image' && (
                                 <>
-                                    <div className={'flex-1'.classNames()}>
-                                        <span className={label_class}>{label}</span>
-                                    </div>
+                                    <div className={'flex-1'.classNames()}>{label_text}</div>
                                     <div className={'flex-1'.classNames()}>
                                         <FileUpload />
                                     </div>
                                 </>
-                            )}
+                            )) ||
+                                null}
+
+                            {/* Checkbox options */}
+                            {(type === 'checkbox' && (
+                                <>
+                                    <div className={'margin-bottom-15'.classNames()}>
+                                        {label_text}
+                                    </div>
+                                    <div
+                                        className={'d-flex flex-direction-column row-gap-10'.classNames()}
+                                    >
+                                        {options.map((option) => {
+                                            let { label, id } = option;
+                                            return (
+                                                <label
+                                                    className={'d-flex align-items-center column-gap-10'.classNames()}
+                                                >
+                                                    <input type="checkbox" />
+                                                    <span
+                                                        className={'font-size-15 font-weight-400 line-height-24 letter-spacing--15 color-text'.classNames()}
+                                                    >
+                                                        {label}
+                                                    </span>
+                                                </label>
+                                            );
+                                        })}
+                                    </div>
+                                </>
+                            )) ||
+                                null}
+
+                            {/* Number field options */}
+                            {(type === 'number' && (
+                                <>
+                                    <div className={'flex-3'.classNames()}>{label_text}</div>
+                                    <div className={'flex-1'.classNames()}>
+                                        <NumberField min={1} value={5} className={input_class} />
+                                    </div>
+                                </>
+                            )) ||
+                                null}
                         </div>
                     );
                 })}

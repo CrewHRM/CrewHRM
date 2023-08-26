@@ -10,7 +10,7 @@
         "watch": "npm run clear && webpack --watch --mode=development",
         "lint": "eslint .",
         "lint:fix": "eslint --fix",
-        "format": "prettier --write './**/*.{js,jsx,ts,tsx,css,scss,md,json}' --config ./.prettierrc"
+        "format": "prettier --write './**/*.{jsx,scss}' --config ./.prettierrc"
     },
     "repository": {
         "type": "git",

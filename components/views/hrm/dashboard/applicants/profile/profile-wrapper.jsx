@@ -174,6 +174,7 @@ export function Profile() {
                         src={avatar}
                         width={109}
                         height={124}
+                        name={applicant.name}
                         className={'border-radius-3'.classNames()}
                     />
                     <div className={'flex-1 margin-left-13'.classNames()}>
