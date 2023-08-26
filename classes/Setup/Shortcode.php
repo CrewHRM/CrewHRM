@@ -19,7 +19,7 @@ class Shortcode {
 	 * @return void
 	 */
 	public function careerPage( $args ) {
-    	do_action( 'careers_page_shortcode' );
+		do_action( 'careers_page_shortcode' );
 		return '<div id="crewhrm_careers"></div>';
 	}
 }

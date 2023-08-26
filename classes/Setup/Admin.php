@@ -31,20 +31,20 @@ class Admin extends Main {
 		add_submenu_page( 
 			self::$configs->root_menu_slug, 
 			__( 'Company', 'crewhrm' ),
-			 __( 'Company', 'crewhrm' ), 
-			 'administrator', 
-			 self::SLUG_COMPANY_PROFILE, 
-			 array( $this, 'companyProfilePage' ) 
+			__( 'Company', 'crewhrm' ), 
+			'administrator', 
+			self::SLUG_COMPANY_PROFILE, 
+			array( $this, 'companyProfilePage' ) 
 		);
 
 		// Setting page
 		add_submenu_page( 
 			self::$configs->root_menu_slug, 
 			__( 'Settings', 'crewhrm' ),
-			 __( 'Settings', 'crewhrm' ), 
-			 'administrator', 
-			 self::SLUG_SETTINGS, 
-			 array( $this, 'settingPage' ) 
+			__( 'Settings', 'crewhrm' ), 
+			'administrator', 
+			self::SLUG_SETTINGS, 
+			array( $this, 'settingPage' ) 
 		);
 	}
 

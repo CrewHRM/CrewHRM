@@ -24,17 +24,17 @@ class Colors {
 		'transparent'  => 'rgba(0, 0, 0, 0)',
 	);
 
-	private static function hexToRgba($hexColor, $opacity) {
+	private static function hexToRgba( $hexColor, $opacity ) {
 		// Remove any leading '#' from the hex color code
-		$hexColor = ltrim($hexColor, '#');
+		$hexColor = ltrim( $hexColor, '#' );
 
 		// Convert the hex color to RGB values
-		$r = hexdec(substr($hexColor, 0, 2));
-		$g = hexdec(substr($hexColor, 2, 2));
-		$b = hexdec(substr($hexColor, 4, 2));
+		$r = hexdec( substr( $hexColor, 0, 2 ) );
+		$g = hexdec( substr( $hexColor, 2, 2 ) );
+		$b = hexdec( substr( $hexColor, 4, 2 ) );
 
 		// Ensure opacity is within the valid range (0 to 1)
-		$opacity = max(0, min(1, $opacity));
+		$opacity = max( 0, min( 1, $opacity ) );
 
 		// Create the RGBA color string
 		$rgbaColor = "rgba($r, $g, $b, $opacity)";
