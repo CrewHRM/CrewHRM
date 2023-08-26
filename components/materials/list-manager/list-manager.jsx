@@ -77,11 +77,13 @@ export function ListManager(props) {
 
 	return <div className={'list-manager'.classNames(style) + `d-flex row-gap-15 ${is_queue ? 'flex-direction-column' : 'flex-direction-column-reverse'}`.classNames() + className}>
 		<SortableList
+			className={'row-gap-15'.classNames()}
 			onReorder={list=>onChange(list)}
 			items={
 				list.map(list_item=>{
 				return {
 					...list_item,
+					id: list_item.id, // Just to make sure it requires ID.
 					rendered: <div className={'d-flex align-items-center border-radius-10 border-1-5 b-color-tertiary padding-15'.classNames() + 'single'.classNames(style)}>
 						<i className={'ch-icon ch-icon-drag font-size-26 color-text-light'.classNames()}></i>
 						<div className={'flex-1'.classNames()}>

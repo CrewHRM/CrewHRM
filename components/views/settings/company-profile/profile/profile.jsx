@@ -65,7 +65,7 @@ const sections = {
 			{
 				name        : 'about_company',
 				label       : __( 'About Company' ),
-				type        : 'textarea',
+				type        : 'textarea_rich',
 				placeholder : __( 'Enter your job description here; include key areas responsibility and specific qualification needed to perform the role.' )
 			}
 		]

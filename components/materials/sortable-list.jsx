@@ -28,26 +28,24 @@ export function SortableList(props) {
 		}));
 	}
 
-	return (
-		<DragDropContext onDragEnd={onDragEnd}>
-			<Droppable droppableId="droppable">
-				{(provided, snapshot) => {
-					const {isDraggingOver, isDragging} = snapshot;
-					return <div data-crewhrm-selector="sortable" className={'d-flex flex-direction-column row-gap-15'.classNames()} {...provided.droppableProps} ref={provided.innerRef}>
-						{props.items.map((item, index) => (
-							<Draggable key={item.id} draggableId={item.id} index={index}>
-								{(provided, snapshot) => {
-									return <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
-										{item.rendered}
-									</div>
-								}}
-							</Draggable>
-						))}
-					
-						{provided.placeholder}
-					</div>
-				}}
-			</Droppable>
-		</DragDropContext>
-    );
+	return <DragDropContext onDragEnd={onDragEnd}>
+		<Droppable droppableId="droppable">
+			{(provided, snapshot) => {
+				const {isDraggingOver, isDragging} = snapshot;
+				return <div data-crewhrm-selector="sortable" className={'d-flex flex-direction-column'.classNames() + (props.className || '')} {...provided.droppableProps} ref={provided.innerRef}>
+					{props.items.map((item, index) => (
+						<Draggable key={item.id} draggableId={item.id} index={index} isDragDisabled={props.disabled ? true : false}>
+							{(provided, snapshot) => {
+								return <div ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
+									{item.rendered}
+								</div>
+							}}
+						</Draggable>
+					))}
+				
+					{provided.placeholder}
+				</div>
+			}}
+		</Droppable>
+	</DragDropContext>
 }

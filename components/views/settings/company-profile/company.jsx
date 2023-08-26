@@ -25,7 +25,7 @@ function CompanyWrapper() {
 				</button>
 			</div>
 		</StickyBar>
-		<div className={'company'.classNames(style)}>
+		<div className={'company'.classNames(style) + 'padding-horizontal-15'.classNames()}>
 			<div className={'sidebar'.classNames(style)}>
 				<CompanyProfileSidebar page_id={page_id}/>
 			</div>

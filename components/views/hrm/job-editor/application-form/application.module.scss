@@ -11,10 +11,22 @@
 			border-radius: 10px;
 			overflow: hidden;
 
-			&>.single-row {
-				padding: 10px 15px;
-				&:not(:last-child) {
-					border-bottom: 1.5px solid  var(--crewhrm-color-tertiary);
+			.single-row {
+				.drag-icon {
+					&::after {
+						content: '';
+						display: block;
+						width: 50px;
+						height: 44px;
+						position: absolute;
+						left: -50px;
+					}
+				}
+				
+				&:not(:hover) {
+					.drag-icon {
+						opacity: 0;
+					}
 				}
 
 				.required{

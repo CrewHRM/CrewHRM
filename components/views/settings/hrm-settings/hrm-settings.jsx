@@ -50,8 +50,9 @@ function Wrapper({children}) {
 				</button>
 			</div>
 		</StickyBar>
-
-		{children}
+		<div className={'padding-horizontal-15'.classNames()}>
+			{children}
+		</div>
 	</ContextSettings.Provider>
 }
 

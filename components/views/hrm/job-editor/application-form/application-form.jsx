@@ -7,6 +7,7 @@ import { Options } from "../../../../materials/dropdown/dropdown.jsx";
 import { FieldEditorModal } from "./field-editor/field-editor-modal.jsx";
 import { sections_fields } from "./form-structure.jsx";
 import { FormActionButtons } from "../../../../materials/form-action.jsx";
+import { SortableList } from "../../../../materials/sortable-list.jsx";
 
 export function ApplicationForm(props) {
 	const {navigateTab} = props;
@@ -94,6 +95,16 @@ export function ApplicationForm(props) {
 		});
 	}
 
+	const updateFields = (section_name, list) => {
+		const {fields={}} = state;
+		fields[section_name].fields = list;
+		
+		setState({
+			...state,
+			fields
+		});
+	}
+
 	return <>
 		
 		{state.pointer && 
@@ -108,7 +119,7 @@ export function ApplicationForm(props) {
 
 			{/* General fields with toggle switch */}
 			{Object.keys(state.fields).map(section_name=>{
-				const {label, fields: input_fields, options={}, addLabel} = sections_fields[section_name];
+				const {label, fields: input_fields, options={}, addLabel, sortable} = state.fields[section_name];
 
 				const options_array = Object.keys(options).map(option_name=>{
 						return {
@@ -125,46 +136,58 @@ export function ApplicationForm(props) {
 					</strong>
 
 					{input_fields.length && <div className={'list-container'.classNames(style)}>
-						{input_fields.map(field=>{
-							const {label: field_label, enabled, required, read_only, id: field_id} = field;
-							const checkbox_id   = 'crewhrm-checkbox-'+field_id;
-
-							return <div data-crewhrm-selector="fields" key={field_id} className={'single-row'.classNames(style) + 'd-flex align-items-center'.classNames()}>
-								<div>
-									<input 
-										id={checkbox_id}
-										type="checkbox" 
-										checked={enabled || read_only} 
-										disabled={read_only}
-										onChange={e=>onToggle('enabled', e.currentTarget.checked, section_name, field_id)}/>
-								</div>
-								<div className={'flex-1'.classNames()}>
-									<label className={'d-block font-size-15 font-weight-500 line-height-25 color-primary margin-left-10'.classNames()} htmlFor={checkbox_id}>
-										{field_label}
-									</label>
-								</div>
-								<div>
-									{
-										read_only && <span className={'required'.classNames(style) + 'font-size-13 font-weight-500 padding-vertical-8 padding-horizontal-15 border-radius-50'.classNames()}>
-											{__( 'Required' )}
-										</span> ||
-										<div className={'d-inline-flex align-items-center column-gap-10'.classNames()}>
-											<span className={'d-inline-block font-size-15 font-weight-400 color-text-light'.classNames()}>
-												{__( 'Required' )}
-											</span>
-											
-											<ToggleSwitch 
-												checked={required} 
-												onChange={required=>onToggle('required', required, section_name, field_id)}/>
-
-											{options_array.length && <Options options={options_array} onClick={action=>onOptionClick(action, section_name, field_id)}>
-												<i className={'ch-icon ch-icon-more font-size-20 color-text-light'.classNames()}></i>
-											</Options> || null}
+						<SortableList
+							disabled={!sortable}
+							onReorder={list=>updateFields(section_name, list)}
+							items={
+								input_fields.map((field, index)=>{
+									const {label: field_label, enabled, required, read_only, id: field_id} = field;
+									const checkbox_id   = 'crewhrm-checkbox-'+field_id;
+									const is_last = index==input_fields.length-1;
+									
+									return {
+										...field,
+										id: field_id, // Just to make sure it requires id
+										rendered: <div data-crewhrm-selector="fields" key={field_id} className={'single-row'.classNames(style) + `d-flex align-items-center padding-vertical-10 padding-horizontal-15 ${!is_last ? 'border-bottom-1-5 b-color-tertiary' : ''}`.classNames()}>
+										{sortable && <div className={'d-flex align-items-center position-absolute'.classNames() + 'drag-icon'.classNames(style)}>
+											<i className={'ch-icon ch-icon-drag font-size-26 color-light position-absolute'.classNames()} style={{left: '-50px'}}></i>
+										</div> || null}
+										<div>
+											<input 
+												id={checkbox_id}
+												type="checkbox" 
+												checked={enabled || read_only} 
+												disabled={read_only}
+												onChange={e=>onToggle('enabled', e.currentTarget.checked, section_name, field_id)}/>
 										</div>
-									}
-								</div>
-							</div>
-						})}
+										<div className={'flex-1'.classNames()}>
+											<label className={'d-block font-size-15 font-weight-500 line-height-25 color-primary margin-left-10'.classNames()} htmlFor={checkbox_id}>
+												{field_label}
+											</label>
+										</div>
+										<div>
+											{
+												read_only && <span className={'required'.classNames(style) + 'font-size-13 font-weight-500 padding-vertical-8 padding-horizontal-15 border-radius-50'.classNames()}>
+													{__( 'Required' )}
+												</span> ||
+												<div className={'d-inline-flex align-items-center column-gap-10'.classNames()}>
+													<span className={'d-inline-block font-size-15 font-weight-400 color-text-light'.classNames()}>
+														{__( 'Required' )}
+													</span>
+													
+													<ToggleSwitch 
+														checked={required} 
+														onChange={required=>onToggle('required', required, section_name, field_id)}/>
+
+													{options_array.length && <Options options={options_array} onClick={action=>onOptionClick(action, section_name, field_id)}>
+														<i className={'ch-icon ch-icon-more font-size-20 color-text-light'.classNames()}></i>
+													</Options> || null}
+												</div>
+											}
+										</div>
+									</div>}
+								}
+							)}/>
 					</div> || null}
 					
 					{addLabel && <div className={`d-flex align-items-center column-gap-10 padding-vertical-10 padding-horizontal-15 border-1 border-radius-10 b-color-secondary cursor-pointer ${input_fields.length ? 'margin-top-10' : ''}`.classNames()} onClick={()=>setState({...state, pointer:{section_name}})}>

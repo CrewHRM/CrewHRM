@@ -85,7 +85,7 @@ export function JobEditor() {
 				</div>
 			</div>
 			
-			<div className={'form'.classNames(style) + 'margin-top-40'.classNames()}>
+			<div className={'form'.classNames(style) + 'margin-top-40 padding-horizontal-15'.classNames()}>
 				<div>
 					{active_tab=='job-details' && <JobDetails navigateTab={navigateTab}/> || null}
 
