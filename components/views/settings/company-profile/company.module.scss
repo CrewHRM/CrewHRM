@@ -1,22 +1,22 @@
 .company {
-	width: 1000px;
-	max-width: 100%;
-	margin: 0 auto;
-	padding-top: 80px;
-	padding-bottom: 46px;
-	display: flex;
+    width: 1000px;
+    max-width: 100%;
+    margin: 0 auto;
+    padding-top: 80px;
+    padding-bottom: 46px;
+    display: flex;
 
-	.sidebar {
-		display: flex;
-		justify-content: end;
-	}
+    .sidebar {
+        display: flex;
+        justify-content: end;
+    }
 
-	.content-area {
-		width: 684px;
-		max-width: 100%;
-		padding: 30px;
-		border-radius: 5px;
-		background: white;
-		box-shadow: 0px 1px 2px 0px rgba(16, 39, 68, 0.08);
-	}
+    .content-area {
+        width: 684px;
+        max-width: 100%;
+        padding: 30px;
+        border-radius: 5px;
+        background: white;
+        box-shadow: 0px 1px 2px 0px rgba(16, 39, 68, 0.08);
+    }
 }

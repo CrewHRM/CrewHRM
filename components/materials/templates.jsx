@@ -1,22 +1,23 @@
-import React from "react";
-import { DoAction } from "../utilities/hooks.jsx";
-import { ToastWrapper } from "./toast/toast.jsx";
+import React from 'react';
+import { DoAction } from '../utilities/hooks.jsx';
+import { ToastWrapper } from './toast/toast.jsx';
 
-
-export function MountPoint(props){
-	return <div data-crewhrm-selector="root" className={'root'.classNames()}>
-		<ToastWrapper>
-			{props.children}
-		</ToastWrapper>
-	</div>
+export function MountPoint(props) {
+    return (
+        <div data-crewhrm-selector="root" className={'root'.classNames()}>
+            <ToastWrapper>{props.children}</ToastWrapper>
+        </div>
+    );
 }
 
 export function Slot(props) {
-	const {children, name} = props;
+    const { children, name } = props;
 
-	return <>
-		<DoAction position="before" action={name}/>
-		{children}
-		<DoAction position="after" action={name}/>
-	</>
+    return (
+        <>
+            <DoAction position="before" action={name} />
+            {children}
+            <DoAction position="after" action={name} />
+        </>
+    );
 }

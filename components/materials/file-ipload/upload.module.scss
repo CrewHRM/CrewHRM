@@ -1,18 +1,18 @@
 .upload {
-	.drop-container {
-		border: 1px dashed var(--crewhrm-color-tertiary);
-		padding: 30px;
-		text-align: center;
-		cursor: pointer;
-		border-radius: 10px;
-		background-color: #F9F9F9;
+    .drop-container {
+        border: 1px dashed var(--crewhrm-color-tertiary);
+        padding: 30px;
+        text-align: center;
+        cursor: pointer;
+        border-radius: 10px;
+        background-color: #f9f9f9;
 
-		&:hover {
-			border: 1px dashed var(--crewhrm-color-primary);
-		}
+        &:hover {
+            border: 1px dashed var(--crewhrm-color-primary);
+        }
 
-		&.highlight {
-			border: 1.5px dashed var(--crewhrm-color-primary);
-		}
-	}
+        &.highlight {
+            border: 1.5px dashed var(--crewhrm-color-primary);
+        }
+    }
 }

@@ -6,48 +6,48 @@ default style for popup
 
 */
 .popup-content {
-	margin: auto;
+    margin: auto;
 
-	&.popup {
-		width: auto;
-	}
+    &.popup {
+        width: auto;
+    }
 
-	&.modal {
-		height: 100%;
-		display: flex;
-		align-items: center;
+    &.modal {
+        height: 100%;
+        display: flex;
+        align-items: center;
 
-		&>div{
-			max-height: 80%;
-			overflow: auto;
-			background-color: white;
-			border-radius: 10px; 
-			padding: 30px;
-			min-width: 586px;
-			max-width: 100%;
-		}
-	}
+        & > div {
+            max-height: 80%;
+            overflow: auto;
+            background-color: white;
+            border-radius: 10px;
+            padding: 30px;
+            min-width: 586px;
+            max-width: 100%;
+        }
+    }
 }
 
 .popup-arrow {
-	color: $color_1;
-	filter: drop-shadow(0 -3px 3px rgba(0, 0, 0, 0.16));
-	color: $color_2;
-	stroke-width: 2px;
-	stroke: #d7d7d7;
-	stroke-dasharray: 30px;
-	stroke-dashoffset: -54px;
-	left: 0;
-	right: 0;
-	top: 0;
-	bottom: 0;
+    color: $color_1;
+    filter: drop-shadow(0 -3px 3px rgba(0, 0, 0, 0.16));
+    color: $color_2;
+    stroke-width: 2px;
+    stroke: #d7d7d7;
+    stroke-dasharray: 30px;
+    stroke-dashoffset: -54px;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
 }
 [role='tooltip'].popup-content {
-	width: auto;
+    width: auto;
 }
 .popup-overlay {
-	background: transparent;
-	&.darken {
-		background: rgba(0, 0, 0, 0.2);
-	}
+    background: transparent;
+    &.darken {
+        background: rgba(0, 0, 0, 0.2);
+    }
 }

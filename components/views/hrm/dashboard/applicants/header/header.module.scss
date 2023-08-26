@@ -1,10 +1,10 @@
 .header {
-	background-color: white;
-	padding: 20px;
-	
-	&>div {
-		max-width: 990px;
-		margin-left: auto;
-		margin-right: auto;
-	}
+    background-color: white;
+    padding: 20px;
+
+    & > div {
+        max-width: 990px;
+        margin-left: auto;
+        margin-right: auto;
+    }
 }

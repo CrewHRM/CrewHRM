@@ -1,71 +1,82 @@
 // These colors are sent from PHP CrewHRM\Helpers\Colors class.
-$colors: 'primary', 'secondary', 'tertiary', 'text', 'text-light', 'text-lighter', 'text-hint', 'danger', 'success', 'warning', 'black', 'white', 'transparent';
+$colors: 'primary', 'secondary', 'tertiary', 'text', 'text-light', 'text-lighter', 'text-hint',
+    'danger', 'success', 'warning', 'black', 'white', 'transparent';
 $color_for: 'color', 'bg-color';
 
-// Loop through the colors 
-@mixin colorGenerate( $class, $attr ) {
-	@each $color in $colors {
+// Loop through the colors
+@mixin colorGenerate($class, $attr) {
+    @each $color in $colors {
+        // Generate text color classes
+        .#{$class}-#{$color} {
+            &,
+            &[type] {
+                // Here [type] is used  to override wp default styles for input fields
+                #{$attr}: var(--crewhrm-color-#{$color}); // Direct initial color
+            }
+        }
+    }
 
-		// Generate text color classes
-		.#{$class}-#{$color} {
-			&, &[type] { // Here [type] is used  to override wp default styles for input fields
-				#{$attr}: var(--crewhrm-color-#{$color}); // Direct initial color
-			}
-		}
-	}
-	
-	// Loop through the colors again 
-	@each $color in $colors {
+    // Loop through the colors again
+    @each $color in $colors {
+        &.#{$class}-hover-#{$color}:hover {
+            &,
+            &[type] {
+                #{$attr}: var(--crewhrm-color-#{$color}); // Color on hover itself
+            }
+        }
 
-		&.#{$class}-hover-#{$color}:hover {
-			&, &[type] {
-				#{$attr}: var(--crewhrm-color-#{$color}); // Color on hover itself
-			}
-		}
+        &.#{$class}-hover-parent:hover {
+            .#{$class}-hover-child-#{$color} {
+                &,
+                &[type] {
+                    #{$attr}: var(
+                        --crewhrm-color-#{$color}
+                    ); // Color for descendent on hovering it self
+                }
+            }
+        }
 
-		&.#{$class}-hover-parent:hover {
-			.#{$class}-hover-child-#{$color} {
-				&, &[type] {
-					#{$attr}: var(--crewhrm-color-#{$color}); // Color for descendent on hovering it self
-				}
-			}
-		}
+        &.#{$class}-active-#{$color} {
+            &.active,
+            &:focus {
+                &,
+                &[type] {
+                    #{$attr}: var(--crewhrm-color-#{$color}); // Active, focus color for itself
+                }
+            }
+        }
 
-		&.#{$class}-active-#{$color} {
-			&.active, &:focus {
-				&, &[type] {
-					#{$attr}: var(--crewhrm-color-#{$color}); // Active, focus color for itself
-				}
-			}
-		}
-
-		&.#{$class}-active-parent {
-			&.active, &:focus {
-				&, &[type] {
-					.#{$class}-active-child {
-						#{$attr}: var(--crewhrm-color-#{$color});  // Active, focus color for children
-					}
-				}
-			}
-		}
-	}
+        &.#{$class}-active-parent {
+            &.active,
+            &:focus {
+                &,
+                &[type] {
+                    .#{$class}-active-child {
+                        #{$attr}: var(
+                            --crewhrm-color-#{$color}
+                        ); // Active, focus color for children
+                    }
+                }
+            }
+        }
+    }
 }
 
-@include colorGenerate( 'color', 'color' );
-@include colorGenerate( 'bg-color', 'background-color' );
-@include colorGenerate( 'b-color', 'border-color' );
+@include colorGenerate('color', 'color');
+@include colorGenerate('bg-color', 'background-color');
+@include colorGenerate('b-color', 'border-color');
 
 .darken-on-hover {
-	&:hover {
-		filter: brightness(0.75);
-	}
+    &:hover {
+        filter: brightness(0.75);
+    }
 }
 
 /* Box shadows */
 .box-shadow-thin {
-	box-shadow: 0px 1px 2px 0px rgba(16, 39, 68, 0.08);
+    box-shadow: 0px 1px 2px 0px rgba(16, 39, 68, 0.08);
 }
 
 .box-shadow-thick {
-	box-shadow: 0px 10px 20px 0px rgba(16, 39, 68, 0.10);
+    box-shadow: 0px 10px 20px 0px rgba(16, 39, 68, 0.1);
 }

@@ -1,15 +1,16 @@
-.apply{
-	.header {
-		background-color: #F9F9F9;
-		
-		.container {
-			max-width: 786px;
-			margin: 0 auto;
-		}
-	}
+.apply {
+    .header {
+        background-color: #f9f9f9;
 
-	.sequence>div, .form {
-		max-width: 552px;
-		margin: 0 auto;
-	}
+        .container {
+            max-width: 786px;
+            margin: 0 auto;
+        }
+    }
+
+    .sequence > div,
+    .form {
+        max-width: 552px;
+        margin: 0 auto;
+    }
 }

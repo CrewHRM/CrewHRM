@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 import style from './intro.module.scss';
 
@@ -7,23 +7,31 @@ import designer_working from '../../images/designer-working.png';
 import being_creative from '../../images/being-creative.png';
 
 const images = {
-	megaphone,
-	designer_working,
-	being_creative,
-}
+    megaphone,
+    designer_working,
+    being_creative
+};
 
 export function IntroCard(props) {
-	const {image, className='', orientation="horizontal"} = props;
+    const { image, className = '', orientation = 'horizontal' } = props;
 
-	const is_horizontal = orientation=='horizontal';
-	const image_url     = images[image];
+    const is_horizontal = orientation == 'horizontal';
+    const image_url = images[image];
 
-	return <div data-crewhrm-selector={"intro-card-"+orientation} className={`intro orientation-${orientation}`.classNames(style) + 'bg-color-white border-radius-5'.classNames() + className} style={{backgroundImage: 'url('+image_url+')'}}>
-		<div className={'content'.classNames(style)}>
-			{props.children}
-		</div>
-		<div className={"image".classNames(style)}>
-			{!is_horizontal && <img src={image_url}/> || null}
-		</div>
-	</div>
+    return (
+        <div
+            data-crewhrm-selector={'intro-card-' + orientation}
+            className={
+                `intro orientation-${orientation}`.classNames(style) +
+                'bg-color-white border-radius-5'.classNames() +
+                className
+            }
+            style={{ backgroundImage: 'url(' + image_url + ')' }}
+        >
+            <div className={'content'.classNames(style)}>{props.children}</div>
+            <div className={'image'.classNames(style)}>
+                {(!is_horizontal && <img src={image_url} />) || null}
+            </div>
+        </div>
+    );
 }

@@ -1,20 +1,21 @@
-.wrapper{
-	max-width: 1366px;
-	margin: 0 auto;
-	display: flex;
+.wrapper {
+    max-width: 1366px;
+    margin: 0 auto;
+    display: flex;
 
-	.sidebar, .content-area {
-		float: left;
-	}
+    .sidebar,
+    .content-area {
+        float: left;
+    }
 
-	.sidebar{
-		width: 461px;
-		padding: 36px;
-		background-color: #E3E5E8;
-	}
+    .sidebar {
+        width: 461px;
+        padding: 36px;
+        background-color: #e3e5e8;
+    }
 
-	.content-area {
-		flex: 1;
-		padding: 36px;
-	}
+    .content-area {
+        flex: 1;
+        padding: 36px;
+    }
 }

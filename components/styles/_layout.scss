@@ -1,225 +1,229 @@
 // Displays
 $displays: 'block', 'flex', 'inline', 'inline-block', 'inline-flex', 'contents', 'none';
 @each $display in $displays {
-	.d-#{$display} {
-		display: #{$display};
-	}
+    .d-#{$display} {
+        display: #{$display};
+    }
 }
 
 // Sizings
-$attrs: 'font-size', 'margin', 'margin-top', 'margin-bottom', 'margin-left', 'margin-right', 'padding', 'padding-top', 'padding-bottom', 'padding-left', 'padding-right', 'padding-vertical', 'padding-horizontal', 'width', 'height', 'line-height', 'column-gap', 'row-gap', 'left', 'right', 'top', 'bottom';
+$attrs: 'font-size', 'margin', 'margin-top', 'margin-bottom', 'margin-left', 'margin-right',
+    'padding', 'padding-top', 'padding-bottom', 'padding-left', 'padding-right', 'padding-vertical',
+    'padding-horizontal', 'width', 'height', 'line-height', 'column-gap', 'row-gap', 'left', 'right',
+    'top', 'bottom';
 @for $i from 0 through 50 {
+    @each $attr in $attrs {
+        @if $attr == 'padding-vertical' {
+            .padding-vertical-#{$i} {
+                &,
+                &[type] {
+                    padding-top: #{$i}px;
+                    padding-bottom: #{$i}px;
+                }
+            }
+        } @else if $attr == 'padding-horizontal' {
+            .padding-horizontal-#{$i} {
+                &,
+                &[type] {
+                    padding-left: #{$i}px;
+                    padding-right: #{$i}px;
+                }
+            }
+        } @else {
+            .#{$attr}-#{$i} {
+                &,
+                &[type] {
+                    #{$attr}: #{$i}px;
+                }
+            }
+        }
+    }
 
-	@each $attr in $attrs {
-		@if $attr == 'padding-vertical' {
-			.padding-vertical-#{$i} {
-				&, &[type] {
-					padding-top: #{$i}px;
-					padding-bottom: #{$i}px;
-				}
-				
-			} 
+    // Letter spacing and flex
+    @if $i <=5 {
+        .letter-spacing_#{$i} {
+            letter-spacing: #{$i}px; // Full number posetive spacing: 2px, 3px...
+        }
+    }
 
-		} @else if $attr == 'padding-horizontal' {
-			.padding-horizontal-#{$i} {
-				&, &[type] {
-					padding-left: #{$i}px;
-					padding-right: #{$i}px;
-				}
-				
-			} 
+    .letter-spacing--#{$i} {
+        letter-spacing: -#{$i/100}px; // Negative decimal point spacing: -0.3px, -0.24px
+    }
 
-		} @else {
-			.#{$attr}-#{$i} {
-				&, &[type] {
-					#{$attr}: #{$i}px;
-				}
-			}
-		}
-	}
+    .letter-spacing-#{$i} {
+        letter-spacing: #{$i/100}px; // Posetive decimal point spacing: 0.3px, 0.24px
+    }
 
-	// Letter spacing and flex
-	@if $i <=5 {
-		.letter-spacing_#{$i} {
-			letter-spacing: #{$i}px; // Full number posetive spacing: 2px, 3px...
-		}
-	} 
+    .flex-#{$i} {
+        flex: #{$i};
+    }
 
-	.letter-spacing--#{$i} {
-		letter-spacing: -#{$i/100}px; // Negative decimal point spacing: -0.3px, -0.24px
-	}
-
-	.letter-spacing-#{$i} {
-		letter-spacing: #{$i/100}px; // Posetive decimal point spacing: 0.3px, 0.24px
-	}
-
-	.flex-#{$i}{
-		flex: #{$i};
-	}
-
-	.border-radius-#{$i} {
-		&, &[type] {
-			border-radius: #{$i}px;
-			overflow: hidden;
-		}
-	}
+    .border-radius-#{$i} {
+        &,
+        &[type] {
+            border-radius: #{$i}px;
+            overflow: hidden;
+        }
+    }
 }
 
 // Flex content justify
 $justifications: 'space-between', 'space-around', 'center', 'end', 'flex-end';
 @each $justfication in $justifications {
-	.justify-content-#{$justfication} {
-		justify-content: #{$justfication};
-	}
+    .justify-content-#{$justfication} {
+        justify-content: #{$justfication};
+    }
 }
 
 // Align self
 $align_selfs: 'center', 'auto';
 @each $align_self in $align_selfs {
-	.align-self-#{$align_self} {
-		align-self: #{$align_self};
-	}
+    .align-self-#{$align_self} {
+        align-self: #{$align_self};
+    }
 }
 
 // Cursors
 $cursors: 'pointer', 'default';
 @each $cursor in $cursors {
-	.cursor-#{$cursor} {
-		cursor: #{$cursor};
-	}
+    .cursor-#{$cursor} {
+        cursor: #{$cursor};
+    }
 }
 
 // Vertical alignments
 $v_alignments: 'middle', 'top';
 @each $v_alignment in $v_alignments {
-	.vertical-align-#{$v_alignment} {
-		vertical-align: #{$v_alignment};
-	}
+    .vertical-align-#{$v_alignment} {
+        vertical-align: #{$v_alignment};
+    }
 }
 
 // Positions
 $positions: 'absolute', 'fixed', 'static', 'relative';
 @each $position in $positions {
-	.position-#{$position} {
-		position: #{$position};
-	}
+    .position-#{$position} {
+        position: #{$position};
+    }
 }
 
 // Borders
 $borders: 'border', 'border-bottom', 'border-top', 'border-left', 'border-right';
 @each $border in $borders {
-	.#{$border}-1 {
-		&, &[type] {
-			#{$border}-width: 1px;
-			#{$border}-style: solid;
-		}
-		
-	}
+    .#{$border}-1 {
+        &,
+        &[type] {
+            #{$border}-width: 1px;
+            #{$border}-style: solid;
+        }
+    }
 
-	.#{$border}-1-5 {
-		&, &[type] {
-			#{$border}-width: 1.5px;
-			#{$border}-style: solid;
-		}
-	}
+    .#{$border}-1-5 {
+        &,
+        &[type] {
+            #{$border}-width: 1.5px;
+            #{$border}-style: solid;
+        }
+    }
 
-	.#{$border}-5 {
-		&, &[type] {
-			#{$border}-width: 5px;
-			#{$border}-style: solid;
-		}
-	}
+    .#{$border}-5 {
+        &,
+        &[type] {
+            #{$border}-width: 5px;
+            #{$border}-style: solid;
+        }
+    }
 }
 
 // Flex flows
 $flows: 'column', 'row', 'row-reverse', 'column-reverse';
 @each $flow in $flows {
-	.flex-direction-#{$flow} {
-		flex-direction: #{$flow};
-	}
+    .flex-direction-#{$flow} {
+        flex-direction: #{$flow};
+    }
 }
 
 // Flex wrap
 $wraps: 'wrap', 'nowrap';
 @each $wrap in $wraps {
-	.flex-wrap-#{$wrap} {
-		flex-wrap: #{$wrap};
-	}
+    .flex-wrap-#{$wrap} {
+        flex-wrap: #{$wrap};
+    }
 }
 
 // Autos
 $autos: 'width', 'height', 'margin';
 @each $auto in $autos {
-	.#{$auto}-auto {
-		#{$auto}: auto;
-	}
+    .#{$auto}-auto {
+        #{$auto}: auto;
+    }
 }
 
 $aligns: 'center', 'start', 'end', 'flex-start', 'flex-end', 'stretch';
 @each $align in $aligns {
-	.align-items-#{$align} {
-		align-items: #{$align};
-	}
+    .align-items-#{$align} {
+        align-items: #{$align};
+    }
 }
 
 $overflows: 'auto', 'hidden';
 @each $overflow in $overflows {
-	.overflow-#{$overflow} {
-		overflow: #{$overflow};
-	}
+    .overflow-#{$overflow} {
+        overflow: #{$overflow};
+    }
 }
 
 .h-full {
-	min-height: 100%;
+    min-height: 100%;
 }
 
 .w-full {
-	min-width: 100%;
+    min-width: 100%;
 }
 
 // Grid
 .column {
-	display: flex;
-	align-items: stretch;
-	margin-left: -10px;
-	margin-right: -10px;
+    display: flex;
+    align-items: stretch;
+    margin-left: -10px;
+    margin-right: -10px;
 
-	&>div{
-		margin: 0 10px;
-		flex: 1;
-	}
+    & > div {
+        margin: 0 10px;
+        flex: 1;
+    }
 }
 
 .line-clamp {
-  display: -webkit-box;
-  -webkit-box-orient: vertical;  
-  overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
 
 .line-clamp-1 {
-  -webkit-line-clamp: 1;
+    -webkit-line-clamp: 1;
 }
 
 .line-clamp-2 {
-  -webkit-line-clamp: 2;
+    -webkit-line-clamp: 2;
 }
 
 .appearance-none {
-	appearance: none;
+    appearance: none;
     -webkit-appearance: none;
     -moz-appearance: none;
 }
 
 .fade-in {
-  opacity: 0;
-  animation: crewFadeInAnimation 0.6s ease-in-out forwards 1; /* Added "1" for iteration count */
+    opacity: 0;
+    animation: crewFadeInAnimation 0.6s ease-in-out forwards 1; /* Added "1" for iteration count */
 }
 
 @keyframes crewFadeInAnimation {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }

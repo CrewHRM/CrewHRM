@@ -1,38 +1,38 @@
 @import './mixins';
 
 @font-face {
-	font-family: 'CrewHRM-Figtree-Regular';
-	src: url('../fonts/Figtree/static/Figtree-Regular.ttf') format('truetype');
+    font-family: 'CrewHRM-Figtree-Regular';
+    src: url('../fonts/Figtree/static/Figtree-Regular.ttf') format('truetype');
 }
 
 @font-face {
-	font-family: 'CrewHRM-Figtree-Medium';
-	src: url('../fonts/Figtree/static/Figtree-Medium.ttf') format('truetype');
+    font-family: 'CrewHRM-Figtree-Medium';
+    src: url('../fonts/Figtree/static/Figtree-Medium.ttf') format('truetype');
 }
 
 @font-face {
-	font-family: 'CrewHRM-Figtree-SemiBold';
-	src: url('../fonts/Figtree/static/Figtree-SemiBold.ttf') format('truetype');
+    font-family: 'CrewHRM-Figtree-SemiBold';
+    src: url('../fonts/Figtree/static/Figtree-SemiBold.ttf') format('truetype');
 }
 
 @font-face {
-	font-family: 'CrewHRM-Figtree-Bold';
-	src: url('../fonts/Figtree/static/Figtree-Bold.ttf') format('truetype');
+    font-family: 'CrewHRM-Figtree-Bold';
+    src: url('../fonts/Figtree/static/Figtree-Bold.ttf') format('truetype');
 }
 
 // Font weights
 .font-weight-400 {
-	@include fontWeight(400);
+    @include fontWeight(400);
 }
 
 .font-weight-500 {
-	@include fontWeight(500);
+    @include fontWeight(500);
 }
 
 .font-weight-600 {
-	@include fontWeight(600);
+    @include fontWeight(600);
 }
 
 .font-weight-700 {
-	@include fontWeight(700);
+    @include fontWeight(700);
 }

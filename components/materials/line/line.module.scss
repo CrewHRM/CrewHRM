@@ -1,14 +1,14 @@
 .line {
-	display: block;
-	align-self: stretch;
+    display: block;
+    align-self: stretch;
 
-	&.horizontal {
-		width: 100%;
-		border-bottom: 1px solid var(--crewhrm-color-tertiary);
-	}
+    &.horizontal {
+        width: 100%;
+        border-bottom: 1px solid var(--crewhrm-color-tertiary);
+    }
 
-	&.vertical {
-		width: 0;
-		border-right: 1px solid var(--crewhrm-color-tertiary);
-	}
+    &.vertical {
+        width: 0;
+        border-right: 1px solid var(--crewhrm-color-tertiary);
+    }
 }

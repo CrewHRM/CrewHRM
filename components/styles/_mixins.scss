@@ -1,14 +1,11 @@
 @mixin fontWeight($weight) {
-	@if $weight == 400 {
-		font-family: CrewHRM-Figtree-Regular;
-
-	} @else if $weight == 500 {
-		font-family: CrewHRM-Figtree-Medium;
-
-	} @else if $weight == 600 {
-		font-family: CrewHRM-Figtree-SemiBold;
-
-	} @else if $weight == 700 {
-		font-family: CrewHRM-Figtree-Bold;
-	}
+    @if $weight == 400 {
+        font-family: CrewHRM-Figtree-Regular;
+    } @else if $weight == 500 {
+        font-family: CrewHRM-Figtree-Medium;
+    } @else if $weight == 600 {
+        font-family: CrewHRM-Figtree-SemiBold;
+    } @else if $weight == 700 {
+        font-family: CrewHRM-Figtree-Bold;
+    }
 }

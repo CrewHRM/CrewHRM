@@ -1,12 +1,11 @@
-
-
 .editor-wrapper {
-	background-color: white;
+    background-color: white;
 
-	&>.tabs, &>.form {
-		&>div {
-			max-width: 854px;
-			margin: 0 auto;
-		}
-	}
+    & > .tabs,
+    & > .form {
+        & > div {
+            max-width: 854px;
+            margin: 0 auto;
+        }
+    }
 }

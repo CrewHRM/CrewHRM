@@ -1,26 +1,26 @@
 $container_width: 990px;
 
 .applicants {
-	.content-area {
-		margin-top: 34px;
-		max-width: 990px;
-		margin-left: auto;
-		margin-right: auto;
-		display: flex;
-		
-		.sidebar-wrapper {
-			width: 276px;
+    .content-area {
+        margin-top: 34px;
+        max-width: 990px;
+        margin-left: auto;
+        margin-right: auto;
+        display: flex;
 
-			&>div{
-				background: white;
-				border-radius: 5px;
-			}
-		}
+        .sidebar-wrapper {
+            width: 276px;
 
-		.profile-wrapper {
-			flex: 1;
-			margin-left: 30px;
-			margin-bottom: 34px;
-		}
-	}
+            & > div {
+                background: white;
+                border-radius: 5px;
+            }
+        }
+
+        .profile-wrapper {
+            flex: 1;
+            margin-left: 30px;
+            margin-bottom: 34px;
+        }
+    }
 }

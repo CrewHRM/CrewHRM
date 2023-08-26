@@ -1,14 +1,14 @@
 .toast {
-	width: 325px;
-	max-height: 400px;
-	overflow-x: hidden;
-	overflow: auto;
-	z-index: 1000;
+    width: 325px;
+    max-height: 400px;
+    overflow-x: hidden;
+    overflow: auto;
+    z-index: 1000;
 
-	&>div {
-		background-color: var(--crewhrm-color-primary);
-		&:not(:last-child) {
-			margin-bottom: 20px;
-		}
-	}
+    & > div {
+        background-color: var(--crewhrm-color-primary);
+        &:not(:last-child) {
+            margin-bottom: 20px;
+        }
+    }
 }

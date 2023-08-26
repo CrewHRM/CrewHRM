@@ -1,13 +1,13 @@
 .notice {
-	&.success {
-		background-color: var(--crewhrm-color-success);
-	}
+    &.success {
+        background-color: var(--crewhrm-color-success);
+    }
 
-	&.warning {
-		background-color: var(--crewhrm-color-warning);
-	}
+    &.warning {
+        background-color: var(--crewhrm-color-warning);
+    }
 
-	&.error {
-		background-color: var(--crewhrm-color-danger);
-	}
+    &.error {
+        background-color: var(--crewhrm-color-danger);
+    }
 }

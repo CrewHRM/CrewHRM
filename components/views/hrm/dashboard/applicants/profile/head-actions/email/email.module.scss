@@ -1,23 +1,24 @@
 .email-fields {
-	.label {
-		width: 70px;
-		margin-right: 10px;
-		color: black;
-	}
+    .label {
+        width: 70px;
+        margin-right: 10px;
+        color: black;
+    }
 
-	input, textarea {
-		width: 100%;
-		padding: 10px 15px;
-		border: 1.5px solid var(--crewhrm-color-tertiary);
-		color: var(--crewhrm-color-text);
-	}
+    input,
+    textarea {
+        width: 100%;
+        padding: 10px 15px;
+        border: 1.5px solid var(--crewhrm-color-tertiary);
+        color: var(--crewhrm-color-text);
+    }
 
-	input {
-		border-radius: 10px;
-	}
+    input {
+        border-radius: 10px;
+    }
 
-	textarea {
-		resize: vertical;
-		border-radius: 5px;
-	}
+    textarea {
+        resize: vertical;
+        border-radius: 5px;
+    }
 }
