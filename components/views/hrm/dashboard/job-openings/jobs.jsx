@@ -9,6 +9,7 @@ import { DropDown, Options } from '../../../../materials/dropdown/dropdown.jsx';
 import { Line } from '../../../../materials/line/line.jsx';
 import { ShareModal } from '../../../../materials/share-modal.jsx';
 import { TextField } from '../../../../materials/text-field/text-field.jsx';
+import { Pagination } from '../../../../materials/pagination/pagination.jsx';
 
 const options = [
     {
@@ -358,6 +359,7 @@ export function JobOpenings(props) {
                 </div>
             )}
 
+			{/* Show view all button when it is loaded in dashboard as summary */}
             {(is_overview && jobs.length && (
                 <Link
                     to="/dashboard/jobs/"
@@ -370,6 +372,11 @@ export function JobOpenings(props) {
                 </Link>
             )) ||
                 null}
+
+			{/* Show pagination when it is loaded as a single view */}
+			{!is_overview && <div className={'d-flex justify-content-end'.classNames()}>
+				<Pagination/>
+			</div> || null}
         </div>
     );
 }
