@@ -14,7 +14,7 @@ export function HeadActions() {
             title: __('Send Email'),
             renderer: Email,
             tagline: (
-                <span className={'font-size-15 font-weight-500 color-primary'.classNames()}>
+                <span className={'font-size-15 font-weight-500 color-text'.classNames()}>
                     {__('Email')}
                 </span>
             )
@@ -25,7 +25,7 @@ export function HeadActions() {
             renderer: Comment,
             tagline: (
                 <>
-                    <span className={'font-size-15 font-weight-500 color-primary'.classNames()}>
+                    <span className={'font-size-15 font-weight-500 color-text'.classNames()}>
                         {__('Add a comment')}
                     </span>{' '}
                     <span className={'font-size-13 font-weight-400 color-text-light'}>
@@ -75,7 +75,7 @@ export function HeadActions() {
 
                         let classes = 'font-size-20 cursor-pointer margin-right-24 ';
                         classes +=
-                            state.active_segment === i ? 'color-primary' : 'color-text-lighter';
+                            state.active_segment === i ? 'color-text' : 'color-text-lighter';
 
                         return (
                             <i
@@ -94,12 +94,12 @@ export function HeadActions() {
                     ></i>
                 </div>
                 <div className={'d-flex align-items-center column-gap-10'.classNames()}>
-                    <span className={'font-size-15 font-weight-400 color-primary'.classNames()}>
+                    <span className={'font-size-15 font-weight-400 color-text'.classNames()}>
                         {__('Move to')}
                     </span>
 
                     <DropDown
-                        className={'padding-vertical-5 padding-horizontal-12 border-1 b-color-primary border-radius-5'.classNames()}
+                        className={'padding-vertical-5 padding-horizontal-12 border-1 b-color-text border-radius-5'.classNames()}
                         value={state.current_application_stage}
                         options={application_stages}
                         onChange={(s) => setState({ ...state, current_application_stage: s })}
@@ -115,7 +115,7 @@ export function HeadActions() {
                     <div className={'d-flex align-items-center margin-bottom-15'.classNames()}>
                         <div className={'flex-1'.classNames()}>
                             <span
-                                className={`d-inline-block ch-icon ${active_icon} font-size-20 color-primary margin-right-10 vertical-align-middle`.classNames()}
+                                className={`d-inline-block ch-icon ${active_icon} font-size-20 color-text margin-right-10 vertical-align-middle`.classNames()}
                             ></span>{' '}
                             {tagline}
                         </div>

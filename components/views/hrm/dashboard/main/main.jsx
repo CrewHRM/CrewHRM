@@ -24,7 +24,7 @@ export function DahboardMain() {
                     className={'margin-bottom-20'.classNames()}
                 >
                     <span
-                        className={'d-block color-primary font-size-28 font-weight-600 line-height-32 margin-bottom-15'.classNames()}
+                        className={'d-block color-text font-size-28 font-weight-600 line-height-32 margin-bottom-15'.classNames()}
                     >
                         {__('Find the person you want to hire ')}
                     </span>
@@ -46,12 +46,12 @@ export function DahboardMain() {
                 <JobOpenings is_overview={true} className={'margin-bottom-20'.classNames()} />
                 <div className={'d-flex align-items-center margin-bottom-20'.classNames()}>
                     <div className={'flex-1'.classNames()}>
-                        <span className={'color-primary font-size-17 font-weight-500'.classNames()}>
+                        <span className={'color-text font-size-17 font-weight-500'.classNames()}>
                             {__('Suggested Action')}
                         </span>
                     </div>
                     <div>
-                        <span className={'color-primary font-size-14 font-weight-400'.classNames()}>
+                        <span className={'color-text font-size-14 font-weight-400'.classNames()}>
                             {__('Don’t show again')}
                         </span>
                     </div>
@@ -60,7 +60,7 @@ export function DahboardMain() {
                     <div>
                         <IntroCard image="designer_working">
                             <span
-                                className={'d-block font-size-20 font-weight-600 color-primary margin-bottom-8'.classNames()}
+                                className={'d-block font-size-20 font-weight-600 color-text margin-bottom-8'.classNames()}
                             >
                                 {__('Question Bank')}
                             </span>
@@ -82,7 +82,7 @@ export function DahboardMain() {
                     <div>
                         <IntroCard image="being_creative">
                             <span
-                                className={'d-block font-size-20 font-weight-600 color-primary margin-bottom-8'.classNames()}
+                                className={'d-block font-size-20 font-weight-600 color-text margin-bottom-8'.classNames()}
                             >
                                 {__('Design your page')}
                             </span>

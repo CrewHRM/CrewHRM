@@ -12,7 +12,7 @@ import { __ } from '../../../../utilities/helpers.jsx';
 import { NumberField } from '../../../../materials/number-field.jsx';
 
 const label_class =
-    'd-block font-size-17 font-weight-500 line-height-24 letter-spacing--17 color-primary'.classNames();
+    'd-block font-size-17 font-weight-500 line-height-24 letter-spacing--17 color-text'.classNames();
 
 const hint_class =
     'd-block margin-top-3 font-size-15 font-weight-400 line-height-24 letter-spacing--15 color-text-light'.classNames();

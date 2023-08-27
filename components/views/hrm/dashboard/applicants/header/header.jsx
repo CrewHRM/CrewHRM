@@ -20,12 +20,12 @@ export function Header(props) {
             label: (
                 <>
                     <span
-                        className={'d-inline-block font-size-15 font-weight-600 color-primary margin-right-3'.classNames()}
+                        className={'d-inline-block font-size-15 font-weight-600 color-text margin-right-3'.classNames()}
                     >
                         {s.count}
                     </span>
                     <span
-                        className={'d-inline-block font-size-14 font-weight-400 color-primary'.classNames()}
+                        className={'d-inline-block font-size-14 font-weight-400 color-text'.classNames()}
                     >
                         {s.label}
                     </span>
@@ -50,16 +50,15 @@ export function Header(props) {
                             options={jobs}
                             onChange={(v) => navigate(`/dashboard/jobs/${v}/applicants/`)}
                             transparent={true}
-                            position="bottom right"
                             className={'padding-vertical-8 padding-horizontal-15'.classNames()}
-                            textClassName={'font-size-24 font-weight-600 color-primary'.classNames()}
+                            textClassName={'font-size-24 font-weight-600 color-text'.classNames()}
                         />
                     </div>
                 </div>
                 <div className={'d-flex align-items-center column-gap-15'.classNames()}>
                     <a
                         href="#"
-                        className={'font-size-15 font-weight-400 color-primary'.classNames()}
+                        className={'font-size-15 font-weight-400 color-text'.classNames()}
                     >
                         {__('View Post')}
                     </a>

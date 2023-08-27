@@ -31,13 +31,13 @@ export function Documents() {
     return (
         <div data-crewhrm-selector="documents" className={'documents'.classNames(style)}>
             <span
-                className={'d-block font-size-17 font-weight-600 line-height-24 letter-spacing--17 color-primary margin-bottom-10'.classNames()}
+                className={'d-block font-size-17 font-weight-600 line-height-24 letter-spacing--17 color-text margin-bottom-10'.classNames()}
             >
                 {__('COVER LETTER')}
             </span>
             <ExpandableContent>
                 <DangerouslySet
-                    className={'d-block font-size-15 font-weight-400 line-height-22 letter-spacing--15 color-primary'.classNames()}
+                    className={'d-block font-size-15 font-weight-400 line-height-22 letter-spacing--15 color-text'.classNames()}
                 >
                     {prepareTexts(cover_letter)}
                 </DangerouslySet>
@@ -47,7 +47,7 @@ export function Documents() {
                 <>
                     <Line className={'margin-top-20 margin-bottom-20'.classNames()} />
                     <span
-                        className={'d-block font-size-17 font-weight-600 line-height-24 letter-spacing--17 color-primary margin-bottom-10'.classNames()}
+                        className={'d-block font-size-17 font-weight-600 line-height-24 letter-spacing--17 color-text margin-bottom-10'.classNames()}
                     >
                         {__('RESUME')}
                     </span>
@@ -60,7 +60,7 @@ export function Documents() {
                 <>
                     <Line className={'margin-top-20 margin-bottom-20'.classNames()} />
                     <span
-                        className={'d-block font-size-17 font-weight-600 line-height-24 letter-spacing--17 color-primary margin-bottom-10'.classNames()}
+                        className={'d-block font-size-17 font-weight-600 line-height-24 letter-spacing--17 color-text margin-bottom-10'.classNames()}
                     >
                         {__('ATTACHMENTS')}
                     </span>

@@ -99,6 +99,7 @@ const sections = {
                 {
                     name: 'country_code',
                     type: 'dropdown',
+					placeholder: __('Select Country'),
                     options: countries_array
                 }
             ],

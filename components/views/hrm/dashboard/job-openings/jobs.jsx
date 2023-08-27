@@ -160,7 +160,7 @@ export function JobOpenings(props) {
                         <Link to="/dashboard/">
                             <i
                                 className={
-                                    'ch-icon ch-icon-arrow-left color-primary cursor-pointer'.classNames() +
+                                    'ch-icon ch-icon-arrow-left color-text cursor-pointer'.classNames() +
                                     'back-icon'.classNames(style)
                                 }
                             ></i>
@@ -169,7 +169,7 @@ export function JobOpenings(props) {
                         null}
                     <span
                         className={
-                            'color-primary ' +
+                            'color-text ' +
                             (is_overview
                                 ? 'font-size-17 font-weight-500'
                                 : 'font-size-24 font-weight-600'
@@ -205,7 +205,7 @@ export function JobOpenings(props) {
                             className={`border-radius-5 border-1 height-34 padding-8 b-color-tertiary ${
                                 is_overview ? 'bg-color-transparent' : ' bg-color-white'
                             }`.classNames()}
-                            iconClass={'ch-icon ch-icon-search-normal-1 font-size-18 color-primary cursor-pointer'.classNames()}
+                            iconClass={'ch-icon ch-icon-search-normal-1 font-size-18 color-text cursor-pointer'.classNames()}
                             icon_position="right"
                             expandable={true}
                             value={state.filter.search}
@@ -250,11 +250,11 @@ export function JobOpenings(props) {
                                             <i
                                                 className={
                                                     o.icon.classNames() +
-                                                    'font-size-24 color-primary'.classNames()
+                                                    'font-size-24 color-text'.classNames()
                                                 }
                                             ></i>
                                             <span
-                                                className={'font-size-15 font-weight-500 line-height-25 color-primary'.classNames()}
+                                                className={'font-size-15 font-weight-500 line-height-25 color-text'.classNames()}
                                             >
                                                 {o.label}
                                             </span>
@@ -277,7 +277,7 @@ export function JobOpenings(props) {
                                                 <StatusDot color={status_color} />
                                             </div>
                                             <span
-                                                className={'d-block color-primary font-size-20 font-weight-600'.classNames()}
+                                                className={'d-block color-text font-size-20 font-weight-600'.classNames()}
                                             >
                                                 {job_title}
                                             </span>
@@ -336,7 +336,7 @@ export function JobOpenings(props) {
                                                     </span>
                                                     <span
                                                         className={
-                                                            'd-block color-primary font-size-17 font-weight-600'
+                                                            'd-block color-text font-size-17 font-weight-600'
                                                         }
                                                     >
                                                         {stats[key]}

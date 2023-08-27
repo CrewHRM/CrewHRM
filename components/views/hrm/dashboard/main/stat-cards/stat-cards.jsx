@@ -47,7 +47,7 @@ export function StatCards({ className = '' }) {
                         <img src={icon} className={'width-24'.classNames()} />
                         <div>
                             <span
-                                className={'d-block margin-bottom-12 font-size-28 font-weight-700 color-primary'.classNames()}
+                                className={'d-block margin-bottom-12 font-size-28 font-weight-700 color-text'.classNames()}
                             >
                                 {count}
                             </span>

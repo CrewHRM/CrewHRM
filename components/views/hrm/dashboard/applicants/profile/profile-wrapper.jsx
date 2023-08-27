@@ -179,7 +179,7 @@ export function Profile() {
                     />
                     <div className={'flex-1 margin-left-13'.classNames()}>
                         <span
-                            className={'d-block font-size-24 font-weight-600 line-height-24 color-primary margin-bottom-2'.classNames()}
+                            className={'d-block font-size-24 font-weight-600 line-height-24 color-text margin-bottom-2'.classNames()}
                         >
                             {applicant.name}
                             <span

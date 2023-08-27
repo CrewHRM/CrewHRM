@@ -15,13 +15,13 @@ export function OverView() {
     return (
         <div data-crewhrm-selector="overview" className={'overview'.classNames(style)}>
             <span
-                className={'d-block font-size-17 font-weight-600 line-height-24 letter-spacing--17 color-primary margin-bottom-10'.classNames()}
+                className={'d-block font-size-17 font-weight-600 line-height-24 letter-spacing--17 color-text margin-bottom-10'.classNames()}
             >
                 {__('SUMMARY')}
             </span>
             <div>
                 <DangerouslySet
-                    className={'font-size-15 font-weight-400 line-height-22 letter-spacing-15 color-primary'.classNames()}
+                    className={'font-size-15 font-weight-400 line-height-22 letter-spacing-15 color-text'.classNames()}
                 >
                     {prepareTexts(summary)}
                 </DangerouslySet>
@@ -31,7 +31,7 @@ export function OverView() {
                 <>
                     <Line className={'margin-top-20 margin-bottom-20'.classNames()} />
                     <span
-                        className={'d-block font-size-17 font-weight-600 line-height-24 letter-spacing--17 color-primary margin-bottom-10'.classNames()}
+                        className={'d-block font-size-17 font-weight-600 line-height-24 letter-spacing--17 color-text margin-bottom-10'.classNames()}
                     >
                         {__('EDUCATION')}
                     </span>
@@ -55,7 +55,7 @@ export function OverView() {
                                     </div>
                                     <div className={'flex-1'.classNames()}>
                                         <span
-                                            className={'font-size-15 font-weight-400 line-height-24 letter-spacing--15 color-primary'.classNames()}
+                                            className={'font-size-15 font-weight-400 line-height-24 letter-spacing--15 color-text'.classNames()}
                                         >
                                             {degree}{' '}
                                             <span className={'color-text-light'.classNames()}>
@@ -76,7 +76,7 @@ export function OverView() {
                 <>
                     <Line className={'margin-top-20 margin-bottom-20'.classNames()} />
                     <span
-                        className={'d-block font-size-17 font-weight-600 line-height-24 letter-spacing--17 color-primary margin-bottom-10'.classNames()}
+                        className={'d-block font-size-17 font-weight-600 line-height-24 letter-spacing--17 color-text margin-bottom-10'.classNames()}
                     >
                         {__('SKILLS')}
                     </span>
@@ -90,7 +90,7 @@ export function OverView() {
                                     key={skill}
                                     className={
                                         'single-skill'.classNames(style) +
-                                        'd-inline-block padding-vertical-5 padding-horizontal-20 font-size-15 font-weight-500 line-height-24 letter-spacing--15 color-primary'.classNames()
+                                        'd-inline-block padding-vertical-5 padding-horizontal-20 font-size-15 font-weight-500 line-height-24 letter-spacing--15 color-text'.classNames()
                                     }
                                 >
                                     {skill}
@@ -110,12 +110,12 @@ export function OverView() {
                         return (
                             <div key={qna_id}>
                                 <span
-                                    className={'d-block font-size-17 font-weight-500 line-height-24 letter-spacing--17 color-primary margin-bottom-1'.classNames()}
+                                    className={'d-block font-size-17 font-weight-500 line-height-24 letter-spacing--17 color-text margin-bottom-1'.classNames()}
                                 >
                                     {question}
                                 </span>
                                 <DangerouslySet
-                                    className={'d-block font-size-15 font-weight-400 line-height-22 letter-spacing--15 color-primary'.classNames()}
+                                    className={'d-block font-size-15 font-weight-400 line-height-22 letter-spacing--15 color-text'.classNames()}
                                 >
                                     {prepareTexts(answer)}
                                 </DangerouslySet>
@@ -146,7 +146,7 @@ export function OverView() {
                                 <i
                                     className={
                                         getSocialIcon(link) +
-                                        'font-size-20 color-primary'.classNames()
+                                        'font-size-20 color-text'.classNames()
                                     }
                                 ></i>
                             </a>

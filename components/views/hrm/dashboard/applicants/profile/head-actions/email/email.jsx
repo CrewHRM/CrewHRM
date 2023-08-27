@@ -66,7 +66,7 @@ export function Email(props) {
                             {(field == 'body' && (
                                 <textarea
                                     name={field}
-                                    className={'font-size-15 font-weight-500 line-height-24 color-primary'.classNames()}
+                                    className={'font-size-15 font-weight-500 line-height-24 color-text'.classNames()}
                                     onChange={setVal}
                                 >
                                     {state.values[field]}
@@ -78,7 +78,7 @@ export function Email(props) {
                                     placeholder={placeholder}
                                     value={state.values[field]}
                                     onChange={setVal}
-                                    className={'font-size-15 font-weight-500 line-height-24 color-primary'.classNames()}
+                                    className={'font-size-15 font-weight-500 line-height-24 color-text'.classNames()}
                                 />
                             )}
                         </div>
@@ -89,9 +89,9 @@ export function Email(props) {
             <div className={'d-flex align-items-center'.classNames()}>
                 <div className={'flex-1'.classNames()}>
                     <i
-                        className={'ch-icon ch-icon-paperclip-2 font-size-20 color-primary vertical-align-middle'.classNames()}
+                        className={'ch-icon ch-icon-paperclip-2 font-size-20 color-text vertical-align-middle'.classNames()}
                     ></i>{' '}
-                    <span className={'font-size-15 font-weight-400 color-primary'.classNames()}>
+                    <span className={'font-size-15 font-weight-400 color-text'.classNames()}>
                         {__('Attach a file')}
                     </span>
                 </div>

@@ -26,12 +26,12 @@ function LayoutDisqualify(props) {
     return (
         <>
             <span
-                className={'font-size-17 font-weight-400 line-height-24 letter-spacing--17 color-primary'.classNames()}
+                className={'font-size-17 font-weight-400 line-height-24 letter-spacing--17 color-text'.classNames()}
             >
                 Disqualified by
             </span>{' '}
             <span
-                className={'font-size-17 font-weight-600 line-height-24 letter-spacing--17 color-primary'.classNames()}
+                className={'font-size-17 font-weight-600 line-height-24 letter-spacing--17 color-text'.classNames()}
             >
                 {by}
             </span>{' '}
@@ -46,19 +46,19 @@ function LayoutComment(props) {
         <>
             <div className={'margin-bottom-5'.classNames()}>
                 <span
-                    className={'font-size-17 font-weight-600 line-height-24 letter-spacing--17 color-primary'.classNames()}
+                    className={'font-size-17 font-weight-600 line-height-24 letter-spacing--17 color-text'.classNames()}
                 >
                     {by}
                 </span>{' '}
                 <span
-                    className={'font-size-17 font-weight-400 line-height-24 letter-spacing--17 color-primary'.classNames()}
+                    className={'font-size-17 font-weight-400 line-height-24 letter-spacing--17 color-text'.classNames()}
                 >
                     added a comment
                 </span>{' '}
                 <Ago date={date_time} />
             </div>
             <div
-                className={'font-size-15 font-weight-400 line-height-24 letter-spacing--15 color-primary'.classNames()}
+                className={'font-size-15 font-weight-400 line-height-24 letter-spacing--15 color-text'.classNames()}
             >
                 {comment}
             </div>
@@ -86,12 +86,12 @@ function LayoutMove(props) {
     return (
         <>
             <span
-                className={'font-size-17 font-weight-400 line-height-24 letter-spacing--17 color-primary'.classNames()}
+                className={'font-size-17 font-weight-400 line-height-24 letter-spacing--17 color-text'.classNames()}
             >
                 Moved to {to} by
             </span>{' '}
             <span
-                className={'font-size-17 font-weight-600 line-height-24 letter-spacing--17 color-primary'.classNames()}
+                className={'font-size-17 font-weight-600 line-height-24 letter-spacing--17 color-text'.classNames()}
             >
                 {by}
             </span>{' '}
@@ -105,7 +105,7 @@ function LayoutApply(props) {
     return (
         <>
             <span
-                className={'font-size-17 font-weight-600 line-height-24 letter-spacing--17 color-primary'.classNames()}
+                className={'font-size-17 font-weight-600 line-height-24 letter-spacing--17 color-text'.classNames()}
             >
                 {by}
             </span>{' '}

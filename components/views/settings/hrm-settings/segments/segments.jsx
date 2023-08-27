@@ -18,7 +18,7 @@ export function Segments(props) {
                 return (
                     <div key={key} className={'margin-bottom-30'.classNames()}>
                         <span
-                            className={'d-block font-size-17 font-weight-600 color-primary margin-bottom-10'.classNames()}
+                            className={'d-block font-size-17 font-weight-600 color-text margin-bottom-10'.classNames()}
                         >
                             {label}
                         </span>
@@ -53,14 +53,14 @@ export function Segments(props) {
                                         </div>
                                         <div className={'flex-1'.classNames()}>
                                             <span
-                                                className={'d-block font-size-15 font-weight-500 line-height-25 color-primary'.classNames()}
+                                                className={'d-block font-size-15 font-weight-500 line-height-25 color-text'.classNames()}
                                             >
                                                 {label}
                                             </span>
                                         </div>
                                         <div>
                                             <i
-                                                className={'ch-icon ch-icon-arrow-right font-size-24 color-primary color-hover-child-secondary'.classNames()}
+                                                className={'ch-icon ch-icon-arrow-right font-size-24 color-text color-hover-child-secondary'.classNames()}
                                             ></i>
                                         </div>
                                     </Link>
