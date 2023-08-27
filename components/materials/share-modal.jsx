@@ -43,7 +43,7 @@ export function ShareModal(props) {
                 className={'d-flex align-items-center'.classNames()}
             >
                 <div className={'flex-1'.classNames()}>
-                    <span className={'font-size-20 font-weight-500 color-primary'.classNames()}>
+                    <span className={'font-size-20 font-weight-500 color-text'.classNames()}>
                         {__('Share')}
                     </span>
                 </div>
@@ -77,7 +77,7 @@ export function ShareModal(props) {
                 style={{ backgroundColor: '#F9F9F9' }}
             >
                 <span
-                    className={'flex-1 font-size-16 font-weight-400 letter-spacing--3 color-primary'.classNames()}
+                    className={'flex-1 font-size-16 font-weight-400 letter-spacing--3 color-text'.classNames()}
                 >
                     {url}
                 </span>

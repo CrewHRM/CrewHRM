@@ -8,7 +8,7 @@
 .select-dropdown-popup {
     .trigger-point {
         & > div {
-            border: none;
+            border: none !important;
             border-radius: 0;
             border-bottom: 1px solid var(--crewhrm-color-tertiary);
         }

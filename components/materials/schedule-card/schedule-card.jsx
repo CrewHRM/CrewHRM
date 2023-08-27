@@ -17,7 +17,7 @@ export function ScheduleCard(props) {
     const flex_class = 'd-flex margin-bottom-15'.classNames();
     const icon_class = 'font-size-24'.classNames();
     const legend_class =
-        'd-block font-size-17 font-weight-600 color-primary margin-bottom-4'.classNames();
+        'd-block font-size-17 font-weight-600 color-text margin-bottom-4'.classNames();
     const sub_text_class = 'd-block font-size-15 font-weight-400 color-text-light'.classNames();
     const flex_1 = 'flex-1'.classNames();
     const width = 'width-39'.classNames();

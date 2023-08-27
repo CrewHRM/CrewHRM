@@ -44,13 +44,13 @@ export function TextField(props) {
             return;
         }
 
-        if (!expandable || state.expanded) {
+        if (!expandable) {
             return;
         }
 
         setState({
             ...state,
-            expanded: true
+            expanded: !state.expanded
         });
     };
 

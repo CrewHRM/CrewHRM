@@ -9,11 +9,11 @@ import { TextEditor } from './text-editor/text-editor.jsx';
 const section_label_class =
     'd-block font-size-17 font-weight-600 line-height-24 letter-spacing--17 color-text-light text-transform-uppercase margin-bottom-20'.classNames();
 const label_class =
-    'd-block font-size-15 font-weight-500 margin-bottom-10 color-primary'.classNames();
+    'd-block font-size-15 font-weight-500 margin-bottom-10 color-text'.classNames();
 const input_text_class =
-    'd-block w-full height-48 padding-15 border-1-5 border-radius-10 b-color-tertiary b-color-active-primary font-size-15 font-weight-400 line-height-24 letter-spacing--15 color-primary'.classNames();
+    'd-block w-full height-48 padding-15 border-1-5 border-radius-10 b-color-tertiary b-color-active-primary font-size-15 font-weight-400 line-height-24 letter-spacing--15 color-text'.classNames();
 const text_area_class =
-    'd-block w-full padding-vertical-15 padding-horizontal-20 border-1-5 border-radius-10 b-color-tertiary b-color-active-primary font-size-15 font-weight-400 line-height-25 color-primary'.classNames();
+    'd-block w-full padding-vertical-15 padding-horizontal-20 border-1-5 border-radius-10 b-color-tertiary b-color-active-primary font-size-15 font-weight-400 line-height-25 color-text'.classNames();
 
 export const ContextForm = createContext();
 
@@ -55,12 +55,12 @@ export function RenderField({ field }) {
             {(disclaimer && (
                 <ExpandableContent className={'margin-bottom-30'.classNames()}>
                     <span
-                        className={'d-block font-size-20 font-weight-600 color-primary'.classNames()}
+                        className={'d-block font-size-20 font-weight-600 color-text'.classNames()}
                     >
                         {disclaimer.heading}
                     </span>
                     <div
-                        className={'font-size-15 font-weight-400 line-height-24 letter-spacing--15 color-primary'.classNames()}
+                        className={'font-size-15 font-weight-400 line-height-24 letter-spacing--15 color-text'.classNames()}
                     >
                         {disclaimer.description}
                     </div>
@@ -85,7 +85,7 @@ export function RenderField({ field }) {
             )) ||
                 null}
 
-            {(type == 'dropdown' && <DropDown options={options} className={input_text_class} />) ||
+            {(type == 'dropdown' && <DropDown options={options} placeholder={placeholder} className={input_text_class} />) ||
                 null}
 
             {(type == 'date' && <DateField className={input_text_class} />) || null}
@@ -147,7 +147,7 @@ export function FormFields({ fields }) {
                 {(!Array.isArray(field) && <RenderField field={field} />) || (
                     <div
                         data-crewhrm-selector="field-group"
-                        className={'d-flex column-gap-10'.classNames()}
+                        className={`d-flex flex-break-sm ${field.find(f=>f.label) ? 'break-gap-30' : ''} column-gap-10`.classNames()}
                     >
                         {field.map((f, i) => (
                             <RenderField key={i} field={f} />
@@ -168,7 +168,7 @@ export function Form({ fields: sections }) {
                     <div
                         data-crewhrm-selector="form-section"
                         key={section_key}
-                        className={'profile'.classNames() + 'margin-bottom-30'.classNames()}
+                        className={'margin-bottom-30'.classNames()}
                     >
                         <span className={section_label_class}>{section_label}</span>
 

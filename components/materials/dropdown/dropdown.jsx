@@ -39,7 +39,7 @@ export function DropDown(props) {
         transparent,
         className = '',
         tabindex,
-        textClassName = 'font-size-15 font-weight-400 color-primary'.classNames(),
+        textClassName = 'font-size-15 font-weight-400 color-text'.classNames(),
         iconClassName = 'ch-icon ch-icon-arrow-down margin-left-10 font-size-18 color-text-light'.classNames(),
         position = 'center top',
         placeholder = __('Select'),
@@ -49,6 +49,8 @@ export function DropDown(props) {
     } = props;
 
     const ref = useRef();
+
+	const pop_border = className.indexOf('border-1-5')>-1 ? 'border-1-5' : ( className.indexOf( 'border-1' )>-1 ? 'border-1' : '' );
 
     const triggerPoint = (
         <div
@@ -83,7 +85,7 @@ export function DropDown(props) {
             >
                 {(close) => {
                     // Determine border width, color and radius from the class name to sync the popup accordingly
-                    let popup_styles = ref.current ? { width: ref.current.clientWidth + 'px' } : {};
+                    let popup_styles = ref.current ? { minWidth: ref.current.clientWidth + 'px' } : {};
                     popup_styles = { ...popup_styles, ...getPopupStyle(className) };
 
                     return (
@@ -91,7 +93,7 @@ export function DropDown(props) {
                             data-crewhrm-selector="dropdown-popup"
                             className={
                                 'select-dropdown-popup'.classNames(style) +
-                                'box-shadow-thick border-radius-10 border-1-5 b-color-tertiary bg-color-white'.classNames()
+                                `box-shadow-thick border-radius-10 ${pop_border} b-color-tertiary bg-color-white white-space-nowrap`.classNames()
                             }
                             style={popup_styles}
                         >

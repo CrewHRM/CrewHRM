@@ -5,14 +5,15 @@ import { generateBackgroundColor, getInitials } from '../../utilities/helpers.js
 
 // To Do: Add a mode to to determine height based on ratio automatically.
 export function CoverImage(props) {
-    const { src, children, backgroundColor, height, width, circle, className = '', name } = props;
+    const { src, children, backgroundColor, height, width, circle, className = '', name, style: cssStyle={} } = props;
 
     const _height = height || width;
     const css = {
         backgroundColor: backgroundColor || (name ? generateBackgroundColor(name) : null),
         backgroundImage: src ? 'url(' + src + ')' : null,
         width: width ? width + (!isNaN(width) ? 'px' : '') : 'auto',
-        height: _height ? _height + (!isNaN(_height) ? 'px' : '') : 'auto'
+        height: _height ? _height + (!isNaN(_height) ? 'px' : '') : 'auto',
+		...cssStyle
     };
 
     return (

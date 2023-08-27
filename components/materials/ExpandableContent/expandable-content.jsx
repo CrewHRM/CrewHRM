@@ -72,7 +72,7 @@ export function ExpandableContent(props) {
             {(state.show_control && (
                 <span
                     data-crewhrm-selector="controller"
-                    className={'d-inline-block font-size-15 font-weight-500 line-height-22 letter-spacing--15 color-primary cursor-pointer margin-top-10'.classNames()}
+                    className={'d-inline-block font-size-15 font-weight-500 line-height-22 letter-spacing--15 color-text cursor-pointer margin-top-10'.classNames()}
                     onClick={toggleView}
                 >
                     {state.expanded ? see_less_text : see_more_text}
