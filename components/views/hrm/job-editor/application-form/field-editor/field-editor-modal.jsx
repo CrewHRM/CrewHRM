@@ -103,7 +103,7 @@ export function FieldEditorModal(props) {
                 className={'d-flex align-items-center margin-bottom-30'.classNames()}
             >
                 <div className={'flex-1'.classNames()}>
-                    <span className={'font-size-24 font-weight-600 color-primary'.classNames()}>
+                    <span className={'font-size-24 font-weight-600 color-text'.classNames()}>
                         {__('Add a question')}
                     </span>
                 </div>
@@ -118,7 +118,7 @@ export function FieldEditorModal(props) {
             >
                 <div className={'flex-4'.classNames()}>
                     <DropDown
-                        className={'padding-vertical-14 padding-horizontal-15 border-radius-10 border-1 b-color-primary font-size-15 font-weight-600 color-primary'.classNames()}
+                        className={'padding-vertical-14 padding-horizontal-15 border-radius-10 border-1 b-color-text font-size-15 font-weight-600 color-text'.classNames()}
                         nested={true}
                         placeholder={__('Select Question Type')}
                         value={field_type}
@@ -145,13 +145,13 @@ export function FieldEditorModal(props) {
 
             <div className={'margin-bottom-15'.classNames()}>
                 <span
-                    className={'d-block font-size-15 font-weight-500 color-primary margin-bottom-10'.classNames()}
+                    className={'d-block font-size-15 font-weight-500 color-text margin-bottom-10'.classNames()}
                 >
                     {__('Question')}
                 </span>
                 <input
                     value={state.field.label}
-                    className={'d-block padding-15 border-1-5 b-color-tertiary b-color-active-primary border-radius-10 font-size-15 font-weight-400 line-height-25 color-primary w-full height-48'.classNames()}
+                    className={'d-block padding-15 border-1-5 b-color-tertiary b-color-active-primary border-radius-10 font-size-15 font-weight-400 line-height-25 color-text w-full height-48'.classNames()}
                     placeholder={__('ex. How did you hear about this job?')}
                     onChange={(e) => onChange('label', e.currentTarget.value)}
                 />
@@ -163,7 +163,7 @@ export function FieldEditorModal(props) {
                     className={'margin-bottom-15'.classNames()}
                 >
                     <span
-                        className={'d-block font-size-15 font-weight-500 color-primary margin-bottom-10'.classNames()}
+                        className={'d-block font-size-15 font-weight-500 color-text margin-bottom-10'.classNames()}
                     >
                         {__('Options')}
                     </span>

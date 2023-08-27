@@ -94,7 +94,7 @@ export function JobEditor() {
                                         <span
                                             className={`font-size-15 font-weight-400 letter-spacing--3 ${
                                                 s.id == state.active_tab
-                                                    ? 'color-primary'
+                                                    ? 'color-text'
                                                     : 'color-text-light'
                                             }`.classNames()}
                                         >

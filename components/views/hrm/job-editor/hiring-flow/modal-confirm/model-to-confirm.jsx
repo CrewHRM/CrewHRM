@@ -15,7 +15,7 @@ function Content({ stage, openMoveDiloague, closeModal }) {
     return (
         <div className={'confirm'.classNames(style) + 'text-align-center'.classNames()}>
             <span
-                className={'d-block font-size-24 font-weight-500 line-height-32 letter-spacing--3 color-primary margin-bottom-30'.classNames()}
+                className={'d-block font-size-24 font-weight-500 line-height-32 letter-spacing--3 color-text margin-bottom-30'.classNames()}
             >
                 {__("Are you sure, you want to delete this item. We won't be able to recover it.")}
             </span>
@@ -91,7 +91,7 @@ function MoveContent({ stage, total, users = [], closeModal, deleteFlow }) {
                 </span>
 
                 <span
-                    className={'d-block font-size-24 font-weight-500 line-height-32 letter-spacing--3 color-primary'.classNames()}
+                    className={'d-block font-size-24 font-weight-500 line-height-32 letter-spacing--3 color-text'.classNames()}
                 >
                     {__('To remove this stage, candidates must be moved to another stage.')}
                 </span>
@@ -107,7 +107,7 @@ function MoveContent({ stage, total, users = [], closeModal, deleteFlow }) {
                 <div className={'d-flex align-items-center column-gap-10'.classNames()}>
                     <div className={'flex-1'.classNames()}>
                         <DropDown
-                            className={'w-full padding-vertical-5 padding-horizontal-12 border-1 b-color-primary height-40'.classNames()}
+                            className={'w-full padding-vertical-5 padding-horizontal-12 border-1 b-color-text height-40'.classNames()}
                             value={state.move_to}
                             options={sequences}
                             onChange={(move_to) => setState({ move_to })}

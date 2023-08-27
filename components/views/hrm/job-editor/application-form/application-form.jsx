@@ -127,7 +127,7 @@ export function ApplicationForm(props) {
                 className={'application'.classNames(style)}
             >
                 <span
-                    className={'d-block font-size-20 font-weight-600 color-primary margin-bottom-40'.classNames()}
+                    className={'d-block font-size-20 font-weight-600 color-text margin-bottom-40'.classNames()}
                 >
                     {__('Customize your application form')}
                 </span>
@@ -148,7 +148,7 @@ export function ApplicationForm(props) {
                             label: options[option_name].label,
                             icon:
                                 options[option_name].icon.classNames() +
-                                'font-size-24 color-primary'.classNames()
+                                'font-size-24 color-text'.classNames()
                         };
                     });
 
@@ -159,7 +159,7 @@ export function ApplicationForm(props) {
                             className={'section-container'.classNames(style)}
                         >
                             <strong
-                                className={'d-block font-size-17 font-weight-600 color-primary margin-bottom-10'.classNames()}
+                                className={'d-block font-size-17 font-weight-600 color-text margin-bottom-10'.classNames()}
                             >
                                 {label}
                             </strong>
@@ -228,7 +228,7 @@ export function ApplicationForm(props) {
                                                         </div>
                                                         <div className={'flex-1'.classNames()}>
                                                             <label
-                                                                className={'d-block font-size-15 font-weight-500 line-height-25 color-primary margin-left-10'.classNames()}
+                                                                className={'d-block font-size-15 font-weight-500 line-height-25 color-text margin-left-10'.classNames()}
                                                                 htmlFor={checkbox_id}
                                                             >
                                                                 {field_label}

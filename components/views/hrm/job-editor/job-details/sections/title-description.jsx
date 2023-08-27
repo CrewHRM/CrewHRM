@@ -43,9 +43,9 @@ export function TitleAndDescription() {
                 </div>
                 <div className={'right-col'.classNames(style)}>
                     <i
-                        className={'ch-icon ch-icon-lamp-charge font-size-20 color-primary margin-right-4 vertical-align-middle'.classNames()}
+                        className={'ch-icon ch-icon-lamp-charge font-size-20 color-text margin-right-4 vertical-align-middle'.classNames()}
                     ></i>{' '}
-                    <span className={'font-size-13 font-weight-400 color-primary'.classNames()}>
+                    <span className={'font-size-13 font-weight-400 color-text'.classNames()}>
                         {__('Tips')}
                     </span>
                 </div>

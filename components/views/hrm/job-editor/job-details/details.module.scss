@@ -5,24 +5,4 @@
         width: 218px;
         margin-left: 54px;
     }
-
-    .type-selection {
-        column-gap: 20px;
-        row-gap: 0;
-
-        button {
-            padding: 8px 15px;
-            height: 40px;
-            width: 100%;
-            border-radius: 10px;
-            font-size: 15px;
-            font-weight: 500;
-            line-height: 25px;
-            white-space: nowrap;
-
-            &:not(.selected):not(:hover) {
-                border-color: var(--crewhrm-color-text-lighter);
-            }
-        }
-    }
 }

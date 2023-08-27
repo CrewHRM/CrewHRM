@@ -9,6 +9,7 @@ import {
 } from '../job-details.jsx';
 import style from '../details.module.scss';
 import { DropDown } from '../../../../../materials/dropdown/dropdown.jsx';
+import { TagField } from '../../../../../materials/tag-field/tag-field.jsx';
 
 const location_types = {
     on_site: __('On-Site'),
@@ -21,37 +22,23 @@ export function Location() {
 
     return (
         <>
-            {/* Salary details */}
+            {/* Location */}
             <div className={'d-flex margin-bottom-30'.classNames()}>
                 <div className={'flex-1'.classNames()}>
                     <span className={section_title_class}>{__('Location')}</span>
                 </div>
             </div>
 
-            {/* Salary type */}
+            {/* Job Locations */}
             <div className={'d-flex margin-bottom-30'.classNames()}>
                 <div className={'flex-1'.classNames()}>
                     <span className={field_label_class}>{__('Job Location type')}</span>
-                    {Object.keys(location_types).map((type) => {
-                        return (
-                            <div
-                                key={type}
-                                className={'d-inline-block margin-right-20'.classNames()}
-                            >
-                                <label
-                                    key={type}
-                                    className={
-                                        input_class +
-                                        'd-flex align-items-center column-gap-8'.classNames()
-                                    }
-                                    style={{ paddingTop: 0, paddingBottom: 0 }}
-                                >
-                                    <input type="checkbox" />
-                                    <span>{location_types[type]}</span>
-                                </label>
-                            </div>
-                        );
-                    })}
+					<TagField
+						theme="button-control"
+						behavior="checkbox"
+						value={values.location_type || []}
+						options={Object.keys(location_types).map(location=>{return {id: location, label: location_types[location]}})}
+						onChange={types=>setVal('location_type', types)}/>
                 </div>
                 <div className={'right-col'.classNames(style)}></div>
             </div>

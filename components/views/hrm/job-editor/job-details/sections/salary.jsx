@@ -9,6 +9,7 @@ import {
 } from '../job-details.jsx';
 import style from '../details.module.scss';
 import { DropDown } from '../../../../../materials/dropdown/dropdown.jsx';
+import { TagField } from '../../../../../materials/tag-field/tag-field.jsx';
 
 const salary_types = {
     hourly: __('Hourly'),
@@ -35,29 +36,15 @@ export function Salary() {
             <div className={'d-flex margin-bottom-40'.classNames()}>
                 <div className={'flex-1'.classNames()}>
                     {/* Employment type */}
-                    <div
-                        className={
-                            'd-flex margin-bottom-30'.classNames() +
-                            'type-selection'.classNames(style)
-                        }
-                    >
-                        {Object.keys(salary_types).map((type) => {
-                            const is_selected = values.salary_type === type;
-                            return (
-                                <div key={type} className={'flex-1'.classNames()}>
-                                    <button
-                                        className={`button button-primary ${
-                                            is_selected ? '' : 'button-outlined'
-                                        } button-outlined w-full`.classNames()}
-                                        onClick={() => setVal('salary_type', type)}
-                                    >
-                                        {salary_types[type]}
-                                    </button>
-                                </div>
-                            );
-                        })}
-                    </div>
-
+					<TagField
+						theme="button"
+						behavior="radio"
+						value={values.salary_type}
+						options={Object.keys(salary_types).map(type=>{return {id: type, label: salary_types[type]}})}
+						onChange={value=>setVal('salary_type', value)}
+						fullWidth={true}
+						className={'margin-bottom-30'.classNames()}/>
+						
                     {/* Salary and Currency */}
                     <div className={'d-flex'.classNames()}>
                         <div className={'flex-1 margin-right-10'.classNames()}>

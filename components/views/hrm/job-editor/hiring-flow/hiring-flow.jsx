@@ -54,7 +54,7 @@ export function HiringFlow(props) {
                 null}
 
             <span
-                className={'d-block font-size-20 font-weight-600 color-primary margin-bottom-40'.classNames()}
+                className={'d-block font-size-20 font-weight-600 color-text margin-bottom-40'.classNames()}
             >
                 {__('Hiring stage')}
             </span>

@@ -10,6 +10,7 @@ import { __ } from '../../../../../utilities/helpers.jsx';
 import style from '../details.module.scss';
 import { NumberField } from '../../../../../materials/number-field.jsx';
 import { DateField } from '../../../../../materials/date-time.jsx';
+import { TagField } from '../../../../../materials/tag-field/tag-field.jsx';
 
 const employments_types = {
     full_time: __('Full Time'),
@@ -36,32 +37,15 @@ export function EmploymentDetails(props) {
             <div className={'d-flex'.classNames()}>
                 <div className={'flex-1'.classNames()}>
                     {/* Employment type */}
-                    <div
-                        className={
-                            'd-flex margin-bottom-30'.classNames() +
-                            'type-selection'.classNames(style)
-                        }
-                    >
-                        {Object.keys(employments_types).map((type) => {
-                            const is_selected = values.employment_type === type;
-                            return (
-                                <div key={type} className={'flex-1'.classNames()}>
-                                    <button
-                                        className={
-                                            `button button-primary ${
-                                                is_selected ? '' : 'button-outlined'
-                                            } w-full`.classNames() +
-                                            `${is_selected ? 'selected' : ''}`.classNames(style)
-                                        }
-                                        onClick={() => setVal('employment_type', type)}
-                                    >
-                                        {employments_types[type]}
-                                    </button>
-                                </div>
-                            );
-                        })}
-                    </div>
-
+					<TagField 
+						value={values.employment_type}
+						behavior="radio"
+						theme="button"
+						options={Object.keys(employments_types).map(type=>{return {id: type, label: employments_types[type]}})}
+						onChange={type=>setVal('employment_type', type)}
+						fullWidth={true}
+						className={'margin-bottom-30'.classNames()}/>
+                    
                     {/* Vacancy and Deadline */}
                     <div className={'d-flex'.classNames()}>
                         <div className={'margin-right-20'.classNames()} style={{ width: '130px' }}>

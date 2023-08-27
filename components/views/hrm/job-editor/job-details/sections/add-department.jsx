@@ -10,21 +10,21 @@ export function AddDepartmentModal({ addDepartMent }) {
     return (
         <Modal>
             <span
-                className={'d-block font-size-24 font-weight-600 color-primary margin-bottom-20'.classNames()}
+                className={'d-block font-size-24 font-weight-600 color-text margin-bottom-20'.classNames()}
             >
                 {__('Add Department')}
             </span>
 
             <div className={'padding-vertical-15'.classNames()}>
                 <span
-                    className={'d-block font-size-15 font-weight-500 color-primary margin-bottom-10'.classNames()}
+                    className={'d-block font-size-15 font-weight-500 color-text margin-bottom-10'.classNames()}
                 >
                     {__('Department Name')}
                 </span>
 
                 <input
                     type="text"
-                    className={'w-full padding-15 border-1-5 b-color-tertiary b-color-active-primary border-radius-10 height-48 font-size-15 font-weight-400 line-height-25 color-primary'.classNames()}
+                    className={'w-full padding-15 border-1-5 b-color-tertiary b-color-active-primary border-radius-10 height-48 font-size-15 font-weight-400 line-height-25 color-text'.classNames()}
                     onChange={(e) => setState({ ...state, department_name: e.currentTarget.value })}
                 />
             </div>
