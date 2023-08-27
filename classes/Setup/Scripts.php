@@ -77,6 +77,7 @@ class Scripts extends Main {
 
 		// Load JS variables
 		$data = array(
+			'app_name'     => self::$configs->app_name,
 			'action_hooks' => array(),
 			'filter_hooks' => array(),
 			'home_url'     => get_home_url(),

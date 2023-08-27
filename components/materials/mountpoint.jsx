@@ -1,11 +1,17 @@
-import React from 'react';
+import React, { createContext } from 'react';
 import { DoAction } from '../utilities/hooks.jsx';
 import { ToastWrapper } from './toast/toast.jsx';
 
-export function MountPoint(props) {
+export const ContextNonce = createContext();
+
+export function MountPoint({children, nonce, nonceAction}) {
     return (
         <div data-crewhrm-selector="root" className={'root'.classNames()}>
-            <ToastWrapper>{props.children}</ToastWrapper>
+			<ContextNonce.Provider value={{nonce, nonceAction}}>
+	            <ToastWrapper>
+					{children}
+				</ToastWrapper>
+			</ContextNonce.Provider>
         </div>
     );
 }

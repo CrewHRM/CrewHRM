@@ -4,8 +4,16 @@ import icons from '../icons/crewhrm/style.module.scss';
 export function getElementDataSet(element) {
     let { dataset = {} } = element;
     let data = {};
+
     for (let k in dataset) {
-        data[k] = JSON.parse(dataset[k]);
+		
+		let _json;
+		try {
+			_json = JSON.parse(dataset[k]);
+		} catch (error) {
+		}
+
+        data[k] = _json ? _json : dataset[k];
     }
 
     return data;

@@ -2,11 +2,15 @@
 
 namespace CrewHRM\Setup;
 
+use CrewHRM\Helpers\Nonce;
 use CrewHRM\Main;
 
 class Admin extends Main {
 	const SLUG_COMPANY_PROFILE = 'crewhrm-settings';
 	const SLUG_SETTINGS        = 'crewhrm-company';
+	const MOUNTPOINT_SETTINGS  = 'crewhrm_settings';
+	const MOUNTPOINT_COMPANY   = 'crewhrm_company_profile';
+	const MOUNTPOINT_DASHBOARD = 'crewhrm_dashboard';
 
 	function __construct() {
 		add_action( 'admin_menu', array( $this, 'registerMenu' ) );
@@ -54,7 +58,7 @@ class Admin extends Main {
 	 * @return void
 	 */
 	public function mainPage() {
-		echo '<div id="crewhrm_dashboard"></div>';
+		echo '<div id="' . esc_attr( self::MOUNTPOINT_DASHBOARD ) .'" data-crewhrm-nonce="' . esc_attr( Nonce::generate( self::MOUNTPOINT_DASHBOARD ) ) . '"></div>';
 	}
 	
 	/**
@@ -63,7 +67,7 @@ class Admin extends Main {
 	 * @return void
 	 */
 	public function companyProfilePage() {
-		echo '<div id="crewhrm_company_profile"></div>';
+		echo '<div id="' . esc_attr( self::MOUNTPOINT_COMPANY ) . '" data-crewhrm-nonce="' . esc_attr( Nonce::generate( self::MOUNTPOINT_COMPANY ) ) . '"></div>';
 	}
 	
 	/**
@@ -72,6 +76,6 @@ class Admin extends Main {
 	 * @return void
 	 */
 	public function settingPage() {
-		echo '<div id="crewhrm_settings"></div>';
+		echo '<div id="' . esc_attr( self::MOUNTPOINT_SETTINGS ) . '" data-crewhrm-nonce="' . esc_attr( Nonce::generate( self::MOUNTPOINT_SETTINGS ) ) . '"></div>';
 	}
 }

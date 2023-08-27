@@ -4,7 +4,7 @@ import { HashRouter, Navigate, Route, Routes, useParams } from 'react-router-dom
 
 import '../../utilities/prototypes.jsx';
 import { __, getElementDataSet } from '../../utilities/helpers.jsx';
-import { MountPoint } from '../../materials/templates.jsx';
+import { MountPoint } from '../../materials/mountpoint.jsx';
 import { Listing } from './listing/listing.jsx';
 import { Apply } from './apply/apply.jsx';
 import { Single } from './single/single.jsx';

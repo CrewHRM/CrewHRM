@@ -1,4 +1,4 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 import { HashRouter, Navigate, Route, Routes, useParams } from 'react-router-dom';
 import { ContextBackendDashboard } from '../../hrm/hrm.jsx';
 import { WpDashboardFullPage } from '../../../materials/backend-dashboard-container/full-page-container.jsx';
@@ -7,10 +7,14 @@ import { Segments } from './segments/segments.jsx';
 import { StickyBar } from '../../../materials/sticky-bar/sticky-bar.jsx';
 import { __ } from '../../../utilities/helpers.jsx';
 import { settings_fields } from './field-structure.jsx';
+import { ContextNonce } from '../../../materials/mountpoint.jsx';
+import { request } from '../../../utilities/request.jsx';
 
 export const ContextSettings = createContext();
 
 function Wrapper({ children }) {
+	const {nonce, nonceAction} = useContext(ContextNonce);
+
     const [state, setState] = useState({
         values: {},
         history_index: null,
@@ -26,6 +30,12 @@ function Wrapper({ children }) {
             }
         });
     };
+
+	const saveSettings=()=>{
+		request('save_settings', {nonce, nonceAction}, resp=>{
+			console.log(resp);
+		});
+	}
 
     const shiftAction = () => {};
 
@@ -50,12 +60,14 @@ function Wrapper({ children }) {
                     <i
                         className={'ch-icon ch-icon-undo font-size-26 color-text-hint'.classNames()}
                     ></i>
-                    <button className={'button button-primary'.classNames()}>
+                    <button className={'button button-primary'.classNames()} onClick={saveSettings}>
                         {__('Save Changes')}
                     </button>
                 </div>
             </StickyBar>
-            <div className={'padding-horizontal-15'.classNames()}>{children}</div>
+            <div className={'padding-horizontal-15'.classNames()}>
+				{children}
+			</div>
         </ContextSettings.Provider>
     );
 }

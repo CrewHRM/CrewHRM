@@ -3,6 +3,7 @@
 namespace CrewHRM;
 
 use CrewHRM\Setup\Admin;
+use CrewHRM\Setup\Dispatcher;
 use CrewHRM\Setup\Scripts;
 use CrewHRM\Setup\Shortcode;
 
@@ -27,6 +28,7 @@ class Main {
 		self::$configs = $configs;
 
 		new Scripts();
+		new Dispatcher();
 		new Admin();
 		new Shortcode();
 	}

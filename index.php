@@ -17,6 +17,7 @@ require_once __DIR__ . '/vendor/autoload.php';
 // Initialize Plugin
 ( new \CrewHRM\Main() )->init(
 	(object) array(
+		'app_name'       => 'crewhrm',
 		'root_menu_slug' => 'crewhrm',
 		'db_prefix'      => 'crewhrm_',
 		'version'        => '1.0.0',
