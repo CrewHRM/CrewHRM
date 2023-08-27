@@ -16,6 +16,8 @@
     text-decoration: none;
     display: inline-block;
     cursor: pointer;
+	transition: none;
+	line-height: normal;
 
     &.button-primary {
         background-color: var(--crewhrm-color-primary);

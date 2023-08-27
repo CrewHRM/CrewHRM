@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import style from './listing.module.scss';
 import { Link } from 'react-router-dom';
@@ -6,14 +6,19 @@ import { __ } from '../../../utilities/helpers.jsx';
 import { LoadingIcon } from '../../../materials/loading-icon/loading-icon.jsx';
 import { TextField } from '../../../materials/text-field/text-field.jsx';
 import { CoverImage } from '../../../materials/image/image.jsx';
+import { TagField } from '../../../materials/tag-field/tag-field.jsx';
 
 import hero from '../../../images/hero.png';
 
 export function Listing({ setFilter, jobs, filters, filterList }) {
+	const [state, setState] = useState({
+		hovered_job: null
+	});
+
     return (
         <>
             <div data-crewhrm-selector="careers-header">
-                <CoverImage src={hero} width="100%" className={'padding-vertical'}>
+                <CoverImage src={hero} style={{minHeight: '355px'}} className={'padding-15 text-align-center'.classNames()}>
                     <span
                         className={'d-block font-size-38 font-weight-500 line-height-24 letter-spacing--38 color-white padding-vertical-50 margin-top-25 margin-bottom-25'.classNames()}
                     >
@@ -27,7 +32,7 @@ export function Listing({ setFilter, jobs, filters, filterList }) {
                 style={{ marginTop: '59px' }}
             >
                 <div data-crewhrm-selector="sidebar" className={'sidebar'.classNames(style)}>
-                    <div className={'margin-right-50'.classNames()}>
+                    <div>
                         {Object.keys(filterList).map((filter_key) => {
                             let {
                                 section_label,
@@ -55,23 +60,33 @@ export function Listing({ setFilter, jobs, filters, filterList }) {
                                                     key={id}
                                                     className={`d-block font-size-14 cursor-pointer margin-bottom-18 ${
                                                         is_active
-                                                            ? 'font-weight-600 color-primary'
+                                                            ? 'font-weight-600 color-text'
                                                             : 'font-weight-500 color-text-light'
                                                     }`.classNames()}
                                                     onClick={() => setFilter(filter_key, id)}
                                                 >
-                                                    {label} ({count})
+                                                    {label} {count && `(${count})` || null}
                                                 </span>
                                             );
                                         })) ||
                                         null}
+
+									{selection_type=='tag' && <div >
+										<TagField
+											theme="tag"
+											behavior="radio"
+											options={options}
+											value={filters.location}
+											onChange={v=>setFilter('location', v)}/>
+									</div> || null}
                                 </div>
                             );
                         })}
                     </div>
                 </div>
-                <div data-crewhrm-selector="listing" className={'content-area'.classNames(style)}>
+                <div data-crewhrm-selector="listing" className={'content-area'.classNames(style) + 'flex-1'.classNames()}>
                     <TextField
+						placeholder={__( 'Search Keywords' )}
                         iconClass={'ch-icon ch-icon-search-normal-1'.classNames()}
                         className={'padding-vertical-10 padding-horizontal-11 border-1 b-color-tertiary b-color-active-primary border-radius-5'.classNames()}
                     />
@@ -82,11 +97,14 @@ export function Listing({ setFilter, jobs, filters, filterList }) {
 
                         return (
                             <div
-                                className={'d-flex align-items-center padding-15 margin-bottom-20'.classNames()}
-                            >
+								key={job_id}
+                                className={'single-job'.classNames(style) + 'd-flex align-items-center padding-15 margin-bottom-20 border-radius-5'.classNames()}
+								onMouseOver={()=>setState({...state, hovered_job: job_id})}
+								onMouseOut={()=>setState({...state, hovered_job: null})}
+							>
                                 <div className={'flex-1'.classNames()}>
                                     <span
-                                        className={'d-block font-size-17 font-weight-600 line-height-24 letter-spacing--17 color-primary margin-bottom-10'.classNames()}
+                                        className={'d-block font-size-17 font-weight-600 line-height-24 letter-spacing--17 color-text'.classNames()}
                                     >
                                         {job_title}
                                     </span>
@@ -112,7 +130,7 @@ export function Listing({ setFilter, jobs, filters, filterList }) {
                                 <div>
                                     <Link
                                         to={`/${job_id}/`}
-                                        className={'button button-primary button-outlined button-medium-2'.classNames()}
+                                        className={`button button-primary ${state.hovered_job!==job_id ? 'button-outlined' : ''} button-medium-2`.classNames()}
                                     >
                                         {__('Apply')}
                                     </Link>

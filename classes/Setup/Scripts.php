@@ -85,7 +85,7 @@ class Scripts extends Main {
 			'ajaxurl'      => admin_url( 'admin-ajax.php' ),
 			'colors'       => $dynamic_colors,
 			'settings'     => array(
-				'application_form_layout' => 'single',
+				'application_form_is_single' => false,
 			),
 		);
 		echo '<script>window.CrewHRM=' . wp_json_encode( $data ) . '</script>';

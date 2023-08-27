@@ -5,12 +5,20 @@
     display: flex;
 
     .sidebar {
-        display: flex;
-        justify-content: end;
+		width: 232px;
+		margin-right: 74px;
+		
+		&>div{
+			position: sticky;
+			top: 0;
+		}
     }
 
-    .content-area {
-        width: 480px;
-        max-width: 100%;
-    }
+	.content-area {
+		.single-job {
+			&:hover {
+				background-color: #F9F9F9;
+			}
+		}
+	}
 }

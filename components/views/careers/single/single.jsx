@@ -15,7 +15,7 @@ function RenderMeta({ icon, hint, content }) {
                 {hint}
             </span>
             <span
-                className={'font-size-17 font-weight-500 line-height-25 color-primary'.classNames()}
+                className={'font-size-17 font-weight-500 line-height-25 color-text'.classNames()}
             >
                 {content}
             </span>
@@ -31,12 +31,12 @@ export function Single({ job, about_company }) {
             <div className={'header'.classNames(style) + 'bg-color-tertiary'.classNames()}>
                 <div className={'container'.classNames(style)}>
                     <span
-                        className={'d-block font-size-15 font-weight-700 line-height-25 letter-spacing_3 color-primary margin-bottom-10'.classNames()}
+                        className={'d-block font-size-15 font-weight-700 line-height-25 letter-spacing_3 color-text margin-bottom-10'.classNames()}
                     >
                         {department}
                     </span>
                     <span
-                        className={'d-block font-size-38 font-weight-600 line-height-24 letter-spacing--38 color-primary'.classNames()}
+                        className={'d-block font-size-38 font-weight-600 line-height-24 letter-spacing--38 color-text'.classNames()}
                     >
                         {job_title}
                     </span>
@@ -45,7 +45,7 @@ export function Single({ job, about_company }) {
             <div className={'details'.classNames(style)}>
                 <div className={'container'.classNames(style)}>
                     <div
-                        className={'d-flex align-items-center justify-content-space-between padding-vertical-20 padding-horizontal-30 bg-color-white border-radius-10 box-shadow-thick'.classNames()}
+                        className={'d-flex align-items-center justify-content-space-between flex-break-sm break-align-items-start break-gap-20 padding-vertical-20 padding-horizontal-30 bg-color-white border-radius-10 box-shadow-thick'.classNames()}
                         style={{ marginTop: '-51px', marginBottom: '79px' }}
                     >
                         <RenderMeta

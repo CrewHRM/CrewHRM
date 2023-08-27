@@ -100,7 +100,7 @@ $v_alignments: 'middle', 'top';
 }
 
 // Positions
-$positions: 'absolute', 'fixed', 'static', 'relative';
+$positions: 'absolute', 'fixed', 'static', 'relative', 'sticky';
 @each $position in $positions {
     .position-#{$position} {
         position: #{$position};
@@ -160,11 +160,14 @@ $autos: 'width', 'height', 'margin';
 }
 
 $aligns: 'center', 'start', 'end', 'flex-start', 'flex-end', 'stretch';
-@each $align in $aligns {
-    .align-items-#{$align} {
-        align-items: #{$align};
-    }
+@mixin alignItems($class) {
+	@each $align in $aligns {
+		#{$class}-#{$align} {
+			align-items: #{$align};
+		}
+	}
 }
+@include alignItems('.align-items');
 
 $overflows: 'auto', 'hidden';
 @each $overflow in $overflows {
@@ -172,6 +175,30 @@ $overflows: 'auto', 'hidden';
         overflow: #{$overflow};
     }
 }
+
+// Change flex-direction from row to column at specific breakpoints
+@mixin break-point($name, $to) {
+
+	@media (max-width: $to) {
+		.flex-break-#{$name} {
+			flex-direction: column !important;
+			column-gap: 0 !important;
+
+			@for $i from 0 through 50 {
+				&.break-gap-#{$i} {
+					row-gap: #{$i}px;
+				}
+
+				@include alignItems('&.break-align-items');
+			}
+		}
+	}
+}
+@include break-point('xl', 1366px);
+@include break-point('lg', 1199px);
+@include break-point('md', 991px);
+@include break-point('sm', 767px);
+@include break-point('xs', 575px);
 
 .h-full {
     min-height: 100%;

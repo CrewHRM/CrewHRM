@@ -61,7 +61,7 @@ const fields = {
 
 export function Apply({ job }) {
     const {
-        settings: { application_form_layout }
+        settings: { application_form_is_single }
     } = window.CrewHRM;
     const { job_title, location } = job;
 
@@ -72,7 +72,7 @@ export function Apply({ job }) {
 
     const step_index = steps.findIndex((s) => s.id === state.active_tab);
     const step = steps[step_index];
-    const is_segment = application_form_layout !== 'single';
+    const is_segment = application_form_is_single==false;
     const is_last_tab = step_index >= steps.length - 1;
 
     const onChange = (name, v) => {
@@ -119,12 +119,12 @@ export function Apply({ job }) {
             <div className={'header'.classNames(style) + 'bg-color-tertiary'.classNames()}>
                 <div className={'container'.classNames(style) + 'padding-30'.classNames()}>
                     <span
-                        className={'d-block font-size-24 font-weight-600 line-height-24 letter-spacing--24 color-primary'.classNames()}
+                        className={'d-block font-size-24 font-weight-600 line-height-24 letter-spacing--24 color-text'.classNames()}
                     >
                         {job_title}
                     </span>
                     <span
-                        className={'d-block font-size-17 font-weight-500 line-height-25 color-primary margin-bottom-10'.classNames()}
+                        className={'d-block font-size-17 font-weight-500 line-height-25 color-text margin-bottom-10'.classNames()}
                     >
                         {location}
                     </span>
@@ -152,14 +152,14 @@ export function Apply({ job }) {
             <div data-crewhrm-selector="job-application-form" className={'form'.classNames(style)}>
                 {(is_segment && (
                     <span
-                        className={'d-block font-size-20 font-weight-600 color-primary margin-bottom-30'.classNames()}
+                        className={'d-block font-size-20 font-weight-600 color-text margin-bottom-30'.classNames()}
                     >
                         {step.label}
                     </span>
                 )) || (
                     <div className={'margin-top-48'.classNames()}>
                         <span
-                            className={'d-block font-size-20 font-weight-600 color-primary margin-bottom-8'.classNames()}
+                            className={'d-block font-size-20 font-weight-600 color-text margin-bottom-8'.classNames()}
                         >
                             {__('Apply for this job')}
                         </span>
