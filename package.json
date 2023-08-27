@@ -10,7 +10,14 @@
         "watch": "npm run clear && webpack --watch --mode=development",
         "lint": "eslint .",
         "lint:fix": "eslint --fix",
-        "format": "prettier --write './**/*.{jsx,scss}' --config ./.prettierrc"
+        "format": "prettier --write './**/*.{jsx,scss}' --config ./.prettierrc",
+        "cypress:open": "cypress open --config-file tests/cypress/config.config.js",
+        "cypress:run": "cypress run --config-file tests/cypress/config.config.js",
+        "env": "wp-env",
+        "env:start": "wp-env start",
+        "env:stop": "wp-env stop",
+        "postenv:start": "./tests/bin/initialize.sh",
+        "mocha": "npx mochawesome-merge ./tests/cypress/reports/*.json -o tests/cypress/reports/mochawesome.json && rm -rf ./tests/cypress/reports/mochawesome-*.json && npx mochawesome-json-to-md -p ./tests/cypress/reports/mochawesome.json -o ./tests/cypress/reports/mochawesome.md && npx mochawesome-report-generator tests/cypress/reports/mochawesome.json -o tests/cypress/reports/"
     },
     "repository": {
         "type": "git",
@@ -29,10 +36,14 @@
         "@babel/preset-react": "^7.22.5",
         "@react-pdf-viewer/core": "^3.12.0",
         "@react-pdf-viewer/default-layout": "^3.12.0",
+        "@wordpress/env": "^8.6.0",
         "babel-eslint": "^10.1.0",
         "babel-loader": "^9.1.3",
         "css-loader": "^6.8.1",
         "css-minimizer-webpack-plugin": "^5.0.1",
+        "cypress": "^11.2.0",
+        "cypress-file-upload": "^5.0.8",
+        "cypress-mochawesome-reporter": "^3.5.1",
         "draft-js": "^0.11.7",
         "draftjs-to-html": "^0.9.1",
         "fs": "^0.0.1-security",
@@ -67,6 +78,7 @@
         "node": ">=18.8.0"
     },
     "devDependencies": {
+        "@10up/cypress-wp-utils": "github:10up/cypress-wp-utils#build",
         "eslint": "^8.48.0",
         "eslint-config-airbnb": "^19.0.4",
         "eslint-config-prettier": "^9.0.0",
