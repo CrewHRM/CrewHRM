@@ -1,74 +1,75 @@
 @import '../../styles/mixins';
 
 .tag {
-	display: flex;
-	column-gap: 20px;
-	row-gap: 20px;
+    display: flex;
+    column-gap: 20px;
+    row-gap: 20px;
 
-	&>div{
-		padding: 8px 15px;
-		height: 40px;
-		color: var(--crewhrm-color-text);
-		border: 1px solid var(--crewhrm-color-text-lighter);
-		border-radius: 10px;
-		cursor: pointer;
-		font-size: 15px;
-		@include fontWeight(500);
-		line-height: 25;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		column-gap: 8px;
-	}
+    & > div {
+        padding: 8px 15px;
+        height: 40px;
+        color: var(--crewhrm-color-text);
+        border: 1px solid var(--crewhrm-color-text-lighter);
+        border-radius: 10px;
+        cursor: pointer;
+        font-size: 15px;
+        @include fontWeight(500);
+        line-height: 25;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        column-gap: 8px;
+    }
 
-	&.full-width {
-		&>div {
-			flex: 1;
-		}
-	}
+    &.full-width {
+        & > div {
+            flex: 1;
+        }
+    }
 
-	&:not(.full-width) {
-		flex-wrap: wrap;
-	}
-	
-	&.theme-button {
-		&>div {
-			&.active, &:hover {
-				background-color: var(--crewhrm-color-text);
-				border-color: var(--crewhrm-color-text);
-				color: white;
-			}
-		}
-	}
+    &:not(.full-width) {
+        flex-wrap: wrap;
+    }
 
-	&.theme-button-control {
-		&>div {
-			&:hover {
-				border-color: var(--crewhrm-color-text);
-			}
-		}
-	}
+    &.theme-button {
+        & > div {
+            &.active,
+            &:hover {
+                background-color: var(--crewhrm-color-text);
+                border-color: var(--crewhrm-color-text);
+                color: white;
+            }
+        }
+    }
 
-	&.theme-tag {
-		column-gap: 10px;
-		row-gap: 10px;
+    &.theme-button-control {
+        & > div {
+            &:hover {
+                border-color: var(--crewhrm-color-text);
+            }
+        }
+    }
 
-		&>div {
-			padding: 2px 13px;
-			border-radius: 50px;
-			border: 1px solid var(--crewhrm-color-tertiary);
-			background-color: #F9F9F9;
-			font-size: 14px;
-			line-height: 24px;
-			height: 28px;
-			color: var(--crewhrm-color-text);
-			@include fontWeight(500);
+    &.theme-tag {
+        column-gap: 10px;
+        row-gap: 10px;
 
-			&.active {
-				color: white;
-				background-color: var(--crewhrm-color-text);
-				border-color: var(--crewhrm-color-text);
-			}
-		}
-	}
+        & > div {
+            padding: 2px 13px;
+            border-radius: 50px;
+            border: 1px solid var(--crewhrm-color-tertiary);
+            background-color: #f9f9f9;
+            font-size: 14px;
+            line-height: 24px;
+            height: 28px;
+            color: var(--crewhrm-color-text);
+            @include fontWeight(500);
+
+            &.active {
+                color: white;
+                background-color: var(--crewhrm-color-text);
+                border-color: var(--crewhrm-color-text);
+            }
+        }
+    }
 }

@@ -10,7 +10,7 @@ import { HRMSettings } from './hrm-settings/hrm-settings.jsx';
 // Render company profile
 const profile = document.getElementById('crewhrm_company_profile');
 if (profile) {
-	const data = getElementDataSet(profile);
+    const data = getElementDataSet(profile);
 
     ReactDOM.createRoot(profile).render(
         <MountPoint element={profile} nonce={data.crewhrmNonce} nonceAction={profile.id}>
@@ -22,7 +22,7 @@ if (profile) {
 // Render hrm settings
 const settings = document.getElementById('crewhrm_settings');
 if (settings) {
-	const data = getElementDataSet(settings);
+    const data = getElementDataSet(settings);
 
     ReactDOM.createRoot(settings).render(
         <MountPoint element={settings} nonce={data.crewhrmNonce} nonceAction={settings.id}>

@@ -110,7 +110,7 @@ class Dispatcher {
 	public function save_company_profile( $data ) {
 		
 		// Update the settings now
-		Settings::saveCompanyProfile( $data['settings'] );
+		Settings::saveSettings( $data['settings'], Settings::KEY_COMPANY );
 
 		wp_send_json_success();
 	}

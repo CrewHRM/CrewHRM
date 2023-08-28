@@ -13,7 +13,13 @@ export function StickyBar({ title, children, backTo, midWidth }) {
                 <link rel="icon" type="image/x-icon" href={logo} />
                 <title>CrewHRM - {title}</title>
             </Helmet>
-            <div data-crewhrm-selector="sticky-bar" className={'sticky-bar'.classNames(style) + 'position-sticky top-32 w-full padding-vertical-15 padding-horizontal-30 bg-color-white'.classNames()}>
+            <div
+                data-crewhrm-selector="sticky-bar"
+                className={
+                    'sticky-bar'.classNames(style) +
+                    'position-sticky top-32 w-full padding-vertical-15 padding-horizontal-30 bg-color-white'.classNames()
+                }
+            >
                 <div className={'d-flex align-items-center'.classNames()}>
                     {/* First column is always flex-1 */}
                     <div className={'flex-1'.classNames()}>

@@ -74,8 +74,7 @@ export function HeadActions() {
                         let { icon, title } = segment;
 
                         let classes = 'font-size-20 cursor-pointer margin-right-24 ';
-                        classes +=
-                            state.active_segment === i ? 'color-text' : 'color-text-lighter';
+                        classes += state.active_segment === i ? 'color-text' : 'color-text-lighter';
 
                         return (
                             <i

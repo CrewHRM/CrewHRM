@@ -4,14 +4,12 @@ import { ToastWrapper } from './toast/toast.jsx';
 
 export const ContextNonce = createContext();
 
-export function MountPoint({children, nonce, nonceAction}) {
+export function MountPoint({ children, nonce, nonceAction }) {
     return (
         <div data-crewhrm-selector="root" className={'root'.classNames()}>
-			<ContextNonce.Provider value={{nonce, nonceAction}}>
-	            <ToastWrapper>
-					{children}
-				</ToastWrapper>
-			</ContextNonce.Provider>
+            <ContextNonce.Provider value={{ nonce, nonceAction }}>
+                <ToastWrapper>{children}</ToastWrapper>
+            </ContextNonce.Provider>
         </div>
     );
 }

@@ -14,9 +14,7 @@ function RenderMeta({ icon, hint, content }) {
             >
                 {hint}
             </span>
-            <span
-                className={'font-size-17 font-weight-500 line-height-25 color-text'.classNames()}
-            >
+            <span className={'font-size-17 font-weight-500 line-height-25 color-text'.classNames()}>
                 {content}
             </span>
         </div>

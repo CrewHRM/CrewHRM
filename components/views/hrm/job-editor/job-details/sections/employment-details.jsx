@@ -37,15 +37,18 @@ export function EmploymentDetails(props) {
             <div className={'d-flex'.classNames()}>
                 <div className={'flex-1'.classNames()}>
                     {/* Employment type */}
-					<TagField 
-						value={values.employment_type}
-						behavior="radio"
-						theme="button"
-						options={Object.keys(employments_types).map(type=>{return {id: type, label: employments_types[type]}})}
-						onChange={type=>setVal('employment_type', type)}
-						fullWidth={true}
-						className={'margin-bottom-30'.classNames()}/>
-                    
+                    <TagField
+                        value={values.employment_type}
+                        behavior="radio"
+                        theme="button"
+                        options={Object.keys(employments_types).map((type) => {
+                            return { id: type, label: employments_types[type] };
+                        })}
+                        onChange={(type) => setVal('employment_type', type)}
+                        fullWidth={true}
+                        className={'margin-bottom-30'.classNames()}
+                    />
+
                     {/* Vacancy and Deadline */}
                     <div className={'d-flex'.classNames()}>
                         <div className={'margin-right-20'.classNames()} style={{ width: '130px' }}>

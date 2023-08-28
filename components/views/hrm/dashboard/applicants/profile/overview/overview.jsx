@@ -145,8 +145,7 @@ export function OverView() {
                             >
                                 <i
                                     className={
-                                        getSocialIcon(link) +
-                                        'font-size-20 color-text'.classNames()
+                                        getSocialIcon(link) + 'font-size-20 color-text'.classNames()
                                     }
                                 ></i>
                             </a>

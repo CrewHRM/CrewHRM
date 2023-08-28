@@ -15,58 +15,52 @@ import { ContextToast } from '../../../materials/toast/toast.jsx';
 
 import style from './company.module.scss';
 
-function CompanyWrapper({companyProfile={}}) {
-	
-	const {nonce, nonceAction} = useContext(ContextNonce);
-	const {addToast} = useContext(ContextToast);
+function CompanyWrapper({ companyProfile = {} }) {
+    const { nonce, nonceAction } = useContext(ContextNonce);
+    const { addToast } = useContext(ContextToast);
     const { sub_page } = useParams();
     const page_id = sub_page || 'profile';
 
-	const [state, setState] = useState({
-		index: 0,
-		logo_url: companyProfile.log,
-		history: [companyProfile]
-	});
+    const [state, setState] = useState({
+        index: 0,
+        logo_url: companyProfile.log,
+        history: [companyProfile]
+    });
 
-	const onChange=(name, value)=>{
-		const {index, history} = state;
+    const onChange = (name, value) => {
+        const { index, history } = state;
 
-		const new_stack = addToHistory(name, value, {index, history});
+		const obj_value = typeof name==='object' ? name : {[name]: value};
 
-		// Excpetionally prepare logo url for preview
-		if ( name === 'logo_image' ) {
-			new_stack.history[ new_stack.index ].logo_url = URL.createObjectURL(value);
-		}
+        // Finally update state
+        setState({
+            ...state,
+            ...addToHistory(obj_value, { index, history })
+        });
+    };
 
-		// Finally update state
-		setState({
-			...state,
-			...new_stack
-		});
-	}
+    const saveCompanyProfile = () => {
+        const values = state.history[state.index];
+        request('save_company_profile', { settings: values, nonce, nonceAction }, (resp) => {
+            const { success, data } = resp;
 
-	const saveCompanyProfile=()=>{
-		const values = state.history[state.index];
-		request('save_company_profile', {settings: values, nonce, nonceAction}, resp=>{
-			const {success, data} = resp;
+            if (!success) {
+                addToast(data?.message || __('Something went wrong!'));
+                return;
+            }
 
-			if ( ! success ) {
-				addToast(data?.message || __('Something went wrong!'));
-				return;
-			}
+            // Show success toast
+            addToast(__('Seetings saved successfully!'));
 
-			// Show success toast
-			addToast(__('Seetings saved successfully!'));
+            // Clear the dirty state and store the saved value as the basis
+            setState({
+                index: 0,
+                history: [values]
+            });
+        });
+    };
 
-			// Clear the dirty state and store the saved value as the basis
-			setState({
-				index: 0,
-				history: [values]
-			});
-		});
-	}
-
-	const values = state.history[ state.index ] || {};
+    const values = state.history[state.index] || {};
 
     return (
         <>
@@ -75,11 +69,16 @@ function CompanyWrapper({companyProfile={}}) {
                 title={pages.find((p) => p.id === page_id)?.label || __('Company Profile')}
             >
                 <div className={'d-flex align-items-center column-gap-30'.classNames()}>
-                    <UndoRedo 
-						historyLength={state.history.length} 
-						index={state.index} 
-						onChange={index=>setState({...state, index})}/>
-                    <button className={'button button-primary'.classNames()} disabled={state.index<0} onClick={saveCompanyProfile}>
+                    <UndoRedo
+                        historyLength={state.history.length}
+                        index={state.index}
+                        onChange={(index) => setState({ ...state, index })}
+                    />
+                    <button
+                        className={'button button-primary'.classNames()}
+                        disabled={state.index < 0}
+                        onClick={saveCompanyProfile}
+                    >
                         {__('Save Changes')}
                     </button>
                 </div>
@@ -89,7 +88,10 @@ function CompanyWrapper({companyProfile={}}) {
                     <CompanyProfileSidebar page_id={page_id} />
                 </div>
                 <div className={'content-area'.classNames(style)}>
-                    {(page_id === 'profile' && <CompanyProfile onChange={onChange} values={values}/>) || null}
+                    {(page_id === 'profile' && (
+                        <CompanyProfile onChange={onChange} values={values} />
+                    )) ||
+                        null}
                     {(page_id === 'departments' && <CompantDepartments />) || null}
                 </div>
             </div>
@@ -103,7 +105,10 @@ export function Company(props) {
             <WpDashboardFullPage>
                 <HashRouter>
                     <Routes>
-                        <Route path="/company/:sub_page?/" element={<CompanyWrapper {...props}/>} />
+                        <Route
+                            path="/company/:sub_page?/"
+                            element={<CompanyWrapper {...props} />}
+                        />
                         <Route path={'*'} element={<Navigate to="/company/" replace />} />
                     </Routes>
                 </HashRouter>

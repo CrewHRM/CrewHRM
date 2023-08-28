@@ -36,15 +36,18 @@ export function Salary() {
             <div className={'d-flex margin-bottom-40'.classNames()}>
                 <div className={'flex-1'.classNames()}>
                     {/* Employment type */}
-					<TagField
-						theme="button"
-						behavior="radio"
-						value={values.salary_type}
-						options={Object.keys(salary_types).map(type=>{return {id: type, label: salary_types[type]}})}
-						onChange={value=>setVal('salary_type', value)}
-						fullWidth={true}
-						className={'margin-bottom-30'.classNames()}/>
-						
+                    <TagField
+                        theme="button"
+                        behavior="radio"
+                        value={values.salary_type}
+                        options={Object.keys(salary_types).map((type) => {
+                            return { id: type, label: salary_types[type] };
+                        })}
+                        onChange={(value) => setVal('salary_type', value)}
+                        fullWidth={true}
+                        className={'margin-bottom-30'.classNames()}
+                    />
+
                     {/* Salary and Currency */}
                     <div className={'d-flex'.classNames()}>
                         <div className={'flex-1 margin-right-10'.classNames()}>

@@ -100,7 +100,7 @@ const sections = {
                 {
                     name: 'country_code',
                     type: 'dropdown',
-					placeholder: __('Select Country'),
+                    placeholder: __('Select Country'),
                     options: countries_array
                 }
             ],
@@ -175,7 +175,7 @@ const sections = {
     }
 };
 
-export function CompanyProfile({onChange, values}) {
+export function CompanyProfile({ onChange, values }) {
     return (
         <>
             <div
@@ -185,7 +185,7 @@ export function CompanyProfile({onChange, values}) {
                 <CoverImage
                     src={values.logo_url || logo_placeholder}
                     width={120}
-					backgroundColor="white"
+                    backgroundColor="white"
                     className={'border-5 b-color-tertiary border-radius-10'.classNames()}
                 />
                 <div>
@@ -195,21 +195,31 @@ export function CompanyProfile({onChange, values}) {
                         {__('Company Logo')}
                     </span>
 
-					<FileUpload 
-						accept="image/*"
-						onChange={files=>onChange('logo_image', files[0].file)}
-						layoutComp={({onCLick})=>{
-							return <button
-									className={'button button-primary button-outlined button-small margin-bottom-5'.classNames()}
-									onClick={onCLick}
-								>
-									{__('Upload Logo')}
-								</button>
-						}}/>
+                    <FileUpload
+                        useWpMedia={true}
+                        accept="image/*"
+                        onChange={(files) => {
+							const {file_id, file_url} = files[0].file;
+							onChange({
+								logo_url: file_url, 
+								logo_id: file_id
+							})
+						}}
+                        layoutComp={({ onCLick }) => {
+                            return (
+                                <button
+                                    className={'button button-primary button-outlined button-small margin-bottom-5'.classNames()}
+                                    onClick={onCLick}
+                                >
+                                    {__('Upload Logo')}
+                                </button>
+                            );
+                        }}
+                    />
                 </div>
             </div>
 
-            <Form fields={sections} onChange={onChange} values={values}/>
+            <Form fields={sections} onChange={onChange} values={values} />
         </>
     );
 }

@@ -13,7 +13,7 @@ import { request } from '../../../utilities/request.jsx';
 export const ContextSettings = createContext();
 
 function Wrapper({ children }) {
-	const {nonce, nonceAction} = useContext(ContextNonce);
+    const { nonce, nonceAction } = useContext(ContextNonce);
 
     const [state, setState] = useState({
         values: {},
@@ -31,11 +31,11 @@ function Wrapper({ children }) {
         });
     };
 
-	const saveSettings=()=>{
-		request('save_settings', {nonce, nonceAction}, resp=>{
-			console.log(resp);
-		});
-	}
+    const saveSettings = () => {
+        request('save_settings', { nonce, nonceAction }, (resp) => {
+            console.log(resp);
+        });
+    };
 
     const shiftAction = () => {};
 
@@ -65,9 +65,7 @@ function Wrapper({ children }) {
                     </button>
                 </div>
             </StickyBar>
-            <div className={'padding-horizontal-15'.classNames()}>
-				{children}
-			</div>
+            <div className={'padding-horizontal-15'.classNames()}>{children}</div>
         </ContextSettings.Provider>
     );
 }

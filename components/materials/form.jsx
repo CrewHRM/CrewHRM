@@ -8,8 +8,7 @@ import { TextEditor } from './text-editor/text-editor.jsx';
 
 const section_label_class =
     'd-block font-size-17 font-weight-600 line-height-24 letter-spacing--17 color-text-light text-transform-uppercase margin-bottom-20'.classNames();
-const label_class =
-    'd-block font-size-15 font-weight-500 margin-bottom-10 color-text'.classNames();
+const label_class = 'd-block font-size-15 font-weight-500 margin-bottom-10 color-text'.classNames();
 const input_text_class =
     'd-block w-full height-48 padding-15 border-1-5 border-radius-10 b-color-tertiary b-color-active-primary font-size-15 font-weight-400 line-height-24 letter-spacing--15 color-text'.classNames();
 const text_area_class =
@@ -71,39 +70,44 @@ export function RenderField({ field }) {
             <span className={label_class}>{label}</span>
 
             {(type == 'text' && (
-                <input 
-					value={values[name] || ''}
-					type="text" 
-					className={input_text_class} 
-					placeholder={placeholder}
-					onChange={e=>onChange(name, e.currentTarget.value)}/>
+                <input
+                    value={values[name] || ''}
+                    type="text"
+                    className={input_text_class}
+                    placeholder={placeholder}
+                    onChange={(e) => onChange(name, e.currentTarget.value)}
+                />
             )) ||
                 null}
 
             {(type == 'textarea' && (
-                <textarea 
-					value={values[name] || ''}
-					className={text_area_class} 
-					placeholder={placeholder}
-					onChange={e=>onChange(name, e.currentTarget.value)}></textarea>
+                <textarea
+                    value={values[name] || ''}
+                    className={text_area_class}
+                    placeholder={placeholder}
+                    onChange={(e) => onChange(name, e.currentTarget.value)}
+                ></textarea>
             )) ||
                 null}
 
             {(type == 'textarea_rich' && (
-                <TextEditor 
-					onChange={v=>onChange(name, v)} 
-					value={values[name] || ''} 
-					placeholder={placeholder}/>
+                <TextEditor
+                    onChange={(v) => onChange(name, v)}
+                    value={values[name] || ''}
+                    placeholder={placeholder}
+                />
             )) ||
                 null}
 
-            {(type == 'dropdown' && 
-				<DropDown 
-					value={values[name]}
-					options={options} 
-					placeholder={placeholder} 
-					className={input_text_class} 
-					onChange={value=>onChange(name, value)}/>) ||
+            {(type == 'dropdown' && (
+                <DropDown
+                    value={values[name]}
+                    options={options}
+                    placeholder={placeholder}
+                    className={input_text_class}
+                    onChange={(value) => onChange(name, value)}
+                />
+            )) ||
                 null}
 
             {(type == 'date' && <DateField className={input_text_class} />) || null}
@@ -165,7 +169,9 @@ export function FormFields({ fields }) {
                 {(!Array.isArray(field) && <RenderField field={field} />) || (
                     <div
                         data-crewhrm-selector="field-group"
-                        className={`d-flex flex-break-sm ${field.find(f=>f.label) ? 'break-gap-30' : ''} column-gap-10`.classNames()}
+                        className={`d-flex flex-break-sm ${
+                            field.find((f) => f.label) ? 'break-gap-30' : ''
+                        } column-gap-10`.classNames()}
                     >
                         {field.map((f, i) => (
                             <RenderField key={i} field={f} />
@@ -179,7 +185,7 @@ export function FormFields({ fields }) {
 
 export function Form({ fields: sections, values, onChange }) {
     return (
-        <ContextForm.Provider value={{values, onChange}}>
+        <ContextForm.Provider value={{ values, onChange }}>
             {Object.keys(sections).map((section_key) => {
                 const { section_label, fields = [] } = sections[section_key];
                 return (

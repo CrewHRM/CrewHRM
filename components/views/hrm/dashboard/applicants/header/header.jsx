@@ -56,10 +56,7 @@ export function Header(props) {
                     </div>
                 </div>
                 <div className={'d-flex align-items-center column-gap-15'.classNames()}>
-                    <a
-                        href="#"
-                        className={'font-size-15 font-weight-400 color-text'.classNames()}
-                    >
+                    <a href="#" className={'font-size-15 font-weight-400 color-text'.classNames()}>
                         {__('View Post')}
                     </a>
                     <button

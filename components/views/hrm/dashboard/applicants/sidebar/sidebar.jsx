@@ -45,7 +45,11 @@ export function Sidebar() {
     const [state, setState] = useState({ active_tab: 'q' });
 
     return (
-        <div data-crewhrm-selector="applicant-sidebar" className={'sidebar'.classNames(style) + 'position-sticky'.classNames()} style={{top: '120px'}}>
+        <div
+            data-crewhrm-selector="applicant-sidebar"
+            className={'sidebar'.classNames(style) + 'position-sticky'.classNames()}
+            style={{ top: '120px' }}
+        >
             <Tabs
                 active={state.active_tab}
                 tabs={steps}

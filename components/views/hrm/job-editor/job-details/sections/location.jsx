@@ -33,12 +33,15 @@ export function Location() {
             <div className={'d-flex margin-bottom-30'.classNames()}>
                 <div className={'flex-1'.classNames()}>
                     <span className={field_label_class}>{__('Job Location type')}</span>
-					<TagField
-						theme="button-control"
-						behavior="checkbox"
-						value={values.location_type || []}
-						options={Object.keys(location_types).map(location=>{return {id: location, label: location_types[location]}})}
-						onChange={types=>setVal('location_type', types)}/>
+                    <TagField
+                        theme="button-control"
+                        behavior="checkbox"
+                        value={values.location_type || []}
+                        options={Object.keys(location_types).map((location) => {
+                            return { id: location, label: location_types[location] };
+                        })}
+                        onChange={(types) => setVal('location_type', types)}
+                    />
                 </div>
                 <div className={'right-col'.classNames(style)}></div>
             </div>

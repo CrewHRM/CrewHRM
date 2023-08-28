@@ -36,11 +36,17 @@ class Scripts extends Main {
 	public function adminScripts() {
 		// Load script for the main hrm dashboard
 		if ( Utilities::isCrewDashboard( self::$configs->root_menu_slug ) ) {
+			if ( current_user_can( 'upload_files' ) ) {
+				wp_enqueue_media();
+			}
 			wp_enqueue_script( 'crewhrm-hrm', self::$configs->dist_url . 'hrm.js', array( 'jquery', 'wp-i18n' ), self::$configs->version, true );
 		}
 
 		// Load scripts for setting and company profile
 		if ( Utilities::isCrewDashboard( array( Admin::SLUG_SETTINGS, Admin::SLUG_COMPANY_PROFILE ) ) ) {
+			if ( current_user_can( 'upload_files' ) ) {
+				wp_enqueue_media();
+			}
 			wp_enqueue_script( 'crewhrm-settings', self::$configs->dist_url . 'settings.js', array( 'jquery', 'wp-i18n' ), self::$configs->version, true );
 		}
 	}

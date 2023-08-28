@@ -14,16 +14,25 @@ class Settings {
 	 * @return array
 	 */
 	public static function getCompanyProfile() {
-		return _Array::getArray( get_option( self::KEY_COMPANY ) ); 
+		$data = _Array::getArray( get_option( self::KEY_COMPANY ) ); 
+
+		if ( ! empty( $data['logo_id'] ) ) {
+			$data['logo_url'] = wp_get_attachment_url( $data['logo_id'] );
+		}
+
+		return $data;
 	}
 
 	/**
 	 * Save company profile data coming from ideally settings page
 	 *
-	 * @param [type] $data
+	 * @param array $data  Text type settings
+	 * @param string $name Option name to save under as it is used for both general settings and company profile
+	 * 
 	 * @return void
 	 */
-	public static function saveCompanyProfile( $data ) {
-		update_option( self::KEY_COMPANY, $data );
+	public static function saveSettings( array $data, $option_name ) {
+		// Save general info
+		update_option( $option_name, $data );
 	}
 }

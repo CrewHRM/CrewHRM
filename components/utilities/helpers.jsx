@@ -6,12 +6,10 @@ export function getElementDataSet(element) {
     let data = {};
 
     for (let k in dataset) {
-		
-		let _json;
-		try {
-			_json = JSON.parse(dataset[k]);
-		} catch (error) {
-		}
+        let _json;
+        try {
+            _json = JSON.parse(dataset[k]);
+        } catch (error) {}
 
         data[k] = _json ? _json : dataset[k];
     }
