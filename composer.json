@@ -2,9 +2,7 @@
     "name": "crew/crewhrm",
     "license": "gpl-v2",
     "autoload": {
-        "psr-4": {
-            "CrewHRM\\": "classes/"
-        }
+        "psr-4": {}
     },
     "scripts": {
         "lint": "phpcs --extensions=php -s .",

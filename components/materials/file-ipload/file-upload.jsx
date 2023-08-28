@@ -9,7 +9,9 @@ export function FileUpload(props) {
         textPrimary = __('Browse'),
         textSecondary = __('or, Just drop it here'),
         value: stateFiles = [],
-        onChange
+        onChange,
+		accept,
+		layoutComp
     } = props;
 
     const input_ref = useRef();
@@ -22,6 +24,12 @@ export function FileUpload(props) {
         let { files = [] } = change ? e.currentTarget : e.dataTransfer;
         let _files = [];
 
+		// Make sure files exists
+		if ( ! files.length ) {
+			return;
+		}
+
+		// Loop thorugh files and generate array with unique id for state purpose
         for (const file of files) {
             _files.push({
                 id: getRandomString(),
@@ -57,6 +65,20 @@ export function FileUpload(props) {
             highlight
         });
     };
+
+	if ( layoutComp ) {
+		return <>
+			<input
+                ref={input_ref}
+                type="file"
+				accept={accept}
+                multiple={fileCount > 1}
+                className={'d-none'.classNames()}
+                onChange={(e) => handleFiles(e, true)}
+            />
+			{layoutComp({onCLick: ()=>input_ref.current.click()})}
+		</> 
+	}
 
     return (
         <div data-crewhrm-selector="file-upload" className={'upload'.classNames(style)}>
@@ -103,6 +125,7 @@ export function FileUpload(props) {
             </div>
             <input
                 ref={input_ref}
+				accept={accept}
                 type="file"
                 multiple={fileCount > 1}
                 className={'d-none'.classNames()}

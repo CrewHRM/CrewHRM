@@ -2,8 +2,9 @@ import React from 'react';
 import { __, countries_array, timezones_array } from '../../../../utilities/helpers.jsx';
 import { CoverImage } from '../../../../materials/image/image.jsx';
 
-import logo from '../../../../images/attachment.png';
+import logo_placeholder from '../../../../images/logo-placeholder.svg';
 import { Form } from '../../../../materials/form.jsx';
+import { FileUpload } from '../../../../materials/file-ipload/file-upload.jsx';
 
 // Do not edit or delete keys. Only can add more.
 const business_types = {
@@ -174,7 +175,7 @@ const sections = {
     }
 };
 
-export function CompanyProfile() {
+export function CompanyProfile({onChange, values}) {
     return (
         <>
             <div
@@ -182,8 +183,9 @@ export function CompanyProfile() {
                 style={{ marginTop: '-70px' }}
             >
                 <CoverImage
-                    src={logo}
+                    src={values.logo_url || logo_placeholder}
                     width={120}
+					backgroundColor="white"
                     className={'border-5 b-color-tertiary border-radius-10'.classNames()}
                 />
                 <div>
@@ -192,15 +194,22 @@ export function CompanyProfile() {
                     >
                         {__('Company Logo')}
                     </span>
-                    <button
-                        className={'button button-primary button-outlined button-small margin-bottom-5'.classNames()}
-                    >
-                        {__('Upload Logo')}
-                    </button>
+
+					<FileUpload 
+						accept="image/*"
+						onChange={files=>onChange('logo_image', files[0].file)}
+						layoutComp={({onCLick})=>{
+							return <button
+									className={'button button-primary button-outlined button-small margin-bottom-5'.classNames()}
+									onClick={onCLick}
+								>
+									{__('Upload Logo')}
+								</button>
+						}}/>
                 </div>
             </div>
 
-            <Form fields={sections} />
+            <Form fields={sections} onChange={onChange} values={values}/>
         </>
     );
 }

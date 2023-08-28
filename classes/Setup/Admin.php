@@ -4,6 +4,7 @@ namespace CrewHRM\Setup;
 
 use CrewHRM\Helpers\Nonce;
 use CrewHRM\Main;
+use CrewHRM\Models\Settings;
 
 class Admin extends Main {
 	const SLUG_COMPANY_PROFILE = 'crewhrm-settings';
@@ -58,7 +59,7 @@ class Admin extends Main {
 	 * @return void
 	 */
 	public function mainPage() {
-		echo '<div id="' . esc_attr( self::MOUNTPOINT_DASHBOARD ) .'" data-crewhrm-nonce="' . esc_attr( Nonce::generate( self::MOUNTPOINT_DASHBOARD ) ) . '"></div>';
+		echo '<div id="' . esc_attr( self::MOUNTPOINT_DASHBOARD ) .'" data-crewhrm-nonce="' . esc_attr( wp_create_nonce( self::MOUNTPOINT_DASHBOARD ) ) . '"></div>';
 	}
 	
 	/**
@@ -67,7 +68,10 @@ class Admin extends Main {
 	 * @return void
 	 */
 	public function companyProfilePage() {
-		echo '<div id="' . esc_attr( self::MOUNTPOINT_COMPANY ) . '" data-crewhrm-nonce="' . esc_attr( Nonce::generate( self::MOUNTPOINT_COMPANY ) ) . '"></div>';
+		echo '<div 
+				id="' . esc_attr( self::MOUNTPOINT_COMPANY ) . '" 
+				data-crewhrm-nonce="' . esc_attr( wp_create_nonce( self::MOUNTPOINT_COMPANY ) ) . '"
+				data-company-profile="' . esc_attr( json_encode( (object)Settings::getCompanyProfile() ) ) . '"></div>';
 	}
 	
 	/**
@@ -76,6 +80,6 @@ class Admin extends Main {
 	 * @return void
 	 */
 	public function settingPage() {
-		echo '<div id="' . esc_attr( self::MOUNTPOINT_SETTINGS ) . '" data-crewhrm-nonce="' . esc_attr( Nonce::generate( self::MOUNTPOINT_SETTINGS ) ) . '"></div>';
+		echo '<div id="' . esc_attr( self::MOUNTPOINT_SETTINGS ) . '" data-crewhrm-nonce="' . esc_attr( wp_create_nonce( self::MOUNTPOINT_SETTINGS ) ) . '"></div>';
 	}
 }

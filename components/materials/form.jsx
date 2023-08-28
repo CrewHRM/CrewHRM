@@ -71,21 +71,39 @@ export function RenderField({ field }) {
             <span className={label_class}>{label}</span>
 
             {(type == 'text' && (
-                <input type="text" className={input_text_class} placeholder={placeholder} />
+                <input 
+					value={values[name] || ''}
+					type="text" 
+					className={input_text_class} 
+					placeholder={placeholder}
+					onChange={e=>onChange(name, e.currentTarget.value)}/>
             )) ||
                 null}
 
             {(type == 'textarea' && (
-                <textarea className={text_area_class} placeholder={placeholder}></textarea>
+                <textarea 
+					value={values[name] || ''}
+					className={text_area_class} 
+					placeholder={placeholder}
+					onChange={e=>onChange(name, e.currentTarget.value)}></textarea>
             )) ||
                 null}
 
             {(type == 'textarea_rich' && (
-                <TextEditor onChange={onChange} value={values[name]} placeholder={placeholder} />
+                <TextEditor 
+					onChange={v=>onChange(name, v)} 
+					value={values[name] || ''} 
+					placeholder={placeholder}/>
             )) ||
                 null}
 
-            {(type == 'dropdown' && <DropDown options={options} placeholder={placeholder} className={input_text_class} />) ||
+            {(type == 'dropdown' && 
+				<DropDown 
+					value={values[name]}
+					options={options} 
+					placeholder={placeholder} 
+					className={input_text_class} 
+					onChange={value=>onChange(name, value)}/>) ||
                 null}
 
             {(type == 'date' && <DateField className={input_text_class} />) || null}
@@ -159,9 +177,9 @@ export function FormFields({ fields }) {
     });
 }
 
-export function Form({ fields: sections }) {
+export function Form({ fields: sections, values, onChange }) {
     return (
-        <ContextForm.Provider value={{}}>
+        <ContextForm.Provider value={{values, onChange}}>
             {Object.keys(sections).map((section_key) => {
                 const { section_label, fields = [] } = sections[section_key];
                 return (

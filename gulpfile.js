@@ -108,20 +108,26 @@ gulp.task('copy', function () {
         .src([
             './**/*.*',
             '!./components/**',
+
             '!./dist/**/*.map',
             '!./dist/**/*.txt',
             '!./node_modules/**',
             '!./tests/**',
-            '!./**/*.zip',
+
+            '!./vendor/**',
+
             '!.github',
             '!.git',
+			
+            '!./**/*.zip',
             '!./readme.md',
             '!.DS_Store',
             '!./**/.DS_Store',
             '!./LICENSE.txt',
             '!./*.lock',
             '!./*.js',
-            '!./*.json'
+            '!./*.json',
+            '!./*.xml'
         ])
         .pipe(gulp.dest('build/crewhrm/'));
 });

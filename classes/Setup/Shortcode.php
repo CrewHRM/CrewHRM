@@ -27,6 +27,6 @@ class Shortcode {
 	 */
 	public function careerPage( $args ) {
 		do_action( 'careers_page_shortcode' );
-		return '<div id="' . esc_attr( self::MOUNTPOINT ) . '" data-crewhrm-nonce="' . esc_attr( Nonce::generate( self::MOUNTPOINT ) ) . '"></div>';
+		return '<div id="' . esc_attr( self::MOUNTPOINT ) . '" data-crewhrm-nonce="' . esc_attr( wp_create_nonce( self::MOUNTPOINT ) ) . '"></div>';
 	}
 }

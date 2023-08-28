@@ -12,7 +12,7 @@
  */
 
 // Load autoloader
-require_once __DIR__ . '/vendor/autoload.php';
+require_once __DIR__ . '/classes/Main.php';
 
 // Initialize Plugin
 ( new \CrewHRM\Main() )->init(
@@ -21,7 +21,7 @@ require_once __DIR__ . '/vendor/autoload.php';
 		'root_menu_slug' => 'crewhrm',
 		'db_prefix'      => 'crewhrm_',
 		'version'        => '1.0.0',
-		'dir'            => __DIR__ . '/',
+		'dir'            => __DIR__ . DIRECTORY_SEPARATOR,
 		'url'            => plugin_dir_url( __FILE__ ),
 		'dist_url'       => plugin_dir_url( __FILE__ ) . 'dist/',
 		'current_url'    => 'http' . ( ( ! empty( $_SERVER['HTTPS'] ) && $_SERVER['HTTPS'] != 'off' ) ? 's' : '' ) . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'],

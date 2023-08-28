@@ -10,16 +10,17 @@ import { HRMSettings } from './hrm-settings/hrm-settings.jsx';
 // Render company profile
 const profile = document.getElementById('crewhrm_company_profile');
 if (profile) {
+	const data = getElementDataSet(profile);
+
     ReactDOM.createRoot(profile).render(
-        <MountPoint element={profile}>
-            <Company {...getElementDataSet(profile)} />
+        <MountPoint element={profile} nonce={data.crewhrmNonce} nonceAction={profile.id}>
+            <Company {...data} />
         </MountPoint>
     );
 }
 
 // Render hrm settings
 const settings = document.getElementById('crewhrm_settings');
-
 if (settings) {
 	const data = getElementDataSet(settings);
 
