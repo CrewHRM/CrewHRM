@@ -28,13 +28,13 @@ export function UndoRedo({ onChange, historyLength, index }) {
     return (
         <div className={'d-flex align-items-center column-gap-30'.classNames()}>
             <i
-                className={`ch-icon ch-icon-redo font-size-26 ${
+                className={`ch-icon ch-icon-undo font-size-26 ${
                     can_undo ? 'color-text cursor-pointer' : 'color-text-hint'
                 }`.classNames()}
                 onClick={() => (can_undo ? unDoRedo(-1) : 0)}
             ></i>
             <i
-                className={`ch-icon ch-icon-undo font-size-26 ${
+                className={`ch-icon ch-icon-redo font-size-26 ${
                     can_redo ? 'color-text cursor-pointer' : 'color-text-hint'
                 }`.classNames()}
                 onClick={() => (can_redo ? unDoRedo(1) : 0)}

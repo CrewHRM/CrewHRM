@@ -1,9 +1,9 @@
 @font-face {
   font-family: 'crewhrm';
   src:
-    url('fonts/crewhrm.ttf?mdp2js') format('truetype'),
-    url('fonts/crewhrm.woff?mdp2js') format('woff'),
-    url('fonts/crewhrm.svg?mdp2js#crewhrm') format('svg');
+    url('fonts/crewhrm.ttf?k55z91') format('truetype'),
+    url('fonts/crewhrm.woff?k55z91') format('woff'),
+    url('fonts/crewhrm.svg?k55z91#crewhrm') format('svg');
   font-weight: normal;
   font-style: normal;
   font-display: block;
@@ -32,11 +32,9 @@
 }
 .ch-icon-redo:before {
   content: "\e906";
-  color: #757c8e;
 }
 .ch-icon-undo:before {
   content: "\e907";
-  color: #757c8e;
 }
 .ch-icon-menu:before {
   content: "\e905";
