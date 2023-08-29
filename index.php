@@ -22,6 +22,7 @@ require_once __DIR__ . '/classes/Main.php';
 		'db_prefix'      => 'crewhrm_',
 		'version'        => '1.0.0',
 		'dir'            => __DIR__ . DIRECTORY_SEPARATOR,
+		'template_dir'   => __DIR__ . DIRECTORY_SEPARATOR . 'templates' . DIRECTORY_SEPARATOR,
 		'url'            => plugin_dir_url( __FILE__ ),
 		'dist_url'       => plugin_dir_url( __FILE__ ) . 'dist/',
 		'current_url'    => 'http' . ( ( ! empty( $_SERVER['HTTPS'] ) && $_SERVER['HTTPS'] != 'off' ) ? 's' : '' ) . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'],

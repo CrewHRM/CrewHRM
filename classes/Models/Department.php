@@ -2,7 +2,18 @@
 
 namespace CrewHRM\Models;
 
+use CrewHRM\Helpers\_Array;
+
 class Department {
+	/**
+	 * COlumn name mapping between react and database
+	 *
+	 * @var array
+	 */
+	private static $column_names = array( 
+		'id'    => 'department_id', 
+		'label' => 'department_name' 
+	);
 
 	/**
 	 * Save bulk departments. Ideally from department setting page in backend dashboard.
@@ -14,18 +25,18 @@ class Department {
 		global $wpdb;
 		
 		foreach ( $departments as $department ) {
-			if ( is_numeric( $department['department_id'] ) ) {
+			if ( is_numeric( $department['id'] ) ) {
 				// Update the name as ID exists
 				$wpdb->update(
 					DB::departments(),
-					array( 'department_name' => $department ),
-					array( 'department_id' => $department['department_id'] )
+					array( 'department_name' => $department['label'] ),
+					array( 'department_id' => $department['id'] )
 				);
 			} else {
 				// The ID was assigned by react when added new for 'key' attribute purpose. Insert it as a new.
 				$wpdb->insert(
 					DB::departments(),
-					array( 'department_name' => $department['department_name'] )
+					array( 'department_name' => $department['label'] )
 				);
 			}
 		}
@@ -36,14 +47,18 @@ class Department {
 	 *
 	 * @return array
 	 */
-	public static function getDepartments( $type = OBJECT  ) {
+	public static function getDepartments() {
 		global $wpdb;
 		$departments = $wpdb->get_results(
 			$wpdb->prepare(
 				"SELECT * FROM " . DB::departments()
 			),
-			$type
+			ARRAY_A
 		);
+
+		// Convert data for react use
+		$departments = _Array::renameColumns( $departments, array_flip( self::$column_names ) );
+		$departments = array_reverse( $departments );
 
 		return $departments;
 	}

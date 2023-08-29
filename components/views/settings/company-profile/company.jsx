@@ -97,13 +97,10 @@ export function Company(props) {
     return (
         <ContextBackendDashboard.Provider value={{}}>
             <WpDashboardFullPage>
-				<HistoryFields defaultValues={{departments, companyProfile}} segmented={true}>
+				<HistoryFields defaultValues={{departments:{departments}, companyProfile}} segmented={true}>
 					<HashRouter>
 						<Routes>
-							<Route
-								path="/company/:sub_page?/"
-								element={<CompanyWrapper {...props} />}
-							/>
+							<Route path="/company/:sub_page?/" element={<CompanyWrapper {...props} />}/>
 							<Route path={'*'} element={<Navigate to="/company/" replace />} />
 						</Routes>
 					</HashRouter>

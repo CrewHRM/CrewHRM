@@ -77,24 +77,22 @@ class Scripts extends Main {
 		$dynamic_colors = Colors::getColors();
 		$_colors        = '';
 		foreach ( $dynamic_colors as $name => $code ) {
-			$_colors .= '--crewhrm-color-' . $name . ':' . $code . ';';
+			$_colors .= '--crewhrm-color-' . esc_attr( $name ) . ':' . esc_attr( $code ) . ';';
 		}
 		echo '<style>:root{' . $_colors . '}</style>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 
 		// Load JS variables
 		$data = array(
-			'app_name'     => self::$configs->app_name,
-			'action_hooks' => array(),
-			'filter_hooks' => array(),
-			'home_url'     => get_home_url(),
-			'dist_url'     => self::$configs->dist_url,
-			'plugin_url'   => self::$configs->url,
-			'ajaxurl'      => admin_url( 'admin-ajax.php' ),
-			'colors'       => $dynamic_colors,
-			'settings'     => array(
-				'application_form_is_single' => false,
-			),
+			'app_name'               => self::$configs->app_name,
+			'action_hooks'           => array(),
+			'filter_hooks'           => array(),
+			'home_url'               => get_home_url(),
+			'dist_url'               => self::$configs->dist_url,
+			'plugin_url'             => self::$configs->url,
+			'ajaxurl'                => admin_url( 'admin-ajax.php' ),
+			'colors'                 => $dynamic_colors,
 		);
+
 		echo '<script>window.CrewHRM=' . wp_json_encode( $data ) . '</script>';
 	}
 }

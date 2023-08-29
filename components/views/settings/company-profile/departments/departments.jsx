@@ -2,11 +2,8 @@ import React, { useState } from 'react';
 import { __ } from '../../../../utilities/helpers.jsx';
 import { ListManager } from '../../../../materials/list-manager/list-manager.jsx';
 
-export function CompantDepartments() {
-    const [state, setState] = useState({
-        departments: []
-    });
-
+export function CompantDepartments({onChange, values}) {
+	
     return (
         <div>
             <span
@@ -16,8 +13,8 @@ export function CompantDepartments() {
             </span>
 
             <ListManager
-                list={state.departments}
-                onChange={(departments) => setState({ ...state, departments })}
+                list={values.departments || []}
+                onChange={(departments) => onChange('departments', departments)}
                 addText={__('Add Department')}
                 mode="stack"
             />

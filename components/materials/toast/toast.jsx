@@ -6,6 +6,12 @@ import { Ripple } from '../dynamic-svg/ripple.jsx';
 
 export const ContextToast = createContext();
 
+const colors = {
+	success: window.CrewHRM.colors['secondary'],
+	warning: window.CrewHRM.colors['warning'],
+	error: window.CrewHRM.colors['danger'],
+}
+
 export function ToastWrapper(props) {
     const ref = useRef();
 
@@ -51,6 +57,17 @@ export function ToastWrapper(props) {
         registerCloser(new_id);
     };
 
+	const ajaxToast=(response)=> {
+		const {success, data} = typeof response === 'object' ? (response || {}) : {};
+		const {message=__('Something went wrong!'), status} = data || {};
+
+		addToast({
+			message,
+			dismissible: true,
+			status: status || (success ? 'success' : 'error'),
+		});
+	}
+
     const dismissToast = (id) => {
         const { toasts = [] } = state;
         const index = toasts.findIndex((t) => t.id === id);
@@ -78,7 +95,7 @@ export function ToastWrapper(props) {
     }, [state.toasts.length]);
 
     return (
-        <ContextToast.Provider value={{ addToast }}>
+        <ContextToast.Provider value={{ addToast, ajaxToast }}>
             {props.children}
 
             {(state.toasts.length && (
@@ -92,7 +109,7 @@ export function ToastWrapper(props) {
                     onMouseOut={() => setMouseState(false)}
                 >
                     {state.toasts.map((toast) => {
-                        const { id, message, dismissible, onTryAgain } = toast;
+                        const { id, message, dismissible, onTryAgain, status='success' } = toast;
 
                         return (
                             <div
@@ -108,7 +125,7 @@ export function ToastWrapper(props) {
                                         data-crewhrm-selector="ripple"
                                         className={'d-inline-block'.classNames()}
                                     >
-                                        <Ripple />
+                                        <Ripple color={colors[status] || colors['success']}/>
                                     </div>
                                     <span
                                         data-crewhrm-selector="message"
