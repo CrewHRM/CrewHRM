@@ -3,12 +3,12 @@ import React, { useContext } from 'react';
 import { DropDown } from '../../../../../materials/dropdown/dropdown.jsx';
 import { __ } from '../../../../../utilities/helpers.jsx';
 import {
-    ContextJobDetails,
     input_class,
     field_label_class,
     section_title_class
 } from '../job-details.jsx';
 import style from '../details.module.scss';
+import { ContextJobEditor } from '../../index.jsx';
 
 const experience_levels = {
     beginner: __('Beginner'),
@@ -17,7 +17,7 @@ const experience_levels = {
 };
 
 export function Experience() {
-    const { values, setVal } = useContext(ContextJobDetails);
+    const { values, onChange } = useContext(ContextJobEditor);
 
     return (
         <>
@@ -40,7 +40,7 @@ export function Experience() {
                             options={Object.keys(experience_levels).map((l) => {
                                 return { id: l, label: experience_levels[l] };
                             })}
-                            onChage={(v) => setVal('experience_level', v)}
+                            onChage={(v) => onChange('experience_level', v)}
                             className={input_class}
                         />
                     </div>

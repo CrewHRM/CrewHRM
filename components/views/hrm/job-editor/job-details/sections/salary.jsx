@@ -2,7 +2,6 @@ import React, { useContext } from 'react';
 
 import { __ } from '../../../../../utilities/helpers.jsx';
 import {
-    ContextJobDetails,
     field_label_class,
     input_class,
     section_title_class
@@ -10,6 +9,7 @@ import {
 import style from '../details.module.scss';
 import { DropDown } from '../../../../../materials/dropdown/dropdown.jsx';
 import { TagField } from '../../../../../materials/tag-field/tag-field.jsx';
+import { ContextJobEditor } from '../../index.jsx';
 
 const salary_types = {
     hourly: __('Hourly'),
@@ -20,7 +20,7 @@ const salary_types = {
 };
 
 export function Salary() {
-    const { values, setVal } = useContext(ContextJobDetails);
+    const { values, onChange } = useContext(ContextJobEditor);
 
     return (
         <>
@@ -43,7 +43,7 @@ export function Salary() {
                         options={Object.keys(salary_types).map((type) => {
                             return { id: type, label: salary_types[type] };
                         })}
-                        onChange={(value) => setVal('salary_type', value)}
+                        onChange={(value) => onChange('salary_type', value)}
                         fullWidth={true}
                         className={'margin-bottom-30'.classNames()}
                     />
@@ -59,7 +59,7 @@ export function Salary() {
                                 options={Intl.supportedValuesOf('currency').map((c) => {
                                     return { id: c, label: c };
                                 })}
-                                onChange={(v) => setVal('currency', v)}
+                                onChange={(v) => onChange('currency', v)}
                                 className={input_class}
                             />
                         </div>

@@ -1,6 +1,5 @@
 import React, { useContext } from 'react';
 import {
-    ContextJobDetails,
     input_class,
     section_title_class,
     field_label_class
@@ -11,6 +10,7 @@ import style from '../details.module.scss';
 import { NumberField } from '../../../../../materials/number-field.jsx';
 import { DateField } from '../../../../../materials/date-time.jsx';
 import { TagField } from '../../../../../materials/tag-field/tag-field.jsx';
+import { ContextJobEditor } from '../../index.jsx';
 
 const employments_types = {
     full_time: __('Full Time'),
@@ -21,7 +21,7 @@ const employments_types = {
 };
 
 export function EmploymentDetails(props) {
-    const { values, setVal } = useContext(ContextJobDetails);
+    const { values, onChange } = useContext(ContextJobEditor);
 
     return (
         <>
@@ -44,7 +44,7 @@ export function EmploymentDetails(props) {
                         options={Object.keys(employments_types).map((type) => {
                             return { id: type, label: employments_types[type] };
                         })}
-                        onChange={(type) => setVal('employment_type', type)}
+                        onChange={(type) => onChange('employment_type', type)}
                         fullWidth={true}
                         className={'margin-bottom-30'.classNames()}
                     />
@@ -59,7 +59,7 @@ export function EmploymentDetails(props) {
                                 min={1}
                                 className={input_class}
                                 value={values.vacancy}
-                                onChange={(v) => setVal('vacancy', v)}
+                                onChange={(v) => onChange('vacancy', v)}
                             />
                         </div>
                         <div className={'flex-1'.classNames()}>

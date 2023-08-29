@@ -2,7 +2,6 @@ import React, { useContext } from 'react';
 
 import { __, countries_array } from '../../../../../utilities/helpers.jsx';
 import {
-    ContextJobDetails,
     input_class,
     section_title_class,
     field_label_class
@@ -10,6 +9,7 @@ import {
 import style from '../details.module.scss';
 import { DropDown } from '../../../../../materials/dropdown/dropdown.jsx';
 import { TagField } from '../../../../../materials/tag-field/tag-field.jsx';
+import { ContextJobEditor } from '../../index.jsx';
 
 const location_types = {
     on_site: __('On-Site'),
@@ -18,7 +18,7 @@ const location_types = {
 };
 
 export function Location() {
-    const { values, setVal } = useContext(ContextJobDetails);
+    const { values, onChange } = useContext(ContextJobEditor);
 
     return (
         <>
@@ -40,7 +40,7 @@ export function Location() {
                         options={Object.keys(location_types).map((location) => {
                             return { id: location, label: location_types[location] };
                         })}
-                        onChange={(types) => setVal('location_type', types)}
+                        onChange={(types) => onChange('location_type', types)}
                     />
                 </div>
                 <div className={'right-col'.classNames(style)}></div>
@@ -84,7 +84,7 @@ export function Location() {
                         <DropDown
                             value={values.country_code}
                             options={countries_array}
-                            onChange={(v) => setVal('country_code', v)}
+                            onChange={(v) => onChange('country_code', v)}
                             className={input_class}
                         />
                     </div>

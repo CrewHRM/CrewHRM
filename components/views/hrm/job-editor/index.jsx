@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { createContext, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { StickyBar } from '../../../materials/sticky-bar/sticky-bar.jsx';
 import { __ } from '../../../utilities/helpers.jsx';
@@ -10,6 +10,8 @@ import { HiringFlow } from './hiring-flow/hiring-flow.jsx';
 import { ApplicationForm } from './application-form/application-form.jsx';
 
 import style from './editor.module.scss';
+
+export const ContextJobEditor = createContext();
 
 const steps = [
     {
@@ -32,8 +34,19 @@ export function JobEditor() {
 
     const [state, setState] = useState({
         is_auto_saving: true,
-        active_tab: 'job-details'
+        active_tab: 'job-details',
+		values: {}
     });
+
+	const onChange=(name, value)=>{
+		setState({
+			...state,
+			values: {
+				...state.values,
+				[name]: value
+			}
+		});
+	}
 
     const navigateTab = (tab) => {
         const current_index = steps.findIndex((s) => s.id == state.active_tab);
@@ -51,7 +64,7 @@ export function JobEditor() {
     const { active_tab } = state;
 
     return (
-        <>
+        <ContextJobEditor.Provider value={{ values:state.values, onChange, navigateTab}}>
             <StickyBar title="Job Editor">
                 {[
                     <div key="log" className={'text-align-center'.classNames()}>
@@ -85,7 +98,6 @@ export function JobEditor() {
                     <div>
                         <Tabs
                             theme="sequence"
-                            onNavigate={navigateTab}
                             active={state.active_tab}
                             tabs={steps.map((s) => {
                                 return {
@@ -114,10 +126,7 @@ export function JobEditor() {
                     }
                 >
                     <div>
-                        {(active_tab == 'job-details' && (
-                            <JobDetails navigateTab={navigateTab} />
-                        )) ||
-                            null}
+                        {active_tab == 'job-details' ? <JobDetails/> : null}
 
                         {(active_tab == 'hiring-flow' && (
                             <HiringFlow navigateTab={navigateTab} />
@@ -131,6 +140,6 @@ export function JobEditor() {
                     </div>
                 </div>
             </div>
-        </>
+        </ContextJobEditor.Provider>
     );
 }

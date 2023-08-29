@@ -1,6 +1,5 @@
 import React, { useContext, useState } from 'react';
 import {
-    ContextJobDetails,
     field_label_class,
     input_class,
     section_title_class
@@ -9,33 +8,21 @@ import { DropDown } from '../../../../../materials/dropdown/dropdown.jsx';
 import { __ } from '../../../../../utilities/helpers.jsx';
 import { TextField } from '../../../../../materials/text-field/text-field.jsx';
 import { CircularProgress } from '../../../../../materials/circular.jsx';
-import { AddDepartmentModal } from './add-department.jsx';
 import { TextEditor } from '../../../../../materials/text-editor/text-editor.jsx';
+import { ContextBackendDashboard } from '../../../hrm.jsx';
+import { ContextJobEditor } from '../../index.jsx';
 
 import style from '../details.module.scss';
 
 export function TitleAndDescription() {
-    const { departments, values, setVal, addDepartMent } = useContext(ContextJobDetails);
-
-    const [state, setState] = useState({
-        department_modal: false,
-        title_allowed_length: 200
-    });
-
+    const { values, onChange } = useContext(ContextJobEditor);
+	const {departments, addDepartment} = useContext(ContextBackendDashboard);
+	
+	const title_allowed_length = 200;
     const job_title_length = values.job_title?.length || 0;
 
     return (
         <>
-            {(state.department_modal && (
-                <AddDepartmentModal
-                    addDepartMent={(d) => {
-                        addDepartMent(d);
-                        setState({ department_modal: false });
-                    }}
-                />
-            )) ||
-                null}
-
             {/* Form intro */}
             <div className={'d-flex margin-bottom-30'.classNames()}>
                 <div className={'flex-1'.classNames()}>
@@ -63,12 +50,12 @@ export function TitleAndDescription() {
                         </div>
                         <div className={'d-flex align-items-center'.classNames()}>
                             <CircularProgress
-                                percentage={(job_title_length / state.title_allowed_length) * 100}
+                                percentage={(job_title_length / title_allowed_length) * 100}
                             />
                             <span
                                 className={'d-inline-block font-size-13 font-weight-500 line-height-21 color-text-light margin-left-5'.classNames()}
                             >
-                                {state.title_allowed_length - job_title_length}
+                                {title_allowed_length - job_title_length}
                             </span>
                         </div>
                     </div>
@@ -82,13 +69,13 @@ export function TitleAndDescription() {
                             icon_position="right"
                             placeholder={__('ex. Product designer, Account manager')}
                             value={values.job_title}
-                            onChange={(v) => setVal('job_title', v)}
+                            onChange={(v) => onChange('job_title', v)}
                             onIconClick={(refocus) => {
-                                setVal('job_title', '');
+                                onChange('job_title', '');
                                 refocus();
                             }}
                             className={input_class}
-                            maxLength={state.title_allowed_length}
+                            maxLength={title_allowed_length}
                         />
                     </div>
                 </div>
@@ -110,13 +97,13 @@ export function TitleAndDescription() {
                                 <span className={'color-danger'.classNames()}>*</span>
                             </span>
                             <DropDown
-                                value={values.department}
+                                value={values.department_id}
                                 options={departments}
-                                onChange={(v) => setVal('department', v)}
+                                onChange={(v) => onChange('department_id', v)}
                                 className={input_class}
                                 tabindex={2}
                                 addText={__('Add Depertment')}
-                                onAddClick={() => setState({ department_modal: true })}
+                                onAddClick={() => addDepartment(id=>onChange('department_id', id))}
                                 textClassName={'font-size-17 font-weight-500 line-height-25 color-text-light'.classNames()}
                             />
                         </div>
@@ -126,7 +113,7 @@ export function TitleAndDescription() {
                                 type="text"
                                 placeholder={__('ex. 001')}
                                 className={input_class}
-                                onChange={(e) => setVal('job_code', e.currentTarget.value)}
+                                onChange={(e) => onChange('job_code', e.currentTarget.value)}
                             />
                         </div>
                     </div>
