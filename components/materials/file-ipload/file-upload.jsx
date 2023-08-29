@@ -171,20 +171,24 @@ export function FileUpload(props) {
         media_frame.on('cropped', function (croppedImage) {
             const { url: file_url, id: file_id } = croppedImage;
 
-			handleFiles([{ 
-				file_id, 
-				file_url 
-			}]);
+            handleFiles([
+                {
+                    file_id,
+                    file_url
+                }
+            ]);
         });
 
         /**
          * If cropping was skipped, apply the image data directly to the setting.
          */
         media_frame.on('skippedcrop', function (selection) {
-			handleFiles([{ 
-				file_id: selection.id,
-				file_url: selection.get('url'), 
-			}]);
+            handleFiles([
+                {
+                    file_id: selection.id,
+                    file_url: selection.get('url')
+                }
+            ]);
         });
 
         /**
@@ -200,14 +204,16 @@ export function FileUpload(props) {
                 !cropControl.params.flex_width &&
                 !cropControl.params.flex_height
             ) {
-				const {id: file_id, url: file_url} = avatarAttachment;
-                
-				handleFiles([{
-					file_id, 
-					file_url 
-				}]);
-               
-				media_frame.close();
+                const { id: file_id, url: file_url } = avatarAttachment;
+
+                handleFiles([
+                    {
+                        file_id,
+                        file_url
+                    }
+                ]);
+
+                media_frame.close();
             } else {
                 media_frame.setState('cropper');
             }

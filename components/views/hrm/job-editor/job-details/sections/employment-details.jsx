@@ -1,9 +1,5 @@
 import React, { useContext } from 'react';
-import {
-    input_class,
-    section_title_class,
-    field_label_class
-} from '../job-details.jsx';
+import { input_class, section_title_class, field_label_class } from '../job-details.jsx';
 
 import { __ } from '../../../../../utilities/helpers.jsx';
 import style from '../details.module.scss';
@@ -58,20 +54,23 @@ export function EmploymentDetails(props) {
                             <NumberField
                                 min={1}
                                 className={input_class}
-                                value={values.vacancy}
+                                value={values.vacancy || 1}
                                 onChange={(v) => onChange('vacancy', v)}
                             />
                         </div>
                         <div className={'flex-1'.classNames()}>
                             <span className={field_label_class}>{__('Submission Deadline')}</span>
-                            <DateField className={input_class} onChange={(v) => {}} />
+                            <DateField
+                                className={input_class}
+                                onChange={(v) => onChange('deadline', v)}
+                            />
                         </div>
                     </div>
                 </div>
                 <div className={'right-col'.classNames(style)}>
                     <span className={'font-size-13 font-weight-400 color-text-light'.classNames()}>
                         {__(
-                            'Include as many details as possible to boost the job’s performance on some job boards'
+                            "Include as many details as possible to boost the job's performance on some job boards"
                         )}
                     </span>
                 </div>

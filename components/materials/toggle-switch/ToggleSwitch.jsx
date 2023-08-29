@@ -20,7 +20,7 @@ export function ToggleSwitch(props) {
                 checked={checked}
                 type="checkbox"
                 data-checkbox-type="toggle"
-                onChange={(e) => onChange(e.currentTarget.checked)}
+                onChange={(e) => onChange(e.currentTarget.checked ? true : false)}
             />
             <label htmlFor={id}></label>
         </div>

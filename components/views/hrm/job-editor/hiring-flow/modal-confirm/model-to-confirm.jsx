@@ -6,7 +6,6 @@ import avatar from '../../../../../images/avatar.svg';
 import style from './confirm.module.scss';
 import { CoverImage } from '../../../../../materials/image/image.jsx';
 import { DropDown } from '../../../../../materials/dropdown/dropdown.jsx';
-import { sequences } from '../hiring-flow.jsx';
 
 function Content({ stage, openMoveDiloague, closeModal }) {
     const btn_class =
@@ -37,7 +36,7 @@ function Content({ stage, openMoveDiloague, closeModal }) {
     );
 }
 
-function MoveContent({ stage, total, users = [], closeModal, deleteFlow }) {
+function MoveContent({ stage, total, users = [], closeModal, deleteFlow, moveTo = [] }) {
     const more = total - users.length;
     const [state, setState] = useState({
         move_to: null
@@ -109,7 +108,7 @@ function MoveContent({ stage, total, users = [], closeModal, deleteFlow }) {
                         <DropDown
                             className={'w-full padding-vertical-5 padding-horizontal-12 border-1 b-color-text height-40'.classNames()}
                             value={state.move_to}
-                            options={sequences}
+                            options={moveTo}
                             onChange={(move_to) => setState({ move_to })}
                             placeholder={__('Select Stage')}
                         />

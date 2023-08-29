@@ -8,7 +8,7 @@ use CrewHRM\Models\Settings;
 
 class CompanyProfile {
 	const PREREQUISITES = array(
-		'saveCompanyProfile' => array(
+		'saveCompanyProfile'     => array(
 			'role' => 'administrator',
 			'data' => array(
 				'settings' => 'type:array|required:true',
@@ -20,12 +20,12 @@ class CompanyProfile {
 				'departments' => 'type:array|required:true',
 			),
 		),
-		'addDepartment' => array(
+		'addDepartment'          => array(
 			'role' => array( 'administrator', 'editor' ),
 			'data' => array(
-				'department_name' => 'type:string|required:true'
-			)
-		)
+				'department_name' => 'type:string|required:true',
+			),
+		),
 	);
 
 	/**
@@ -78,13 +78,13 @@ class CompanyProfile {
 		}
 
 		// Get updated list
-		$departments =  Department::getDepartments();
+		$departments = Department::getDepartments();
 
 		wp_send_json_success(
 			array(
 				'id'          => $new_id,
 				'departments' => $departments,
-				'message'     => __( 'New department added successfully', 'crewhrm' )
+				'message'     => __( 'New department added successfully', 'crewhrm' ),
 			)
 		);
 	}

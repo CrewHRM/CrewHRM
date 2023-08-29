@@ -1,9 +1,5 @@
 import React, { useContext, useState } from 'react';
-import {
-    field_label_class,
-    input_class,
-    section_title_class
-} from '../job-details.jsx';
+import { field_label_class, input_class, section_title_class } from '../job-details.jsx';
 import { DropDown } from '../../../../../materials/dropdown/dropdown.jsx';
 import { __ } from '../../../../../utilities/helpers.jsx';
 import { TextField } from '../../../../../materials/text-field/text-field.jsx';
@@ -16,9 +12,9 @@ import style from '../details.module.scss';
 
 export function TitleAndDescription() {
     const { values, onChange } = useContext(ContextJobEditor);
-	const {departments, addDepartment} = useContext(ContextBackendDashboard);
-	
-	const title_allowed_length = 200;
+    const { departments, addDepartment } = useContext(ContextBackendDashboard);
+
+    const title_allowed_length = 200;
     const job_title_length = values.job_title?.length || 0;
 
     return (
@@ -68,7 +64,7 @@ export function TitleAndDescription() {
                             }
                             icon_position="right"
                             placeholder={__('ex. Product designer, Account manager')}
-                            value={values.job_title}
+                            value={values.job_title || ''}
                             onChange={(v) => onChange('job_title', v)}
                             onIconClick={(refocus) => {
                                 onChange('job_title', '');
@@ -103,7 +99,9 @@ export function TitleAndDescription() {
                                 className={input_class}
                                 tabindex={2}
                                 addText={__('Add Depertment')}
-                                onAddClick={() => addDepartment(id=>onChange('department_id', id))}
+                                onAddClick={() =>
+                                    addDepartment((id) => onChange('department_id', id))
+                                }
                                 textClassName={'font-size-17 font-weight-500 line-height-25 color-text-light'.classNames()}
                             />
                         </div>
@@ -113,6 +111,7 @@ export function TitleAndDescription() {
                                 type="text"
                                 placeholder={__('ex. 001')}
                                 className={input_class}
+                                value={values.job_code === undefined ? '' : values.job_code}
                                 onChange={(e) => onChange('job_code', e.currentTarget.value)}
                             />
                         </div>
@@ -129,7 +128,8 @@ export function TitleAndDescription() {
             <div className={'d-flex margin-bottom-30'.classNames()}>
                 <div className={'flex-1'.classNames()}>
                     <TextEditor
-                        onChange={(v) => console.log(v)}
+                        onChange={(v) => onChange('job_description', v)}
+                        value={values.job_description || ''}
                         placeholder={__(
                             'Enter your job description here; include key areas responsibility and specific qualification needed to perform the role. '
                         )}

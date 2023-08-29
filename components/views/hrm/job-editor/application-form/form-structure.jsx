@@ -356,3 +356,29 @@ export const sections_fields = {
         ]
     }
 };
+
+export function getApplicationFieldsExceptForms() {
+    const _new = {};
+
+    // Loop through the sections
+    for (let section in sections_fields) {
+        // Extract fields array
+        let { fields = [] } = sections_fields[section];
+
+        // Loop through fields
+        fields = fields.map((field) => {
+            let new_field = { ...field };
+
+            // And now delete form fields from the field object
+            if (new_field.form) {
+                delete new_field.form;
+            }
+
+            return new_field;
+        });
+
+        _new[section] = { ...sections_fields[section], fields };
+    }
+
+    return _new;
+}

@@ -20,36 +20,27 @@ function CompanyWrapper() {
     const { ajaxToast } = useContext(ContextToast);
     const { sub_page } = useParams();
     const page_id = sub_page || 'profile';
-	const segment = page_id === 'profile' ? 'companyProfile' : 'departments';
+    const segment = page_id === 'profile' ? 'companyProfile' : 'departments';
 
-	const {
-		clearHistory, 
-		can_go_next, 
-		onChange, 
-		values
-
-	} = useContext(ContextHistoryFields);
-
+    const { clearHistory, can_go_next, onChange, values } = useContext(ContextHistoryFields);
 
     const saveCompanyProfile = () => {
-		let _action;
-		let _payload;
+        let _action;
+        let _payload;
 
-		if ( segment==='companyProfile' ) {
-			_action = 'save_company_profile',
-			_payload = {settings: values[segment]};
-		} else {
-			_action = 'save_company_departments';
-			_payload = {departments: values[segment].departments};
-		}
-		
+        if (segment === 'companyProfile') {
+            (_action = 'save_company_profile'), (_payload = { settings: values[segment] });
+        } else {
+            _action = 'save_company_departments';
+            _payload = { departments: values[segment].departments };
+        }
+
         request(_action, { ..._payload, nonce, nonceAction }, (resp) => {
+            ajaxToast(resp);
 
-			ajaxToast(resp);
-			
-            if ( resp?.success ) {
-				clearHistory(segment);
-			}
+            if (resp?.success) {
+                clearHistory(segment);
+            }
         });
     };
 
@@ -60,7 +51,7 @@ function CompanyWrapper() {
                 title={pages.find((p) => p.id === page_id)?.label || __('Company Profile')}
             >
                 <div className={'d-flex align-items-center column-gap-30'.classNames()}>
-                    <UndoRedo segment={segment}/>
+                    <UndoRedo segment={segment} />
                     <button
                         className={'button button-primary'.classNames()}
                         disabled={!can_go_next[segment]}
@@ -76,15 +67,20 @@ function CompanyWrapper() {
                 </div>
                 <div className={'content-area'.classNames(style)}>
                     {(page_id === 'profile' && (
-                        <CompanyProfile 
-							onChange={(name, value)=>onChange(name, value, 'companyProfile')} 
-							values={values[segment]} />
+                        <CompanyProfile
+                            onChange={(name, value) => onChange(name, value, 'companyProfile')}
+                            values={values[segment]}
+                        />
                     )) ||
                         null}
 
-                    {(page_id === 'departments' && <CompantDepartments 
-						onChange={(name, value)=>onChange(name, value, 'departments')} 
-						values={values[segment]}/>) || null}
+                    {(page_id === 'departments' && (
+                        <CompantDepartments
+                            onChange={(name, value) => onChange(name, value, 'departments')}
+                            values={values[segment]}
+                        />
+                    )) ||
+                        null}
                 </div>
             </div>
         </>
@@ -92,19 +88,25 @@ function CompanyWrapper() {
 }
 
 export function Company(props) {
-	const {departments={}, companyProfile={}} = props;
+    const { departments = {}, companyProfile = {} } = props;
 
     return (
         <ContextBackendDashboard.Provider value={{}}>
             <WpDashboardFullPage>
-				<HistoryFields defaultValues={{departments:{departments}, companyProfile}} segmented={true}>
-					<HashRouter>
-						<Routes>
-							<Route path="/company/:sub_page?/" element={<CompanyWrapper {...props} />}/>
-							<Route path={'*'} element={<Navigate to="/company/" replace />} />
-						</Routes>
-					</HashRouter>
-				</HistoryFields>
+                <HistoryFields
+                    defaultValues={{ departments: { departments }, companyProfile }}
+                    segmented={true}
+                >
+                    <HashRouter>
+                        <Routes>
+                            <Route
+                                path="/company/:sub_page?/"
+                                element={<CompanyWrapper {...props} />}
+                            />
+                            <Route path={'*'} element={<Navigate to="/company/" replace />} />
+                        </Routes>
+                    </HashRouter>
+                </HistoryFields>
             </WpDashboardFullPage>
         </ContextBackendDashboard.Provider>
     );

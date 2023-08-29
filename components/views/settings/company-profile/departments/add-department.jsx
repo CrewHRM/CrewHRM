@@ -6,27 +6,27 @@ import { ContextNonce } from '../../../../materials/mountpoint.jsx';
 import { ContextToast } from '../../../../materials/toast/toast.jsx';
 
 export function AddDepartmentModal({ closeModal, onAdd }) {
-	const {nonce, nonceAction} = useContext(ContextNonce);
-	const {ajaxToast} = useContext(ContextToast);
+    const { nonce, nonceAction } = useContext(ContextNonce);
+    const { ajaxToast } = useContext(ContextToast);
 
     const [state, setState] = useState({
         department_name: null
     });
 
-	const addNow=()=>{
-		const {department_name} = state;
-		
-		request('add_department', {nonce, nonceAction, department_name }, resp=>{
-			ajaxToast(resp);
+    const addNow = () => {
+        const { department_name } = state;
 
-			if ( resp?.success ) {
-				const {id, departments=[]} = resp?.data || {};
-				onAdd({id, departments});
-			} else {
-				closeModal();
-			}
-		});
-	}
+        request('add_department', { nonce, nonceAction, department_name }, (resp) => {
+            ajaxToast(resp);
+
+            if (resp?.success) {
+                const { id, departments = [] } = resp?.data || {};
+                onAdd({ id, departments });
+            } else {
+                closeModal();
+            }
+        });
+    };
 
     return (
         <Modal>
@@ -61,7 +61,7 @@ export function AddDepartmentModal({ closeModal, onAdd }) {
                 </span>
                 <button
                     className={'button button-primary'.classNames()}
-                    onClick={() => addNow() }
+                    onClick={() => addNow()}
                     disabled={!state.department_name}
                 >
                     {__('Add Department')}

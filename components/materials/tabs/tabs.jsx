@@ -4,7 +4,7 @@ import { ContextJobEditor } from '../../views/hrm/job-editor/index.jsx';
 import style from './tabs.module.scss';
 
 export function Tabs(props) {
-	const {navigateTab} = useContext(ContextJobEditor);
+    const { navigateTab } = useContext(ContextJobEditor);
 
     const { active, tabs = [], theme, className = '', style: cssStyle = {} } = props;
     const active_index = tabs.findIndex((tab) => tab.id == active);

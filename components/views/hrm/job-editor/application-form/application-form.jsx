@@ -1,24 +1,24 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 
 import style from './application.module.scss';
 import { __, getRandomString } from '../../../../utilities/helpers.jsx';
 import { ToggleSwitch } from '../../../../materials/toggle-switch/ToggleSwitch.jsx';
 import { Options } from '../../../../materials/dropdown/dropdown.jsx';
 import { FieldEditorModal } from './field-editor/field-editor-modal.jsx';
-import { sections_fields } from './form-structure.jsx';
 import { FormActionButtons } from '../../../../materials/form-action.jsx';
 import { SortableList } from '../../../../materials/sortable-list.jsx';
+import { ContextJobEditor } from '../index.jsx';
 
-export function ApplicationForm(props) {
-    const { navigateTab } = props;
+export function ApplicationForm() {
+    const { navigateTab, values = {}, onChange } = useContext(ContextJobEditor);
+
     const [state, setState] = useState({
-        fields: sections_fields,
         pointer: null
     });
 
     const onOptionClick = (action, section_name, field_id) => {
         let { pointer } = state;
-        const { fields } = state;
+        const { application_form: fields } = values;
         const field_index = fields[section_name].fields.findIndex((f) => f.id == field_id);
         const field = fields[section_name].fields[field_index];
 
@@ -41,9 +41,10 @@ export function ApplicationForm(props) {
                 };
         }
 
+        onChange('application_form', fields);
+
         setState({
             ...state,
-            fields,
             pointer
         });
     };
@@ -59,7 +60,8 @@ export function ApplicationForm(props) {
         }
 
         // Get pointer
-        const { pointer = {}, fields = {} } = state;
+        const { application_form: fields = {} } = values;
+        const { pointer = {} } = state;
         const { section_name, field_index } = pointer;
 
         // Update data in the array
@@ -77,35 +79,41 @@ export function ApplicationForm(props) {
 
         console.log(updated_field);
 
+        onChange('application_form', fields);
+
         // Update state
         setState({
             ...state,
-            fields,
             pointer: null
         });
     };
 
     const onToggle = (key, value, section_name, field_id) => {
         // Find field
-        const { fields } = state;
+        const { application_form: fields } = values;
         const index = fields[section_name].fields.findIndex((f) => f.id === field_id);
 
         // Update field
         fields[section_name].fields[index][key] = value;
-        setState({
-            ...state,
-            fields
-        });
+
+        // Enable too if the field marked as required
+        if (key === 'required' && value === true) {
+            fields[section_name].fields[index].enabled = true;
+        }
+
+        // Remove required state if its not enabled
+        if (key === 'enabled' && value === false) {
+            fields[section_name].fields[index].required = false;
+        }
+
+        onChange('application_form', fields);
     };
 
     const updateFields = (section_name, list) => {
-        const { fields = {} } = state;
+        const { application_form: fields = {} } = values;
         fields[section_name].fields = list;
 
-        setState({
-            ...state,
-            fields
-        });
+        onChange('application_form', fields);
     };
 
     return (
@@ -113,7 +121,7 @@ export function ApplicationForm(props) {
             {(state.pointer && (
                 <FieldEditorModal
                     field={
-                        state.fields[state.pointer.section_name].fields[
+                        values.application_form[state.pointer.section_name].fields[
                             state.pointer.field_index
                         ] || {}
                     }
@@ -133,14 +141,14 @@ export function ApplicationForm(props) {
                 </span>
 
                 {/* General fields with toggle switch */}
-                {Object.keys(state.fields).map((section_name) => {
+                {Object.keys(values.application_form).map((section_name) => {
                     const {
                         label,
                         fields: input_fields,
                         options = {},
                         addLabel,
                         sortable
-                    } = state.fields[section_name];
+                    } = values.application_form[section_name];
 
                     const options_array = Object.keys(options).map((option_name) => {
                         return {
@@ -204,7 +212,7 @@ export function ApplicationForm(props) {
                                                                 }
                                                             >
                                                                 <i
-                                                                    className={'ch-icon ch-icon-drag font-size-26 color-light position-absolute'.classNames()}
+                                                                    className={'ch-icon ch-icon-drag font-size-26 color-text-light position-absolute'.classNames()}
                                                                     style={{ left: '-50px' }}
                                                                 ></i>
                                                             </div>
@@ -219,7 +227,9 @@ export function ApplicationForm(props) {
                                                                 onChange={(e) =>
                                                                     onToggle(
                                                                         'enabled',
-                                                                        e.currentTarget.checked,
+                                                                        e.currentTarget.checked
+                                                                            ? true
+                                                                            : false,
                                                                         section_name,
                                                                         field_id
                                                                     )

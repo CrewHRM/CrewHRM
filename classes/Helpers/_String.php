@@ -9,12 +9,12 @@ class _String {
 	 * @param string $input
 	 * @return string
 	 */
-	public static function snakeToCamel($input) {
-		$parts = explode('_', $input);
+	public static function snakeToCamel( $input ) {
+		$parts     = explode( '_', $input );
 		$camelCase = $parts[0];
 
-		for ($i = 1; $i < count($parts); $i++) {
-			$camelCase .= ucfirst($parts[$i]);
+		for ( $i = 1; $i < count( $parts ); $i++ ) {
+			$camelCase .= ucfirst( $parts[ $i ] );
 		}
 
 		return $camelCase;

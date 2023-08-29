@@ -65,7 +65,7 @@ class _Array {
 	/**
 	 * Apply order to every array elements
 	 *
-	 * @param array $array
+	 * @param array  $array
 	 * @param string $key
 	 * @return array
 	 */
@@ -79,7 +79,7 @@ class _Array {
 				continue;
 			}
 
-			$elment[ $key ] = $order;
+			$elment[ $key ]  = $order;
 			$array[ $index ] = $elment;
 			$order++;
 		}
@@ -90,7 +90,7 @@ class _Array {
 	/**
 	 * Type cast key value paired array
 	 *
-	 * @param array $array
+	 * @param array  $array
 	 * @param string $method
 	 * @return array
 	 */
@@ -112,13 +112,13 @@ class _Array {
 	/**
 	 * Type cast row-column array
 	 *
-	 * @param array $rows
+	 * @param array  $rows
 	 * @param string $method
 	 * @return array
 	 */
 	public static function castColumns( array $rows, $method ) {
 		return array_map(
-			function ( $row ) use( $method ) {
+			function ( $row ) use ( $method ) {
 				return self::cast( $row, $method );
 			},
 			$rows

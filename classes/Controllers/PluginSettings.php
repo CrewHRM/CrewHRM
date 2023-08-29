@@ -8,7 +8,7 @@ class PluginSettings {
 	const PREREQUISITES = array(
 		'saveSettings' => array(
 			'role' => 'administrator',
-		)
+		),
 	);
 
 	/**

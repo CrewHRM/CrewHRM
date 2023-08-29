@@ -1,13 +1,14 @@
 import React, { createContext, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { StickyBar } from '../../../materials/sticky-bar/sticky-bar.jsx';
-import { __ } from '../../../utilities/helpers.jsx';
+import { __, getRandomString } from '../../../utilities/helpers.jsx';
 import { Tabs } from '../../../materials/tabs/tabs.jsx';
 
 import logo_extended from '../../../images/logo-extended.svg';
 import { JobDetails } from './job-details/job-details.jsx';
 import { HiringFlow } from './hiring-flow/hiring-flow.jsx';
 import { ApplicationForm } from './application-form/application-form.jsx';
+import { getApplicationFieldsExceptForms } from './application-form/form-structure.jsx';
 
 import style from './editor.module.scss';
 
@@ -28,6 +29,18 @@ const steps = [
     }
 ];
 
+export const hiriging_flow = [
+    __('Screening'),
+    __('Assesment'),
+    __('Interview'),
+    __('Make an Offer')
+].map((s) => {
+    return {
+        id: getRandomString(),
+        label: s
+    };
+});
+
 export function JobEditor() {
     let { job_id: id } = useParams();
     const job_id = id === 'new' ? 0 : id;
@@ -35,18 +48,21 @@ export function JobEditor() {
     const [state, setState] = useState({
         is_auto_saving: true,
         active_tab: 'job-details',
-		values: {}
+        values: {
+            hiriging_flow,
+            application_form: getApplicationFieldsExceptForms()
+        }
     });
 
-	const onChange=(name, value)=>{
-		setState({
-			...state,
-			values: {
-				...state.values,
-				[name]: value
-			}
-		});
-	}
+    const onChange = (name, value) => {
+        setState({
+            ...state,
+            values: {
+                ...state.values,
+                [name]: value
+            }
+        });
+    };
 
     const navigateTab = (tab) => {
         const current_index = steps.findIndex((s) => s.id == state.active_tab);
@@ -64,7 +80,7 @@ export function JobEditor() {
     const { active_tab } = state;
 
     return (
-        <ContextJobEditor.Provider value={{ values:state.values, onChange, navigateTab}}>
+        <ContextJobEditor.Provider value={{ values: state.values, onChange, navigateTab }}>
             <StickyBar title="Job Editor">
                 {[
                     <div key="log" className={'text-align-center'.classNames()}>
@@ -126,17 +142,11 @@ export function JobEditor() {
                     }
                 >
                     <div>
-                        {active_tab == 'job-details' ? <JobDetails/> : null}
+                        {active_tab == 'job-details' ? <JobDetails /> : null}
 
-                        {(active_tab == 'hiring-flow' && (
-                            <HiringFlow navigateTab={navigateTab} />
-                        )) ||
-                            null}
+                        {active_tab == 'hiring-flow' ? <HiringFlow /> : null}
 
-                        {(active_tab == 'application-form' && (
-                            <ApplicationForm navigateTab={navigateTab} />
-                        )) ||
-                            null}
+                        {active_tab == 'application-form' ? <ApplicationForm /> : null}
                     </div>
                 </div>
             </div>

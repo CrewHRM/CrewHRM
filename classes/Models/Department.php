@@ -12,7 +12,7 @@ class Department {
 	 */
 	private static $column_names = array( 
 		'id'    => 'department_id', 
-		'label' => 'department_name' 
+		'label' => 'department_name', 
 	);
 
 	/**
@@ -34,7 +34,7 @@ class Department {
 					DB::departments(),
 					array( 
 						'department_name' => $department['label'],
-						'sequence'       => $department['sequence']
+						'sequence'        => $department['sequence'],
 					),
 					array( 'department_id' => $department['id'] )
 				);
@@ -44,7 +44,7 @@ class Department {
 					DB::departments(),
 					array( 
 						'department_name' => $department['label'],
-						'sequence'        => $department['sequence']
+						'sequence'        => $department['sequence'],
 					)
 				);
 			}
@@ -60,12 +60,12 @@ class Department {
 		global $wpdb;
 		$departments = $wpdb->get_results(
 			$wpdb->prepare(
-				"SELECT 
+				'SELECT 
 					department_name, 
 					CAST(department_id as UNSIGNED) as department_id,
 					CAST(sequence as UNSIGNED) as sequence,
 					CAST(parent_id as UNSIGNED) as parent_id
-				FROM " . DB::departments()
+				FROM ' . DB::departments()
 			),
 			ARRAY_A
 		);
@@ -88,15 +88,15 @@ class Department {
 		global $wpdb;
 
 		// Get sequence number
-		$max_value    = $wpdb->get_var( "SELECT MAX(sequence) FROM " . DB::departments() );
-    	$new_sequence = $max_value + 1;
+		$max_value    = $wpdb->get_var( 'SELECT MAX(sequence) FROM ' . DB::departments() );
+		$new_sequence = $max_value + 1;
 
 		// Insert finally
 		$wpdb->insert(
 			DB::departments(),
 			array(
 				'department_name' => $department_name,
-				'sequence'        => $new_sequence
+				'sequence'        => $new_sequence,
 			)
 		);
 

@@ -199,12 +199,12 @@ export function CompanyProfile({ onChange, values }) {
                         useWpMedia={true}
                         accept="image/*"
                         onChange={(files) => {
-							const {file_id, file_url} = files[0].file;
-							onChange({
-								logo_url: file_url, 
-								logo_id: file_id
-							})
-						}}
+                            const { file_id, file_url } = files[0].file;
+                            onChange({
+                                logo_url: file_url,
+                                logo_id: file_id
+                            });
+                        }}
                         layoutComp={({ onCLick }) => {
                             return (
                                 <button

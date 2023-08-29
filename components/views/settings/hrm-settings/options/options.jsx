@@ -22,7 +22,7 @@ export function Options(props) {
     const { segment, sub_segment } = useParams();
     const { fields, icon, label } = settings_fields[segment].segments[sub_segment];
     const field_keys = Object.keys(fields);
-    const { values={}, onChange } = useContext(ContextSettings);
+    const { values = {}, onChange } = useContext(ContextSettings);
 
     const satisfyLogic = (when) => {
         const pointer = when[0];
@@ -61,7 +61,16 @@ export function Options(props) {
                 </span>
 
                 {field_keys.map((key, index) => {
-                    const { label, type, options = [], when, direction, hint, min, max } = fields[key];
+                    const {
+                        label,
+                        type,
+                        options = [],
+                        when,
+                        direction,
+                        hint,
+                        min,
+                        max
+                    } = fields[key];
                     const is_last = index == field_keys.length - 1;
 
                     if (when && !satisfyLogic(when)) {
@@ -105,10 +114,11 @@ export function Options(props) {
                                 <>
                                     <div className={'flex-1'.classNames()}>{label_text}</div>
                                     <div className={'flex-1'.classNames()}>
-                                        <TextField 
-											value={values[key]} 
-											className={input_class} 
-											onChange={v=>onChange(key, v)}/>
+                                        <TextField
+                                            value={values[key]}
+                                            className={input_class}
+                                            onChange={(v) => onChange(key, v)}
+                                        />
                                     </div>
                                 </>
                             )) ||
@@ -126,19 +136,22 @@ export function Options(props) {
                                 null}
 
                             {/* Checkbox options */}
-                            {((type === 'checkbox' || type=='radio') && (
+                            {((type === 'checkbox' || type == 'radio') && (
                                 <>
                                     <div className={'margin-bottom-15'.classNames()}>
                                         {label_text}
                                     </div>
-                                    <div className={'d-flex flex-direction-column row-gap-10'.classNames()}>
-										<RadioCheckbox
-											type={type}
-											name={key}
-											value={values[key]}
-											options={options}
-											onChange={value=>onChange(key, value)}
-											spanClassName={'font-size-15 font-weight-400 line-height-24 letter-spacing--15 color-text'.classNames()}/>
+                                    <div
+                                        className={'d-flex flex-direction-column row-gap-10'.classNames()}
+                                    >
+                                        <RadioCheckbox
+                                            type={type}
+                                            name={key}
+                                            value={values[key]}
+                                            options={options}
+                                            onChange={(value) => onChange(key, value)}
+                                            spanClassName={'font-size-15 font-weight-400 line-height-24 letter-spacing--15 color-text'.classNames()}
+                                        />
                                     </div>
                                 </>
                             )) ||
@@ -149,11 +162,12 @@ export function Options(props) {
                                 <>
                                     <div className={'flex-5'.classNames()}>{label_text}</div>
                                     <div className={'flex-2'.classNames()}>
-                                        <NumberField 
-											min={min} 
-											value={values[key]} 
-											className={input_class} 
-											onChange={v=>onChange(key, v)}/>
+                                        <NumberField
+                                            min={min}
+                                            value={values[key]}
+                                            className={input_class}
+                                            onChange={(v) => onChange(key, v)}
+                                        />
                                     </div>
                                 </>
                             )) ||

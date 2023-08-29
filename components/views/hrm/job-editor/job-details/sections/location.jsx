@@ -1,11 +1,7 @@
 import React, { useContext } from 'react';
 
 import { __, countries_array } from '../../../../../utilities/helpers.jsx';
-import {
-    input_class,
-    section_title_class,
-    field_label_class
-} from '../job-details.jsx';
+import { input_class, section_title_class, field_label_class } from '../job-details.jsx';
 import style from '../details.module.scss';
 import { DropDown } from '../../../../../materials/dropdown/dropdown.jsx';
 import { TagField } from '../../../../../materials/tag-field/tag-field.jsx';
@@ -55,6 +51,8 @@ export function Location() {
                             type="text"
                             placeholder={__('ex. New York, NY 00010, USA')}
                             className={input_class}
+                            value={values.street_address || ''}
+                            onChange={(e) => onChange('street_address', e.currentTarget.value)}
                         />
                     </div>
                 </div>
@@ -77,6 +75,8 @@ export function Location() {
                             type="text"
                             className={input_class}
                             placeholder={__('ex. NY 00010')}
+                            value={values.zip_code || ''}
+                            onChange={(e) => onChange('zip_code', e.currentTarget.value)}
                         />
                     </div>
                     <div className={'flex-1 margin-left-10'.classNames()}>

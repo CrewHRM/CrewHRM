@@ -1,57 +1,46 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { __, getRandomString } from '../../../../utilities/helpers.jsx';
 
 import style from './hiring.module.scss';
 import { FormActionButtons } from '../../../../materials/form-action.jsx';
 import { ListManager } from '../../../../materials/list-manager/list-manager.jsx';
 import { DeletionConfirm } from './modal-confirm/model-to-confirm.jsx';
+import { ContextJobEditor } from '../index.jsx';
 
-export const sequences = [
-    __('Screening'),
-    __('Assesment'),
-    __('Interview'),
-    __('Make an Offer'),
-    __('Hired')
-].map((s) => {
-    return {
-        id: getRandomString(),
-        label: s
-    };
-});
-
-export function HiringFlow(props) {
-    const { navigateTab } = props;
+export function HiringFlow() {
+    const { values, onChange, navigateTab } = useContext(ContextJobEditor);
 
     const [state, setState] = useState({
-        sequences: sequences
+        confirm_modal_for: null
     });
 
     const deleteFlow = (id) => {
-        const { sequences = [] } = state;
+        const { hiriging_flow = [] } = values;
 
         if (id !== null) {
-            const index = sequences.findIndex((s) => s.id === id);
-            sequences.splice(index, 1);
+            const index = hiriging_flow.findIndex((s) => s.id === id);
+            hiriging_flow.splice(index, 1);
         }
 
         // Mark the state as modal to close now
+        onChange('hiriging_flow', hiriging_flow);
+
         setState({
             ...state,
-            sequences,
             confirm_modal_for: null
         });
     };
 
     return (
         <div data-crewhrm-selector="hiring-flow-builder" className={'hiring'.classNames(style)}>
-            {(state.confirm_modal_for && (
+            {state.confirm_modal_for ? (
                 <DeletionConfirm
-                    stage={state.sequences.find((s) => s.id == state.confirm_modal_for)}
+                    stage={values.hiriging_flow.find((s) => s.id == state.confirm_modal_for)}
                     closeModal={() => deleteFlow(null)}
                     deleteFlow={() => deleteFlow(state.confirm_modal_for)}
+                    moveTo={values.hiriging_flow.filter((f) => f.id !== state.confirm_modal_for)}
                 />
-            )) ||
-                null}
+            ) : null}
 
             <span
                 className={'d-block font-size-20 font-weight-600 color-text margin-bottom-40'.classNames()}
@@ -60,9 +49,10 @@ export function HiringFlow(props) {
             </span>
 
             <ListManager
-                list={state.sequences}
-                onChange={(sequences) => setState({ ...state, sequences })}
                 mode="queue"
+                list={values.hiriging_flow}
+                onChange={(hiriging_flow) => onChange('hiriging_flow', hiriging_flow)}
+                readOnyAfter={[{ id: 'a', label: __('Hired') }]}
                 className={'margin-bottom-50'.classNames()}
                 deleteItem={(id) => setState({ ...state, confirm_modal_for: id })}
                 addText={__('Add Stage')}

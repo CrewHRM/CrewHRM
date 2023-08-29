@@ -1,11 +1,7 @@
 import React, { useContext } from 'react';
 
 import { __ } from '../../../../../utilities/helpers.jsx';
-import {
-    field_label_class,
-    input_class,
-    section_title_class
-} from '../job-details.jsx';
+import { field_label_class, input_class, section_title_class } from '../job-details.jsx';
 import style from '../details.module.scss';
 import { DropDown } from '../../../../../materials/dropdown/dropdown.jsx';
 import { TagField } from '../../../../../materials/tag-field/tag-field.jsx';
@@ -39,11 +35,11 @@ export function Salary() {
                     <TagField
                         theme="button"
                         behavior="radio"
-                        value={values.salary_type}
+                        value={values.salary_basis}
                         options={Object.keys(salary_types).map((type) => {
                             return { id: type, label: salary_types[type] };
                         })}
-                        onChange={(value) => onChange('salary_type', value)}
+                        onChange={(value) => onChange('salary_basis', value)}
                         fullWidth={true}
                         className={'margin-bottom-30'.classNames()}
                     />
@@ -65,7 +61,12 @@ export function Salary() {
                         </div>
                         <div className={'flex-1 margin-left-10'.classNames()}>
                             <span className={field_label_class}>{__('Salary')}</span>
-                            <input className={input_class} placeholder={__('ex $100')} />
+                            <input
+                                className={input_class}
+                                placeholder={__('ex $100')}
+                                value={values.salary || ''}
+                                onChange={(e) => onChange('salary', e.currentTarget.value)}
+                            />
                         </div>
                     </div>
                 </div>

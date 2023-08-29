@@ -5,8 +5,56 @@ import { __, getRandomString } from '../../utilities/helpers.jsx';
 
 import style from './list.module.scss';
 
+function ItemSingle({ list_item, renameStage, deleteHandler, deleteFlow }) {
+    return (
+        <div
+            className={
+                'd-flex align-items-center border-radius-10 border-1-5 b-color-tertiary padding-15'.classNames() +
+                'single'.classNames(style)
+            }
+        >
+            <i className={'ch-icon ch-icon-drag font-size-26 color-text-light'.classNames()}></i>
+
+            <div className={'flex-1'.classNames()}>
+                <input
+                    id={'crewhrm-flow-option-' + list_item.id}
+                    type="text"
+                    value={list_item.label}
+                    disabled={!renameStage}
+                    onChange={(e) => {
+                        if (renameStage) {
+                            renameStage(list_item.id, e.currentTarget.value);
+                        }
+                    }}
+                    className={'text-field-flat margin-left-5'.classNames()}
+                />
+            </div>
+
+            {deleteHandler || deleteFlow ? (
+                <i
+                    className={
+                        'ch-icon ch-icon-trash font-size-24 color-danger margin-left-20 cursor-pointer'.classNames() +
+                        'trash'.classNames(style)
+                    }
+                    onClick={() =>
+                        deleteHandler ? deleteHandler(list_item.id) : deleteFlow(list_item.id)
+                    }
+                ></i>
+            ) : null}
+        </div>
+    );
+}
+
 export function ListManager(props) {
-    const { list, mode, className = '', onChange, deleteItem, addText = __('Add New') } = props;
+    const {
+        list,
+        mode,
+        className = '',
+        onChange,
+        deleteItem: deleteHandler,
+        addText = __('Add New'),
+        readOnyAfter
+    } = props;
     const is_queue = mode === 'queue';
 
     const [state, setState] = useState({
@@ -89,42 +137,19 @@ export function ListManager(props) {
                         ...list_item,
                         id: list_item.id, // Just to make sure it requires ID.
                         rendered: (
-                            <div
-                                className={
-                                    'd-flex align-items-center border-radius-10 border-1-5 b-color-tertiary padding-15'.classNames() +
-                                    'single'.classNames(style)
-                                }
-                            >
-                                <i
-                                    className={'ch-icon ch-icon-drag font-size-26 color-text-light'.classNames()}
-                                ></i>
-                                <div className={'flex-1'.classNames()}>
-                                    <input
-                                        id={'crewhrm-flow-option-' + list_item.id}
-                                        type="text"
-                                        value={list_item.label}
-                                        onChange={(e) =>
-                                            renameStage(list_item.id, e.currentTarget.value)
-                                        }
-                                        className={'text-field-flat margin-left-5'.classNames()}
-                                    />
-                                </div>
-                                <i
-                                    className={
-                                        'ch-icon ch-icon-trash font-size-24 color-danger margin-left-20 cursor-pointer'.classNames() +
-                                        'trash'.classNames(style)
-                                    }
-                                    onClick={() =>
-                                        deleteItem
-                                            ? deleteItem(list_item.id)
-                                            : deleteFlow(list_item.id)
-                                    }
-                                ></i>
-                            </div>
+                            <ItemSingle
+                                {...{ list_item, renameStage, deleteHandler, deleteFlow }}
+                            />
                         )
                     };
                 })}
             />
+
+            {readOnyAfter
+                ? readOnyAfter.map((list_item) => {
+                      return <ItemSingle key={list_item.id} list_item={list_item} />;
+                  })
+                : null}
 
             <div
                 className={
