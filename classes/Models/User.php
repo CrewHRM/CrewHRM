@@ -7,7 +7,7 @@ class User {
 	/**
 	 * Validate if a user has required role
 	 *
-	 * @param int $user_id
+	 * @param int          $user_id
 	 * @param string|array $role
 	 * @return bool
 	 */

@@ -2,116 +2,116 @@
 
 namespace CrewHRM\Setup;
 
+use CrewHRM\Helpers\_String;
 use CrewHRM\Helpers\Validation;
 use CrewHRM\Main;
-use CrewHRM\Models\Settings;
 use CrewHRM\Models\User;
+
+use CrewHRM\Controllers\CompanyProfile;
+use CrewHRM\Controllers\PluginSettings;
 
 class Dispatcher {
 	
-	// To Do: Secure all the endpoint after MVP implementation
+	/**
+	 * Ajax request endpoints
+	 *
+	 * @var array
+	 */
 	private static $endpoints = array(
-
-		// Administrative endpoints
-		'save_settings' => array(
-			'role' => 'administrator',
-		),
-		'save_company_profile' => array(
-			'role' => 'administrator',
-			'required' => array(
-				'settings' => array(
-					'type' => 'array'
-				)
-			)
-		),
-
-		// End user endpoints
-		'get_career_listings' => array(
-			'nopriv' => true
-		)
+		'save_settings'            => PluginSettings::class,
+		'save_company_profile'     => CompanyProfile::class,
+		'save_company_departments' => CompanyProfile::class,
 	);
 
 	/**
 	 * Dispatcher registration in constructor
 	 */
-	function __construct() {
-		// Loop through handlers and register
-		foreach ( self::$endpoints as $endpoint => $prerequisites ) {
-			// Register logged in handler first
-			add_action( 'wp_ajax_' . Main::$configs->app_name . '_' . $endpoint, function() use($endpoint) {
-				$this->dispatch($endpoint);
-			} );
+	public function __construct() {
 
-			// Register public handlers too if defined so
+		// Loop through handlers and register
+		foreach ( self::$endpoints as $endpoint => $class ) {
+			// Retrieve prerequisities from controller class
+			$prerequisites = $this->getPrerequisites( $class, $endpoint );
+
+			// Determine ajax handler types
+			$handlers    = [];
+			$handlers [] = 'wp_ajax_' . Main::$configs->app_name . '_' . $endpoint;
+
+			// Check if norpriv necessary
 			if ( ( $prerequisites['nopriv'] ?? false ) === true ) {
-				add_action( 'wp_ajax_nopriv_' . Main::$configs->app_name . '_' . $endpoint, function() use($endpoint) {
-					$this->dispatch($endpoint);
-				} );
+				$handlers[] = 'wp_ajax_nopriv_' . Main::$configs->app_name . '_' . $endpoint;
+			}
+
+			// Loop through the handlers and register
+			foreach ( $handlers as $handler ) {
+				add_action(
+					$handler,
+					function() use ( $endpoint, $prerequisites ) {
+						$this->dispatch( $endpoint, $prerequisites );
+					} 
+				);
 			}
 		}
 	}
 
-	public function dispatch( $endpoint ) {
-		// Determine data
-		$is_post = strtolower( sanitize_text_field( $_SERVER['REQUEST_METHOD'] ) ) === 'post';
-		$data    = $is_post ? $_POST : $_GET;
+	/**
+	 * Get prerequisities for a controller
+	 *
+	 * @param string $class Controller class
+	 * @param string $handler Ajax handler
+	 * @return array
+	 */
+	private function getPrerequisites( $class, $endpoint ) {
 
-		// Verify nonce
+		$method = _String::snakeToCamel( $endpoint );
+
+		if ( defined( $class . '::PREREQUISITES' ) && is_array( $class::PREREQUISITES ) && ! empty( $class::PREREQUISITES[ $method ] ) ) {
+			return $class::PREREQUISITES[ $method ];
+		}
+
+		return array();
+	}
+
+	/**
+	 * Dispatch request to target handler after some verification
+	 *
+	 * @param string $endpoint
+	 * @return void
+	 */
+	public function dispatch( $endpoint, $prerequisites ) {
+		// Determine post/get data
+		$is_post = isset( $_SERVER['REQUEST_METHOD'] ) ? strtolower( sanitize_text_field( $_SERVER['REQUEST_METHOD'] ) ) === 'post' : null;
+		$data    = $is_post ? $_POST : $_GET; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+
+		// Verify nonce first of all
 		$nonce   = $data['nonce'] ?? null;
 		$action  = $data['nonceAction'] ?? null;
 		$matched = $nonce && $action && wp_verify_nonce( $nonce, $action );
 		if ( ! $matched ) {
-			wp_send_json_error( array( 'message' => __( 'Session Expired!', 'crewhrm' ) ) );
+			wp_send_json_error( array( 'message' => __( 'Session Expired! Reloading the page might help resolve.', 'crewhrm' ) ) );
 		}
 
 		// Verify required user role
-		if ( ! empty( $required_roles = self::$endpoints[ $endpoint ]['role'] ) ) {
+		if ( ! empty( $required_roles = $prerequisites['role'] ) ) {
 			if ( ! User::validateRole( get_current_user_id(), $required_roles ) ) {
 				wp_send_json_error( array( 'message' => __( 'Access Denied!', 'crewhrm' ) ) );
 			}
 		}
 
 		// Check required data
-		if ( ! empty( $required = self::$endpoints[ $endpoint ]['required'] ) ) {
+		if ( ! empty( $required = $prerequisites['required'] ) ) {
 			if ( ! Validation::validateData( $data, $required ) ) {
 				wp_send_json_error( array( 'message' => __( 'Invalid Data!', 'crewhrm' ) ) );
 			}
 		}
 
 		// Now pass to the action handler function
-		if ( method_exists( $this, $endpoint ) ) {
-			$this->$endpoint( $data );
+		$method = _String::snakeToCamel( $endpoint );
+		$class  = self::$endpoints[ $endpoint ];
+		if ( class_exists( $class ) && method_exists( $class, $method ) ) {
+			$class::$method( $data );
 		} else {
 			wp_send_json_error( array( 'message' => __( 'Invalid Endpoint!', 'crewhrm' ) ) );
 		}
-	}
-
-	/* ------------------------------------ Action Handlers ------------------------------------ */
-
-	/**
-	 * Save admin settings
-	 *
-	 * @return void
-	 */
-	public function save_settings() {
-		wp_send_json_success(
-			array(
-				'message' => 'ok',
-			)
-		);
-	}
-
-	/**
-	 * Save company settings
-	 *
-	 * @param array $data Request data
-	 * @return void
-	 */
-	public function save_company_profile( $data ) {
-		
-		// Update the settings now
-		Settings::saveSettings( $data['settings'], Settings::KEY_COMPANY );
-
-		wp_send_json_success();
 	}
 }
