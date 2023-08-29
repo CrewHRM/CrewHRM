@@ -9,20 +9,22 @@ use CrewHRM\Models\Settings;
 class CompanyProfile {
 	const PREREQUISITES = array(
 		'saveCompanyProfile' => array(
-			'role'       => 'administrator',
-			'required'   => array(
-				'settings' => array(
-					'type' => 'array',
-				),
+			'role' => 'administrator',
+			'data' => array(
+				'settings' => 'type:array|required:true',
 			),
 		),
 		'saveCompanyDepartments' => array(
-			'role'     => 'administrator',
-			'required' => array(
-				'settings' => array(
-					'type' => 'array',
-				),
+			'role' => 'administrator',
+			'data' => array(
+				'departments' => 'type:array|required:true',
 			),
+		),
+		'addDepartment' => array(
+			'role' => array( 'administrator', 'editor' ),
+			'data' => array(
+				'department_name' => 'type:string|required:true'
+			)
 		)
 	);
 
@@ -32,7 +34,7 @@ class CompanyProfile {
 	 * @param array $data Request data
 	 * @return void
 	 */
-	public static function saveCompanyProfile( $data ) {
+	public static function saveCompanyProfile( array $data ) {
 		
 		// Update the settings now
 		Settings::saveSettings( $data['settings'], Settings::KEY_COMPANY );
@@ -40,7 +42,13 @@ class CompanyProfile {
 		wp_send_json_success( array( 'message' => __( 'Company profile updated' ) ) );
 	}
 
-	public static function saveCompanyDepartments( $data ) {
+	/**
+	 * Save departments, ideally from main department editor.
+	 *
+	 * @param array $data Request data
+	 * @return void
+	 */
+	public static function saveCompanyDepartments( array $data ) {
 		
 		// Save the departments
 		Department::saveDepartments( $data['departments'] );
@@ -52,6 +60,31 @@ class CompanyProfile {
 			array(
 				'message'     => __( 'Departments Saved!' ),
 				'departments' => $departments,
+			)
+		);
+	}
+
+	/**
+	 * Add single department, ideally from job editor
+	 *
+	 * @param array $data Request data
+	 * @return void
+	 */
+	public static function addDepartment( array $data ) {
+		// Add first
+		$new_id = Department::addDepartment( $data['department_name'] );
+		if ( ! $new_id ) {
+			wp_send_json_error( array( 'message' => __( 'Something went wrong!', 'crewhrm' ) ) );
+		}
+
+		// Get updated list
+		$departments =  Department::getDepartments();
+
+		wp_send_json_success(
+			array(
+				'id'          => $new_id,
+				'departments' => $departments,
+				'message'     => __( 'New department added successfully', 'crewhrm' )
 			)
 		);
 	}

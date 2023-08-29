@@ -21,6 +21,7 @@ class Dispatcher {
 		'save_settings'            => PluginSettings::class,
 		'save_company_profile'     => CompanyProfile::class,
 		'save_company_departments' => CompanyProfile::class,
+		'add_department'           => CompanyProfile::class,
 	);
 
 	/**
@@ -99,8 +100,8 @@ class Dispatcher {
 		}
 
 		// Check required data
-		if ( ! empty( $required = $prerequisites['required'] ) ) {
-			if ( ! Validation::validateData( $data, $required ) ) {
+		if ( ! empty( $required_data_role = $prerequisites['data'] ) ) {
+			if ( ! Validation::validateData( $data, $required_data_role ) ) {
 				wp_send_json_error( array( 'message' => __( 'Invalid Data!', 'crewhrm' ) ) );
 			}
 		}

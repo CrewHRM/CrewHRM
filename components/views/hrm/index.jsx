@@ -8,9 +8,10 @@ import { MountPoint } from '../../materials/mountpoint.jsx';
 
 const hrm = document.getElementById('crewhrm_dashboard');
 if (hrm) {
+	const data = getElementDataSet(hrm);
     ReactDOM.createRoot(hrm).render(
-        <MountPoint element={hrm}>
-            <HRM {...getElementDataSet(hrm)} />
+        <MountPoint element={hrm} nonce={data.crewhrmNonce} nonceAction={hrm.id}>
+            <HRM {...data} />
         </MountPoint>
     );
 }

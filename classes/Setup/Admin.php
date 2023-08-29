@@ -60,7 +60,10 @@ class Admin extends Main {
 	 * @return void
 	 */
 	public function mainPage() {
-		echo '<div id="' . esc_attr( self::MOUNTPOINT_DASHBOARD ) . '" data-crewhrm-nonce="' . esc_attr( wp_create_nonce( self::MOUNTPOINT_DASHBOARD ) ) . '"></div>';
+		echo '<div 
+				id="' . esc_attr( self::MOUNTPOINT_DASHBOARD ) . '" 
+				data-crewhrm-nonce="' . esc_attr( wp_create_nonce( self::MOUNTPOINT_DASHBOARD ) ) . '"
+				data-departments="' . esc_attr( json_encode( Department::getDepartments() ) ) . '"></div>';
 	}
 	
 	/**

@@ -8,7 +8,9 @@ export function MountPoint({ children, nonce, nonceAction }) {
     return (
         <div data-crewhrm-selector="root" className={'root'.classNames()}>
             <ContextNonce.Provider value={{ nonce, nonceAction }}>
-                <ToastWrapper>{children}</ToastWrapper>
+                <ToastWrapper>
+					{children}
+				</ToastWrapper>
             </ContextNonce.Provider>
         </div>
     );

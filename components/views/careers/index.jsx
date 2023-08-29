@@ -185,9 +185,11 @@ function Router() {
 // Render company profile
 const careers = document.getElementById('crewhrm_careers');
 if (careers) {
+	const data = getElementDataSet(careers);
+
     ReactDOM.createRoot(careers).render(
-        <MountPoint element={careers}>
-            <Router {...getElementDataSet(careers)} />
+        <MountPoint element={careers} nonce={data.crewhrmNonce} nonceAction={careers.id}>
+            <Router {...data} />
         </MountPoint>
     );
 }

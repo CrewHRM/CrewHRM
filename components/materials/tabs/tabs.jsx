@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useContext } from 'react';
 
+import { ContextJobEditor } from '../../views/hrm/job-editor/index.jsx';
 import style from './tabs.module.scss';
 
 export function Tabs(props) {
-    const { active, tabs = [], onNavigate, theme, className = '', style: cssStyle = {} } = props;
+	const {navigateTab} = useContext(ContextJobEditor);
+
+    const { active, tabs = [], theme, className = '', style: cssStyle = {} } = props;
     const active_index = tabs.findIndex((tab) => tab.id == active);
 
     return (
@@ -24,7 +27,7 @@ export function Tabs(props) {
                     <div
                         key={id}
                         className={`single-step ${id === active ? 'active' : ''}`.classNames(style)}
-                        onClick={() => onNavigate(id)}
+                        onClick={() => navigateTab(id)}
                     >
                         {label}
                         {(theme == 'sequence' && (

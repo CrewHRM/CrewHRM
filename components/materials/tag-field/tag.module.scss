@@ -14,7 +14,8 @@
         cursor: pointer;
         font-size: 15px;
         @include fontWeight(500);
-        line-height: 25;
+        line-height: 25px;
+		white-space: nowrap;
         display: flex;
         align-items: center;
         justify-content: center;

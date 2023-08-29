@@ -22,21 +22,30 @@ class Department {
 	 * @return array Saved departments
 	 */
 	public static function saveDepartments( array $departments ) {
+
+		// Apply order the way the array is
+		$departments = _Array::applyOrderRecursive( $departments, 'sequence' );
+
 		global $wpdb;
-		
 		foreach ( $departments as $department ) {
 			if ( is_numeric( $department['id'] ) ) {
 				// Update the name as ID exists
 				$wpdb->update(
 					DB::departments(),
-					array( 'department_name' => $department['label'] ),
+					array( 
+						'department_name' => $department['label'],
+						'sequence'       => $department['sequence']
+					),
 					array( 'department_id' => $department['id'] )
 				);
 			} else {
 				// The ID was assigned by react when added new for 'key' attribute purpose. Insert it as a new.
 				$wpdb->insert(
 					DB::departments(),
-					array( 'department_name' => $department['label'] )
+					array( 
+						'department_name' => $department['label'],
+						'sequence'        => $department['sequence']
+					)
 				);
 			}
 		}
@@ -51,15 +60,46 @@ class Department {
 		global $wpdb;
 		$departments = $wpdb->get_results(
 			$wpdb->prepare(
-				"SELECT * FROM " . DB::departments()
+				"SELECT 
+					department_name, 
+					CAST(department_id as UNSIGNED) as department_id,
+					CAST(sequence as UNSIGNED) as sequence,
+					CAST(parent_id as UNSIGNED) as parent_id
+				FROM " . DB::departments()
 			),
 			ARRAY_A
 		);
 
 		// Convert data for react use
 		$departments = _Array::renameColumns( $departments, array_flip( self::$column_names ) );
+		$departments = _Array::castColumns( $departments, 'intval' );
 		$departments = array_reverse( $departments );
 
 		return $departments;
+	}
+
+	/**
+	 * Add a single department
+	 *
+	 * @param string $department_name
+	 * @return int
+	 */
+	public static function addDepartment( string $department_name ) {
+		global $wpdb;
+
+		// Get sequence number
+		$max_value    = $wpdb->get_var( "SELECT MAX(sequence) FROM " . DB::departments() );
+    	$new_sequence = $max_value + 1;
+
+		// Insert finally
+		$wpdb->insert(
+			DB::departments(),
+			array(
+				'department_name' => $department_name,
+				'sequence'        => $new_sequence
+			)
+		);
+
+		return $wpdb->insert_id;
 	}
 }

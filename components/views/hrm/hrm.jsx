@@ -10,6 +10,7 @@ import { StickyBar } from '../../materials/sticky-bar/sticky-bar.jsx';
 import { __, getRandomString } from '../../utilities/helpers.jsx';
 // import { NotificationsEmail, NotificationsOnSite } from "./notifications/notifications.jsx";
 import { NoticeBar } from './notifications/notice/notice-bar.jsx';
+import { AddDepartmentModal } from '../settings/company-profile/departments/add-department.jsx';
 
 export const ContextBackendDashboard = createContext();
 
@@ -35,8 +36,10 @@ export function DashboardBar(props) {
     );
 }
 
-export function HRM(props) {
+export function HRM({departments=[]}) {
+
     const [state, setState] = useState({
+		departments,
         notices: [
             {
                 id: getRandomString(),
@@ -95,12 +98,42 @@ export function HRM(props) {
         ]
     });
 
-    const showNotice = () => {};
+	// To Do: Fill this function
+    const showNotice = () => {
+		
+	}
+
+    const addDepartment = (add_department_callback=()=>{}) => {
+		setState({
+			...state,
+			add_department_callback
+		});
+    };
+
+	const onAddDepartment=({id, departments})=>{
+		// Send the new id to the parent caller
+		state.add_department_callback(id);
+
+		// Update state with the new list, and close modal
+		setState({
+			...state,
+			add_department_callback: null,
+			departments
+		});
+	}
+
+	const closeDepartmentModal=()=>{
+		setState({
+			...state,
+			add_department_callback: null
+		});
+	}
 
     const deleteNotice = (id) => {
         const { notices } = state;
         const index = notices.findIndex((n) => n.id === id);
         notices.splice(index, 1);
+
         setState({
             ...state,
             notices
@@ -109,9 +142,21 @@ export function HRM(props) {
 
     return (
         <ContextBackendDashboard.Provider
-            value={{ notices: state.notices, showNotice, deleteNotice }}
+            value={{ 
+				notices: state.notices, 
+				showNotice, 
+				deleteNotice, 
+				departments: state.departments, 
+				addDepartment }}
         >
             <WpDashboardFullPage>
+
+				{state.add_department_callback ? 
+					<AddDepartmentModal 
+						onAdd={onAddDepartment} 
+						closeModal={closeDepartmentModal}/> : null
+				}
+
                 <HashRouter>
                     <Routes>
                         <Route

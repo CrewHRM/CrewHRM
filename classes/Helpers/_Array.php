@@ -61,4 +61,67 @@ class _Array {
 			$rows
 		);
 	}
+
+	/**
+	 * Apply order to every array elements
+	 *
+	 * @param array $array
+	 * @param string $key
+	 * @return array
+	 */
+	public static function applyOrderRecursive( array $array, string $key, $order = 1 ) {
+		
+		foreach ( $array as $index => $elment ) {
+
+			// Deep level order assignment
+			if ( is_array( $elment ) ) {
+				$array[ $index ] = self::applyOrderRecursive( $elment, $key );
+				continue;
+			}
+
+			$elment[ $key ] = $order;
+			$array[ $index ] = $elment;
+			$order++;
+		}
+
+		return $array;
+	}
+
+	/**
+	 * Type cast key value paired array
+	 *
+	 * @param array $array
+	 * @param string $method
+	 * @return array
+	 */
+	public static function cast( array $array, $method ) {
+		$is_intval = $method === 'intval';
+		
+		foreach ( $array as $key => $value ) {
+			
+			if ( $is_intval && ! is_numeric( $value ) ) {
+				continue;
+			}
+
+			$array[ $key ] = $method( $value );
+		}
+
+		return $array;
+	}
+
+	/**
+	 * Type cast row-column array
+	 *
+	 * @param array $rows
+	 * @param string $method
+	 * @return array
+	 */
+	public static function castColumns( array $rows, $method ) {
+		return array_map(
+			function ( $row ) use( $method ) {
+				return self::cast( $row, $method );
+			},
+			$rows
+		);
+	}
 }
