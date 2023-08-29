@@ -9,58 +9,49 @@ import { CompantDepartments } from './departments/departments.jsx';
 import { CompanyProfile } from './profile/profile.jsx';
 import { ContextNonce } from '../../../materials/mountpoint.jsx';
 import { __ } from '../../../utilities/helpers.jsx';
-import { UndoRedo, addToHistory } from '../../../materials/undo-redo.jsx';
+import { ContextHistoryFields, HistoryFields, UndoRedo } from '../../../materials/undo-redo.jsx';
 import { request } from '../../../utilities/request.jsx';
 import { ContextToast } from '../../../materials/toast/toast.jsx';
 
 import style from './company.module.scss';
 
-function CompanyWrapper({ companyProfile = {} }) {
+function CompanyWrapper() {
     const { nonce, nonceAction } = useContext(ContextNonce);
-    const { addToast } = useContext(ContextToast);
+    const { ajaxToast } = useContext(ContextToast);
     const { sub_page } = useParams();
     const page_id = sub_page || 'profile';
+	const segment = page_id === 'profile' ? 'companyProfile' : 'departments';
 
-    const [state, setState] = useState({
-        index: 0,
-        logo_url: companyProfile.log,
-        history: [companyProfile]
-    });
+	const {
+		clearHistory, 
+		can_go_next, 
+		onChange, 
+		values
 
-    const onChange = (name, value) => {
-        const { index, history } = state;
+	} = useContext(ContextHistoryFields);
 
-		const obj_value = typeof name==='object' ? name : {[name]: value};
-
-        // Finally update state
-        setState({
-            ...state,
-            ...addToHistory(obj_value, { index, history })
-        });
-    };
 
     const saveCompanyProfile = () => {
-        const values = state.history[state.index];
-        request('save_company_profile', { settings: values, nonce, nonceAction }, (resp) => {
-            const { success, data } = resp;
+		let _action;
+		let _payload;
 
-            if (!success) {
-                addToast(data?.message || __('Something went wrong!'));
-                return;
-            }
+		if ( segment==='companyProfile' ) {
+			_action = 'save_company_profile',
+			_payload = {settings: values[segment]};
+		} else {
+			_action = 'save_company_departments';
+			_payload = {departments: values[segment].departments};
+		}
+		
+        request(_action, { ..._payload, nonce, nonceAction }, (resp) => {
 
-            // Show success toast
-            addToast(__('Seetings saved successfully!'));
-
-            // Clear the dirty state and store the saved value as the basis
-            setState({
-                index: 0,
-                history: [values]
-            });
+			ajaxToast(resp);
+			
+            if ( resp?.success ) {
+				clearHistory(segment);
+			}
         });
     };
-
-    const values = state.history[state.index] || {};
 
     return (
         <>
@@ -69,14 +60,10 @@ function CompanyWrapper({ companyProfile = {} }) {
                 title={pages.find((p) => p.id === page_id)?.label || __('Company Profile')}
             >
                 <div className={'d-flex align-items-center column-gap-30'.classNames()}>
-                    <UndoRedo
-                        historyLength={state.history.length}
-                        index={state.index}
-                        onChange={(index) => setState({ ...state, index })}
-                    />
+                    <UndoRedo segment={segment}/>
                     <button
                         className={'button button-primary'.classNames()}
-                        disabled={state.index < 0}
+                        disabled={!can_go_next[segment]}
                         onClick={saveCompanyProfile}
                     >
                         {__('Save Changes')}
@@ -89,10 +76,15 @@ function CompanyWrapper({ companyProfile = {} }) {
                 </div>
                 <div className={'content-area'.classNames(style)}>
                     {(page_id === 'profile' && (
-                        <CompanyProfile onChange={onChange} values={values} />
+                        <CompanyProfile 
+							onChange={(name, value)=>onChange(name, value, 'companyProfile')} 
+							values={values[segment]} />
                     )) ||
                         null}
-                    {(page_id === 'departments' && <CompantDepartments />) || null}
+
+                    {(page_id === 'departments' && <CompantDepartments 
+						onChange={(name, value)=>onChange(name, value, 'departments')} 
+						values={values[segment]}/>) || null}
                 </div>
             </div>
         </>
@@ -100,18 +92,22 @@ function CompanyWrapper({ companyProfile = {} }) {
 }
 
 export function Company(props) {
+	const {departments={}, companyProfile={}} = props;
+
     return (
         <ContextBackendDashboard.Provider value={{}}>
             <WpDashboardFullPage>
-                <HashRouter>
-                    <Routes>
-                        <Route
-                            path="/company/:sub_page?/"
-                            element={<CompanyWrapper {...props} />}
-                        />
-                        <Route path={'*'} element={<Navigate to="/company/" replace />} />
-                    </Routes>
-                </HashRouter>
+				<HistoryFields defaultValues={{departments, companyProfile}} segmented={true}>
+					<HashRouter>
+						<Routes>
+							<Route
+								path="/company/:sub_page?/"
+								element={<CompanyWrapper {...props} />}
+							/>
+							<Route path={'*'} element={<Navigate to="/company/" replace />} />
+						</Routes>
+					</HashRouter>
+				</HistoryFields>
             </WpDashboardFullPage>
         </ContextBackendDashboard.Provider>
     );

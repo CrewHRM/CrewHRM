@@ -59,15 +59,15 @@ export const settings_fields = {
                             'Not specifying any removes restriction. To disable upload, turn off attachment per job post.'
                         )
                     },
-                    attachment_size_limit: {
-                        label: __('Max attachment size (KB)'),
+                    attachment_max_upload_size: {
+                        label: __('Max attachment size (KiloByte)'),
                         type: 'number',
-                        hint: __('Keep blank to apply default size')
+						min: 1
                     },
-                    attachment_file_limit: {
+                    attachment_max_upload_count: {
                         label: __('Max attachment files'),
                         type: 'number',
-                        hint: __('Keep blank for no limit')
+						min: 1
                     }
                 }
             }

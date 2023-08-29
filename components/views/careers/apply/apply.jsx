@@ -60,9 +60,6 @@ const fields = {
 };
 
 export function Apply({ job }) {
-    const {
-        settings: { application_form_is_single }
-    } = window.CrewHRM;
     const { job_title, location } = job;
 
     const [state, setState] = useState({
@@ -72,7 +69,7 @@ export function Apply({ job }) {
 
     const step_index = steps.findIndex((s) => s.id === state.active_tab);
     const step = steps[step_index];
-    const is_segment = application_form_is_single == false;
+    const is_segment = true;
     const is_last_tab = step_index >= steps.length - 1;
 
     const onChange = (name, v) => {
