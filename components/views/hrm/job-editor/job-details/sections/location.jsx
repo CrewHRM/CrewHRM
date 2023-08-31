@@ -7,7 +7,7 @@ import { DropDown } from '../../../../../materials/dropdown/dropdown.jsx';
 import { TagField } from '../../../../../materials/tag-field/tag-field.jsx';
 import { ContextJobEditor } from '../../index.jsx';
 
-const location_types = {
+const attendance_types = {
     on_site: __('On-Site'),
     remote: __('Fully Remote'),
     hybrid: __('Hybrid')
@@ -32,11 +32,11 @@ export function Location() {
                     <TagField
                         theme="button-control"
                         behavior="checkbox"
-                        value={values.location_type || []}
-                        options={Object.keys(location_types).map((location) => {
-                            return { id: location, label: location_types[location] };
+                        value={values.attendance_type || []}
+                        options={Object.keys(attendance_types).map((location) => {
+                            return { id: location, label: attendance_types[location] };
                         })}
-                        onChange={(types) => onChange('location_type', types)}
+                        onChange={(types) => onChange('attendance_type', types)}
                     />
                 </div>
                 <div className={'right-col'.classNames(style)}></div>

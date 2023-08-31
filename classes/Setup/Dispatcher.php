@@ -8,6 +8,7 @@ use CrewHRM\Main;
 use CrewHRM\Models\User;
 
 use CrewHRM\Controllers\CompanyProfile;
+use CrewHRM\Controllers\JobManagement;
 use CrewHRM\Controllers\PluginSettings;
 
 class Dispatcher {
@@ -19,9 +20,12 @@ class Dispatcher {
 	 */
 	private static $endpoints = array(
 		'save_settings'            => PluginSettings::class,
+
 		'save_company_profile'     => CompanyProfile::class,
 		'save_company_departments' => CompanyProfile::class,
 		'add_department'           => CompanyProfile::class,
+
+		'update_job'               => JobManagement::class,
 	);
 
 	/**
