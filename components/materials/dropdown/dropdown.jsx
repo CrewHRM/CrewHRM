@@ -113,8 +113,8 @@ export function DropDown(props) {
                                     }`;
                                     return (
                                         <div
+											key={id}
                                             data-crewhrm-selector="dropdown-item"
-                                            key={id}
                                             className={classes.classNames(style) + list_class}
                                             onClick={() => {
                                                 onChange(id);

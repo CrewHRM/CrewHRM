@@ -14,7 +14,7 @@ class JobManagement {
 				'job' => 'type:array'
 			)
 		),
-		'getJobs' => array()
+		'getJobsDashboard' => array()
 	);
 
 	/**
@@ -63,8 +63,10 @@ class JobManagement {
 	 *
 	 * @return void
 	 */
-	public static function getJobs() {
+	public static function getJobsDashboard() {
+		// Get Initial job list
 		$jobs = Job::getJobs();
-		wp_send_json_success( array( 'jobs' => $jobs ) );
+
+		wp_send_json_success( array( 'jobs' => array_values( $jobs ) ) );
 	}
 }

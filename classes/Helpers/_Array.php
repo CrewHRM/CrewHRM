@@ -124,4 +124,36 @@ class _Array {
 			$rows
 		);
 	}
+
+	/**
+	 * Make an array column value index of the array
+	 *
+	 * @param array $array
+	 * @param string $column
+	 * @return array
+	 */
+	public static function indexify( array $array, string $column ) {
+		$new_array = array();
+		foreach ( $array as $element ) {
+			$new_array[ $element[ $column ] ] = $element;
+		}
+
+		return $new_array;
+	}
+
+	/**
+	 * Append column to a two dimensional array
+	 *
+	 * @param array $array
+	 * @param string $key
+	 * @param mixed $value
+	 * @return array
+	 */
+	public static function appendColumn( array $array, string $key, $value ) {
+		foreach ( $array as $index => $element ) {
+			$array[ $index ][ $key ] = $value;
+		}
+
+		return $array;
+	}
 }

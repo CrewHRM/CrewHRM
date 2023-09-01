@@ -28,7 +28,7 @@ export function EmploymentDetails(props) {
                 </div>
             </div>
 
-            {/* Employment type, vacancy and deadline */}
+            {/* Employment type, vacancy and application_deadline */}
             <span className={field_label_class}>{__('Choose employment type')}</span>
             <div className={'d-flex'.classNames()}>
                 <div className={'flex-1'.classNames()}>
@@ -62,7 +62,8 @@ export function EmploymentDetails(props) {
                             <span className={field_label_class}>{__('Submission Deadline')}</span>
                             <DateField
                                 className={input_class}
-                                onChange={(v) => onChange('deadline', v)}
+								value={values.application_deadline}
+                                onChange={(v) => onChange('application_deadline', v)}
                             />
                         </div>
                     </div>

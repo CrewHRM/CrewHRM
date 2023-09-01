@@ -1,15 +1,19 @@
-import React, { useState } from 'react';
-import { __, countries_array } from '../../../../utilities/helpers.jsx';
+import React, { useContext, useEffect, useState } from 'react';
+import { __, countries_array, getCountries } from '../../../../utilities/helpers.jsx';
 
 import style from './jobs.module.scss';
 import { StatusDot } from '../../../../materials/status-dot/status-dots.jsx';
-import { NoJob } from './no-job.jsx';
+import { NoJob } from './segments/no-job.jsx';
 import { Link } from 'react-router-dom';
 import { DropDown, Options } from '../../../../materials/dropdown/dropdown.jsx';
 import { Line } from '../../../../materials/line/line.jsx';
 import { ShareModal } from '../../../../materials/share-modal.jsx';
 import { TextField } from '../../../../materials/text-field/text-field.jsx';
 import { Pagination } from '../../../../materials/pagination/pagination.jsx';
+import { request } from '../../../../utilities/request.jsx';
+import { ContextNonce } from '../../../../materials/mountpoint.jsx';
+import moment from 'moment-timezone';
+import { StatsRow } from './segments/stats-row.jsx';
 
 const options = [
     {
@@ -63,6 +67,11 @@ const statuses = {
     }
 };
 
+const special_stages = {
+	_hired_ : __('Hired'),
+	_disqualified_: __('Disqualified')
+}
+
 const job = {
     job_id: 1,
     job_permalink: 'https://example.com/jobs/1',
@@ -103,8 +112,12 @@ const stat_labels = {
 
 export function JobOpenings(props) {
     let { is_overview, className } = props;
+	const {nonce, nonceAction} = useContext(ContextNonce);
+
     const [state, setState] = useState({
         share_link: null,
+		jobs: [],
+		fetching: false,
         filter: {
             job_status: 'all',
             country_code: null,
@@ -135,9 +148,28 @@ export function JobOpenings(props) {
         }
     };
 
-    const filter_status_options = status_keys.map((key) => {
-        return { id: key, label: statuses[key].label };
-    });
+	const getJobs=()=>{
+		setState({
+			...state,
+			fetching: true
+		});
+
+		const {filter} = state;
+		request('get_jobs_dashboard', {filter, nonce, nonceAction}, resp=>{
+			const {success, data={}} = resp;
+			const {jobs=[]} = data;
+
+			setState({
+				...state,
+				fetching: false,
+				jobs
+			});
+		})
+	}
+
+	useEffect(()=>{
+		getJobs();
+	}, []);
 
     return (
         <div data-crewhrm-selector="job-openings" className={'jobs'.classNames(style) + className}>
@@ -196,7 +228,7 @@ export function JobOpenings(props) {
                             transparent={is_overview}
                             placeholder={__('Department')}
                             value={state.filter.job_status}
-                            options={filter_status_options}
+                            options={status_keys.map((key) => {return { id: key, label: statuses[key].label }})}
                             onChange={(v) => onChange('job_status', v)}
                         />
                     </div>
@@ -215,28 +247,53 @@ export function JobOpenings(props) {
                 </div>
             </div>
 
-            {(!jobs.length && <NoJob />) || (
-                <div className={'job-list'.classNames(style)}>
-                    {jobs.map((job) => {
+            {(!state.jobs.length && <NoJob />) || (
+                <div data-crewhrm-selector={'job-list'}>
+                    {state.jobs.map((job) => {
                         const {
                             job_id,
                             job_title,
                             job_status,
-                            department,
-                            location,
+                            department_name,
+							street_address,
+							country_code,
                             job_type,
-                            application_deadline
+							employment_type,
+							vacancy,
+                            application_deadline,
+							stats: {candidates=0, stages: application_stages={}}
                         } = job;
-                        const meta_data = [department, location, job_type, application_deadline];
-                        const { color: status_color, label: status_label } = statuses[job_status];
 
-                        const stats = {
-                            candidates: job.candidates,
-                            qualified_candidates: job.qualified_candidates,
-                            job_views: job.job_views,
-                            interviewing: job.interviewing,
-                            hired: job.hired + '/' + job.vacancy
-                        };
+                        const meta_data = [
+							department_name, 
+							(street_address || country_code) ? street_address + (country_code ? ', ' + getCountries()[country_code] : '') : null, 
+							job_type, 
+							application_deadline ? moment(application_deadline).format('DD MMM, YYYY') : null
+						];
+
+                        const { 
+							color: status_color, 
+							label: status_label = __( 'Unknown Status' ) 
+						} = statuses[job_status] || {};
+
+                        const stats = [
+                            {
+								key: 'sdfsdf',
+								label: __( 'Candidates' ),
+								content: candidates,
+							}
+                        ];
+
+						// Assign data to stats object
+						Object.keys(application_stages).forEach(id=>{
+							const {stage_id, stage_name, candidates=0} = application_stages[id];
+							
+							stats.push({
+								key: stage_id,
+								label: special_stages[stage_name] || stage_name,
+								content: stage_name === '_hired_' ? candidates+(vacancy ? '/'+vacancy : '') : candidates
+							}) 
+						});
 
                         const actions = options
                             .filter((o) => o.for === 'all' || o.for.indexOf(job_status) > -1)
@@ -264,8 +321,8 @@ export function JobOpenings(props) {
                             });
 
                         return (
-                            <div key={job_id}>
-                                <div className={'d-flex align-items-center'.classNames()}>
+                            <div key={job_id} className={'bg-color-white border-radius-5 margin-bottom-20'.classNames()}>
+                                <div className={'d-flex align-items-center border-bottom-1 b-color-tertiary padding-vertical-15 padding-horizontal-20'.classNames()}>
                                     <div className={'flex-1'.classNames()}>
                                         <div
                                             className={'d-flex align-items-center margin-bottom-15'.classNames()}
@@ -282,7 +339,7 @@ export function JobOpenings(props) {
                                                 {job_title}
                                             </span>
                                         </div>
-                                        <div className={'meta-data'.classNames(style)}>
+                                        <div className={'d-flex align-items-center flex-direction-row flex-wrap-wrap column-gap-30 row-gap-5'.classNames()}>
                                             {meta_data.map((data, index) => {
                                                 return (
                                                     (data && (
@@ -318,40 +375,9 @@ export function JobOpenings(props) {
                                     </div>
                                 </div>
                                 <div
-                                    className={'d-flex align-items-center justify-content-space-between'.classNames()}
+                                    className={'d-flex align-items-center justify-content-space-between padding-vertical-15 padding-horizontal-20'.classNames()}
                                 >
-                                    {Object.keys(stats).map((key, index) => {
-                                        let is_last = index == Object.keys(stats).length - 1;
-
-                                        return [
-                                            <div
-                                                key={key}
-                                                style={!is_last ? {} : { paddingRight: '5%' }}
-                                            >
-                                                <div>
-                                                    <span
-                                                        className={'d-block color-text-light font-size-14 font-weight-400 margin-bottom-7'.classNames()}
-                                                    >
-                                                        {stat_labels[key]}
-                                                    </span>
-                                                    <span
-                                                        className={
-                                                            'd-block color-text font-size-17 font-weight-600'
-                                                        }
-                                                    >
-                                                        {stats[key]}
-                                                    </span>
-                                                </div>
-                                            </div>,
-                                            (!is_last && (
-                                                <Line
-                                                    key={key + '_separator'}
-                                                    orientation="vertical"
-                                                />
-                                            )) ||
-                                                null
-                                        ];
-                                    })}
+                                    <StatsRow stats={stats}/>
                                 </div>
                             </div>
                         );
@@ -360,7 +386,7 @@ export function JobOpenings(props) {
             )}
 
             {/* Show view all button when it is loaded in dashboard as summary */}
-            {(is_overview && jobs.length && (
+            {(is_overview && state.jobs.length && (
                 <Link
                     to="/dashboard/jobs/"
                     className={

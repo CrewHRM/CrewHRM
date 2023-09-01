@@ -1,7 +1,7 @@
 import React from 'react';
 
-import img from '../../../../images/no-job.svg';
-import { __ } from '../../../../utilities/helpers.jsx';
+import img from '../../../../../images/no-job.svg';
+import { __ } from '../../../../../utilities/helpers.jsx';
 
 export function NoJob() {
     return (

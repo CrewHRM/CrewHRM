@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Aug 31, 2023 at 02:06 AM
+-- Generation Time: Sep 01, 2023 at 09:41 PM
 -- Server version: 8.0.16
 -- PHP Version: 8.0.0
 
@@ -44,6 +44,22 @@ CREATE TABLE IF NOT EXISTS `wp_crewhrm_addresses` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `wp_crewhrm_applications`
+--
+
+CREATE TABLE IF NOT EXISTS `wp_crewhrm_applications` (
+  `application_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `job_id` bigint(20) UNSIGNED NOT NULL,
+  `stage_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `applicant_first_name` varchar(20) NOT NULL,
+  `applicant_last_name` varchar(20) NOT NULL,
+  `resume_file_id` bigint(20) UNSIGNED NOT NULL,
+  PRIMARY KEY (`application_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `wp_crewhrm_departments`
 --
 
@@ -53,19 +69,6 @@ CREATE TABLE IF NOT EXISTS `wp_crewhrm_departments` (
   `parent_id` bigint(20) UNSIGNED NOT NULL,
   `sequence` smallint(5) UNSIGNED NOT NULL,
   PRIMARY KEY (`department_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `wp_crewhrm_hiring_flows`
---
-
-CREATE TABLE IF NOT EXISTS `wp_crewhrm_hiring_flows` (
-  `flow_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `flow_name` varchar(50) NOT NULL,
-  `job_id` bigint(20) UNSIGNED NOT NULL,
-  PRIMARY KEY (`flow_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -106,7 +109,7 @@ CREATE TABLE IF NOT EXISTS `wp_crewhrm_jobs` (
   `experience_level` varchar(20) DEFAULT NULL COMMENT 'beginner, intermediate, expert etc.',
   `experience_years` varchar(255) DEFAULT NULL,
   `attendance_type` varchar(10) DEFAULT NULL,
-  `deadline` timestamp NULL DEFAULT NULL,
+  `application_deadline` timestamp NULL DEFAULT NULL,
   `application_form` longtext NOT NULL,
   PRIMARY KEY (`job_id`),
   KEY `job_status` (`job_status`,`department_id`,`salary_basis`,`employment_type`)
@@ -115,17 +118,29 @@ CREATE TABLE IF NOT EXISTS `wp_crewhrm_jobs` (
 -- --------------------------------------------------------
 
 --
--- Table structure for table `wp_crewhrm_job_applications`
+-- Table structure for table `wp_crewhrm_pipeline`
 --
 
-CREATE TABLE IF NOT EXISTS `wp_crewhrm_job_applications` (
-  `application_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+CREATE TABLE IF NOT EXISTS `wp_crewhrm_pipeline` (
+  `pipeline_id` bigint(20) UNSIGNED NOT NULL,
+  `application_id` bigint(20) UNSIGNED NOT NULL,
+  `stage_id` int(10) UNSIGNED NOT NULL,
+  `action_taker_id` bigint(20) UNSIGNED NOT NULL,
+  `action_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `wp_crewhrm_stages`
+--
+
+CREATE TABLE IF NOT EXISTS `wp_crewhrm_stages` (
+  `stage_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `stage_name` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
   `job_id` bigint(20) UNSIGNED NOT NULL,
-  `flow_id` bigint(20) UNSIGNED DEFAULT NULL,
-  `applicant_first_name` varchar(20) NOT NULL,
-  `applicant_last_name` varchar(20) NOT NULL,
-  `resume_file_id` bigint(20) UNSIGNED NOT NULL,
-  PRIMARY KEY (`application_id`)
+  `sequence` tinyint(3) UNSIGNED NOT NULL,
+  PRIMARY KEY (`stage_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 COMMIT;
 

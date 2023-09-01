@@ -26,6 +26,7 @@ class Dispatcher {
 		'add_department'           => CompanyProfile::class,
 
 		'update_job'               => JobManagement::class,
+		'get_jobs_dashboard'       => JobManagement::class,
 	);
 
 	/**
