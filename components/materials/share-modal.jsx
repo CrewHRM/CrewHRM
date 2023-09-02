@@ -12,29 +12,50 @@ import { ContextToast } from './toast/toast.jsx';
 const targets = [
     {
         label: __('Facebook'),
-        icon: facebook
+        icon: facebook,
+		sharer: 'https://www.facebook.com/sharer/sharer.php?u=%s'
     },
     {
         label: __('Linkedin'),
-        icon: linkedin
+        icon: linkedin,
+		sharer: 'https://www.linkedin.com/sharing/share-offsite/?url=%s'
     },
     {
         label: __('Twitter'),
-        icon: twitter
+        icon: twitter,
+		sharer: 'https://twitter.com/intent/tweet?url=%s'
     },
     {
         label: __('Reddit'),
-        icon: reddit
+        icon: reddit,
+		sharer: 'https://www.reddit.com/submit?url=%s'
     },
     {
         label: __('Email'),
-        icon: email
+        icon: email,
+		sharer: 'mailto:?body=%s'
     }
 ];
 
 export function ShareModal(props) {
     const { url, closeModal } = props;
     const { addToast } = useContext(ContextToast);
+
+	const openSharer=(url, sharer)=>{
+		url = 'http://google.com';
+		let urlToLoad = sharer.replace( '%s', encodeURIComponent( url ) );
+
+		// Define the dimensions of the popup window
+		var width = 500;
+		var height = 550;
+
+		// Calculate the left and top positions to center the window
+		var left = (window.screen.width - width) / 2;
+		var top = (window.screen.height - height) / 2;
+
+		// Open the popup window centered on the screen
+		window.open(urlToLoad, "PopupWindow", "width=" + width + ",height=" + height + ",left=" + left + ",top=" + top);
+	}
 
     return (
         <Modal>
@@ -60,7 +81,7 @@ export function ShareModal(props) {
             >
                 {targets.map((target, index) => {
                     return (
-                        <div key={index} className={'text-align-center'.classNames()}>
+                        <div key={index} className={'text-align-center darken-on-hover--9 cursor-pointer'.classNames()} onClick={()=>openSharer(url, target.sharer)}>
                             <img src={target.icon} className={'width-44'.classNames()} />
                             <span
                                 className={'d-block margin-top-12 font-size-16 font-weight-400 color-text-light'.classNames()}

@@ -3,7 +3,7 @@ import ReactPaginate from 'react-paginate';
 
 import style from './pagination.module.scss';
 
-export function Pagination({ itemsPerPage = 3, pageCount = 23 }) {
+export function Pagination({ pageNumber = 3, pageCount = 23 }) {
     // Invoke when user click to request another page.
     const handlePageClick = (event) => {
         console.log(event.selected, event);
@@ -23,9 +23,10 @@ export function Pagination({ itemsPerPage = 3, pageCount = 23 }) {
             disabledClassName={'disabled'.classNames(style)}
             pageLinkClassName={'font-size-15 font-weight-700 line-height-20'.classNames()}
             onPageChange={handlePageClick}
-            pageRangeDisplayed={3}
+            pageRangeDisplayed={2}
             marginPagesDisplayed={2}
             pageCount={pageCount}
+			forcePage={pageNumber}
             renderOnZeroPageCount={null}
         />
     );

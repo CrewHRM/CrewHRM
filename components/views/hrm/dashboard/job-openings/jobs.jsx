@@ -1,19 +1,23 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { __, countries_array, getCountries } from '../../../../utilities/helpers.jsx';
+import { __, getCountries } from '../../../../utilities/helpers.jsx';
 
 import style from './jobs.module.scss';
 import { StatusDot } from '../../../../materials/status-dot/status-dots.jsx';
 import { NoJob } from './segments/no-job.jsx';
 import { Link } from 'react-router-dom';
-import { DropDown, Options } from '../../../../materials/dropdown/dropdown.jsx';
-import { Line } from '../../../../materials/line/line.jsx';
+import { Options } from '../../../../materials/dropdown/dropdown.jsx';
 import { ShareModal } from '../../../../materials/share-modal.jsx';
-import { TextField } from '../../../../materials/text-field/text-field.jsx';
 import { Pagination } from '../../../../materials/pagination/pagination.jsx';
 import { request } from '../../../../utilities/request.jsx';
 import { ContextNonce } from '../../../../materials/mountpoint.jsx';
 import moment from 'moment-timezone';
 import { StatsRow } from './segments/stats-row.jsx';
+import { FilterBar } from './segments/filter-bar.jsx';
+
+const special_stages = {
+	_hired_ : __('Hired'),
+	_disqualified_: __('Disqualified')
+}
 
 const options = [
     {
@@ -48,7 +52,7 @@ const options = [
     }
 ];
 
-const statuses = {
+export const statuses = {
     publish: {
         color: '#73BF45',
         label: __('Published')
@@ -67,48 +71,7 @@ const statuses = {
     }
 };
 
-const special_stages = {
-	_hired_ : __('Hired'),
-	_disqualified_: __('Disqualified')
-}
-
-const job = {
-    job_id: 1,
-    job_permalink: 'https://example.com/jobs/1',
-    job_status: 'publish',
-    job_title: 'Account Manager',
-    department: 'Sales',
-    location: 'London, England',
-    job_type: 'Full Time',
-    application_deadline: '2023-12-21',
-    candidates: 433,
-    qualified_candidates: 100,
-    job_views: 10,
-    interviewing: 3,
-    selected: 10,
-    vacancy: 3,
-    hired: 2
-};
-
-const status_keys = Object.keys(statuses);
-const jobs = Array(status_keys.length)
-    .fill(job)
-    .map((j, i) => {
-        return {
-            ...j,
-            job_id: j.job_id + i,
-            job_status: status_keys[i]
-        };
-    });
-
-const stat_labels = {
-    candidates: __('Candidates'),
-    qualified_candidates: __('Qualified'),
-    job_views: __('Job Views'),
-    interviewing: __('Interview'),
-    selected: __('Selected'),
-    hired: __('Hired')
-};
+export const status_keys = Object.keys(statuses);
 
 export function JobOpenings(props) {
     let { is_overview, className } = props;
@@ -136,7 +99,7 @@ export function JobOpenings(props) {
     };
 
     const onActionClick = (action, job_id) => {
-        const job = jobs.find((j) => j.job_id == job_id);
+        const job = state.jobs.find((j) => j.job_id == job_id);
 
         switch (action) {
             case 'share':
@@ -144,6 +107,10 @@ export function JobOpenings(props) {
                     ...state,
                     share_link: job.job_permalink
                 });
+				break;
+
+			case 'preview' :
+				window.open( job.job_permalink, '_blank' );
                 break;
         }
     };
@@ -173,79 +140,13 @@ export function JobOpenings(props) {
 
     return (
         <div data-crewhrm-selector="job-openings" className={'jobs'.classNames(style) + className}>
-            {(state.share_link && (
-                <ShareModal
+            {state.share_link ? <ShareModal
                     url={state.share_link}
                     closeModal={() => setState({ ...state, share_link: null })}
-                />
-            )) ||
-                null}
+                /> : null
+			}
 
-            <div
-                className={
-                    'd-flex align-items-center margin-bottom-20'.classNames() +
-                    'filter'.classNames(style)
-                }
-            >
-                <div className={'flex-1 d-flex align-items-center'.classNames()}>
-                    {(!is_overview && (
-                        <Link to="/dashboard/">
-                            <i
-                                className={
-                                    'ch-icon ch-icon-arrow-left color-text cursor-pointer'.classNames() +
-                                    'back-icon'.classNames(style)
-                                }
-                            ></i>
-                        </Link>
-                    )) ||
-                        null}
-                    <span
-                        className={
-                            'color-text ' +
-                            (is_overview
-                                ? 'font-size-17 font-weight-500'
-                                : 'font-size-24 font-weight-600'
-                            ).classNames()
-                        }
-                    >
-                        {__('Job Openings')}
-                    </span>
-                </div>
-                <div className={'d-flex align-items-center column-gap-15'.classNames()}>
-                    <div className={'d-inline-block'.classNames()} style={{ minWidth: '113px' }}>
-                        <DropDown
-                            className={'padding-vertical-8 padding-horizontal-15'.classNames()}
-                            transparent={is_overview}
-                            placeholder={__('All Location')}
-                            value={state.filter.country_code}
-                            options={countries_array}
-                            onChange={(v) => onChange('country_code', v)}
-                        />
-                    </div>
-                    <div className={'d-inline-block'.classNames()} style={{ minWidth: '113px' }}>
-                        <DropDown
-                            className={'padding-vertical-8 padding-horizontal-15'.classNames()}
-                            transparent={is_overview}
-                            placeholder={__('Department')}
-                            value={state.filter.job_status}
-                            options={status_keys.map((key) => {return { id: key, label: statuses[key].label }})}
-                            onChange={(v) => onChange('job_status', v)}
-                        />
-                    </div>
-                    <div className={'d-inline-block'.classNames()}>
-                        <TextField
-                            className={`border-radius-5 border-1 height-34 padding-8 b-color-tertiary ${
-                                is_overview ? 'bg-color-transparent' : ' bg-color-white'
-                            }`.classNames()}
-                            iconClass={'ch-icon ch-icon-search-normal-1 font-size-18 color-text cursor-pointer'.classNames()}
-                            icon_position="right"
-                            expandable={true}
-                            value={state.filter.search}
-                            onChange={(v) => onChange('search', v)}
-                        />
-                    </div>
-                </div>
-            </div>
+            <FilterBar {...{is_overview, onChange, filters: state.filter}}/>
 
             {(!state.jobs.length && <NoJob />) || (
                 <div data-crewhrm-selector={'job-list'}>

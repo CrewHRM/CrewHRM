@@ -153,7 +153,7 @@ export function ListManager(props) {
 
             <div
                 className={
-                    'd-flex align-items-center darken-on-hover'.classNames() +
+                    'd-flex align-items-center darken-on-hover--8'.classNames() +
                     'add-stage'.classNames(style)
                 }
                 onClick={addStage}

@@ -136,6 +136,11 @@ class Job {
 		$jobs = self::appendApplicantCounts( $jobs );
 		$jobs = self::appendApplicationStages( $jobs );
 
+		// Assign job permalink
+		foreach ( $jobs as $index => $job ) {
+			$jobs[ $index ]['job_permalink'] = self::getJobPermalink( $job['job_id'] );
+		}
+
 		return $jobs;
 	}
 
@@ -218,5 +223,22 @@ class Job {
 		}
 
 		return $jobs;
+	}
+
+	/**
+	 * Get job permalink by ID
+	 *
+	 * @param int $job_id
+	 * @return string
+	 */
+	public static function getJobPermalink( $job_id ) {
+		static $careers_permalink = null;
+		
+		if ( $careers_permalink === null ) {
+			$careers_id        = get_option( 'crewhrm_careers_page_id', false );
+			$careers_permalink = ! empty( $careers_id ) ? get_permalink( $careers_id ) : '';
+		}
+
+		return $careers_permalink . '#/' . $job_id . '/';
 	}
 }
