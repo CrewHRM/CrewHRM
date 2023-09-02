@@ -99,11 +99,14 @@ class Job {
 	 */
 	public static function getJobs( $args = array() ) {
 		// Prepare limit, offset, where conditions
-		$page         = $args['page'] ?? 1;
-		$limit        = $args['limit'] ?? 15;
-		$offset       = ( $page - 1 ) * $limit;
-		$limit_clause = ' LIMIT ' . $limit . ' OFFSET ' . $offset;
+		$page   = $args['page'] ?? 1;
+		$limit  = $args['limit'] ?? 15;
+		$offset = ( $page - 1 ) * $limit;
+
+		// SQL parts
 		$where_clause = '1=1';
+		$order_by     = 'ORDER BY job.created_at DESC ';
+		$limit_clause = 'LIMIT ' . $limit . ' OFFSET ' . $offset;
 
 		// Apply query filters
 		if ( isset( $args['job_id'] ) ) {
@@ -118,7 +121,7 @@ class Job {
 				"SELECT job.*, department.department_name, address.*  FROM " . DB::jobs() . " job 
 					LEFT JOIN " . DB::departments() ." department ON job.department_id=department.department_id
 					LEFT JOIN " . DB::addresses() ." address ON job.address_id=address.address_id
-				WHERE " . $where_clause . ' ' . $limit_clause
+				WHERE {$where_clause} {$order_by} {$limit_clause}"
 			),
 			ARRAY_A
 		);
@@ -240,5 +243,157 @@ class Job {
 		}
 
 		return $careers_permalink . '#/' . $job_id . '/';
+	}
+
+	/**
+	 * Toggle archive status of a job
+	 *
+	 * @param int $job_id
+	 * @param bool $archive True to archive, otherwise unarchive.
+	 * @return void
+	 */
+	public static function toggleArchiveState( $job_id, $archive ) {
+		global $wpdb;
+		$wpdb->update(
+			DB::jobs(),
+			array( 'job_status' => $archive ? 'archive' : 'draft' ),
+			array( 'job_id' => $job_id )
+		);
+	}
+
+	/**
+	 * Delete a job permanently
+	 *
+	 * @param int $job_id
+	 * @return void
+	 */
+	public static function deleteJob( $job_id ) {
+		global $wpdb;
+
+		// Delete stages
+		$wpdb->delete(
+			DB::stages(),
+			array( 'job_id' => $job_id )
+		);
+
+		// Delete meta
+		Meta::deleteJobMeta( $job_id );
+
+		// Delete associated address
+		$address_id = self::getJobFiled( $job_id, 'address_id' );
+		if ( ! empty( $address_id ) ) {
+			Address::deleteAddress( $address_id );
+		}
+
+		// Delete associated applications
+		Application::deleteApplicationByJobId( $job_id );
+
+		// Delete job
+		$wpdb->delete(
+			DB::jobs(),
+			array( 'job_id' => $job_id )
+		);
+	}
+
+	/**
+	 * Duplicate a job
+	 *
+	 * @param int $job_id
+	 * @return void
+	 */
+	public static function duplicateJob( $job_id ) {
+		global $wpdb;
+
+		// Get source job row
+		$job = $wpdb->get_row(
+			$wpdb->prepare(
+				"SELECT * FROM " . DB::jobs() . " WHERE job_id=%d",
+				$job_id
+			),
+			ARRAY_A
+		);
+		if ( empty( $job ) ) {
+			return false;
+		}
+
+		// ----------- Copy the address for the new job -----------
+		$old_job_id     = $job['job_id'];
+		$new_address_id = null;
+		if ( ! empty( $job['address_id'] ) ) {
+			$address = $wpdb->get_row(
+				$wpdb->prepare(
+					"SELECT * FROM " . DB::addresses() . " WHERE address_id=%d",
+					$job['address_id']
+				),
+				ARRAY_A
+			);
+
+			unset( $address['address_id'] );
+			$wpdb->insert(
+				DB::addresses(),
+				$address
+			);
+
+			$new_address_id = $wpdb->insert_id;
+		}
+
+		// -------------------- Insert New Job --------------------
+		unset( $job['job_id'] );
+		unset( $job['created_at'] );
+		$job['job_status']           = 'draft';
+		$job['job_title']            = $job['job_title'] . ' - ' . __( 'Draft', 'crewhrm' );
+		$job['address_id']           = $new_address_id;
+		$job['application_deadline'] = null;
+
+		// Now insert the job as a new
+		$wpdb->insert(
+			DB::jobs(),
+			$job
+		);
+		$new_job_id = $wpdb->insert_id;
+
+		// ------------ Copy stages from old one to new ------------
+		$stages = $wpdb->get_results(
+			$wpdb->prepare(
+				"SELECT stage_name, sequence FROM " . DB::stages() . " WHERE job_id=%d",
+				$old_job_id
+			),
+			ARRAY_A
+		);
+
+		// Insert the stages for new job
+		foreach ( $stages as $stage ) {
+			$wpdb->insert(
+				DB::stages(),
+				array(
+					'stage_name' => $stage['stage_name'],
+					'sequence'   => $stage['sequence'],
+					'job_id'     => $new_job_id
+				)
+			);
+		}
+
+		// ------------------- Now copy the meta -------------------
+		$meta_data = $wpdb->get_results(
+			$wpdb->prepare(
+				"SELECT meta_key, meta_value FROM " . DB::jobmeta() . " WHERE object_id=%d",
+				$old_job_id
+			),
+			ARRAY_A
+		);
+
+		// Now insert these meta for the new job
+		foreach ( $meta_data as $meta ) {
+			$wpdb->insert(
+				DB::jobmeta(),
+				array(
+					'object_id'  => $new_job_id,
+					'meta_key'   => $meta['meta_key'],
+					'meta_value' => $meta['meta_value']
+				)
+			);
+		}
+
+		return $new_job_id;
 	}
 }

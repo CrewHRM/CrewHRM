@@ -27,6 +27,7 @@ class Dispatcher {
 
 		'update_job'               => JobManagement::class,
 		'get_jobs_dashboard'       => JobManagement::class,
+		'single_job_action'        => JobManagement::class,
 	);
 
 	/**
@@ -98,14 +99,14 @@ class Dispatcher {
 		}
 
 		// Verify required user role
-		if ( ! empty( $required_roles = $prerequisites['role'] ) ) {
+		if ( ! empty( $required_roles = $prerequisites['role'] ?? array() ) ) {
 			if ( ! User::validateRole( get_current_user_id(), $required_roles ) ) {
 				wp_send_json_error( array( 'message' => __( 'Access Denied!', 'crewhrm' ) ) );
 			}
 		}
 
 		// Check required data
-		if ( ! empty( $required_data_role = $prerequisites['data'] ) ) {
+		if ( ! empty( $required_data_role = $prerequisites['data'] ?? array() ) ) {
 			if ( ! Validation::validateData( $data, $required_data_role ) ) {
 				wp_send_json_error( array( 'message' => __( 'Invalid Data!', 'crewhrm' ) ) );
 			}

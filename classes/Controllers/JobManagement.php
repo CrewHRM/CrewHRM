@@ -14,7 +14,8 @@ class JobManagement {
 				'job' => 'type:array'
 			)
 		),
-		'getJobsDashboard' => array()
+		'getJobsDashboard' => array(),
+		'singleJobAction' => array()
 	);
 
 	/**
@@ -68,5 +69,37 @@ class JobManagement {
 		$jobs = Job::getJobs();
 
 		wp_send_json_success( array( 'jobs' => array_values( $jobs ) ) );
+	}
+
+	public static function singleJobAction( $data ) {
+		$job_id = $data['job_id'];
+		$action = $data['job_action'];
+		
+		switch ( $action ) {
+			case 'archive' :
+			case 'unarchive' :
+				$do_archive = $action === 'archive';
+				Job::toggleArchiveState( $job_id, $do_archive );
+				wp_send_json_success(
+					array(
+						'message' => $do_archive ? __( 'Job archived', 'crewhrm' ) : __( 'Job removed from archived' ),
+					)
+				);
+				break;
+
+			case 'delete' :
+				Job::deleteJob( $job_id );
+				wp_send_json_success( array( 'message' => __( 'Job deleted', 'crewhrm' ) ) );
+				break;
+
+			case 'duplicate' :
+				$new_job_id = Job::duplicateJob( $job_id );
+				if ( ! empty( $new_job_id ) ) {
+					wp_send_json_success( array( 'message' => __( 'Job duplicated', 'crewhrm' ) ) );
+				} else {
+					wp_send_json_error( array( 'message' => 'Failed to duplicate' ) );
+				}
+				break;
+		}
 	}
 }

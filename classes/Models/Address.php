@@ -43,4 +43,20 @@ class Address {
 
 		return $address['address_id'];
 	}
+
+	/**
+	 * Delete address by address ID
+	 *
+	 * @param int $address_id
+	 * @return void
+	 */
+	public static function deleteAddress( $address_id ) {
+		$ids    = is_array( $address_id ) ? $address_id : array( $address_id );
+		$ids_in = implode( ',', $ids );
+
+		global $wpdb;
+		$wpdb->query(
+			"DELETE FROM " . DB::addresses() . " WHERE address_id IN({$ids_in})"
+		);
+	}
 }

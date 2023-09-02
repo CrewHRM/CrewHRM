@@ -55,7 +55,12 @@ export function request(action, payload = {}, callback, progressCallback) {
                 callback(response);
             }
         },
-        error: function () {},
+        error: function () {
+			callback({
+				success: false, 
+				data:{}
+			})
+		},
         xhr: function () {
             var xhr = new window.XMLHttpRequest();
             xhr.upload.addEventListener(

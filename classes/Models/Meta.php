@@ -78,12 +78,17 @@ class Meta {
 	private static function deleteMeta( $obj_id, $meta_key, $table ) {
 		global $wpdb;
 
+		$where = array(
+			'object_id' => $obj_id,
+		);
+
+		if ( $meta_key !== null ) {
+			$where['meta_key'] = $meta_key;
+		}
+
 		$wpdb->delete(
 			$table,
-			array(
-				'object_id' => $obj_id,
-				'meta_key' => $meta_key
-			)
+			$where
 		);
 	}
 
@@ -117,7 +122,7 @@ class Meta {
 	 * @param string $meta_key
 	 * @return mixed
 	 */
-	public static function deleteJobMeta( $job_id, $meta_key ) {
+	public static function deleteJobMeta( $job_id, $meta_key = null ) {
 		return self::deleteMeta( $job_id, $meta_key, DB::jobmeta() );
 	}
 }
