@@ -226,6 +226,7 @@ export function JobEditor() {
                         <Tabs
                             theme="sequence"
                             active={state.active_tab}
+							onNavigate={navigateTab}
                             tabs={steps.map((s) => {
                                 return {
                                     ...s,

@@ -1,6 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
 
-import style from './options.module.scss';
 import { useParams } from 'react-router-dom';
 import { settings_fields } from '../field-structure.jsx';
 import { ContextSettings } from '../hrm-settings.jsx';
@@ -11,6 +10,10 @@ import { FileUpload } from '../../../../materials/file-ipload/file-upload.jsx';
 import { __ } from '../../../../utilities/helpers.jsx';
 import { NumberField } from '../../../../materials/number-field.jsx';
 import { RadioCheckbox } from '../../../../materials/radio-checkbox.jsx';
+import { DropDown } from '../../../../materials/dropdown/dropdown.jsx';
+import { ContextBackendDashboard } from '../../../hrm/hrm.jsx';
+
+import style from './options.module.scss';
 
 const label_class =
     'd-block font-size-17 font-weight-500 line-height-24 letter-spacing--17 color-text'.classNames();
@@ -20,9 +23,11 @@ const hint_class =
 
 export function Options(props) {
     const { segment, sub_segment } = useParams();
+    const { values = {}, onChange } = useContext(ContextSettings);
+	const { resources = {} } = useContext( ContextBackendDashboard );
+
     const { fields, icon, label } = settings_fields[segment].segments[sub_segment];
     const field_keys = Object.keys(fields);
-    const { values = {}, onChange } = useContext(ContextSettings);
 
     const satisfyLogic = (when) => {
         const pointer = when[0];
@@ -64,10 +69,11 @@ export function Options(props) {
                     const {
                         label,
                         type,
-                        options = [],
+                        options,
                         when,
                         direction,
                         hint,
+						placeholder,
                         min,
                         max
                     } = fields[key];
@@ -158,8 +164,7 @@ export function Options(props) {
                                 null}
 
                             {/* Number field options */}
-                            {(type === 'number' && (
-                                <>
+                            {type === 'number' ? <>
                                     <div className={'flex-5'.classNames()}>{label_text}</div>
                                     <div className={'flex-2'.classNames()}>
                                         <NumberField
@@ -169,9 +174,20 @@ export function Options(props) {
                                             onChange={(v) => onChange(key, v)}
                                         />
                                     </div>
-                                </>
-                            )) ||
-                                null}
+                                </> : null
+							}
+
+							{type=='dropdown' ? <>
+								<div className={'flex-5'.classNames()}>{label_text}</div>
+								<div className={'flex-2'.classNames()}>
+									<DropDown 
+										className={input_class}
+										value={values[key]} 
+										onChange={v=>onChange(key, v)}
+										options={typeof options === 'string' ? (resources[options] || []) : []}
+										placeholder={placeholder}/>
+								</div>
+							</> : null}
                         </div>
                     );
                 })}

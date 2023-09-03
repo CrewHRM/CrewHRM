@@ -10,6 +10,7 @@ namespace CrewHRM\Setup;
 use CrewHRM\Helpers\Colors;
 use CrewHRM\Helpers\Utilities;
 use CrewHRM\Main;
+use CrewHRM\Models\Settings;
 
 /**
  * Script handler class
@@ -21,7 +22,7 @@ class Scripts extends Main {
 	 */
 	public function __construct() {
 		add_action( 'admin_enqueue_scripts', array( $this, 'adminScripts' ), 11 );
-		add_action( 'careers_page_shortcode', array( $this, 'frontendScripts' ), 11 );
+		add_action( 'wp_enqueue_scripts', array( $this, 'frontendScripts' ), 11 );
 
 		// Color pallete
 		add_action( 'wp_head', array( $this, 'loadVariables' ), 1000 );
@@ -57,7 +58,7 @@ class Scripts extends Main {
 	 * @return void
 	 */
 	public function frontendScripts() {
-		if ( ! is_admin() ) {
+		if ( Utilities::isCareersPage() ) {
 			wp_enqueue_script( 'crewhrm-careers', self::$configs->dist_url . 'careers.js', array( 'jquery', 'wp-i18n' ), self::$configs->version, true );
 		}
 	}
@@ -69,7 +70,7 @@ class Scripts extends Main {
 	 */
 	public function loadVariables() {
 		// Check if it's our page and needs resources to load
-		if ( ! Utilities::isCrewDashboard() && ! ( is_singular() && strpos( get_the_content(), '[' . Shortcode::SHORTCODE ) !== false ) ) {
+		if ( ! Utilities::isCrewDashboard() && ! Utilities::isCareersPage() ) {
 			return;
 		}
 

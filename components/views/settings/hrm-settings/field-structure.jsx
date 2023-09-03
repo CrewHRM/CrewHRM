@@ -20,6 +20,12 @@ export const settings_fields = {
                 label: __('Careers'),
                 icon: 'ch-icon ch-icon-building-4',
                 fields: {
+                    careers_page_id: {
+                        label: __('Careers Page'),
+                        type: 'dropdown',
+						options: 'pages',
+						placeholder: __( 'Select Page' )
+                    },
                     careers_header: {
                         label: __('Show Header'),
                         type: 'switch'

@@ -3,6 +3,7 @@
 namespace CrewHRM\Models;
 
 use CrewHRM\Helpers\_Array;
+use CrewHRM\Helpers\Utilities;
 
 class Job {
 
@@ -238,11 +239,11 @@ class Job {
 		static $careers_permalink = null;
 		
 		if ( $careers_permalink === null ) {
-			$careers_id        = get_option( 'crewhrm_careers_page_id', false );
+			$careers_id        = Utilities::getCareersPageId();
 			$careers_permalink = ! empty( $careers_id ) ? get_permalink( $careers_id ) : '';
 		}
 
-		return $careers_permalink . '#/' . $job_id . '/';
+		return $careers_permalink . $job_id . '/';
 	}
 
 	/**

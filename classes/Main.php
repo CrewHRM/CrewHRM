@@ -3,9 +3,9 @@
 namespace CrewHRM;
 
 use CrewHRM\Setup\Admin;
+use CrewHRM\Setup\Careers;
 use CrewHRM\Setup\Dispatcher;
 use CrewHRM\Setup\Scripts;
-use CrewHRM\Setup\Shortcode;
 
 class Main {
 	/**
@@ -34,7 +34,7 @@ class Main {
 		new Scripts();
 		new Dispatcher();
 		new Admin();
-		new Shortcode();
+		new Careers();
 	}
 
 	/**

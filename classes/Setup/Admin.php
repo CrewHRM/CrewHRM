@@ -3,6 +3,7 @@
 namespace CrewHRM\Setup;
 
 use CrewHRM\Helpers\Nonce;
+use CrewHRM\Helpers\Utilities;
 use CrewHRM\Main;
 use CrewHRM\Models\Department;
 use CrewHRM\Models\Settings;
@@ -85,9 +86,14 @@ class Admin extends Main {
 	 * @return void
 	 */
 	public function settingPage() {
+		$resources = array(
+			'pages' => Utilities::getPageList()
+		);
+		
 		echo '<div 
 			id="' . esc_attr( self::MOUNTPOINT_SETTINGS ) . '" 
 			data-crewhrm-nonce="' . esc_attr( wp_create_nonce( self::MOUNTPOINT_SETTINGS ) ) . '"
-			data-settings="' . esc_attr( json_encode( (object) Settings::getSettings() ) ) . '"></div>';
+			data-settings="' . esc_attr( json_encode( (object) Settings::getSettings() ) ) . '"
+			data-resources="' . esc_attr( json_encode( $resources ) ) . '"></div>';
 	}
 }

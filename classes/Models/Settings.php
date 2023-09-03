@@ -27,9 +27,10 @@ class Settings {
 	/**
 	 * Get plugin settings
 	 *
-	 * @return array
+	 * @param string|null $name
+	 * @return mixed
 	 */
-	public static function getSettings() {
+	public static function getSettings( $name = null, $default = null ) {
 		$data = _Array::getArray( get_option( self::KEY_SETTINGS ) );
 
 		$max_upload = wp_max_upload_size() / 1024;
@@ -42,7 +43,19 @@ class Settings {
 			$data['attachment_max_upload_count'] = 3;
 		}
 		
-		return $data;
+		$options = _Array::cast( $data, 'intval' );
+
+		return $name !== null ? ( $options[ $name ] ?? $default ) : $options;
+	}
+
+	/**
+	 * Get specific settings
+	 *
+	 * @param string $name
+	 * @return mixed
+	 */
+	public static function getSetting( string $name, $default = null ) {
+		return self::getSettings( $name, $default );
 	}
 
 	/**
@@ -56,5 +69,8 @@ class Settings {
 	public static function saveSettings( array $data, $option_name ) {
 		// Save general info
 		update_option( $option_name, $data );
+
+		// Flush rewrite rule to apply dashboard page change
+		flush_rewrite_rules();
 	}
 }

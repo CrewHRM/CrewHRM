@@ -60,7 +60,7 @@ const fields = {
 };
 
 export function Apply({ job }) {
-    const { job_title, location } = job;
+    const { job_title='Sampel title', location = 'Sample location' } = job || {};
 
     const [state, setState] = useState({
         active_tab: 'personal',
