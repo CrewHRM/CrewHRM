@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { Tabs } from '../../../materials/tabs/tabs.jsx';
-import { __ } from '../../../utilities/helpers.jsx';
-import { ContextForm, FormFields } from '../../../materials/form.jsx';
-import { sections_fields } from '../../hrm/job-editor/application-form/form-structure.jsx';
+import { Tabs } from '../../../../materials/tabs/tabs.jsx';
+import { __ } from '../../../../utilities/helpers.jsx';
+import { ContextForm, FormFields } from '../../../../materials/form.jsx';
+import { sections_fields } from '../../../hrm/job-editor/application-form/form-structure.jsx';
+import { FormActionButtons } from '../../../../materials/form-action.jsx';
 
 import style from './apply.module.scss';
-import { FormActionButtons } from '../../../materials/form-action.jsx';
 
 const steps = [
     {

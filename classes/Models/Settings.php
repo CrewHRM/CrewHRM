@@ -11,9 +11,11 @@ class Settings {
 	/**
 	 * Get company profile from options and add dynamic meta data like image logo url
 	 *
-	 * @return array
+	 * @param string $name
+	 * @param mixed $default
+	 * @return mixed
 	 */
-	public static function getCompanyProfile() {
+	public static function getCompanyProfile( $key = null, $default = null ) {
 		$data = _Array::getArray( get_option( self::KEY_COMPANY ) ); 
 
 		// Assign dynamic meta data
@@ -21,7 +23,7 @@ class Settings {
 			$data['logo_url'] = wp_get_attachment_url( $data['logo_id'] );
 		}
 
-		return $data;
+		return $key !== null ? ( $data[ $key ] ?? $default ) : $data;
 	}
 
 	/**

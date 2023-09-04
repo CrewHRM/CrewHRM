@@ -158,6 +158,7 @@ export function generateBackgroundColor(name) {
 
 export const is_production = process.env.NODE_ENV === 'production';
 export const countries_array = getCountries(true);
+export const countries_object = getCountries(false);
 export const timezones_array = tz.names().map((z) => {
     return { id: z, label: z };
 });

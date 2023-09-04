@@ -28,6 +28,7 @@ class Dispatcher {
 		'update_job'               => JobManagement::class,
 		'get_jobs_dashboard'       => JobManagement::class,
 		'single_job_action'        => JobManagement::class,
+		'get_single_job_view'      => JobManagement::class,
 	);
 
 	/**

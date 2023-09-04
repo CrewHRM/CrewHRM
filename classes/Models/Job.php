@@ -98,7 +98,7 @@ class Job {
 	 * @param array $args
 	 * @return array
 	 */
-	public static function getJobs( $args = array() ) {
+	public static function getJobs( $args = array(), $meta_data = array( 'application_count', 'stages' ) ) {
 		// Prepare limit, offset, where conditions
 		$page   = $args['page'] ?? 1;
 		$limit  = $args['limit'] ?? 15;
@@ -136,9 +136,18 @@ class Job {
 		$jobs = _Array::castColumns( $jobs, 'intval' );
 		$jobs = _Array::indexify( $jobs, 'job_id' );
 
-		// Assign application stages data
-		$jobs = self::appendApplicantCounts( $jobs );
-		$jobs = self::appendApplicationStages( $jobs );
+		// Assign meta
+		$jobs = Meta::assignBulkJobMeta( $jobs );
+
+		// Assign application count
+		if ( ! empty( $meta_data ) && in_array( 'application_count', $meta_data ) ) {
+			$jobs = self::appendApplicantCounts( $jobs );
+		}
+
+		// Assign stages data
+		if ( ! empty( $meta_data ) && in_array( 'stages', $meta_data ) ) {
+			$jobs = self::appendApplicationStages( $jobs );
+		}
 
 		// Assign job permalink
 		foreach ( $jobs as $index => $job ) {
@@ -154,8 +163,8 @@ class Job {
 	 * @param int $job_id
 	 * @return array
 	 */
-	public static function getJobById( $job_id ) {
-		$jobs = self::getJobs( array( 'job_id' => $job_id ) );
+	public static function getJobById( $job_id, $meta=null ) {
+		$jobs = self::getJobs( array( 'job_id' => $job_id ), $meta );
 		$jobs = array_values( $jobs );
 		return $jobs[0] ?? null;
 	}

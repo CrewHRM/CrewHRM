@@ -8,7 +8,7 @@ import { DateField } from '../../../../../materials/date-time.jsx';
 import { TagField } from '../../../../../materials/tag-field/tag-field.jsx';
 import { ContextJobEditor } from '../../index.jsx';
 
-const employments_types = {
+export const employments_types = {
     full_time: __('Full Time'),
     part_time: __('Part Time'),
     contract: __('Contract'),

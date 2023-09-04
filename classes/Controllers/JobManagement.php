@@ -5,6 +5,7 @@ namespace CrewHRM\Controllers;
 use CrewHRM\Models\Address;
 use CrewHRM\Models\Job;
 use CrewHRM\Models\Meta;
+use CrewHRM\Models\Settings;
 
 class JobManagement {
 	const PREREQUISITES = array(
@@ -15,7 +16,8 @@ class JobManagement {
 			)
 		),
 		'getJobsDashboard' => array(),
-		'singleJobAction' => array()
+		'singleJobAction' => array(),
+		'getSingleJobView' => array(),
 	);
 
 	/**
@@ -100,6 +102,28 @@ class JobManagement {
 					wp_send_json_error( array( 'message' => 'Failed to duplicate' ) );
 				}
 				break;
+		}
+	}
+
+	/**
+	 * Get the job for single view and application process
+	 *
+	 * @param array $data Request data
+	 * @return void
+	 */
+	public static function getSingleJobView( array $data ) {
+		$job_id = $data['job_id'];
+		$job    = Job::getJobById( $job_id );
+
+		if ( empty( $job ) ) {
+			wp_send_json_error( array( 'message' => __( 'Job not found' ) ) );
+		} else {
+			wp_send_json_success(
+				array(
+					'job'           => $job,
+					'about_company' => Settings::getCompanyProfile( 'about_company' )
+				)
+			);
 		}
 	}
 }
