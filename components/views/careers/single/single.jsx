@@ -65,16 +65,15 @@ export function Single({ base_permalink }) {
 		job_description, 
 		street_address, 
 		country_code,
+		employment_type,
 		salary_a, 
 		salary_b
 	} = state.job || {};
 
-	const {employment_type} = meta || {};
+	const {attendance_type} = meta || {};
 
 	if ( state.fetching ) {
-		return <div className={'text-align-center'.classNames()}>
-			<LoadingIcon size={34}/>
-		</div>
+		return <LoadingIcon size={34} center={true}/>
 	}
 
 	if ( state.error_message ) {
@@ -113,7 +112,7 @@ export function Single({ base_permalink }) {
 					<RenderMeta
 						icon={'ch-icon ch-icon-briefcase'}
 						hint={__('Job Type')}
-						content={Array.isArray(employment_type) ? employment_type.map(e=>employments_types[e]).filter(e=>e).join(', ') : employments_types[employment_type]}
+						content={employments_types[employment_type]}
 					/>
 					<RenderMeta
 						icon={'ch-icon ch-icon-empty-wallet'}

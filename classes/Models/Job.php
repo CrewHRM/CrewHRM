@@ -32,9 +32,8 @@ class Job {
 			'employment_type'      => $job['employment_type'] ?? null,
 			'experience_level'     => $job['experience_level'] ?? null,
 			'attendance_type'      => $job['attendance_type'] ?? null,
-			'attendance_type'      => $job['attendance_type'] ?? null,
 			'application_deadline' => $job['application_deadline'] ?? null,
-			'application_form'     => serialize( $job['application_form'] ),
+			'application_form'     => maybe_serialize( $job['application_form'] ),
 			'job_status'           => $job['job_status'] ?? 'draft',
 			'currency'             => $job['currency'] ?? null,
 		);
@@ -63,13 +62,40 @@ class Job {
 	}
 
 	/**
-	 * Job meta data
+	 * Get editable job. Just the reverse version of the job that can be saved using createUpdateJob method.
 	 *
-	 * @param array $job
-	 * @return void
+	 * @param int $job_id
+	 * @return array
 	 */
-	private static function createUpdateJobMeta( array $job ) {
-		$job_id = $job['job_id'];
+	public static function getEditableJob( $job_id ) {
+		global $wpdb;
+		$job = $wpdb->get_row(
+			$wpdb->prepare(
+				"SELECT * FROM " . DB::jobs() . " WHERE job_id=%d",
+				$job_id
+			)
+		);
+
+		if ( empty( $job ) ) {
+			return null;
+		}
+
+		// Unserialize application form 
+		$job['application_form'] = maybe_unserialize( $job['application_form'] );
+
+		// Assign address
+		if ( ! empty( $job['address_id'] ) ) {
+			$address = Address::getAddressById( $job['address_id'] );
+			if ( ! empty( $address ) ) {
+				$job = array_merge( $job, $address );
+			}
+		}
+
+		// Assign meta
+		$meta = Meta::getJobMeta( $job_id );
+		if ( empty( $meta ) && is_array( $meta ) ) {
+			$job = array_merge( $job, $meta );
+		}
 	}
 
 	/**

@@ -17,7 +17,7 @@ const text_area_class =
 export const ContextForm = createContext();
 
 export function RenderField({ field }) {
-    const { name, label, type, placeholder, flex = 1, options, disclaimer } = field;
+    const { name, label, type, placeholder, flex = 1, options, disclaimer, required: required_field, readonly: mandatory_by_site, enabled=true } = field;
     const { onChange = () => {}, values = {} } = useContext(ContextForm);
 
     const dispatchChecks = (e) => {
@@ -49,6 +49,11 @@ export function RenderField({ field }) {
         onChange(name, array);
     };
 
+	// Determine 
+	if ( ! (mandatory_by_site || enabled) ) {
+		return;
+	}
+
     return (
         <div data-crewhrm-selector="single-field" className={('flex-' + flex).classNames()}>
             {(disclaimer && (
@@ -67,7 +72,10 @@ export function RenderField({ field }) {
             )) ||
                 null}
 
-            <span className={label_class}>{label}</span>
+            <span className={label_class}>
+				{label}
+				{( label && ( mandatory_by_site || required_field ) ) ? <span className={'color-danger'.classNames()}>*</span> : null}
+			</span>
 
             {(type == 'text' && (
                 <input

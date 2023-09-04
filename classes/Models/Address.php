@@ -59,4 +59,22 @@ class Address {
 			"DELETE FROM " . DB::addresses() . " WHERE address_id IN({$ids_in})"
 		);
 	}
+
+	/**
+	 * Get address by id
+	 *
+	 * @param int $address_id
+	 * @return array|null
+	 */
+	public static function getAddressById( $address_id ) {
+		global $wpdb;
+		$address = $wpdb->get_row(
+			$wpdb->prepare(
+				"SELECT * FROM " . DB::addresses() . " WHERE address_id=%d",
+				$address_id
+			)
+		);
+
+		return empty( $address ) ? null : $address;
+	}
 }

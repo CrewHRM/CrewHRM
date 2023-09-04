@@ -55,7 +55,7 @@ export const sections_fields = {
             {
                 id: 'name',
                 label: __('Name'),
-                read_only: true,
+                readonly: true,
                 form: [
                     [
                         {
@@ -75,7 +75,7 @@ export const sections_fields = {
             {
                 id: 'address',
                 label: __('Address'),
-                read_only: true,
+                readonly: true,
                 form: [
                     {
                         name: 'street_address',
@@ -113,7 +113,7 @@ export const sections_fields = {
             {
                 id: 'mobile_number',
                 label: __('Mobile Number'),
-                read_only: true,
+                readonly: true,
                 form: [
                     {
                         name: 'phone',
@@ -128,7 +128,7 @@ export const sections_fields = {
             {
                 id: 'email',
                 label: __('Email'),
-                read_only: true,
+                readonly: true,
                 form: [
                     {
                         name: 'email',
@@ -148,7 +148,7 @@ export const sections_fields = {
             {
                 id: 'resume',
                 label: __('Resume'),
-                read_only: true,
+                readonly: true,
                 form: [
                     {
                         name: 'resume',

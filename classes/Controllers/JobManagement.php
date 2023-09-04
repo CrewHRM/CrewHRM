@@ -18,6 +18,12 @@ class JobManagement {
 		'getJobsDashboard' => array(),
 		'singleJobAction' => array(),
 		'getSingleJobView' => array(),
+		'getSingleJobEdit' => array(
+			'role' => array( 'administrator', 'editor' ),
+			'data' => array(
+				'job_id' => 'type:numeric'
+			)
+		),
 	);
 
 	/**
@@ -125,5 +131,15 @@ class JobManagement {
 				)
 			);
 		}
+	}
+
+	/**
+	 * Get job for edit purpose
+	 *
+	 * @param array $data
+	 * @return void
+	 */
+	public static function getSingleJobEdit( array $data ) {
+		$job = Job::
 	}
 }

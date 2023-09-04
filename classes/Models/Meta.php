@@ -10,27 +10,39 @@ class Meta {
 	 *
 	 * @param int $obj_id
 	 * @param string $meta_key
-	 * @param mixed $default
+	 * @param string $table
 	 * @return mixed
 	 */
-	private static function getMeta( $obj_id, $meta_key, $singular, $table ) {
+	private static function getMeta( $obj_id, $meta_key, $table ) {
+		
+		$where_clause = ! empty( $meta_key ) ? " AND meta_key='" . esc_sql( $meta_key ) . "' " : '';
+		
 		global $wpdb;
-		$meta_values = $wpdb->get_col(
+		$results = $wpdb->get_results(
 			$wpdb->prepare(
-				"SELECT meta_value FROM " . $table . " WHERE object_id=%d AND meta_key=%s ORDER BY meta_id DESC " . ( $singular ? 'LIMIT 1' : '' ),
-				$obj_id,
-				$meta_key
+				"SELECT meta_key, meta_value FROM " . $table . " WHERE object_id=%d " . $where_clause,
+				$obj_id
 			)
 		);
 
-		$meta_values = array_map(
-			function( $meta ) {
-				return maybe_unserialize( $meta );
-			},
-			$meta_values
-		);
+		$_meta = array();
+		foreach ( $results as $result ) {
+			$key   = $result['meta_key'];
+			$value = maybe_unserialize( $result['meta_value'] );
 
-		return $singular ? ($meta_values[0] ?? null) : $meta_values;
+			if ( ! isset( $_meta[ $key ] ) ) {
+				$_meta[ $key ] = $value;
+				continue;
+			}
+
+			if ( ! is_array( $_meta[ $key ] ) ) {
+				$_meta[ $key ] = array( $_meta[ $key ] );
+			}
+
+			$_meta[ $key ][] = $value;
+		}
+
+		return $meta_key ? ( $_meta[ $meta_key ] ?? null ) : $_meta;
 	}
 
 	/**
@@ -176,8 +188,8 @@ class Meta {
 	 * @param string $meta_key
 	 * @return mixed
 	 */
-	public static function getJobMeta( $job_id, $meta_key, $singular=false ) {
-		return self::getMeta( $job_id, $meta_key, $singular, DB::jobmeta() );
+	public static function getJobMeta( $job_id, $meta_key=null ) {
+		return self::getMeta( $job_id, $meta_key, DB::jobmeta() );
 	}
 
 	/**

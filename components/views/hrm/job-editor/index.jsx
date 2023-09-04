@@ -14,6 +14,7 @@ import { ContextNonce } from '../../../materials/mountpoint.jsx';
 import { ContextToast } from '../../../materials/toast/toast.jsx';
 
 import style from './editor.module.scss';
+import { LoadingIcon } from '../../../materials/loading-icon/loading-icon.jsx';
 
 export const ContextJobEditor = createContext();
 
@@ -45,7 +46,7 @@ export const hiriging_flow = [
     };
 });
 
-
+// Remove unnecessary properties before saving
 function getFieldsToSave(sections_fields) {
     const _new = {};
 
@@ -80,20 +81,16 @@ function getFieldsToSave(sections_fields) {
 }
 
 export function JobEditor() {
-    let { job_id: id } = useParams();
-    const job_id = id === 'new' ? 0 : id;
+    let { job_id } = useParams();
 	const {nonce, nonceAction} = useContext(ContextNonce);
 	const {ajaxToast} = useContext(ContextToast);
 
     const [state, setState] = useState({
         active_tab: 'job-details',
+		error_message: null,
 		has_changes: false,
 		auto_saver: null,
-        values: {
-			job_status: 'draft',
-            hiriging_flow,
-            application_form: sections_fields
-        }
+        values: {}
     });
 
 	const [updates, setUpdates] = useState({
@@ -187,81 +184,125 @@ export function JobEditor() {
         });
     };
 
+	const getJob=()=>{
+		if ( job_id === 'new' ) {
+			// As it is new, just use predefined template
+			setState({
+				...state,
+				values: {
+					job_status: 'draft',
+					job_id: 0,
+					hiriging_flow,
+					application_form: sections_fields
+				}
+			});
+			return;
+		}
+
+		setState({
+			...state,
+			fetching: true
+		});
+
+		request( 'get_single_job_edit', {nonce, nonceAction, job_id}, resp=>{
+			const {success, data:{job, message=__('Something went wrong!')}} = resp;
+
+			setState({
+				...state,
+				values: job,
+				fetching: false,
+				error_message: !success ? message : null
+			})
+		} );
+	}
+
+	useEffect(()=>{
+		getJob();
+	}, [job_id]);
+
     const { active_tab } = state;
 	const is_last_step = active_tab === steps[steps.length-1].id;
 
-    return (
-        <ContextJobEditor.Provider value={{ values: state.values, onChange, navigateTab }}>
-            <StickyBar title="Job Editor">
-                {[
-                    <div key="log" className={'text-align-center'.classNames()}>
-                        <img
-                            src={logo_extended}
-                            style={{ width: 'auto', height: '16px' }}
-                            className={'d-inline-block'.classNames()}
-                        />
-                    </div>,
-                    <div key="action" className={'d-flex align-items-center column-gap-20 justify-content-end'.classNames()}>
-                        {updates.saving_mode==='auto' ? <span className={'font-size-15 font-weight-400 letter-spacing--3 color-text-light margin-right-20'.classNames()}>
-							{__('Auto saving ...')}
-						</span> : null}
-						
-						{is_last_step ? <button className={'button button-primary button-outlined'.classNames()}>
-                            {__('Preview Job')}
-                        </button> : null}
+	if ( state.fetching ) {
+		return <LoadingIcon center={true}/>
+	}
 
-                        <button
-                            className={'button button-primary'.classNames()}
-                            disabled={updates.saving_mode!==null || !state.has_changes}
-                        >
-                            {is_last_step ? __('Publish') : __('Save and Continue')}
-                        </button>
-                    </div>
-                ]}
-            </StickyBar>
+	if ( state.error_message ) {
+		return <div className={'text-align-center color-danger'.classNames()}>
+			{state.error_message}
+		</div>
+	}
 
-            <div className={'editor-wrapper'.classNames(style)}>
-                <div className={'box-shadow-thin padding-20'.classNames()}>
-                    <div>
-                        <Tabs
-                            theme="sequence"
-                            active={state.active_tab}
-							onNavigate={navigateTab}
-                            tabs={steps.map((s) => {
-                                return {
-                                    ...s,
-                                    label: (
-                                        <span
-                                            className={`font-size-15 font-weight-400 letter-spacing--3 ${
-                                                s.id == state.active_tab
-                                                    ? 'color-text'
-                                                    : 'color-text-light'
-                                            }`.classNames()}
-                                        >
-                                            {s.label}
-                                        </span>
-                                    )
-                                };
-                            })}
-                        />
-                    </div>
-                </div>
+    return <ContextJobEditor.Provider value={{ values: state.values, onChange, navigateTab }}>
+		<StickyBar title="Job Editor">
+			{[
+				<div key="log" className={'text-align-center'.classNames()}>
+					<img
+						src={logo_extended}
+						style={{ width: 'auto', height: '16px' }}
+						className={'d-inline-block'.classNames()}
+					/>
+				</div>,
+				<div key="action" className={'d-flex align-items-center column-gap-20 justify-content-end'.classNames()}>
+					{updates.saving_mode==='auto' ? <span className={'font-size-15 font-weight-400 letter-spacing--3 color-text-light margin-right-20'.classNames()}>
+						{__('Auto saving ...')}
+					</span> : null}
+					
+					{is_last_step ? <button className={'button button-primary button-outlined'.classNames()}>
+						{__('Preview Job')}
+					</button> : null}
 
-                <div
-                    className={
-                        'form'.classNames(style) +
-                        'margin-top-40 padding-horizontal-15'.classNames()
-                    }
-                >
-                    <div>
-                        {active_tab == 'job-details' ? <JobDetails /> : null}
+					<button
+						className={'button button-primary'.classNames()}
+						disabled={updates.saving_mode!==null || !state.has_changes}
+					>
+						{is_last_step ? __('Publish') : __('Save and Continue')}
+					</button>
+				</div>
+			]}
+		</StickyBar>
 
-                        {active_tab == 'hiring-flow' ? <HiringFlow /> : null}
+		<div className={'editor-wrapper'.classNames(style)}>
+			<div className={'box-shadow-thin padding-20'.classNames()}>
+				<div>
+					<Tabs
+						theme="sequence"
+						active={state.active_tab}
+						onNavigate={navigateTab}
+						tabs={steps.map((s) => {
+							return {
+								...s,
+								label: (
+									<span
+										className={`font-size-15 font-weight-400 letter-spacing--3 ${
+											s.id == state.active_tab
+												? 'color-text'
+												: 'color-text-light'
+										}`.classNames()}
+									>
+										{s.label}
+									</span>
+								)
+							};
+						})}
+					/>
+				</div>
+			</div>
 
-                        {active_tab == 'application-form' ? <ApplicationForm /> : null}
-                    </div>
-                </div>
-            </div>
-        </ContextJobEditor.Provider>
-    );
+			<div
+				className={
+					'form'.classNames(style) +
+					'margin-top-40 padding-horizontal-15'.classNames()
+				}
+			>
+				<div>
+					{active_tab == 'job-details' ? <JobDetails /> : null}
+
+					{active_tab == 'hiring-flow' ? <HiringFlow /> : null}
+
+					{active_tab == 'application-form' ? <ApplicationForm /> : null}
+				</div>
+			</div>
+		</div>
+	</ContextJobEditor.Provider>
 }

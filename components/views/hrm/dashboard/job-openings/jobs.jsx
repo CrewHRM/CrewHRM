@@ -4,7 +4,7 @@ import { __, getCountries } from '../../../../utilities/helpers.jsx';
 import style from './jobs.module.scss';
 import { StatusDot } from '../../../../materials/status-dot/status-dots.jsx';
 import { NoJob } from './segments/no-job.jsx';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Options } from '../../../../materials/dropdown/dropdown.jsx';
 import { ShareModal } from '../../../../materials/share-modal.jsx';
 import { Pagination } from '../../../../materials/pagination/pagination.jsx';
@@ -27,6 +27,12 @@ const options = [
         label: __('Preview'),
         icon: 'ch-icon ch-icon-eye',
         for: ['draft']
+    },
+    {
+        name: 'edit',
+        label: __('Edit'),
+        icon: 'ch-icon ch-icon-edit-2',
+        for: ['publish', 'draft', 'expired']
     },
     {
         name: 'duplicate',
@@ -85,6 +91,7 @@ export function JobOpenings(props) {
     let { is_overview, className } = props;
 	const {nonce, nonceAction} = useContext(ContextNonce);
 	const {ajaxToast} = useContext(ContextToast);
+	const navigate = useNavigate();
 
     const [state, setState] = useState({
         share_link: null,
@@ -121,6 +128,10 @@ export function JobOpenings(props) {
 
 			case 'preview' :
 				window.open( job.job_permalink, '_blank' );
+                break;
+
+			case 'edit' :
+				navigate(`/dashboard/jobs/editor/${job.job_id}/`);
                 break;
 
 			case 'archive' :
@@ -195,7 +206,6 @@ export function JobOpenings(props) {
 							street_address,
 							country_code,
                             job_type,
-							employment_type,
 							vacancy,
                             application_deadline,
 							stats: {candidates=0, stages: application_stages={}}

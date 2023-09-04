@@ -182,7 +182,7 @@ export function ApplicationForm() {
                                                 label: field_label,
                                                 enabled,
                                                 required,
-                                                read_only,
+                                                readonly,
                                                 id: field_id
                                             } = field;
                                             const checkbox_id = 'crewhrm-checkbox-' + field_id;
@@ -222,8 +222,8 @@ export function ApplicationForm() {
                                                             <input
                                                                 id={checkbox_id}
                                                                 type="checkbox"
-                                                                checked={enabled || read_only}
-                                                                disabled={read_only}
+                                                                checked={enabled || readonly}
+                                                                disabled={readonly}
                                                                 onChange={(e) =>
                                                                     onToggle(
                                                                         'enabled',
@@ -245,7 +245,7 @@ export function ApplicationForm() {
                                                             </label>
                                                         </div>
                                                         <div>
-                                                            {(read_only && (
+                                                            {(readonly && (
                                                                 <span
                                                                     className={
                                                                         'required'.classNames(

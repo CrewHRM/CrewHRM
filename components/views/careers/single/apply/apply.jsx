@@ -22,22 +22,40 @@ const steps = [
     }
 ];
 
+const getForm=(form, {required, readonly, enabled})=>{
+	let _form = [...form];
+	let attrs = {required, readonly, enabled};
+
+	// Loop through fields
+	for ( let i=0; i < _form.length; i++ ) {
+
+		// Recursive, though there are only two level ideally
+		if ( Array.isArray( _form[i] ) ) {
+			_form[i] = getForm( _form[i], attrs );
+			continue;
+		}
+
+		_form[i] = {..._form[i], ...attrs}
+	}
+	return _form;
+}
+
 const fields = {
     personal: [
         ...sections_fields.personal_info.fields
-            .map((f) => f.form)
+            .map((f) =>getForm(f.form, f))
             .filter((f) => f)
             .flat()
     ],
     documents: [
         ...sections_fields.documents.fields
-            .map((f) => f.form)
+            .map((f) =>getForm(f.form, f))
             .filter((f) => f)
             .flat()
     ],
     other: [
         ...sections_fields.profile.fields
-            .map((f) => f.form)
+            .map((f) =>getForm(f.form, f))
             .filter((f) => f)
             .flat(),
         ...sections_fields.questions.fields
