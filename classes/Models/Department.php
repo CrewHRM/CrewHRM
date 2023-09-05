@@ -59,14 +59,7 @@ class Department {
 	public static function getDepartments() {
 		global $wpdb;
 		$departments = $wpdb->get_results(
-			$wpdb->prepare(
-				'SELECT 
-					department_name, 
-					CAST(department_id as UNSIGNED) as department_id,
-					CAST(sequence as UNSIGNED) as sequence,
-					CAST(parent_id as UNSIGNED) as parent_id
-				FROM ' . DB::departments()
-			),
+			"SELECT department_name, department_id, sequence, parent_id FROM " . DB::departments(),
 			ARRAY_A
 		);
 

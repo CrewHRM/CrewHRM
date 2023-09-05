@@ -4,6 +4,7 @@ namespace CrewHRM\Controllers;
 
 use CrewHRM\Models\Address;
 use CrewHRM\Models\Job;
+use CrewHRM\Models\JobMeta;
 use CrewHRM\Models\Meta;
 use CrewHRM\Models\Settings;
 
@@ -33,24 +34,21 @@ class JobManagement {
 	 * @return void
 	 */
 	public static function updateJob( array $data ) {
-		// Can access directly as it is checked by dispatcher already usning prerequisities array
-		$data = $data['job'];
+		// Can access job directly as it is checked by dispatcher already using prerequisities array
+		$data    = $data['job'];
+		$is_auto = ( $data['auto_save'] ?? false ) == true;
 
 		// If it is autosave while there is a published version, put it in meta instead to avoid conflict between edited and published version.
 		// Editor will show prompt in next opening that there's a cached autosaved version. 
 		if ( ! empty( $data['job_id'] ) ) {
 			$status = Job::getJobFiled( $data['job_id'], 'job_status' );
 			if ( $status !== 'draft' ) {
-				Meta::updateJobMeta( $data['job_id'], 'autosaved_job', $data );
+				JobMeta::updateJobMeta( $data['job_id'], 'autosaved_job', $data );
 				wp_send_json_success();
 				return;
 			}
 		}
 
-		// Firstly Create/Update the address
-		$data['address_id'] = Address::createUpdateAddress( $data );
-		$is_auto    = ( $data['auto_save'] ?? false ) == true;
-		
 		// Create or update job
 		$job_id  = Job::createUpdateJob( $data );
 		if ( empty( $job_id ) ) {
@@ -140,6 +138,13 @@ class JobManagement {
 	 * @return void
 	 */
 	public static function getSingleJobEdit( array $data ) {
-		$job = Job::
+		$job_id = $data['job_id'];
+		$job    = Job::getEditableJob( $job_id );
+
+		if ( ! empty( $job ) ) {
+			wp_send_json_success( array( 'job' => $job ) );
+		} else {
+			wp_send_json_error( array( 'message' => __( 'Job not found to edit', 'crewhrm' ) ) );
+		}
 	}
 }

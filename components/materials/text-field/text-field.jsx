@@ -114,11 +114,11 @@ export function TextField(props) {
                     onFocus={() => toggleFocusState(true)}
                     onBlur={() => toggleFocusState(false)}
                     placeholder={placeholder}
+                    pattern={pattern}
                     className={
                         'text-field-flat font-size-15 font-weight-500 letter-spacing--15 flex-1'.classNames() +
                         inputClassName
                     }
-                    pattern={pattern}
                 />
             )) ||
                 null}

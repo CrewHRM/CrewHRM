@@ -111,7 +111,7 @@ export function TitleAndDescription() {
                                 type="text"
                                 placeholder={__('ex. 001')}
                                 className={input_class}
-                                value={values.job_code === undefined ? '' : values.job_code}
+                                value={values.job_code || ''}
                                 onChange={(e) => onChange('job_code', e.currentTarget.value)}
                             />
                         </div>

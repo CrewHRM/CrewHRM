@@ -72,7 +72,8 @@ class Address {
 			$wpdb->prepare(
 				"SELECT * FROM " . DB::addresses() . " WHERE address_id=%d",
 				$address_id
-			)
+			),
+			ARRAY_A
 		);
 
 		return empty( $address ) ? null : $address;

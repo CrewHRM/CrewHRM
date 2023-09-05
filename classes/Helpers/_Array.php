@@ -146,12 +146,13 @@ class _Array {
 	 *
 	 * @param array $array
 	 * @param string $key
-	 * @param mixed $value
+	 * @param array $new
 	 * @return array
 	 */
-	public static function appendColumn( array $array, string $key, $value ) {
+	public static function appendArray( array $array, string $key, $new ) {
 		foreach ( $array as $index => $element ) {
-			$array[ $index ][ $key ] = $value;
+			$prev = $array[ $index ][ $key ] ?? array();
+			$array[ $index ][ $key ] = array_merge_recursive( $prev, $new );
 		}
 
 		return $array;

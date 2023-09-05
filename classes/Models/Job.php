@@ -5,6 +5,11 @@ namespace CrewHRM\Models;
 use CrewHRM\Helpers\_Array;
 use CrewHRM\Helpers\Utilities;
 
+/**
+ * Job class to manage job related database interactions.
+ * 
+ * Note: The post data to create/update job, the autosave version in the meta and the return value of getEditableJob method must be the same structure. 
+ */
 class Job {
 
 	/**
@@ -15,8 +20,8 @@ class Job {
 	 */
 	public static function createUpdateJob( array $job ) {
 
-		$salary   = $job['salary'] ?? '';
-		$salary   = explode( '-', $salary );
+		$salary = $job['salary'] ?? '';
+		$salary = explode( '-', $salary );
 		
 		$_job = array(
 			'job_title'            => $job['job_title'] ?? '',
@@ -24,14 +29,13 @@ class Job {
 			'job_status'           => $job['job_status'] ?? 'draft',
 			'job_code'             => $job['job_code'] ?? null,
 			'department_id'        => ( ! empty( $job['department_id'] ) && is_numeric( $job['department_id'] ) ) ? $job['department_id'] : null,
-			'address_id'           => $job['address_id'],
 			'vacancy'              => ( ! empty( $job['vacancy'] ) && is_numeric( $job['vacancy'] ) ) ? $job['vacancy'] : null,
 			'salary_a'             => is_numeric( $salary[0] ?? null ) ? $salary[0] : null,
 			'salary_b'             => is_numeric( $salary[1] ?? null ) ? $salary[1] : null,
 			'salary_basis'         => $job['salary_basis'] ?? null,
 			'employment_type'      => $job['employment_type'] ?? null,
+			'experience_years'     => $job['experience_years'] ?? null,
 			'experience_level'     => $job['experience_level'] ?? null,
-			'attendance_type'      => $job['attendance_type'] ?? null,
 			'application_deadline' => $job['application_deadline'] ?? null,
 			'application_form'     => maybe_serialize( $job['application_form'] ),
 			'job_status'           => $job['job_status'] ?? 'draft',
@@ -39,26 +43,42 @@ class Job {
 		);
 
 		global $wpdb;
-		if ( ! empty( $job['job_id'] ) ) {
+
+		// Firstly Create/Update the address
+		$job_id     = $job['job_id'] ?? null;
+		$address_id = Address::createUpdateAddress( $job );
+		if ( ! empty( $address_id ) ) {
+			$_job['address_id'] = $address_id;
+		}
+
+		// Update the job now if it is present
+		if ( ! empty( $job_id ) ) {
 			$wpdb->update(
 				DB::jobs(),
 				$_job,
-				array( 'job_id' => $job['job_id'] )
+				array( 'job_id' => $job_id )
 			);
 		} else {
+			// Insert new if the id empty
 			$wpdb->insert(
 				DB::jobs(),
 				$_job
 			);
 
-			$job['job_id'] = $wpdb->insert_id;
+			// Set the newly created ID
+			$job_id = $wpdb->insert_id;
 		}
 
-		if ( ! empty( $job['job_id'] ) ) {
-
+		// Insert Job meta
+		$to_store = [ 'attendance_type' ];
+		foreach ( $to_store as $field_name ) {
+			JobMeta::updateJobMeta( $job_id, $field_name, ( $job[ $field_name ] ?? null ) );
 		}
 
-		return $job['job_id'];
+		// Insert stages
+		Stage::createUpdateStages( $job_id, $job['hiring_flow'] ?? array() );
+		
+		return $job_id;
 	}
 
 	/**
@@ -73,15 +93,18 @@ class Job {
 			$wpdb->prepare(
 				"SELECT * FROM " . DB::jobs() . " WHERE job_id=%d",
 				$job_id
-			)
+			),
+			ARRAY_A
 		);
-
 		if ( empty( $job ) ) {
 			return null;
 		}
 
+		$job = _Array::cast( $job, 'intval' );
+
 		// Unserialize application form 
 		$job['application_form'] = maybe_unserialize( $job['application_form'] );
+		$job['salary'] = ( $job['salary_a'] ?? '' ) . ( ( ! empty( $job['salary_a'] ) && ! empty( $job['salary_b'] ) ) ? '-' . $job['salary_b'] : '' );
 
 		// Assign address
 		if ( ! empty( $job['address_id'] ) ) {
@@ -92,10 +115,15 @@ class Job {
 		}
 
 		// Assign meta
-		$meta = Meta::getJobMeta( $job_id );
-		if ( empty( $meta ) && is_array( $meta ) ) {
+		$meta = JobMeta::getJobMeta( $job_id );
+		if ( ! empty( $meta ) && is_array( $meta ) ) {
 			$job = array_merge( $job, $meta );
 		}
+
+		// Assign stages
+		$job['hiring_flow'] = Stage::getStagesByJobId( $job_id );
+
+		return $job;
 	}
 
 	/**
@@ -163,16 +191,16 @@ class Job {
 		$jobs = _Array::indexify( $jobs, 'job_id' );
 
 		// Assign meta
-		$jobs = Meta::assignBulkJobMeta( $jobs );
+		$jobs = JobMeta::assignBulkJobMeta( $jobs );
 
 		// Assign application count
 		if ( ! empty( $meta_data ) && in_array( 'application_count', $meta_data ) ) {
-			$jobs = self::appendApplicantCounts( $jobs );
+			$jobs = Application::appendApplicantCounts( $jobs );
 		}
 
 		// Assign stages data
 		if ( ! empty( $meta_data ) && in_array( 'stages', $meta_data ) ) {
-			$jobs = self::appendApplicationStages( $jobs );
+			$jobs = Stage::appendApplicationStages( $jobs );
 		}
 
 		// Assign job permalink
@@ -193,75 +221,6 @@ class Job {
 		$jobs = self::getJobs( array( 'job_id' => $job_id ), $meta );
 		$jobs = array_values( $jobs );
 		return $jobs[0] ?? null;
-	}
-
-	/**
-	 * Get total count of applications per stages.
-	 *
-	 * @param array $jobs
-	 * @return array
-	 */
-	public static function appendApplicantCounts( array $jobs ) {
-		global $wpdb;
-
-		// Prepare the jobs array
-		$jobs    = _Array::appendColumn( $jobs, 'stats', array( 'candidates' => 0, 'stages' => array() ) );
-		$job_ids = array_column( $jobs, 'job_id' );
-		$ids_in  = implode( ',', $job_ids );
-
-		// Get the candidates counts per stages
-		$counts  = $wpdb->get_results(
-			"SELECT job_id, stage_id, COUNT(application_id) as count FROM " . DB::applications() . " WHERE job_id IN ({$ids_in}) GROUP BY job_id, stage_id",
-			ARRAY_A
-		);
-		$counts = _Array::castColumns( $counts, 'intval' );
-
-		// Loop through the rows and gather counts
-		foreach ( $counts as $count ) {
-			$job_id = $count['job_id'];
-			$stage_id = $count['stage_id'];
-
-			// Add the number to total candidate count
-			$jobs[ $job_id ]['stats']['candidates'] += $count['count'];
-
-			// Add the number to per stage count
-			$jobs[ $job_id ]['stats']['stages'][ $stage_id ] = array( 
-				'candidates' => $count['count']
-			);
-		}
-
-		return $jobs;
-	}
-
-	/**
-	 * Get all stages for multiple jobs using a single query.
-	 * This method requires calling Job::appendApplicantCounts method first as it appends data to jobs>stats>stages.
-	 *
-	 * @param array $jobs
-	 * @return array
-	 */
-	public static function appendApplicationStages( array $jobs ) {
-		global $wpdb;
-
-		// Prepare args 
-		$job_ids = array_keys( $jobs );
-		$ids_in  = implode( ',', $job_ids );
-		$stages  = $wpdb->get_results(
-			"SELECT * FROM " . DB::stages() . " WHERE job_id IN({$ids_in}) ORDER BY sequence",
-			ARRAY_A
-		);
-		$stages = _Array::castColumns( $stages, 'intval' );
-
-		// Assign the stages in jobs array
-		foreach ( $stages as $stage ) {
-			$job_id   = $stage['job_id'];
-			$stage_id = $stage['stage_id'];
-
-			$jobs[ $job_id ]['stats']['stages'][ $stage_id ]['stage_name'] = $stage['stage_name'];
-			$jobs[ $job_id ]['stats']['stages'][ $stage_id ]['stage_id'] = $stage_id;
-		}
-
-		return $jobs;
 	}
 
 	/**
@@ -313,7 +272,7 @@ class Job {
 		);
 
 		// Delete meta
-		Meta::deleteJobMeta( $job_id );
+		JobMeta::deleteJobMeta( $job_id );
 
 		// Delete associated address
 		$address_id = self::getJobFiled( $job_id, 'address_id' );
@@ -388,48 +347,12 @@ class Job {
 		);
 		$new_job_id = $wpdb->insert_id;
 
-		// ------------ Copy stages from old one to new ------------
-		$stages = $wpdb->get_results(
-			$wpdb->prepare(
-				"SELECT stage_name, sequence FROM " . DB::stages() . " WHERE job_id=%d",
-				$old_job_id
-			),
-			ARRAY_A
-		);
-
-		// Insert the stages for new job
-		foreach ( $stages as $stage ) {
-			$wpdb->insert(
-				DB::stages(),
-				array(
-					'stage_name' => $stage['stage_name'],
-					'sequence'   => $stage['sequence'],
-					'job_id'     => $new_job_id
-				)
-			);
-		}
-
-		// ------------------- Now copy the meta -------------------
-		$meta_data = $wpdb->get_results(
-			$wpdb->prepare(
-				"SELECT meta_key, meta_value FROM " . DB::jobmeta() . " WHERE object_id=%d",
-				$old_job_id
-			),
-			ARRAY_A
-		);
-
-		// Now insert these meta for the new job
-		foreach ( $meta_data as $meta ) {
-			$wpdb->insert(
-				DB::jobmeta(),
-				array(
-					'object_id'  => $new_job_id,
-					'meta_key'   => $meta['meta_key'],
-					'meta_value' => $meta['meta_value']
-				)
-			);
-		}
-
+		// Copy stages from old one to new
+		Stage::copyStages( $old_job_id, $new_job_id );
+		
+		// Now copy the meta
+		JobMeta::copyJobMeta( $old_job_id, $new_job_id );
+		
 		return $new_job_id;
 	}
 }

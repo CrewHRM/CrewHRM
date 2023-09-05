@@ -3,7 +3,7 @@ import { TextField } from './text-field/text-field.jsx';
 import { __ } from '../utilities/helpers.jsx';
 
 export function DateField(props) {
-    let { onChange, className, inputClassName } = props;
+    let { onChange, className, inputClassName, value } = props;
 
     return (
         <TextField
@@ -11,7 +11,7 @@ export function DateField(props) {
             type="date"
             pattern="\d{4}-\d{2}-\d{2}"
             icon_position="right"
-            {...{ onChange, className, inputClassName }}
+            {...{ onChange, className, inputClassName, value }}
         />
     );
 }

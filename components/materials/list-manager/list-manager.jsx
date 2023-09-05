@@ -48,6 +48,8 @@ function ItemSingle({ list_item, renameStage, deleteHandler, deleteFlow }) {
 export function ListManager(props) {
     const {
         list,
+		newIdKey = 'id',
+		newLabelKey = 'label',
         mode,
         className = '',
         onChange,
@@ -72,7 +74,7 @@ export function ListManager(props) {
         });
 
         // Build array
-        let item = { id, label: __('Untitled') };
+        let item = { [newIdKey]: id, [newLabelKey]: __('Untitled') };
         let new_array = is_queue ? [...list, item] : [item, ...list];
 
         // Send the changes to parent component

@@ -16,7 +16,7 @@ const salary_types = {
 };
 
 export function Salary() {
-    const { values, onChange } = useContext(ContextJobEditor);
+    const { values={}, onChange } = useContext(ContextJobEditor);
 
     return (
         <>
@@ -63,7 +63,7 @@ export function Salary() {
                             <span className={field_label_class}>{__('Salary')}</span>
                             <input
                                 className={input_class}
-                                placeholder={__('ex $100')}
+                                placeholder={__('ex 70000-90000')}
                                 value={values.salary || ''}
                                 onChange={(e) => onChange('salary', e.currentTarget.value)}
                             />

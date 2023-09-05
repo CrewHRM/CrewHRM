@@ -6,24 +6,36 @@ use CrewHRM\Helpers\_Array;
 
 class Meta {
 	/**
+	 * Meta table where to do operations
+	 *
+	 * @var string
+	 */
+	private $table;
+
+	public function __construct( string $table ) {
+		$this->table = $table;
+	}
+
+	/**
 	 * Get single meta value by object id and meta key
 	 *
 	 * @param int $obj_id
 	 * @param string $meta_key
-	 * @param string $table
 	 * @return mixed
 	 */
-	private static function getMeta( $obj_id, $meta_key, $table ) {
+	public function getMeta( $obj_id, $meta_key ) {
 		
 		$where_clause = ! empty( $meta_key ) ? " AND meta_key='" . esc_sql( $meta_key ) . "' " : '';
 		
 		global $wpdb;
 		$results = $wpdb->get_results(
 			$wpdb->prepare(
-				"SELECT meta_key, meta_value FROM " . $table . " WHERE object_id=%d " . $where_clause,
+				"SELECT meta_key, meta_value FROM " . $this->table . " WHERE object_id=%d " . $where_clause,
 				$obj_id
-			)
+			),
+			ARRAY_A
 		);
+
 
 		$_meta = array();
 		foreach ( $results as $result ) {
@@ -42,19 +54,38 @@ class Meta {
 			$_meta[ $key ][] = $value;
 		}
 
-		return $meta_key ? ( $_meta[ $meta_key ] ?? null ) : $_meta;
+		return ! empty( $meta_key ) ? ( $_meta[ $meta_key ] ?? null ) : $_meta;
 	}
 
 	/**
-	 * Create or update a meta field
+	 * Create or update a meta field. If the value is array, then mismatching values will be removed.
 	 *
 	 * @param int $obj_id
 	 * @param string $meta_key
 	 * @param mixed $meta_value
 	 * @return bool
 	 */
-	private static function updateMeta( $obj_id, $meta_key, $meta_value, $table ) {
+	public function updateMeta( $obj_id, $meta_key, $meta_value ) {
 		global $wpdb;
+
+		if ( is_array( $meta_value ) ) {
+			// Delete existing
+			$this->deleteMeta( $obj_id, $meta_key, null );
+
+			// Add again
+			foreach ( $meta_value as $value ) {
+				$this->addMeta( $obj_id, $meta_key, $value );
+			}
+			return;
+		}
+		
+		$exists = $wpdb->get_var(
+			$wpdb->prepare(
+				"SELECT COUNT(meta_key) FROM " . $this->table . " WHERE object_id=%d AND meta_key=%s",
+				$obj_id,
+				$meta_key
+			)
+		);
 
 		$payload = array(
 			'object_id' => $obj_id,
@@ -62,51 +93,36 @@ class Meta {
 			'meta_value' => maybe_serialize( $meta_value )
 		);
 
-		// Check if it exists
-		$exist_counts = $wpdb->get_var(
-			$wpdb->prepare(
-				"SELECT COUNT(meta_key) FROM " . $table . " WHERE object_id=%d AND meta_key=%s",
-				$obj_id,
-				$meta_key
-			)
-		);
-
-		if ( $exist_counts === 1 ) {
-			// Can be updated if there's only one meta for the key
+		if ( $exists ) {
 			$wpdb->update(
-				$table,
+				$this->table,
 				$payload,
 				array( 
 					'object_id' => $obj_id,
 					'meta_key'  => $meta_key 
 				)
 			);
-		} else if( $exist_counts === 0 ) {
-			// Can be added if no meta key added for this
+
+		} else {
 			$wpdb->insert(
-				$table,
+				$this->table,
 				$payload
 			);
-		} else {
-			// If there are multiple meta with the key, then neither update nor create possible.
-			return false;
-		}
-
-		return true;
+		} 
 	}
 
 	/**
-	 * Add meta
+	 * Add meta. No check about if there is any existing
 	 *
 	 * @param int $obj_id
 	 * @param string $meta_key
 	 * @param mixed $meta_value
 	 * @return bool
 	 */
-	public static function addMeta( $obj_id, $meta_key, $meta_value, $table ) {
+	public function addMeta( $obj_id, $meta_key, $meta_value ) {
 		global $wpdb;
 		$wpdb->insert(
-			$table,
+			$this->table,
 			array(
 				'object_id'  => $obj_id,
 				'meta_key'   => $meta_key,
@@ -120,10 +136,9 @@ class Meta {
 	 *
 	 * @param int $obj_id
 	 * @param string $meta_key
-	 * @param string $table
 	 * @return void
 	 */
-	private static function deleteMeta( $obj_id, $meta_key, $table ) {
+	public function deleteMeta( $obj_id, $meta_key, $meta_value ) {
 		global $wpdb;
 
 		$where = array(
@@ -134,28 +149,32 @@ class Meta {
 			$where['meta_key'] = $meta_key;
 		}
 
+		if ( $meta_value !== null ) {
+			$where['meta_value'] = $meta_value;
+		}
+
 		$wpdb->delete(
-			$table,
+			$this->table,
 			$where
 		);
 	}
 
 	/**
-	 * Undocumented function
+	 * Assign bulk meta to objects array
 	 *
 	 * @param array $objects
 	 * @param string $id_key
 	 * @return void
 	 */
-	private static function assignBulkMeta( array $objects, string $table ) {
+	public function assignBulkMeta( array $objects ) {
 		global $wpdb;
 
-		$objects = _Array::appendColumn( $objects, 'meta', array() );
+		$objects = _Array::appendArray( $objects, 'meta', array() );
 		$obj_ids = array_keys( $objects );
 		$ids_in  = implode( ',', $obj_ids );
 
 		$meta = $wpdb->get_results(
-			"SELECT * FROM " . $table . " WHERE object_id IN({$ids_in})",
+			"SELECT * FROM " . $this->table . " WHERE object_id IN({$ids_in})",
 			ARRAY_A
 		);
 
@@ -182,57 +201,33 @@ class Meta {
 	}
 
 	/**
-	 * Get job meta value
+	 * Copy meta from one object to another in favour of duplication. This method will not check for duplicate. Just will add.
 	 *
-	 * @param int $job_id
-	 * @param string $meta_key
-	 * @return mixed
+	 * @param int $object_from_id
+	 * @param int $object_to_id
+	 * @return void
 	 */
-	public static function getJobMeta( $job_id, $meta_key=null ) {
-		return self::getMeta( $job_id, $meta_key, DB::jobmeta() );
-	}
+	public function copyMeta( $object_from_id, $object_to_id ) {
+		global $wpdb;
 
-	/**
-	 * Add meta no matter if there are some already with the key
-	 *
-	 * @param string $meta_key
-	 * @param mixed $meta_value
-	 * @return bool
-	 */
-	public static function addJobMeta( $job_id, $meta_key, $meta_value ) {
-		return self::addMeta( $job_id, $meta_key, $meta_value, DB::jobmeta() );
-	}
+		$meta_data = $wpdb->get_results(
+			$wpdb->prepare(
+				"SELECT meta_key, meta_value FROM " . $this->table . " WHERE object_id=%d",
+				$object_from_id
+			),
+			ARRAY_A
+		);
 
-	/**
-	 * Update job meta
-	 *
-	 * @param int $job_id
-	 * @param string $meta_key
-	 * @param mixed $meta_value
-	 * @return mixed
-	 */
-	public static function updateJobMeta( $job_id, $meta_key, $meta_value ) {
-		return self::updateMeta( $job_id, $meta_key, $meta_value, DB::jobmeta() );
-	}
-
-	/**
-	 * Delete job meta
-	 *
-	 * @param int $job_id
-	 * @param string $meta_key
-	 * @return mixed
-	 */
-	public static function deleteJobMeta( $job_id, $meta_key = null ) {
-		return self::deleteMeta( $job_id, $meta_key, DB::jobmeta() );
-	}
-
-	/**
-	 * Assign bulk job meta in jobs array
-	 *
-	 * @param array $jobs
-	 * @return array
-	 */
-	public static function assignBulkJobMeta( array $jobs ) {
-		return self::assignBulkMeta( $jobs, DB::jobmeta() );
+		// Now insert these meta for the new job
+		foreach ( $meta_data as $meta ) {
+			$wpdb->insert(
+				$this->table,
+				array(
+					'object_id'  => $object_to_id,
+					'meta_key'   => $meta['meta_key'],
+					'meta_value' => $meta['meta_value']
+				)
+			);
+		}
 	}
 }

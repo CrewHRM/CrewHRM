@@ -34,15 +34,15 @@ const steps = [
 ];
 
 
-export const hiriging_flow = [
+export const hiring_flow = [
     __('Screening'),
     __('Assesment'),
     __('Interview'),
     __('Make an Offer')
 ].map((s) => {
     return {
-        id: getRandomString(),
-        label: s
+        stage_id: getRandomString(),
+        stage_name: s
     };
 });
 
@@ -192,7 +192,7 @@ export function JobEditor() {
 				values: {
 					job_status: 'draft',
 					job_id: 0,
-					hiriging_flow,
+					hiring_flow,
 					application_form: sections_fields
 				}
 			});
@@ -205,11 +205,14 @@ export function JobEditor() {
 		});
 
 		request( 'get_single_job_edit', {nonce, nonceAction, job_id}, resp=>{
-			const {success, data:{job, message=__('Something went wrong!')}} = resp;
+			const {success, data:{job={}, message=__('Something went wrong!')}} = resp;
 
 			setState({
 				...state,
-				values: job,
+				values: {
+					...job,
+					application_form: job.application_form || sections_fields
+				},
 				fetching: false,
 				error_message: !success ? message : null
 			})
