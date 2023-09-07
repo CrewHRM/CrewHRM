@@ -107,8 +107,7 @@ class Job {
 		$job = _Array::castRecursive( $job );
 
 		// Unserialize application form 
-		$application_form = maybe_unserialize( $job['application_form'] );
-		$job['application_form'] = is_array( $application_form ) ? _Array::castRecursive( $application_form ) : null;
+		$job['application_form'] = _Array::getArray( maybe_unserialize( $job['application_form'] ) );
 		$job['salary'] = ( $job['salary_a'] ?? '' ) . ( ( ! empty( $job['salary_a'] ) && ! empty( $job['salary_b'] ) ) ? '-' . $job['salary_b'] : '' );
 
 		// Assign address
@@ -210,7 +209,12 @@ class Job {
 
 		// Assign job permalink
 		foreach ( $jobs as $index => $job ) {
+
+			// Add permalink
 			$jobs[ $index ]['job_permalink'] = self::getJobPermalink( $job['job_id'] );
+
+			// Prepare application form
+			$jobs[ $index ]['application_form'] = _Array::getArray( maybe_unserialize( $job['application_form'] ) );
 		}
 
 		return $jobs;

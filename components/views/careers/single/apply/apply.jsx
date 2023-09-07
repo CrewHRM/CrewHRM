@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { Tabs } from '../../../../materials/tabs/tabs.jsx';
-import { __ } from '../../../../utilities/helpers.jsx';
+import { __, countries_object } from '../../../../utilities/helpers.jsx';
 import { ContextForm, FormFields } from '../../../../materials/form.jsx';
-import { sections_fields } from '../../../hrm/job-editor/application-form/form-structure.jsx';
 import { FormActionButtons } from '../../../../materials/form-action.jsx';
 
 import style from './apply.module.scss';
@@ -22,63 +21,13 @@ const steps = [
     }
 ];
 
-const getForm=(form, {required, readonly, enabled})=>{
-	let _form = [...form];
-	let attrs = {required, readonly, enabled};
-
-	// Loop through fields
-	for ( let i=0; i < _form.length; i++ ) {
-
-		// Recursive, though there are only two level ideally
-		if ( Array.isArray( _form[i] ) ) {
-			_form[i] = getForm( _form[i], attrs );
-			continue;
-		}
-
-		_form[i] = {..._form[i], ...attrs}
-	}
-	return _form;
-}
-
-const fields = {
-    personal: [
-        ...sections_fields.personal_info.fields
-            .map((f) =>getForm(f.form, f))
-            .filter((f) => f)
-            .flat()
-    ],
-    documents: [
-        ...sections_fields.documents.fields
-            .map((f) =>getForm(f.form, f))
-            .filter((f) => f)
-            .flat()
-    ],
-    other: [
-        ...sections_fields.profile.fields
-            .map((f) =>getForm(f.form, f))
-            .filter((f) => f)
-            .flat(),
-        ...sections_fields.questions.fields
-            .map((question) => {
-                return [
-                    {
-                        name: question.id,
-                        label: question.label,
-                        type: question.type,
-                        options: question.field_options,
-                        enabled: question.enabled,
-                        required: question.required
-                    },
-                    null
-                ];
-            })
-            .filter((q) => q)
-            .flat()
-    ]
-};
-
-export function Apply({ job }) {
-    const { job_title='Sampel title', location = 'Sample location' } = job || {};
+export function Apply({ job={} }) {
+    const { 
+		job_title, 
+		street_address,
+		country_code,
+		application_form: fields={}
+	} = job;
 
     const [state, setState] = useState({
         active_tab: 'personal',
@@ -126,7 +75,7 @@ export function Apply({ job }) {
     };
 
     const submitApplication = () => {
-        console.log('Submit now');
+        console.log(state.values);
     };
 
     return (
@@ -141,28 +90,26 @@ export function Apply({ job }) {
                     <span
                         className={'d-block font-size-17 font-weight-500 line-height-25 color-text margin-bottom-10'.classNames()}
                     >
-                        {location}
+                        {street_address}, {countries_object[country_code]}
                     </span>
                 </div>
             </div>
-            {(is_segment && (
-                <div
-                    className={
-                        'sequence'.classNames(style) +
-                        'padding-vertical-20 box-shadow-thin margin-bottom-50'.classNames()
-                    }
-                >
-                    <div>
-                        <Tabs
-                            active={state.active_tab}
-                            tabs={steps}
-                            theme="sequence"
-                            onNavigate={(tab) => navigateTab(tab)}
-                        />
-                    </div>
-                </div>
-            )) ||
-                null}
+			
+            {is_segment ? <div
+				className={
+					'sequence'.classNames(style) +
+					'padding-vertical-20 box-shadow-thin margin-bottom-50'.classNames()
+				}
+			>
+				<div>
+					<Tabs
+						active={state.active_tab}
+						tabs={steps}
+						theme="sequence"
+						onNavigate={(tab) => navigateTab(tab)}
+					/>
+				</div>
+			</div> : null}
 
             <div data-crewhrm-selector="job-application-form" className={'form'.classNames(style)}>
                 {(is_segment && (
@@ -188,6 +135,7 @@ export function Apply({ job }) {
 
                 <ContextForm.Provider value={{ values: state.values, onChange }}>
                     <FormFields
+						defaultEnabled={false}
                         fields={
                             is_segment
                                 ? fields[state.active_tab]

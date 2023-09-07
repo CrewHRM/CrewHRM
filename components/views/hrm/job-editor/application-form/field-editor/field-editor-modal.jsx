@@ -135,7 +135,7 @@ export function FieldEditorModal(props) {
                         {__('Required')}
                     </span>
                     <ToggleSwitch
-                        checked={state.field.required}
+                        checked={state.field.required || false}
                         onChange={(required) => onChange('required', required)}
                     />
                 </div>

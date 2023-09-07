@@ -3,29 +3,15 @@
 namespace CrewHRM\Helpers;
 
 class _Array {
-	public static function getArray( $value, $cast_booleans = true ) {
+	/**
+	 * Return array
+	 *
+	 * @param mixed $value
+	 * @return array
+	 */
+	public static function getArray( $value ) {
 		$array = is_array( $value ) ? $value : array();
-
-		if ( $cast_booleans === true ) {
-			foreach ( $array as $index => $value ) {
-
-				if ( $value === 'true' ) {
-					$array[ $index ] = true;
-					continue;
-				}
-
-				if ( $value === false ) {
-					$array[ $index ] = false;
-					continue;
-				}
-
-				if ( $value === 'null' ) {
-					$array[ $index ] = null;
-					continue;
-				}
-			}
-		}
-
+		$array = self::castRecursive( $array );
 		return $array;
 	}
 

@@ -9,6 +9,75 @@ import { request } from '../../../utilities/request.jsx';
 import { ContextNonce } from '../../../materials/mountpoint.jsx';
 import { LoadingIcon } from '../../../materials/loading-icon/loading-icon.jsx';
 import { employments_types } from '../../hrm/job-editor/job-details/sections/employment-details.jsx';
+import { sections_fields } from '../../hrm/job-editor/application-form/form-structure.jsx';
+
+const getForm=(_form, attrs)=>{
+	// Loop through fields
+	for ( let i=0; i < _form.length; i++ ) {
+
+		// Recursive, though there are only two level ideally
+		if ( Array.isArray( _form[i] ) ) {
+			_form[i] = getForm( _form[i], attrs );
+			continue;
+		}
+
+		_form[i] = {..._form[i], ...attrs}
+	}
+
+	return _form;
+}
+
+const prepareField=(category, field={})=>{
+	
+	let {form: _form=[]} = sections_fields[category].fields.find(f=>f.id===field.id) || {};
+	const { required, enabled, readonly } = field;
+
+	let attrs = {
+		required: required || readonly, 
+		enabled: enabled || readonly
+	};
+
+	return getForm( _form, attrs );
+}
+
+function applyFormFields(fields) {
+	return  {
+		personal: [
+			...fields.personal_info.fields
+				.map((f) =>prepareField('personal_info', f))
+				.filter((f) => f)
+				.flat()
+		],
+		documents: [
+			...fields.documents.fields
+				.map((f) =>prepareField('documents', f))
+				.filter((f) => f)
+				.flat()
+		],
+		other: [
+			...fields.profile.fields
+				.map((f) =>prepareField('profile', f))
+				.filter((f) => f)
+				.flat(),
+			...fields.questions.fields
+				.map((question) => {
+					return [
+						{
+							name: question.id,
+							label: question.label,
+							type: question.type,
+							options: question.field_options,
+							enabled: question.enabled,
+							required: question.required
+						},
+						null
+					];
+				})
+				.filter((q) => q)
+				.flat()
+		]
+	};
+}
 
 function RenderMeta({ icon, hint, content }) {
     return content ? <div>
@@ -31,7 +100,7 @@ export function Single({ base_permalink }) {
 	const [state, setState] = useState({
 		job: null,
 		about_company: null,
-		fetching: false,
+		fetching: true,
 		error_message: null
 	});
 	
@@ -42,11 +111,21 @@ export function Single({ base_permalink }) {
 		});
 
 		request('get_single_job_view', {job_id, nonce, nonceAction}, resp=>{
-			const {success, data:{job=null, about_company, message=__( 'Something Went Wrong!' )}} = resp;
+			const {
+				success, 
+				data:{
+					job={}, 
+					about_company, 
+					message=__( 'Something Went Wrong!' )
+				}
+			} = resp;
 
 			setState({
 				...state,
-				job,
+				job: {
+					...job,
+					application_form: applyFormFields( job.application_form || {} )
+				},
 				about_company,
 				fetching: false,
 				error_message: (!success || !job) ? message : null
@@ -61,7 +140,7 @@ export function Single({ base_permalink }) {
     const { 
 		department_name, 
 		job_title, 
-		meta,
+		meta={},
 		job_description, 
 		street_address, 
 		country_code,
@@ -69,8 +148,6 @@ export function Single({ base_permalink }) {
 		salary_a, 
 		salary_b
 	} = state.job || {};
-
-	const {attendance_type} = meta || {};
 
 	if ( state.fetching ) {
 		return <LoadingIcon size={34} center={true}/>

@@ -180,9 +180,9 @@ export function ApplicationForm() {
                                         items={input_fields.map((field, index) => {
                                             const {
                                                 label: field_label,
-                                                enabled,
-                                                required,
-                                                readonly,
+                                                enabled=false,
+                                                required=false,
+                                                readonly=false,
                                                 id: field_id
                                             } = field;
                                             const checkbox_id = 'crewhrm-checkbox-' + field_id;
@@ -222,7 +222,7 @@ export function ApplicationForm() {
                                                             <input
                                                                 id={checkbox_id}
                                                                 type="checkbox"
-                                                                checked={enabled || readonly}
+                                                                checked={enabled || readonly || false}
                                                                 disabled={readonly}
                                                                 onChange={(e) =>
                                                                     onToggle(
