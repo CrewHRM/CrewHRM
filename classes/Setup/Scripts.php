@@ -11,6 +11,7 @@ use CrewHRM\Helpers\Colors;
 use CrewHRM\Helpers\Utilities;
 use CrewHRM\Main;
 use CrewHRM\Models\Settings;
+use CrewHRM\Models\Stage;
 
 /**
  * Script handler class
@@ -84,14 +85,15 @@ class Scripts extends Main {
 
 		// Load JS variables
 		$data = array(
-			'app_name'     => self::$configs->app_name,
-			'action_hooks' => array(),
-			'filter_hooks' => array(),
-			'home_url'     => get_home_url(),
-			'dist_url'     => self::$configs->dist_url,
-			'plugin_url'   => self::$configs->url,
-			'ajaxurl'      => admin_url( 'admin-ajax.php' ),
-			'colors'       => $dynamic_colors,
+			'app_name'        => self::$configs->app_name,
+			'action_hooks'    => array(),
+			'filter_hooks'    => array(),
+			'home_url'        => get_home_url(),
+			'dist_url'        => self::$configs->dist_url,
+			'plugin_url'      => self::$configs->url,
+			'ajaxurl'         => admin_url( 'admin-ajax.php' ),
+			'colors'          => $dynamic_colors,
+			'reserved_stages' => Stage::$reserved_stages,
 		);
 
 		echo '<script>window.CrewHRM=' . wp_json_encode( $data ) . '</script>';

@@ -5,7 +5,7 @@ import { __, getRandomString } from '../../utilities/helpers.jsx';
 
 import style from './list.module.scss';
 
-function ItemSingle({ list_item, renameStage, deleteHandler, deleteFlow }) {
+function ItemSingle({ id_key, label_key, list_item, renameStage, deleteHandler, deleteFlow }) {
     return (
         <div
             className={
@@ -17,13 +17,13 @@ function ItemSingle({ list_item, renameStage, deleteHandler, deleteFlow }) {
 
             <div className={'flex-1'.classNames()}>
                 <input
-                    id={'crewhrm-flow-option-' + list_item.id}
+                    id={'crewhrm-flow-option-' + list_item[id_key]}
                     type="text"
-                    value={list_item.label}
+                    value={list_item[label_key]}
                     disabled={!renameStage}
                     onChange={(e) => {
                         if (renameStage) {
-                            renameStage(list_item.id, e.currentTarget.value);
+                            renameStage(list_item[id_key], e.currentTarget.value);
                         }
                     }}
                     className={'text-field-flat margin-left-5'.classNames()}
@@ -37,7 +37,7 @@ function ItemSingle({ list_item, renameStage, deleteHandler, deleteFlow }) {
                         'trash'.classNames(style)
                     }
                     onClick={() =>
-                        deleteHandler ? deleteHandler(list_item.id) : deleteFlow(list_item.id)
+                        deleteHandler ? deleteHandler(list_item[id_key]) : deleteFlow(list_item[id_key])
                     }
                 ></i>
             ) : null}
@@ -48,8 +48,8 @@ function ItemSingle({ list_item, renameStage, deleteHandler, deleteFlow }) {
 export function ListManager(props) {
     const {
         list,
-		newIdKey = 'id',
-		newLabelKey = 'label',
+		id_key = 'id',
+		label_key = 'label',
         mode,
         className = '',
         onChange,
@@ -61,7 +61,7 @@ export function ListManager(props) {
 
     const [state, setState] = useState({
         last_id: null,
-        exclude_focus: list.map((s) => s.id)
+        exclude_focus: list.map((s) => s[id_key])
     });
 
     const addStage = () => {
@@ -74,7 +74,7 @@ export function ListManager(props) {
         });
 
         // Build array
-        let item = { [newIdKey]: id, [newLabelKey]: __('Untitled') };
+        let item = { [id_key]: id, [label_key]: __('Untitled') };
         let new_array = is_queue ? [...list, item] : [item, ...list];
 
         // Send the changes to parent component
@@ -83,8 +83,8 @@ export function ListManager(props) {
 
     const renameStage = (id, label) => {
         const { list = [] } = props;
-        const index = list.findIndex((s) => s.id == id);
-        list[index].label = label;
+        const index = list.findIndex((s) => s[id_key] == id);
+        list[index][label_key] = label;
 
         // Send the renamed list to parent
         onChange(list);
@@ -94,7 +94,7 @@ export function ListManager(props) {
         const { list = [] } = props;
 
         if (id !== null) {
-            const index = list.findIndex((s) => s.id === id);
+            const index = list.findIndex((s) => s[id_key] === id);
             list.splice(index, 1);
         }
 
@@ -137,10 +137,10 @@ export function ListManager(props) {
                 items={list.map((list_item) => {
                     return {
                         ...list_item,
-                        id: list_item.id, // Just to make sure it requires ID.
+                        id: list_item[id_key], // Just to make sure it requires ID.
                         rendered: (
                             <ItemSingle
-                                {...{ list_item, renameStage, deleteHandler, deleteFlow }}
+                                {...{ list_item, id_key, label_key, renameStage, deleteHandler, deleteFlow }}
                             />
                         )
                     };
@@ -149,7 +149,7 @@ export function ListManager(props) {
 
             {readOnyAfter
                 ? readOnyAfter.map((list_item) => {
-                      return <ItemSingle key={list_item.id} list_item={list_item} />;
+                      return <ItemSingle key={list_item[id_key]} {...{list_item, id_key, label_key}} />;
                   })
                 : null}
 

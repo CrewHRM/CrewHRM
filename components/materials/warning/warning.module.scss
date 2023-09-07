@@ -1,10 +1,7 @@
-.move,
 .confirm {
     width: 619px;
-    padding: 40px 50px;
-}
+	max-width: 100%;
 
-.confirm {
     .cancel-button {
         width: 118px;
         color: var(--crewhrm-color-text-light);

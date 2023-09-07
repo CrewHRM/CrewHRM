@@ -65,7 +65,7 @@ class Department {
 
 		// Convert data for react use
 		$departments = _Array::renameColumns( $departments, array_flip( self::$column_names ) );
-		$departments = _Array::castColumns( $departments, 'intval' );
+		$departments = _Array::castRecursive( $departments );
 		$departments = array_reverse( $departments );
 
 		return $departments;

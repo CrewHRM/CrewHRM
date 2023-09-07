@@ -83,7 +83,7 @@ class Application {
 			"SELECT job_id, stage_id, COUNT(application_id) as count FROM " . DB::applications() . " WHERE job_id IN ({$ids_in}) GROUP BY job_id, stage_id",
 			ARRAY_A
 		);
-		$counts = _Array::castColumns( $counts, 'intval' );
+		$counts = _Array::castRecursive( $counts );
 
 		// Loop through the rows and gather counts
 		foreach ( $counts as $count ) {

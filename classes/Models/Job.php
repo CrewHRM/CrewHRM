@@ -16,7 +16,7 @@ class Job {
 	 * Create or update a job
 	 *
 	 * @param array $job
-	 * @return int Job ID
+	 * @return array
 	 */
 	public static function createUpdateJob( array $job ) {
 
@@ -76,9 +76,13 @@ class Job {
 		}
 
 		// Insert stages
-		Stage::createUpdateStages( $job_id, $job['hiring_flow'] ?? array() );
+		$stage_ids = Stage::createUpdateStages( $job_id, $job['hiring_flow'] ?? array() );
 		
-		return $job_id;
+		return array(
+			'job_id'     => $job_id,
+			'address_id' => $address_id,
+			'stage_ids'  => $stage_ids
+		);
 	}
 
 	/**
@@ -100,10 +104,11 @@ class Job {
 			return null;
 		}
 
-		$job = _Array::cast( $job, 'intval' );
+		$job = _Array::castRecursive( $job );
 
 		// Unserialize application form 
-		$job['application_form'] = maybe_unserialize( $job['application_form'] );
+		$application_form = maybe_unserialize( $job['application_form'] );
+		$job['application_form'] = is_array( $application_form ) ? _Array::castRecursive( $application_form ) : null;
 		$job['salary'] = ( $job['salary_a'] ?? '' ) . ( ( ! empty( $job['salary_a'] ) && ! empty( $job['salary_b'] ) ) ? '-' . $job['salary_b'] : '' );
 
 		// Assign address
@@ -187,7 +192,7 @@ class Job {
 		}
 
 		// Prepare row columns
-		$jobs = _Array::castColumns( $jobs, 'intval' );
+		$jobs = _Array::castRecursive( $jobs );
 		$jobs = _Array::indexify( $jobs, 'job_id' );
 
 		// Assign meta

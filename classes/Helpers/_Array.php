@@ -88,41 +88,41 @@ class _Array {
 	}
 
 	/**
-	 * Type cast key value paired array
+	 * Cast number, bool from string.
 	 *
-	 * @param array  $array
-	 * @param string $method
+	 * @param array $array
 	 * @return array
 	 */
-	public static function cast( array $array, $method ) {
-		$is_intval = $method === 'intval';
-		
-		foreach ( $array as $key => $value ) {
-			
-			if ( $is_intval && ! is_numeric( $value ) ) {
+	public static function castRecursive( array $array ) {
+		// Loop through array elements
+		foreach ( $array as $index => $value ) {
+
+			// If it is also array, pass through recursion
+			if ( is_array( $value ) ) {
+				$array[ $index ] = self::castRecursive( $value );
 				continue;
 			}
 
-			$array[ $key ] = $method( $value );
+			if ( is_string( $value ) ) {
+
+				// Cast number
+				if ( is_numeric( $value ) ) {
+					$array[ $index ] = (int) $value;
+				}
+
+				// Cast boolean true
+				if ( $value === 'true' ) {
+					$array[ $index ] = true;
+				}
+
+				// Cast boolean false
+				if ( $value === 'false' ) {
+					$array[ $index ] = false;
+				}
+			}
 		}
 
 		return $array;
-	}
-
-	/**
-	 * Type cast row-column array
-	 *
-	 * @param array  $rows
-	 * @param string $method
-	 * @return array
-	 */
-	public static function castColumns( array $rows, $method ) {
-		return array_map(
-			function ( $row ) use ( $method ) {
-				return self::cast( $row, $method );
-			},
-			$rows
-		);
 	}
 
 	/**

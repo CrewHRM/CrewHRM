@@ -45,7 +45,7 @@ class Settings {
 			$data['attachment_max_upload_count'] = 3;
 		}
 		
-		$options = _Array::cast( $data, 'intval' );
+		$options = _Array::castRecursive( $data );
 
 		return $name !== null ? ( $options[ $name ] ?? $default ) : $options;
 	}

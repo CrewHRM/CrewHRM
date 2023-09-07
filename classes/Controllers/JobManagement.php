@@ -7,6 +7,7 @@ use CrewHRM\Models\Job;
 use CrewHRM\Models\JobMeta;
 use CrewHRM\Models\Meta;
 use CrewHRM\Models\Settings;
+use CrewHRM\Models\Stage;
 
 class JobManagement {
 	const PREREQUISITES = array(
@@ -17,7 +18,7 @@ class JobManagement {
 			)
 		),
 		'getJobsDashboard' => array(),
-		'singleJobAction' => array(),
+		'singleJobAction'  => array(),
 		'getSingleJobView' => array(),
 		'getSingleJobEdit' => array(
 			'role' => array( 'administrator', 'editor' ),
@@ -25,6 +26,14 @@ class JobManagement {
 				'job_id' => 'type:numeric'
 			)
 		),
+		'deleteHiringStage' => array(
+			'role' => array( 'administrator', 'editor' ),
+			'data' => array(
+				'job_id'   => 'type:numeric',
+				'stage_id' => 'type:numeric',
+				'move_to'  => 'type:numeric|optional:true'
+			)
+		)
 	);
 
 	/**
@@ -50,17 +59,14 @@ class JobManagement {
 		}
 
 		// Create or update job
-		$job_id  = Job::createUpdateJob( $data );
-		if ( empty( $job_id ) ) {
-			$message = $is_auto ? __( 'Auto save failed', 'crewhrm' ) :  __( 'Failed to publish job', 'crewhrm' );
-			wp_send_json_error( array( 'message' => $message ) );
-		}
-
+		$job = Job::createUpdateJob( $data );
+		
 		wp_send_json_success(
 			array(
-				'message'    => $is_auto ? __( 'Saved job automatically' ) : __( 'Job published' ),
-				'address_id' => $data['address_id'],
-				'job_id'     => $job_id
+				'message'    => $is_auto ? __( 'Auto saved job' ) : __( 'Job published' ),
+				'address_id' => $job['address_id'],
+				'stage_ids'  => $job['stage_ids'],
+				'job_id'     => $job['job_id']
 			)
 		);
 	}
@@ -145,6 +151,35 @@ class JobManagement {
 			wp_send_json_success( array( 'job' => $job ) );
 		} else {
 			wp_send_json_error( array( 'message' => __( 'Job not found to edit', 'crewhrm' ) ) );
+		}
+	}
+
+	/**
+	 * Delete hiring stage from individual job
+	 *
+	 * @param array $data
+	 * @return void
+	 */
+	public static function deleteHiringStage( array $data ) {
+
+		// Run delete
+		$deletion = Stage::deleteStage(
+			$data['job_id'],
+			$data['stage_id'], 
+			$data['move_to'] ?? null
+		);
+
+		if ( $deletion === true ) {
+			// Deleted successfully as there are no applicant in the stage
+			wp_send_json_success();
+
+		} else if ( is_array( $deletion ) ) {
+			// There are applicants in the stage
+			wp_send_json_error( array( 'overview' => $deletion ) );
+			
+		} else {
+			$message = $deletion === false ? __( 'Stage not found to move to', 'crewhrm' ) : __( 'Something went wrong!' );
+			wp_send_json_error( array( 'message' => $message ) );
 		}
 	}
 }

@@ -30,6 +30,7 @@ class Dispatcher {
 		'single_job_action'        => JobManagement::class,
 		'get_single_job_view'      => JobManagement::class,
 		'get_single_job_edit'      => JobManagement::class,
+		'delete_hiring_stage'      => JobManagement::class,
 	);
 
 	/**

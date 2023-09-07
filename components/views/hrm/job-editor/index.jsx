@@ -144,7 +144,14 @@ export function JobEditor() {
 		}
 
 		request('update_job', paylod, resp=>{
-			const {success, data:{job_id, address_id}} = resp;
+			const {
+				success, 
+				data:{
+					job_id, 
+					address_id,
+					stage_ids={}
+				}
+			} = resp;
 
 			if ( ! auto || ( auto && !success ) ) {
 				ajaxToast(resp);
@@ -152,10 +159,20 @@ export function JobEditor() {
 
 			// Add job id and address id to the job object
 			if ( success ) {
+				
+				// Replace dynamic stage id with database one
+				const hiring_flow = state.values.hiring_flow.map(f=>{
+					return {
+						stage_id: stage_ids[f.stage_id] || f.stage_id, 
+						stage_name: f.stage_name
+					}
+				});
+
 				setState({
 					...state,
 					values: {
 						...state.values,
+						hiring_flow,
 						job_id,
 						address_id
 					}
@@ -186,7 +203,7 @@ export function JobEditor() {
 
 	const getJob=()=>{
 		if ( job_id === 'new' ) {
-			// As it is new, just use predefined template
+			// As it is new, just use predefined template at mount time
 			setState({
 				...state,
 				values: {
@@ -205,7 +222,13 @@ export function JobEditor() {
 		});
 
 		request( 'get_single_job_edit', {nonce, nonceAction, job_id}, resp=>{
-			const {success, data:{job={}, message=__('Something went wrong!')}} = resp;
+			const {
+				success, 
+				data:{
+					job={}, 
+					message=__('Something went wrong!')
+				}
+			} = resp;
 
 			setState({
 				...state,
