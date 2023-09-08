@@ -7,6 +7,9 @@ use CrewHRM\Models\Department;
 use CrewHRM\Models\Settings;
 
 class CompanyProfile {
+	/**
+	 * Controller methods prerequisities that will be verified before executing.
+	 */
 	const PREREQUISITES = array(
 		'saveCompanyProfile'     => array(
 			'role' => 'administrator',

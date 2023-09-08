@@ -247,7 +247,7 @@ export function FileUpload(props) {
         );
     }
 
-    return (
+    return <>
         <div data-crewhrm-selector="file-upload" className={'upload'.classNames(style)}>
             <div
                 className={`drop-container ${state.highlight ? 'highlight' : ''}`.classNames(style)}
@@ -276,24 +276,28 @@ export function FileUpload(props) {
                     {textSecondary}
                 </span>
 
-                {stateFiles.map(({ id, file }) => {
-                    return (
-                        <div
-                            data-crewhrm-selector="items"
-                            key={id}
-                            className={'d-flex align-items-center column-gap-14 margin-auto'.classNames()}
-                            style={{ maxWidth: '552px' }}
-                        >
-                            <i
-                                className={'ch-icon ch-icon-trash cursor-pointer'.classNames()}
-                                onClick={(e) => removeFile(e, id)}
-                            ></i>
-                            <span>{file.name}</span>
-                        </div>
-                    );
-                })}
+                
             </div>
             <Input />
         </div>
-    );
+		{stateFiles.map(({ id, file }) => {
+			return (
+				<div
+					data-crewhrm-selector="upload-items"
+					key={id}
+					className={'d-flex align-items-center column-gap-14 padding-vertical-10 padding-horizontal-20 margin-top-10 border-radius-10 border-1 b-color-tertiary'.classNames()}
+					style={{ maxWidth: '552px' }}
+				>
+					<span className={'flex-1 font-size-15 font-weight-400 line-height-19 color-text'.classNames()}>
+						{file.name}
+					</span>
+
+					<i
+						className={'ch-icon ch-icon-times cursor-pointer font-size-15 color-text-lighter color-hover-text'.classNames()}
+						onClick={(e) => removeFile(e, id)}
+					></i>
+				</div>
+			);
+		})}
+    </>
 }

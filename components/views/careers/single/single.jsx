@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 
-import { __, countries_object } from '../../../utilities/helpers.jsx';
+import { __ } from '../../../utilities/helpers.jsx';
 import style from './single.module.scss';
 import { DangerouslySet } from '../../../materials/DangerouslySet.jsx';
 import { Apply } from './apply/apply.jsx';
@@ -42,23 +42,22 @@ const prepareField=(category, field={})=>{
 
 function applyFormFields(fields) {
 	return  {
-		personal: [
-			...fields.personal_info.fields
+		personal: fields.personal_info.fields
 				.map((f) =>prepareField('personal_info', f))
 				.filter((f) => f)
-				.flat()
-		],
-		documents: [
-			...fields.documents.fields
+				.flat(),
+
+		documents: fields.documents.fields
 				.map((f) =>prepareField('documents', f))
 				.filter((f) => f)
-				.flat()
-		],
+				.flat(),
+
 		other: [
 			...fields.profile.fields
 				.map((f) =>prepareField('profile', f))
 				.filter((f) => f)
 				.flat(),
+				
 			...fields.questions.fields
 				.map((question) => {
 					return [

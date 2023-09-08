@@ -2,6 +2,7 @@
 
 namespace CrewHRM\Setup;
 
+use CrewHRM\Controllers\ApplicationHandler;
 use CrewHRM\Helpers\_String;
 use CrewHRM\Helpers\Validation;
 use CrewHRM\Main;
@@ -31,6 +32,8 @@ class Dispatcher {
 		'get_single_job_view'      => JobManagement::class,
 		'get_single_job_edit'      => JobManagement::class,
 		'delete_hiring_stage'      => JobManagement::class,
+
+		'apply_to_job'             => ApplicationHandler::class,
 	);
 
 	/**

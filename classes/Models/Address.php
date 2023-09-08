@@ -22,13 +22,14 @@ class Address {
 		);
 
 		global $wpdb;
+		$address_id = $address['address_id'] ?? null;
 
-		if ( ! empty( $address['address_id'] ) ) {
+		if ( ! empty( $address_id ) ) {
 			// Update existing address with the ID
 			$wpdb->update(
 				DB::addresses(),
 				$_address,
-				array( 'address_id' => $address['address_id'] )
+				array( 'address_id' => $address_id )
 			);
 
 		} else {
@@ -38,10 +39,10 @@ class Address {
 				$_address
 			);
 
-			$address['address_id'] = $wpdb->insert_id;
+			$address_id = $wpdb->insert_id;
 		}
 
-		return $address['address_id'];
+		return $address_id;
 	}
 
 	/**

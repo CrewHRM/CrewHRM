@@ -6,6 +6,38 @@ use CrewHRM\Helpers\_Array;
 
 class Application {
 	/**
+	 * Create an application
+	 *
+	 * @param array $application
+	 * @return bool
+	 */
+	public static function createApplication( array $application ) {
+		$address_id = Address::createUpdateAddress( $application );
+
+		$application = array(
+			'job_id'         => $application['job_id'],
+			'address_id'     => $address_id,
+			'stage_id'       => null, // Initially no stage.
+			'first_name'     => $application['first_name'] ?? '',
+			'last_name'      => $application['last_name'] ?? '',
+			'email'          => $application['email'] ?? '',
+			'phone'          => $application['phone'] ?? '',
+			'gender'         => $application['phone'] ?? null,
+			'date_of_birth'  => $application['date_of_birth'] ?? null,
+			'cover_letter'   => $application['cover_letter'] ?? null,
+			'resume_file_id' => 0,
+		);
+
+		global $wpdb;
+		$wpdb->insert(
+			DB::applications(),
+			$application
+		);
+
+		return $wpdb->insert_id;
+	}
+
+	/**
 	 * Delete job applications by job ID
 	 *
 	 * @param [type] $job_id
