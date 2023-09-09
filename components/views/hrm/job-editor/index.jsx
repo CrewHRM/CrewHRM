@@ -137,10 +137,7 @@ export function JobEditor() {
 		const paylod = {
 			nonce, 
 			nonceAction,
-			job:{
-				...state.values,
-				application_form: getFieldsToSave(state.values.application_form)
-			}, 
+			job: state.values,
 		}
 
 		request('update_job', paylod, resp=>{
@@ -210,7 +207,7 @@ export function JobEditor() {
 					job_status: 'draft',
 					job_id: 0,
 					hiring_flow,
-					application_form: sections_fields
+					application_form: getFieldsToSave( sections_fields ) 
 				}
 			});
 			return;
@@ -294,7 +291,6 @@ export function JobEditor() {
 					<Tabs
 						theme="sequence"
 						active={state.active_tab}
-						onNavigate={navigateTab}
 						tabs={steps.map((s) => {
 							return {
 								...s,

@@ -58,6 +58,7 @@ export function Applicants() {
 
     const [state, setState] = useState({
 		fetching: true,
+		active_stage_id: 0,
 		error_message: null,
 		stages:[],
 		job_list: [],
@@ -118,18 +119,18 @@ export function Applicants() {
 				job_list={state.job_list} 
 				job_id={job_id} 
 				stages={state.stages}
-				candidates={state.candidates}/>
+				active_stage_id={state.active_stage_id}
+				candidates={state.candidates}
+				navigateStage={active_stage_id=>setState({...state, active_stage_id})}/>
 
-			{/* <div className={'content-area'.classNames(style)}>
+			<div className={'content-area'.classNames(style)}>
 				<div className={'sidebar-wrapper'.classNames(style)}>
-					<Sidebar job_id={job_id}/>
+					<Sidebar job_id={job_id} stage_id={state.active_stage_id}/>
 				</div>
 				<div className={'profile-wrapper'.classNames(style)}>
-					<Profile 
-						job_id={job_id} 
-						applicant_id={applicant_id}/>
+					<Profile job_id={job_id} applicant_id={applicant_id}/>
 				</div>
-			</div> */}
+			</div>
 		</div>
     );
 }

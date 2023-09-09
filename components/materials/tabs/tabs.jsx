@@ -24,8 +24,8 @@ export function Tabs(props) {
                 return (
                     <div
                         key={id}
-                        className={`single-step ${id === active ? 'active' : ''}`.classNames(style)}
-                        onClick={() => onNavigate(id)}
+                        className={`single-step ${id === active ? 'active' : ''}`.classNames(style) + `${onNavigate ? 'cursor-pointer' : ''}`.classNames()}
+                        onClick={() => onNavigate ? onNavigate(id) : null}
                     >
                         {label}
                         {(theme == 'sequence' && (

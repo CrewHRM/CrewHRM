@@ -8,13 +8,12 @@ import { Tabs } from '../../../../../materials/tabs/tabs.jsx';
 
 import style from './header.module.scss';
 
-export function Header({ job_list, job_id, stages=[], candidates=0 }) {
+export function Header({ job_list, job_id, stages=[], candidates=0, active_stage_id: active_tab, navigateStage }) {
 
-	const [state, setState] = useState({ active_tab: 'cnd' });
     const navigate = useNavigate();
 
 	const _candidates = {
-		stage_id: 'cnd', 
+		stage_id: 0, 
 		stage_name: __('Candidates'), 
 		candidates
 	}
@@ -74,8 +73,8 @@ export function Header({ job_list, job_id, stages=[], candidates=0 }) {
             <div>
                 <Tabs
                     tabs={header_tabs}
-                    active={state.active_tab}
-                    onNavigate={(active_tab) => setState({ ...state, active_tab })}
+                    active={active_tab}
+                    onNavigate={navigateStage}
                     theme="button"
                 />
             </div>

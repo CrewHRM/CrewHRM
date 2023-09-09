@@ -52,7 +52,11 @@ export function request(action, payload = {}, callback, progressCallback) {
         ...modifer,
         success: function (response) {
             if (typeof callback == 'function') {
-                callback(response);
+                callback({
+					...response, 
+					success: response.success || false,
+					data: response.data || {}
+				});
             }
         },
         error: function () {

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Sep 08, 2023 at 10:11 PM
+-- Generation Time: Sep 09, 2023 at 08:05 PM
 -- Server version: 8.0.16
 -- PHP Version: 8.0.0
 
@@ -134,6 +134,7 @@ CREATE TABLE IF NOT EXISTS `wp_crewhrm_jobs` (
   `application_deadline` date DEFAULT NULL,
   `application_form` longtext COLLATE utf8mb4_unicode_520_ci NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`job_id`),
   KEY `job_status` (`job_status`,`department_id`,`salary_basis`,`employment_type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;

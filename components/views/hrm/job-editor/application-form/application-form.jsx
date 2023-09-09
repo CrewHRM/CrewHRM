@@ -8,6 +8,11 @@ import { FieldEditorModal } from './field-editor/field-editor-modal.jsx';
 import { FormActionButtons } from '../../../../materials/form-action.jsx';
 import { SortableList } from '../../../../materials/sortable-list.jsx';
 import { ContextJobEditor } from '../index.jsx';
+import { sections_fields } from './form-structure.jsx';
+
+const getQuestionId=()=> {
+	return '_question_' + getRandomString();
+}
 
 export function ApplicationForm() {
     const { navigateTab, values = {}, onChange } = useContext(ContextJobEditor);
@@ -30,7 +35,7 @@ export function ApplicationForm() {
             case 'duplicate':
                 fields[section_name].fields.splice(field_index, 0, {
                     ...field,
-                    id: getRandomString()
+                    id: getQuestionId()
                 });
                 break;
 
@@ -66,18 +71,16 @@ export function ApplicationForm() {
 
         // Update data in the array
         if (isNaN(field_index)) {
-            // This block means it's new, so assign an ID and then push to state
+            // This block means it's new, so assign an ID and then push to question set
             fields[section_name].fields.push({
                 ...updated_field,
                 enabled: true,
-                id: getRandomString()
+                id: getQuestionId()
             });
         } else {
             // It's update request
             fields[section_name].fields[field_index] = updated_field;
         }
-
-        console.log(updated_field);
 
         onChange('application_form', fields);
 
@@ -145,20 +148,21 @@ export function ApplicationForm() {
                     const {
                         label,
                         fields: input_fields,
-                        options = {},
                         addLabel,
                         sortable
                     } = values.application_form[section_name];
 
-                    const options_array = Object.keys(options).map((option_name) => {
-                        return {
-                            id: option_name,
-                            label: options[option_name].label,
-                            icon:
-                                options[option_name].icon.classNames() +
-                                'font-size-24 color-text'.classNames()
-                        };
-                    });
+					// Prepare popup options to delete, edit etc. questions
+					const {options={}} = sections_fields[section_name];
+					const options_array = Object.keys(options).map((option_name) => {
+						return {
+							id: option_name,
+							label: options[option_name].label,
+							icon:
+								options[option_name].icon.classNames() +
+								'font-size-24 color-text'.classNames()
+						};
+					});
 
                     return (
                         <div

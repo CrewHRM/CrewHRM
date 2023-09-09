@@ -184,7 +184,6 @@ export function Apply({ job={} }) {
 					active={state.active_tab}
 					tabs={steps}
 					theme="sequence"
-					onNavigate={(tab) => navigateTab(tab)}
 				/>
 			</div>
 		</div> : null}
@@ -221,7 +220,7 @@ export function Apply({ job={} }) {
 			{(is_segment && (
 				<div>
 					<FormActionButtons
-						disabledNext={!is_next_enabled}
+						/* disabledNext={!is_next_enabled} */
 						title={!is_next_enabled ? __('Please fill all the required fields first') : null}
 						onBack={() => navigateTab(-1)}
 						onNext={() => (is_last_tab ? submitApplication() : navigateTab(1))}

@@ -44,7 +44,7 @@ export function sprintf(str, ...params) {
 }
 
 export function getFlag(countryCode) {
-    const codePoints = countryCode
+    const codePoints = (countryCode || '')
         .toUpperCase()
         .split('')
         .map((char) => 127397 + char.charCodeAt());

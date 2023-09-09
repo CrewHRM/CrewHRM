@@ -24,7 +24,7 @@ const thumbnails = {
 };
 
 export function Documents({ applicant }) {
-    const { cover_letter, resume_url, attachments = [] } = applicant;
+    const { cover_letter, resume_file_url, attachments = [] } = applicant;
 
     return (
         <div data-crewhrm-selector="documents" className={'documents'.classNames(style)}>
@@ -41,7 +41,7 @@ export function Documents({ applicant }) {
                 </DangerouslySet>
             </ExpandableContent>
 
-            {(resume_url && (
+            {(resume_file_url && (
                 <>
                     <Line className={'margin-top-20 margin-bottom-20'.classNames()} />
                     <span
@@ -49,7 +49,7 @@ export function Documents({ applicant }) {
                     >
                         {__('RESUME')}
                     </span>
-                    <PDFViewer src={resume_url} />
+                    <PDFViewer src={resume_file_url} />
                 </>
             )) ||
                 null}

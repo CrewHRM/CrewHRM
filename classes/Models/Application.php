@@ -12,9 +12,12 @@ class Application {
 	 * @return bool
 	 */
 	public static function createApplication( array $application ) {
+		global $wpdb;
+
+		// Create address first to insert the id in application row
 		$address_id = Address::createUpdateAddress( $application );
 
-		$application = array(
+		$_application = array(
 			'job_id'         => $application['job_id'],
 			'address_id'     => $address_id,
 			'stage_id'       => null, // Initially no stage.
@@ -28,13 +31,24 @@ class Application {
 			'resume_file_id' => 0,
 		);
 
-		global $wpdb;
+		// Insert the main job data
 		$wpdb->insert(
 			DB::applications(),
-			$application
+			$_application
 		);
+		$app_id = $wpdb->insert_id;
+		if ( empty( $app_id ) ) {
+			return;
+		}
 
-		return $wpdb->insert_id;
+		// Insert custom added questions
+		foreach ( $application as $key => $value ) {
+			if ( strpos( $key, '_question_' ) === 0 ) {
+				Meta::application()->updateMeta( $app_id, $key, $value );
+			}
+		}
+		
+		return $app_id;
 	}
 
 	/**
@@ -125,5 +139,63 @@ class Application {
 		}
 
 		return $jobs;
+	}
+
+	/**
+	 * Get applicant list by args
+	 *
+	 * @param array $args
+	 * @return array
+	 */
+	public static function getApplicants( array $args ) {
+		/* $job_id        = $args['job_id'];
+		$stage_id      = $args['stage_id'];
+		$qualified     = $args['qualification'] !== 'disqualified';
+
+		$limit         = $args['limit'] ?? 20;
+		$offset        = ( ( $args['page'] ?? 1 ) - 1 ) * $limit;
+		$limit_clause  = " LIMIT {$limit} OFFSET {$offset}";
+
+		$where_clause  = ' 1=1 ';
+
+		global $wpdb;
+		$wpdb->get_results(
+			$wpdb->prepare(
+				"SELECT * FROM " . DB::applications() . " WHERE job_id=%d AND stage_id=%d {$limit_clause}",
+				$job_id,
+				$stage_id
+			),
+			ARRAY_A
+		) */
+	}
+
+	/**
+	 * Get singel applicant, ideally for single applicant profile view by admin/editor.
+	 *
+	 * @param int $application_id
+	 * @param int $job_id
+	 * @return array
+	 */
+	public static function getSingleApplicant( $job_id, $application_id ) {
+		
+		global $wpdb;
+		$applicant = $wpdb->get_row(
+			$wpdb->prepare(
+				"SELECT * FROM " . DB::applications() . " WHERE job_id=%d AND application_id=%d",
+				$job_id,
+				$application_id
+			),
+			ARRAY_A
+		);
+
+		// Assign resume file url
+		$applicant['resume_file_url'] = is_numeric( $applicant['resume_file_id'] ) ? wp_get_attachment_url( $applicant['resume_file_id'] ) : null;
+
+		// Assign address
+		$applicant['address'] = is_numeric( $applicant['address_id'] ) ? Address::getAddressById( $applicant['address_id'] ) : null;
+
+		// Assign attachments
+
+		return $applicant;
 	}
 }

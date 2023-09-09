@@ -8,22 +8,25 @@ import style from './overview.module.scss';
 // To Do: Output contents should be converted html entities from PHP using htmlspecialchars function.
 
 export function OverView({ applicant = {} }) {
-    const { summary, education = [], skills = [], qna = [], social_links = [] } = applicant;
+    const { cover_letter, education = [], skills = [], qna = [], social_links = [] } = applicant;
 
     return (
         <div data-crewhrm-selector="overview" className={'overview'.classNames(style)}>
-            <span
-                className={'d-block font-size-17 font-weight-600 line-height-24 letter-spacing--17 color-text margin-bottom-10'.classNames()}
-            >
-                {__('SUMMARY')}
-            </span>
-            <div>
-                <DangerouslySet
-                    className={'font-size-15 font-weight-400 line-height-22 letter-spacing-15 color-text'.classNames()}
-                >
-                    {prepareTexts(summary)}
-                </DangerouslySet>
-            </div>
+			{cover_letter ? <>
+				<span
+					className={'d-block font-size-17 font-weight-600 line-height-24 letter-spacing--17 color-text margin-bottom-10'.classNames()}
+				>
+					{__('SUMMARY')}
+				</span>
+				<div>
+					<DangerouslySet
+						className={'font-size-15 font-weight-400 line-height-22 letter-spacing-15 color-text'.classNames()}
+					>
+						{prepareTexts(cover_letter)}
+					</DangerouslySet>
+				</div>
+			</> : null}
+            
 
             {(education.length && (
                 <>

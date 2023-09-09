@@ -35,6 +35,8 @@ class Dispatcher {
 		'delete_hiring_stage'      => JobManagement::class,
 
 		'apply_to_job'             => ApplicationHandler::class,
+		'get_applicants_list'      => ApplicationHandler::class,
+		'get_applicant_single'     => ApplicationHandler::class,
 	);
 
 	/**

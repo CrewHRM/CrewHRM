@@ -12,6 +12,7 @@ use CrewHRM\Helpers\Utilities;
  */
 class Job {
 
+
 	/**
 	 * Create or update a job
 	 *
@@ -72,7 +73,7 @@ class Job {
 		// Insert Job meta
 		$to_store = [ 'attendance_type' ];
 		foreach ( $to_store as $field_name ) {
-			JobMeta::updateJobMeta( $job_id, $field_name, ( $job[ $field_name ] ?? null ) );
+			Meta::job()->updateMeta( $job_id, $field_name, ( $job[ $field_name ] ?? null ) );
 		}
 
 		// Insert stages
@@ -119,7 +120,7 @@ class Job {
 		}
 
 		// Assign meta
-		$meta = JobMeta::getJobMeta( $job_id );
+		$meta = Meta::job()->getMeta( $job_id );
 		if ( ! empty( $meta ) && is_array( $meta ) ) {
 			$job = array_merge( $job, $meta );
 		}
@@ -195,7 +196,7 @@ class Job {
 		$jobs = _Array::indexify( $jobs, 'job_id' );
 
 		// Assign meta
-		$jobs = JobMeta::assignBulkJobMeta( $jobs );
+		$jobs = Meta::job()->assignBulkMeta( $jobs );
 
 		// Assign application count
 		if ( ! empty( $meta_data ) && in_array( 'application_count', $meta_data ) ) {
@@ -293,7 +294,7 @@ class Job {
 		);
 
 		// Delete meta
-		JobMeta::deleteJobMeta( $job_id );
+		Meta::job()->deleteMeta( $job_id );
 
 		// Delete associated address
 		$address_id = self::getJobFiled( $job_id, 'address_id' );
@@ -372,7 +373,7 @@ class Job {
 		Stage::copyStages( $old_job_id, $new_job_id );
 		
 		// Now copy the meta
-		JobMeta::copyJobMeta( $old_job_id, $new_job_id );
+		Meta::job()->copyMeta( $old_job_id, $new_job_id );
 		
 		return $new_job_id;
 	}

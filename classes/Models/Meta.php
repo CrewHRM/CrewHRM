@@ -4,6 +4,12 @@ namespace CrewHRM\Models;
 
 use CrewHRM\Helpers\_Array;
 
+/**
+ * Meta table CRUD functionalities. 
+ * This doesn't support multiple entry for single meta key unlike WP. 
+ * One meta key in the entire table. So no add capability. 
+ * Just update and get singular field always.
+ */
 class Meta {
 	/**
 	 * Meta table where to do operations
@@ -17,15 +23,45 @@ class Meta {
 	}
 
 	/**
+	 * Provide an instance of job meta
+	 *
+	 * @return Meta
+	 */
+	public static function job() {
+		static $instance = null;
+
+		if ( $instance === null ) {
+			$instance = new self( DB::jobmeta() );
+		}
+
+		return $instance;
+	}
+
+	/**
+	 * Provide an instance of application meta
+	 *
+	 * @return Meta
+	 */
+	public static function application() {
+		static $instance = null;
+
+		if ( $instance === null ) {
+			$instance = new self( DB::appmeta() );
+		}
+
+		return $instance;
+	}
+
+	/**
 	 * Get single meta value by object id and meta key
 	 *
 	 * @param int $obj_id
 	 * @param string $meta_key
 	 * @return mixed
 	 */
-	public function getMeta( $obj_id, $meta_key ) {
-		
-		$where_clause = ! empty( $meta_key ) ? " AND meta_key='" . esc_sql( $meta_key ) . "' " : '';
+	public function getMeta( $obj_id, $meta_key = null ) {
+		$is_singular  = ! empty( $meta_key );
+		$where_clause = $is_singular ? " AND meta_key='" . esc_sql( $meta_key ) . "' " : '';
 		
 		global $wpdb;
 		$results = $wpdb->get_results(
@@ -36,25 +72,16 @@ class Meta {
 			ARRAY_A
 		);
 
-
+		// New array 
 		$_meta = array();
+
+		// Loop through results and prepare value
 		foreach ( $results as $result ) {
-			$key   = $result['meta_key'];
-			$value = maybe_unserialize( $result['meta_value'] );
-
-			if ( ! isset( $_meta[ $key ] ) ) {
-				$_meta[ $key ] = $value;
-				continue;
-			}
-
-			if ( ! is_array( $_meta[ $key ] ) ) {
-				$_meta[ $key ] = array( $_meta[ $key ] );
-			}
-
-			$_meta[ $key ][] = $value;
+			// Store values per meta key in the array
+			$_meta[ $result['meta_key'] ] = maybe_unserialize( $result['meta_value'] );
 		}
 
-		return ! empty( $meta_key ) ? ( $_meta[ $meta_key ] ?? null ) : $_meta;
+		return $is_singular ? ( $_meta[ $meta_key ] ?? null ) : $_meta;
 	}
 
 	/**
@@ -68,32 +95,24 @@ class Meta {
 	public function updateMeta( $obj_id, $meta_key, $meta_value ) {
 		global $wpdb;
 
-		if ( is_array( $meta_value ) ) {
-			// Delete existing
-			$this->deleteMeta( $obj_id, $meta_key, null );
-
-			// Add again
-			foreach ( $meta_value as $value ) {
-				$this->addMeta( $obj_id, $meta_key, $value );
-			}
-			return;
-		}
-		
+		// Check if the meta exists already
 		$exists = $wpdb->get_var(
 			$wpdb->prepare(
-				"SELECT COUNT(meta_key) FROM " . $this->table . " WHERE object_id=%d AND meta_key=%s",
+				"SELECT meta_key FROM " . $this->table . " WHERE object_id=%d AND meta_key=%s LIMIT 1",
 				$obj_id,
 				$meta_key
 			)
 		);
 
+		// Prepare the row to insert/update
 		$payload = array(
-			'object_id' => $obj_id,
-			'meta_key' => $meta_key,
+			'object_id'  => $obj_id,
+			'meta_key'   => $meta_key,
 			'meta_value' => maybe_serialize( $meta_value )
 		);
 
 		if ( $exists ) {
+			// Update existing one
 			$wpdb->update(
 				$this->table,
 				$payload,
@@ -104,31 +123,12 @@ class Meta {
 			);
 
 		} else {
+			// Insert as new
 			$wpdb->insert(
 				$this->table,
 				$payload
 			);
 		} 
-	}
-
-	/**
-	 * Add meta. No check about if there is any existing
-	 *
-	 * @param int $obj_id
-	 * @param string $meta_key
-	 * @param mixed $meta_value
-	 * @return bool
-	 */
-	public function addMeta( $obj_id, $meta_key, $meta_value ) {
-		global $wpdb;
-		$wpdb->insert(
-			$this->table,
-			array(
-				'object_id'  => $obj_id,
-				'meta_key'   => $meta_key,
-				'meta_value' => maybe_serialize( $meta_value )
-			)
-		);
 	}
 
 	/**
@@ -138,7 +138,7 @@ class Meta {
 	 * @param string $meta_key
 	 * @return void
 	 */
-	public function deleteMeta( $obj_id, $meta_key, $meta_value ) {
+	public function deleteMeta( $obj_id, $meta_key = null, $meta_value = null ) {
 		global $wpdb;
 
 		$where = array(
@@ -181,20 +181,8 @@ class Meta {
 		foreach ( $meta as $m ) {
 			$_key   = $m['meta_key'];
 			$_value = maybe_unserialize( $m['meta_value'] );
-			$_meta  = &$objects[ (int)$m['object_id'] ]['meta'];
 
-			// First time assign the value directly
-			if ( ! isset( $_meta[ $_key ] ) ) {
-				$_meta[ $_key ] = $_value;
-				continue;
-			}
-
-			// Make it array if same key has multiple value
-			if ( ! is_array( $_meta[ $_key ] ) ) {
-				$_meta[ $_key ] = array( $_meta[ $_key ] );
-			}
-
-			$_meta[ $_key ][] = $_value;
+			$objects[ (int) $m['object_id'] ]['meta'][ $_key ] = $_value;
 		}
 
 		return $objects;

@@ -4,7 +4,6 @@ namespace CrewHRM\Controllers;
 
 use CrewHRM\Models\Address;
 use CrewHRM\Models\Job;
-use CrewHRM\Models\JobMeta;
 use CrewHRM\Models\Meta;
 use CrewHRM\Models\Settings;
 use CrewHRM\Models\Stage;
@@ -58,7 +57,7 @@ class JobManagement {
 		if ( ! empty( $data['job_id'] ) ) {
 			$status = Job::getJobFiled( $data['job_id'], 'job_status' );
 			if ( $status !== 'draft' ) {
-				JobMeta::updateJobMeta( $data['job_id'], 'autosaved_job', $data );
+				Meta::job()->updateMeta( $data['job_id'], 'autosaved_job', $data );
 				wp_send_json_success();
 				return;
 			}

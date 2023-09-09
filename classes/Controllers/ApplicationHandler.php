@@ -10,6 +10,22 @@ class ApplicationHandler {
 			'data' => array(
 				'application' => 'type:array'
 			)
+		),
+		'getApplicantsList' => array(
+			'role' => array(
+				'administrator',
+				'editor'
+			),
+			'data' => array(
+			)
+		),
+		'getApplicantSingle' => array(
+			'role' => array(
+				'administrator',
+				'editor'
+			),
+			'data' => array(
+			)
 		)
 	);
 
@@ -28,5 +44,33 @@ class ApplicationHandler {
 		} else {
 			wp_send_json_success( array( 'message' => __( 'Application submitted successfully' ) ) );
 		}
+	}
+
+	/**
+	 * Get applicant list, ideally for the applicant view page sidebar.
+	 *
+	 * @param array $data Request data
+	 * @return void
+	 */
+	public static function getApplicantsList( array $data ) {
+		/* wp_send_json_success(
+			array(
+				'applicants' => Application
+			)
+		); */
+	}
+
+	/**
+	 * Get single applicant profile
+	 * 
+	 * @param array $data Request data
+	 * @return void
+	 */
+	public static function getApplicantSingle( array $data ) {
+		wp_send_json_success(
+			array(
+				'applicant' => Application::getSingleApplicant( $data['job_id'], $data['applicant_id'] )
+			)
+		);
 	}
 }

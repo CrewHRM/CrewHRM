@@ -9,19 +9,19 @@ import { Activity } from './activity/activity.jsx';
 import { CoverImage } from '../../../../../materials/image/image.jsx';
 import { Line } from '../../../../../materials/line/line.jsx';
 
-import avatar from '../../../../../images/avatar.svg';
 import pdf from '../../../../../images/sample.pdf';
 import attachment from '../../../../../images/attachment.png';
 import style from './profile.module.scss';
 import { request } from '../../../../../utilities/request.jsx';
 import { ContextNonce } from '../../../../../materials/mountpoint.jsx';
+import { InitState } from '../../../../../materials/init-state.jsx';
+import { Address } from '../../../../../materials/address.jsx';
 
 const applicant = {
     name: 'Bessie Cooper',
     address: '2118 Thornridge Cir. Syracuse, Connecticut 35624, USA',
     email: 'debbie.baker@example.com',
     phone: '(480) 555-0103',
-    avatar_url: avatar,
     country_code: 'US',
     summary:
         'I am an experienced developer at https://google.com. organised and focused manager with a background in on and offline services. Highly motivated, I love learning new technology and sharing that knowledge to nurture and enhance the skills of the team.',
@@ -165,18 +165,41 @@ export function Profile({job_id, applicant_id, stages=[]}) {
 
     const [state, setState] = useState({ 
 		fetching: false,
-		active_tab: 'overview' 
+		active_tab: 'overview',
+		error_message: null
 	});
 
 	const getApplicant=()=>{
-		request('get_application_view_dashboard', {nonce, nonceAction, job_id, applicant_id}, resp=>{
+		setState({
+			...state,
+			fetching: true
+		});
 
+		request('get_applicant_single', {nonce, nonceAction, job_id, applicant_id}, resp=>{
+			const {success, data: {applicant={}, message=__('Something went wrong!')}} = resp;
+
+			setState({
+				...state,
+				fetching: false,
+				applicant,
+				error_message: success ? null : message
+			});
 		});
 	}
 
 	useEffect(()=>{
+		getApplicant();
 
-	}, [job_id, applicant_id]);
+	}, [applicant_id]);
+
+
+	if (state.fetching || state.error_message) {
+		return <InitState 
+				fetching={state.fetching} 
+				error_message={state.error_message}/>
+	}
+
+	const {applicant={}} = state;
 
     return (
         <>
@@ -186,28 +209,30 @@ export function Profile({job_id, applicant_id, stages=[]}) {
                 {/* Basic Personal Info Heading */}
                 <div className={'d-flex align-items-center padding-20'.classNames()}>
                     <CoverImage
-                        src={avatar}
+                        src={applicant.avatar_url}
                         width={109}
                         height={124}
-                        name={applicant.name}
+                        name={applicant.first_name + ' ' + applicant.last_name}
                         className={'border-radius-3'.classNames()}
                     />
                     <div className={'flex-1 margin-left-13'.classNames()}>
                         <span
                             className={'d-block font-size-24 font-weight-600 line-height-24 color-text margin-bottom-2'.classNames()}
                         >
-                            {applicant.name}
+                            {applicant.first_name} {applicant.last_name}
                             <span
                                 className={'d-inline-block margin-left-4 font-size-15 vertical-align-middle'.classNames()}
                             >
-                                {getFlag(applicant.country_code)}
+                                {getFlag(applicant.address?.country_code)}
                             </span>
                         </span>
-                        <span
+
+						{applicant.address ? <span
                             className={'d-block font-size-15 font-weight-400 line-height-24 color-text-light margin-bottom-2'.classNames()}
                         >
-                            {applicant.address}
-                        </span>
+                            <Address {...applicant.address}/>
+                        </span> : null}
+                        
                         <span
                             className={'d-block font-size-15 font-weight-400 line-height-24 color-text-light margin-bottom-2'.classNames()}
                         >
