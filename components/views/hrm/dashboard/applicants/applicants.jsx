@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { __ } from '../../../../utilities/helpers.jsx';
@@ -7,6 +7,9 @@ import { Sidebar } from './sidebar/sidebar.jsx';
 import { Profile } from './profile/profile-wrapper.jsx';
 
 import style from './applicants.module.scss';
+import { LoadingIcon } from '../../../../materials/loading-icon/loading-icon.jsx';
+import { request } from '../../../../utilities/request.jsx';
+import { ContextNonce } from '../../../../materials/mountpoint.jsx';
 
 const jobs = ['Account Manager', 'Lead Backend Developer', 'Junior React Developer'].map((j, i) => {
     return {
@@ -48,62 +51,85 @@ const steps = [
     }
 ];
 
-export const ContextApplicants = createContext();
-
-export function Applicants(props) {
+export function Applicants() {
     const { job_id: raw_job_id, applicant_id } = useParams();
     const job_id = parseInt(raw_job_id);
+	const {nonce, nonceAction} = useContext(ContextNonce);
 
     const [state, setState] = useState({
-        job: {
-            job_id: job_id,
-            job_title: 'Sampel Job Title',
-            application_stages: [
-                {
-                    id: 'id1',
-                    label: 'Screening'
-                },
-                {
-                    id: 'id2',
-                    label: 'Assessment'
-                },
-                {
-                    id: 'id3',
-                    label: 'Interview'
-                },
-                {
-                    id: 'id4',
-                    label: 'Make an offer'
-                },
-                {
-                    id: 'id5',
-                    label: 'Hired'
-                }
-            ],
-            current_stage: 'id2'
-        }
+		fetching: true,
+		error_message: null,
+		stages:[],
+		job_list: [],
+        job: {},
+		candidates: 0,
     });
 
-    const getJobData = () => {};
+    const getJob = () => {
+		setState({
+			...state,
+			fetching: true
+		});
 
-    useEffect(() => {}, []);
+		request('get_job_view_dashboard', {job_id, nonce, nonceAction}, resp=>{
+			const {
+				success, 
+				data:{
+					message=__('Something went wrong'), 
+					job={}, 
+					stages=[],
+					job_list,
+					candidates,
+				}
+			} = resp;
+
+			setState({
+				...state,
+				fetching: false,
+				error_message: !success ? message : null,
+				job,
+				stages,
+				job_list,
+				candidates,
+			});
+		});
+	};
+
+    useEffect(() => {
+		getJob();
+	}, [job_id]);
+
+	if ( state.fetching ) {
+		return <LoadingIcon center={true}/>
+	}
+
+	if ( !state.fetching && (!state.job || state.error_message) ) {
+		return <div className={'color-danger'.classNames()}>
+			{state.error_message || __('Something went wrong')}
+		</div>
+	}
 
     return (
-        <ContextApplicants.Provider value={{ job_id, jobs, steps, job: state.job }}>
-            <div
-                data-crewhrm-selector="applicant-wrapper"
-                className={'applicants'.classNames(style)}
-            >
-                <Header />
-                <div className={'content-area'.classNames(style)}>
-                    <div className={'sidebar-wrapper'.classNames(style)}>
-                        <Sidebar />
-                    </div>
-                    <div className={'profile-wrapper'.classNames(style)}>
-                        <Profile />
-                    </div>
-                </div>
-            </div>
-        </ContextApplicants.Provider>
+		<div
+			data-crewhrm-selector="applicant-wrapper"
+			className={'applicants'.classNames(style)}
+		>
+			<Header 
+				job_list={state.job_list} 
+				job_id={job_id} 
+				stages={state.stages}
+				candidates={state.candidates}/>
+
+			{/* <div className={'content-area'.classNames(style)}>
+				<div className={'sidebar-wrapper'.classNames(style)}>
+					<Sidebar job_id={job_id}/>
+				</div>
+				<div className={'profile-wrapper'.classNames(style)}>
+					<Profile 
+						job_id={job_id} 
+						applicant_id={applicant_id}/>
+				</div>
+			</div> */}
+		</div>
     );
 }

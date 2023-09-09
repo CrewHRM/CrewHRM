@@ -103,32 +103,25 @@ class Application {
 	 * @return array
 	 */
 	public static function appendApplicantCounts( array $jobs ) {
-		global $wpdb;
-
 		// Prepare the jobs array
-		$jobs    = _Array::appendArray( $jobs, 'stats', array( 'candidates' => 0 ) );
+		$jobs    = _Array::appendArray( $jobs, 'stats', array( 'candidates' => 0, 'stages' => array() ) );
 		$job_ids = array_column( $jobs, 'job_id' );
-		$ids_in  = implode( ',', $job_ids );
 
-		// Get the candidates counts per stages
-		$counts  = $wpdb->get_results(
-			"SELECT job_id, stage_id, COUNT(application_id) as count FROM " . DB::applications() . " WHERE job_id IN ({$ids_in}) GROUP BY job_id, stage_id",
-			ARRAY_A
-		);
-		$counts = _Array::castRecursive( $counts );
+		// Get stats
+		$stats      = Stage::getStageStatsByJobId( $job_ids );
+		$candidates = $stats['candidates'] ?? 0;
+		$stages     = $stats['stages'] ?? array();
 
-		// Loop through the rows and gather counts
-		foreach ( $counts as $count ) {
-			$job_id = $count['job_id'];
-			$stage_id = $count['stage_id'];
+		// Loop through total candidate counts per job regardless of stage
+		foreach ( $candidates as $job_id => $total ) {
 
-			// Add the number to total candidate count
-			$jobs[ $job_id ]['stats']['candidates'] += $count['count'];
+			// Assign the total candidate count per job
+			$jobs[ $job_id ]['stats']['candidates'] = $total;
 
-			// Add the number to per stage count
-			$jobs[ $job_id ]['stats']['stages'][ $stage_id ] = array( 
-				'candidates' => $count['count']
-			);
+			// Loop thorugh the stages under the job
+			foreach ( $stages[ $job_id ] as $stage ) {
+				$jobs[ $job_id ]['stats']['stages'][ $stage['stage_id'] ] = $stage;
+			}
 		}
 
 		return $jobs;

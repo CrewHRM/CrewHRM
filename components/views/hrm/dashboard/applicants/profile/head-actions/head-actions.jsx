@@ -1,13 +1,12 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 
 import style from './head.module.scss';
 import { Comment } from './comment/comment.jsx';
 import { Email } from './email/email.jsx';
 import { __ } from '../../../../../../utilities/helpers.jsx';
 import { DropDown } from '../../../../../../materials/dropdown/dropdown.jsx';
-import { ContextApplicants } from '../../applicants.jsx';
 
-export function HeadActions() {
+export function HeadActions({stages=[]}) {
     const segments = [
         {
             icon: 'ch-icon ch-icon-sms',
@@ -36,12 +35,10 @@ export function HeadActions() {
         }
     ];
 
-    const { job } = useContext(ContextApplicants);
-    const { application_stages = [], current_stage } = job;
-
     const [state, setState] = useState({
         active_segment: null,
-        current_application_stage: current_stage
+		fetching: true,
+		application: {}
     });
 
     // To Do: Retain form data even after segment switch
@@ -53,6 +50,18 @@ export function HeadActions() {
     };
 
     const disqualifyApplicant = () => {};
+
+	const getApplication=()=>{
+
+	}
+
+	const changeStage=(stage_id)=>{
+		
+	}
+
+	useEffect(()=>{
+
+	}, [])
 
     const {
         renderer: ActiveComp,
@@ -99,9 +108,9 @@ export function HeadActions() {
 
                     <DropDown
                         className={'padding-vertical-5 padding-horizontal-12 border-1 b-color-text border-radius-5'.classNames()}
-                        value={state.current_application_stage}
-                        options={application_stages}
-                        onChange={(s) => setState({ ...state, current_application_stage: s })}
+                        value={state.application.stage_id}
+                        options={stages.map(s=>{return {id: s.stage_id, label: s.stage_name}})}
+                        onChange={changeStage}
                     />
                 </div>
             </div>

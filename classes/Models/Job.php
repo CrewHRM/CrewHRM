@@ -202,11 +202,6 @@ class Job {
 			$jobs = Application::appendApplicantCounts( $jobs );
 		}
 
-		// Assign stages data
-		if ( ! empty( $meta_data ) && in_array( 'stages', $meta_data ) ) {
-			$jobs = Stage::appendApplicationStages( $jobs );
-		}
-
 		// Assign job permalink
 		foreach ( $jobs as $index => $job ) {
 
@@ -216,6 +211,23 @@ class Job {
 			// Prepare application form
 			$jobs[ $index ]['application_form'] = _Array::getArray( maybe_unserialize( $job['application_form'] ) );
 		}
+
+		return $jobs;
+	}
+
+	/**
+	 * Job list with minimal data and filters
+	 *
+	 * @return array
+	 */
+	public static function getJobsMinimal() {
+		global $wpdb;
+		$jobs = $wpdb->get_results(
+			"SELECT job_id, job_title FROM " . DB::jobs() . " ORDER BY created_at",
+			ARRAY_A
+		);
+
+		$jobs = _Array::castRecursive( $jobs );
 
 		return $jobs;
 	}

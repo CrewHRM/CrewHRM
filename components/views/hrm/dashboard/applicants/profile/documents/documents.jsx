@@ -1,5 +1,4 @@
-import React, { useContext } from 'react';
-import { ContextApplicantProfile } from '../profile-wrapper.jsx';
+import React from 'react';
 import { ExpandableContent } from '../../../../../../materials/ExpandableContent/expandable-content.jsx';
 import { __, prepareTexts } from '../../../../../../utilities/helpers.jsx';
 import { Line } from '../../../../../../materials/line/line.jsx';
@@ -24,8 +23,7 @@ const thumbnails = {
     other: null
 };
 
-export function Documents() {
-    const { applicant } = useContext(ContextApplicantProfile);
+export function Documents({ applicant }) {
     const { cover_letter, resume_url, attachments = [] } = applicant;
 
     return (

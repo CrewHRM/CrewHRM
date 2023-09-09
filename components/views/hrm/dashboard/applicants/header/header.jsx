@@ -1,38 +1,43 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { __ } from '../../../../../utilities/helpers.jsx';
 import { StatusDot } from '../../../../../materials/status-dot/status-dots.jsx';
 import { DropDown } from '../../../../../materials/dropdown/dropdown.jsx';
-import { ContextApplicants } from '../applicants.jsx';
 import { Tabs } from '../../../../../materials/tabs/tabs.jsx';
 
 import style from './header.module.scss';
 
-export function Header(props) {
-    const { jobs, job_id, steps } = useContext(ContextApplicants);
-    const [state, setState] = useState({ active_tab: 'cnd' });
+export function Header({ job_list, job_id, stages=[], candidates=0 }) {
+
+	const [state, setState] = useState({ active_tab: 'cnd' });
     const navigate = useNavigate();
 
-    const header_tabs = steps.map((s) => {
-        return {
-            id: s.id,
+	const _candidates = {
+		stage_id: 'cnd', 
+		stage_name: __('Candidates'), 
+		candidates
+	}
+
+    const header_tabs = [_candidates, ...stages].map((s) => {
+        return s.stage_name==='_disqualified_' ? null : {
+            id: s.stage_id,
             label: (
                 <>
                     <span
                         className={'d-inline-block font-size-15 font-weight-600 color-text margin-right-3'.classNames()}
                     >
-                        {s.count}
+                        {s.candidates}
                     </span>
                     <span
                         className={'d-inline-block font-size-14 font-weight-400 color-text'.classNames()}
                     >
-                        {s.label}
+                        {s.stage_name==='_hired_' ? __( 'Hired' ) : s.stage_name}
                     </span>
                 </>
             )
         };
-    });
+    }).filter(s=>s);
 
     return (
         <div
@@ -47,7 +52,7 @@ export function Header(props) {
                     <div>
                         <DropDown
                             value={job_id}
-                            options={jobs}
+                            options={job_list.map(j=>{return {id: j.job_id, label: j.job_title}})}
                             onChange={(v) => navigate(`/dashboard/jobs/${v}/applicants/`)}
                             transparent={true}
                             className={'padding-vertical-8 padding-horizontal-15'.classNames()}

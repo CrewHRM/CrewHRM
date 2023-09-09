@@ -170,26 +170,6 @@ class Stage {
 	}
 
 	/**
-	 * Get all stages for multiple jobs using a single query.
-	 *
-	 * @param array $jobs
-	 * @return array
-	 */
-	public static function appendApplicationStages( array $jobs ) {
-
-		// Prepare args 
-		$jobs   = _Array::appendArray( $jobs, 'stats', array( 'stages' => array() ) );
-		$stages = self::getStagesByJobId( array_keys( $jobs ) );
-
-		// Assign the stages in jobs array
-		foreach ( $stages as $job_id => $stage ) {			
-			$jobs[ $job_id ]['stats']['stages'] = $stage;
-		}
-
-		return $jobs;
-	}
-
-	/**
 	 * Delete individual application stage from individual job
 	 *
 	 * @param int $job_id The job id to delete stage from
@@ -317,5 +297,92 @@ class Stage {
 		);
 
 		return _Array::castRecursive( $applicants );
+	}
+
+	/**
+	 * Get stages nad applicant counts for job/s
+	 *
+	 * @param int|array $job_id
+	 * @return array
+	 */
+	public static function getStageStatsByJobId( $job_id ) {
+		// Prepare arguments
+		$is_singular = ! is_array( $job_id );
+		$job_ids     = ! $is_singular ? $job_id : array( $job_id );
+		$ids_in      = implode( ',', $job_ids );
+		if ( empty( $job_ids ) ) {
+			return array();
+		}
+
+		// Get application counts per stage per job.
+		global $wpdb;
+		$counts  = $wpdb->get_results(
+			"SELECT job_id, stage_id, COUNT(application_id) as candidates FROM " . DB::applications() . " WHERE job_id IN ({$ids_in}) GROUP BY job_id, stage_id",
+			ARRAY_A
+		);
+		$counts = _Array::castRecursive( $counts );
+		if ( empty( $counts ) ) {
+			return array();
+		}
+
+		// Get job wise total candidate counts
+		$candidate_counts = array();
+		foreach ( $counts as $count ) {
+			$_job_id = $count['job_id'];
+
+			// Create the holder if not already
+			if ( ! isset( $candidate_counts[ $_job_id ] ) ) {
+				$candidate_counts[ $_job_id ] = 0;
+			}
+
+			$candidate_counts[ $_job_id ] += $count['candidates'];
+		}
+
+		// Get the stages sequence to sort
+		$sequences    = $wpdb->get_results(
+			$wpdb->prepare(
+				"SELECT job_id, stage_id, stage_name, sequence FROM " . DB::stages() . " WHERE job_id IN ({$ids_in}) ORDER BY sequence"
+			),
+			ARRAY_A
+		);
+		$sequences = _Array::castRecursive( $sequences );
+
+		// Generate new stage array per job based on sequence order
+		$_stages = array();
+
+		// Loop through sorted sequences
+		foreach ( $sequences as $sequence ) {
+
+			// Loop through candidate counts
+			foreach ( $counts as $count ) {
+
+				$_job_id = $count['job_id'];
+
+				// No need to process null. 
+				// Null means the application is not assigned to any stage yet. 
+				// It has been already included in the global candidates count variable $candidate_counts
+				if ( $count['stage_id'] === null || $_job_id !== $sequence['job_id'] ) {
+					continue;
+				}
+
+				// Create the holder if not created yet
+				if ( ! isset( $_stages[ $_job_id ] ) ) {
+					$_stages[ $_job_id ] = array();
+				}
+
+				// Add the stage per job
+				$_stages[ $_job_id ][] = array_merge(
+					$sequence, 
+					array( 
+						'candidates' => $count['candidates'],
+					) 
+				);
+			}
+		}
+
+		return array(
+			'candidates'  => $is_singular ? ( $candidate_counts[ $job_id ] ?? 0 ) : $candidate_counts,
+			'stages'      => $is_singular ? ( $_stages[ $job_id ] ?? array() ) : $_stages,
+		);
 	}
 }

@@ -1,5 +1,4 @@
-import React, { useContext } from 'react';
-import { ContextApplicantProfile } from '../profile-wrapper.jsx';
+import React from 'react';
 import { __, getSocialIcon, prepareTexts } from '../../../../../../utilities/helpers.jsx';
 import { Line } from '../../../../../../materials/line/line.jsx';
 import { DangerouslySet } from '../../../../../../materials/DangerouslySet.jsx';
@@ -8,8 +7,7 @@ import style from './overview.module.scss';
 
 // To Do: Output contents should be converted html entities from PHP using htmlspecialchars function.
 
-export function OverView() {
-    const { applicant = {} } = useContext(ContextApplicantProfile);
+export function OverView({ applicant = {} }) {
     const { summary, education = [], skills = [], qna = [], social_links = [] } = applicant;
 
     return (

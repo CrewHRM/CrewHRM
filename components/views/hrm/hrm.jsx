@@ -40,7 +40,7 @@ export function HRM({ departments = [] }) {
     const [state, setState] = useState({
         departments,
         notices: [
-            {
+            /* {
                 id: getRandomString(),
                 type: 'success',
                 content: (
@@ -93,7 +93,7 @@ export function HRM({ departments = [] }) {
                         </button>
                     </div>
                 )
-            }
+            } */
         ]
     });
 

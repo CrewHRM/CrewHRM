@@ -1,4 +1,4 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 
 import { __, getFlag } from '../../../../../utilities/helpers.jsx';
 import { HeadActions } from './head-actions/head-actions.jsx';
@@ -12,8 +12,9 @@ import { Line } from '../../../../../materials/line/line.jsx';
 import avatar from '../../../../../images/avatar.svg';
 import pdf from '../../../../../images/sample.pdf';
 import attachment from '../../../../../images/attachment.png';
-
 import style from './profile.module.scss';
+import { request } from '../../../../../utilities/request.jsx';
+import { ContextNonce } from '../../../../../materials/mountpoint.jsx';
 
 const applicant = {
     name: 'Bessie Cooper',
@@ -130,42 +131,56 @@ const applicant = {
     ]
 };
 
-export const ContextApplicantProfile = createContext();
+const tab_class =
+	'd-flex align-items-center justify-content-center font-size-15 font-weight-500 line-height-24'.classNames();
+	
+const tabs = [
+	{
+		id: 'overview',
+		label: <span className={tab_class}>{__('Overview')}</span>
+	},
+	{
+		id: 'documents',
+		label: <span className={tab_class}>{__('Documents')}</span>
+	},
+	{
+		id: 'activity',
+		label: (
+			<span className={tab_class}>
+				<span className={'d-inline-block vertical-align-middle'.classNames()}>
+					{__('Activity')}
+				</span>
+				<span
+					className={'d-inline-block vertical-align-middle bg-color-secondary border-radius-30 color-white font-size-13 font-weight-500 line-height-24 letter-spacing--13 padding-horizontal-7 margin-left-10'.classNames()}
+				>
+					12
+				</span>
+			</span>
+		)
+	}
+];
 
-export function Profile() {
-    const tab_class =
-        'd-flex align-items-center justify-content-center font-size-15 font-weight-500 line-height-24'.classNames();
-    const tabs = [
-        {
-            id: 'overview',
-            label: <span className={tab_class}>{__('Overview')}</span>
-        },
-        {
-            id: 'documents',
-            label: <span className={tab_class}>{__('Documents')}</span>
-        },
-        {
-            id: 'activity',
-            label: (
-                <span className={tab_class}>
-                    <span className={'d-inline-block vertical-align-middle'.classNames()}>
-                        {__('Activity')}
-                    </span>
-                    <span
-                        className={'d-inline-block vertical-align-middle bg-color-secondary border-radius-30 color-white font-size-13 font-weight-500 line-height-24 letter-spacing--13 padding-horizontal-7 margin-left-10'.classNames()}
-                    >
-                        12
-                    </span>
-                </span>
-            )
-        }
-    ];
+export function Profile({job_id, applicant_id, stages=[]}) {
+	const {nonce, nonceAction} = useContext(ContextNonce);
 
-    const [state, setState] = useState({ active_tab: 'overview' });
+    const [state, setState] = useState({ 
+		fetching: false,
+		active_tab: 'overview' 
+	});
+
+	const getApplicant=()=>{
+		request('get_application_view_dashboard', {nonce, nonceAction, job_id, applicant_id}, resp=>{
+
+		});
+	}
+
+	useEffect(()=>{
+
+	}, [job_id, applicant_id]);
 
     return (
         <>
-            <HeadActions />
+            <HeadActions stages={stages}/>
 
             <div className={'applicant-data'.classNames(style) + 'border-radius-5'.classNames()}>
                 {/* Basic Personal Info Heading */}
@@ -218,11 +233,9 @@ export function Profile() {
                 />
 
                 {/* Profile contents per selected tab */}
-                <ContextApplicantProfile.Provider value={{ applicant }}>
-                    {(state.active_tab == 'overview' && <OverView />) || null}
-                    {(state.active_tab == 'documents' && <Documents />) || null}
-                    {(state.active_tab == 'activity' && <Activity />) || null}
-                </ContextApplicantProfile.Provider>
+				{state.active_tab == 'overview' ? <OverView applicant={applicant}/> : null}
+				{state.active_tab == 'documents' ? <Documents applicant={applicant}/> : null}
+				{state.active_tab == 'activity' ? <Activity applicant={applicant}/> : null}
             </div>
         </>
     );

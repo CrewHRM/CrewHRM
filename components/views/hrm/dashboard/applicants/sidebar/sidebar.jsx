@@ -1,13 +1,12 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Tabs } from '../../../../../materials/tabs/tabs.jsx';
 import { __ } from '../../../../../utilities/helpers.jsx';
 import { TextField } from '../../../../../materials/text-field/text-field.jsx';
-
-import dummy_avatar from '../../../../../images/avatar.svg';
-
-import style from './sidebar.module.scss';
 import { Line } from '../../../../../materials/line/line.jsx';
 import { CoverImage } from '../../../../../materials/image/image.jsx';
+
+import dummy_avatar from '../../../../../images/avatar.svg';
+import style from './sidebar.module.scss';
 
 const applicant = {
     application_id: 1,
@@ -41,8 +40,9 @@ const steps = [
     }
 ];
 
-export function Sidebar() {
-    const [state, setState] = useState({ active_tab: 'q' });
+export function Sidebar({job_id}) {
+
+	const [state, setState] = useState({ active_tab: 'q' });
 
     return (
         <div

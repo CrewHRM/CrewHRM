@@ -14,8 +14,8 @@ class JobManagement {
 		'updateJob' => array(
 			'role' => array( 'administrator', 'editor' ),
 			'data' => array(
-				'job' => 'type:array'
-			)
+				'job' => 'type:array',
+			),
 		),
 		'getJobsDashboard' => array(),
 		'singleJobAction'  => array(),
@@ -23,16 +23,22 @@ class JobManagement {
 		'getSingleJobEdit' => array(
 			'role' => array( 'administrator', 'editor' ),
 			'data' => array(
-				'job_id' => 'type:numeric'
-			)
+				'job_id' => 'type:numeric',
+			),
 		),
 		'deleteHiringStage' => array(
 			'role' => array( 'administrator', 'editor' ),
 			'data' => array(
 				'job_id'   => 'type:numeric',
 				'stage_id' => 'type:numeric',
-				'move_to'  => 'type:numeric|optional:true'
-			)
+				'move_to'  => 'type:numeric|optional:true',
+			),
+		),
+		'getJobViewDashboard' => array(
+			'role' => 'administrator',
+			'data' => array(
+				'job_id' => 'type:numeric',
+			),
 		)
 	);
 
@@ -181,5 +187,24 @@ class JobManagement {
 			$message = $deletion === false ? __( 'Stage not found to move to', 'crewhrm' ) : __( 'Something went wrong!' );
 			wp_send_json_error( array( 'message' => $message ) );
 		}
+	}
+
+	/**
+	 * Return job data for single view
+	 *
+	 * @param array $data Request data
+	 * @return void
+	 */
+	public static function getJobViewDashboard( array $data ) {
+		$stats = Stage::getStageStatsByJobId( $data['job_id'] );
+
+		wp_send_json_success(
+			array(
+				'job_list'   => Job::getJobsMinimal(),
+				'stages'     => $stats['stages'] ?? array(),
+				'candidates' => $stats['candidates'] ?? 0,
+				'job'        => Job::getJobById( $data['job_id'] )
+			)
+		);
 	}
 }
