@@ -52,7 +52,7 @@ const steps = [
 ];
 
 export function Applicants() {
-    const { job_id: raw_job_id, applicant_id } = useParams();
+    const { job_id: raw_job_id } = useParams();
     const job_id = parseInt(raw_job_id);
 	const {nonce, nonceAction} = useContext(ContextNonce);
 
@@ -125,10 +125,14 @@ export function Applicants() {
 
 			<div className={'content-area'.classNames(style)}>
 				<div className={'sidebar-wrapper'.classNames(style)}>
-					<Sidebar job_id={job_id} stage_id={state.active_stage_id}/>
+					<Sidebar 
+						job_id={job_id} 
+						stage_id={state.active_stage_id}/>
 				</div>
 				<div className={'profile-wrapper'.classNames(style)}>
-					<Profile job_id={job_id} applicant_id={applicant_id}/>
+					<Profile 
+						job_id={job_id} 
+						defaultApplication={state.defaultApplication}/>
 				</div>
 			</div>
 		</div>

@@ -94,6 +94,7 @@ class Scripts extends Main {
 			'ajaxurl'         => admin_url( 'admin-ajax.php' ),
 			'colors'          => $dynamic_colors,
 			'reserved_stages' => Stage::$reserved_stages,
+			'timeouts'        => (object)array()
 		);
 
 		echo '<script>window.CrewHRM=' . wp_json_encode( $data ) . '</script>';

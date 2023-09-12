@@ -16,6 +16,7 @@ import { request } from '../../../../../utilities/request.jsx';
 import { ContextNonce } from '../../../../../materials/mountpoint.jsx';
 import { InitState } from '../../../../../materials/init-state.jsx';
 import { Address } from '../../../../../materials/address.jsx';
+import { useParams } from 'react-router-dom';
 
 const applicant = {
     name: 'Bessie Cooper',
@@ -160,7 +161,8 @@ const tabs = [
 	}
 ];
 
-export function Profile({job_id, applicant_id, stages=[]}) {
+export function Profile({job_id, stages=[]}) {
+	const {applicant_id} = useParams();
 	const {nonce, nonceAction} = useContext(ContextNonce);
 
     const [state, setState] = useState({ 
@@ -189,9 +191,7 @@ export function Profile({job_id, applicant_id, stages=[]}) {
 
 	useEffect(()=>{
 		getApplicant();
-
 	}, [applicant_id]);
-
 
 	if (state.fetching || state.error_message) {
 		return <InitState 
@@ -201,67 +201,66 @@ export function Profile({job_id, applicant_id, stages=[]}) {
 
 	const {applicant={}} = state;
 
-    return (
-        <>
-            <HeadActions stages={stages}/>
+    return !applicant_id ? null : <>
+	
+		<HeadActions stages={stages}/>
 
-            <div className={'applicant-data'.classNames(style) + 'border-radius-5'.classNames()}>
-                {/* Basic Personal Info Heading */}
-                <div className={'d-flex align-items-center padding-20'.classNames()}>
-                    <CoverImage
-                        src={applicant.avatar_url}
-                        width={109}
-                        height={124}
-                        name={applicant.first_name + ' ' + applicant.last_name}
-                        className={'border-radius-3'.classNames()}
-                    />
-                    <div className={'flex-1 margin-left-13'.classNames()}>
-                        <span
-                            className={'d-block font-size-24 font-weight-600 line-height-24 color-text margin-bottom-2'.classNames()}
-                        >
-                            {applicant.first_name} {applicant.last_name}
-                            <span
-                                className={'d-inline-block margin-left-4 font-size-15 vertical-align-middle'.classNames()}
-                            >
-                                {getFlag(applicant.address?.country_code)}
-                            </span>
-                        </span>
+		<div className={'applicant-data'.classNames(style) + 'border-radius-5'.classNames()}>
+			{/* Basic Personal Info Heading */}
+			<div className={'d-flex align-items-center padding-20'.classNames()}>
+				<CoverImage
+					src={applicant.avatar_url}
+					width={109}
+					height={124}
+					name={applicant.first_name + ' ' + applicant.last_name}
+					className={'border-radius-3'.classNames()}
+				/>
+				<div className={'flex-1 margin-left-13'.classNames()}>
+					<span
+						className={'d-block font-size-24 font-weight-600 line-height-24 color-text margin-bottom-2'.classNames()}
+					>
+						{applicant.first_name} {applicant.last_name}
+						<span
+							className={'d-inline-block margin-left-4 font-size-15 vertical-align-middle'.classNames()}
+						>
+							{getFlag(applicant.address?.country_code)}
+						</span>
+					</span>
 
-						{applicant.address ? <span
-                            className={'d-block font-size-15 font-weight-400 line-height-24 color-text-light margin-bottom-2'.classNames()}
-                        >
-                            <Address {...applicant.address}/>
-                        </span> : null}
-                        
-                        <span
-                            className={'d-block font-size-15 font-weight-400 line-height-24 color-text-light margin-bottom-2'.classNames()}
-                        >
-                            {applicant.email}
-                        </span>
-                        <span
-                            className={'d-block font-size-15 font-weight-400 line-height-24 color-text-light margin-bottom-2'.classNames()}
-                        >
-                            {applicant.phone}
-                        </span>
-                    </div>
-                </div>
+					{applicant.address ? <span
+						className={'d-block font-size-15 font-weight-400 line-height-24 color-text-light margin-bottom-2'.classNames()}
+					>
+						<Address {...applicant.address}/>
+					</span> : null}
+					
+					<span
+						className={'d-block font-size-15 font-weight-400 line-height-24 color-text-light margin-bottom-2'.classNames()}
+					>
+						{applicant.email}
+					</span>
+					<span
+						className={'d-block font-size-15 font-weight-400 line-height-24 color-text-light margin-bottom-2'.classNames()}
+					>
+						{applicant.phone}
+					</span>
+				</div>
+			</div>
 
-                <Line />
+			<Line />
 
-                {/* Profile Contents Tab */}
-                <Tabs
-                    active={state.active_tab}
-                    tabs={tabs}
-                    onNavigate={(active_tab) => setState({ ...state, active_tab })}
-                    theme={'transparent'}
-                    className={'margin-bottom-20'.classNames()}
-                />
+			{/* Profile Contents Tab */}
+			<Tabs
+				active={state.active_tab}
+				tabs={tabs}
+				onNavigate={(active_tab) => setState({ ...state, active_tab })}
+				theme={'transparent'}
+				className={'margin-bottom-20'.classNames()}
+			/>
 
-                {/* Profile contents per selected tab */}
-				{state.active_tab == 'overview' ? <OverView applicant={applicant}/> : null}
-				{state.active_tab == 'documents' ? <Documents applicant={applicant}/> : null}
-				{state.active_tab == 'activity' ? <Activity applicant={applicant}/> : null}
-            </div>
-        </>
-    );
+			{/* Profile contents per selected tab */}
+			{state.active_tab == 'overview' ? <OverView applicant={applicant}/> : null}
+			{state.active_tab == 'documents' ? <Documents applicant={applicant}/> : null}
+			{state.active_tab == 'activity' ? <Activity applicant={applicant}/> : null}
+		</div>
+	</>
 }

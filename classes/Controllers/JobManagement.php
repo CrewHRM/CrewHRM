@@ -55,7 +55,7 @@ class JobManagement {
 		// If it is autosave while there is a published version, put it in meta instead to avoid conflict between edited and published version.
 		// Editor will show prompt in next opening that there's a cached autosaved version. 
 		if ( ! empty( $data['job_id'] ) ) {
-			$status = Job::getJobFiled( $data['job_id'], 'job_status' );
+			$status = Job::getFiled( $data['job_id'], 'job_status' );
 			if ( $status !== 'draft' ) {
 				Meta::job()->updateMeta( $data['job_id'], 'autosaved_job', $data );
 				wp_send_json_success();

@@ -8,6 +8,7 @@ import { CoverImage } from '../../../../../materials/image/image.jsx';
 import style from './sidebar.module.scss';
 import { request } from '../../../../../utilities/request.jsx';
 import { ContextNonce } from '../../../../../materials/mountpoint.jsx';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const steps = [
     {
@@ -28,11 +29,13 @@ const steps = [
     }
 ];
 
-export function Sidebar({job_id, stage_id}) {
-
+export function Sidebar({stage_id}) {
+	const navigate = useNavigate();
+	const {applicant_id, job_id} = useParams();
 	const {nonce, nonceAction} = useContext(ContextNonce);
 
 	const [state, setState] = useState({
+		mounted: false,
 		fetching: false,
 		active_tab: 'qualified',
 		filter: {
@@ -41,6 +44,8 @@ export function Sidebar({job_id, stage_id}) {
 		},
 		applicants: []
 	});
+
+	const [searchState, setSearchState] = useState('');
 
 	const getApplicants=()=>{
 		setState({
@@ -54,7 +59,8 @@ export function Sidebar({job_id, stage_id}) {
 				...state.filter,
 				job_id,
 				stage_id,
-				qualification: state.active_tab
+				qualification: state.active_tab,
+				page: 1
 			}, 
 			nonce, 
 			nonceAction
@@ -68,7 +74,12 @@ export function Sidebar({job_id, stage_id}) {
 				...state,
 				fetching: false,
 				applicants
-			})
+			});
+
+			// Set the first profile to open automatacillay
+			if ( applicants.length && !applicant_id) {
+				navigate(`/dashboard/jobs/${job_id}/applicants/${applicants[0].application_id}/`);
+			}
 		});
 	}
 
@@ -82,6 +93,32 @@ export function Sidebar({job_id, stage_id}) {
 		state.filter.search, 
 		state.active_tab
 	]);
+
+	// Debounce for search input
+	useEffect(() => {
+		// Prevent duplicate ajax call
+		if ( ! state.mounted ) {
+			setState({
+				...state,
+				mounted: true
+			});
+			return;
+		}
+
+		const timeOutId = setTimeout(() => {
+			setState({
+				...state,
+				filter: {
+					...state.filter,
+					search: searchState
+				}
+			});
+		}, 500);
+
+		return () => {
+			clearTimeout(timeOutId);
+		}
+	}, [searchState]);
 
     return (
         <div
@@ -98,9 +135,11 @@ export function Sidebar({job_id, stage_id}) {
 
             <div className={'padding-15'.classNames()}>
                 <TextField
+					value={searchState}
                     className={'border-1 b-color-tertiary border-radius-5 padding-vertical-10 padding-horizontal-11 height-40'.classNames()}
                     iconClass={'ch-icon ch-icon-search-normal-1 font-size-16 color-text-light'.classNames()}
                     placeholder={__('Search by name')}
+					onChange={v=>setSearchState(v)}
                 />
             </div>
 

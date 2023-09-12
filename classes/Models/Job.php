@@ -138,7 +138,7 @@ class Job {
 	 * @param string $field
 	 * @return mixed
 	 */
-	public static function getJobFiled( $job_id, $field ) {
+	public static function getFiled( $job_id, $field ) {
 		global $wpdb;
 
 		$field_value = $wpdb->get_var(
@@ -148,7 +148,7 @@ class Job {
 			)
 		);
 
-		return $field_value;
+		return maybe_unserialize( $field_value );
 	}
 
 	/**
@@ -297,7 +297,7 @@ class Job {
 		Meta::job()->deleteMeta( $job_id );
 
 		// Delete associated address
-		$address_id = self::getJobFiled( $job_id, 'address_id' );
+		$address_id = self::getFiled( $job_id, 'address_id' );
 		if ( ! empty( $address_id ) ) {
 			Address::deleteAddress( $address_id );
 		}

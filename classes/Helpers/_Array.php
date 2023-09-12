@@ -143,4 +143,20 @@ class _Array {
 
 		return $array;
 	}
+
+	/**
+	 * Get object from array by object key value match, similar to js find method.
+	 *
+	 * @param array $array
+	 * @param string $key
+	 * @param mixed $value
+	 * @return mixed
+	 */
+	public static function find( array $array, $key, $value ) {
+		foreach ( $array as $object ) {
+			if ( ( $object[ $key ] ?? null ) === $value ) {
+				return $object;
+			}
+		}
+	}
 }

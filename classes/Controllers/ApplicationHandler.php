@@ -53,11 +53,13 @@ class ApplicationHandler {
 	 * @return void
 	 */
 	public static function getApplicantsList( array $data ) {
-		/* wp_send_json_success(
+		$applications = Application::getApplicants( $data['filter'] );
+
+		wp_send_json_success(
 			array(
-				'applicants' => Application
+				'applicants' => $applications,
 			)
-		); */
+		);
 	}
 
 	/**

@@ -371,7 +371,7 @@ class Stage {
 				}
 
 				// Add the stage per job
-				$_stages[ $_job_id ][] = array_merge(
+				$_stages[ $_job_id ][ $sequence['stage_id'] ] = array_merge(
 					$sequence, 
 					array( 
 						'candidates' => $count['candidates'],
@@ -380,9 +380,47 @@ class Stage {
 			}
 		}
 
+		foreach ( $_stages as $index => $s ) {
+			$_stages[ $index ] = array_values( $s );
+		}
+
 		return array(
 			'candidates'  => $is_singular ? ( $candidate_counts[ $job_id ] ?? 0 ) : $candidate_counts,
 			'stages'      => $is_singular ? ( $_stages[ $job_id ] ?? array() ) : $_stages,
+		);
+	}
+
+	/**
+	 * Get single field by stage id
+	 *
+	 * @param int $stage_id
+	 * @param string $field_name
+	 * @return int|string
+	 */
+	public static function getField( $stage_id, $field_name ) {
+		global $wpdb;
+
+		return $wpdb->get_var(
+			$wpdb->prepare(
+				"SELECT {$field_name} FROM " . DB::stages() . " WHERE stage_id=%d",
+				$stage_id
+			)
+		);
+	}
+
+	/**
+	 * Get the stage id of disqualify for a job
+	 *
+	 * @param int $job_id
+	 * @return int
+	 */
+	public static function getDisqualifyId( $job_id ) {
+		global $wpdb;
+		return $wpdb->get_var(
+			$wpdb->prepare(
+				"SELECT stage_id FROM " . DB::stages() . " WHERE job_id=%d AND stage_name='_disqualified_'",
+				$job_id
+			)
 		);
 	}
 }

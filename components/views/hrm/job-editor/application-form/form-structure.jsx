@@ -224,30 +224,6 @@ export const sections_fields = {
                     null
                 ]
             },
-            {
-                id: 'education',
-                label: __('Education'),
-                form: [
-                    {
-                        name: 'education',
-                        label: __('Education'),
-                        type: 'textarea'
-                    },
-                    null
-                ]
-            },
-            {
-                id: 'experience',
-                label: __('Experience'),
-                form: [
-                    {
-                        name: 'experience',
-                        label: __('Experience'),
-                        type: 'textarea'
-                    },
-                    null
-                ]
-            }
         ]
     },
     questions: {
