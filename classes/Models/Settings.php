@@ -75,4 +75,21 @@ class Settings {
 		// Flush rewrite rule to apply dashboard page change
 		flush_rewrite_rules();
 	}
+
+	/**
+	 * Return recruiter email to send on behalf of
+	 *
+	 * @return string|null
+	 */
+	public static function getRecruiterEmail() {
+		// Get From company settings first
+		$email = self::getCompanyProfile( 'recruiter_email' );
+
+		// Then from global settings
+		if ( empty( $mail ) ) {
+			$mail = get_option('admin_email');
+		}
+
+		return empty( $mail ) ? null : $mail;
+	}
 }

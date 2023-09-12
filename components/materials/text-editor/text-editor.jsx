@@ -5,10 +5,11 @@ import draftToHtml from 'draftjs-to-html';
 import htmlToDraft from 'html-to-draftjs';
 
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
-
 import style from './editor.module.scss';
 
-export function TextEditor({ onChange: dispatchTo, value: html, placeholder }) {
+// To Do: Implement disabled state
+
+export function TextEditor({ onChange: dispatchTo, value: html, placeholder, disabled }) {
     const contentBlock = html ? htmlToDraft(html) : null;
     const [state, setState] = useState({
         editorState: contentBlock

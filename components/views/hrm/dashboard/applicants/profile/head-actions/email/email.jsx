@@ -1,21 +1,43 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { __ } from '../../../../../../../utilities/helpers.jsx';
+import { TextEditor } from '../../../../../../../materials/text-editor/text-editor.jsx';
 
 import style from './email.module.scss';
+import { LoadingIcon } from '../../../../../../../materials/loading-icon/loading-icon.jsx';
+import { request } from '../../../../../../../utilities/request.jsx';
+import { ContextToast } from '../../../../../../../materials/toast/toast.jsx';
 
-export function Email(props) {
-    const { onClose } = props;
+const fields = {
+	from_address: {
+		label: __('From')
+	},
+	to: {
+		label: __('To'),
+		disabled: true
+	},
+	subject: {
+		label: __('Subject')
+	},
+	body: {
+		label: __('Message'),
+		placeholder: __('Write your message')
+	}
+};
+
+export function Email({onClose, application}) {
+	const {ajaxToast} = useContext(ContextToast);
+
     const [state, setState] = useState({
+		sending: false,
         values: {
-            from: 'Risat Rajin (risatrajin@gmail.com)',
-            to: 'Bessie Cooper (debbie.baker@example.com)',
-            subject: 'Call with Bessie copper - Account Manager',
-            body: null
+            from_address: application.recruiter_email,
+            to: application.email,
+            subject: '',
+            body: ''
         }
     });
 
-    const setVal = (e) => {
-        let { name, value } = e.currentTarget;
+    const setVal = (name, value) => {
 
         setState({
             ...state,
@@ -26,26 +48,37 @@ export function Email(props) {
         });
     };
 
-    const fields = {
-        from: {
-            label: __('From')
-        },
-        to: {
-            label: __('To')
-        },
-        subject: {
-            label: __('Subject')
-        },
-        body: {
-            label: __('Message'),
-            placeholder: __('Write your message')
-        }
-    };
+	const sendMail=()=>{
+		// Show loader
+		setState({
+			...state,
+			sending: true
+		});
+
+		const {values: mail} = state;
+		request('mail_to_applicant', {mail}, resp=>{
+			ajaxToast(resp);
+
+			if ( resp.success ) {
+				// Close the mailer if sent successfully
+				onClose();
+
+			} else {
+				// Just remove the sending state if there's an error
+				setState({
+					...state,
+					sending: false
+				});
+			}
+		});
+	}
+
+	const button_disabled = Object.keys(state.values).filter(name=>!state.values[name] || !/\S+/.test( state.values[name] )).length>0;
 
     return (
         <div data-crewhrm-selector="email">
             {Object.keys(fields).map((field) => {
-                let { label, placeholder } = fields[field];
+                let { label, placeholder, disabled } = fields[field];
                 return (
                     <div
                         key={field}
@@ -63,24 +96,23 @@ export function Email(props) {
                             {label}
                         </div>
                         <div className={'flex-1'.classNames()}>
-                            {(field == 'body' && (
-                                <textarea
-                                    name={field}
+                            {
+								field == 'body' ? <TextEditor
+									value={state.values[field]}
+									disabled={state.sending}
                                     className={'font-size-15 font-weight-500 line-height-24 color-text'.classNames()}
-                                    onChange={setVal}
-                                >
-                                    {state.values[field]}
-                                </textarea>
-                            )) || (
+                                    onChange={v=>setVal(field, v)}/>
+								:
                                 <input
                                     name={field}
                                     type="text"
                                     placeholder={placeholder}
                                     value={state.values[field]}
-                                    onChange={setVal}
+									disabled={state.sending || disabled}
+                                    onChange={e=>setVal(field, e.currentTarget.value)}
                                     className={'font-size-15 font-weight-500 line-height-24 color-text'.classNames()}
                                 />
-                            )}
+                            }
                         </div>
                     </div>
                 );
@@ -96,8 +128,8 @@ export function Email(props) {
                     </span>
                 </div>
                 <div>
-                    <button className={'button button-primary'.classNames()}>
-                        {__('Send Email')}
+                    <button className={'button button-primary'.classNames()} disabled={button_disabled || state.sending} onClick={sendMail}>
+                        {__('Send Email')} {state.sending ? <LoadingIcon/> : null }
                     </button>
                 </div>
             </div>

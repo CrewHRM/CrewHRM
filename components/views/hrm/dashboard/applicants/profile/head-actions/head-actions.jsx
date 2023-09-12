@@ -58,8 +58,8 @@ export function HeadActions({ application }) {
         });
     };
 
-    const changeStage = (stage_id) => {
-		showWarning(__('Sure to move?'), ()=>{
+    const changeStage = (stage_id, message = __('Sure to move?')) => {
+		showWarning(message, ()=>{
 			loadingState();
 
 			request('move_application_stage', {job_id, stage_id, application_id}, resp=>{
@@ -110,7 +110,7 @@ export function HeadActions({ application }) {
                     <i
                         title={__('Disqualify')}
                         className={'ch-icon ch-icon-slash color-danger font-size-20 cursor-pointer'.classNames()}
-                        onClick={() => changeStage('_disqualified_')}
+                        onClick={() => changeStage('_disqualified_', __('Sure to disqualify?'))}
                     ></i>
                 </div>
                 <div className={'d-flex align-items-center column-gap-10'.classNames()}>
@@ -132,8 +132,8 @@ export function HeadActions({ application }) {
                 </div>
             </div>
 
-            {(ActiveComp && (
-                <div
+            {
+				ActiveComp ? <div
                     data-crewhrm-selector="action-fields"
                     className={'content-area'.classNames(style)}
                 >
@@ -144,6 +144,7 @@ export function HeadActions({ application }) {
                             ></span>{' '}
                             {tagline}
                         </div>
+						
                         <div>
                             <i
                                 className={'ch-icon ch-icon-times font-size-24 color-text-light margin-left-10 cursor-pointer'.classNames()}
@@ -151,10 +152,12 @@ export function HeadActions({ application }) {
                             ></i>
                         </div>
                     </div>
-                    <ActiveComp onClose={toggleSegment} />
-                </div>
-            )) ||
-                null}
+
+                    <ActiveComp 
+						onClose={toggleSegment} 
+						application={application}/>
+                </div> : null
+			}
         </div>
     );
 }

@@ -3,6 +3,8 @@
 namespace CrewHRM\Controllers;
 
 use CrewHRM\Models\Application;
+use CrewHRM\Models\Mail;
+use CrewHRM\Models\Settings;
 
 class ApplicationHandler {
 	const PREREQUISITES = array(
@@ -31,6 +33,15 @@ class ApplicationHandler {
 				'editor',
 			),
 			'data' => array(),
+		),
+		'mailToApplicant' => array(
+			'role' => array(
+				'administrator',
+				'editor',
+			),
+			'data' => array(
+				'mail' => 'type:array'
+			),
 		),
 	);
 
@@ -74,9 +85,12 @@ class ApplicationHandler {
 	 * @return void
 	 */
 	public static function getApplicationSingle( array $data ) {
+		$application = Application::getSingleApplication( $data['job_id'], $data['application_id'] );
+		$application['recruiter_email'] = Settings::getRecruiterEmail();
+
 		wp_send_json_success(
 			array(
-				'application' => Application::getSingleApplication( $data['job_id'], $data['application_id'] ),
+				'application' => $application,
 			)
 		);
 	}
@@ -90,5 +104,22 @@ class ApplicationHandler {
 	public static function moveApplicationStage( array $data ) {
 		Application::changeApplicationStage( $data['job_id'], $data['application_id'], $data['stage_id'] );
 		wp_send_json_success( array( 'message' => __( 'Application stage changed successfully!' ) ) );
+	}
+
+	/**
+	 * Send mail to applicant from single application view interface
+	 *
+	 * @param array $data
+	 * @return void
+	 */
+	public static function mailToApplicant( array $data ) {
+		// To Do: Add attachment support
+		$sent = (new Mail( $data['mail'] ))->send();
+
+		if ( $sent ) {
+			wp_send_json_success( array( 'message' => __( 'Email sent!', 'crewhrm' ) ) );
+		} else {
+			wp_send_json_error( array( 'message' => __( 'Failed to send mail!', 'crewhrm' ) ) );
+		}
 	}
 }
