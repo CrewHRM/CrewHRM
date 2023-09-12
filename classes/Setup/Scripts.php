@@ -95,6 +95,7 @@ class Scripts extends Main {
 			'colors'          => $dynamic_colors,
 			'reserved_stages' => Stage::$reserved_stages,
 			'timeouts'        => (object) array(),
+			'nonce'           => wp_create_nonce( get_home_url() )
 		);
 
 		echo '<script>window.CrewHRM=' . wp_json_encode( $data ) . '</script>';

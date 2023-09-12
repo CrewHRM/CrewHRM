@@ -4,7 +4,6 @@ import { __, countries_object } from '../../../../utilities/helpers.jsx';
 import { ContextForm, FormFields } from '../../../../materials/form.jsx';
 import { FormActionButtons } from '../../../../materials/form-action.jsx';
 import { request } from '../../../../utilities/request.jsx';
-import { ContextNonce } from '../../../../materials/mountpoint.jsx';
 import { ContextToast } from '../../../../materials/toast/toast.jsx';
 
 import style from './apply.module.scss';
@@ -37,7 +36,6 @@ export function Apply({ job = {} }) {
         }
     });
 
-    const { nonce, nonceAction } = useContext(ContextNonce);
     const { addToast } = useContext(ContextToast);
 
     const step_index = steps.findIndex((s) => s.id === state.active_tab);
@@ -81,7 +79,7 @@ export function Apply({ job = {} }) {
     };
 
     const submitApplication = () => {
-        request('apply_to_job', { application: state.values, nonce, nonceAction }, (resp) => {
+        request('apply_to_job', { application: state.values }, (resp) => {
             const {
                 success,
                 data: { notice, message }

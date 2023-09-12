@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 
 import { __ } from '../../../utilities/helpers.jsx';
@@ -6,7 +6,6 @@ import style from './single.module.scss';
 import { DangerouslySet } from '../../../materials/DangerouslySet.jsx';
 import { Apply } from './apply/apply.jsx';
 import { request } from '../../../utilities/request.jsx';
-import { ContextNonce } from '../../../materials/mountpoint.jsx';
 import { LoadingIcon } from '../../../materials/loading-icon/loading-icon.jsx';
 import { employments_types } from '../../hrm/job-editor/job-details/sections/employment-details.jsx';
 import { sections_fields } from '../../hrm/job-editor/application-form/form-structure.jsx';
@@ -95,7 +94,6 @@ function RenderMeta({ icon, hint, content }) {
 
 export function Single({ base_permalink }) {
     const { job_action, job_id } = useParams();
-    const { nonce, nonceAction } = useContext(ContextNonce);
 
     const [state, setState] = useState({
         job: null,
@@ -110,7 +108,7 @@ export function Single({ base_permalink }) {
             fetching: true
         });
 
-        request('get_single_job_view', { job_id, nonce, nonceAction }, (resp) => {
+        request('get_single_job_view', { job_id }, (resp) => {
             const {
                 success,
                 data: { job = {}, about_company, message = __('Something Went Wrong!') }

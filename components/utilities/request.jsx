@@ -37,11 +37,13 @@ export function request(action, payload = {}, callback, progressCallback) {
 
     if (payload instanceof FormData) {
         payload.append('action', action_prefixed);
+        payload.append('nonce', window.CrewHRM.nonce);
     } else {
         modifer = {};
         payload = {
             ...payload,
-            action: action_prefixed
+            action: action_prefixed,
+			nonce: window.CrewHRM.nonce,
         };
     }
 

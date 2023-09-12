@@ -3,18 +3,16 @@ import { useParams } from 'react-router-dom';
 import { StickyBar } from '../../../materials/sticky-bar/sticky-bar.jsx';
 import { __, getRandomString } from '../../../utilities/helpers.jsx';
 import { Tabs } from '../../../materials/tabs/tabs.jsx';
-
-import logo_extended from '../../../images/logo-extended.svg';
 import { JobDetails } from './job-details/job-details.jsx';
 import { HiringFlow } from './hiring-flow/hiring-flow.jsx';
 import { ApplicationForm } from './application-form/application-form.jsx';
 import { sections_fields } from './application-form/form-structure.jsx';
 import { request } from '../../../utilities/request.jsx';
-import { ContextNonce } from '../../../materials/mountpoint.jsx';
 import { ContextToast } from '../../../materials/toast/toast.jsx';
-
-import style from './editor.module.scss';
 import { LoadingIcon } from '../../../materials/loading-icon/loading-icon.jsx';
+
+import logo_extended from '../../../images/logo-extended.svg';
+import style from './editor.module.scss';
 
 export const ContextJobEditor = createContext();
 
@@ -80,7 +78,6 @@ function getFieldsToSave(sections_fields) {
 
 export function JobEditor() {
     let { job_id } = useParams();
-    const { nonce, nonceAction } = useContext(ContextNonce);
     const { ajaxToast } = useContext(ContextToast);
 
     const [state, setState] = useState({
@@ -132,8 +129,6 @@ export function JobEditor() {
         });
 
         const paylod = {
-            nonce,
-            nonceAction,
             job: state.values
         };
 
@@ -210,7 +205,7 @@ export function JobEditor() {
             fetching: true
         });
 
-        request('get_single_job_edit', { nonce, nonceAction, job_id }, (resp) => {
+        request('get_single_job_edit', { job_id }, (resp) => {
             const {
                 success,
                 data: { job = {}, message = __('Something went wrong!') }

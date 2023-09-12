@@ -180,7 +180,7 @@ class Application {
 		
 		// If it needs applications of specific stage
 		if ( ! empty( $stage_id ) ) {
-			$stage_sequence = Stage::getField( $stage_id, 'sequence' );
+			$stage_sequence = Stage::getField( array( 'stage_id' => $stage_id ), 'sequence' );
 			$where_clause  .= " AND app.stage_id={$stage_id}";
 
 			// As it is specifc stage, so get qualified and disqualified applications of this stage
@@ -348,5 +348,40 @@ class Application {
 		$pipeline = array();
 
 		return $pipeline;
+	}
+
+	/**
+	 * Change application stage
+	 *
+	 * @param int $application_id
+	 * @param int|string $stage_id Stage ID or _disqualify_ only in case of disqualification.
+	 * @return bool
+	 */
+	public static function changeApplicationStage( $job_id, $application_id, $stage_id ) {
+		$is_disqualify = $stage_id === '_disqualified_';
+
+		if ( $is_disqualify ) {
+			$stage_id = Stage::getDisqualifyId( $job_id );
+		} else {
+			$disqname      = Stage::getField( array( 'job_id' => $job_id, 'stage_id' => $stage_id ), 'stage_name' );
+			$is_disqualify = $disqname === '_disqualified_';
+		}
+
+		global $wpdb;
+
+		if ( ! $is_disqualify ) {
+			// Disqualify stage should not be assigned application table directly because of classification of qualified/disqualified per stages. 
+			// Rather use only the pipeline to determine disqualified state.
+			$wpdb->update(
+				DB::applications(),
+				array( 'stage_id' => $stage_id ),
+				array( 'application_id' => $application_id, 'job_id' => $job_id )
+			);
+		}
+		
+		// Now insert an entry to the pipeline
+		Pipeline::create( $application_id, $stage_id, get_current_user_id() );
+
+		return true;
 	}
 }

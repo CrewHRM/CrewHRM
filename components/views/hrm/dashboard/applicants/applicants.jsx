@@ -7,7 +7,6 @@ import { Sidebar } from './sidebar/sidebar.jsx';
 import { Profile } from './profile/profile-wrapper.jsx';
 import { LoadingIcon } from '../../../../materials/loading-icon/loading-icon.jsx';
 import { request } from '../../../../utilities/request.jsx';
-import { ContextNonce } from '../../../../materials/mountpoint.jsx';
 
 import style from './applicants.module.scss';
 
@@ -16,7 +15,6 @@ export const ContextApplicationSession = createContext();
 export function Applications() {
     const { job_id: raw_job_id } = useParams();
     const job_id = parseInt(raw_job_id);
-    const { nonce, nonceAction } = useContext(ContextNonce);
 
     const [state, setState] = useState({
         session: getRandomString(),
@@ -35,7 +33,7 @@ export function Applications() {
             fetching: true
         });
 
-        request('get_job_view_dashboard', { job_id, nonce, nonceAction }, (resp) => {
+        request('get_job_view_dashboard', { job_id }, (resp) => {
             const {
                 success,
                 data: {

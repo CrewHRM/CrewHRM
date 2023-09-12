@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { __, getCountries } from '../../../../utilities/helpers.jsx';
+import moment from 'moment-timezone';
 
+import { __, getCountries } from '../../../../utilities/helpers.jsx';
 import style from './jobs.module.scss';
 import { StatusDot } from '../../../../materials/status-dot/status-dots.jsx';
 import { NoJob } from './segments/no-job.jsx';
@@ -9,8 +10,6 @@ import { Options } from '../../../../materials/dropdown/dropdown.jsx';
 import { ShareModal } from '../../../../materials/share-modal.jsx';
 import { Pagination } from '../../../../materials/pagination/pagination.jsx';
 import { request } from '../../../../utilities/request.jsx';
-import { ContextNonce } from '../../../../materials/mountpoint.jsx';
-import moment from 'moment-timezone';
 import { StatsRow } from './segments/stats-row.jsx';
 import { FilterBar } from './segments/filter-bar.jsx';
 import { LoadingIcon } from '../../../../materials/loading-icon/loading-icon.jsx';
@@ -89,7 +88,6 @@ export const status_keys = Object.keys(statuses);
 
 export function JobOpenings(props) {
     let { is_overview, className } = props;
-    const { nonce, nonceAction } = useContext(ContextNonce);
     const { ajaxToast } = useContext(ContextToast);
     const navigate = useNavigate();
 
@@ -147,7 +145,7 @@ export function JobOpenings(props) {
                 // Server request for action
                 request(
                     'single_job_action',
-                    { nonce, nonceAction, job_action: action, job_id },
+                    { job_action: action, job_id },
                     (resp) => {
                         // Remove loading state
                         setState({
@@ -175,7 +173,7 @@ export function JobOpenings(props) {
         const { filters } = state;
         request(
             'get_jobs_dashboard',
-            { filters: { ...filters, ...f }, nonce, nonceAction },
+            { filters: { ...filters, ...f } },
             (resp) => {
                 const { success, data = {} } = resp;
                 const { jobs = [] } = data;

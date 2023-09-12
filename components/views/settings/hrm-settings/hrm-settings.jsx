@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext } from 'react';
 import { HashRouter, Navigate, Route, Routes, useParams } from 'react-router-dom';
 import { ContextBackendDashboard } from '../../hrm/hrm.jsx';
 import { WpDashboardFullPage } from '../../../materials/backend-dashboard-container/full-page-container.jsx';
@@ -7,7 +7,6 @@ import { Segments } from './segments/segments.jsx';
 import { StickyBar } from '../../../materials/sticky-bar/sticky-bar.jsx';
 import { __ } from '../../../utilities/helpers.jsx';
 import { settings_fields } from './field-structure.jsx';
-import { ContextNonce } from '../../../materials/mountpoint.jsx';
 import { request } from '../../../utilities/request.jsx';
 import { ContextHistoryFields, HistoryFields, UndoRedo } from '../../../materials/undo-redo.jsx';
 import { ContextToast } from '../../../materials/toast/toast.jsx';
@@ -15,13 +14,12 @@ import { ContextToast } from '../../../materials/toast/toast.jsx';
 export const ContextSettings = createContext();
 
 function Wrapper({ children }) {
-    const { nonce, nonceAction } = useContext(ContextNonce);
     const { clearHistory, can_go_next, values, onChange } = useContext(ContextHistoryFields);
 
     const { ajaxToast } = useContext(ContextToast);
 
     const saveSettings = () => {
-        request('save_settings', { settings: values, nonceAction, nonce }, (resp) => {
+        request('save_settings', { settings: values }, (resp) => {
             ajaxToast(resp);
 
             if (resp?.success) {

@@ -2,11 +2,9 @@ import React, { useContext, useState } from 'react';
 import { Modal } from '../../../../materials/modal.jsx';
 import { __ } from '../../../../utilities/helpers.jsx';
 import { request } from '../../../../utilities/request.jsx';
-import { ContextNonce } from '../../../../materials/mountpoint.jsx';
 import { ContextToast } from '../../../../materials/toast/toast.jsx';
 
 export function AddDepartmentModal({ closeModal, onAdd }) {
-    const { nonce, nonceAction } = useContext(ContextNonce);
     const { ajaxToast } = useContext(ContextToast);
 
     const [state, setState] = useState({
@@ -16,7 +14,7 @@ export function AddDepartmentModal({ closeModal, onAdd }) {
     const addNow = () => {
         const { department_name } = state;
 
-        request('add_department', { nonce, nonceAction, department_name }, (resp) => {
+        request('add_department', { department_name }, (resp) => {
             ajaxToast(resp);
 
             if (resp?.success) {

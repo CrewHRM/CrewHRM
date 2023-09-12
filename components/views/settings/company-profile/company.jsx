@@ -7,7 +7,6 @@ import { StickyBar } from '../../../materials/sticky-bar/sticky-bar.jsx';
 import { CompanyProfileSidebar, pages } from './sidebar/sidebar.jsx';
 import { CompantDepartments } from './departments/departments.jsx';
 import { CompanyProfile } from './profile/profile.jsx';
-import { ContextNonce } from '../../../materials/mountpoint.jsx';
 import { __ } from '../../../utilities/helpers.jsx';
 import { ContextHistoryFields, HistoryFields, UndoRedo } from '../../../materials/undo-redo.jsx';
 import { request } from '../../../utilities/request.jsx';
@@ -16,7 +15,6 @@ import { ContextToast } from '../../../materials/toast/toast.jsx';
 import style from './company.module.scss';
 
 function CompanyWrapper() {
-    const { nonce, nonceAction } = useContext(ContextNonce);
     const { ajaxToast } = useContext(ContextToast);
     const { sub_page } = useParams();
     const page_id = sub_page || 'profile';
@@ -35,7 +33,7 @@ function CompanyWrapper() {
             _payload = { departments: values[segment].departments };
         }
 
-        request(_action, { ..._payload, nonce, nonceAction }, (resp) => {
+        request(_action, { ..._payload }, (resp) => {
             ajaxToast(resp);
 
             if (resp?.success) {

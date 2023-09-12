@@ -338,10 +338,10 @@ class Stage {
 			$candidate_counts[ $_job_id ] += $count['candidates'];
 		}
 
-		// Get the stages sequence to sort
+		// Get the stages sequence to sort (Exclude disqualified as it has no usage in frontend view)
 		$sequences = $wpdb->get_results(
 			$wpdb->prepare(
-				'SELECT job_id, stage_id, stage_name, sequence FROM ' . DB::stages() . " WHERE job_id IN ({$ids_in}) ORDER BY sequence"
+				'SELECT job_id, stage_id, stage_name, sequence FROM ' . DB::stages() . " WHERE job_id IN ({$ids_in}) AND stage_name!='_disqualified_' ORDER BY sequence"
 			),
 			ARRAY_A
 		);
@@ -393,18 +393,20 @@ class Stage {
 	/**
 	 * Get single field by stage id
 	 *
-	 * @param int    $stage_id
+	 * @param array  $where
 	 * @param string $field_name
 	 * @return int|string
 	 */
-	public static function getField( $stage_id, $field_name ) {
-		global $wpdb;
+	public static function getField( $where, $field_name ) {
 
+		$where_clause = '1=1';
+		foreach ( $where as $col => $val ) {
+			$where_clause .= " AND " . $col . "='{$val}'";
+		}
+
+		global $wpdb;
 		return $wpdb->get_var(
-			$wpdb->prepare(
-				"SELECT {$field_name} FROM " . DB::stages() . ' WHERE stage_id=%d',
-				$stage_id
-			)
+			"SELECT {$field_name} FROM " . DB::stages() . " WHERE {$where_clause} LIMIT 1",
 		);
 	}
 

@@ -25,6 +25,13 @@ class ApplicationHandler {
 			),
 			'data' => array(),
 		),
+		'moveApplicationStage' => array(
+			'role' => array(
+				'administrator',
+				'editor',
+			),
+			'data' => array(),
+		),
 	);
 
 	/**
@@ -72,5 +79,16 @@ class ApplicationHandler {
 				'application' => Application::getSingleApplication( $data['job_id'], $data['application_id'] ),
 			)
 		);
+	}
+
+	/**
+	 * Move singular application stage
+	 *
+	 * @param array $data
+	 * @return void
+	 */
+	public static function moveApplicationStage( array $data ) {
+		Application::changeApplicationStage( $data['job_id'], $data['application_id'], $data['stage_id'] );
+		wp_send_json_success( array( 'message' => __( 'Application stage changed successfully!' ) ) );
 	}
 }

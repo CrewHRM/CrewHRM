@@ -1,12 +1,16 @@
-import React from 'react';
+import React, { createContext, useState } from 'react';
 
 import style from './warning.module.scss';
 import { __ } from '../../utilities/helpers.jsx';
 import { LoadingIcon } from '../loading-icon/loading-icon.jsx';
+import { Modal } from '../modal.jsx';
 
-export function Warning({ onCancel, onConfirm, loading = false }) {
-    const btn_class =
-        'font-size-15 font-weight-400 letter-spacing--3 padding-vertical-10 padding-horizontal-15 border-radius-5 border-1-5 b-color-tertiary cursor-pointer'.classNames();
+export const ContextWarning = createContext();
+
+const btn_class =
+	'font-size-15 font-weight-400 letter-spacing--3 padding-vertical-10 padding-horizontal-15 border-radius-5 border-1-5 b-color-tertiary cursor-pointer'.classNames();
+
+function Warning({ onCancel, onConfirm, loading = false, message=__('Are you sure to proceed?') }) {
 
     return (
         <div
@@ -18,7 +22,7 @@ export function Warning({ onCancel, onConfirm, loading = false }) {
             <span
                 className={'d-block font-size-24 font-weight-500 line-height-32 letter-spacing--3 color-text margin-bottom-30'.classNames()}
             >
-                {__("Are you sure, you want to delete this item. We won't be able to recover it.")}
+                {message}
             </span>
             <button
                 className={
@@ -41,4 +45,58 @@ export function Warning({ onCancel, onConfirm, loading = false }) {
             </button>
         </div>
     );
+}
+
+
+export function WarningWrapper({children}) {
+	const [state, setState] = useState({
+		message: null,
+		onConfirm: ()=>{},
+		onClose: ()=>{}
+	});
+
+	const [loading, setLoading] = useState(false);
+
+	const showWarning=(message, onConfirm, onClose)=>{
+		setState({
+			...state, 
+			message, 
+			onConfirm,
+			onClose
+		});
+	}
+
+	const closeWarning=()=>{
+		if (state.onClose) {
+			state.onClose();
+		}
+
+		setState({
+			...state, 
+			message: null,
+			loading: false
+		});
+
+		setLoading(false);
+	}
+
+	const loadingState=(loading=true)=>{
+		setLoading(loading);
+	}
+
+	return <ContextWarning.Provider value={{showWarning, closeWarning, loadingState}}>
+		{
+		 	state.message ? (
+                <Modal>
+                    <Warning
+						message={state.message}
+                        loading={loading}
+                        onCancel={closeWarning}
+                        onConfirm={state.onConfirm || (()=>{})}
+                    />
+                </Modal>
+            ) : null
+		}
+		{children}
+	</ContextWarning.Provider>
 }

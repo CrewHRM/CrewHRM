@@ -37,6 +37,7 @@ class Dispatcher {
 		'apply_to_job'             => ApplicationHandler::class,
 		'get_applications_list'    => ApplicationHandler::class,
 		'get_application_single'   => ApplicationHandler::class,
+		'move_application_stage'   => ApplicationHandler::class,
 	);
 
 	/**
@@ -100,9 +101,7 @@ class Dispatcher {
 		$data    = $is_post ? $_POST : $_GET; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 
 		// Verify nonce first of all
-		$nonce   = $data['nonce'] ?? null;
-		$action  = $data['nonceAction'] ?? null;
-		$matched = $nonce && $action && wp_verify_nonce( $nonce, $action );
+		$matched = wp_verify_nonce( ( $data['nonce'] ?? '' ), get_home_url() );
 		if ( ! $matched ) {
 			wp_send_json_error( array( 'message' => __( 'Session Expired! Reloading the page might help resolve.', 'crewhrm' ) ) );
 		}

@@ -1,14 +1,22 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
+import { useParams } from 'react-router-dom';
 
-import style from './head.module.scss';
 import { Comment } from './comment/comment.jsx';
 import { Email } from './email/email.jsx';
 import { __ } from '../../../../../../utilities/helpers.jsx';
 import { DropDown } from '../../../../../../materials/dropdown/dropdown.jsx';
 import { ContextApplicationSession } from '../../applicants.jsx';
+import { ContextWarning } from '../../../../../../materials/warning/warning.jsx';
+import { request } from '../../../../../../utilities/request.jsx';
+import { ContextToast } from '../../../../../../materials/toast/toast.jsx';
+
+import style from './head.module.scss';
 
 export function HeadActions({ application }) {
     const { stages = [], session, sessionRefresh } = useContext(ContextApplicationSession);
+	const {showWarning, closeWarning, loadingState} = useContext(ContextWarning);
+	const {application_id, job_id} = useParams();
+	const {ajaxToast} = useContext(ContextToast);
 
     const segments = [
         {
@@ -50,9 +58,22 @@ export function HeadActions({ application }) {
         });
     };
 
-    const disqualifyApplication = () => {};
+    const changeStage = (stage_id) => {
+		showWarning(__('Sure to move?'), ()=>{
+			loadingState();
 
-    const changeStage = (stage_id) => {};
+			request('move_application_stage', {job_id, stage_id, application_id}, resp=>{
+				const {success} = resp;
+				
+				ajaxToast(resp);
+
+				if ( success ) {
+					closeWarning();
+					sessionRefresh();
+				}
+			});
+		});
+	};
 
     const {
         renderer: ActiveComp,
@@ -89,7 +110,7 @@ export function HeadActions({ application }) {
                     <i
                         title={__('Disqualify')}
                         className={'ch-icon ch-icon-slash color-danger font-size-20 cursor-pointer'.classNames()}
-                        onClick={() => disqualifyApplication()}
+                        onClick={() => changeStage('_disqualified_')}
                     ></i>
                 </div>
                 <div className={'d-flex align-items-center column-gap-10'.classNames()}>

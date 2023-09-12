@@ -10,9 +10,9 @@ import { Activity } from './activity/activity.jsx';
 import { CoverImage } from '../../../../../materials/image/image.jsx';
 import { Line } from '../../../../../materials/line/line.jsx';
 import { request } from '../../../../../utilities/request.jsx';
-import { ContextNonce } from '../../../../../materials/mountpoint.jsx';
 import { InitState } from '../../../../../materials/init-state.jsx';
 import { Address } from '../../../../../materials/address.jsx';
+import { ContextApplicationSession } from '../applicants.jsx';
 
 import style from './profile.module.scss';
 
@@ -45,12 +45,12 @@ const tabs = [
     }
 ];
 
-export function Profile({ job_id, stages = [] }) {
+export function Profile({ job_id }) {
     const { application_id } = useParams();
-    const { nonce, nonceAction } = useContext(ContextNonce);
+	const {session} = useContext(ContextApplicationSession);
 
     const [state, setState] = useState({
-        fetching: false,
+        fetching: true,
         application: {},
         active_tab: 'overview',
         error_message: null
@@ -64,7 +64,7 @@ export function Profile({ job_id, stages = [] }) {
 
         request(
             'get_application_single',
-            { nonce, nonceAction, job_id, application_id },
+            { job_id, application_id },
             (resp) => {
                 const {
                     success,
@@ -82,8 +82,10 @@ export function Profile({ job_id, stages = [] }) {
     };
 
     useEffect(() => {
-        getApplication();
-    }, [application_id]);
+		if ( application_id ) {
+			getApplication();
+		}
+    }, [application_id, session]);
 
     if (state.fetching || state.error_message) {
         return <InitState fetching={state.fetching} error_message={state.error_message} />;

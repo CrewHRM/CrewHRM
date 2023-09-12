@@ -1,11 +1,10 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Modal } from '../../../../materials/modal.jsx';
 import { __, sprintf } from '../../../../utilities/helpers.jsx';
 import { CoverImage } from '../../../../materials/image/image.jsx';
 import { DropDown } from '../../../../materials/dropdown/dropdown.jsx';
-import { Warning } from '../../../../materials/warning/warning.jsx';
+import { ContextWarning } from '../../../../materials/warning/warning.jsx';
 import { request } from '../../../../utilities/request.jsx';
-import { ContextNonce } from '../../../../materials/mountpoint.jsx';
 import { ContextToast } from '../../../../materials/toast/toast.jsx';
 
 import avatar from '../../../../images/avatar.svg';
@@ -113,24 +112,33 @@ function MoveContent({
 }
 
 export function DeletionConfirm(props) {
-    const { job_id, stage_id, stage_name, onDelete } = props;
-    const { nonce, nonceAction } = useContext(ContextNonce);
+    const { job_id, stage_id, stage_name, onDelete, closeModal } = props;
     const { ajaxToast } = useContext(ContextToast);
+	const {showWarning, closeWarning, loadingState: warningLoading} = useContext(ContextWarning);
 
     const [state, setState] = useState({
         overview: null,
         loading: false
     });
 
-    const deleteStage = (move_to) => {
-        setState({
-            ...state,
-            loading: true
-        });
+	const closeModalAll=()=>{
+		closeWarning();
+		closeModal();
+	}
 
+    const deleteStage = (move_to) => {
+		if (move_to) {
+			setState({
+				...state,
+				loading: true
+			});
+		} else {
+			warningLoading();
+		}
+        
         request(
             'delete_hiring_stage',
-            { job_id, stage_id, move_to, nonce, nonceAction },
+            { job_id, stage_id, move_to },
             (resp) => {
                 const { success, data } = resp;
                 const { overview = {} } = data || {};
@@ -138,7 +146,10 @@ export function DeletionConfirm(props) {
                 if (success) {
                     // Deleted from server. Now from browser
                     onDelete();
-                } else if (overview) {
+					return;
+                }
+				
+				if (overview) {
                     // Could not delete as target stage not specified and there are applications in the stage
                     setState({
                         ...state,
@@ -147,37 +158,28 @@ export function DeletionConfirm(props) {
                     });
                 } else {
                     ajaxToast(resp);
-                    props.closeModal();
                 }
+
+				closeModalAll();
             }
         );
     };
 
-    return (
-        <>
-            {/* Confirm Modal */}
-            {!state.overview ? (
-                <Modal>
-                    <Warning
-                        loading={state.loading}
-                        onCancel={props.closeModal}
-                        onConfirm={deleteStage}
-                    />
-                </Modal>
-            ) : null}
+	useEffect(()=>{
+		showWarning(
+			__("Are you sure, you want to delete this item. We won't be able to recover it."), 
+			deleteStage,
+			closeModalAll
+		);
+	}, []);
 
-            {/* Move Modal */}
-            {state.overview ? (
-                <Modal>
-                    <MoveContent
-                        stage_name={stage_name}
-                        moveTo={props.moveTo}
-                        onCancel={props.closeModal}
-                        onConfirm={deleteStage}
-                        overview={state.overview}
-                    />
-                </Modal>
-            ) : null}
-        </>
-    );
+    return !state.overview ? null : <Modal>
+		<MoveContent
+			stage_name={stage_name}
+			moveTo={props.moveTo}
+			onCancel={closeModalAll}
+			onConfirm={deleteStage}
+			overview={state.overview}
+		/>
+	</Modal>
 }

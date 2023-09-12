@@ -5,7 +5,6 @@ import { TextField } from '../../../../../materials/text-field/text-field.jsx';
 import { Line } from '../../../../../materials/line/line.jsx';
 import { CoverImage } from '../../../../../materials/image/image.jsx';
 import { request } from '../../../../../utilities/request.jsx';
-import { ContextNonce } from '../../../../../materials/mountpoint.jsx';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ContextApplicationSession } from '../applicants.jsx';
 
@@ -33,7 +32,6 @@ const steps = [
 export function Sidebar({ stage_id }) {
     const navigate = useNavigate();
     const { application_id, job_id } = useParams();
-    const { nonce, nonceAction } = useContext(ContextNonce);
     const { session, sessionRefresh } = useContext(ContextApplicationSession);
 
     const [state, setState] = useState({
@@ -63,9 +61,7 @@ export function Sidebar({ stage_id }) {
                 stage_id,
                 qualification: state.active_tab,
                 page: 1
-            },
-            nonce,
-            nonceAction
+            }
         };
 
         // Send request
@@ -84,7 +80,8 @@ export function Sidebar({ stage_id }) {
             // Set the first profile to open automatacillay
             if (applications.length && !application_id) {
                 navigate(
-                    `/dashboard/jobs/${job_id}/applications/${applications[0].application_id}/`
+                    `/dashboard/jobs/${job_id}/applications/${applications[0].application_id}/`,
+					{ replace: true }
                 );
             }
         });
