@@ -8,8 +8,8 @@ import { DeletionConfirm } from './model-to-delete.jsx';
 import { ContextJobEditor } from '../index.jsx';
 
 export function HiringFlow() {
-    const { values={}, onChange, navigateTab } = useContext(ContextJobEditor);
-	const hiring_flow = Array.isArray( values.hiring_flow ) ? values.hiring_flow : [];
+    const { values = {}, onChange, navigateTab } = useContext(ContextJobEditor);
+    const hiring_flow = Array.isArray(values.hiring_flow) ? values.hiring_flow : [];
 
     const [state, setState] = useState({
         to_delete: null
@@ -32,27 +32,32 @@ export function HiringFlow() {
         });
     };
 
-	const list_manager_stages = hiring_flow.filter(f=>{
-		// Exclude reserved stages from managable list
-		return window.CrewHRM.reserved_stages.indexOf(f.stage_name)===-1;
-		
-	}).map(f=>{
-		// Convert keys to adjust with react list manager
-		return {
-			stage_id: f.stage_id, 
-			stage_name: f.stage_name
-		}
-	});
+    const list_manager_stages = hiring_flow
+        .filter((f) => {
+            // Exclude reserved stages from managable list
+            return window.CrewHRM.reserved_stages.indexOf(f.stage_name) === -1;
+        })
+        .map((f) => {
+            // Convert keys to adjust with react list manager
+            return {
+                stage_id: f.stage_id,
+                stage_name: f.stage_name
+            };
+        });
 
     return (
         <div data-crewhrm-selector="hiring-flow-builder" className={'hiring'.classNames(style)}>
             {state.to_delete ? (
                 <DeletionConfirm
-					job_id={values.job_id}
+                    job_id={values.job_id}
                     {...hiring_flow.find((s) => s.stage_id == state.to_delete)}
                     closeModal={() => deleteFlow(null)}
                     onDelete={() => deleteFlow(state.to_delete)}
-                    moveTo={list_manager_stages.filter((f) => f.stage_id !== state.to_delete).map(f=>{return {id: f.stage_id, label: f.stage_name}})}
+                    moveTo={list_manager_stages
+                        .filter((f) => f.stage_id !== state.to_delete)
+                        .map((f) => {
+                            return { id: f.stage_id, label: f.stage_name };
+                        })}
                 />
             ) : null}
 
@@ -64,8 +69,8 @@ export function HiringFlow() {
 
             <ListManager
                 mode="queue"
-				id_key="stage_id"
-				label_key="stage_name"
+                id_key="stage_id"
+                label_key="stage_name"
                 list={list_manager_stages}
                 onChange={(hiring_flow) => onChange('hiring_flow', hiring_flow)}
                 readOnyAfter={[{ stage_id: 'a', stage_name: __('Hired') }]}

@@ -82,7 +82,7 @@ class Job {
 		return array(
 			'job_id'     => $job_id,
 			'address_id' => $address_id,
-			'stage_ids'  => $stage_ids
+			'stage_ids'  => $stage_ids,
 		);
 	}
 
@@ -96,7 +96,7 @@ class Job {
 		global $wpdb;
 		$job = $wpdb->get_row(
 			$wpdb->prepare(
-				"SELECT * FROM " . DB::jobs() . " WHERE job_id=%d",
+				'SELECT * FROM ' . DB::jobs() . ' WHERE job_id=%d',
 				$job_id
 			),
 			ARRAY_A
@@ -109,7 +109,7 @@ class Job {
 
 		// Unserialize application form 
 		$job['application_form'] = _Array::getArray( maybe_unserialize( $job['application_form'] ) );
-		$job['salary'] = ( $job['salary_a'] ?? '' ) . ( ( ! empty( $job['salary_a'] ) && ! empty( $job['salary_b'] ) ) ? '-' . $job['salary_b'] : '' );
+		$job['salary']           = ( $job['salary_a'] ?? '' ) . ( ( ! empty( $job['salary_a'] ) && ! empty( $job['salary_b'] ) ) ? '-' . $job['salary_b'] : '' );
 
 		// Assign address
 		if ( ! empty( $job['address_id'] ) ) {
@@ -134,7 +134,7 @@ class Job {
 	/**
 	 * Get specific field value of a job
 	 *
-	 * @param int $job_id
+	 * @param int    $job_id
 	 * @param string $field
 	 * @return mixed
 	 */
@@ -143,7 +143,7 @@ class Job {
 
 		$field_value = $wpdb->get_var(
 			$wpdb->prepare(
-				"SELECT " . $field . " FROM " . DB::jobs() . " WHERE job_id=%d",
+				'SELECT ' . $field . ' FROM ' . DB::jobs() . ' WHERE job_id=%d',
 				$job_id
 			)
 		);
@@ -178,9 +178,9 @@ class Job {
 		global $wpdb;
 		$jobs = $wpdb->get_results(
 			$wpdb->prepare(
-				"SELECT job.*, department.department_name, address.*  FROM " . DB::jobs() . " job 
-					LEFT JOIN " . DB::departments() ." department ON job.department_id=department.department_id
-					LEFT JOIN " . DB::addresses() ." address ON job.address_id=address.address_id
+				'SELECT job.*, department.department_name, address.*  FROM ' . DB::jobs() . ' job 
+					LEFT JOIN ' . DB::departments() . ' department ON job.department_id=department.department_id
+					LEFT JOIN ' . DB::addresses() . " address ON job.address_id=address.address_id
 				WHERE {$where_clause} {$order_by} {$limit_clause}"
 			),
 			ARRAY_A
@@ -200,7 +200,7 @@ class Job {
 
 		// Assign application count
 		if ( ! empty( $meta_data ) && in_array( 'application_count', $meta_data ) ) {
-			$jobs = Application::appendApplicantCounts( $jobs );
+			$jobs = Application::appendApplicationCounts( $jobs );
 		}
 
 		// Assign job permalink
@@ -224,7 +224,7 @@ class Job {
 	public static function getJobsMinimal() {
 		global $wpdb;
 		$jobs = $wpdb->get_results(
-			"SELECT job_id, job_title FROM " . DB::jobs() . " ORDER BY created_at",
+			'SELECT job_id, job_title FROM ' . DB::jobs() . ' ORDER BY created_at',
 			ARRAY_A
 		);
 
@@ -239,7 +239,7 @@ class Job {
 	 * @param int $job_id
 	 * @return array
 	 */
-	public static function getJobById( $job_id, $meta=null ) {
+	public static function getJobById( $job_id, $meta = null ) {
 		$jobs = self::getJobs( array( 'job_id' => $job_id ), $meta );
 		$jobs = array_values( $jobs );
 		return $jobs[0] ?? null;
@@ -265,7 +265,7 @@ class Job {
 	/**
 	 * Toggle archive status of a job
 	 *
-	 * @param int $job_id
+	 * @param int  $job_id
 	 * @param bool $archive True to archive, otherwise unarchive.
 	 * @return void
 	 */
@@ -324,7 +324,7 @@ class Job {
 		// Get source job row
 		$job = $wpdb->get_row(
 			$wpdb->prepare(
-				"SELECT * FROM " . DB::jobs() . " WHERE job_id=%d",
+				'SELECT * FROM ' . DB::jobs() . ' WHERE job_id=%d',
 				$job_id
 			),
 			ARRAY_A
@@ -339,7 +339,7 @@ class Job {
 		if ( ! empty( $job['address_id'] ) ) {
 			$address = $wpdb->get_row(
 				$wpdb->prepare(
-					"SELECT * FROM " . DB::addresses() . " WHERE address_id=%d",
+					'SELECT * FROM ' . DB::addresses() . ' WHERE address_id=%d',
 					$job['address_id']
 				),
 				ARRAY_A

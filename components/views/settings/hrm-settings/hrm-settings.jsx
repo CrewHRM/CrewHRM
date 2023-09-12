@@ -53,9 +53,9 @@ function Wrapper({ children }) {
     );
 }
 
-export function HRMSettings({resources, settings}) {
+export function HRMSettings({ resources, settings }) {
     return (
-        <ContextBackendDashboard.Provider value={{resources}}>
+        <ContextBackendDashboard.Provider value={{ resources }}>
             <WpDashboardFullPage>
                 <HistoryFields defaultValues={settings || {}}>
                     <HashRouter>

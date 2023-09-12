@@ -16,7 +16,7 @@ const salary_types = {
 };
 
 export function Salary() {
-    const { values={}, onChange } = useContext(ContextJobEditor);
+    const { values = {}, onChange } = useContext(ContextJobEditor);
 
     return (
         <>

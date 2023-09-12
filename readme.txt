@@ -29,7 +29,7 @@ Some description about CrewHRM
 == Screenshots ==
 
 1. Dashboard: HR management home
-2. Application: Application screen for applicants
+2. Application: Application screen for applications
 
 == Changelog ==
 

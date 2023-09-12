@@ -18,7 +18,7 @@ class Address {
 			'country_code'   => $address['country_code'] ?? '',
 			'timezone'       => $address['timezone'] ?? null,
 			'date_format'    => $address['date_format'] ?? 'Y-m-d',
-			'time_format'    => $address['time_format'] ?? 24
+			'time_format'    => $address['time_format'] ?? 24,
 		);
 
 		global $wpdb;
@@ -57,7 +57,7 @@ class Address {
 
 		global $wpdb;
 		$wpdb->query(
-			"DELETE FROM " . DB::addresses() . " WHERE address_id IN({$ids_in})"
+			'DELETE FROM ' . DB::addresses() . " WHERE address_id IN({$ids_in})"
 		);
 	}
 
@@ -71,7 +71,7 @@ class Address {
 		global $wpdb;
 		$address = $wpdb->get_row(
 			$wpdb->prepare(
-				"SELECT * FROM " . DB::addresses() . " WHERE address_id=%d",
+				'SELECT * FROM ' . DB::addresses() . ' WHERE address_id=%d',
 				$address_id
 			),
 			ARRAY_A

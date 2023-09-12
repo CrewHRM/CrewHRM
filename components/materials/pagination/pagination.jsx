@@ -26,7 +26,7 @@ export function Pagination({ pageNumber = 3, pageCount = 23 }) {
             pageRangeDisplayed={2}
             marginPagesDisplayed={2}
             pageCount={pageCount}
-			forcePage={pageNumber}
+            forcePage={pageNumber}
             renderOnZeroPageCount={null}
         />
     );

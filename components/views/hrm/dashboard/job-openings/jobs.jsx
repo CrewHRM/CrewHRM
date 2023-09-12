@@ -17,9 +17,9 @@ import { LoadingIcon } from '../../../../materials/loading-icon/loading-icon.jsx
 import { ContextToast } from '../../../../materials/toast/toast.jsx';
 
 const special_stages = {
-	_hired_ : __('Hired'),
-	_disqualified_: __('Disqualified')
-}
+    _hired_: __('Hired'),
+    _disqualified_: __('Disqualified')
+};
 
 const options = [
     {
@@ -89,15 +89,15 @@ export const status_keys = Object.keys(statuses);
 
 export function JobOpenings(props) {
     let { is_overview, className } = props;
-	const {nonce, nonceAction} = useContext(ContextNonce);
-	const {ajaxToast} = useContext(ContextToast);
-	const navigate = useNavigate();
+    const { nonce, nonceAction } = useContext(ContextNonce);
+    const { ajaxToast } = useContext(ContextToast);
+    const navigate = useNavigate();
 
     const [state, setState] = useState({
         share_link: null,
-		jobs: [],
-		fetching: false,
-		in_action: null,
+        jobs: [],
+        fetching: false,
+        in_action: null,
         filters: {
             job_status: 'all',
             country_code: null,
@@ -124,76 +124,85 @@ export function JobOpenings(props) {
                     ...state,
                     share_link: job.job_permalink
                 });
-				break;
-
-			case 'preview' :
-				window.open( job.job_permalink, '_blank' );
                 break;
 
-			case 'edit' :
-				navigate(`/dashboard/jobs/editor/${job.job_id}/`);
+            case 'preview':
+                window.open(job.job_permalink, '_blank');
                 break;
 
-			case 'archive' :
-			case 'unarchive' :
-			case 'delete' :
-			case 'duplicate' :
-				// Register loading state
-				setState({
-					...state, 
-					in_action: action
-				});
+            case 'edit':
+                navigate(`/dashboard/jobs/editor/${job.job_id}/`);
+                break;
 
-				// Server request for action
-				request('single_job_action', {nonce, nonceAction, job_action: action, job_id}, resp=>{
-					// Remove loading state
-					setState({
-						...state, 
-						in_action: null
-					});
+            case 'archive':
+            case 'unarchive':
+            case 'delete':
+            case 'duplicate':
+                // Register loading state
+                setState({
+                    ...state,
+                    in_action: action
+                });
 
-					// Show response notice
-					ajaxToast(resp);
+                // Server request for action
+                request(
+                    'single_job_action',
+                    { nonce, nonceAction, job_action: action, job_id },
+                    (resp) => {
+                        // Remove loading state
+                        setState({
+                            ...state,
+                            in_action: null
+                        });
 
-					// Get updated job list again
-					getJobs(action==='duplicate' ? {page: 1} : {}); // Get to first page to see the duplicated one.
-				});
-				break;
+                        // Show response notice
+                        ajaxToast(resp);
+
+                        // Get updated job list again
+                        getJobs(action === 'duplicate' ? { page: 1 } : {}); // Get to first page to see the duplicated one.
+                    }
+                );
+                break;
         }
     };
 
-	const getJobs=(f={})=>{
-		setState({
-			...state,
-			fetching: true
-		});
+    const getJobs = (f = {}) => {
+        setState({
+            ...state,
+            fetching: true
+        });
 
-		const {filters} = state;
-		request('get_jobs_dashboard', {filters:{...filters, ...f}, nonce, nonceAction}, resp=>{
-			const {success, data={}} = resp;
-			const {jobs=[]} = data;
+        const { filters } = state;
+        request(
+            'get_jobs_dashboard',
+            { filters: { ...filters, ...f }, nonce, nonceAction },
+            (resp) => {
+                const { success, data = {} } = resp;
+                const { jobs = [] } = data;
 
-			setState({
-				...state,
-				fetching: false,
-				jobs
-			});
-		})
-	}
+                setState({
+                    ...state,
+                    fetching: false,
+                    jobs
+                });
+            }
+        );
+    };
 
-	useEffect(()=>{
-		getJobs();
-	}, []);
+    useEffect(() => {
+        getJobs();
+    }, []);
 
     return (
         <div data-crewhrm-selector="job-openings" className={'jobs'.classNames(style) + className}>
-            {state.share_link ? <ShareModal
+            {state.share_link ? (
+                <ShareModal
                     url={state.share_link}
                     closeModal={() => setState({ ...state, share_link: null })}
-                /> : null
-			}
+                />
+            ) : null}
 
-            <FilterBar {...{is_overview, onChange, filters: state.filters}}/>
+            <FilterBar {...{ is_overview, onChange, filters: state.filters }} />
 
             {(!state.jobs.length && <NoJob />) || (
                 <div data-crewhrm-selector={'job-list'}>
@@ -203,44 +212,50 @@ export function JobOpenings(props) {
                             job_title,
                             job_status,
                             department_name,
-							street_address,
-							country_code,
+                            street_address,
+                            country_code,
                             job_type,
-							vacancy,
+                            vacancy,
                             application_deadline,
-							stats: {candidates=0, stages: application_stages={}}
+                            stats: { candidates = 0, stages: application_stages = {} }
                         } = job;
 
                         const meta_data = [
-							department_name, 
-							(street_address || country_code) ? street_address + (country_code ? ', ' + getCountries()[country_code] : '') : null, 
-							job_type, 
-							application_deadline ? moment(application_deadline).format('DD MMM, YYYY') : null
-						];
+                            department_name,
+                            street_address || country_code
+                                ? street_address +
+                                  (country_code ? ', ' + getCountries()[country_code] : '')
+                                : null,
+                            job_type,
+                            application_deadline
+                                ? moment(application_deadline).format('DD MMM, YYYY')
+                                : null
+                        ];
 
-                        const { 
-							color: status_color, 
-							label: status_label = __( 'Unknown Status' ) 
-						} = statuses[job_status] || {};
+                        const { color: status_color, label: status_label = __('Unknown Status') } =
+                            statuses[job_status] || {};
 
                         const stats = [
                             {
-								key: 'sdfsdf',
-								label: __( 'Candidates' ),
-								content: candidates,
-							}
+                                key: 'sdfsdf',
+                                label: __('Candidates'),
+                                content: candidates
+                            }
                         ];
 
-						// Assign data to stats object
-						Object.keys(application_stages).forEach(id=>{
-							const {stage_id, stage_name, candidates=0} = application_stages[id];
-							
-							stats.push({
-								key: stage_id,
-								label: special_stages[stage_name] || stage_name,
-								content: stage_name === '_hired_' ? candidates+(vacancy ? '/'+vacancy : '') : candidates
-							}) 
-						});
+                        // Assign data to stats object
+                        Object.keys(application_stages).forEach((id) => {
+                            const { stage_id, stage_name, candidates = 0 } = application_stages[id];
+
+                            stats.push({
+                                key: stage_id,
+                                label: special_stages[stage_name] || stage_name,
+                                content:
+                                    stage_name === '_hired_'
+                                        ? candidates + (vacancy ? '/' + vacancy : '')
+                                        : candidates
+                            });
+                        });
 
                         const actions = options
                             .filter((o) => o.for === 'all' || o.for.indexOf(job_status) > -1)
@@ -251,14 +266,17 @@ export function JobOpenings(props) {
                                         <span
                                             className={'d-inline-flex align-items-center column-gap-10'.classNames()}
                                         >
-											{state.action ? <LoadingIcon size={24}/> : <i
-                                                className={
-														o.icon.classNames() +
-														'font-size-24 color-text'.classNames()
-													}
-												></i>
-											}
-                                            
+                                            {state.action ? (
+                                                <LoadingIcon size={24} />
+                                            ) : (
+                                                <i
+                                                    className={
+                                                        o.icon.classNames() +
+                                                        'font-size-24 color-text'.classNames()
+                                                    }
+                                                ></i>
+                                            )}
+
                                             <span
                                                 className={'font-size-15 font-weight-500 line-height-25 color-text'.classNames()}
                                             >
@@ -270,8 +288,13 @@ export function JobOpenings(props) {
                             });
 
                         return (
-                            <div key={job_id} className={'bg-color-white border-radius-5 margin-bottom-20'.classNames()}>
-                                <div className={'d-flex align-items-center border-bottom-1 b-color-tertiary padding-vertical-15 padding-horizontal-20'.classNames()}>
+                            <div
+                                key={job_id}
+                                className={'bg-color-white border-radius-5 margin-bottom-20'.classNames()}
+                            >
+                                <div
+                                    className={'d-flex align-items-center border-bottom-1 b-color-tertiary padding-vertical-15 padding-horizontal-20'.classNames()}
+                                >
                                     <div className={'flex-1'.classNames()}>
                                         <div
                                             className={'d-flex align-items-center margin-bottom-15'.classNames()}
@@ -288,20 +311,24 @@ export function JobOpenings(props) {
                                                 {job_title}
                                             </span>
                                         </div>
-                                        <div className={'d-flex align-items-center flex-direction-row flex-wrap-wrap column-gap-30 row-gap-5'.classNames()}>
+                                        <div
+                                            className={'d-flex align-items-center flex-direction-row flex-wrap-wrap column-gap-30 row-gap-5'.classNames()}
+                                        >
                                             {meta_data.map((data, index) => {
-                                                return !data ? null : <span
-													key={data}
-													className={'d-inline-block font-size-15 font-weight-400 color-text-light'.classNames()}
-												>
-													{data}
-												</span>
+                                                return !data ? null : (
+                                                    <span
+                                                        key={data}
+                                                        className={'d-inline-block font-size-15 font-weight-400 color-text-light'.classNames()}
+                                                    >
+                                                        {data}
+                                                    </span>
+                                                );
                                             })}
                                         </div>
                                     </div>
                                     <div>
                                         <Link
-                                            to={`/dashboard/jobs/${job_id}/applicants/`}
+                                            to={`/dashboard/jobs/${job_id}/applications/`}
                                             className={'button button-primary button-outlined button-small'.classNames()}
                                         >
                                             {__('Details')}
@@ -321,7 +348,7 @@ export function JobOpenings(props) {
                                 <div
                                     className={'d-flex align-items-center justify-content-space-between padding-vertical-15 padding-horizontal-20'.classNames()}
                                 >
-                                    <StatsRow stats={stats}/>
+                                    <StatsRow stats={stats} />
                                 </div>
                             </div>
                         );

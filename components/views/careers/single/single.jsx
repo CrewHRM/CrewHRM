@@ -11,228 +11,238 @@ import { LoadingIcon } from '../../../materials/loading-icon/loading-icon.jsx';
 import { employments_types } from '../../hrm/job-editor/job-details/sections/employment-details.jsx';
 import { sections_fields } from '../../hrm/job-editor/application-form/form-structure.jsx';
 
-const getForm=(_form, attrs)=>{
-	// Loop through fields
-	for ( let i=0; i < _form.length; i++ ) {
+const getForm = (_form, attrs) => {
+    // Loop through fields
+    for (let i = 0; i < _form.length; i++) {
+        // Recursive, though there are only two level ideally
+        if (Array.isArray(_form[i])) {
+            _form[i] = getForm(_form[i], attrs);
+            continue;
+        }
 
-		// Recursive, though there are only two level ideally
-		if ( Array.isArray( _form[i] ) ) {
-			_form[i] = getForm( _form[i], attrs );
-			continue;
-		}
+        _form[i] = { ..._form[i], ...attrs };
+    }
 
-		_form[i] = {..._form[i], ...attrs}
-	}
+    return _form;
+};
 
-	return _form;
-}
+const prepareField = (category, field = {}) => {
+    let { form: _form = [] } =
+        sections_fields[category].fields.find((f) => f.id === field.id) || {};
+    const { required, enabled, readonly } = field;
 
-const prepareField=(category, field={})=>{
-	
-	let {form: _form=[]} = sections_fields[category].fields.find(f=>f.id===field.id) || {};
-	const { required, enabled, readonly } = field;
+    let attrs = {
+        required: required || readonly,
+        enabled: enabled || readonly
+    };
 
-	let attrs = {
-		required: required || readonly, 
-		enabled: enabled || readonly
-	};
-
-	return getForm( _form, attrs );
-}
+    return getForm(_form, attrs);
+};
 
 function applyFormFields(fields) {
-	return  {
-		personal: fields.personal_info.fields
-				.map((f) =>prepareField('personal_info', f))
-				.filter((f) => f)
-				.flat(),
+    return {
+        personal: fields.personal_info.fields
+            .map((f) => prepareField('personal_info', f))
+            .filter((f) => f)
+            .flat(),
 
-		documents: fields.documents.fields
-				.map((f) =>prepareField('documents', f))
-				.filter((f) => f)
-				.flat(),
+        documents: fields.documents.fields
+            .map((f) => prepareField('documents', f))
+            .filter((f) => f)
+            .flat(),
 
-		other: [
-			...fields.profile.fields
-				.map((f) =>prepareField('profile', f))
-				.filter((f) => f)
-				.flat(),
-				
-			...fields.questions.fields
-				.map((question) => {
-					return [
-						{
-							name: question.id,
-							label: question.label,
-							type: question.type,
-							options: question.field_options,
-							enabled: question.enabled,
-							required: question.required
-						},
-						null
-					];
-				})
-				.filter((q) => q)
-				.flat()
-		]
-	};
+        other: [
+            ...fields.profile.fields
+                .map((f) => prepareField('profile', f))
+                .filter((f) => f)
+                .flat(),
+
+            ...fields.questions.fields
+                .map((question) => {
+                    return [
+                        {
+                            name: question.id,
+                            label: question.label,
+                            type: question.type,
+                            options: question.field_options,
+                            enabled: question.enabled,
+                            required: question.required
+                        },
+                        null
+                    ];
+                })
+                .filter((q) => q)
+                .flat()
+        ]
+    };
 }
 
 function RenderMeta({ icon, hint, content }) {
-    return content ? <div>
-		<i className={`${icon} font-size-16 color-text-light`.classNames()}></i>
-		<span
-			className={'d-block font-size-13 font-weight-500 line-height-25 color-text-light margin-top-8 margin-bottom-2'.classNames()}
-		>
-			{hint}
-		</span>
-		<span className={'font-size-17 font-weight-500 line-height-25 color-text'.classNames()}>
-			{content}
-		</span>
-	</div> : null
+    return content ? (
+        <div>
+            <i className={`${icon} font-size-16 color-text-light`.classNames()}></i>
+            <span
+                className={'d-block font-size-13 font-weight-500 line-height-25 color-text-light margin-top-8 margin-bottom-2'.classNames()}
+            >
+                {hint}
+            </span>
+            <span className={'font-size-17 font-weight-500 line-height-25 color-text'.classNames()}>
+                {content}
+            </span>
+        </div>
+    ) : null;
 }
 
 export function Single({ base_permalink }) {
-	const {job_action, job_id} = useParams();
-	const {nonce, nonceAction} = useContext(ContextNonce);
+    const { job_action, job_id } = useParams();
+    const { nonce, nonceAction } = useContext(ContextNonce);
 
-	const [state, setState] = useState({
-		job: null,
-		about_company: null,
-		fetching: true,
-		error_message: null
-	});
-	
-	const getJob=()=>{
-		setState({
-			...state,
-			fetching: true
-		});
+    const [state, setState] = useState({
+        job: null,
+        about_company: null,
+        fetching: true,
+        error_message: null
+    });
 
-		request('get_single_job_view', {job_id, nonce, nonceAction}, resp=>{
-			const {
-				success, 
-				data:{
-					job={}, 
-					about_company, 
-					message=__( 'Something Went Wrong!' )
-				}
-			} = resp;
+    const getJob = () => {
+        setState({
+            ...state,
+            fetching: true
+        });
 
-			setState({
-				...state,
-				job: {
-					...job,
-					application_form: applyFormFields( job.application_form || {} )
-				},
-				about_company,
-				fetching: false,
-				error_message: (!success || !job) ? message : null
-			});
-		});
-	}
+        request('get_single_job_view', { job_id, nonce, nonceAction }, (resp) => {
+            const {
+                success,
+                data: { job = {}, about_company, message = __('Something Went Wrong!') }
+            } = resp;
 
-	useEffect(()=>{
-		getJob();
-	}, [job_id] );
+            setState({
+                ...state,
+                job: {
+                    ...job,
+                    application_form: applyFormFields(job.application_form || {})
+                },
+                about_company,
+                fetching: false,
+                error_message: !success || !job ? message : null
+            });
+        });
+    };
 
-    const { 
-		department_name, 
-		job_title, 
-		meta={},
-		job_description, 
-		street_address, 
-		country_code,
-		employment_type,
-		salary_a, 
-		salary_b
-	} = state.job || {};
+    useEffect(() => {
+        getJob();
+    }, [job_id]);
 
-	if ( state.fetching ) {
-		return <LoadingIcon size={34} center={true}/>
-	}
+    const {
+        department_name,
+        job_title,
+        meta = {},
+        job_description,
+        street_address,
+        country_code,
+        employment_type,
+        salary_a,
+        salary_b
+    } = state.job || {};
 
-	if ( state.error_message ) {
-		return <div className={'text-align-center color-danger'.classNames()}>
-			{state.error_message}
-		</div>
-	}
+    if (state.fetching) {
+        return <LoadingIcon size={34} center={true} />;
+    }
 
-    return job_action === 'apply' ? <Apply job={state.job}/> : <div className={'single'.classNames(style)}>
-		<div className={'header'.classNames(style) + 'bg-color-tertiary'.classNames()}>
-			<div className={'container'.classNames(style)}>
-				<span
-					className={'d-block font-size-15 font-weight-700 line-height-25 letter-spacing_3 color-text margin-bottom-10'.classNames()}
-				>
-					{department_name}
-				</span>
-				<span
-					className={'d-block font-size-38 font-weight-600 line-height-24 letter-spacing--38 color-text'.classNames()}
-				>
-					{job_title}
-				</span>
-			</div>
-		</div>
-		<div className={'details'.classNames(style)}>
-			<div className={'container'.classNames(style)}>
-				<div
-					className={'d-flex align-items-center justify-content-space-between flex-break-sm break-align-items-start break-gap-20 padding-vertical-20 padding-horizontal-30 bg-color-white border-radius-10 box-shadow-thick'.classNames()}
-					style={{ marginTop: '-51px', marginBottom: '79px' }}
-				>
-					<RenderMeta
-						icon={'ch-icon ch-icon-location'}
-						hint={__('Location')}
-						/* content={(street_address || '') + (country_code ? ', '+countries_object[country_code] : '')} */
-						content={(street_address || '')}
-					/>
-					<RenderMeta
-						icon={'ch-icon ch-icon-briefcase'}
-						hint={__('Job Type')}
-						content={employments_types[employment_type]}
-					/>
-					<RenderMeta
-						icon={'ch-icon ch-icon-empty-wallet'}
-						hint={__('Salary')}
-						content={(salary_a || '') + (salary_b ? '-'+salary_b : '')}
-					/>
-					<div className={'align-self-center'.classNames()}>
-						<Link to={`/${base_permalink}/${job_id}/apply/`} className={'button button-primary'.classNames()}>
-							{__('Apply Now')}
-						</Link>
-					</div>
-				</div>
+    if (state.error_message) {
+        return (
+            <div className={'text-align-center color-danger'.classNames()}>
+                {state.error_message}
+            </div>
+        );
+    }
 
-				{state.about_company ? <div className={'margin-bottom-32'.classNames()}>
-					<span
-						className={'d-block font-size-17 font-weight-600 line-height-24 color-black margin-bottom-12'.classNames()}
-					>
-						{__('About Company')}
-					</span>
-					<DangerouslySet className={'font-weight-400 color-black'.classNames()}>
-						{state.about_company}
-					</DangerouslySet>
-				</div> : null}
-				
-				{job_description ? <div className={'margin-bottom-32'.classNames()}>
-					<span
-						className={'d-block font-size-17 font-weight-600 line-height-24 color-black margin-bottom-12'.classNames()}
-					>
-						{__('Job Description')}
-					</span>
-					<DangerouslySet className={'font-weight-400 color-black'.classNames()}>
-						{job_description}
-					</DangerouslySet>
-				</div> : null}
-				
-				<div>
-					<Link
-						to={`/${base_permalink}/${job_id}/apply/`}
-						className={'button button-primary button-full-width'.classNames()}
-					>
-						{__('Apply Now')}
-					</Link>
-				</div>
-			</div>
-		</div>
-	</div>
+    return job_action === 'apply' ? (
+        <Apply job={state.job} />
+    ) : (
+        <div className={'single'.classNames(style)}>
+            <div className={'header'.classNames(style) + 'bg-color-tertiary'.classNames()}>
+                <div className={'container'.classNames(style)}>
+                    <span
+                        className={'d-block font-size-15 font-weight-700 line-height-25 letter-spacing_3 color-text margin-bottom-10'.classNames()}
+                    >
+                        {department_name}
+                    </span>
+                    <span
+                        className={'d-block font-size-38 font-weight-600 line-height-24 letter-spacing--38 color-text'.classNames()}
+                    >
+                        {job_title}
+                    </span>
+                </div>
+            </div>
+            <div className={'details'.classNames(style)}>
+                <div className={'container'.classNames(style)}>
+                    <div
+                        className={'d-flex align-items-center justify-content-space-between flex-break-sm break-align-items-start break-gap-20 padding-vertical-20 padding-horizontal-30 bg-color-white border-radius-10 box-shadow-thick'.classNames()}
+                        style={{ marginTop: '-51px', marginBottom: '79px' }}
+                    >
+                        <RenderMeta
+                            icon={'ch-icon ch-icon-location'}
+                            hint={__('Location')}
+                            /* content={(street_address || '') + (country_code ? ', '+countries_object[country_code] : '')} */
+                            content={street_address || ''}
+                        />
+                        <RenderMeta
+                            icon={'ch-icon ch-icon-briefcase'}
+                            hint={__('Job Type')}
+                            content={employments_types[employment_type]}
+                        />
+                        <RenderMeta
+                            icon={'ch-icon ch-icon-empty-wallet'}
+                            hint={__('Salary')}
+                            content={(salary_a || '') + (salary_b ? '-' + salary_b : '')}
+                        />
+                        <div className={'align-self-center'.classNames()}>
+                            <Link
+                                to={`/${base_permalink}/${job_id}/apply/`}
+                                className={'button button-primary'.classNames()}
+                            >
+                                {__('Apply Now')}
+                            </Link>
+                        </div>
+                    </div>
+
+                    {state.about_company ? (
+                        <div className={'margin-bottom-32'.classNames()}>
+                            <span
+                                className={'d-block font-size-17 font-weight-600 line-height-24 color-black margin-bottom-12'.classNames()}
+                            >
+                                {__('About Company')}
+                            </span>
+                            <DangerouslySet className={'font-weight-400 color-black'.classNames()}>
+                                {state.about_company}
+                            </DangerouslySet>
+                        </div>
+                    ) : null}
+
+                    {job_description ? (
+                        <div className={'margin-bottom-32'.classNames()}>
+                            <span
+                                className={'d-block font-size-17 font-weight-600 line-height-24 color-black margin-bottom-12'.classNames()}
+                            >
+                                {__('Job Description')}
+                            </span>
+                            <DangerouslySet className={'font-weight-400 color-black'.classNames()}>
+                                {job_description}
+                            </DangerouslySet>
+                        </div>
+                    ) : null}
+
+                    <div>
+                        <Link
+                            to={`/${base_permalink}/${job_id}/apply/`}
+                            className={'button button-primary button-full-width'.classNames()}
+                        >
+                            {__('Apply Now')}
+                        </Link>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
 }

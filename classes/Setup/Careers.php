@@ -10,7 +10,7 @@ class Careers {
 	 */
 	const MOUNTPOINT = 'crewhrm_careers';
 
-	public function __construct() {		
+	public function __construct() {     
 		add_filter( 'query_vars', array( $this, 'registerQueryVars' ) );
 		add_action( 'generate_rewrite_rules', array( $this, 'addRewriteRules' ) );
 		add_filter( 'the_content', array( $this, 'renderCareers' ) );
@@ -34,10 +34,10 @@ class Careers {
 	 */
 	public function addRewriteRules( $wp_rewrite ) {
 		$careers_page_id   = Utilities::getCareersPageId();
-		$careers_page_slug = get_post_field('post_name', $careers_page_id);
+		$careers_page_slug = get_post_field( 'post_name', $careers_page_id );
 
 		// ~/careers/23/
-		$new_rules["({$careers_page_slug})/(.+?)/?$"] = 'index.php?pagename=' . $wp_rewrite->preg_index(1) . '&crewhrm_segments=' . $wp_rewrite->preg_index(2);
+		$new_rules[ "({$careers_page_slug})/(.+?)/?$" ] = 'index.php?pagename=' . $wp_rewrite->preg_index( 1 ) . '&crewhrm_segments=' . $wp_rewrite->preg_index( 2 );
 		
 		$wp_rewrite->rules = $new_rules + $wp_rewrite->rules;
 	}

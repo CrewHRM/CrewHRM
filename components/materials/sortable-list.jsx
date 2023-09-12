@@ -44,7 +44,7 @@ export function SortableList(props) {
                             {props.items.map((item, index) => (
                                 <Draggable
                                     key={item.id}
-                                    draggableId={'_'+item.id}
+                                    draggableId={'_' + item.id}
                                     index={index}
                                     isDragDisabled={props.disabled ? true : false}
                                 >

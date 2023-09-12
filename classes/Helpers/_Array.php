@@ -114,7 +114,7 @@ class _Array {
 	/**
 	 * Make an array column value index of the array
 	 *
-	 * @param array $array
+	 * @param array  $array
 	 * @param string $column
 	 * @return array
 	 */
@@ -130,14 +130,14 @@ class _Array {
 	/**
 	 * Append column to a two dimensional array
 	 *
-	 * @param array $array
+	 * @param array  $array
 	 * @param string $key
-	 * @param array $new
+	 * @param array  $new
 	 * @return array
 	 */
 	public static function appendArray( array $array, string $key, $new ) {
 		foreach ( $array as $index => $element ) {
-			$prev = $array[ $index ][ $key ] ?? array();
+			$prev                    = $array[ $index ][ $key ] ?? array();
 			$array[ $index ][ $key ] = array_merge_recursive( $prev, $new );
 		}
 
@@ -147,9 +147,9 @@ class _Array {
 	/**
 	 * Get object from array by object key value match, similar to js find method.
 	 *
-	 * @param array $array
+	 * @param array  $array
 	 * @param string $key
-	 * @param mixed $value
+	 * @param mixed  $value
 	 * @return mixed
 	 */
 	public static function find( array $array, $key, $value ) {

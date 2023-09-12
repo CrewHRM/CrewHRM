@@ -24,7 +24,7 @@ const hint_class =
 export function Options(props) {
     const { segment, sub_segment } = useParams();
     const { values = {}, onChange } = useContext(ContextSettings);
-	const { resources = {} } = useContext( ContextBackendDashboard );
+    const { resources = {} } = useContext(ContextBackendDashboard);
 
     const { fields, icon, label } = settings_fields[segment].segments[sub_segment];
     const field_keys = Object.keys(fields);
@@ -66,17 +66,8 @@ export function Options(props) {
                 </span>
 
                 {field_keys.map((key, index) => {
-                    const {
-                        label,
-                        type,
-                        options,
-                        when,
-                        direction,
-                        hint,
-						placeholder,
-                        min,
-                        max
-                    } = fields[key];
+                    const { label, type, options, when, direction, hint, placeholder, min, max } =
+                        fields[key];
                     const is_last = index == field_keys.length - 1;
 
                     if (when && !satisfyLogic(when)) {
@@ -164,7 +155,8 @@ export function Options(props) {
                                 null}
 
                             {/* Number field options */}
-                            {type === 'number' ? <>
+                            {type === 'number' ? (
+                                <>
                                     <div className={'flex-5'.classNames()}>{label_text}</div>
                                     <div className={'flex-2'.classNames()}>
                                         <NumberField
@@ -174,20 +166,27 @@ export function Options(props) {
                                             onChange={(v) => onChange(key, v)}
                                         />
                                     </div>
-                                </> : null
-							}
+                                </>
+                            ) : null}
 
-							{type=='dropdown' ? <>
-								<div className={'flex-5'.classNames()}>{label_text}</div>
-								<div className={'flex-2'.classNames()}>
-									<DropDown 
-										className={input_class}
-										value={values[key]} 
-										onChange={v=>onChange(key, v)}
-										options={typeof options === 'string' ? (resources[options] || []) : []}
-										placeholder={placeholder}/>
-								</div>
-							</> : null}
+                            {type == 'dropdown' ? (
+                                <>
+                                    <div className={'flex-5'.classNames()}>{label_text}</div>
+                                    <div className={'flex-2'.classNames()}>
+                                        <DropDown
+                                            className={input_class}
+                                            value={values[key]}
+                                            onChange={(v) => onChange(key, v)}
+                                            options={
+                                                typeof options === 'string'
+                                                    ? resources[options] || []
+                                                    : []
+                                            }
+                                            placeholder={placeholder}
+                                        />
+                                    </div>
+                                </>
+                            ) : null}
                         </div>
                     );
                 })}

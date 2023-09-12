@@ -4,12 +4,12 @@ import { __ } from '../../../../../utilities/helpers.jsx';
 import { TextField } from '../../../../../materials/text-field/text-field.jsx';
 import { Line } from '../../../../../materials/line/line.jsx';
 import { CoverImage } from '../../../../../materials/image/image.jsx';
-
-import style from './sidebar.module.scss';
 import { request } from '../../../../../utilities/request.jsx';
 import { ContextNonce } from '../../../../../materials/mountpoint.jsx';
 import { useNavigate, useParams } from 'react-router-dom';
-import { ContextApplicantSession } from '../applicants.jsx';
+import { ContextApplicationSession } from '../applicants.jsx';
+
+import style from './sidebar.module.scss';
 
 const steps = [
     {
@@ -30,103 +30,100 @@ const steps = [
     }
 ];
 
-export function Sidebar({stage_id}) {
-	const navigate = useNavigate();
-	const {applicant_id, job_id} = useParams();
-	const {nonce, nonceAction} = useContext(ContextNonce);
-	const {session, sessionRefresh} = useContext(ContextApplicantSession);
+export function Sidebar({ stage_id }) {
+    const navigate = useNavigate();
+    const { application_id, job_id } = useParams();
+    const { nonce, nonceAction } = useContext(ContextNonce);
+    const { session, sessionRefresh } = useContext(ContextApplicationSession);
 
-	const [state, setState] = useState({
-		mounted: false,
-		fetching: false,
-		active_tab: 'qualified',
-		filter: {
-			page: 1,
-			search: null,
-		},
-		applicants: []
-	});
+    const [state, setState] = useState({
+        mounted: false,
+        fetching: false,
+        active_tab: 'qualified',
+        filter: {
+            page: 1,
+            search: null
+        },
+        applications: []
+    });
 
-	const [searchState, setSearchState] = useState('');
+    const [searchState, setSearchState] = useState('');
 
-	const getApplicants=()=>{
-		setState({
-			...state,
-			fetching: true
-		});
+    const getApplications = () => {
+        setState({
+            ...state,
+            fetching: true
+        });
 
-		// Prepare the request data
-		const payload = {
-			filter:{
-				...state.filter,
-				job_id,
-				stage_id,
-				qualification: state.active_tab,
-				page: 1
-			}, 
-			nonce, 
-			nonceAction
-		}
-		
-		// Send request
-		request('get_applicants_list', payload, resp=>{
-			const {success, data: {applicants= []}} = resp;
+        // Prepare the request data
+        const payload = {
+            filter: {
+                ...state.filter,
+                job_id,
+                stage_id,
+                qualification: state.active_tab,
+                page: 1
+            },
+            nonce,
+            nonceAction
+        };
 
-			setState({
-				...state,
-				fetching: false,
-				applicants
-			});
+        // Send request
+        request('get_applications_list', payload, (resp) => {
+            const {
+                success,
+                data: { applications = [] }
+            } = resp;
 
-			// Set the first profile to open automatacillay
-			if ( applicants.length && !applicant_id) {
-				navigate(`/dashboard/jobs/${job_id}/applicants/${applicants[0].application_id}/`);
-			}
-		});
-	}
+            setState({
+                ...state,
+                fetching: false,
+                applications
+            });
 
-	useEffect(()=>{
-		getApplicants();
-		
-	}, [
-		job_id, 
-		stage_id, 
-		state.filter.page, 
-		state.filter.search, 
-		state.active_tab,
-		session
-	]);
+            // Set the first profile to open automatacillay
+            if (applications.length && !application_id) {
+                navigate(
+                    `/dashboard/jobs/${job_id}/applications/${applications[0].application_id}/`
+                );
+            }
+        });
+    };
 
-	// Debounce for search input
-	// To Do: Use this same technique in settings undo/redo and job auto save.
-	useEffect(() => {
-		// Prevent duplicate ajax call
-		if ( ! state.mounted ) {
-			setState({
-				...state,
-				mounted: true
-			});
-			return;
-		}
+    useEffect(() => {
+        getApplications();
+    }, [job_id, stage_id, state.filter.page, state.filter.search, state.active_tab, session]);
 
-		const timeOutId = setTimeout(() => {
-			setState({
-				...state,
-				filter: {
-					...state.filter,
-					search: searchState
-				}
-			});
-		}, 500);
+    // Debounce for search input
+    // To Do: Use this same technique in settings undo/redo and job auto save.
+    useEffect(() => {
+        // Prevent duplicate ajax call
+        if (!state.mounted) {
+            setState({
+                ...state,
+                mounted: true
+            });
+            return;
+        }
 
-		return () => {
-			clearTimeout(timeOutId);
-		}
-	}, [searchState]);
+        const timeOutId = setTimeout(() => {
+            setState({
+                ...state,
+                filter: {
+                    ...state.filter,
+                    search: searchState
+                }
+            });
+        }, 500);
+
+        return () => {
+            clearTimeout(timeOutId);
+        };
+    }, [searchState]);
 
     return (
         <div
-            data-crewhrm-selector="applicant-sidebar"
+            data-crewhrm-selector="application-sidebar"
             className={'sidebar'.classNames(style) + 'position-sticky'.classNames()}
             style={{ top: '120px' }}
         >
@@ -139,24 +136,29 @@ export function Sidebar({stage_id}) {
 
             <div className={'padding-15'.classNames()}>
                 <TextField
-					value={searchState}
+                    value={searchState}
                     className={'border-1 b-color-tertiary border-radius-5 padding-vertical-10 padding-horizontal-11 height-40'.classNames()}
                     iconClass={'ch-icon ch-icon-search-normal-1 font-size-16 color-text-light'.classNames()}
                     placeholder={__('Search by name')}
-					onChange={v=>setSearchState(v)}
+                    onChange={(v) => setSearchState(v)}
                 />
             </div>
 
             <Line />
 
             <div data-crewhrm-selector="list" className={'list'.classNames(style)}>
-                {state.applicants.map((applicant, i) => {
-                    let { first_name, last_name, application_date, application_id } = applicant;
+                {state.applications.map((application, i) => {
+                    let { first_name, last_name, application_date, application_id } = application;
 
                     return (
                         <div key={application_id}>
                             <div className={'d-flex align-items-center'.classNames()}>
-                                <CoverImage src={null} width={48} circle={true} name={first_name + ' ' + last_name} />
+                                <CoverImage
+                                    src={null}
+                                    width={48}
+                                    circle={true}
+                                    name={first_name + ' ' + last_name}
+                                />
                                 <div className={'flex-1 margin-left-10'.classNames()}>
                                     <span
                                         className={'d-block font-size-17 font-weight-600 letter-spacing--17 color-text margin-bottom-2'.classNames()}

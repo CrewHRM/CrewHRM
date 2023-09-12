@@ -62,7 +62,7 @@ export function EmploymentDetails(props) {
                             <span className={field_label_class}>{__('Submission Deadline')}</span>
                             <DateField
                                 className={input_class}
-								value={values.application_deadline}
+                                value={values.application_deadline}
                                 onChange={(v) => onChange('application_deadline', v)}
                             />
                         </div>

@@ -55,7 +55,7 @@ class Meta {
 	/**
 	 * Get single meta value by object id and meta key
 	 *
-	 * @param int $obj_id
+	 * @param int    $obj_id
 	 * @param string $meta_key
 	 * @return mixed
 	 */
@@ -66,7 +66,7 @@ class Meta {
 		global $wpdb;
 		$results = $wpdb->get_results(
 			$wpdb->prepare(
-				"SELECT meta_key, meta_value FROM " . $this->table . " WHERE object_id=%d " . $where_clause,
+				'SELECT meta_key, meta_value FROM ' . $this->table . ' WHERE object_id=%d ' . $where_clause,
 				$obj_id
 			),
 			ARRAY_A
@@ -87,9 +87,9 @@ class Meta {
 	/**
 	 * Create or update a meta field. If the value is array, then mismatching values will be removed.
 	 *
-	 * @param int $obj_id
+	 * @param int    $obj_id
 	 * @param string $meta_key
-	 * @param mixed $meta_value
+	 * @param mixed  $meta_value
 	 * @return bool
 	 */
 	public function updateMeta( $obj_id, $meta_key, $meta_value ) {
@@ -98,7 +98,7 @@ class Meta {
 		// Check if the meta exists already
 		$exists = $wpdb->get_var(
 			$wpdb->prepare(
-				"SELECT meta_key FROM " . $this->table . " WHERE object_id=%d AND meta_key=%s LIMIT 1",
+				'SELECT meta_key FROM ' . $this->table . ' WHERE object_id=%d AND meta_key=%s LIMIT 1',
 				$obj_id,
 				$meta_key
 			)
@@ -108,7 +108,7 @@ class Meta {
 		$payload = array(
 			'object_id'  => $obj_id,
 			'meta_key'   => $meta_key,
-			'meta_value' => maybe_serialize( $meta_value )
+			'meta_value' => maybe_serialize( $meta_value ),
 		);
 
 		if ( $exists ) {
@@ -118,7 +118,7 @@ class Meta {
 				$payload,
 				array( 
 					'object_id' => $obj_id,
-					'meta_key'  => $meta_key 
+					'meta_key'  => $meta_key, 
 				)
 			);
 
@@ -134,7 +134,7 @@ class Meta {
 	/**
 	 * Delete single meta
 	 *
-	 * @param int $obj_id
+	 * @param int    $obj_id
 	 * @param string $meta_key
 	 * @return void
 	 */
@@ -162,7 +162,7 @@ class Meta {
 	/**
 	 * Assign bulk meta to objects array
 	 *
-	 * @param array $objects
+	 * @param array  $objects
 	 * @param string $id_key
 	 * @return void
 	 */
@@ -174,7 +174,7 @@ class Meta {
 		$ids_in  = implode( ',', $obj_ids );
 
 		$meta = $wpdb->get_results(
-			"SELECT * FROM " . $this->table . " WHERE object_id IN({$ids_in})",
+			'SELECT * FROM ' . $this->table . " WHERE object_id IN({$ids_in})",
 			ARRAY_A
 		);
 
@@ -200,7 +200,7 @@ class Meta {
 
 		$meta_data = $wpdb->get_results(
 			$wpdb->prepare(
-				"SELECT meta_key, meta_value FROM " . $this->table . " WHERE object_id=%d",
+				'SELECT meta_key, meta_value FROM ' . $this->table . ' WHERE object_id=%d',
 				$object_from_id
 			),
 			ARRAY_A
@@ -213,7 +213,7 @@ class Meta {
 				array(
 					'object_id'  => $object_to_id,
 					'meta_key'   => $meta['meta_key'],
-					'meta_value' => $meta['meta_value']
+					'meta_value' => $meta['meta_value'],
 				)
 			);
 		}

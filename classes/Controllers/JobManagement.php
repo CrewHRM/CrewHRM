@@ -10,22 +10,22 @@ use CrewHRM\Models\Stage;
 
 class JobManagement {
 	const PREREQUISITES = array(
-		'updateJob' => array(
+		'updateJob'           => array(
 			'role' => array( 'administrator', 'editor' ),
 			'data' => array(
 				'job' => 'type:array',
 			),
 		),
-		'getJobsDashboard' => array(),
-		'singleJobAction'  => array(),
-		'getSingleJobView' => array(),
-		'getSingleJobEdit' => array(
+		'getJobsDashboard'    => array(),
+		'singleJobAction'     => array(),
+		'getSingleJobView'    => array(),
+		'getSingleJobEdit'    => array(
 			'role' => array( 'administrator', 'editor' ),
 			'data' => array(
 				'job_id' => 'type:numeric',
 			),
 		),
-		'deleteHiringStage' => array(
+		'deleteHiringStage'   => array(
 			'role' => array( 'administrator', 'editor' ),
 			'data' => array(
 				'job_id'   => 'type:numeric',
@@ -38,7 +38,7 @@ class JobManagement {
 			'data' => array(
 				'job_id' => 'type:numeric',
 			),
-		)
+		),
 	);
 
 	/**
@@ -71,7 +71,7 @@ class JobManagement {
 				'message'    => $is_auto ? __( 'Auto saved job' ) : __( 'Job published' ),
 				'address_id' => $job['address_id'],
 				'stage_ids'  => $job['stage_ids'],
-				'job_id'     => $job['job_id']
+				'job_id'     => $job['job_id'],
 			)
 		);
 	}
@@ -93,8 +93,8 @@ class JobManagement {
 		$action = $data['job_action'];
 		
 		switch ( $action ) {
-			case 'archive' :
-			case 'unarchive' :
+			case 'archive':
+			case 'unarchive':
 				$do_archive = $action === 'archive';
 				Job::toggleArchiveState( $job_id, $do_archive );
 				wp_send_json_success(
@@ -104,12 +104,12 @@ class JobManagement {
 				);
 				break;
 
-			case 'delete' :
+			case 'delete':
 				Job::deleteJob( $job_id );
 				wp_send_json_success( array( 'message' => __( 'Job deleted', 'crewhrm' ) ) );
 				break;
 
-			case 'duplicate' :
+			case 'duplicate':
 				$new_job_id = Job::duplicateJob( $job_id );
 				if ( ! empty( $new_job_id ) ) {
 					wp_send_json_success( array( 'message' => __( 'Job duplicated', 'crewhrm' ) ) );
@@ -136,7 +136,7 @@ class JobManagement {
 			wp_send_json_success(
 				array(
 					'job'           => $job,
-					'about_company' => Settings::getCompanyProfile( 'about_company' )
+					'about_company' => Settings::getCompanyProfile( 'about_company' ),
 				)
 			);
 		}
@@ -175,11 +175,11 @@ class JobManagement {
 		);
 
 		if ( $deletion === true ) {
-			// Deleted successfully as there are no applicant in the stage
+			// Deleted successfully as there are no application in the stage
 			wp_send_json_success();
 
-		} else if ( is_array( $deletion ) ) {
-			// There are applicants in the stage
+		} elseif ( is_array( $deletion ) ) {
+			// There are applications in the stage
 			wp_send_json_error( array( 'overview' => $deletion ) );
 			
 		} else {
@@ -202,7 +202,7 @@ class JobManagement {
 				'job_list'   => Job::getJobsMinimal(),
 				'stages'     => $stats['stages'] ?? array(),
 				'candidates' => $stats['candidates'] ?? 0,
-				'job'        => Job::getJobById( $data['job_id'] )
+				'job'        => Job::getJobById( $data['job_id'] ),
 			)
 		);
 	}

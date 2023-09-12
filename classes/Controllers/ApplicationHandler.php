@@ -6,32 +6,30 @@ use CrewHRM\Models\Application;
 
 class ApplicationHandler {
 	const PREREQUISITES = array(
-		'applyToJob' => array(
+		'applyToJob'           => array(
 			'data' => array(
-				'application' => 'type:array'
-			)
+				'application' => 'type:array',
+			),
 		),
-		'getApplicantsList' => array(
+		'getApplicationsList'  => array(
 			'role' => array(
 				'administrator',
-				'editor'
+				'editor',
 			),
-			'data' => array(
-			)
+			'data' => array(),
 		),
-		'getApplicantSingle' => array(
+		'getApplicationSingle' => array(
 			'role' => array(
 				'administrator',
-				'editor'
+				'editor',
 			),
-			'data' => array(
-			)
-		)
+			'data' => array(),
+		),
 	);
 
 	/**
 	 * Create application to job. 
-	 * Note: There is no edit feature for job application. Just create on submission and retreieve in the applicant view.
+	 * Note: There is no edit feature for job application. Just create on submission and retreieve in the application view.
 	 *
 	 * @param array $data
 	 * @return void
@@ -47,31 +45,31 @@ class ApplicationHandler {
 	}
 
 	/**
-	 * Get applicant list, ideally for the applicant view page sidebar.
+	 * Get application list, ideally for the application view page sidebar.
 	 *
 	 * @param array $data Request data
 	 * @return void
 	 */
-	public static function getApplicantsList( array $data ) {
-		$applications = Application::getApplicants( $data['filter'] );
+	public static function getApplicationsList( array $data ) {
+		$applications = Application::getApplications( $data['filter'] );
 
 		wp_send_json_success(
 			array(
-				'applicants' => $applications,
+				'applications' => $applications,
 			)
 		);
 	}
 
 	/**
-	 * Get single applicant profile
+	 * Get single application profile
 	 * 
 	 * @param array $data Request data
 	 * @return void
 	 */
-	public static function getApplicantSingle( array $data ) {
+	public static function getApplicationSingle( array $data ) {
 		wp_send_json_success(
 			array(
-				'applicant' => Application::getSingleApplicant( $data['job_id'], $data['applicant_id'] )
+				'application' => Application::getSingleApplication( $data['job_id'], $data['application_id'] ),
 			)
 		);
 	}

@@ -10,7 +10,6 @@ import { TagField } from '../../../materials/tag-field/tag-field.jsx';
 
 import hero from '../../../images/hero.png';
 
-
 const job = {
     job_id: 1,
     job_title: 'Account Executive',
@@ -133,7 +132,7 @@ const filterList = {
     }
 };
 
-export function Listing({base_permalink}) {
+export function Listing({ base_permalink }) {
     const [state, setState] = useState({
         filters: {},
         jobs: jobs,

@@ -5,10 +5,10 @@ import { Comment } from './comment/comment.jsx';
 import { Email } from './email/email.jsx';
 import { __ } from '../../../../../../utilities/helpers.jsx';
 import { DropDown } from '../../../../../../materials/dropdown/dropdown.jsx';
-import { ContextApplicantSession } from '../../applicants.jsx';
+import { ContextApplicationSession } from '../../applicants.jsx';
 
-export function HeadActions({applicant}) {
-	const {stages=[], session, sessionRefresh} = useContext(ContextApplicantSession);
+export function HeadActions({ application }) {
+    const { stages = [], session, sessionRefresh } = useContext(ContextApplicationSession);
 
     const segments = [
         {
@@ -39,7 +39,7 @@ export function HeadActions({applicant}) {
     ];
 
     const [state, setState] = useState({
-        active_segment: null,
+        active_segment: null
     });
 
     // To Do: Retain form data even after segment switch
@@ -50,13 +50,9 @@ export function HeadActions({applicant}) {
         });
     };
 
-    const disqualifyApplicant = () => {
-		
-	}
+    const disqualifyApplication = () => {};
 
-	const changeStage=(stage_id)=>{
-		
-	}
+    const changeStage = (stage_id) => {};
 
     const {
         renderer: ActiveComp,
@@ -66,7 +62,7 @@ export function HeadActions({applicant}) {
 
     return (
         <div
-            data-crewhrm-selector="applicant"
+            data-crewhrm-selector="application"
             className={'head'.classNames(style) + 'margin-bottom-13'.classNames()}
         >
             <div
@@ -93,7 +89,7 @@ export function HeadActions({applicant}) {
                     <i
                         title={__('Disqualify')}
                         className={'ch-icon ch-icon-slash color-danger font-size-20 cursor-pointer'.classNames()}
-                        onClick={() => disqualifyApplicant()}
+                        onClick={() => disqualifyApplication()}
                     ></i>
                 </div>
                 <div className={'d-flex align-items-center column-gap-10'.classNames()}>
@@ -103,14 +99,14 @@ export function HeadActions({applicant}) {
 
                     <DropDown
                         className={'padding-vertical-5 padding-horizontal-12 border-1 b-color-text border-radius-5'.classNames()}
-                        value={applicant.stage_id}
+                        value={application.stage_id}
                         onChange={changeStage}
-                        options={stages.map(s=>{
-							return {
-								id: s.stage_id, 
-								label: s.stage_name==='_hired_' ? __('Hired') : s.stage_name
-							}
-						})}
+                        options={stages.map((s) => {
+                            return {
+                                id: s.stage_id,
+                                label: s.stage_name === '_hired_' ? __('Hired') : s.stage_name
+                            };
+                        })}
                     />
                 </div>
             </div>

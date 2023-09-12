@@ -11,7 +11,7 @@ const card_stats = [
         icon: curtains
     },
     {
-        label: __('Total Applicants'),
+        label: __('Total Applications'),
         count: 1232,
         icon: curtains
     },

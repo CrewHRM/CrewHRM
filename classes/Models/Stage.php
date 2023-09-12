@@ -15,7 +15,7 @@ class Stage {
 	 */
 	public static $reserved_stages = array(
 		'_disqualified_',
-		'_hired_'
+		'_hired_',
 	);
 
 	/**
@@ -30,7 +30,7 @@ class Stage {
 
 		$stages = $wpdb->get_results(
 			$wpdb->prepare(
-				"SELECT stage_name, sequence FROM " . DB::stages() . " WHERE job_id=%d",
+				'SELECT stage_name, sequence FROM ' . DB::stages() . ' WHERE job_id=%d',
 				$job_from_id
 			),
 			ARRAY_A
@@ -43,7 +43,7 @@ class Stage {
 				array(
 					'stage_name' => $stage['stage_name'],
 					'sequence'   => $stage['sequence'],
-					'job_id'     => $job_to_id
+					'job_id'     => $job_to_id,
 				)
 			);
 		}
@@ -86,7 +86,7 @@ class Stage {
 					$payload,
 					array( 
 						'stage_id' => $stage_id,
-						'job_id'   => $job_id
+						'job_id'   => $job_id,
 					)
 				);
 			} else {
@@ -103,7 +103,7 @@ class Stage {
 		foreach ( self::$reserved_stages as $stage_name ) {
 			$exist_id = $wpdb->get_var(
 				$wpdb->prepare(
-					"SELECT stage_id FROM " . DB::stages() . " WHERE job_id=%d AND stage_name=%s LIMIT 1",
+					'SELECT stage_id FROM ' . DB::stages() . ' WHERE job_id=%d AND stage_name=%s LIMIT 1',
 					$job_id,
 					$stage_name
 				)
@@ -142,8 +142,8 @@ class Stage {
 		$ids_in      = implode( ',', $job_ids );
 
 		global $wpdb;
-		$stages  = $wpdb->get_results(
-			"SELECT * FROM " . DB::stages() . " WHERE job_id IN({$ids_in}) ORDER BY sequence",
+		$stages = $wpdb->get_results(
+			'SELECT * FROM ' . DB::stages() . " WHERE job_id IN({$ids_in}) ORDER BY sequence",
 			ARRAY_A
 		);
 		$stages = _Array::castRecursive( $stages );
@@ -152,7 +152,7 @@ class Stage {
 
 		// Assign the stages in jobs array
 		foreach ( $stages as $stage ) {
-			$_job_id     = $stage['job_id'];
+			$_job_id = $stage['job_id'];
 			
 			if ( ! isset( $new_array[ $_job_id ] ) ) {
 				$new_array[ $_job_id ] = array();
@@ -160,7 +160,7 @@ class Stage {
 
 			$new_array[ $_job_id ][] = array(
 				'stage_id'   => $stage['stage_id'],
-				'stage_name' => $stage['stage_name']
+				'stage_name' => $stage['stage_name'],
 			);
 		}
 
@@ -174,20 +174,20 @@ class Stage {
 	 *
 	 * @param int $job_id The job id to delete stage from
 	 * @param int $stage_id The stage to delete
-	 * @param int $move_to The stage id to move the applicants to before deleting
+	 * @param int $move_to The stage id to move the applications to before deleting
 	 * @return mixed
 	 */
 	public static function deleteStage( $job_id, $stage_id, $move_to = null ) {
 		global $wpdb;
 
-		// Get the applicants in the deletable stage
-		$overview = self::getApplicantsOverview( $job_id, $stage_id );
+		// Get the applications in the deletable stage
+		$overview = self::getApplicationsOverview( $job_id, $stage_id );
 
-		// Move the applicants to new target if necessary
+		// Move the applications to new target if necessary
 		if ( ! empty( $overview['count'] ) ) {
 
 			if ( empty( $move_to ) ) {
-				// Return overview to show prompt that applicants should be moved to another stage before deleting.
+				// Return overview to show prompt that applications should be moved to another stage before deleting.
 				// However if the stage id to move to is provided, then this block will not be executed. Directly will be moved before deletion.
 				return $overview;
 			}
@@ -195,7 +195,7 @@ class Stage {
 			// Check if the target stage exists
 			$target = $wpdb->get_var(
 				$wpdb->prepare(
-					"SELECT stage_id FROM " . DB::stages() . " WHERE job_id=%d AND stage_id=%d LIMIT 1",
+					'SELECT stage_id FROM ' . DB::stages() . ' WHERE job_id=%d AND stage_id=%d LIMIT 1',
 					$job_id,
 					$move_to
 				)
@@ -204,13 +204,13 @@ class Stage {
 				return false;
 			}
 
-			// Move applicants to another stage
+			// Move applications to another stage
 			$wpdb->update(
 				DB::applications(),
 				array( 'stage_id' => $move_to ),
 				array(
 					'job_id'   => $job_id,
-					'stage_id' => $stage_id
+					'stage_id' => $stage_id,
 				)
 			);
 
@@ -232,26 +232,26 @@ class Stage {
 	}
 
 	/**
-	 * Get an over view of applicants
+	 * Get an over view of applications
 	 *
 	 * @param int $job_id
 	 * @param int $stage_id
 	 * @return array
 	 */
-	public static function getApplicantsOverview( $job_id, $stage_id ) {
+	public static function getApplicationsOverview( $job_id, $stage_id ) {
 		global $wpdb;
 
 		// Get the total application count
 		$count = $wpdb->get_var(
 			$wpdb->prepare(
-				"SELECT COUNT(application_id) FROM " . DB::applications() . " WHERE job_id=%d AND stage_id=%d",
+				'SELECT COUNT(application_id) FROM ' . DB::applications() . ' WHERE job_id=%d AND stage_id=%d',
 				$job_id,
 				$stage_id
 			)
 		);
 
 		// Get the initial 3 application data
-		$peak = self::getApplicants(
+		$peak = self::getApplications(
 			array(
 				'job_id'   => $job_id,
 				'stage_id' => $stage_id,
@@ -261,17 +261,17 @@ class Stage {
 
 		return array(
 			'count' => (int) $count,
-			'peak'  => $peak
+			'peak'  => $peak,
 		);
 	}
 
 	/**
-	 * Get applicants based on arguments
+	 * Get applications based on arguments
 	 *
 	 * @param array $args
 	 * @return array
 	 */
-	public static function getApplicants( array $args ) {
+	public static function getApplications( array $args ) {
 		
 		$order_by = $args['order_by'] ?? 'application_date';
 		$order    = $args['order'] ?? 'DESC';
@@ -291,16 +291,16 @@ class Stage {
 		}
 
 		global $wpdb;
-		$applicants = $wpdb->get_results(
-			"SELECT * FROM " . DB::applications() . " WHERE 1=1 {$where_clause} {$order_clause} {$limit_clause}",
+		$applications = $wpdb->get_results(
+			'SELECT * FROM ' . DB::applications() . " WHERE 1=1 {$where_clause} {$order_clause} {$limit_clause}",
 			ARRAY_A
 		);
 
-		return _Array::castRecursive( $applicants );
+		return _Array::castRecursive( $applications );
 	}
 
 	/**
-	 * Get stages nad applicant counts for job/s
+	 * Get stages nad application counts for job/s
 	 *
 	 * @param int|array $job_id
 	 * @return array
@@ -316,8 +316,8 @@ class Stage {
 
 		// Get application counts per stage per job.
 		global $wpdb;
-		$counts  = $wpdb->get_results(
-			"SELECT job_id, stage_id, COUNT(application_id) as candidates FROM " . DB::applications() . " WHERE job_id IN ({$ids_in}) GROUP BY job_id, stage_id",
+		$counts = $wpdb->get_results(
+			'SELECT job_id, stage_id, COUNT(application_id) as candidates FROM ' . DB::applications() . " WHERE job_id IN ({$ids_in}) GROUP BY job_id, stage_id",
 			ARRAY_A
 		);
 		$counts = _Array::castRecursive( $counts );
@@ -339,9 +339,9 @@ class Stage {
 		}
 
 		// Get the stages sequence to sort
-		$sequences    = $wpdb->get_results(
+		$sequences = $wpdb->get_results(
 			$wpdb->prepare(
-				"SELECT job_id, stage_id, stage_name, sequence FROM " . DB::stages() . " WHERE job_id IN ({$ids_in}) ORDER BY sequence"
+				'SELECT job_id, stage_id, stage_name, sequence FROM ' . DB::stages() . " WHERE job_id IN ({$ids_in}) ORDER BY sequence"
 			),
 			ARRAY_A
 		);
@@ -385,15 +385,15 @@ class Stage {
 		}
 
 		return array(
-			'candidates'  => $is_singular ? ( $candidate_counts[ $job_id ] ?? 0 ) : $candidate_counts,
-			'stages'      => $is_singular ? ( $_stages[ $job_id ] ?? array() ) : $_stages,
+			'candidates' => $is_singular ? ( $candidate_counts[ $job_id ] ?? 0 ) : $candidate_counts,
+			'stages'     => $is_singular ? ( $_stages[ $job_id ] ?? array() ) : $_stages,
 		);
 	}
 
 	/**
 	 * Get single field by stage id
 	 *
-	 * @param int $stage_id
+	 * @param int    $stage_id
 	 * @param string $field_name
 	 * @return int|string
 	 */
@@ -402,7 +402,7 @@ class Stage {
 
 		return $wpdb->get_var(
 			$wpdb->prepare(
-				"SELECT {$field_name} FROM " . DB::stages() . " WHERE stage_id=%d",
+				"SELECT {$field_name} FROM " . DB::stages() . ' WHERE stage_id=%d',
 				$stage_id
 			)
 		);
@@ -418,7 +418,7 @@ class Stage {
 		global $wpdb;
 		return $wpdb->get_var(
 			$wpdb->prepare(
-				"SELECT stage_id FROM " . DB::stages() . " WHERE job_id=%d AND stage_name='_disqualified_'",
+				'SELECT stage_id FROM ' . DB::stages() . " WHERE job_id=%d AND stage_name='_disqualified_'",
 				$job_id
 			)
 		);

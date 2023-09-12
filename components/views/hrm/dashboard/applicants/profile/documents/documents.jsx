@@ -23,8 +23,8 @@ const thumbnails = {
     other: null
 };
 
-export function Documents({ applicant }) {
-    const { cover_letter, resume_file_url, attachments = [] } = applicant;
+export function Documents({ application }) {
+    const { cover_letter, resume_file_url, attachments = [] } = application;
 
     return (
         <div data-crewhrm-selector="documents" className={'documents'.classNames(style)}>

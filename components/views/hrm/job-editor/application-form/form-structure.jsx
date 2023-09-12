@@ -223,7 +223,7 @@ export const sections_fields = {
                     },
                     null
                 ]
-            },
+            }
         ]
     },
     questions: {
@@ -247,4 +247,3 @@ export const sections_fields = {
         fields: []
     }
 };
-

@@ -87,7 +87,7 @@ class Admin extends Main {
 	 */
 	public function settingPage() {
 		$resources = array(
-			'pages' => Utilities::getPageList()
+			'pages' => Utilities::getPageList(),
 		);
 		
 		echo '<div 

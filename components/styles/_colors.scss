@@ -73,11 +73,11 @@ $color_for: 'color', 'bg-color';
 @include colorGenerate('b-color', 'border-color');
 
 @for $i from 5 through 10 {
-	.darken-on-hover--#{$i} {
-		&:hover {
-			filter: brightness($i/10);
-		}
-	}
+    .darken-on-hover--#{$i} {
+        &:hover {
+            filter: brightness($i/10);
+        }
+    }
 }
 
 /* Box shadows */

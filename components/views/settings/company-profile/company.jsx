@@ -22,12 +22,7 @@ function CompanyWrapper() {
     const page_id = sub_page || 'profile';
     const segment = page_id === 'profile' ? 'companyProfile' : 'departments';
 
-    const { 
-		clearHistory, 
-		can_go_next, 
-		onChange, 
-		values
-	} = useContext(ContextHistoryFields);
+    const { clearHistory, can_go_next, onChange, values } = useContext(ContextHistoryFields);
 
     const saveCompanyProfile = () => {
         let _action;

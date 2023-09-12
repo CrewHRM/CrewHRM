@@ -62,7 +62,7 @@ class Utilities extends Main {
 			function ( $page ) {
 				return array(
 					'id'    => (int) $page->ID,
-					'label' => $page->post_title
+					'label' => $page->post_title,
 				);
 			},
 			$pages

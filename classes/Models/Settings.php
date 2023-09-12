@@ -12,7 +12,7 @@ class Settings {
 	 * Get company profile from options and add dynamic meta data like image logo url
 	 *
 	 * @param string $name
-	 * @param mixed $default
+	 * @param mixed  $default
 	 * @return mixed
 	 */
 	public static function getCompanyProfile( $key = null, $default = null ) {

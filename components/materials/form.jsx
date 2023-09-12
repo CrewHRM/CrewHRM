@@ -17,19 +17,19 @@ const text_area_class =
 export const ContextForm = createContext();
 
 export function RenderField({ field, defaultEnabled }) {
-    const { 
-		name, 
-		label, 
-		type, 
-		placeholder, 
-		flex = 1, 
-		options, 
-		disclaimer, 
-		required, 
-		enabled = defaultEnabled
-	} = field;
-    
-	const { onChange = () => {}, values = {} } = useContext(ContextForm);
+    const {
+        name,
+        label,
+        type,
+        placeholder,
+        flex = 1,
+        options,
+        disclaimer,
+        required,
+        enabled = defaultEnabled
+    } = field;
+
+    const { onChange = () => {}, values = {} } = useContext(ContextForm);
 
     const dispatchChecks = (e) => {
         const { checked, name, value } = e.currentTarget;
@@ -60,111 +60,113 @@ export function RenderField({ field, defaultEnabled }) {
         onChange(name, array);
     };
 
-    return !enabled ? null : <div data-crewhrm-selector="single-field" className={('flex-' + flex).classNames()}>
-		{(disclaimer && (
-			<ExpandableContent className={'margin-bottom-30'.classNames()}>
-				<span
-					className={'d-block font-size-20 font-weight-600 color-text'.classNames()}
-				>
-					{disclaimer.heading}
-				</span>
-				<div
-					className={'font-size-15 font-weight-400 line-height-24 letter-spacing--15 color-text'.classNames()}
-				>
-					{disclaimer.description}
-				</div>
-			</ExpandableContent>
-		)) ||
-			null}
+    return !enabled ? null : (
+        <div data-crewhrm-selector="single-field" className={('flex-' + flex).classNames()}>
+            {(disclaimer && (
+                <ExpandableContent className={'margin-bottom-30'.classNames()}>
+                    <span
+                        className={'d-block font-size-20 font-weight-600 color-text'.classNames()}
+                    >
+                        {disclaimer.heading}
+                    </span>
+                    <div
+                        className={'font-size-15 font-weight-400 line-height-24 letter-spacing--15 color-text'.classNames()}
+                    >
+                        {disclaimer.description}
+                    </div>
+                </ExpandableContent>
+            )) ||
+                null}
 
-		<span className={label_class}>
-			{label}
-			{( label && required ) ? <span className={'color-danger'.classNames()}>*</span> : null}
-		</span>
+            <span className={label_class}>
+                {label}
+                {label && required ? <span className={'color-danger'.classNames()}>*</span> : null}
+            </span>
 
-		{(type == 'text' && (
-			<input
-				value={values[name] || ''}
-				type="text"
-				className={input_text_class}
-				placeholder={placeholder}
-				onChange={(e) => onChange(name, e.currentTarget.value)}
-			/>
-		)) ||
-			null}
+            {(type == 'text' && (
+                <input
+                    value={values[name] || ''}
+                    type="text"
+                    className={input_text_class}
+                    placeholder={placeholder}
+                    onChange={(e) => onChange(name, e.currentTarget.value)}
+                />
+            )) ||
+                null}
 
-		{(type == 'textarea' && (
-			<textarea
-				value={values[name] || ''}
-				className={text_area_class}
-				placeholder={placeholder}
-				onChange={(e) => onChange(name, e.currentTarget.value)}
-			></textarea>
-		)) ||
-			null}
+            {(type == 'textarea' && (
+                <textarea
+                    value={values[name] || ''}
+                    className={text_area_class}
+                    placeholder={placeholder}
+                    onChange={(e) => onChange(name, e.currentTarget.value)}
+                ></textarea>
+            )) ||
+                null}
 
-		{(type == 'textarea_rich' && (
-			<TextEditor
-				onChange={(v) => onChange(name, v)}
-				value={values[name] || ''}
-				placeholder={placeholder}
-			/>
-		)) ||
-			null}
+            {(type == 'textarea_rich' && (
+                <TextEditor
+                    onChange={(v) => onChange(name, v)}
+                    value={values[name] || ''}
+                    placeholder={placeholder}
+                />
+            )) ||
+                null}
 
-		{(type == 'dropdown' && (
-			<DropDown
-				value={values[name]}
-				options={options}
-				placeholder={placeholder}
-				className={input_text_class}
-				onChange={(value) => onChange(name, value)}
-			/>
-		)) ||
-			null}
+            {(type == 'dropdown' && (
+                <DropDown
+                    value={values[name]}
+                    options={options}
+                    placeholder={placeholder}
+                    className={input_text_class}
+                    onChange={(value) => onChange(name, value)}
+                />
+            )) ||
+                null}
 
-		{(type == 'date' && <DateField className={input_text_class} />) || null}
+            {(type == 'date' && <DateField className={input_text_class} />) || null}
 
-		{((type == 'checkbox' || type == 'radio') && (
-			<div className={'d-flex flex-direction-row column-gap-20'.classNames()}>
-				{options.map(({ id: value, label }) => {
-					return (
-						<label
-							data-crewhrm-selector={'field-' + type}
-							key={value}
-							className={'d-flex flex-direction-row align-items-center column-gap-7 cursor-pointer'.classNames()}
-						>
-							<input
-								type={type}
-								name={name}
-								value={value}
-								checked={
-									type === 'radio'
-										? values[name] === value
-										: (values[name] || []).findIndex((v) => v == value) > -1
-								}
-								onChange={dispatchChecks}
-							/>{' '}
-							{label}
-						</label>
-					);
-				})}
-			</div>
-		)) ||
-			null}
+            {((type == 'checkbox' || type == 'radio') && (
+                <div className={'d-flex flex-direction-row column-gap-20'.classNames()}>
+                    {options.map(({ id: value, label }) => {
+                        return (
+                            <label
+                                data-crewhrm-selector={'field-' + type}
+                                key={value}
+                                className={'d-flex flex-direction-row align-items-center column-gap-7 cursor-pointer'.classNames()}
+                            >
+                                <input
+                                    type={type}
+                                    name={name}
+                                    value={value}
+                                    checked={
+                                        type === 'radio'
+                                            ? values[name] === value
+                                            : (values[name] || []).findIndex((v) => v == value) > -1
+                                    }
+                                    onChange={dispatchChecks}
+                                />{' '}
+                                {label}
+                            </label>
+                        );
+                    })}
+                </div>
+            )) ||
+                null}
 
-		{(type == 'file' && (
-			<FileUpload
-				value={values[name] || []}
-				textPrimary={placeholder}
-				onChange={(files) => onChange(name, files)}
-			/>
-		)) ||
-			null}
-	</div>
+            {(type == 'file' && (
+                <FileUpload
+                    value={values[name] || []}
+                    textPrimary={placeholder}
+                    onChange={(files) => onChange(name, files)}
+                />
+            )) ||
+                null}
+        </div>
+    );
 }
 
-export function FormFields({ fields, defaultEnabled=true }) {
+export function FormFields({ fields, defaultEnabled = true }) {
     return fields.map((field, index) => {
         if (field === null && fields[index - 1] !== null) {
             return (
@@ -178,7 +180,9 @@ export function FormFields({ fields, defaultEnabled=true }) {
 
         return (
             <div data-crewhrm-selector="field-wrapper" key={index}>
-                {(!Array.isArray(field) && <RenderField field={field} defaultEnabled={defaultEnabled}/>) || (
+                {(!Array.isArray(field) && (
+                    <RenderField field={field} defaultEnabled={defaultEnabled} />
+                )) || (
                     <div
                         data-crewhrm-selector="field-group"
                         className={`d-flex flex-break-sm ${
@@ -186,7 +190,7 @@ export function FormFields({ fields, defaultEnabled=true }) {
                         } column-gap-10`.classNames()}
                     >
                         {field.map((f, i) => (
-                            <RenderField key={i} field={f} defaultEnabled={defaultEnabled}/>
+                            <RenderField key={i} field={f} defaultEnabled={defaultEnabled} />
                         ))}
                     </div>
                 )}

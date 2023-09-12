@@ -5,7 +5,7 @@ import { WpDashboardFullPage } from '../../materials/backend-dashboard-container
 import { JobEditor } from './job-editor/index.jsx';
 import { DahboardMain } from './dashboard/main/main.jsx';
 import { JobOpeningsFullView } from './dashboard/job-openings/jobs.jsx';
-import { Applicants } from './dashboard/applicants/applicants.jsx';
+import { Applications } from './dashboard/applicants/applicants.jsx';
 import { StickyBar } from '../../materials/sticky-bar/sticky-bar.jsx';
 import { __, getRandomString } from '../../utilities/helpers.jsx';
 // import { NotificationsEmail, NotificationsOnSite } from "./notifications/notifications.jsx";
@@ -175,11 +175,11 @@ export function HRM({ departments = [] }) {
                         />
 
                         <Route
-                            path="/dashboard/jobs/:job_id/applicants/:applicant_id?/"
+                            path="/dashboard/jobs/:job_id/applications/:application_id?/"
                             element={
                                 <>
                                     <DashboardBar />
-                                    <Applicants />
+                                    <Applications />
                                 </>
                             }
                         />

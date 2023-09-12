@@ -15,7 +15,7 @@ export function TextField(props) {
         inputClassName = '',
         pattern,
         value,
-		defaultValue,
+        defaultValue,
         maxLength = null,
         expandable = false
     } = props;
@@ -110,7 +110,7 @@ export function TextField(props) {
                 <input
                     ref={input_ref}
                     type={type}
-					defaultValue={defaultValue}
+                    defaultValue={defaultValue}
                     value={value}
                     onChange={(e) => dispatchChange(e.currentTarget.value)}
                     onFocus={() => toggleFocusState(true)}

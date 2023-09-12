@@ -23,8 +23,8 @@ export const settings_fields = {
                     careers_page_id: {
                         label: __('Careers Page'),
                         type: 'dropdown',
-						options: 'pages',
-						placeholder: __( 'Select Page' )
+                        options: 'pages',
+                        placeholder: __('Select Page')
                     },
                     careers_header: {
                         label: __('Show Header'),

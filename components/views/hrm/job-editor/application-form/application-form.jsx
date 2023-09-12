@@ -10,9 +10,9 @@ import { SortableList } from '../../../../materials/sortable-list.jsx';
 import { ContextJobEditor } from '../index.jsx';
 import { sections_fields } from './form-structure.jsx';
 
-const getQuestionId=()=> {
-	return '_question_' + getRandomString();
-}
+const getQuestionId = () => {
+    return '_question_' + getRandomString();
+};
 
 export function ApplicationForm() {
     const { navigateTab, values = {}, onChange } = useContext(ContextJobEditor);
@@ -152,17 +152,17 @@ export function ApplicationForm() {
                         sortable
                     } = values.application_form[section_name];
 
-					// Prepare popup options to delete, edit etc. questions
-					const {options={}} = sections_fields[section_name];
-					const options_array = Object.keys(options).map((option_name) => {
-						return {
-							id: option_name,
-							label: options[option_name].label,
-							icon:
-								options[option_name].icon.classNames() +
-								'font-size-24 color-text'.classNames()
-						};
-					});
+                    // Prepare popup options to delete, edit etc. questions
+                    const { options = {} } = sections_fields[section_name];
+                    const options_array = Object.keys(options).map((option_name) => {
+                        return {
+                            id: option_name,
+                            label: options[option_name].label,
+                            icon:
+                                options[option_name].icon.classNames() +
+                                'font-size-24 color-text'.classNames()
+                        };
+                    });
 
                     return (
                         <div
@@ -184,9 +184,9 @@ export function ApplicationForm() {
                                         items={input_fields.map((field, index) => {
                                             const {
                                                 label: field_label,
-                                                enabled=false,
-                                                required=false,
-                                                readonly=false,
+                                                enabled = false,
+                                                required = false,
+                                                readonly = false,
                                                 id: field_id
                                             } = field;
                                             const checkbox_id = 'crewhrm-checkbox-' + field_id;
@@ -226,7 +226,9 @@ export function ApplicationForm() {
                                                             <input
                                                                 id={checkbox_id}
                                                                 type="checkbox"
-                                                                checked={enabled || readonly || false}
+                                                                checked={
+                                                                    enabled || readonly || false
+                                                                }
                                                                 disabled={readonly}
                                                                 onChange={(e) =>
                                                                     onToggle(

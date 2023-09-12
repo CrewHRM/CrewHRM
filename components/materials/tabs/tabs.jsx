@@ -3,7 +3,6 @@ import React from 'react';
 import style from './tabs.module.scss';
 
 export function Tabs(props) {
-
     const { onNavigate, active, tabs = [], theme, className = '', style: cssStyle = {} } = props;
     const active_index = tabs.findIndex((tab) => tab.id == active);
 
@@ -24,8 +23,11 @@ export function Tabs(props) {
                 return (
                     <div
                         key={id}
-                        className={`single-step ${id === active ? 'active' : ''}`.classNames(style) + `${onNavigate ? 'cursor-pointer' : ''}`.classNames()}
-                        onClick={() => onNavigate ? onNavigate(id) : null}
+                        className={
+                            `single-step ${id === active ? 'active' : ''}`.classNames(style) +
+                            `${onNavigate ? 'cursor-pointer' : ''}`.classNames()
+                        }
+                        onClick={() => (onNavigate ? onNavigate(id) : null)}
                     >
                         {label}
                         {(theme == 'sequence' && (

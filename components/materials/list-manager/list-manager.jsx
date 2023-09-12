@@ -37,7 +37,9 @@ function ItemSingle({ id_key, label_key, list_item, renameStage, deleteHandler, 
                         'trash'.classNames(style)
                     }
                     onClick={() =>
-                        deleteHandler ? deleteHandler(list_item[id_key]) : deleteFlow(list_item[id_key])
+                        deleteHandler
+                            ? deleteHandler(list_item[id_key])
+                            : deleteFlow(list_item[id_key])
                     }
                 ></i>
             ) : null}
@@ -48,8 +50,8 @@ function ItemSingle({ id_key, label_key, list_item, renameStage, deleteHandler, 
 export function ListManager(props) {
     const {
         list,
-		id_key = 'id',
-		label_key = 'label',
+        id_key = 'id',
+        label_key = 'label',
         mode,
         className = '',
         onChange,
@@ -140,7 +142,14 @@ export function ListManager(props) {
                         id: list_item[id_key], // Just to make sure it requires ID.
                         rendered: (
                             <ItemSingle
-                                {...{ list_item, id_key, label_key, renameStage, deleteHandler, deleteFlow }}
+                                {...{
+                                    list_item,
+                                    id_key,
+                                    label_key,
+                                    renameStage,
+                                    deleteHandler,
+                                    deleteFlow
+                                }}
                             />
                         )
                     };
@@ -149,7 +158,12 @@ export function ListManager(props) {
 
             {readOnyAfter
                 ? readOnyAfter.map((list_item) => {
-                      return <ItemSingle key={list_item[id_key]} {...{list_item, id_key, label_key}} />;
+                      return (
+                          <ItemSingle
+                              key={list_item[id_key]}
+                              {...{ list_item, id_key, label_key }}
+                          />
+                      );
                   })
                 : null}
 

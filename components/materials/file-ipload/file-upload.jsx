@@ -247,57 +247,61 @@ export function FileUpload(props) {
         );
     }
 
-    return <>
-        <div data-crewhrm-selector="file-upload" className={'upload'.classNames(style)}>
-            <div
-                className={`drop-container ${state.highlight ? 'highlight' : ''}`.classNames(style)}
-                onDragOver={(e) => setActionState(e, true)}
-                onDragLeave={(e) => setActionState(e, false)}
-                onClick={openPicker}
-                onDrop={(e) => {
-                    handleFiles(e?.dataTransfer?.files || []);
-                    setActionState(e, false);
-                }}
-            >
-                <div className={'margin-bottom-5'.classNames()}>
-                    <i
-                        className={'ch-icon ch-icon-folder-add font-size-24 color-text'.classNames()}
-                    ></i>
+    return (
+        <>
+            <div data-crewhrm-selector="file-upload" className={'upload'.classNames(style)}>
+                <div
+                    className={`drop-container ${state.highlight ? 'highlight' : ''}`.classNames(
+                        style
+                    )}
+                    onDragOver={(e) => setActionState(e, true)}
+                    onDragLeave={(e) => setActionState(e, false)}
+                    onClick={openPicker}
+                    onDrop={(e) => {
+                        handleFiles(e?.dataTransfer?.files || []);
+                        setActionState(e, false);
+                    }}
+                >
+                    <div className={'margin-bottom-5'.classNames()}>
+                        <i
+                            className={'ch-icon ch-icon-folder-add font-size-24 color-text'.classNames()}
+                        ></i>
+                    </div>
+
+                    <span
+                        className={'d-block font-size-15 font-weight-600 line-height-20 color-text'.classNames()}
+                    >
+                        {textPrimary}
+                    </span>
+                    <span
+                        className={'font-size-15 font-weight-400 line-height-20 color-text'.classNames()}
+                    >
+                        {textSecondary}
+                    </span>
                 </div>
-
-                <span
-                    className={'d-block font-size-15 font-weight-600 line-height-20 color-text'.classNames()}
-                >
-                    {textPrimary}
-                </span>
-                <span
-                    className={'font-size-15 font-weight-400 line-height-20 color-text'.classNames()}
-                >
-                    {textSecondary}
-                </span>
-
-                
+                <Input />
             </div>
-            <Input />
-        </div>
-		{stateFiles.map(({ id, file }) => {
-			return (
-				<div
-					data-crewhrm-selector="upload-items"
-					key={id}
-					className={'d-flex align-items-center column-gap-14 padding-vertical-10 padding-horizontal-20 margin-top-10 border-radius-10 border-1 b-color-tertiary'.classNames()}
-					style={{ maxWidth: '552px' }}
-				>
-					<span className={'flex-1 font-size-15 font-weight-400 line-height-19 color-text'.classNames()}>
-						{file.name}
-					</span>
+            {stateFiles.map(({ id, file }) => {
+                return (
+                    <div
+                        data-crewhrm-selector="upload-items"
+                        key={id}
+                        className={'d-flex align-items-center column-gap-14 padding-vertical-10 padding-horizontal-20 margin-top-10 border-radius-10 border-1 b-color-tertiary'.classNames()}
+                        style={{ maxWidth: '552px' }}
+                    >
+                        <span
+                            className={'flex-1 font-size-15 font-weight-400 line-height-19 color-text'.classNames()}
+                        >
+                            {file.name}
+                        </span>
 
-					<i
-						className={'ch-icon ch-icon-times cursor-pointer font-size-15 color-text-lighter color-hover-text'.classNames()}
-						onClick={(e) => removeFile(e, id)}
-					></i>
-				</div>
-			);
-		})}
-    </>
+                        <i
+                            className={'ch-icon ch-icon-times cursor-pointer font-size-15 color-text-lighter color-hover-text'.classNames()}
+                            onClick={(e) => removeFile(e, id)}
+                        ></i>
+                    </div>
+                );
+            })}
+        </>
+    );
 }

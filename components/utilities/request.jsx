@@ -53,18 +53,18 @@ export function request(action, payload = {}, callback, progressCallback) {
         success: function (response) {
             if (typeof callback == 'function') {
                 callback({
-					...response, 
-					success: response.success || false,
-					data: response.data || {}
-				});
+                    ...response,
+                    success: response.success || false,
+                    data: response.data || {}
+                });
             }
         },
         error: function () {
-			callback({
-				success: false, 
-				data:{}
-			})
-		},
+            callback({
+                success: false,
+                data: {}
+            });
+        },
         xhr: function () {
             var xhr = new window.XMLHttpRequest();
             xhr.upload.addEventListener(
