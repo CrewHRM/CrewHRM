@@ -5,8 +5,11 @@ import { Comment } from './comment/comment.jsx';
 import { Email } from './email/email.jsx';
 import { __ } from '../../../../../../utilities/helpers.jsx';
 import { DropDown } from '../../../../../../materials/dropdown/dropdown.jsx';
+import { ContextApplicantSession } from '../../applicants.jsx';
 
-export function HeadActions({stages=[]}) {
+export function HeadActions({applicant}) {
+	const {stages=[], session, sessionRefresh} = useContext(ContextApplicantSession);
+
     const segments = [
         {
             icon: 'ch-icon ch-icon-sms',
@@ -37,8 +40,6 @@ export function HeadActions({stages=[]}) {
 
     const [state, setState] = useState({
         active_segment: null,
-		fetching: true,
-		application: {}
     });
 
     // To Do: Retain form data even after segment switch
@@ -49,19 +50,13 @@ export function HeadActions({stages=[]}) {
         });
     };
 
-    const disqualifyApplicant = () => {};
-
-	const getApplication=()=>{
-
+    const disqualifyApplicant = () => {
+		
 	}
 
 	const changeStage=(stage_id)=>{
 		
 	}
-
-	useEffect(()=>{
-
-	}, [])
 
     const {
         renderer: ActiveComp,
@@ -108,9 +103,14 @@ export function HeadActions({stages=[]}) {
 
                     <DropDown
                         className={'padding-vertical-5 padding-horizontal-12 border-1 b-color-text border-radius-5'.classNames()}
-                        value={state.application.stage_id}
-                        options={stages.map(s=>{return {id: s.stage_id, label: s.stage_name}})}
+                        value={applicant.stage_id}
                         onChange={changeStage}
+                        options={stages.map(s=>{
+							return {
+								id: s.stage_id, 
+								label: s.stage_name==='_hired_' ? __('Hired') : s.stage_name
+							}
+						})}
                     />
                 </div>
             </div>

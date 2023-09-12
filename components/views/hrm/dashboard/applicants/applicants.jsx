@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { __ } from '../../../../utilities/helpers.jsx';
+import { __, getRandomString } from '../../../../utilities/helpers.jsx';
 import { Header } from './header/header.jsx';
 import { Sidebar } from './sidebar/sidebar.jsx';
 import { Profile } from './profile/profile-wrapper.jsx';
@@ -11,45 +11,7 @@ import { LoadingIcon } from '../../../../materials/loading-icon/loading-icon.jsx
 import { request } from '../../../../utilities/request.jsx';
 import { ContextNonce } from '../../../../materials/mountpoint.jsx';
 
-const jobs = ['Account Manager', 'Lead Backend Developer', 'Junior React Developer'].map((j, i) => {
-    return {
-        id: i + 1,
-        label: j
-    };
-});
-
-const steps = [
-    {
-        id: 'cnd',
-        label: 'Candidates',
-        count: 500
-    },
-    {
-        id: 'sc',
-        label: 'Screening',
-        count: 37
-    },
-    {
-        id: 'asses',
-        label: 'Assesment',
-        count: 20
-    },
-    {
-        id: 'intr',
-        label: 'Interview',
-        count: 10
-    },
-    {
-        id: 'offr',
-        label: 'Make an Offer',
-        count: 10
-    },
-    {
-        id: 'hrd',
-        label: 'Hired',
-        count: 2
-    }
-];
+export const ContextApplicantSession = createContext();
 
 export function Applicants() {
     const { job_id: raw_job_id } = useParams();
@@ -57,6 +19,7 @@ export function Applicants() {
 	const {nonce, nonceAction} = useContext(ContextNonce);
 
     const [state, setState] = useState({
+		session: getRandomString(),
 		fetching: true,
 		active_stage_id: 0,
 		error_message: null,
@@ -110,7 +73,7 @@ export function Applicants() {
 		</div>
 	}
 
-    return (
+    return <ContextApplicantSession.Provider value={{stages: state.stages, session: state.session, sessionRefresh:()=>setState({...state, session: getRandomString()})}}>
 		<div
 			data-crewhrm-selector="applicant-wrapper"
 			className={'applicants'.classNames(style)}
@@ -136,5 +99,5 @@ export function Applicants() {
 				</div>
 			</div>
 		</div>
-    );
+	</ContextApplicantSession.Provider>
 }

@@ -19,7 +19,7 @@ export function Header({ job_list, job_id, stages=[], candidates=0, active_stage
 	}
 
     const header_tabs = [_candidates, ...stages].map((s) => {
-        return s.stage_name==='_disqualified_' ? null : {
+        return {
             id: s.stage_id,
             label: (
                 <>

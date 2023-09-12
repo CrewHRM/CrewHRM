@@ -9,6 +9,7 @@ import style from './sidebar.module.scss';
 import { request } from '../../../../../utilities/request.jsx';
 import { ContextNonce } from '../../../../../materials/mountpoint.jsx';
 import { useNavigate, useParams } from 'react-router-dom';
+import { ContextApplicantSession } from '../applicants.jsx';
 
 const steps = [
     {
@@ -33,6 +34,7 @@ export function Sidebar({stage_id}) {
 	const navigate = useNavigate();
 	const {applicant_id, job_id} = useParams();
 	const {nonce, nonceAction} = useContext(ContextNonce);
+	const {session, sessionRefresh} = useContext(ContextApplicantSession);
 
 	const [state, setState] = useState({
 		mounted: false,
@@ -91,10 +93,12 @@ export function Sidebar({stage_id}) {
 		stage_id, 
 		state.filter.page, 
 		state.filter.search, 
-		state.active_tab
+		state.active_tab,
+		session
 	]);
 
 	// Debounce for search input
+	// To Do: Use this same technique in settings undo/redo and job auto save.
 	useEffect(() => {
 		// Prevent duplicate ajax call
 		if ( ! state.mounted ) {

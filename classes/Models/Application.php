@@ -214,7 +214,7 @@ class Application {
 			"SELECT * FROM " . DB::applications() . " WHERE application_id IN ({$ids_in})"
 		);
 
-		return $results;
+		return _Array::castRecursive( $results );
 	}
 
 	/**
@@ -235,6 +235,9 @@ class Application {
 			),
 			ARRAY_A
 		);
+
+		// Cast 
+		$applicant = _Array::castRecursive( $applicant );
 
 		// Assign resume file url
 		$applicant['resume_file_url'] = is_numeric( $applicant['resume_file_id'] ) ? wp_get_attachment_url( $applicant['resume_file_id'] ) : null;
@@ -314,7 +317,7 @@ class Application {
 			}
 		}
 		
-		return $overview;
+		return _Array::castRecursive( $overview );
 	}
 
 	/**
