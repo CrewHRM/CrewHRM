@@ -198,8 +198,11 @@ export function CompanyProfile({ onChange, values }) {
                     <FileUpload
                         useWpMedia={true}
                         accept="image/*"
-                        onChange={(files) => {
-                            const { file_id, file_url } = files[0].file;
+                        onChange={({file={}}) => {
+							// File info
+                            const { file_id, file_url } = file;
+
+							// Dispatch
                             onChange({
                                 logo_url: file_url,
                                 logo_id: file_id

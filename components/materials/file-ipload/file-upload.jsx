@@ -83,11 +83,15 @@ export function FileUpload(props) {
         layoutComp
     } = props;
 
+	const singular  = fileCount <= 1;
     const input_ref = useRef();
-
     const [state, setState] = useState({
         highlight: false
     });
+
+	const _onChange=files=>{
+		onChange( singular ? files[0] : files );
+	}
 
     const handleFiles = (files) => {
         let _files = [];
@@ -107,7 +111,7 @@ export function FileUpload(props) {
 
         // To Do: Validate files
 
-        onChange([..._files, ...stateFiles].slice(0, fileCount));
+        _onChange([..._files, ...stateFiles].slice(0, fileCount));
     };
 
     const removeFile = (e, id) => {
@@ -116,7 +120,7 @@ export function FileUpload(props) {
         const _files = stateFiles;
         const index = stateFiles.findIndex((f) => f.id === id);
         _files.splice(index, 1);
-        onChange(_files);
+        _onChange(_files);
     };
 
     const setActionState = (e, highlight) => {
@@ -228,7 +232,7 @@ export function FileUpload(props) {
                 ref={input_ref}
                 type="file"
                 accept={accept}
-                multiple={fileCount > 1}
+                multiple={!singular}
                 className={'d-none'.classNames()}
                 onChange={(e) => {
                     handleFiles(e.currentTarget?.files || []);

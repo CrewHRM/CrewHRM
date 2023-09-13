@@ -39,6 +39,7 @@ class Dispatcher {
 		'get_application_single'   => ApplicationHandler::class,
 		'move_application_stage'   => ApplicationHandler::class,
 		'mail_to_applicant'        => ApplicationHandler::class,
+		'comment_on_application'   => ApplicationHandler::class,
 	);
 
 	/**

@@ -4,7 +4,7 @@ export function DangerouslySet(props) {
     let { style = {}, className, children } = props;
     return (
         <div
-            className={className}
+            className={'word-break-break-word'.classNames() + className}
             style={style}
             dangerouslySetInnerHTML={{ __html: children }}
         ></div>

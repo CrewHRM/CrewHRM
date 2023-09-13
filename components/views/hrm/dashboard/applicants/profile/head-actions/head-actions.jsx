@@ -90,7 +90,7 @@ export function HeadActions({ application }) {
                 data-crewhrm-selector="action"
                 className={'d-flex align-items-center box-shadow-thin padding-vertical-15 padding-horizontal-30'.classNames()}
             >
-                <div className={'flex-1'.classNames()}>
+                <div className={'flex-1 d-flex align-items-center'.classNames()}>
                     {segments.map((segment, i) => {
                         let { icon, title } = segment;
 
@@ -107,11 +107,16 @@ export function HeadActions({ application }) {
                         );
                     })}
 
-                    <i
-                        title={__('Disqualify')}
-                        className={'ch-icon ch-icon-slash color-danger font-size-20 cursor-pointer'.classNames()}
-                        onClick={() => changeStage('_disqualified_', __('Sure to disqualify?'))}
-                    ></i>
+					{
+						application.disqualified ? <i>
+							{__( 'Disqualified' )}
+						</i> : 
+						<i
+							title={__('Disqualify')}
+							className={'ch-icon ch-icon-slash color-danger font-size-20 cursor-pointer'.classNames()}
+							onClick={() => changeStage('_disqualified_', __('Sure to disqualify?'))}
+						></i>
+					}
                 </div>
                 <div className={'d-flex align-items-center column-gap-10'.classNames()}>
                     <span className={'font-size-15 font-weight-400 color-text'.classNames()}>
@@ -120,7 +125,7 @@ export function HeadActions({ application }) {
 
                     <DropDown
                         className={'padding-vertical-5 padding-horizontal-12 border-1 b-color-text border-radius-5'.classNames()}
-                        value={application.stage_id}
+                        value={application.disqualified ? 0 : application.stage_id}
                         onChange={changeStage}
                         options={stages.map((s) => {
                             return {

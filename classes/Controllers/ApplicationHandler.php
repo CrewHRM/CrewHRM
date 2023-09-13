@@ -3,6 +3,7 @@
 namespace CrewHRM\Controllers;
 
 use CrewHRM\Models\Application;
+use CrewHRM\Models\Comment;
 use CrewHRM\Models\Mail;
 use CrewHRM\Models\Settings;
 
@@ -43,6 +44,12 @@ class ApplicationHandler {
 				'mail' => 'type:array'
 			),
 		),
+		'commentOnApplication' => array(
+			'role' => array(
+				'administrator',
+				'editor',
+			),
+		)
 	);
 
 	/**
@@ -113,6 +120,14 @@ class ApplicationHandler {
 	 * @return void
 	 */
 	public static function mailToApplicant( array $data ) {
+		// Mail array
+		$mail = $data['mail'];
+
+		// Prepare attachment
+		if ( isset( $_FILES['attachment'] ) && $_FILES['attachment']['error'] === UPLOAD_ERR_OK ) {
+			$mail['attachment_path'] = $_FILES['attachment']['tmp_name'];
+		}
+
 		// To Do: Add attachment support
 		$sent = (new Mail( $data['mail'] ))->send();
 
@@ -120,6 +135,23 @@ class ApplicationHandler {
 			wp_send_json_success( array( 'message' => __( 'Email sent!', 'crewhrm' ) ) );
 		} else {
 			wp_send_json_error( array( 'message' => __( 'Failed to send mail!', 'crewhrm' ) ) );
+		}
+	}
+
+	/**
+	 * Create comment on application from single application view
+	 *
+	 * @param array $data Request data
+	 * @return void
+	 */
+	public static function commentOnApplication( array $data ) {
+		// Create or update comment
+		$comment_id = Comment::createUpdateComment( $data );
+
+		if ( ! empty( $comment_id ) ) {
+			wp_send_json_success( array( 'message' => __( 'Comment submitted successfully!', 'crewhrm' ) ) );
+		} else {
+			wp_send_json_error( array( 'message' => __( 'Failed to process comment!', 'crewhrm' ) ) );
 		}
 	}
 }

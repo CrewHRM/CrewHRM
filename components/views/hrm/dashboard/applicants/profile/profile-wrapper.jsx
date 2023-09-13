@@ -51,6 +51,7 @@ export function Profile({ job_id }) {
 
     const [state, setState] = useState({
         fetching: true,
+		mounted: false,
         application: {},
         active_tab: 'overview',
         error_message: null
@@ -73,6 +74,7 @@ export function Profile({ job_id }) {
 
                 setState({
                     ...state,
+					mounted: true,
                     fetching: false,
                     application,
                     error_message: success ? null : message
@@ -87,7 +89,7 @@ export function Profile({ job_id }) {
 		}
     }, [application_id, session]);
 
-    if (state.fetching || state.error_message) {
+    if ( ( !state.mounted && state.fetching ) || state.error_message ) {
         return <InitState fetching={state.fetching} error_message={state.error_message} />;
     }
 

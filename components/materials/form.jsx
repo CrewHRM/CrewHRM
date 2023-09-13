@@ -22,6 +22,7 @@ export function RenderField({ field, defaultEnabled }) {
         label,
         type,
         placeholder,
+		fileCount,
         flex = 1,
         options,
         disclaimer,
@@ -158,6 +159,7 @@ export function RenderField({ field, defaultEnabled }) {
                 <FileUpload
                     value={values[name] || []}
                     textPrimary={placeholder}
+					fileCount={fileCount}
                     onChange={(files) => onChange(name, files)}
                 />
             )) ||

@@ -9,6 +9,7 @@ class Colors {
 		'primary'      => '#1A1A1A',
 		'secondary'    => '#236BFE',
 		'tertiary'     => '#E3E5E8',
+		'quaternary'   => '#F9F9F9',
 
 		'text'         => '#1A1A1A',
 		'text-light'   => '#72777B',

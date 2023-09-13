@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Sep 12, 2023 at 03:36 AM
+-- Generation Time: Sep 13, 2023 at 01:50 AM
 -- Server version: 8.0.16
 -- PHP Version: 8.0.0
 
@@ -74,10 +74,26 @@ CREATE TABLE IF NOT EXISTS `wp_crewhrm_applications` (
 CREATE TABLE IF NOT EXISTS `wp_crewhrm_appmeta` (
   `meta_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
   `object_id` bigint(20) UNSIGNED NOT NULL,
-  `meta_key` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL,
-  `meta_value` longtext NOT NULL,
+  `meta_key` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci NOT NULL,
+  `meta_value` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci NOT NULL,
   PRIMARY KEY (`meta_id`),
   KEY `object_id` (`object_id`,`meta_key`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `wp_crewhrm_comments`
+--
+
+CREATE TABLE IF NOT EXISTS `wp_crewhrm_comments` (
+  `comment_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `comment_content` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci NOT NULL,
+  `comment_type` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci NOT NULL DEFAULT 'text',
+  `comment_parent_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `application_id` bigint(20) UNSIGNED NOT NULL,
+  `commenter_id` bigint(20) UNSIGNED NOT NULL,
+  PRIMARY KEY (`comment_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------

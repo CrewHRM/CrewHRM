@@ -156,6 +156,10 @@ export function generateBackgroundColor(name) {
     return colors[colorIndex];
 }
 
+export function isEmptyString(str) {
+	return !str || typeof str !== 'string' || !/\S+/.test( str );
+}
+
 export const is_production = process.env.NODE_ENV === 'production';
 export const countries_array = getCountries(true);
 export const countries_object = getCountries(false);

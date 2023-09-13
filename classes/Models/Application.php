@@ -256,8 +256,32 @@ class Application {
 
 		// Set documents
 		$application['documents'] = self::getApplicationDocuments( $application_id, $job_id );
+
+		// Set if disqualified
+		$application['disqualified'] = self::isDisqualified( $application_id );
 		
 		return $application;
+	}
+
+	/**
+	 * Check if an application disqualified
+	 *
+	 * @param int $application_id
+	 * @return boolean
+	 */
+	public static function isDisqualified( $application_id ) {
+		global $wpdb;
+		$stage_name = $wpdb->get_var(
+			$wpdb->prepare(
+				"SELECT stage.stage_name FROM " . DB::pipeline() . " pipe
+					INNER JOIN " . DB::applications() . " app ON pipe.application_id=app.application_id
+					INNER JOIN " . DB::stages() . " stage ON pipe.stage_id=stage.stage_id
+				WHERE app.application_id=%d ORDER BY pipe.action_date DESC LIMIT 1",
+				$application_id
+			)
+		);
+
+		return $stage_name === '_disqualified_';
 	}
 
 	/**

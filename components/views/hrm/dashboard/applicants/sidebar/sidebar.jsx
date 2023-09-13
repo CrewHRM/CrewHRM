@@ -145,10 +145,10 @@ export function Sidebar({ stage_id }) {
 
             <div data-crewhrm-selector="list" className={'list'.classNames(style)}>
                 {state.applications.map((application, i) => {
-                    let { first_name, last_name, application_date, application_id } = application;
+                    let { first_name, last_name, application_date, application_id: app_id } = application;
 
                     return (
-                        <div key={application_id}>
+                        <div key={app_id} className={`cursor-pointer bg-color-hover-quaternary bg-color-active-quaternary ${application_id===app_id ? 'active' : ''}`.classNames()} onClick={e=>navigate(`/dashboard/jobs/${job_id}/applications/${app_id}/`)}>
                             <div className={'d-flex align-items-center'.classNames()}>
                                 <CoverImage
                                     src={null}
