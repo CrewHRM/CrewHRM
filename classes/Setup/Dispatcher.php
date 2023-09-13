@@ -40,6 +40,7 @@ class Dispatcher {
 		'move_application_stage'   => ApplicationHandler::class,
 		'mail_to_applicant'        => ApplicationHandler::class,
 		'comment_on_application'   => ApplicationHandler::class,
+		'get_application_pipeline' => ApplicationHandler::class,
 	);
 
 	/**

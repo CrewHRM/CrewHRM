@@ -138,22 +138,22 @@ export function getInitials(name) {
 }
 
 export function generateBackgroundColor(name) {
-    const colors = [
-        '#FFC0CB', // Pink
-        '#87CEEB', // Sky Blue
-        '#98FB98', // Pale Green
-        '#FFD700', // Gold
-        '#FFA07A', // Light Salmon
-        '#7B68EE' // Medium Slate Blue
-    ];
 
-    const initials = name.trim().substring(0, 2).toUpperCase();
-    const charCodeSum = Array.from(initials)
-        .map((char) => char.charCodeAt(0))
-        .reduce((sum, charCode) => sum + charCode, 0);
+	// Generate a hash value from the user's name
+	let hash = 0;
+	for (let i = 0; i < name.length; i++) {
+		hash = name.charCodeAt(i) + ((hash << 5) - hash);
+	}
 
-    const colorIndex = charCodeSum % colors.length;
-    return colors[colorIndex];
+	// Use a fixed range of hues (0-360 degrees) based on the hash value for consistency
+	const hue = (Math.abs(hash) % 360);
+
+	// Use random saturation and lightness values for variability
+	const saturation = 30 + 0.5 * 40; // Adjust the range (40) for more variability
+	const lightness = 40 + 0.5 * 40;  // Adjust the range (40) for more variability
+	const color = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
+
+	return color;
 }
 
 export function isEmptyString(str) {

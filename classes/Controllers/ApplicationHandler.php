@@ -5,6 +5,7 @@ namespace CrewHRM\Controllers;
 use CrewHRM\Models\Application;
 use CrewHRM\Models\Comment;
 use CrewHRM\Models\Mail;
+use CrewHRM\Models\Pipeline;
 use CrewHRM\Models\Settings;
 
 class ApplicationHandler {
@@ -45,6 +46,12 @@ class ApplicationHandler {
 			),
 		),
 		'commentOnApplication' => array(
+			'role' => array(
+				'administrator',
+				'editor',
+			),
+		),
+		'getApplicationPipeline' => array(
 			'role' => array(
 				'administrator',
 				'editor',
@@ -152,6 +159,22 @@ class ApplicationHandler {
 			wp_send_json_success( array( 'message' => __( 'Comment submitted successfully!', 'crewhrm' ) ) );
 		} else {
 			wp_send_json_error( array( 'message' => __( 'Failed to process comment!', 'crewhrm' ) ) );
+		}
+	}
+
+	/**
+	 * Provide application activity/pipeline
+	 *
+	 * @param array $data Request data
+	 * @return void
+	 */
+	public static function getApplicationPipeline( array $data ) {
+		$pipeline = Pipeline::getPipeLine( $data['application_id'] );
+
+		if ( ! empty( $pipeline ) ) {
+			wp_send_json_success( array( 'pipeline' => $pipeline ) );
+		} else {
+			wp_send_json_error( array( 'message' => __( 'No activity', 'crewhrm' ) ) );
 		}
 	}
 }

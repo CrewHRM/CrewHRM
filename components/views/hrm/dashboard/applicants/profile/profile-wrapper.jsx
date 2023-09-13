@@ -35,11 +35,11 @@ const tabs = [
                 <span className={'d-inline-block vertical-align-middle'.classNames()}>
                     {__('Activity')}
                 </span>
-                <span
+                {/* <span
                     className={'d-inline-block vertical-align-middle bg-color-secondary border-radius-30 color-white font-size-13 font-weight-500 line-height-24 letter-spacing--13 padding-horizontal-7 margin-left-10'.classNames()}
                 >
                     12
-                </span>
+                </span> */}
             </span>
         )
     }

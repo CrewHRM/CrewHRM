@@ -41,7 +41,7 @@ export function CoverImage(props) {
             ) : !src && name ? (
                 <span
                     className={'font-weight-500 text-transform-uppercase'.classNames()}
-                    style={{ fontSize: (width / 3) * 1.1 + 'px', color: 'inherit' }}
+                    style={{ fontSize: (width / 3) * 1.1 + 'px', color: 'inherit', lineHeight: 0 }}
                 >
                     {getInitials(name)}
                 </span>

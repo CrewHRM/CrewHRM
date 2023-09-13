@@ -180,7 +180,7 @@ class Application {
 		
 		// If it needs applications of specific stage
 		if ( ! empty( $stage_id ) ) {
-			$stage_sequence = Stage::getField( array( 'stage_id' => $stage_id ), 'sequence' );
+			$stage_sequence = Field::stages()->getField( array( 'stage_id' => $stage_id ), 'sequence' );
 			$where_clause  .= " AND app.stage_id={$stage_id}";
 
 			// As it is specifc stage, so get qualified and disqualified applications of this stage
@@ -363,18 +363,6 @@ class Application {
 	}
 
 	/**
-	 * Prepare application activities/pipeline to show in single application view in dashboard
-	 *
-	 * @param int $application_id
-	 * @return array
-	 */
-	public static function getApplicationPipeline( $application_id ) {
-		$pipeline = array();
-
-		return $pipeline;
-	}
-
-	/**
 	 * Change application stage
 	 *
 	 * @param int $application_id
@@ -387,7 +375,7 @@ class Application {
 		if ( $is_disqualify ) {
 			$stage_id = Stage::getDisqualifyId( $job_id );
 		} else {
-			$disqname      = Stage::getField( array( 'job_id' => $job_id, 'stage_id' => $stage_id ), 'stage_name' );
+			$disqname      = Field::stages()->getField( array( 'job_id' => $job_id, 'stage_id' => $stage_id ), 'stage_name' );
 			$is_disqualify = $disqname === '_disqualified_';
 		}
 

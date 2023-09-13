@@ -391,26 +391,6 @@ class Stage {
 	}
 
 	/**
-	 * Get single field by stage id
-	 *
-	 * @param array  $where
-	 * @param string $field_name
-	 * @return int|string
-	 */
-	public static function getField( $where, $field_name ) {
-
-		$where_clause = '1=1';
-		foreach ( $where as $col => $val ) {
-			$where_clause .= " AND " . $col . "='{$val}'";
-		}
-
-		global $wpdb;
-		return $wpdb->get_var(
-			"SELECT {$field_name} FROM " . DB::stages() . " WHERE {$where_clause} LIMIT 1",
-		);
-	}
-
-	/**
 	 * Get the stage id of disqualify for a job
 	 *
 	 * @param int $job_id

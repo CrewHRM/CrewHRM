@@ -1,28 +1,32 @@
-import React from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import TimeAgo from 'javascript-time-ago';
+import { useParams } from 'react-router-dom';
 import en from 'javascript-time-ago/locale/en';
+
+import { CoverImage } from '../../../../../../materials/image/image.jsx';
+import { Line } from '../../../../../../materials/line/line.jsx';
+import { ContextApplicationSession } from '../../applicants.jsx';
+import { request } from '../../../../../../utilities/request.jsx';
 
 import avatar from '../../../../../../images/avatar.svg';
 import attachment from '../../../../../../images/attachment.png';
-import { CoverImage } from '../../../../../../materials/image/image.jsx';
-import { Line } from '../../../../../../materials/line/line.jsx';
 import style from './activity.module.scss';
 
 TimeAgo.addDefaultLocale(en);
 const timeAgo = new TimeAgo();
 
-function Ago(props) {
+function Ago({timestamp}) {
     return (
         <span
             className={'d-inline-block font-size-15 font-weight-400 line-height-24 letter-spacing--15 color-text-light'.classNames()}
         >
-            &middot; {timeAgo.format(new Date(props.date))}
+            &middot; {timeAgo.format(new Date(timestamp*1000))}
         </span>
     );
 }
 
 function LayoutDisqualify(props) {
-    let { by, date_time } = props.activity;
+    let { by, timestamp } = props.activity;
     return (
         <>
             <span
@@ -35,13 +39,13 @@ function LayoutDisqualify(props) {
             >
                 {by}
             </span>{' '}
-            <Ago date={date_time} />
+            <Ago timestamp={timestamp} />
         </>
     );
 }
 
 function LayoutComment(props) {
-    let { by, date_time, comment, attachments = [] } = props.activity;
+    let { by, timestamp, comment, attachments = [] } = props.activity;
     return (
         <>
             <div className={'margin-bottom-5'.classNames()}>
@@ -55,7 +59,7 @@ function LayoutComment(props) {
                 >
                     added a comment
                 </span>{' '}
-                <Ago date={date_time} />
+                <Ago timestamp={timestamp} />
             </div>
             <div
                 className={'font-size-15 font-weight-400 line-height-24 letter-spacing--15 color-text'.classNames()}
@@ -63,26 +67,23 @@ function LayoutComment(props) {
                 {comment}
             </div>
 
-            {(attachments.length && (
-                <div className={'comment-attachments'.classNames(style)}>
-                    {attachments.map((attachment) => {
-                        return (
-                            <CoverImage
-                                src={attachment.url}
-                                height={50}
-                                className={'border-radius-5'.classNames()}
-                            />
-                        );
-                    })}
-                </div>
-            )) ||
-                null}
+            {attachments.length ? <div className={'comment-attachments'.classNames(style)}>
+				{attachments.map((attachment) => {
+					return (
+						<CoverImage
+							src={attachment.url}
+							height={50}
+							className={'border-radius-5'.classNames()}
+						/>
+					);
+				})}
+			</div> : null}
         </>
     );
 }
 
 function LayoutMove(props) {
-    let { by, date_time, to } = props.activity;
+    let { by, timestamp, stage_name: to } = props.activity;
     return (
         <>
             <span
@@ -95,13 +96,13 @@ function LayoutMove(props) {
             >
                 {by}
             </span>{' '}
-            <Ago date={date_time} />
+            <Ago timestamp={timestamp} />
         </>
     );
 }
 
 function LayoutApply(props) {
-    let { by, date_time } = props.activity;
+    let { by, timestamp } = props.activity;
     return (
         <>
             <span
@@ -114,7 +115,7 @@ function LayoutApply(props) {
             >
                 applied
             </span>{' '}
-            <Ago date={date_time} />
+            <Ago timestamp={timestamp} />
         </>
     );
 }
@@ -131,82 +132,58 @@ const activity_handlers = {
     move: {
         icon: 'ch-icon ch-icon-trello font-size-24 color-text-light',
         renderer: LayoutMove
-    },
-    disqualify: {
-        icon: 'ch-icon ch-icon-slash color-danger font-size-24',
-        renderer: LayoutDisqualify
     }
 };
 
-const acitivities = [
-    {
-        type: 'disqualify',
-        by: 'Darlene Robertson',
-        avatar_url: avatar,
-        date_time: '2023-05-11 05:34'
-    },
-    {
-        type: 'move',
-        by: 'Jerome Bell',
-        avatar_url: avatar,
-        to: 'Assesment',
-        date_time: '2023-04-24 05:34'
-    },
-    {
-        type: 'comment',
-        by: 'Brooklyn Simmons',
-        avatar_url: avatar,
-        comment: "OK, I'll get in touch and arrange the call",
-        date_time: '2023-03-24 05:34'
-    },
-    {
-        type: 'comment',
-        by: 'Jacob Jones',
-        avatar_url: avatar,
-        comment: 'Looks like a good candidate. should we arrange a call?',
-        attachments: [
-            {
-                attachment_id: 12,
-                url: attachment,
-                mime_type: 'image/png'
-            },
-            {
-                attachment_id: 13,
-                url: attachment,
-                mime_type: 'image/png'
-            },
-            {
-                attachment_id: 14,
-                url: attachment,
-                mime_type: 'image/png'
-            },
-            {
-                attachment_id: 15,
-                url: attachment,
-                mime_type: 'image/png'
-            }
-        ],
-        date_time: '2023-03-14 05:34'
-    },
-    {
-        type: 'apply',
-        by: 'Bessie Cooper',
-        avatar_url: avatar,
-        date_time: '2023-03-12 15:34'
-    }
-];
-
 export function Activity() {
+	const {session} = useContext(ContextApplicationSession);
+	const {application_id} = useParams();
+
+	const [state, setState] = useState({
+		loading: true,
+		pipeline: []
+	});
+
+	const getPipeline=()=>{
+
+		setState({
+			...state,
+			loading: true
+		});
+
+		request( 'get_application_pipeline', {application_id}, resp=> {
+			const {data:{pipeline=[]}} = resp;
+			setState({
+				...state,
+				loading: false,
+				pipeline
+			});
+		});
+	}
+
+	useEffect(()=>{
+		getPipeline();
+	}, [session, application_id]);
+
     return (
         <div data-crewhrm-selector="activity" className={'activities'.classNames(style)}>
-            {acitivities.map((activity, i) => {
+            {state.pipeline.map((activity, i) => {
                 let { avatar_url, type } = activity;
                 let { renderer: Comp, icon } = activity_handlers[type];
 
-                return [
-                    <div key={i} className={'d-flex'.classNames()}>
+				if (activity.type === 'move' && activity.stage_name === '_disqualified_') {
+					icon = 'ch-icon ch-icon-slash color-danger font-size-24';
+					Comp = LayoutDisqualify;
+				}
+
+                return <div key={i}>
+                    <div className={'d-flex'.classNames()}>
                         <div>
-                            <CoverImage src={avatar_url} width={26} circle={true} />
+                            <CoverImage 
+								src={avatar_url} 
+								width={26} 
+								circle={true}
+								name={activity.by}/>
                         </div>
                         <div className={'flex-1 margin-left-10 margin-right-25'.classNames()}>
                             <Comp activity={activity} />
@@ -214,13 +191,15 @@ export function Activity() {
                         <div className={'align-self-center'.classNames()}>
                             <i className={icon.classNames()}></i>
                         </div>
-                    </div>,
-                    <Line
-                        key={i + '_2'}
-                        show={i < acitivities.length - 1}
-                        className={'margin-top-20 margin-bottom-20'.classNames()}
-                    />
-                ];
+                    </div>
+
+					{
+						i < state.pipeline.length - 1 ? <Line
+							key={i + '_2'}
+							className={'margin-top-20 margin-bottom-20'.classNames()}
+						/> : null
+					}
+				</div>
             })}
         </div>
     );

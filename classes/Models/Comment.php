@@ -2,6 +2,8 @@
 
 namespace CrewHRM\Models;
 
+use CrewHRM\Helpers\_Array;
+
 class Comment {
 	/**
 	 * Create or update comment
@@ -38,5 +40,30 @@ class Comment {
 		}
 
 		return $comment_id;
+	}
+
+	/**
+	 * Get application comments
+	 *
+	 * @param int $application_id
+	 * @return array
+	 */
+	public static function getComments( $application_id ) {
+		global $wpdb;
+		$comments = $wpdb->get_results(
+			$wpdb->prepare(
+				"SELECT 
+					_comment.*, 
+					_user.display_name AS commenter_name, 
+					UNIX_TIMESTAMP(_comment.comment_date) AS timestamp 
+				FROM " . DB::comments() . " _comment
+					LEFT JOIN {$wpdb->users} _user on _comment.commenter_id=_user.ID
+				WHERE _comment.application_id=%d AND _comment.comment_parent_id IS NULL",
+				$application_id
+			),
+			ARRAY_A
+		);
+
+		return _Array::castRecursive( $comments );
 	}
 }
