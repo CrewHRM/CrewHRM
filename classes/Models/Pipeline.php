@@ -106,7 +106,7 @@ class Pipeline {
 
 		// ---------- Now sort all by timestamp ----------
 		$_pipeline = array();
-		$timestamps = array_column( $pipeline, 'timestamp' );
+		$timestamps = array_unique( array_column( $pipeline, 'timestamp' ) );
 		rsort( $timestamps );
 
 		// Loop through ordered timestamps

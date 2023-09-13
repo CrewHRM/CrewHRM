@@ -183,7 +183,7 @@ export function CompanyProfile({ onChange, values }) {
                 style={{ marginTop: '-70px' }}
             >
                 <CoverImage
-                    src={values.logo_url || logo_placeholder}
+                    src={values?.company_logo?.file_url || logo_placeholder}
                     width={120}
                     backgroundColor="white"
                     className={'border-5 b-color-tertiary border-radius-10'.classNames()}
@@ -196,18 +196,9 @@ export function CompanyProfile({ onChange, values }) {
                     </span>
 
                     <FileUpload
-                        useWpMedia={true}
+                        WpMedia={{width: 200, height: 200}}
                         accept="image/*"
-                        onChange={({file={}}) => {
-							// File info
-                            const { file_id, file_url } = file;
-
-							// Dispatch
-                            onChange({
-                                logo_url: file_url,
-                                logo_id: file_id
-                            });
-                        }}
+                        onChange={company_logo => onChange({company_logo})}
                         layoutComp={({ onCLick }) => {
                             return (
                                 <button

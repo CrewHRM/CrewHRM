@@ -1,0 +1,29 @@
+.attachments {
+	&.theme-grid {
+		display: grid;
+		grid-template-columns: repeat(4, 1fr);
+		gap: 15px;
+	}
+
+	&.theme-singular {
+		width: auto;
+		height: auto;
+	}
+
+	.single-attachment {
+		.attachment-overlay.has-thumbnail {
+			display: none;
+			background-color: rgba(26, 26, 26, 0.8);
+		}
+
+		&:hover {
+			.has-thumbnail {
+				display: flex;
+			}
+
+			.attachment-overlay:not(.has-thumbnail) {
+				filter: brightness(0.75);
+			}
+		}
+	}
+}

@@ -22,7 +22,7 @@ export function RenderField({ field, defaultEnabled }) {
         label,
         type,
         placeholder,
-		fileCount,
+		maxlenth,
         flex = 1,
         options,
         disclaimer,
@@ -157,9 +157,9 @@ export function RenderField({ field, defaultEnabled }) {
 
             {(type == 'file' && (
                 <FileUpload
-                    value={values[name] || []}
+                    value={values[name]}
                     textPrimary={placeholder}
-					fileCount={fileCount}
+					maxlenth={maxlenth}
                     onChange={(files) => onChange(name, files)}
                 />
             )) ||

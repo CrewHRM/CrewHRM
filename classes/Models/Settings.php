@@ -17,11 +17,7 @@ class Settings {
 	 */
 	public static function getCompanyProfile( $key = null, $default = null ) {
 		$data = _Array::getArray( get_option( self::KEY_COMPANY ) ); 
-
-		// Assign dynamic meta data
-		if ( ! empty( $data['logo_id'] ) ) {
-			$data['logo_url'] = wp_get_attachment_url( $data['logo_id'] );
-		}
+		$data = File::applyDynamics( $data );
 
 		return $key !== null ? ( $data[ $key ] ?? $default ) : $data;
 	}

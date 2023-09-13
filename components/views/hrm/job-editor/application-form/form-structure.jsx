@@ -179,10 +179,10 @@ export const sections_fields = {
                 form: [
                     {
                         name: 'file_attachment',
-                        label: __('Upload your best 3 sample projects'),
+                        label: __('Upload attachments. Max 3.'),
                         type: 'file',
                         placeholder: __('Browse Files'),
-                        fileCount: 3
+                        maxlenth: 3
                     },
                     null
                 ]

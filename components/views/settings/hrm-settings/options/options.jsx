@@ -14,6 +14,7 @@ import { DropDown } from '../../../../materials/dropdown/dropdown.jsx';
 import { ContextBackendDashboard } from '../../../hrm/hrm.jsx';
 
 import style from './options.module.scss';
+import { RenderMedia } from '../../../../materials/render-media/render-media.jsx';
 
 const label_class =
     'd-block font-size-17 font-weight-500 line-height-24 letter-spacing--17 color-text'.classNames();
@@ -122,15 +123,25 @@ export function Options(props) {
                                 null}
 
                             {/* Image upload */}
-                            {(type === 'image' && (
+                            {type === 'image' ?
                                 <>
                                     <div className={'flex-1'.classNames()}>{label_text}</div>
                                     <div className={'flex-1'.classNames()}>
-                                        <FileUpload />
+										{
+											!values[key] ? <FileUpload 
+												accept="image/*"
+												WpMedia={{width: 1200, height: 300}}
+												onChange={file=>onChange(key, file)}/> 
+											: 
+											<RenderMedia
+												theme="singular"
+												media={values[key]}
+												onDelete={()=>onChange(key, null)}
+												overlay={false}/>
+										}
                                     </div>
-                                </>
-                            )) ||
-                                null}
+                                </> : null
+							}
 
                             {/* Checkbox options */}
                             {((type === 'checkbox' || type == 'radio') && (

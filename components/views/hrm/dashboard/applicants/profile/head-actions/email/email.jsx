@@ -121,6 +121,7 @@ console.log(value);
 
             <div className={'d-flex align-items-center'.classNames()}>
 				<FileUpload 
+					value={state.values['attachment']}
 					onChange={file=>setVal('attachment', file)}
 					layoutComp={({onCLick})=>{
 						return <div className={'flex-1 cursor-pointer'.classNames()} onClick={onCLick}>
@@ -128,7 +129,7 @@ console.log(value);
 								className={'ch-icon ch-icon-paperclip-2 font-size-20 color-text vertical-align-middle d-inline-block margin-right-5'.classNames()}
 							></i>
 							<span className={'font-size-15 font-weight-400 color-text'.classNames()}>
-								{__('Attach a file')}
+								{ state.values?.attachment?.name || __('Attach a file')}
 							</span>
 						</div>
 					}

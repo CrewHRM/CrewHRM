@@ -160,6 +160,18 @@ export function isEmptyString(str) {
 	return !str || typeof str !== 'string' || !/\S+/.test( str );
 }
 
+export function getFileId( file ) {
+	if ( file instanceof File ) {
+		// If it is uploaded file from system
+		const {lastModified, name, size, type} = file;
+		return lastModified + '_' + size + '_' + type + '_' + (name || '').replaceAll(' ', '_');
+
+	} else if ( typeof file === 'object' ) {
+		// If it is from WP media selection
+		return file.file_id;
+	}
+}
+
 export const is_production = process.env.NODE_ENV === 'production';
 export const countries_array = getCountries(true);
 export const countries_object = getCountries(false);

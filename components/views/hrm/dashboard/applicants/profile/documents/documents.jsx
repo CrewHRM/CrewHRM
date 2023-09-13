@@ -3,31 +3,74 @@ import { ExpandableContent } from '../../../../../../materials/ExpandableContent
 import { __, prepareTexts } from '../../../../../../utilities/helpers.jsx';
 import { Line } from '../../../../../../materials/line/line.jsx';
 import { DangerouslySet } from '../../../../../../materials/DangerouslySet.jsx';
-import { CoverImage } from '../../../../../../materials/image/image.jsx';
 import { PDFViewer } from '../../../../../../materials/pdf-viewer.jsx';
+import { RenderMedia } from '../../../../../../materials/render-media/render-media.jsx';
 
-import { IconImage } from '../../../../../../materials/dynamic-svg/icon-image.jsx';
-import { IconAudio } from '../../../../../../materials/dynamic-svg/icon-audio.jsx';
-import { IconVideo } from '../../../../../../materials/dynamic-svg/icon-video.jsx';
-import { IconPDF } from '../../../../../../materials/dynamic-svg/icon-pdf.jsx';
-import { IconZip } from '../../../../../../materials/dynamic-svg/icon-zip.jsx';
+import pdf from '../../../../../../images/sample.pdf';
+import attachment from '../../../../../../images/attachment.png';
 
-import style from './documents.module.scss';
-
-const thumbnails = {
-    image: IconImage,
-    audio: IconAudio,
-    video: IconVideo,
-    pdf: IconPDF,
-    zip: IconZip,
-    other: null
-};
+const attachments = [
+	{
+		file_id: 1,
+		file_name: 'Sample.png',
+		mime_type: 'image/png',
+		file_url: attachment
+	},
+	{
+		file_id: 2,
+		file_name: 'How to build.jpg',
+		mime_type: 'image/jpeg',
+		file_url: attachment
+	},
+	{
+		file_id: 3,
+		file_name: 'Demo App.jpg',
+		mime_type: 'application/zip',
+		file_url: attachment
+	},
+	{
+		file_id: 4,
+		file_name: 'Banner Design.jpg',
+		mime_type: 'image/png',
+		file_url: attachment
+	},
+	{
+		file_id: 5,
+		file_name: 'Banner Design.jpg',
+		mime_type: 'video/mp4',
+		file_url: attachment
+	},
+	{
+		file_id: 6,
+		file_name: 'Beats Pattern',
+		mime_type: 'audio/mp3',
+		file_url: attachment
+	},
+	{
+		file_id: 7,
+		file_name: 'How to build.pdf',
+		mime_type: 'application/pdf',
+		file_url: pdf
+	},
+	{
+		file_id: 8,
+		file_name: 'Piano Melodic.mp3',
+		mime_type: 'audio/mp3',
+		file_url: attachment
+	},
+	{
+		file_id: 9,
+		file_name: 'Rock Notes Sample',
+		mime_type: 'audio/mp3',
+		file_url: null
+	}
+];
 
 export function Documents({ application }) {
-    const { cover_letter, resume_file_url, attachments = [] } = application;
+    const { cover_letter, resume_file_url } = application;
 
     return (
-        <div data-crewhrm-selector="documents" className={'documents'.classNames(style)}>
+        <div data-crewhrm-selector="documents">
             <span
                 className={'d-block font-size-17 font-weight-600 line-height-24 letter-spacing--17 color-text margin-bottom-10'.classNames()}
             >
@@ -62,67 +105,7 @@ export function Documents({ application }) {
                     >
                         {__('ATTACHMENTS')}
                     </span>
-                    <div className={'attachments'.classNames(style)}>
-                        {attachments.map((attachment, i2) => {
-                            let { url, name, mime_type = '' } = attachment;
-
-                            let media_type = mime_type.slice(0, mime_type.indexOf('/'));
-                            if (media_type === 'application') {
-                                media_type = mime_type.slice(mime_type.indexOf('/') + 1);
-                            }
-
-                            let is_image = media_type === 'image';
-                            let CompIcon = thumbnails[media_type] || thumbnails.other;
-                            let thumb_image = is_image ? url : null;
-
-                            return (
-                                <CoverImage
-                                    key={i2}
-                                    className={
-                                        'single-attachment'.classNames(style) +
-                                        'flex-1 border-radius-10'.classNames()
-                                    }
-                                    src={thumb_image}
-                                    height={125}
-                                >
-                                    <div
-                                        className={
-                                            `attachment-overlay ${
-                                                thumb_image ? 'has-thumbnail' : ''
-                                            }`.classNames(style) +
-                                            `w-full h-full d-flex align-items-center justify-content-center padding-20 cursor-pointer ${
-                                                thumb_image
-                                                    ? ''
-                                                    : 'border-1-5 b-color-tertiary border-radius-10'
-                                            }`.classNames()
-                                        }
-                                    >
-                                        <div
-                                            className={'d-inline-block text-align-center'.classNames()}
-                                        >
-                                            {(CompIcon && (
-                                                <CompIcon
-                                                    color={
-                                                        thumb_image
-                                                            ? 'white'
-                                                            : window.CrewHRM.colors['text-lighter']
-                                                    }
-                                                />
-                                            )) ||
-                                                null}
-                                            <span
-                                                className={`d-block margin-top-5 font-size-13 font-weight-400 line-height-24 letter-spacing--13 line-clamp line-clamp-1 color-${
-                                                    is_image ? 'white' : 'light'
-                                                }`.classNames()}
-                                            >
-                                                {name}
-                                            </span>
-                                        </div>
-                                    </div>
-                                </CoverImage>
-                            );
-                        })}
-                    </div>
+                    <RenderMedia media={attachments}/>
                 </>
             )) ||
                 null}

@@ -1,21 +1,7 @@
 import React, { useRef, useState } from 'react';
 
 import style from './upload.module.scss';
-import { __, getRandomString } from '../../utilities/helpers.jsx';
-
-/**
- * Setup Crop control
- * The controls used by WordPress Admin are api.CroppedImageControl and api.SiteIconControl.
- */
-const cropControl = {
-    id: 'control-id',
-    params: {
-        flex_width: true, // set to true if the width of the cropped image can be different to the width defined here
-        flex_height: true, // set to true if the height of the cropped image can be different to the height defined here
-        width: 200, // set the desired width of the destination image here
-        height: 200 // set the desired height of the destination image here
-    }
-};
+import { __, getFileId } from '../../utilities/helpers.jsx';
 
 /**
  * Returns a set of options, computed from the attached image data and
@@ -73,18 +59,34 @@ function media_frame_image_cal(attachment, controller) {
 
 export function FileUpload(props) {
     const {
-        fileCount = 1,
+        maxlenth = 1,
         textPrimary = __('Browse'),
         textSecondary = __('or, Just drop it here'),
-        value: stateFiles = [],
+        value,
         onChange,
         accept,
-        useWpMedia,
+        WpMedia,
         layoutComp
     } = props;
 
-	const singular  = fileCount <= 1;
-    const input_ref = useRef();
+	const singular   = maxlenth <= 1;
+    const input_ref  = useRef();
+	const stateFiles = value ? ( !Array.isArray( value ) ? [value] : value ) : [];
+
+	/**
+	 * Setup Crop control
+	 * The controls used by WordPress Admin are api.CroppedImageControl and api.SiteIconControl.
+	 */
+	const cropControl = {
+		id: 'control-id',
+		params: {
+			flex_width: true, // set to true if the width of the cropped image can be different to the width defined here
+			flex_height: true, // set to true if the height of the cropped image can be different to the height defined here
+			width: WpMedia?.width, // set the desired width of the destination image here
+			height: WpMedia?.height // set the desired height of the destination image here
+		}
+	};
+
     const [state, setState] = useState({
         highlight: false
     });
@@ -94,32 +96,31 @@ export function FileUpload(props) {
 	}
 
     const handleFiles = (files) => {
-        let _files = [];
+		if ( files && ! Array.isArray( files ) ) {
+			files = [files];
+		}
 
         // Make sure files exists
-        if (!files.length) {
+        if ( !files || !files.length) {
             return;
         }
 
         // Loop thorugh files and generate array with unique id for state purpose
+        let _files = [];
         for (const file of files) {
-            _files.push({
-                id: file.file_id || getRandomString(),
-                file
-            });
+            _files.push(file);
         }
 
         // To Do: Validate files
 
-        _onChange([..._files, ...stateFiles].slice(0, fileCount));
+        _onChange([..._files, ...stateFiles].slice(0, maxlenth));
     };
 
     const removeFile = (e, id) => {
         e.stopPropagation();
 
         const _files = stateFiles;
-        const index = stateFiles.findIndex((f) => f.id === id);
-        _files.splice(index, 1);
+        _files.splice(id, 1);
         _onChange(_files);
     };
 
@@ -132,12 +133,16 @@ export function FileUpload(props) {
     };
 
     const openPicker = () => {
-        if (!useWpMedia) {
+        if (!WpMedia) {
             input_ref.current.click();
             return;
         }
 
-        /* Open Wp Media picker otherwise (For now media picker is statically defined for image. Refactor it later to add suport for other types.) */
+		/**
+		 * Open Wp Media picker otherwise.
+		 * For now media picker is statically defined for image. 
+		 * Refactor it later to add suport for other types of files.
+		 */
 
         /**
          * Create a media modal select frame, we need to set this up every time instead of reusing if already there
@@ -152,13 +157,13 @@ export function FileUpload(props) {
             },
             states: [
                 new wp.media.controller.Library({
-                    title: __('Select'), // l10n.selectAndCrop,
+                    title: __('Select'),
                     library: wp.media.query({ type: 'image' }),
-                    multiple: false, // We set multiple to false so only get one image from the uploader
+                    multiple: false,
                     date: false,
                     priority: 20,
-                    suggestedWidth: 200,
-                    suggestedHeight: 200
+                    suggestedWidth: WpMedia.width,
+                    suggestedHeight: WpMedia.height
                 }),
                 new wp.media.controller.CustomizeImageCropper({
                     imgSelectOptions: media_frame_image_cal,
@@ -173,26 +178,25 @@ export function FileUpload(props) {
          * @param {object} croppedImage Cropped attachment data.
          */
         media_frame.on('cropped', function (croppedImage) {
-            const { url: file_url, id: file_id } = croppedImage;
-
-            handleFiles([
-                {
-                    file_id,
-                    file_url
-                }
-            ]);
+			
+            handleFiles({
+				file_id: croppedImage.id,
+				file_url: croppedImage.url,
+				file_name: croppedImage.filename,
+				mime_type: croppedImage.mime
+			});
         });
 
         /**
          * If cropping was skipped, apply the image data directly to the setting.
          */
         media_frame.on('skippedcrop', function (selection) {
-            handleFiles([
-                {
-                    file_id: selection.id,
-                    file_url: selection.get('url')
-                }
-            ]);
+            handleFiles({
+				file_id: selection.id,
+				file_url: selection.get('url'),
+				file_name: selection.get('filename'),
+				mime_type: selection.get('mime')
+			});
         });
 
         /**
@@ -208,14 +212,13 @@ export function FileUpload(props) {
                 !cropControl.params.flex_width &&
                 !cropControl.params.flex_height
             ) {
-                const { id: file_id, url: file_url } = avatarAttachment;
 
-                handleFiles([
-                    {
-                        file_id,
-                        file_url
-                    }
-                ]);
+                handleFiles({
+					file_id: avatarAttachment.id,
+					file_url: avatarAttachment.url,
+					file_name: avatarAttachment.filename,
+					mime_type: avatarAttachment.mime
+				});
 
                 media_frame.close();
             } else {
@@ -285,11 +288,12 @@ export function FileUpload(props) {
                 </div>
                 <Input />
             </div>
-            {stateFiles.map(({ id, file }) => {
+            {stateFiles.map((file, index) => {
+
                 return (
                     <div
                         data-crewhrm-selector="upload-items"
-                        key={id}
+                        key={getFileId(file)}
                         className={'d-flex align-items-center column-gap-14 padding-vertical-10 padding-horizontal-20 margin-top-10 border-radius-10 border-1 b-color-tertiary'.classNames()}
                         style={{ maxWidth: '552px' }}
                     >
@@ -301,7 +305,7 @@ export function FileUpload(props) {
 
                         <i
                             className={'ch-icon ch-icon-times cursor-pointer font-size-15 color-text-lighter color-hover-text'.classNames()}
-                            onClick={(e) => removeFile(e, id)}
+                            onClick={(e) => removeFile(e, index)}
                         ></i>
                     </div>
                 );
