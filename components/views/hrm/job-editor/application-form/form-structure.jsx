@@ -152,8 +152,9 @@ export const sections_fields = {
                 form: [
                     {
                         name: 'resume',
-                        label: __('Resume'),
+                        label: __('Resume (PDF)'),
                         type: 'file',
+						accept: 'application/pdf',
                         placeholder: __('Browse resume'),
                         required: true
                     },

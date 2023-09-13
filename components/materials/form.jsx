@@ -27,6 +27,7 @@ export function RenderField({ field, defaultEnabled }) {
         options,
         disclaimer,
         required,
+		accept,
         enabled = defaultEnabled
     } = field;
 
@@ -160,6 +161,7 @@ export function RenderField({ field, defaultEnabled }) {
                     value={values[name]}
                     textPrimary={placeholder}
 					maxlenth={maxlenth}
+					accept={accept}
                     onChange={(files) => onChange(name, files)}
                 />
             )) ||

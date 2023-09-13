@@ -71,7 +71,7 @@ export function FileUpload(props) {
 
 	const singular   = maxlenth <= 1;
     const input_ref  = useRef();
-	const stateFiles = value ? ( !Array.isArray( value ) ? [value] : value ) : [];
+	const stateFiles = value ? ( Array.isArray( value ) ? value : [value] ) : [];
 
 	/**
 	 * Setup Crop control
@@ -96,24 +96,30 @@ export function FileUpload(props) {
 	}
 
     const handleFiles = (files) => {
-		if ( files && ! Array.isArray( files ) ) {
+
+		// Convert singulars to array
+		if ( ! ( files instanceof FileList ) ) {
 			files = [files];
 		}
-
+		
         // Make sure files exists
         if ( !files || !files.length) {
             return;
         }
 
-        // Loop thorugh files and generate array with unique id for state purpose
-        let _files = [];
-        for (const file of files) {
-            _files.push(file);
-        }
+		files = Array.from( files );
+		files = [...files, ...stateFiles];
 
-        // To Do: Validate files
-
-        _onChange([..._files, ...stateFiles].slice(0, maxlenth));
+		// Exclude duplicate 
+		const ids = [];
+		files = files.filter(f=>{
+			let id = getFileId( f );
+			let exists = ids.indexOf( id ) > -1;
+			ids.push(id);
+			return !exists;
+		});
+		
+        _onChange(files.slice(0, maxlenth));
     };
 
     const removeFile = (e, id) => {
@@ -134,6 +140,7 @@ export function FileUpload(props) {
 
     const openPicker = () => {
         if (!WpMedia) {
+			input_ref.value = '';
             input_ref.current.click();
             return;
         }
@@ -239,7 +246,6 @@ export function FileUpload(props) {
                 className={'d-none'.classNames()}
                 onChange={(e) => {
                     handleFiles(e.currentTarget?.files || []);
-                    e.currentTarget.value = '';
                 }}
             />
         );
@@ -289,18 +295,21 @@ export function FileUpload(props) {
                 <Input />
             </div>
             {stateFiles.map((file, index) => {
+				
+				const file_name = file instanceof File ? file.name : file.file_name;
+				const file_id   = getFileId(file);
 
                 return (
                     <div
                         data-crewhrm-selector="upload-items"
-                        key={getFileId(file)}
+                        key={file_id}
                         className={'d-flex align-items-center column-gap-14 padding-vertical-10 padding-horizontal-20 margin-top-10 border-radius-10 border-1 b-color-tertiary'.classNames()}
                         style={{ maxWidth: '552px' }}
                     >
                         <span
                             className={'flex-1 font-size-15 font-weight-400 line-height-19 color-text'.classNames()}
                         >
-                            {file.name}
+                            {file_name}
                         </span>
 
                         <i

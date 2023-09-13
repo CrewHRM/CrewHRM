@@ -137,7 +137,6 @@ export function Apply({ job = {} }) {
             const value = state.values[name];
 
             if (required && (!value || (Array.isArray(value) && !value.length))) {
-                console.log(fields[i]);
                 _enabled = false;
             }
         }
