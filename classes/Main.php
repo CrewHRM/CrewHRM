@@ -5,6 +5,7 @@ namespace CrewHRM;
 use CrewHRM\Setup\Admin;
 use CrewHRM\Setup\Careers;
 use CrewHRM\Setup\Dispatcher;
+use CrewHRM\Setup\Media;
 use CrewHRM\Setup\Scripts;
 
 class Main {
@@ -32,6 +33,7 @@ class Main {
 
 		// Load apps now
 		new Scripts();
+		new Media();
 		new Dispatcher();
 		new Admin();
 		new Careers();

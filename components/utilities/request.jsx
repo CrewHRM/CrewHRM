@@ -1,57 +1,52 @@
 export function request(action, payload = {}, callback, progressCallback) {
-    let modifer = {
-        contentType: false,
-        cache: false,
-        processData: false
-    };
+	
+	// Append action and nonce
+	payload = {
+		...payload,
+		action: window.CrewHRM.app_name + '_' + action,
+		nonce: window.CrewHRM.nonce,
+	}
 
-    // Create form data if it is not already, but has file inside
-    if (!(payload instanceof FormData)) {
-        // Loop through all values to check if there is file
-        for (let k in payload) {
-            // If a at least single one is file
-            if (payload[k] instanceof File) {
-                // Create new
-                let new_payload = new FormData();
+	// Build form data
+	const formData = new FormData();
 
-                // Loop through values to append in the form data
-                for (let key in payload) {
-                    if (payload[key] instanceof File) {
-                        // Append file
-                        new_payload.append(key, payload[key], payload[key].name);
-                    } else {
-                        // Append scalar value
-                        new_payload.append(key, payload[key]);
-                    }
-                }
+	// Function to flatten nested JSON into a flat object and append files to FormData. Thanks ChatGPT :)
+	function flattenObject(obj, formData, parentKey = '') {
+		for (let key in obj) {
+			const _key = parentKey === '' ? key : `${parentKey}[${key}]`;
+			if (typeof obj[key] === 'object') {
+				if (Array.isArray(obj[key])) {
+					obj[key].forEach((item, index) => {
+						if (item instanceof File) {
+							formData.append(`${_key}[${index}]`, item, item.name);
+						} else if( ! Array.isArray( item ) && typeof item !== 'object' ) {
+							formData.append(`${_key}[${index}]`, item);
+						} else {
+							flattenObject(item, formData, `${_key}[${index}]`);
+						}
+					});
+				} else if (obj[key] instanceof File) {
+					formData.append(`${_key}`, obj[key]);
+				} else {
+					flattenObject(obj[key], formData, `${_key}`);
+				}
+			} else {
+				// console.log(obj[key]);
+				formData.append(`${_key}`, obj[key]);
+			}
+		}
+	}
 
-                // Replace the payload with the new one
-                payload = new_payload;
-
-                break;
-            }
-        }
-    }
-
-    let action_prefixed = window.CrewHRM.app_name + '_' + action;
-
-    if (payload instanceof FormData) {
-        payload.append('action', action_prefixed);
-        payload.append('nonce', window.CrewHRM.nonce);
-    } else {
-        modifer = {};
-        payload = {
-            ...payload,
-            action: action_prefixed,
-			nonce: window.CrewHRM.nonce,
-        };
-    }
+	// Flatten the nested JSON and append files to FormData
+	flattenObject(payload, formData);
 
     window.jQuery.ajax({
-        url: window.CrewHRM.ajaxurl,
-        type: 'POST',
-        data: payload,
-        ...modifer,
+        url         : window.CrewHRM.ajaxurl,
+        type        : 'POST',
+        data        : formData,
+        contentType : false,
+        cache       : false,
+        processData : false,
         success: function (response) {
             if (typeof callback == 'function') {
                 callback({

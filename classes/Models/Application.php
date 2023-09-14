@@ -3,15 +3,20 @@
 namespace CrewHRM\Models;
 
 use CrewHRM\Helpers\_Array;
+use CrewHRM\Helpers\_String;
+use CrewHRM\Helpers\File;
 
 class Application {
 	/**
 	 * Create an application
+	 * ---------------------
+	 * 
 	 *
-	 * @param array $application
+	 * @param array $application Textual application data
+	 * @param array $files Resume and attachments
 	 * @return bool
 	 */
-	public static function createApplication( array $application ) {
+	public static function createApplication( array $application, array $files ) {
 		global $wpdb;
 
 		// Create address first to insert the id in application row
@@ -41,6 +46,32 @@ class Application {
 			return;
 		}
 
+		// Insert resume
+		if ( ! empty( $files['resume'] ) ) {
+			$resume_id = FileManager::uploadFile( $app_id, $files['resume'], 'Resume-' . $app_id . '-' . _String::getRandomString() );
+			if ( ! empty( $resume_id ) ) {
+				$wpdb->update(
+					DB::applications(),
+					array( 'resume_file_id' => $resume_id ),
+					array( 'application_id' => $app_id )
+				);
+			}
+		}
+
+		// Insert attachments
+		$attachment_ids = array();
+		$attachments    = $files['file_attachment'] ?? array();
+		$attachments    = File::organizeUploadedFiles( $attachments );
+		
+		foreach ( $attachments as $attachment ) {
+			$name   = 'Attachment-' . $app_id . '-' . _String::getRandomString();
+			$new_id = FileManager::uploadFile( $app_id, $attachment, $name  );
+			if ( ! empty( $new_id ) ) {
+				$attachment_ids[] = $new_id;
+			}
+		}
+		Meta::application()->updateMeta( $app_id, 'application_attachments', $attachment_ids );
+		
 		// Insert custom added questions
 		foreach ( $application as $key => $value ) {
 			if ( strpos( $key, '_question_' ) === 0 ) {

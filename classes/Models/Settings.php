@@ -3,6 +3,7 @@
 namespace CrewHRM\Models;
 
 use CrewHRM\Helpers\_Array;
+use CrewHRM\Helpers\File;
 
 class Settings {
 	const KEY_COMPANY  = 'crewhrm_company_profile';

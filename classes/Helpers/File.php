@@ -1,6 +1,6 @@
 <?php
 
-namespace CrewHRM\Models;
+namespace CrewHRM\Helpers;
 
 class File {
 	/**
@@ -24,5 +24,25 @@ class File {
 		}
 
 		return $contents;
+	}
+
+	/**
+	 * Organize upload files
+	 *
+	 * @param array $files
+	 * @return array
+	 */
+	public static function organizeUploadedFiles( array $files ) {
+		$organizedFiles = [];
+
+		foreach ($files as $key => $value) {
+			if (is_array($value)) {
+				foreach ($value as $index => $fileInfo) {
+					$organizedFiles[$index][$key] = $fileInfo;
+				}
+			}
+		}
+
+		return $organizedFiles;
 	}
 }

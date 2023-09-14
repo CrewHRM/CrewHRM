@@ -2,6 +2,7 @@
 
 namespace CrewHRM\Controllers;
 
+use CrewHRM\Helpers\File;
 use CrewHRM\Models\Application;
 use CrewHRM\Models\Comment;
 use CrewHRM\Models\Mail;
@@ -13,6 +14,8 @@ class ApplicationHandler {
 		'applyToJob'           => array(
 			'data' => array(
 				'application' => 'type:array',
+				'resume'      => 'type:file',
+				'attachments' => 'type:array/file'
 			),
 		),
 		'getApplicationsList'  => array(
@@ -67,7 +70,8 @@ class ApplicationHandler {
 	 * @return void
 	 */
 	public static function applyToJob( array $data ) {
-		$application_id = Application::createApplication( $data['application'] );
+		$files          = File::organizeUploadedFiles( $_FILES['application'] ?? array() );
+		$application_id = Application::createApplication( $data['application'], $files );
 
 		if ( empty( $application_id ) ) {
 			wp_send_json_error( array( 'notice' => __( 'Application submission failed!', 'crewhrm' ) ) );

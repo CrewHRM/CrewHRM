@@ -9,7 +9,7 @@ const question_types = {
     textarea: __('Paragraph'),
     date: __('Date'),
     text: __('Short Answer'),
-    file: __('File Upload'),
+    // file: __('File Upload'),
     checkbox: __('Multiple Choice'),
     radio: __('Single Choice'),
     dropdown: __('Dropdown')
