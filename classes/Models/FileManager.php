@@ -68,7 +68,8 @@ class FileManager {
 
 		// Add direct file download restriction apache server.
 		if ( ! file_exists( $htaccess_path ) ) {
-			file_put_contents( $htaccess_path, 'deny from all' );
+			// To Do: use deny, instruct for nginx, implement file loading with access restriction.
+			// file_put_contents( $htaccess_path, 'deny from all' );
 		}
 
 		// To Do: nginx doesn't restrict per directory, rather show instruction in dashboard how to restrict directory.

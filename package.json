@@ -63,6 +63,7 @@
         "react-dom": "^18.2.0",
         "react-draft-wysiwyg": "^1.15.0",
         "react-helmet": "^6.1.0",
+        "react-image-zooom": "^1.2.0",
         "react-paginate": "^8.2.0",
         "react-router-dom": "^6.14.2",
         "sass-loader": "^13.3.2",

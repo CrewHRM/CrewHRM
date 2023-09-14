@@ -70,13 +70,13 @@ class Application {
 				$attachment_ids[] = $new_id;
 			}
 		}
-		Meta::application()->updateMeta( $app_id, 'application_attachments', $attachment_ids );
+		Meta::application( $app_id )->updateMeta( 'application_attachments', $attachment_ids );
 		
 		// Insert custom added questions
 		foreach ( $application as $key => $value ) {
 			if ( strpos( $key, '_question_' ) === 0 ) {
 				// To Do: Process data based on question type. Like upload file and assign file ID instead as value
-				Meta::application()->updateMeta( $app_id, $key, $value );
+				Meta::application( $app_id )->updateMeta( $key, $value );
 			}
 		}
 		
@@ -323,7 +323,7 @@ class Application {
 	 */
 	public static function getApplicationOverview( $application_id, $job_id ) {
 		$overview = array();
-		$meta     = Meta::application()->getMeta( $application_id );
+		$meta     = Meta::application( $application_id )->getMeta();
 		$form     = Job::getFiled( $job_id, 'application_form' );
 		
 		// Loop through all the meta data of the application
@@ -389,6 +389,23 @@ class Application {
 	 */
 	public static function getApplicationDocuments( $application_id ) {
 		$documents = array();
+		
+		// Get resume
+		$resume_id = Field::applications()->getField( array( 'application_id' => $application_id ), 'resume_file_id' );
+		$documents['resume_url'] = ! empty( $resume_id ) ? wp_get_attachment_url( $resume_id ) : null;
+
+		// Get attachments
+		$documents['attachments'] = array();
+		$attachment_ids = Meta::application( $application_id )->getMeta( 'application_attachments' );
+		$attachment_ids = _Array::getArray( $attachment_ids );
+		foreach ( $attachment_ids as $id ) {
+			$documents['attachments'][] = array(
+				'file_id'   => $id,
+				'file_url'  => wp_get_attachment_url( $id ),
+				'file_name' => get_the_title( $id ),
+				'mime_type' => get_post_mime_type( $id )
+			);
+		}
 
 		return $documents;
 	}

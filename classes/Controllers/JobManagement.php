@@ -57,7 +57,7 @@ class JobManagement {
 		if ( ! empty( $data['job_id'] ) ) {
 			$status = Job::getFiled( $data['job_id'], 'job_status' );
 			if ( $status !== 'draft' ) {
-				Meta::job()->updateMeta( $data['job_id'], 'autosaved_job', $data );
+				Meta::job( $data['job_id'] )->updateMeta( 'autosaved_job', $data );
 				wp_send_json_success();
 				return;
 			}

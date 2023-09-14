@@ -73,7 +73,7 @@ class Job {
 		// Insert Job meta
 		$to_store = [ 'attendance_type' ];
 		foreach ( $to_store as $field_name ) {
-			Meta::job()->updateMeta( $job_id, $field_name, ( $job[ $field_name ] ?? null ) );
+			Meta::job( $job_id )->updateMeta( $field_name, ( $job[ $field_name ] ?? null ) );
 		}
 
 		// Insert stages
@@ -120,7 +120,7 @@ class Job {
 		}
 
 		// Assign meta
-		$meta = Meta::job()->getMeta( $job_id );
+		$meta = Meta::job( $job_id )->getMeta();
 		if ( ! empty( $meta ) && is_array( $meta ) ) {
 			$job = array_merge( $job, $meta );
 		}
@@ -196,7 +196,7 @@ class Job {
 		$jobs = _Array::indexify( $jobs, 'job_id' );
 
 		// Assign meta
-		$jobs = Meta::job()->assignBulkMeta( $jobs );
+		$jobs = Meta::job( null )->assignBulkMeta( $jobs );
 
 		// Assign application count
 		if ( ! empty( $meta_data ) && in_array( 'application_count', $meta_data ) ) {
@@ -294,7 +294,7 @@ class Job {
 		);
 
 		// Delete meta
-		Meta::job()->deleteMeta( $job_id );
+		Meta::job( $job_id )->deleteMeta();
 
 		// Delete associated address
 		$address_id = self::getFiled( $job_id, 'address_id' );
@@ -373,7 +373,7 @@ class Job {
 		Stage::copyStages( $old_job_id, $new_job_id );
 		
 		// Now copy the meta
-		Meta::job()->copyMeta( $old_job_id, $new_job_id );
+		Meta::job( $old_job_id )->copyMeta( $new_job_id );
 		
 		return $new_job_id;
 	}

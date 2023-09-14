@@ -18,48 +18,51 @@ class Meta {
 	 */
 	private $table;
 
-	public function __construct( string $table ) {
+	/**
+	 * Object ID to work for
+	 *
+	 * @var int
+	 */
+	private $object_id;
+
+	/**
+	 * Meta instance
+	 *
+	 * @param string $table
+	 * @param int $object_id
+	 */
+	public function __construct( string $table, $object_id ) {
 		$this->table = $table;
+		$this->object_id = $object_id;
 	}
 
 	/**
 	 * Provide an instance of job meta
 	 *
+	 * @param int $job_id
 	 * @return Meta
 	 */
-	public static function job() {
-		static $instance = null;
-
-		if ( $instance === null ) {
-			$instance = new self( DB::jobmeta() );
-		}
-
-		return $instance;
+	public static function job( $job_id ) {
+		return new self( DB::jobmeta(), $job_id );
 	}
 
 	/**
 	 * Provide an instance of application meta
 	 *
+	 * @param int $application_id
 	 * @return Meta
 	 */
-	public static function application() {
-		static $instance = null;
-
-		if ( $instance === null ) {
-			$instance = new self( DB::appmeta() );
-		}
-
-		return $instance;
+	public static function application( $application_id ) {
+		return new self( DB::appmeta(), $application_id );
 	}
 
 	/**
 	 * Get single meta value by object id and meta key
 	 *
-	 * @param int    $obj_id
 	 * @param string $meta_key
 	 * @return mixed
 	 */
-	public function getMeta( $obj_id, $meta_key = null ) {
+	public function getMeta( $meta_key = null ) {
 		$is_singular  = ! empty( $meta_key );
 		$where_clause = $is_singular ? " AND meta_key='" . esc_sql( $meta_key ) . "' " : '';
 		
@@ -67,7 +70,7 @@ class Meta {
 		$results = $wpdb->get_results(
 			$wpdb->prepare(
 				'SELECT meta_key, meta_value FROM ' . $this->table . ' WHERE object_id=%d ' . $where_clause,
-				$obj_id
+				$this->object_id
 			),
 			ARRAY_A
 		);
@@ -87,26 +90,25 @@ class Meta {
 	/**
 	 * Create or update a meta field. If the value is array, then mismatching values will be removed.
 	 *
-	 * @param int    $obj_id
 	 * @param string $meta_key
 	 * @param mixed  $meta_value
 	 * @return bool
 	 */
-	public function updateMeta( $obj_id, $meta_key, $meta_value ) {
+	public function updateMeta( $meta_key, $meta_value ) {
 		global $wpdb;
 
 		// Check if the meta exists already
 		$exists = $wpdb->get_var(
 			$wpdb->prepare(
 				'SELECT meta_key FROM ' . $this->table . ' WHERE object_id=%d AND meta_key=%s LIMIT 1',
-				$obj_id,
+				$this->object_id,
 				$meta_key
 			)
 		);
 
 		// Prepare the row to insert/update
 		$payload = array(
-			'object_id'  => $obj_id,
+			'object_id'  => $this->object_id,
 			'meta_key'   => $meta_key,
 			'meta_value' => maybe_serialize( $meta_value ),
 		);
@@ -117,7 +119,7 @@ class Meta {
 				$this->table,
 				$payload,
 				array( 
-					'object_id' => $obj_id,
+					'object_id' => $this->object_id,
 					'meta_key'  => $meta_key, 
 				)
 			);
@@ -134,15 +136,14 @@ class Meta {
 	/**
 	 * Delete single meta
 	 *
-	 * @param int    $obj_id
 	 * @param string $meta_key
 	 * @return void
 	 */
-	public function deleteMeta( $obj_id, $meta_key = null, $meta_value = null ) {
+	public function deleteMeta( $meta_key = null, $meta_value = null ) {
 		global $wpdb;
 
 		$where = array(
-			'object_id' => $obj_id,
+			'object_id' => $this->object_id,
 		);
 
 		if ( $meta_key !== null ) {
@@ -191,17 +192,16 @@ class Meta {
 	/**
 	 * Copy meta from one object to another in favour of duplication. This method will not check for duplicate. Just will add.
 	 *
-	 * @param int $object_from_id
-	 * @param int $object_to_id
+	 * @param int $to_id
 	 * @return void
 	 */
-	public function copyMeta( $object_from_id, $object_to_id ) {
+	public function copyMeta( $to_id ) {
 		global $wpdb;
 
 		$meta_data = $wpdb->get_results(
 			$wpdb->prepare(
 				'SELECT meta_key, meta_value FROM ' . $this->table . ' WHERE object_id=%d',
-				$object_from_id
+				$this->object_id
 			),
 			ARRAY_A
 		);
@@ -211,7 +211,7 @@ class Meta {
 			$wpdb->insert(
 				$this->table,
 				array(
-					'object_id'  => $object_to_id,
+					'object_id'  => $to_id,
 					'meta_key'   => $meta['meta_key'],
 					'meta_value' => $meta['meta_value'],
 				)

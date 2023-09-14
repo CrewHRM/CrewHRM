@@ -172,6 +172,11 @@ export function getFileId( file ) {
 	}
 }
 
+export function scrollLock(lock) {
+	document.getElementsByTagName('html')[0].style.overflow = lock ? 'hidden' : '';
+	document.getElementsByTagName('body')[0].style.overflow = lock ? 'hidden' : '';
+}
+
 export const is_production = process.env.NODE_ENV === 'production';
 export const countries_array = getCountries(true);
 export const countries_object = getCountries(false);
