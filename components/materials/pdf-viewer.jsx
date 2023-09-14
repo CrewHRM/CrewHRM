@@ -8,7 +8,7 @@ import { __ } from '../utilities/helpers.jsx';
 import '@react-pdf-viewer/core/lib/styles/index.css';
 import '@react-pdf-viewer/default-layout/lib/styles/index.css';
 
-export function PDFViewer({ src }) {
+export function PDFViewer({ src, defaultScale, height='750px', width='100%' }) {
     const [state, setState] = useState({
         error: false,
         loaded: false
@@ -20,11 +20,12 @@ export function PDFViewer({ src }) {
             style={
                 state.error || !state.loaded
                     ? {}
-                    : { border: '1px solid rgba(0, 0, 0, 0.3)', height: '750px' }
+                    : { border: '1px solid rgba(0, 0, 0, 0.3)', height, width }
             }
         >
             <Worker workerUrl={`${window.CrewHRM.dist_url}libraries/pdf.worker.js`}>
                 <Viewer
+					defaultScale={defaultScale}
                     fileUrl={src}
                     plugins={[defaultLayoutPluginInstance]}
                     renderError={() => setState({ ...state, error: true })}
@@ -34,8 +35,8 @@ export function PDFViewer({ src }) {
                             className={'d-flex flex-direction-column row-gap-15 align-items-center justify-content-center'.classNames()}
                         >
                             <CircularProgress
-                                size={100}
-                                strokeWidth={5}
+                                size={50}
+                                strokeWidth={3}
                                 percentage={Math.round(percentages)}
                                 showPercent={true}
                                 fontSize={24}

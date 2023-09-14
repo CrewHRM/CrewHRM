@@ -3,6 +3,7 @@ import ImageZoom from 'react-image-zooom';
 
 import { CoverImage } from "../image/image.jsx";
 import { getFileId, scrollLock } from "../../utilities/helpers.jsx";
+import { PDFViewer } from "../pdf-viewer.jsx";
 
 import { IconImage } from '../dynamic-svg/icon-image.jsx';
 import { IconAudio } from '../dynamic-svg/icon-audio.jsx';
@@ -30,14 +31,12 @@ export function RenderMedia({media, onDelete, theme='grid', overlay=true}) {
 
 	const openPreview=(e, attachment)=>{
 
-		console.log(attachment);
-		e.preventDefault();
-
 		// Don't prevent default if it is not previewable
 		if ( ['image', 'audio', 'video', 'pdf'].indexOf( attachment.media_type ) === -1 ) {
 			return;
 		}
 
+		e.preventDefault();
 
 		setState({
 			...state,
@@ -134,8 +133,8 @@ export function RenderMedia({media, onDelete, theme='grid', overlay=true}) {
 										/> : null
 									}
 									<span
-										className={`d-block margin-top-5 font-size-13 font-weight-400 line-height-24 letter-spacing--13 line-clamp line-clamp-1 color-${
-											is_image ? 'white' : 'light'
+										className={`d-block margin-top-5 font-size-13 font-weight-400 line-height-24 letter-spacing--13 line-clamp line-clamp-1 ${
+											is_image ? 'color-white' : 'color-text-light'
 										}`.classNames()}
 									>
 										{file_name}
@@ -150,20 +149,61 @@ export function RenderMedia({media, onDelete, theme='grid', overlay=true}) {
 	</>
 }
 
-export function RenderMediaPreview({attachment:{ media_type, file_url}, onClosePreview}) {
+export function RenderMediaPreview(props) {
 	
+	const {
+		attachment:{
+			mime_type, 
+			media_type, 
+			file_url
+		}, 
+		onClosePreview 
+	} = props;
+
 	useEffect(()=>{
 		scrollLock(true);
 		return ()=>scrollLock(false);
 	}, )
 	
 	return <div className={`preview media-type-${media_type}`.classNames(style) + 'position-fixed left-0 right-0 top-0 bottom-0 w-full h-full padding-50'.classNames()} onClick={onClosePreview}>
+		<span 
+			className={'cursor-pointer bg-color-danger width-20 height-20 d-flex align-items-center justify-content-center position-fixed top-42 right-42'.classNames()} 
+			style={{borderRadius: '50%', zIndex: 99}} 
+			onClick={onClosePreview}
+		>
+			<i className={'ch-icon ch-icon-times color-white font-size-12'.classNames()}></i>
+		</span>
 		<div className={'w-full h-full d-flex align-items-center justify-content-center'.classNames()} onClick={e=>e.stopPropagation()}>
 			{
 				media_type === 'image' ? 
 					<ImageZoom src={file_url} zoom="180"/>
 				: null
 			}
+			
+			{
+				media_type === 'pdf' ? 
+					<PDFViewer src={file_url} height="100%" defaultScale={1}/>
+				: null
+			}
+			
+			{
+				media_type === 'audio' ? 
+					<audio autoPlay={true} controls={true} className={'w-full'.classNames()}>
+						<source src={file_url} type={mime_type} />
+						Your browser does not support the audio element.
+					</audio>
+				: null
+			}
+
+			{
+				media_type === 'video' ? 
+					<video autoPlay={true} controls={true} className={'w-full h-full'.classNames()}>
+						<source src={file_url} type={mime_type} />
+						Your browser does not support the audio element.
+					</video>
+				: null
+			}
+			
 		</div>
 	</div>
 }

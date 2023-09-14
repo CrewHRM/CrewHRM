@@ -40,6 +40,18 @@
 		border-radius: 10px;
 	}
 
+	&.media-type-audio {
+		&>div {
+			background-color: transparent;
+		}
+	}
+
+	&.media-type-video {
+		&>div {
+			background-color: black;
+		}
+	}
+
 	&.media-type-image {
 		figure {
 			width: 100%;
