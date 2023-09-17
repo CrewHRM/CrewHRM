@@ -9,6 +9,7 @@ import { FormActionButtons } from '../../../../materials/form-action.jsx';
 import { SortableList } from '../../../../materials/sortable-list.jsx';
 import { ContextJobEditor } from '../index.jsx';
 import { sections_fields } from './form-structure.jsx';
+import { Conditional } from '../../../../materials/conditional.jsx';
 
 const getQuestionId = () => {
     return '_question_' + getRandomString();
@@ -121,18 +122,17 @@ export function ApplicationForm() {
 
     return (
         <>
-            {(state.pointer && (
-                <FieldEditorModal
+			<Conditional show={state.pointer}>
+				<FieldEditorModal
                     field={
-                        values.application_form[state.pointer.section_name].fields[
-                            state.pointer.field_index
+                        values.application_form[state.pointer?.section_name]?.fields?.[
+                            state.pointer?.field_index
                         ] || {}
                     }
                     updateField={updateField}
                 />
-            )) ||
-                null}
-
+			</Conditional>
+			
             <div
                 data-crewhrm-selector="application-builder"
                 className={'application'.classNames(style)}

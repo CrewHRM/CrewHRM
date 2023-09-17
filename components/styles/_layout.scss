@@ -159,16 +159,6 @@ $autos: 'width', 'height', 'margin';
     }
 }
 
-// Word break
-$breaks: 'normal', 'break-word';
-@each $break in $breaks {
-	.word-break-#{$break} {
-		&, & * {
-			word-break: #{$break};
-		}
-	}
-}
-
 $aligns: 'center', 'start', 'end', 'flex-start', 'flex-end', 'stretch';
 @mixin alignItems($class) {
     @each $align in $aligns {

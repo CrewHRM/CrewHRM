@@ -18,7 +18,7 @@ export function OverView({ application = {} }) {
                 return (
                     <div key={id}>
                         <span
-                            className={'d-block font-size-17 font-weight-500 line-height-24 letter-spacing--17 color-text margin-bottom-1 word-break-break-word'.classNames()}
+                            className={'d-block font-size-17 font-weight-500 line-height-24 letter-spacing--17 color-text margin-bottom-1'.classNames()}
                         >
                             {label}
                         </span>

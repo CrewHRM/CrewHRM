@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { __, isEmptyString } from '../../../../../../../utilities/helpers.jsx';
+import { __, isEmpty } from '../../../../../../../utilities/helpers.jsx';
 import { TextEditor } from '../../../../../../../materials/text-editor/text-editor.jsx';
 
 import style from './email.module.scss';
@@ -74,7 +74,7 @@ console.log(value);
 		});
 	}
 
-	const button_disabled = Object.keys(state.values).filter(name=>isEmptyString( state.values[name] )).length>0;
+	const button_disabled = Object.keys(state.values).filter(name=>isEmpty( state.values[name] )).length>0;
 
     return (
         <div data-crewhrm-selector="email">

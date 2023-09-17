@@ -11,7 +11,7 @@ export function DateField(props) {
             type="date"
             pattern="\d{4}-\d{2}-\d{2}"
             icon_position="right"
-            {...{ onChange, className, inputClassName, value }}
+            {...{ onChange, className, inputClassName, value: value || '' }}
         />
     );
 }

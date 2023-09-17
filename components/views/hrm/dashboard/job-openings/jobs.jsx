@@ -14,6 +14,7 @@ import { StatsRow } from './segments/stats-row.jsx';
 import { FilterBar } from './segments/filter-bar.jsx';
 import { LoadingIcon } from '../../../../materials/loading-icon/loading-icon.jsx';
 import { ContextToast } from '../../../../materials/toast/toast.jsx';
+import { ContextWarning } from '../../../../materials/warning/warning.jsx';
 
 const special_stages = {
     _hired_: __('Hired'),
@@ -37,19 +38,22 @@ const options = [
         name: 'duplicate',
         label: __('Duplicate'),
         icon: 'ch-icon ch-icon-copy',
-        for: 'all'
+        for: 'all',
+		warning: __('Are you sure to duplicate?')
     },
     {
         name: 'archive',
         label: __('Archive'),
         icon: 'ch-icon ch-icon-archive',
-        for: ['publish', 'draft', 'expired']
+        for: ['publish', 'draft', 'expired'],
+		warning: __('Are you sure to archive?')
     },
     {
         name: 'unarchive',
         label: __('Un-archive'),
         icon: 'ch-icon ch-icon-archive',
-        for: ['archive']
+        for: ['archive'],
+		warning: __('Are you sure to un-archive?')
     },
     {
         name: 'share',
@@ -61,7 +65,8 @@ const options = [
         name: 'delete',
         label: __('Delete'),
         icon: 'ch-icon ch-icon-trash',
-        for: 'all'
+        for: 'all',
+		warning: __('Are you sure to delete permanently?')
     }
 ];
 
@@ -89,6 +94,7 @@ export const status_keys = Object.keys(statuses);
 export function JobOpenings(props) {
     let { is_overview, className } = props;
     const { ajaxToast } = useContext(ContextToast);
+	const {showWarning, closeWarning} = useContext(ContextWarning);
     const navigate = useNavigate();
 
     const [state, setState] = useState({
@@ -136,30 +142,39 @@ export function JobOpenings(props) {
             case 'unarchive':
             case 'delete':
             case 'duplicate':
-                // Register loading state
-                setState({
-                    ...state,
-                    in_action: action
-                });
+				showWarning(
+					__(options.find(o=>o.name===action)?.warning || 'Sure to proceed?'),
+					()=>{
+						// Close warning modal and execute in background
+						closeWarning();
 
-                // Server request for action
-                request(
-                    'single_job_action',
-                    { job_action: action, job_id },
-                    (resp) => {
-                        // Remove loading state
-                        setState({
-                            ...state,
-                            in_action: null
-                        });
+						// Register loading state
+						setState({
+							...state,
+							in_action: action
+						});
 
-                        // Show response notice
-                        ajaxToast(resp);
+						// Server request for action
+						request(
+							'single_job_action',
+							{ job_action: action, job_id },
+							(resp) => {
+								// Remove loading state
+								setState({
+									...state,
+									in_action: null
+								});
 
-                        // Get updated job list again
-                        getJobs(action === 'duplicate' ? { page: 1 } : {}); // Get to first page to see the duplicated one.
-                    }
-                );
+								// Show response notice
+								ajaxToast(resp);
+
+								// Get updated job list again
+								getJobs(action === 'duplicate' ? { page: 1 } : {}); // Get to first page to see the duplicated one.
+							
+							}
+						);
+					}
+				);
                 break;
         }
     };

@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { Tabs } from '../../../../materials/tabs/tabs.jsx';
-import { __, countries_object } from '../../../../utilities/helpers.jsx';
+import { __, countries_object, isEmpty } from '../../../../utilities/helpers.jsx';
 import { ContextForm, FormFields } from '../../../../materials/form.jsx';
 import { FormActionButtons } from '../../../../materials/form-action.jsx';
 import { request } from '../../../../utilities/request.jsx';
@@ -117,10 +117,6 @@ export function Apply({ job = {} }) {
 
         // Loop through fields
         for (let i = 0; i < fields.length; i++) {
-            // Skip null that is used for line break
-            if (!fields[i] || !fields[i].name) {
-                continue;
-            }
 
             // If it is already false, break the loop, no more check necessary
             if (!_enabled) {
@@ -133,10 +129,15 @@ export function Apply({ job = {} }) {
                 continue;
             }
 
+            // Skip null that is used for line break
+            if (!fields[i] || !fields[i].name) {
+                continue;
+            }
+
             const { name, required } = fields[i];
             const value = state.values[name];
 
-            if (required && (!value || (Array.isArray(value) && !value.length))) {
+            if (required && isEmpty(value)) {
                 _enabled = false;
             }
         }
@@ -212,7 +213,7 @@ export function Apply({ job = {} }) {
                 {(is_segment && (
                     <div>
                         <FormActionButtons
-                            /* disabledNext={!is_next_enabled} */
+                            disabledNext={!is_next_enabled}
                             title={
                                 !is_next_enabled
                                     ? __('Please fill all the required fields first')

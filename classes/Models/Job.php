@@ -39,7 +39,7 @@ class Job {
 			'experience_years'     => $job['experience_years'] ?? null,
 			'experience_level'     => $job['experience_level'] ?? null,
 			'application_deadline' => $job['application_deadline'] ?? null,
-			'application_form'     => maybe_serialize( $job['application_form'] ),
+			'application_form'     => maybe_serialize( $job['application_form'] ?? array() ),
 			'job_status'           => $job['job_status'] ?? 'draft',
 			'currency'             => $job['currency'] ?? null,
 		);
@@ -69,6 +69,10 @@ class Job {
 
 			// Set the newly created ID
 			$job_id = $wpdb->insert_id;
+		}
+
+		if( empty( $job_id ) ) {
+			return null;
 		}
 
 		// Insert Job meta

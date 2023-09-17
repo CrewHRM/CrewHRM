@@ -49,14 +49,18 @@ class JobManagement {
 	 */
 	public static function updateJob( array $data ) {
 		// Can access job directly as it is checked by dispatcher already using prerequisities array
-		$data    = $data['job'];
-		$is_auto = ( $data['auto_save'] ?? false ) == true;
+		$data       = $data['job'];
+		$new_status = $data['job_status'];
+		$is_publish = $new_status === 'publish';
 
 		// If it is autosave while there is a published version, put it in meta instead to avoid conflict between edited and published version.
 		// Editor will show prompt in next opening that there's a cached autosaved version. 
 		if ( ! empty( $data['job_id'] ) ) {
-			$status = Job::getFiled( $data['job_id'], 'job_status' );
-			if ( $status !== 'draft' ) {
+
+			$_status = Job::getFiled( $data['job_id'], 'job_status' );
+
+			// Auto save
+			if ( $_status === 'publish' && ! $is_publish ) {
 				Meta::job( $data['job_id'] )->updateMeta( 'autosaved_job', $data );
 				wp_send_json_success();
 				return;
@@ -65,10 +69,18 @@ class JobManagement {
 
 		// Create or update job
 		$job = Job::createUpdateJob( $data );
+
+		if ( empty( $job ) ) {
+			wp_send_json_error( array( 'message' => __( 'Failed to save job', 'crewhrm' ) ) );
+		} else {
+			error_log('Here');
+			// Delete meta cache as the job saved in job table directly, no matter the job status.
+			Meta::job( $job['job_id'] )->deleteMeta( 'autosaved_job' );
+		}
 		
 		wp_send_json_success(
 			array(
-				'message'    => $is_auto ? __( 'Auto saved job' ) : __( 'Job published' ),
+				'message'    => $is_publish ? __( 'Job published', 'crewhrm' ) : __( 'Job saved', 'crewhrm' ),
 				'address_id' => $job['address_id'],
 				'stage_ids'  => $job['stage_ids'],
 				'job_id'     => $job['job_id'],
@@ -152,11 +164,16 @@ class JobManagement {
 		$job_id = $data['job_id'];
 		$job    = Job::getEditableJob( $job_id );
 
-		if ( ! empty( $job ) ) {
-			wp_send_json_success( array( 'job' => $job ) );
-		} else {
+		if ( empty( $job ) ) {
 			wp_send_json_error( array( 'message' => __( 'Job not found to edit', 'crewhrm' ) ) );
 		}
+
+		wp_send_json_success(
+			array( 
+				'job'            => $job,
+				'autosaved_job' => Meta::job( $job_id )->getMeta( 'autosaved_job' )
+			)
+		);
 	}
 
 	/**

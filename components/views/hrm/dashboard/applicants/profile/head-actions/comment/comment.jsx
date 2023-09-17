@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { __, isEmptyString } from '../../../../../../../utilities/helpers.jsx';
+import { __, isEmpty } from '../../../../../../../utilities/helpers.jsx';
 import { request } from '../../../../../../../utilities/request.jsx';
 import { ContextToast } from '../../../../../../../materials/toast/toast.jsx';
 import { ContextApplicationSession } from '../../../applicants.jsx';
@@ -60,7 +60,7 @@ export function Comment(props) {
                     </span>
                 </div>
                 <div>
-                    <button className={'button button-primary'.classNames()} disabled={isEmptyString(state.values.comment_content)} onClick={submitComment}>
+                    <button className={'button button-primary'.classNames()} disabled={isEmpty(state.values.comment_content)} onClick={submitComment}>
                         {__('Submit Comment')}
                     </button>
                 </div>

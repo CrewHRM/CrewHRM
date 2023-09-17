@@ -5,7 +5,7 @@ import { WarningWrapper } from './warning/warning.jsx';
 
 export function MountPoint({ children }) {
     return (
-        <div data-crewhrm-selector="root" className={'root'.classNames()}>
+        <div data-crewhrm-selector="root" className={'root margin-bottom-15'.classNames()}>
 			<ToastWrapper>
 				<WarningWrapper>
 					{children}

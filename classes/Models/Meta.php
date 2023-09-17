@@ -84,6 +84,8 @@ class Meta {
 			$_meta[ $result['meta_key'] ] = maybe_unserialize( $result['meta_value'] );
 		}
 
+		$_meta = _Array::castRecursive( $_meta );
+
 		return $is_singular ? ( $_meta[ $meta_key ] ?? null ) : $_meta;
 	}
 
@@ -140,7 +142,6 @@ class Meta {
 	 * @return void
 	 */
 	public function deleteMeta( $meta_key = null, $meta_value = null ) {
-		global $wpdb;
 
 		$where = array(
 			'object_id' => $this->object_id,
@@ -154,6 +155,9 @@ class Meta {
 			$where['meta_value'] = $meta_value;
 		}
 
+		// var_dump($where);
+
+		global $wpdb;
 		$wpdb->delete(
 			$this->table,
 			$where

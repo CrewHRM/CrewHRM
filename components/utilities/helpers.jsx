@@ -156,10 +156,6 @@ export function generateBackgroundColor(name) {
 	return color;
 }
 
-export function isEmptyString(str) {
-	return !str || typeof str !== 'string' || !/\S+/.test( str );
-}
-
 export function getFileId( file ) {
 	if ( file instanceof File ) {
 		// If it is uploaded file from system
@@ -210,6 +206,35 @@ export function filterObject(ob, cb) {
 	}
 
 	return new_object;
+}
+
+export function isEmpty(value, treatNumericAsEmpty = false) {
+  // Check for undefined and null values
+  if (value === undefined || value === null) {
+    return true;
+  }
+
+  // Check for empty strings
+  if (typeof value === 'string' && value.trim() === '') {
+    return true;
+  }
+
+  // Check for empty arrays
+  if (Array.isArray(value) && value.length === 0) {
+    return true;
+  }
+
+  // Check for empty objects
+  if (typeof value === 'object' && Object.keys(value).length === 0) {
+    return true;
+  }
+
+  // Check for numeric values (optional)
+  if (treatNumericAsEmpty && typeof value === 'number') {
+    return !value || isNaN(value);
+  }
+
+  return false; // If none of the above conditions are met, the value is not empty
 }
 
 export const is_production = process.env.NODE_ENV === 'production';
