@@ -1,74 +1,86 @@
 import React, { useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 
-import { __, filterUniqueColumn } from '../../../utilities/helpers.jsx';
+import { __, filterObject, filterUniqueColumn } from '../../../utilities/helpers.jsx';
 import { LoadingIcon } from '../../../materials/loading-icon/loading-icon.jsx';
 import { TextField } from '../../../materials/text-field/text-field.jsx';
 import { CoverImage } from '../../../materials/image/image.jsx';
 import { CareersSidebar } from './sidebar.jsx';
 import { CareersLoop } from './loop.jsx';
-
-import style from './listing.module.scss';
 import { request } from '../../../utilities/request.jsx';
 import { Conditional } from '../../../materials/conditional.jsx';
 
+import style from './listing.module.scss';
+
 export function Listing({ base_permalink, settings={} }) {
-    const [state, setState] = useState({
-        filters: {
-			search: '',
-			page: 1,
-			limit: 1,
-			department: null,
-			attendance_type: null,
-			country_code: null,
-			employment_type: null,
-		},
-		filter_list: [],
+	const [searchParam, setSearchParam] = useSearchParams();
+	const queryParams = {};
+	for (const [key, value] of searchParam) {
+		queryParams[key] = value;
+	}
+	const current_page = queryParams.page || 1;
+
+	const [state, setState] = useState({
         jobs: [],
+		departments: [],
 		loading: true,
-		no_more: false
+		no_more: false,
     });
 
-	const [searchState, setSearchState] = useState('');
+	const [searchState, setSearchState] = useState(null);
 
+	// Push the filters to URL state
     const setFilter = (key, value) => {
-        setState({
-            ...state,
-			no_more: false,
-            filters: {
-                ...state.filters,
-				page: 1,
-                [key]: value
-            }
-        });
+		const filters = {
+			...queryParams,
+			page: 1,
+			[key]: value
+		}
+
+		setState({
+			...state,
+			no_more: false
+		});
+
+		// Push the filters to search param 
+		setSearchParam(new URLSearchParams(filterObject(filters, v=>v)).toString());
     };
 
 	const getJobs=()=>{
 		setState({
 			...state,
-			loading: true
+			loading: true,
 		});
-
-		request('get_careers_listing', {filters: state.filters}, resp=>{
-			const {data: {jobs=[]}} = resp;
+		
+		request('get_careers_listing', {filters: {page:1, ...queryParams}}, resp=>{
+			const {data: {jobs=[], departments=[]}} = resp;
 
 			// Build jobs array
-			let jobs_combined = state.filters.page>1 ? [...state.jobs, ...jobs] : jobs;
+			let jobs_combined = current_page>1 ? [...state.jobs, ...jobs] : jobs;
 			jobs_combined = filterUniqueColumn( jobs_combined, 'job_id' );
 
 			setState({
 				...state,
 				jobs: jobs_combined,
+				departments: departments,
 				loading: false,
 				no_more: !jobs.length
 			});
 		});
 	}
 
+	// When URL state changes, put the filters in state
 	useEffect(()=>{
-		getJobs();
-	}, [state.filters]);
+		console.log(searchParam);
+        getJobs();
+	}, [searchParam]);
 
+	// Use debounce for search input to prevent excessive request
 	useEffect(()=>{
+		if ( searchState === null ) {
+			return;
+		}
+
 		const timer = window.setTimeout(()=>{
 			setFilter('search', searchState);
 		}, 500);
@@ -102,10 +114,10 @@ export function Listing({ base_permalink, settings={} }) {
             >
 				<Conditional show={settings.sidebar}>
 					<CareersSidebar 
-						filters={state.filters}
+						filters={queryParams}
 						setFilter={setFilter} 
-						filterList={state.filter_list}
-						jobs_country_codes={settings.country_codes}/>
+						jobs_country_codes={settings.country_codes}
+						departments={state.departments}/>
 				</Conditional>
 				
                 <div
@@ -116,12 +128,18 @@ export function Listing({ base_permalink, settings={} }) {
 						<TextField
 							placeholder={__('Search Keywords')}
 							iconClass={'ch-icon ch-icon-search-normal-1'.classNames()}
-							value={searchState}
+							value={searchState===null ? '' : searchState}
 							onChange={v=>setSearchState(v)}
 							className={'padding-vertical-10 padding-horizontal-11 border-1 b-color-tertiary b-color-active-primary border-radius-5'.classNames()}
 						/>
 					</Conditional>
 					
+					<Conditional show={!state.loading && !state.jobs.length}>
+						<div className={'text-align-center margin-top-10 margin-bottom-10'.classNames()}>
+							{__('No Job Found!')}
+						</div>
+					</Conditional>
+
 					<CareersLoop 
 						jobs={state.jobs} 
 						base_permalink={base_permalink}/>
@@ -137,9 +155,9 @@ export function Listing({ base_permalink, settings={} }) {
 							>
 								<span 
 									className={`${!state.loading ? 'cursor-pointer hover-underline' : ''}`.classNames()} 
-									onClick={()=>state.loading ? 0 : setFilter('page', state.filters.page+1)}
+									onClick={()=>state.loading ? 0 : setFilter('page', current_page+1)}
 								>
-									{state.loading ? (state.filters.page>1 ? __('Loading More...') : __('Loading...')) : __('Load More')}
+									{state.loading ? (current_page>1 ? __('Loading More...') : __('Loading...')) : __('Load More')}
 								</span>
 							</div>
 						</div>

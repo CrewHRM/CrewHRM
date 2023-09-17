@@ -200,6 +200,18 @@ export function filterUniqueColumn(array, column) {
 	});
 }
 
+export function filterObject(ob, cb) {
+	const new_object = {};
+
+	for ( let k in ob ) {
+		if ( cb( ob[k], k ) ) {
+			new_object[k] = ob[k];
+		}
+	}
+
+	return new_object;
+}
+
 export const is_production = process.env.NODE_ENV === 'production';
 export const countries_array = getCountries(true);
 export const countries_object = getCountries(false);

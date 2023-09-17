@@ -5,50 +5,20 @@ import { countries_object, __ } from "../../../utilities/helpers.jsx";
 
 import style from './listing.module.scss';
 
-export function CareersSidebar({setFilter, filters, jobs_country_codes=[]}) {
+export function CareersSidebar({setFilter, filters, jobs_country_codes=[], departments=[]}) {
 
 	const filterList = {
-		/* department: {
+		department_id: {
 			section_label: __('Departments'),
 			selection_type: 'list',
-			options: [
-				{
-					id: 1,
-					label: 'Business Development',
-					count: 2
-				},
-				{
-					id: 2,
-					label: 'Business Analytics/Operations',
-					count: 5
-				},
-				{
-					id: 3,
-					label: 'Backend Engineer',
-					count: 1
-				},
-				{
-					id: 4,
-					label: 'Brand & Marketing',
-					count: 1
-				},
-				{
-					id: 5,
-					label: 'Copywriter',
-					count: 1
-				},
-				{
-					id: 6,
-					label: 'Creative Director',
-					count: 2
-				},
-				{
-					id: 7,
-					label: 'Data Science',
-					count: 1
+			options: departments.map(d=>{
+				return {
+					id: d.department_id,
+					label: d.department_name,
+					count: d.job_count
 				}
-			]
-		}, */
+			}),
+		},
 		country_code: {
 			section_label: __('Location'),
 			selection_type: 'tag',
@@ -84,7 +54,7 @@ export function CareersSidebar({setFilter, filters, jobs_country_codes=[]}) {
 					options = []
 				} = filterList[filter_key];
 
-				return options.length>1 ? <div
+				return options.length ? <div
 					key={filter_key}
 					className={'margin-bottom-23 overflow-auto'.classNames()}
 				>
@@ -96,7 +66,7 @@ export function CareersSidebar({setFilter, filters, jobs_country_codes=[]}) {
 
 					{selection_type == 'list' ? options.map((option) => {
 							let { id, label, count } = option;
-							let is_active = filters[filter_key] === id;
+							let is_active = filters[filter_key] == id;
 							return (
 								<span
 									key={id}

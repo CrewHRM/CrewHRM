@@ -33,10 +33,13 @@ export function Location() {
                         theme="button-control"
                         behavior="checkbox"
                         value={values.attendance_type || []}
-                        options={Object.keys(attendance_types).map((location) => {
-                            return { id: location, label: attendance_types[location] };
-                        })}
                         onChange={(types) => onChange('attendance_type', types)}
+                        options={Object.keys(attendance_types).map((a) => {
+                            return { 
+								id: a, 
+								label: attendance_types[a] 
+							};
+                        })}
                     />
                 </div>
                 <div className={'right-col'.classNames(style)}></div>
