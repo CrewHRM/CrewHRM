@@ -239,12 +239,12 @@ class Job {
 	 * @param array $args
 	 * @return array
 	 */
-	public static function getCareersListing( array $args, $counter = false ) {
-		$selects      = $counter ? 'COUNT(job.job_id)' : 'job.job_id, job.job_title, address.*';
+	public static function getCareersListing( array $args ) {
+		$selects      = 'job.job_id, job.job_title, address.*';
 		$limit        = Number::getInt( $args['limit'], 1, 20 );
 		$offset       = ( Number::getInt( $args['page'] ?? 1, 1 ) - 1 ) * $limit;
-		$limit_clause = $counter ? '' : " LIMIT {$limit} OFFSET {$offset}";
-		$where_clause = '';
+		$limit_clause = " LIMIT {$limit} OFFSET {$offset}";
+		$where_clause = "job.job_status='publish'";
 
 		// Add department filter
 		if ( ! empty( $args['department_id'] ) ) {
@@ -273,37 +273,25 @@ class Job {
 			$where_clause .= " AND employment.meta_key='employment_type' AND employment.meta_value LIKE '%{$employment_type}%'"; 
 		}
 
-		/// Build the SQL
-		$query = "SELECT DISTINCT {$selects}
+		global $wpdb;
+
+		// Otherwise prepare other meta data
+		$jobs = $wpdb->get_results(
+			"SELECT DISTINCT {$selects}
 			FROM " . DB::jobs() . " job
 				LEFT JOIN " . DB::addresses() . " address ON job.address_id=address.address_id 
 				LEFT JOIN " . DB::jobmeta() . " employment ON job.job_id=employment.object_id 
-			WHERE job.job_status='publish' {$where_clause} {$limit_clause}";
-
-		error_log( $query );
-
-		global $wpdb;
-
-		// If counter, just return the count
-		if ( $counter ) {
-			return $wpdb->get_var( $query );
-		}
-		
-		// Otherwise prepare other meta data
-		$jobs = $wpdb->get_results( $query, ARRAY_A );
+			WHERE {$where_clause} {$limit_clause}", 
+			ARRAY_A
+		);
 		$jobs = _Array::getArray( $jobs );
 		$jobs = _Array::indexify( $jobs, 'job_id' );
 		$jobs = Meta::job( null )->assignBulkMeta( $jobs );
 		
-		// Add department counter
-		/* $departments = Department::getDepartments();
-		$department_ids = array_column( $departments, 'department_id' );
-		foreach ( $department_ids as $department_id ) {
-			$new_args = array_merge( $args['department_id', ] )
-			$ self::getCareersListing(  )
-		} */
-
-		return $jobs;
+		return array(
+			'jobs'        => $jobs,
+			'departments' => array()
+		);
 	}
 
 	/**

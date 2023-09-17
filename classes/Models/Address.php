@@ -79,4 +79,19 @@ class Address {
 
 		return empty( $address ) ? null : $address;
 	}
+
+	/**
+	 * Get country codes that are connected to published jobs.
+	 *
+	 * @return array
+	 */
+	public static function getJobsCountryCodes() {
+		global $wpdb;
+		return $wpdb->get_col(
+			"SELECT DISTINCT address.country_code 
+			FROM " . DB::addresses() . " address 
+				INNER JOIN " . DB::jobs() . " job ON address.address_id=job.address_id
+			WHERE job.job_status='publish' AND address.country_code IS NOT NULL AND address.country_code!='' ORDER BY address.country_code ASC"
+		);
+	}
 }

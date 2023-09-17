@@ -200,7 +200,8 @@ class ApplicationHandler {
 		// 
 		wp_send_json_success(
 			array(
-				'jobs' => array_values( $jobs ),
+				'jobs' => array_values( $jobs['jobs'] ),
+				'departments' => $jobs['departments']
 			)
 		);
 	}

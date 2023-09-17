@@ -93,6 +93,7 @@ export function Sidebar({ stage_id }) {
 
     // Debounce for search input
     // To Do: Use this same technique in settings undo/redo and job auto save.
+	// To Do: Fix rich editor glithch with undo/redo. Need to update contents as stage changes.
     useEffect(() => {
         // Prevent duplicate ajax call
         if (!state.mounted) {

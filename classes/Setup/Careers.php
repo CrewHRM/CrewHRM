@@ -3,6 +3,8 @@
 namespace CrewHRM\Setup;
 
 use CrewHRM\Helpers\Utilities;
+use CrewHRM\Models\Address;
+use CrewHRM\Models\Career;
 use CrewHRM\Models\Settings;
 
 class Careers {
@@ -56,7 +58,10 @@ class Careers {
 			$settings = array(
 				'header'         => ( $settings['careers_header'] ?? false ) === true,
 				'tagline'        => $settings['careers_tagline'] ?? '',
-				'hero_image_url' => is_array( $settings['careers_hero_image'] ?? null ) ? ( $settings['careers_hero_image']['file_url'] ) : ''
+				'sidebar'        => $settings['careers_sidebar'] ?? false,
+				'search'         => $settings['careers_search'] ?? false,
+				'hero_image_url' => is_array( $settings['careers_hero_image'] ?? null ) ? ( $settings['careers_hero_image']['file_url'] ) : '',
+				'country_codes'  => Address::getJobsCountryCodes()
 			);
 
 			return '<div 

@@ -40,7 +40,7 @@ class CompanyProfile {
 	public static function saveCompanyProfile( array $data ) {
 		
 		// Update the settings now
-		Settings::saveSettings( $data['settings'], Settings::KEY_COMPANY );
+		Settings::saveCompanyProfile( $data['settings'] );
 
 		wp_send_json_success( array( 'message' => __( 'Company profile updated' ) ) );
 	}
