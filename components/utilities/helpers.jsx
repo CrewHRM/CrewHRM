@@ -177,6 +177,29 @@ export function scrollLock(lock) {
 	document.getElementsByTagName('body')[0].style.overflow = lock ? 'hidden' : '';
 }
 
+export function getAddress({ street_address, city, province, zip_code, country_code }) {
+    return [street_address, city, province + ' ' + zip_code, countries_object[country_code]]
+        .map((a) => (a || '').trim())
+        .filter((a) => a)
+        .join(', ');
+}
+
+export function filterUniqueColumn(array, column) {
+	
+	let _values   = [];
+	
+	return array.filter(a=>{
+		let _v = a[column];
+
+		if ( _values.indexOf(_v) > -1 ) {
+			return false;
+		}
+
+		_values.push(_v);
+		return true;
+	});
+}
+
 export const is_production = process.env.NODE_ENV === 'production';
 export const countries_array = getCountries(true);
 export const countries_object = getCountries(false);

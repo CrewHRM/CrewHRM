@@ -63,7 +63,6 @@ class Admin extends Main {
 	public function mainPage() {
 		echo '<div 
 				id="' . esc_attr( self::MOUNTPOINT_DASHBOARD ) . '" 
-				data-crewhrm-nonce="' . esc_attr( wp_create_nonce( self::MOUNTPOINT_DASHBOARD ) ) . '"
 				data-departments="' . esc_attr( json_encode( Department::getDepartments() ) ) . '"></div>';
 	}
 	
@@ -75,7 +74,6 @@ class Admin extends Main {
 	public function companyProfilePage() {
 		echo '<div 
 				id="' . esc_attr( self::MOUNTPOINT_COMPANY ) . '" 
-				data-crewhrm-nonce="' . esc_attr( wp_create_nonce( self::MOUNTPOINT_COMPANY ) ) . '"
 				data-company-profile="' . esc_attr( json_encode( (object) Settings::getCompanyProfile() ) ) . '"
 				data-departments="' . esc_attr( json_encode( Department::getDepartments() ) ) . '"></div>';
 	}
@@ -92,7 +90,6 @@ class Admin extends Main {
 		
 		echo '<div 
 			id="' . esc_attr( self::MOUNTPOINT_SETTINGS ) . '" 
-			data-crewhrm-nonce="' . esc_attr( wp_create_nonce( self::MOUNTPOINT_SETTINGS ) ) . '"
 			data-settings="' . esc_attr( json_encode( (object) Settings::getSettings() ) ) . '"
 			data-resources="' . esc_attr( json_encode( $resources ) ) . '"></div>';
 	}

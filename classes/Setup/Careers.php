@@ -3,6 +3,7 @@
 namespace CrewHRM\Setup;
 
 use CrewHRM\Helpers\Utilities;
+use CrewHRM\Models\Settings;
 
 class Careers {
 	/**
@@ -50,10 +51,18 @@ class Careers {
 	public function renderCareers() {
 		if ( get_the_ID() === Utilities::getCareersPageId() ) {
 
+			// Prepare careers page settings
+			$settings = Settings::getSettings();
+			$settings = array(
+				'header'         => ( $settings['careers_header'] ?? false ) === true,
+				'tagline'        => $settings['careers_tagline'] ?? '',
+				'hero_image_url' => is_array( $settings['careers_hero_image'] ?? null ) ? ( $settings['careers_hero_image']['file_url'] ) : ''
+			);
+
 			return '<div 
 					id="' . esc_attr( self::MOUNTPOINT ) . '" 
-					data-crewhrm-nonce="' . esc_attr( wp_create_nonce( self::MOUNTPOINT ) ) . '"
-					data-base_permalink="' . trim( str_replace( get_home_url(), '', get_permalink( get_the_ID() ) ), '/' ) . '"></div>';
+					data-base_permalink="' . trim( str_replace( get_home_url(), '', get_permalink( get_the_ID() ) ), '/' ) . '"
+					data-settings="' . esc_attr( json_encode( $settings ) ) . '"></div>';
 		}
 	}
 }

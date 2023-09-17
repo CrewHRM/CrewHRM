@@ -5,6 +5,7 @@ namespace CrewHRM\Controllers;
 use CrewHRM\Helpers\File;
 use CrewHRM\Models\Application;
 use CrewHRM\Models\Comment;
+use CrewHRM\Models\Job;
 use CrewHRM\Models\Mail;
 use CrewHRM\Models\Pipeline;
 use CrewHRM\Models\Settings;
@@ -59,6 +60,11 @@ class ApplicationHandler {
 				'administrator',
 				'editor',
 			),
+		),
+		'getCareersListing' => array(
+			'data' => array(
+				'filters' => 'type:array',
+			)
 		)
 	);
 
@@ -180,5 +186,22 @@ class ApplicationHandler {
 		} else {
 			wp_send_json_error( array( 'message' => __( 'No activity', 'crewhrm' ) ) );
 		}
+	}
+
+	/**
+	 * Provide listing for careers page
+	 *
+	 * @param array $data
+	 * @return void
+	 */
+	public static function getCareersListing( array $data ) {
+		$jobs = Job::getCareersListing( $data['filters'] );
+
+		// 
+		wp_send_json_success(
+			array(
+				'jobs' => array_values( $jobs ),
+			)
+		);
 	}
 }

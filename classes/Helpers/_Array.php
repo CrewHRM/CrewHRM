@@ -4,18 +4,6 @@ namespace CrewHRM\Helpers;
 
 class _Array {
 	/**
-	 * Return array
-	 *
-	 * @param mixed $value
-	 * @return array
-	 */
-	public static function getArray( $value ) {
-		$array = is_array( $value ) ? $value : array();
-		$array = self::castRecursive( $array );
-		return $array;
-	}
-
-	/**
 	 * Rename array keys
 	 *
 	 * @param array $array Target array
@@ -74,6 +62,16 @@ class _Array {
 	}
 
 	/**
+	 * Return array no matter what. And cast values to appropriate data type.
+	 *
+	 * @param mixed $value
+	 * @return array
+	 */
+	public static function getArray( $value ) {
+		return self::castRecursive( is_array( $value ) ? $value : array() );
+	}
+
+	/**
 	 * Cast number, bool from string.
 	 *
 	 * @param array $array
@@ -91,19 +89,25 @@ class _Array {
 
 			if ( is_string( $value ) ) {
 
-				// Cast number
 				if ( is_numeric( $value ) ) {
+					// Cast number
 					$array[ $index ] = (int) $value;
-				}
 
-				// Cast boolean true
-				if ( $value === 'true' ) {
+				} else if ( $value === 'true' ) {
+					// Cast boolean true
 					$array[ $index ] = true;
-				}
 
-				// Cast boolean false
-				if ( $value === 'false' ) {
+				} else if ( $value === 'false' ) {
+					// Cast boolean false
 					$array[ $index ] = false;
+
+				} else if ( $value === 'null' ) {
+					// Cast null
+					$array[ $index ] = null;
+
+				} else {
+					// Maybe unserialize
+					$array[ $index ] = maybe_unserialize( $value );
 				}
 			}
 		}
@@ -135,10 +139,9 @@ class _Array {
 	 * @param array  $new
 	 * @return array
 	 */
-	public static function appendArray( array $array, string $key, $new ) {
+	public static function appendColumn( array $array, string $key, $new ) {
 		foreach ( $array as $index => $element ) {
-			$prev                    = $array[ $index ][ $key ] ?? array();
-			$array[ $index ][ $key ] = array_merge_recursive( $prev, $new );
+			$array[ $index ][ $key ] = $new;
 		}
 
 		return $array;

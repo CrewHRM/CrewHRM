@@ -5,6 +5,7 @@ import { __ } from '../utilities/helpers.jsx';
 import { DateField } from './date-time.jsx';
 import { ExpandableContent } from './ExpandableContent/expandable-content.jsx';
 import { TextEditor } from './text-editor/text-editor.jsx';
+import { Conditional } from './conditional.jsx';
 
 const section_label_class =
     'd-block font-size-17 font-weight-600 line-height-24 letter-spacing--17 color-text-light text-transform-uppercase margin-bottom-20'.classNames();
@@ -62,112 +63,108 @@ export function RenderField({ field, defaultEnabled }) {
         onChange(name, array);
     };
 
-    return !enabled ? null : (
-        <div data-crewhrm-selector="single-field" className={('flex-' + flex).classNames()}>
-            {(disclaimer && (
-                <ExpandableContent className={'margin-bottom-30'.classNames()}>
+    return <Conditional show={enabled}>
+		<div data-crewhrm-selector="single-field" className={('flex-' + flex).classNames()}>
+			<Conditional show={disclaimer}>
+				<ExpandableContent className={'margin-bottom-30'.classNames()}>
                     <span
                         className={'d-block font-size-20 font-weight-600 color-text'.classNames()}
                     >
-                        {disclaimer.heading}
+                        {disclaimer?.heading}
                     </span>
                     <div
                         className={'font-size-15 font-weight-400 line-height-24 letter-spacing--15 color-text'.classNames()}
                     >
-                        {disclaimer.description}
+                        {disclaimer?.description}
                     </div>
                 </ExpandableContent>
-            )) ||
-                null}
-
+			</Conditional>
+			
             <span className={label_class}>
                 {label}
-                {label && required ? <span className={'color-danger'.classNames()}>*</span> : null}
+				<Conditional show={label && required}>
+					<span className={'color-danger'.classNames()}>*</span>
+				</Conditional>
             </span>
 
-            {(type == 'text' && (
-                <input
+			<Conditional show={type == 'text'}>
+				<input
                     value={values[name] || ''}
                     type="text"
                     className={input_text_class}
                     placeholder={placeholder}
                     onChange={(e) => onChange(name, e.currentTarget.value)}
                 />
-            )) ||
-                null}
-
-            {(type == 'textarea' && (
-                <textarea
+			</Conditional>
+			
+			<Conditional show={type == 'textarea'}>
+				<textarea
                     value={values[name] || ''}
                     className={text_area_class}
                     placeholder={placeholder}
                     onChange={(e) => onChange(name, e.currentTarget.value)}
                 ></textarea>
-            )) ||
-                null}
-
-            {(type == 'textarea_rich' && (
-                <TextEditor
+			</Conditional>
+			
+			<Conditional show={type == 'textarea_rich'}>
+				<TextEditor
                     onChange={(v) => onChange(name, v)}
                     value={values[name] || ''}
                     placeholder={placeholder}
                 />
-            )) ||
-                null}
-
-            {(type == 'dropdown' && (
-                <DropDown
+			</Conditional>
+			
+			<Conditional show={type == 'dropdown'}>
+				<DropDown
                     value={values[name]}
                     options={options}
                     placeholder={placeholder}
                     className={input_text_class}
                     onChange={(value) => onChange(name, value)}
                 />
-            )) ||
-                null}
+			</Conditional>
+			
+			<Conditional show={type == 'date'}>
+				<DateField className={input_text_class} />
+			</Conditional>
+			
+			<Conditional show={type == 'checkbox' || type == 'radio'}>
+				<div className={'d-flex flex-direction-row column-gap-20'.classNames()}>
+                    {options?.map(({ id: value, label }) => {
+						const _value = values[name];
+						let checked = false;
 
-            {(type == 'date' && <DateField className={input_text_class} />) || null}
+						if( type === 'radio' ) {
+							checked = _value=== value;
+						} else if( Array.isArray(_value) ) {
+							checked = _value.findIndex((v) => v == value) > -1;
+						}
 
-            {((type == 'checkbox' || type == 'radio') && (
-                <div className={'d-flex flex-direction-row column-gap-20'.classNames()}>
-                    {options.map(({ id: value, label }) => {
                         return (
                             <label
                                 data-crewhrm-selector={'field-' + type}
                                 key={value}
                                 className={'d-flex flex-direction-row align-items-center column-gap-7 cursor-pointer'.classNames()}
                             >
-                                <input
-                                    type={type}
-                                    name={name}
-                                    value={value}
-                                    checked={
-                                        type === 'radio'
-                                            ? values[name] === value
-                                            : (values[name] || []).findIndex((v) => v == value) > -1
-                                    }
-                                    onChange={dispatchChecks}
-                                />{' '}
-                                {label}
+                                <input {...{type, name, value, checked}} onChange={dispatchChecks}/>
+								&nbsp; {label}
                             </label>
                         );
                     })}
                 </div>
-            )) ||
-                null}
-
-            {(type == 'file' && (
-                <FileUpload
+			</Conditional>
+			
+			<Conditional show={type == 'file'}>
+				<FileUpload
                     value={values[name]}
                     textPrimary={placeholder}
 					maxlenth={maxlenth}
 					accept={accept}
                     onChange={(files) => onChange(name, files)}
                 />
-            )) ||
-                null}
+			</Conditional>
         </div>
-    );
+	</Conditional>
 }
 
 export function FormFields({ fields, defaultEnabled = true }) {

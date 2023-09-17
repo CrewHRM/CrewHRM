@@ -2,10 +2,11 @@ import React from 'react';
 import { CircularProgress } from '../circular.jsx';
 
 import style from './loading.module.scss';
+import { Conditional } from '../conditional.jsx';
 
-export function LoadingIcon({ size, center = false, color, colorSecondary = 'transparent' }) {
-    return (
-        <div
+export function LoadingIcon({ show=true, size, center = false, color, colorSecondary = 'transparent' }) {
+    return <Conditional show={show}>
+		<div
             data-crewhrm-selector="loading-icon"
             className={`${center ? 'd-block text-align-center' : 'd-inline-block'}`.classNames()}
         >
@@ -17,5 +18,5 @@ export function LoadingIcon({ size, center = false, color, colorSecondary = 'tra
                 className={'rotate'.classNames(style)}
             />
         </div>
-    );
+	</Conditional>
 }

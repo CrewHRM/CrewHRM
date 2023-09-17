@@ -41,6 +41,7 @@ class Dispatcher {
 		'mail_to_applicant'        => ApplicationHandler::class,
 		'comment_on_application'   => ApplicationHandler::class,
 		'get_application_pipeline' => ApplicationHandler::class,
+		'get_careers_listing'      => ApplicationHandler::class,
 	);
 
 	/**

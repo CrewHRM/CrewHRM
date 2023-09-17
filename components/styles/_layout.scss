@@ -244,10 +244,8 @@ $overflows: 'auto', 'hidden';
     -webkit-line-clamp: 2;
 }
 
-.appearance-none {
-    appearance: none;
-    -webkit-appearance: none;
-    -moz-appearance: none;
+.hover-underline:hover {
+	text-decoration: underline;
 }
 
 .fade-in {
