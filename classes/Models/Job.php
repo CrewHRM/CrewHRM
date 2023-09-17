@@ -35,6 +35,7 @@ class Job {
 			'salary_b'             => is_numeric( $salary[1] ?? null ) ? $salary[1] : null,
 			'salary_basis'         => $job['salary_basis'] ?? null,
 			'employment_type'      => $job['employment_type'] ?? null,
+			'attendance_type'      => maybe_serialize( $job['attendance_type'] ?? array() ), 
 			'experience_years'     => $job['experience_years'] ?? null,
 			'experience_level'     => $job['experience_level'] ?? null,
 			'application_deadline' => $job['application_deadline'] ?? null,
@@ -71,7 +72,7 @@ class Job {
 		}
 
 		// Insert Job meta
-		$to_store = [ 'attendance_type' ];
+		$to_store = array();
 		foreach ( $to_store as $field_name ) {
 			Meta::job( $job_id )->updateMeta( $field_name, ( $job[ $field_name ] ?? null ) );
 		}
@@ -240,16 +241,18 @@ class Job {
 	 * @return array
 	 */
 	public static function getCareersListing( array $args ) {
-		$selects      = 'job.job_id, job.job_title, address.*';
-		$limit        = Number::getInt( $args['limit'], 1, 20 );
-		$offset       = ( Number::getInt( $args['page'] ?? 1, 1 ) - 1 ) * $limit;
-		$limit_clause = " LIMIT {$limit} OFFSET {$offset}";
-		$where_clause = "job.job_status='publish'";
+		$selects           = 'job.job_id, job.job_title, address.*';
+		$limit             = Number::getInt( ( $args['limit'] ?? 20 ), 1, 20 );
+		$offset            = ( Number::getInt( $args['page'] ?? 1, 1 ) - 1 ) * $limit;
+		$limit_clause      = " LIMIT {$limit} OFFSET {$offset}";
+		$where_clause      = "job.job_status='publish'";
+		$department_clause = '';
 
 		// Add department filter
 		if ( ! empty( $args['department_id'] ) ) {
+			// Keep it in different clause in favour of group by query later.
 			$dep = esc_sql( $args['department_id'] );
-			$where_clause .= " AND job.department_id={$dep}";
+			$department_clause .= " AND job.department_id={$dep}";
 		}
 
 		// Add search filter
@@ -270,7 +273,7 @@ class Job {
 			$employment_type = esc_sql( $args['employment_type'] );
 			
 			// Like operator because multiple types get stored as serialized array.
-			$where_clause .= " AND employment.meta_key='employment_type' AND employment.meta_value LIKE '%{$employment_type}%'"; 
+			$where_clause .= " AND job.employment_type LIKE '%{$employment_type}%'"; 
 		}
 
 		global $wpdb;
@@ -280,17 +283,27 @@ class Job {
 			"SELECT DISTINCT {$selects}
 			FROM " . DB::jobs() . " job
 				LEFT JOIN " . DB::addresses() . " address ON job.address_id=address.address_id 
-				LEFT JOIN " . DB::jobmeta() . " employment ON job.job_id=employment.object_id 
-			WHERE {$where_clause} {$limit_clause}", 
+			WHERE {$where_clause} {$department_clause} {$limit_clause}", 
 			ARRAY_A
 		);
 		$jobs = _Array::getArray( $jobs );
 		$jobs = _Array::indexify( $jobs, 'job_id' );
 		$jobs = Meta::job( null )->assignBulkMeta( $jobs );
+
+		// Get departments
+		$departments = $wpdb->get_results(
+			"SELECT job.department_id, d.department_name, COUNT(job.job_id) AS job_count
+			FROM " . DB::jobs() . " job
+				LEFT JOIN " . DB::addresses() . " address ON job.address_id=address.address_id 
+				INNER JOIN " . DB::departments() . " d ON d.department_id=job.department_id
+			WHERE {$where_clause} GROUP BY d.department_id ORDER BY d.sequence",
+			ARRAY_A
+		);
+		$departments = _Array::getArray( $departments );
 		
 		return array(
 			'jobs'        => $jobs,
-			'departments' => array()
+			'departments' => $departments
 		);
 	}
 
