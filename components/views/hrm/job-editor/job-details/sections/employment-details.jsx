@@ -8,7 +8,7 @@ import { DateField } from '../../../../../materials/date-time.jsx';
 import { TagField } from '../../../../../materials/tag-field/tag-field.jsx';
 import { ContextJobEditor } from '../../index.jsx';
 
-export const employments_types = {
+export const employment_types = {
     full_time: __('Full Time'),
     part_time: __('Part Time'),
     contract: __('Contract'),
@@ -37,8 +37,8 @@ export function EmploymentDetails(props) {
                         value={values.employment_type}
                         behavior="radio"
                         theme="button"
-                        options={Object.keys(employments_types).map((type) => {
-                            return { id: type, label: employments_types[type] };
+                        options={Object.keys(employment_types).map((type) => {
+                            return { id: type, label: employment_types[type] };
                         })}
                         onChange={(type) => onChange('employment_type', type)}
                         fullWidth={true}

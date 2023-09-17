@@ -69,11 +69,6 @@ export const settings_fields = {
                         label: __('Max attachment size (KiloByte)'),
                         type: 'number',
                         min: 1
-                    },
-                    attachment_max_upload_count: {
-                        label: __('Max attachment files'),
-                        type: 'number',
-                        min: 1
                     }
                 }
             }

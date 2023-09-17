@@ -7,7 +7,7 @@ import { DangerouslySet } from '../../../materials/DangerouslySet.jsx';
 import { Apply } from './apply/apply.jsx';
 import { request } from '../../../utilities/request.jsx';
 import { LoadingIcon } from '../../../materials/loading-icon/loading-icon.jsx';
-import { employments_types } from '../../hrm/job-editor/job-details/sections/employment-details.jsx';
+import { employment_types } from '../../hrm/job-editor/job-details/sections/employment-details.jsx';
 import { sections_fields } from '../../hrm/job-editor/application-form/form-structure.jsx';
 
 const getForm = (_form, attrs) => {
@@ -188,7 +188,7 @@ export function Single({ base_permalink }) {
                         <RenderMeta
                             icon={'ch-icon ch-icon-briefcase'}
                             hint={__('Job Type')}
-                            content={employments_types[employment_type]}
+                            content={employment_types[employment_type]}
                         />
                         <RenderMeta
                             icon={'ch-icon ch-icon-empty-wallet'}

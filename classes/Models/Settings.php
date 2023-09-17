@@ -31,20 +31,18 @@ class Settings {
 	 */
 	public static function getSettings( $name = null, $default = null ) {
 		$data = _Array::getArray( get_option( self::KEY_SETTINGS ) );
+		$data = File::applyDynamics( $data );
 
+		// Convert to kilobyte
 		$max_upload = wp_max_upload_size() / 1024;
 
+		// Safe max range
 		if ( empty( $data['attachment_max_upload_size'] ) || $data['attachment_max_upload_size'] > $max_upload ) {
 			$data['attachment_max_upload_size'] = $max_upload;
 		}
 
-		if ( empty( $data['attachment_max_upload_count'] ) ) {
-			$data['attachment_max_upload_count'] = 3;
-		}
-		
-		$options = _Array::castRecursive( $data );
 
-		return $name !== null ? ( $options[ $name ] ?? $default ) : $options;
+		return $name !== null ? ( $data[ $name ] ?? $default ) : $data;
 	}
 
 	/**
@@ -80,7 +78,7 @@ class Settings {
 	 */
 	public static function getRecruiterEmail() {
 		// Get From company settings first
-		$email = self::getCompanyProfile( 'recruiter_email' );
+		$mail = self::getCompanyProfile( 'recruiter_email' );
 
 		// Then from global settings
 		if ( empty( $mail ) ) {

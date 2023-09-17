@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { __, getFlag } from '../../../../../utilities/helpers.jsx';
+import { __, getAddress, getFlag } from '../../../../../utilities/helpers.jsx';
 import { HeadActions } from './head-actions/head-actions.jsx';
 import { Tabs } from '../../../../../materials/tabs/tabs.jsx';
 import { OverView } from './overview/overview.jsx';
@@ -11,7 +11,6 @@ import { CoverImage } from '../../../../../materials/image/image.jsx';
 import { Line } from '../../../../../materials/line/line.jsx';
 import { request } from '../../../../../utilities/request.jsx';
 import { InitState } from '../../../../../materials/init-state.jsx';
-import { Address } from '../../../../../materials/address.jsx';
 import { ContextApplicationSession } from '../applicants.jsx';
 
 import style from './profile.module.scss';
@@ -125,7 +124,7 @@ export function Profile({ job_id }) {
                             <span
                                 className={'d-block font-size-15 font-weight-400 line-height-24 color-text-light margin-bottom-2'.classNames()}
                             >
-                                <Address {...application.address} />
+								{getAddress(application.address)}
                             </span>
                         ) : null}
 

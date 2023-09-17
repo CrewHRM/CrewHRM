@@ -170,7 +170,7 @@ class Meta {
 	public function assignBulkMeta( array $objects ) {
 		global $wpdb;
 
-		$objects = _Array::appendArray( $objects, 'meta', array() );
+		$objects = _Array::appendColumn( $objects, 'meta', (object)array() );
 		$obj_ids = array_keys( $objects );
 		$ids_in  = implode( ',', $obj_ids );
 
@@ -183,7 +183,7 @@ class Meta {
 			$_key   = $m['meta_key'];
 			$_value = maybe_unserialize( $m['meta_value'] );
 
-			$objects[ (int) $m['object_id'] ]['meta'][ $_key ] = $_value;
+			$objects[ (int) $m['object_id'] ]['meta']->$_key = $_value;
 		}
 
 		return $objects;

@@ -3,6 +3,7 @@
 namespace CrewHRM\Models;
 
 use CrewHRM\Helpers\_Array;
+use CrewHRM\Helpers\Number;
 use CrewHRM\Helpers\Utilities;
 
 /**
@@ -11,7 +12,6 @@ use CrewHRM\Helpers\Utilities;
  * Note: The post data to create/update job, the autosave version in the meta and the return value of getEditableJob method must be the same structure. 
  */
 class Job {
-
 
 	/**
 	 * Create or update a job
@@ -217,7 +217,7 @@ class Job {
 	}
 
 	/**
-	 * Job list with minimal data and filters
+	 * Job list with minimal data and filters. Ideally for dropdowns.
 	 *
 	 * @return array
 	 */
@@ -229,6 +229,79 @@ class Job {
 		);
 
 		$jobs = _Array::castRecursive( $jobs );
+
+		return $jobs;
+	}
+
+	/**
+	 * Get job listing ideally for careers page that is publicly accessible.
+	 *
+	 * @param array $args
+	 * @return array
+	 */
+	public static function getCareersListing( array $args, $counter = false ) {
+		$selects      = $counter ? 'COUNT(job.job_id)' : 'job.job_id, job.job_title, address.*';
+		$limit        = Number::getInt( $args['limit'], 1, 20 );
+		$offset       = ( Number::getInt( $args['page'] ?? 1, 1 ) - 1 ) * $limit;
+		$limit_clause = $counter ? '' : " LIMIT {$limit} OFFSET {$offset}";
+		$where_clause = '';
+
+		// Add department filter
+		if ( ! empty( $args['department_id'] ) ) {
+			$dep = esc_sql( $args['department_id'] );
+			$where_clause .= " AND job.department_id={$dep}";
+		}
+
+		// Add search filter
+		if ( ! empty( $args['search'] ) ) {
+			$keyword = esc_sql( $args['search'] );
+			$where_clause .= " AND job.job_title LIKE '%{$keyword}%'";
+		}
+
+		// Add country filter
+		if ( ! empty( $args['country_code'] ) ) {
+			$country_code = esc_sql( $args['country_code'] );
+			$where_clause .= " AND address.country_code='{$country_code}'";
+		}
+
+		// Add employment_type filter
+		if ( ! empty( $args['employment_type'] ) ) {
+			// Escape
+			$employment_type = esc_sql( $args['employment_type'] );
+			
+			// Like operator because multiple types get stored as serialized array.
+			$where_clause .= " AND employment.meta_key='employment_type' AND employment.meta_value LIKE '%{$employment_type}%'"; 
+		}
+
+		/// Build the SQL
+		$query = "SELECT DISTINCT {$selects}
+			FROM " . DB::jobs() . " job
+				LEFT JOIN " . DB::addresses() . " address ON job.address_id=address.address_id 
+				LEFT JOIN " . DB::jobmeta() . " employment ON job.job_id=employment.object_id 
+			WHERE job.job_status='publish' {$where_clause} {$limit_clause}";
+
+		error_log( $query );
+
+		global $wpdb;
+
+		// If counter, just return the count
+		if ( $counter ) {
+			return $wpdb->get_var( $query );
+		}
+		
+		// Otherwise prepare other meta data
+		$jobs = $wpdb->get_results( $query, ARRAY_A );
+		$jobs = _Array::getArray( $jobs );
+		$jobs = _Array::indexify( $jobs, 'job_id' );
+		$jobs = Meta::job( null )->assignBulkMeta( $jobs );
+		
+		// Add department counter
+		/* $departments = Department::getDepartments();
+		$department_ids = array_column( $departments, 'department_id' );
+		foreach ( $department_ids as $department_id ) {
+			$new_args = array_merge( $args['department_id', ] )
+			$ self::getCareersListing(  )
+		} */
 
 		return $jobs;
 	}
