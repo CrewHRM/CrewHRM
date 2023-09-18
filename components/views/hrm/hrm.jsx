@@ -36,7 +36,7 @@ export function DashboardBar(props) {
     );
 }
 
-export function HRM({ departments = [] }) {
+export function HRM({ departments = [], applicationStats }) {
     const [state, setState] = useState({
         departments,
         notices: [
@@ -144,6 +144,7 @@ export function HRM({ departments = [] }) {
                 showNotice,
                 deleteNotice,
                 departments: state.departments,
+				applicationStats,
                 addDepartment
             }}
         >

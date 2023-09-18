@@ -1,33 +1,45 @@
-import React from 'react';
+import React, { useContext } from 'react';
+
+import { __ } from '../../../../../utilities/helpers.jsx';
+import { ContextBackendDashboard } from '../../../hrm.jsx';
 
 import curtains from '../../../../../images/curtains.svg';
 import style from './cards.module.scss';
-import { __ } from '../../../../../utilities/helpers.jsx';
-
-const card_stats = [
-    {
-        label: __('Total Job Posts'),
-        count: 12,
-        icon: curtains
-    },
-    {
-        label: __('Total Applications'),
-        count: 1232,
-        icon: curtains
-    },
-    {
-        label: __('Total Hired'),
-        count: 32,
-        icon: curtains
-    },
-    {
-        label: __('Total Pending'),
-        count: 233,
-        icon: curtains
-    }
-];
 
 export function StatCards({ className = '' }) {
+
+	const {
+		applicationStats:{
+			total_jobs = 0,
+			total_applications = 0,
+			total_pending_applications = 0,
+			total_hired = 0
+		}
+	} = useContext(ContextBackendDashboard);
+
+	const card_stats = [
+		{
+			label: __('Total Job Posts'),
+			count: total_jobs,
+			icon: curtains
+		},
+		{
+			label: __('Total Applications'),
+			count: total_applications,
+			icon: curtains
+		},
+		{
+			label: __('Total Hired'),
+			count: total_hired,
+			icon: curtains
+		},
+		{
+			label: __('Total Pending'),
+			count: total_pending_applications,
+			icon: curtains
+		}
+	];
+
     return (
         <div
             data-crewhrm-selector="hrm-stat"

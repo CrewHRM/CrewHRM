@@ -1,13 +1,13 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+
 import { __ } from '../../../../utilities/helpers.jsx';
-
 import { StatCards } from './stat-cards/stat-cards.jsx';
-
-import style from './main.module.scss';
 import { JobOpenings } from '../job-openings/jobs.jsx';
 import { IntroCard } from '../../../../materials/intro-card/intro-card.jsx';
 import { DangerouslySet } from '../../../../materials/DangerouslySet.jsx';
-import { Link } from 'react-router-dom';
+
+import style from './main.module.scss';
 
 export function DahboardMain() {
     return (
@@ -44,7 +44,7 @@ export function DahboardMain() {
 
             <div className={'content-area'.classNames(style)}>
                 <JobOpenings is_overview={true} className={'margin-bottom-20'.classNames()} />
-                <div className={'d-flex align-items-center margin-bottom-20'.classNames()}>
+                {/* <div className={'d-flex align-items-center margin-bottom-20'.classNames()}>
                     <div className={'flex-1'.classNames()}>
                         <span className={'color-text font-size-17 font-weight-500'.classNames()}>
                             {__('Suggested Action')}
@@ -101,7 +101,7 @@ export function DahboardMain() {
                             </a>
                         </IntroCard>
                     </div>
-                </div>
+                </div> */}
             </div>
         </div>
     );

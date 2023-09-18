@@ -444,4 +444,43 @@ class Application {
 
 		return true;
 	}
+
+	/**
+	 * Get application overview of total site
+	 *
+	 * @return array
+	 */
+	public static function getApplicationStats() {
+		global $wpdb;
+
+		// Total created job no matter status or anything
+		$total_job = $wpdb->get_var(
+			"SELECT COUNT(job_id) FROM " . DB::jobs()
+		);
+
+		// Total application count no matter the stage
+		$total_application = $wpdb->get_var(
+			"SELECT COUNT(application_id) FROM " . DB::applications()
+		);
+
+		$total_hired = $wpdb->get_var(
+			"SELECT COUNT(app.application_id) 
+			FROM " . DB::applications() . " app
+				INNER JOIN " . DB::stages() . " stage ON app.stage_id=stage.stage_id
+			WHERE stage.stage_name='_hired_';"
+		);
+
+		$total_pending = $wpdb->get_var(
+			"SELECT COUNT(application_id) FROM " . DB::applications() . " WHERE stage_id IS NULL"
+		);
+
+		return _Array::castRecursive(
+			array(
+				'total_jobs'                 => $total_job,
+				'total_applications'         => $total_application,
+				'total_pending_applications' => $total_pending,
+				'total_hired'                => $total_hired,
+			)
+		);
+	}
 }

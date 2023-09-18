@@ -2,9 +2,9 @@
 
 namespace CrewHRM\Setup;
 
-use CrewHRM\Helpers\Nonce;
 use CrewHRM\Helpers\Utilities;
 use CrewHRM\Main;
+use CrewHRM\Models\Application;
 use CrewHRM\Models\Department;
 use CrewHRM\Models\Settings;
 
@@ -61,9 +61,11 @@ class Admin extends Main {
 	 * @return void
 	 */
 	public function mainPage() {
+		$application_overview = Application::getApplicationStats();
 		echo '<div 
 				id="' . esc_attr( self::MOUNTPOINT_DASHBOARD ) . '" 
-				data-departments="' . esc_attr( json_encode( Department::getDepartments() ) ) . '"></div>';
+				data-departments="' . esc_attr( json_encode( Department::getDepartments() ) ) . '"
+				data-application-stats="' . esc_attr( json_encode( $application_overview ) ) . '"></div>';
 	}
 	
 	/**

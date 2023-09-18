@@ -29,11 +29,9 @@ function CareersRouter({ base_permalink, settings={} }) {
 // Render company profile
 const careers = document.getElementById('crewhrm_careers');
 if (careers) {
-    const data = getElementDataSet(careers);
-
     ReactDOM.createRoot(careers).render(
-        <MountPoint element={careers} nonce={data.crewhrmNonce} nonceAction={careers.id}>
-            <CareersRouter {...data} />
+        <MountPoint element={careers}>
+            <CareersRouter {...getElementDataSet(careers)} />
         </MountPoint>
     );
 }
