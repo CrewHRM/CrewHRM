@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { Tabs } from '../../../../materials/tabs/tabs.jsx';
-import { __, countries_object, isEmpty } from '../../../../utilities/helpers.jsx';
+import { __, calculateJSONSizeInKB, countries_object, isEmpty, sprintf } from '../../../../utilities/helpers.jsx';
 import { ContextForm, FormFields } from '../../../../materials/form.jsx';
 import { FormActionButtons } from '../../../../materials/form-action.jsx';
 import { request } from '../../../../utilities/request.jsx';
@@ -79,7 +79,20 @@ export function Apply({ job = {} }) {
     };
 
     const submitApplication = () => {
-        request('apply_to_job', { application: state.values }, (resp) => {
+		const payload = { application: state.values };
+
+		const {application_max_size} = window.CrewHRM;
+		const payload_size = calculateJSONSizeInKB( payload ) + 5;
+
+		if ( payload_size >= application_max_size ) {
+			addToast({
+				message: sprintf( __('Total file size exceeds the limit of %s.'), application_max_size+' KB'),
+				status: 'error'
+			});
+			return;
+		}
+
+        request('apply_to_job', payload, (resp) => {
             const {
                 success,
                 data: { notice, message }

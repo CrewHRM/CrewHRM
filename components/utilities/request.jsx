@@ -10,7 +10,7 @@ export function request(action, payload = {}, callback, progressCallback) {
 	// Build form data
 	const formData = new FormData();
 
-	// Function to flatten nested JSON into a flat object and append files to FormData. Thanks ChatGPT :)
+	// Function to flatten nested JSON into a flat object and append files to FormData.
 	function flattenObject(obj, formData, parentKey = '') {
 		for (let key in obj) {
 			const _key = parentKey === '' ? key : `${parentKey}[${key}]`;
@@ -31,7 +31,6 @@ export function request(action, payload = {}, callback, progressCallback) {
 					flattenObject(obj[key], formData, `${_key}`);
 				}
 			} else {
-				// console.log(obj[key]);
 				formData.append(`${_key}`, obj[key]);
 			}
 		}

@@ -53,7 +53,7 @@ class Settings {
 		$data = self::get( self::KEY_SETTINGS );
 		
 		// Convert to kilobyte
-		$max_upload = wp_max_upload_size() / 1024;
+		$max_upload = self::getWpMaxUploadSize();
 
 		// Safe max range
 		if ( empty( $data['attachment_max_upload_size'] ) || $data['attachment_max_upload_size'] > $max_upload ) {
@@ -61,6 +61,24 @@ class Settings {
 		}
 
 		return $name !== null ? ( $data[ $name ] ?? $default ) : $data;
+	}
+
+	/**
+	 * Get the max size in KB allowed for job application 
+	 *
+	 * @return int
+	 */
+	public static function getApplicationMaxSize() {
+		return self::getSettings( 'attachment_max_upload_size' );
+	}
+
+	/**
+	 * Get WP max upload size in KB.
+	 *
+	 * @return int
+	 */
+	public static function getWpMaxUploadSize() {
+		return floor( wp_max_upload_size() / 1024 );
 	}
 
 	/**

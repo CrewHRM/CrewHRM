@@ -66,9 +66,13 @@ export const settings_fields = {
                         )
                     },
                     attachment_max_upload_size: {
-                        label: __('Max attachment size (KiloByte)'),
+                        label: __('Job application size (KiloByte)'),
                         type: 'number',
-                        min: 1
+                        min: 1,
+						max: window.CrewHRM.wp_max_size,
+                        hint: __(
+                            'Total maximum size of resume, attachments and texts combined in job application',
+                        )
                     }
                 }
             }

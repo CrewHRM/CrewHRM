@@ -208,33 +208,83 @@ export function filterObject(ob, cb) {
 	return new_object;
 }
 
+function hasTextInHTML(htmlString) {
+	// Create a DOMParser instance
+	const parser = new DOMParser();
+
+	// Parse the HTML string
+	const doc = parser.parseFromString(htmlString, 'text/html');
+
+	// Get the text content of the parsed document
+	const textContent = doc.documentElement.textContent.trim();
+
+	// Check if there is any non-whitespace text content
+	return textContent.length > 0;
+}
+
 export function isEmpty(value, treatNumericAsEmpty = false) {
-  // Check for undefined and null values
-  if (value === undefined || value === null) {
-    return true;
-  }
+	// Check for undefined and null values
+	if (value === undefined || value === null) {
+		return true;
+	}
 
-  // Check for empty strings
-  if (typeof value === 'string' && value.trim() === '') {
-    return true;
-  }
+	// Check for empty strings
+	if (typeof value === 'string' && (value.trim() === '' || !hasTextInHTML( value ))) {
+		return true;
+	}
 
-  // Check for empty arrays
-  if (Array.isArray(value) && value.length === 0) {
-    return true;
-  }
+	// Check for empty arrays
+	if (Array.isArray(value) && value.length === 0) {
+		return true;
+	}
 
-  // Check for empty objects
-  if (typeof value === 'object' && Object.keys(value).length === 0) {
-    return true;
-  }
+	// Check for empty objects
+	if (typeof value === 'object' && !(value instanceof File) && Object.keys(value).length === 0) {
+		return true;
+	}
 
-  // Check for numeric values (optional)
-  if (treatNumericAsEmpty && typeof value === 'number') {
-    return !value || isNaN(value);
-  }
+	// Check for numeric values (optional)
+	if (treatNumericAsEmpty && typeof value === 'number') {
+		return !value || isNaN(value);
+	}
 
-  return false; // If none of the above conditions are met, the value is not empty
+	return false; // If none of the above conditions are met, the value is not empty
+}
+
+// Caluclatate JSON object size including text, file etc.
+export function calculateJSONSizeInKB(jsonObject) {
+    function calculateSize(obj) {
+        if (typeof obj === 'object' && obj instanceof File) {
+            // If it's a File object, add its size
+            return obj.size;
+        } else if (typeof obj === 'object') {
+            let size = 0;
+            if (Array.isArray(obj)) {
+                for (const item of obj) {
+                    size += calculateSize(item);
+                }
+            } else {
+                for (const key in obj) {
+                    size += calculateSize(obj[key]);
+                }
+            }
+            return size;
+        } else if (typeof obj === 'string') {
+            // Estimate the size of the string as bytes (UTF-16 encoding)
+            return obj.length * 2;
+        } else  {
+            // For other types, assume a small constant size
+            return 16; // Adjust as needed
+        }
+    }
+
+    // Calculate the size recursively
+    const sizeInBytes = calculateSize(jsonObject);
+
+    // Convert bytes to kilobytes (KB)
+    const sizeInKB = sizeInBytes / 1024;
+
+    return sizeInKB;
 }
 
 export const is_production = process.env.NODE_ENV === 'production';

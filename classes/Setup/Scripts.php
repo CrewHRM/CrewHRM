@@ -85,17 +85,19 @@ class Scripts extends Main {
 
 		// Load JS variables
 		$data = array(
-			'app_name'        => self::$configs->app_name,
-			'action_hooks'    => array(),
-			'filter_hooks'    => array(),
-			'home_url'        => get_home_url(),
-			'dist_url'        => self::$configs->dist_url,
-			'plugin_url'      => self::$configs->url,
-			'ajaxurl'         => admin_url( 'admin-ajax.php' ),
-			'colors'          => $dynamic_colors,
-			'reserved_stages' => Stage::$reserved_stages,
-			'timeouts'        => (object) array(),
-			'nonce'           => wp_create_nonce( get_home_url() )
+			'app_name'             => self::$configs->app_name,
+			'action_hooks'         => array(),
+			'filter_hooks'         => array(),
+			'home_url'             => get_home_url(),
+			'dist_url'             => self::$configs->dist_url,
+			'plugin_url'           => self::$configs->url,
+			'ajaxurl'              => admin_url( 'admin-ajax.php' ),
+			'colors'               => $dynamic_colors,
+			'reserved_stages'      => Stage::$reserved_stages,
+			'timeouts'             => (object) array(),
+			'nonce'                => wp_create_nonce( get_home_url() ),
+			'wp_max_size'          => Settings::getWpMaxUploadSize(),
+			'application_max_size' => Settings::getApplicationMaxSize(),
 		);
 
 		echo '<script>window.CrewHRM=' . wp_json_encode( $data ) . '</script>';

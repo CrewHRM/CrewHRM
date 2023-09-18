@@ -164,7 +164,7 @@ export function JobEditor() {
 
 				// Replace url state with job ID if it was new previously. So reload will be supported. 
 				if ( is_new ) {
-					navigate(`/dashboard/jobs/editor/${stored_job_id}/`, {replace: true});
+					navigate(`/dashboard/jobs/editor/${job_id}/`, {replace: true});
 				}
             }
 
@@ -266,10 +266,6 @@ export function JobEditor() {
 
 	}, [state.autosaved_job]);
 
-    if (state.fetching) {
-        return <LoadingIcon center={true} />;
-    }
-
     if (state.error_message) {
         return (
             <div className={'text-align-center color-danger'.classNames()}>
@@ -319,6 +315,12 @@ export function JobEditor() {
                     </div>
                 ]}
             </StickyBar>
+			
+			<Conditional show={state.fetching}>
+				<div className={'margin-top-20 margin-bottom-20'.classNames()}>
+					<LoadingIcon center={true} />
+				</div>
+			</Conditional>
 
             <div className={'editor-wrapper'.classNames(style)}>
                 <div className={'box-shadow-thin padding-20'.classNames()}>

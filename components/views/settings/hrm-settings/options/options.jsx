@@ -172,6 +172,7 @@ export function Options(props) {
                                     <div className={'flex-2'.classNames()}>
                                         <NumberField
                                             min={min}
+											max={max}
                                             value={values[key]}
                                             className={input_class}
                                             onChange={(v) => onChange(key, v)}

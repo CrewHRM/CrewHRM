@@ -155,8 +155,6 @@ class Meta {
 			$where['meta_value'] = $meta_value;
 		}
 
-		// var_dump($where);
-
 		global $wpdb;
 		$wpdb->delete(
 			$this->table,
