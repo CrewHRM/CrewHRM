@@ -1,13 +1,19 @@
-import React from 'react';
-
-import style from '../jobs.module.scss';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
+
 import { __, countries_array } from '../../../../../utilities/helpers.jsx';
 import { DropDown } from '../../../../../materials/dropdown/dropdown.jsx';
 import { status_keys, statuses } from '../jobs.jsx';
 import { TextField } from '../../../../../materials/text-field/text-field.jsx';
+import { ContextBackendDashboard } from '../../../hrm.jsx';
 
-export function FilterBar({ is_overview, filters = {}, onChange }) {
+import style from '../jobs.module.scss';
+import { Conditional } from '../../../../../materials/conditional.jsx';
+import { LoadingIcon } from '../../../../../materials/loading-icon/loading-icon.jsx';
+
+export function FilterBar({ is_overview, filters = {}, onChange, fetching }) {
+	const {departments=[]} = useContext(ContextBackendDashboard);
+
     return (
         <div
             className={
@@ -16,8 +22,8 @@ export function FilterBar({ is_overview, filters = {}, onChange }) {
             }
         >
             <div className={'flex-1 d-flex align-items-center'.classNames()}>
-                {(!is_overview && (
-                    <Link to="/dashboard/">
+				<Conditional show={!is_overview}>
+					<Link to="/dashboard/">
                         <i
                             className={
                                 'ch-icon ch-icon-arrow-left color-text cursor-pointer'.classNames() +
@@ -25,8 +31,8 @@ export function FilterBar({ is_overview, filters = {}, onChange }) {
                             }
                         ></i>
                     </Link>
-                )) ||
-                    null}
+				</Conditional>
+				
                 <span
                     className={
                         'color-text ' +
@@ -36,7 +42,7 @@ export function FilterBar({ is_overview, filters = {}, onChange }) {
                         ).classNames()
                     }
                 >
-                    {__('Job Openings')}
+                    {__('Job Openings')} <LoadingIcon show={fetching} className={'margin-left-5'.classNames()}/>
                 </span>
             </div>
             <div className={'d-flex align-items-center column-gap-15'.classNames()}>
@@ -44,22 +50,28 @@ export function FilterBar({ is_overview, filters = {}, onChange }) {
                     <DropDown
                         className={'padding-vertical-8 padding-horizontal-15'.classNames()}
                         transparent={is_overview}
-                        placeholder={__('All Location')}
-                        value={filters.country_code}
-                        options={countries_array}
-                        onChange={(v) => onChange('country_code', v)}
+                        placeholder={__('All Departments')}
+                        value={filters.department_id}
+                        options={[{id: 0, label: __('All Departments')}, ...departments]}
+                        onChange={(v) => onChange('department_id', v)}
                     />
                 </div>
                 <div className={'d-inline-block'.classNames()} style={{ minWidth: '113px' }}>
                     <DropDown
                         className={'padding-vertical-8 padding-horizontal-15'.classNames()}
                         transparent={is_overview}
-                        placeholder={__('Department')}
+                        placeholder={__('All Status')}
                         value={filters.job_status}
-                        options={status_keys.map((key) => {
-                            return { id: key, label: statuses[key].label };
-                        })}
                         onChange={(v) => onChange('job_status', v)}
+                        options={[
+							{id: 0, label: __('All Status')}, 
+							...status_keys.map((key) => {
+								return { 
+									id: key, 
+									label: statuses[key].label 
+								}
+							})
+						]}
                     />
                 </div>
                 <div className={'d-inline-block'.classNames()}>
@@ -72,6 +84,7 @@ export function FilterBar({ is_overview, filters = {}, onChange }) {
                         expandable={true}
                         value={filters.search}
                         onChange={(v) => onChange('search', v)}
+						rateLimit={500}
                     />
                 </div>
             </div>

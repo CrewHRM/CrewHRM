@@ -15,6 +15,7 @@ import { FilterBar } from './segments/filter-bar.jsx';
 import { LoadingIcon } from '../../../../materials/loading-icon/loading-icon.jsx';
 import { ContextToast } from '../../../../materials/toast/toast.jsx';
 import { ContextWarning } from '../../../../materials/warning/warning.jsx';
+import { Conditional } from '../../../../materials/conditional.jsx';
 
 const special_stages = {
     _hired_: __('Hired'),
@@ -100,11 +101,14 @@ export function JobOpenings(props) {
     const [state, setState] = useState({
         share_link: null,
         jobs: [],
-        fetching: false,
+        fetching: true,
         in_action: null,
+		segmentation: null,
         filters: {
-            job_status: 'all',
-            country_code: null,
+            job_status: null,
+			department_id: null,
+			search: '',
+            // country_code: null,
             page: 1
         }
     });
@@ -114,7 +118,8 @@ export function JobOpenings(props) {
             ...state,
             filters: {
                 ...state.filters,
-                [key]: value
+                [key]: value,
+				page: key==='page' ? value : 1
             }
         });
     };
@@ -186,16 +191,21 @@ export function JobOpenings(props) {
         });
 
         const { filters } = state;
+		
         request(
             'get_jobs_dashboard',
             { filters: { ...filters, ...f } },
             (resp) => {
-                const { success, data = {} } = resp;
-                const { jobs = [] } = data;
+                const { success, data: {jobs = [], segmentation={}} } = resp;
+
+				if ( !success ) {
+					ajaxToast(resp);
+				}
 
                 setState({
                     ...state,
                     fetching: false,
+					segmentation,
                     jobs
                 });
             }
@@ -204,21 +214,31 @@ export function JobOpenings(props) {
 
     useEffect(() => {
         getJobs();
-    }, []);
+    }, [state.filters]);
 
-    return (
+    return <>
+		<Conditional show={state.share_link}>
+			<ShareModal
+				url={state.share_link}
+				closeModal={() => setState({ ...state, share_link: null })}
+			/>
+		</Conditional>
+
         <div data-crewhrm-selector="job-openings" className={'jobs'.classNames(style) + className}>
-            {state.share_link ? (
-                <ShareModal
-                    url={state.share_link}
-                    closeModal={() => setState({ ...state, share_link: null })}
-                />
-            ) : null}
+			
+            <FilterBar {...{
+				is_overview, 
+				onChange, 
+				filters: state.filters, 
+				fetching: state.fetching
+			}}/>
 
-            <FilterBar {...{ is_overview, onChange, filters: state.filters }} />
+			<Conditional show={!state.jobs.length && !state.fetching}>
+				<NoJob/>
+			</Conditional>
 
-            {(!state.jobs.length && <NoJob />) || (
-                <div data-crewhrm-selector={'job-list'}>
+			<Conditional show={state.jobs.length}>
+				<div data-crewhrm-selector={'job-list'}>
                     {state.jobs.map((job) => {
                         const {
                             job_id,
@@ -367,11 +387,11 @@ export function JobOpenings(props) {
                         );
                     })}
                 </div>
-            )}
-
+			</Conditional>
+			
             {/* Show view all button when it is loaded in dashboard as summary */}
-            {(is_overview && state.jobs.length && (
-                <Link
+			<Conditional show={is_overview && state.jobs.length}>
+				<Link
                     to="/dashboard/jobs/"
                     className={
                         'button button-primary button-outlined button-full-width-2'.classNames() +
@@ -380,18 +400,19 @@ export function JobOpenings(props) {
                 >
                     {__('View All Jobs')}
                 </Link>
-            )) ||
-                null}
-
+			</Conditional>
+			
             {/* Show pagination when it is loaded as a single view */}
-            {(!is_overview && (
-                <div className={'d-flex justify-content-end'.classNames()}>
-                    <Pagination />
+			<Conditional show={!is_overview}>
+				<div className={'d-flex justify-content-end'.classNames()}>
+                    <Pagination 
+						onChange={page=>onChange('page', page)}
+						pageNumber={state.filters.page}
+						pageCount={state.segmentation?.page_count || 1}/>
                 </div>
-            )) ||
-                null}
+			</Conditional>
         </div>
-    );
+    </>
 }
 
 export function JobOpeningsFullView(props) {

@@ -89,15 +89,22 @@ class JobManagement {
 	}
 
 	/**
-	 * Get job list to render in dashboard and careers page
+	 * Get job list to render in dashboard
 	 *
+	 * @param array $data Request data
 	 * @return void
 	 */
-	public static function getJobsDashboard() {
+	public static function getJobsDashboard( array $data ) {
 		// Get Initial job list
-		$jobs = Job::getJobs();
+		$jobs         = Job::getJobs( $data['filters'] );
+		$segmentation = Job::getJobs( $data['filters'], array(), true );
 
-		wp_send_json_success( array( 'jobs' => array_values( $jobs ) ) );
+		wp_send_json_success(
+			array(
+				'jobs'         => array_values( $jobs ),
+				'segmentation' => $segmentation
+			)
+		);
 	}
 
 	public static function singleJobAction( $data ) {

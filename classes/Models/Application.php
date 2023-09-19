@@ -148,7 +148,7 @@ class Application {
 	 * @param array $jobs
 	 * @return array
 	 */
-	public static function appendApplicationCounts( array $jobs ) {
+	public static function appendApplicationCounts( $jobs ) {
 		// Prepare the jobs array
 		$jobs    = _Array::appendColumn(
 			$jobs,

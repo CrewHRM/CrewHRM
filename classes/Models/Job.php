@@ -160,12 +160,13 @@ class Job {
 	 * Get jobs based on args
 	 *
 	 * @param array $args
+	 * @param bool $segmentation
 	 * @return array
 	 */
-	public static function getJobs( $args = array(), $meta_data = array( 'application_count', 'stages' ) ) {
+	public static function getJobs( $args = array(), $meta_data = array( 'application_count', 'stages' ), $segmentation=false ) {
 		// Prepare limit, offset, where conditions
-		$page   = $args['page'] ?? 1;
-		$limit  = $args['limit'] ?? 15;
+		$page   = (int)($args['page'] ?? 1);
+		$limit  = $args['limit'] ?? 1; // To Do: Restore 20. 1 is for test only.
 		$offset = ( $page - 1 ) * $limit;
 
 		// SQL parts
@@ -178,19 +179,46 @@ class Job {
 			$where_clause .= " AND job.job_id={$args['job_id']}";
 		}
 
-		// To Do: Add more filters
+		// Apply department filter
+		if ( ! empty( $args['department_id'] ) ) {
+			$dep = esc_sql( $args['department_id'] );
+			$where_clause .= " AND job.department_id={$dep}";
+		}
 
-		global $wpdb;
-		$jobs = $wpdb->get_results(
-			$wpdb->prepare(
-				'SELECT job.*, department.department_name, address.*  FROM ' . DB::jobs() . ' job 
+		// Apply job status
+		if ( ! empty( $args['job_status'] ) ) {
+			$status = esc_sql( $args['job_status'] );
+			$where_clause .= " AND job.job_status='{$status}'";
+		}
+
+		// Apply search
+		if ( ! empty( $args['search'] ) ) {
+			$keyword = esc_sql( $args['search'] );
+			$where_clause .= " AND job.job_title LIKE '%{$keyword}%'";
+		}
+
+		$selects = $segmentation ? 'COUNT(job.job_id)' : 'job.*, department.department_name, address.*';
+		$query   = "SELECT {$selects} FROM " . DB::jobs() . ' job 
 					LEFT JOIN ' . DB::departments() . ' department ON job.department_id=department.department_id
 					LEFT JOIN ' . DB::addresses() . " address ON job.address_id=address.address_id
-				WHERE {$where_clause} {$order_by} {$limit_clause}"
-			),
-			ARRAY_A
-		);
+				WHERE {$where_clause} " . ( $segmentation ? '' : "{$order_by} {$limit_clause}" );
 
+		global $wpdb;
+		if ( $segmentation ) {
+			$total_count = (int)$wpdb->get_var( $query );
+			$page_count = ceil( $total_count / $limit );
+
+			return array(
+				'total_count' => $total_count,
+				'page_count'  => $page_count,
+				'page'        => $page,
+				'limit'       => $limit
+			);
+
+		} else {
+			$jobs = $wpdb->get_results( $query, ARRAY_A );
+		}
+		
 		// No need further data if it's empty
 		if ( empty( $jobs ) ) {
 			return array();

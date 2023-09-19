@@ -1,6 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 
+import { Conditional } from '../conditional.jsx';
 import style from './text-field.module.scss';
+import { InputDebounce } from '../input-debounce.jsx';
 
 export function TextField(props) {
     const {
@@ -16,6 +18,7 @@ export function TextField(props) {
         pattern,
         value,
         defaultValue,
+		rateLimit=0,
         maxLength = null,
         expandable = false
     } = props;
@@ -40,7 +43,9 @@ export function TextField(props) {
             clickHandler(() => {
                 if (input_ref?.current) {
                     input_ref.current.focus();
-                }
+                } else {
+					console.log('noo');
+				}
             });
             return;
         }
@@ -72,8 +77,7 @@ export function TextField(props) {
         }
     }, [state.expanded]);
 
-    const separator =
-        (state.expanded && <span className={'d-inline-block width-6'.classNames()}></span>) || null;
+    const separator = state.expanded ? <span className={'d-inline-block width-6'.classNames()}></span> : null;
 
     return (
         <div
@@ -86,33 +90,28 @@ export function TextField(props) {
                 className
             }
         >
-            {(iconClass && (
-                <>
-                    <i className={iconClass} onClick={() => onIconClick()}></i>
-                    {separator}
-                </>
-            )) ||
-                null}
-
-            {(image && state.expanded && (
-                <>
-                    <img
-                        src={image}
-                        className={'image'.classNames(style)}
-                        onClick={() => onIconClick()}
-                    />
-                    {separator}
-                </>
-            )) ||
-                null}
-
-            {(state.expanded && (
-                <input
-                    ref={input_ref}
+			<Conditional show={iconClass}>
+				<i className={iconClass} onClick={() => onIconClick()}></i>
+				{separator}
+			</Conditional>
+			
+			<Conditional show={image && state.expanded}>
+				<img
+					src={image}
+					className={'image'.classNames(style)}
+					onClick={() => onIconClick()}
+				/>
+				{separator}
+			</Conditional>
+			
+			<Conditional show={state.expanded}>
+				<InputDebounce
+					ref={input_ref}
                     type={type}
                     defaultValue={defaultValue}
                     value={value}
-                    onChange={(e) => dispatchChange(e.currentTarget.value)}
+					rateLimit={rateLimit}
+					onChange={dispatchChange}
                     onFocus={() => toggleFocusState(true)}
                     onBlur={() => toggleFocusState(false)}
                     placeholder={placeholder}
@@ -120,10 +119,8 @@ export function TextField(props) {
                     className={
                         'text-field-flat font-size-15 font-weight-500 letter-spacing--15 flex-1'.classNames() +
                         inputClassName
-                    }
-                />
-            )) ||
-                null}
+                    }/>
+			</Conditional>
         </div>
     );
 }
