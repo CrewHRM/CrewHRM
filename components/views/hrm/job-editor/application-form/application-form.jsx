@@ -16,7 +16,7 @@ const getQuestionId = () => {
 };
 
 export function ApplicationForm() {
-    const { navigateTab, values = {}, onChange } = useContext(ContextJobEditor);
+    const { navigateTab, values = {}, onChange, is_next_disabled } = useContext(ContextJobEditor);
 
     const [state, setState] = useState({
         pointer: null
@@ -336,7 +336,10 @@ export function ApplicationForm() {
                     );
                 })}
 
-                <FormActionButtons onBack={() => navigateTab(-1)} onNext={() => navigateTab(1)} />
+                <FormActionButtons 
+					onBack={() => navigateTab(-1)} 
+					onNext={() => navigateTab(1)} 
+					disabledNext={is_next_disabled}/>
             </div>
         </>
     );

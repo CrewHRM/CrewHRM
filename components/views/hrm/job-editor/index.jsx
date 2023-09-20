@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { StickyBar } from '../../../materials/sticky-bar/sticky-bar.jsx';
-import { __, getRandomString } from '../../../utilities/helpers.jsx';
+import { __, getRandomString, isEmpty } from '../../../utilities/helpers.jsx';
 import { Tabs } from '../../../materials/tabs/tabs.jsx';
 import { JobDetails } from './job-details/job-details.jsx';
 import { HiringFlow } from './hiring-flow/hiring-flow.jsx';
@@ -21,7 +21,12 @@ export const ContextJobEditor = createContext();
 const steps = [
     {
         id: 'job-details',
-        label: __('Job Details')
+        label: __('Job Details'),
+		required: [
+			'job_title',
+			'department_id',
+			'job_description'
+		]
     },
     {
         id: 'hiring-flow',
@@ -86,7 +91,6 @@ export function JobEditor() {
 	const is_new = job_id==='new';
 
     const [state, setState] = useState({
-        active_tab: 'job-details',
 		edit_session: null,
 		autosaved_job: null,
         error_message: null,
@@ -95,8 +99,12 @@ export function JobEditor() {
         values: {}
     });
 
-    const is_last_step = state.active_tab === steps[steps.length - 1].id;
-	
+	const [active_tab, setTab] = useState('job-details');
+
+	const active_index = steps.findIndex(s=>s.id===active_tab);
+    const is_last_step = active_tab === steps[steps.length - 1].id;
+	const is_next_disabled = steps[active_index]?.required?.filter(f=>isEmpty(state.values[f]))?.length>0;
+
     const onChange = (name, value) => {
         setState({
             ...state,
@@ -109,14 +117,20 @@ export function JobEditor() {
     };
 
 	const onSaveClick=()=>{
-		saveJob(!is_last_step); 
-
 		if ( !is_last_step ) {
 			navigateTab(1);
+			return;
 		}
+		
+		saveJob(!is_last_step); 
 	}
 
     const saveJob = (auto) => {
+		// Save only if the required fields are filled no matter if it is auto or manual save
+		if (is_next_disabled) {
+			return;
+		}
+		
         setState({
 			...state,
 			saving_mode: auto ? 'auto' : 'manual',
@@ -173,16 +187,13 @@ export function JobEditor() {
     };
 
     const navigateTab = (tab) => {
-        const current_index = steps.findIndex((s) => s.id == state.active_tab);
+        const current_index = steps.findIndex((s) => s.id == active_tab);
 
         if (tab === 1 || tab === -1) {
             tab = steps[current_index + tab].id;
         }
 
-        setState({
-            ...state,
-            active_tab: tab
-        });
+		setTab(tab);
     };
 
     const getJob = () => {
@@ -275,7 +286,7 @@ export function JobEditor() {
     }
 
     return (
-        <ContextJobEditor.Provider value={{ values: state.values, onChange, navigateTab }}>
+        <ContextJobEditor.Provider value={{ values: state.values, onChange, navigateTab, is_next_disabled }}>
             <StickyBar title="Job Editor">
                 {[
                     <div key="log" className={'text-align-center'.classNames()}>
@@ -307,10 +318,10 @@ export function JobEditor() {
 						
                         <button
                             className={'button button-primary'.classNames()}
-                            disabled={state.saving_mode != null || !state.edit_session}
+                            disabled={is_next_disabled || state.saving_mode != null || !state.edit_session}
 							onClick={onSaveClick}
                         >
-                            {is_last_step ? __('Publish') : __('Save and Continue')}
+                            {is_last_step ? __('Publish') : __('Save & Continue')}
                         </button>
                     </div>
                 ]}
@@ -327,14 +338,14 @@ export function JobEditor() {
                     <div>
                         <Tabs
                             theme="sequence"
-                            active={state.active_tab}
+                            active={active_tab}
                             tabs={steps.map((s) => {
                                 return {
                                     ...s,
                                     label: (
                                         <span
                                             className={`font-size-15 font-weight-400 letter-spacing--3 ${
-                                                s.id == state.active_tab
+                                                s.id == active_tab
                                                     ? 'color-text'
                                                     : 'color-text-light'
                                             }`.classNames()}
@@ -355,11 +366,11 @@ export function JobEditor() {
                     }
                 >
                     <div>
-                        {state.active_tab == 'job-details' ? <JobDetails /> : null}
+                        {active_tab == 'job-details' ? <JobDetails /> : null}
 
-                        {state.active_tab == 'hiring-flow' ? <HiringFlow /> : null}
+                        {active_tab == 'hiring-flow' ? <HiringFlow /> : null}
 
-                        {state.active_tab == 'application-form' ? <ApplicationForm /> : null}
+                        {active_tab == 'application-form' ? <ApplicationForm /> : null}
                     </div>
                 </div>
             </div>

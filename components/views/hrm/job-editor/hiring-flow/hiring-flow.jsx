@@ -8,7 +8,7 @@ import { DeletionConfirm } from './model-to-delete.jsx';
 import { ContextJobEditor } from '../index.jsx';
 
 export function HiringFlow() {
-    const { values = {}, onChange, navigateTab } = useContext(ContextJobEditor);
+    const { values = {}, onChange, navigateTab, is_next_disabled } = useContext(ContextJobEditor);
     const hiring_flow = Array.isArray(values.hiring_flow) ? values.hiring_flow : [];
 
     const [state, setState] = useState({
@@ -79,7 +79,10 @@ export function HiringFlow() {
                 addText={__('Add Stage')}
             />
 
-            <FormActionButtons onBack={() => navigateTab(-1)} onNext={() => navigateTab(1)} />
+            <FormActionButtons 
+				onBack={() => navigateTab(-1)} 
+				onNext={() => navigateTab(1)} 
+				disabledNext={is_next_disabled}/>
         </div>
     );
 }

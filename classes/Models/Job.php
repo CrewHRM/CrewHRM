@@ -23,6 +23,17 @@ class Job {
 
 		$salary = $job['salary'] ?? '';
 		$salary = explode( '-', $salary );
+		$application_form = maybe_serialize( $job['application_form'] ?? array() );
+
+		// Make sure there is at least empty fields array in segments.
+		// Because empty fields array doesn't get submitted, and it is underfined in the next load.
+		// That causes multiple react error.
+		// This issue occurs especially in case of question as the fields are initially empty.
+		/* foreach ( $application_form as $index => $segments ) {
+			if ( empty( $segments['fields'] ) || ! is_array( $segments['fields'] ) ) {
+				$application_form[ $index ]['fields'] = array();
+			}
+		} */
 		
 		$_job = array(
 			'job_title'            => $job['job_title'] ?? '',
@@ -39,7 +50,7 @@ class Job {
 			'experience_years'     => $job['experience_years'] ?? null,
 			'experience_level'     => $job['experience_level'] ?? null,
 			'application_deadline' => $job['application_deadline'] ?? null,
-			'application_form'     => maybe_serialize( $job['application_form'] ?? array() ),
+			'application_form'     => $application_form,
 			'job_status'           => $job['job_status'] ?? 'draft',
 			'currency'             => $job['currency'] ?? null,
 		);
@@ -166,7 +177,7 @@ class Job {
 	public static function getJobs( $args = array(), $meta_data = array( 'application_count', 'stages' ), $segmentation=false ) {
 		// Prepare limit, offset, where conditions
 		$page   = (int)($args['page'] ?? 1);
-		$limit  = $args['limit'] ?? 1; // To Do: Restore 20. 1 is for test only.
+		$limit  = $args['limit'] ?? 20;
 		$offset = ( $page - 1 ) * $limit;
 
 		// SQL parts

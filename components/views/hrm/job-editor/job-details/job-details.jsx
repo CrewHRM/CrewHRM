@@ -21,7 +21,7 @@ export const field_label_class =
     'd-block font-size-15 font-weight-500 color-text margin-bottom-10'.classNames();
 
 export function JobDetails() {
-    const { navigateTab } = useContext(ContextJobEditor);
+    const { navigateTab, is_next_disabled } = useContext(ContextJobEditor);
 
     return (
         <div className={'job-details'.classNames(style)}>
@@ -45,7 +45,9 @@ export function JobDetails() {
             {/* Action Button */}
             <div className={'d-flex margin-bottom-10'.classNames()}>
                 <div className={'flex-1'.classNames()}>
-                    <FormActionButtons onNext={() => navigateTab(1)} />
+                    <FormActionButtons 
+						onNext={() => navigateTab(1)} 
+						disabledNext={is_next_disabled}/>
                 </div>
                 <div className={'right-col'.classNames(style)}></div>
             </div>
