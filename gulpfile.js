@@ -133,6 +133,11 @@ gulp.task('copy', function () {
 });
 
 gulp.task('make-zip', function () {
+	// Replace the mode in build folder
+	const index_path = path.resolve( __dirname+'/build/crewhrm/index.php' );
+	const codes      = fs.readFileSync(index_path).toString().replace( "=> 'development',", "=> 'production'," );
+	fs.writeFileSync(index_path, codes);
+	
     return gulp.src('./build/**/*.*').pipe(zip(build_name)).pipe(gulp.dest('./'));
 });
 

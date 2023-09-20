@@ -4,6 +4,8 @@ namespace CrewHRM;
 
 use CrewHRM\Setup\Admin;
 use CrewHRM\Setup\Careers;
+use CrewHRM\Setup\CLI;
+use CrewHRM\Setup\Database;
 use CrewHRM\Setup\Dispatcher;
 use CrewHRM\Setup\Media;
 use CrewHRM\Setup\Scripts;
@@ -30,6 +32,14 @@ class Main {
 
 		// Loading Autoloader
 		spl_autoload_register( array( $this, 'loader' ) );
+
+		// Register Activation/Deactivation Hook
+		register_activation_hook( self::$configs->file, array( $this, 'activate' ) );
+		register_deactivation_hook( self::$configs->file, array( $this, 'deactivate' ) );
+
+		// Core
+		new Database();
+		new CLI();
 
 		// Load apps now
 		new Scripts();
@@ -62,5 +72,23 @@ class Main {
 		if ( file_exists( $file_name ) ) {
 			require_once $file_name;
 		}
+	}
+
+	/**
+	 * Execute activation hook
+	 *
+	 * @return void
+	 */
+	public static function activate() {
+		do_action( 'crewhrm_activated' );
+	}
+
+	/**
+	 * Execute deactivation hook
+	 *
+	 * @return void
+	 */
+	public static function deactivate() {
+		do_action( 'crewhrm_deactivated' );
 	}
 }
