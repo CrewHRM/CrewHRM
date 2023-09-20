@@ -13,6 +13,7 @@ use CrewHRM\Models\Settings;
 class ApplicationHandler {
 	const PREREQUISITES = array(
 		'applyToJob'           => array(
+			'nopriv' => true,
 			'data' => array(
 				'application' => 'type:array',
 				'resume'      => 'type:file',
@@ -62,6 +63,7 @@ class ApplicationHandler {
 			),
 		),
 		'getCareersListing' => array(
+			'nopriv' => true,
 			'data' => array(
 				'filters' => 'type:array',
 			)

@@ -17,7 +17,6 @@ export function TextField(props) {
         inputClassName = '',
         pattern,
         value,
-        defaultValue,
 		rateLimit=0,
         maxLength = null,
         expandable = false
@@ -108,7 +107,6 @@ export function TextField(props) {
 				<InputDebounce
 					ref={input_ref}
                     type={type}
-                    defaultValue={defaultValue}
                     value={value}
 					rateLimit={rateLimit}
 					onChange={dispatchChange}

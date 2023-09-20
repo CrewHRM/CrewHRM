@@ -2,11 +2,13 @@
 
 namespace CrewHRM\Controllers;
 
+use CrewHRM\Helpers\_Array;
 use CrewHRM\Models\Address;
 use CrewHRM\Models\Job;
 use CrewHRM\Models\Meta;
 use CrewHRM\Models\Settings;
 use CrewHRM\Models\Stage;
+use CrewHRM\Models\User;
 
 class JobManagement {
 	const PREREQUISITES = array(
@@ -18,7 +20,9 @@ class JobManagement {
 		),
 		'getJobsDashboard'    => array(),
 		'singleJobAction'     => array(),
-		'getSingleJobView'    => array(),
+		'getSingleJobView'    => array(
+			'nopriv' => true
+		),
 		'getSingleJobEdit'    => array(
 			'role' => array( 'administrator', 'editor' ),
 			'data' => array(
@@ -49,7 +53,7 @@ class JobManagement {
 	 */
 	public static function updateJob( array $data ) {
 		// Can access job directly as it is checked by dispatcher already using prerequisities array
-		$data       = $data['job'];
+		$data       = _Array::getArray( $data['job'] );
 		$new_status = $data['job_status'];
 		$is_publish = $new_status === 'publish';
 
@@ -149,7 +153,26 @@ class JobManagement {
 		$job_id = $data['job_id'];
 		$job    = Job::getJobById( $job_id );
 
-		if ( empty( $job ) ) {
+		// Determine if the current user can visit the job
+		$can_visit = ! empty( $job );
+		$privileged = User::validateRole( get_current_user_id(), array( 'administrator', 'editor' ) );
+
+		// Only admin and editor can visit the job even if not published
+		if ( $can_visit && $job['job_status'] !== 'publish' ) {
+			// If not published yet, then only privieleged users can see the job.
+			$can_visit = $privileged;
+		}
+
+		// Provide preview content for admin and editor
+		// Only the privileged users can see preview content which is not in the main job yet.
+		if ( $can_visit && (int)( $data['preview'] ?? 0 ) === 1 && $privileged ) {
+			$autosaved = Meta::job( $job_id )->getMeta( 'autosaved_job' );
+			if ( ! empty( $autosaved ) ) {
+				$job = $autosaved;
+			}
+		}
+		
+		if ( ! $can_visit ) {
 			wp_send_json_error( array( 'message' => __( 'Job not found' ) ) );
 		} else {
 			wp_send_json_success(

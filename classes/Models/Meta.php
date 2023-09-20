@@ -80,6 +80,7 @@ class Meta {
 
 		// Loop through results and prepare value
 		foreach ( $results as $result ) {
+
 			// Store values per meta key in the array
 			$_meta[ $result['meta_key'] ] = maybe_unserialize( $result['meta_value'] );
 		}

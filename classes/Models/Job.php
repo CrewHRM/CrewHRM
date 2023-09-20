@@ -23,18 +23,7 @@ class Job {
 
 		$salary = $job['salary'] ?? '';
 		$salary = explode( '-', $salary );
-		$application_form = maybe_serialize( $job['application_form'] ?? array() );
 
-		// Make sure there is at least empty fields array in segments.
-		// Because empty fields array doesn't get submitted, and it is underfined in the next load.
-		// That causes multiple react error.
-		// This issue occurs especially in case of question as the fields are initially empty.
-		/* foreach ( $application_form as $index => $segments ) {
-			if ( empty( $segments['fields'] ) || ! is_array( $segments['fields'] ) ) {
-				$application_form[ $index ]['fields'] = array();
-			}
-		} */
-		
 		$_job = array(
 			'job_title'            => $job['job_title'] ?? '',
 			'job_description'      => $job['job_description'] ?? '',
@@ -50,7 +39,7 @@ class Job {
 			'experience_years'     => $job['experience_years'] ?? null,
 			'experience_level'     => $job['experience_level'] ?? null,
 			'application_deadline' => $job['application_deadline'] ?? null,
-			'application_form'     => $application_form,
+			'application_form'     => maybe_serialize( $job['application_form'] ?? array() ),
 			'job_status'           => $job['job_status'] ?? 'draft',
 			'currency'             => $job['currency'] ?? null,
 		);
@@ -143,6 +132,9 @@ class Job {
 
 		// Assign stages
 		$job['hiring_flow'] = Stage::getStagesByJobId( $job_id );
+
+		// Permalink
+		$job['job_permalink'] = self::getJobPermalink( $job_id );
 
 		return $job;
 	}

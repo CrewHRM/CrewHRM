@@ -169,7 +169,8 @@ export function DeletionConfirm(props) {
 		showWarning(
 			__("Are you sure, you want to delete this item. We won't be able to recover it."), 
 			deleteStage,
-			closeModalAll
+			closeModalAll,
+			__('Delete')
 		);
 	}, []);
 

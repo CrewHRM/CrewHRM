@@ -105,6 +105,10 @@ class _Array {
 					// Cast null
 					$array[ $index ] = null;
 
+				} else if( $value === '[]' ) {
+					// Cast empty array
+					$array[ $index ] = array();
+
 				} else {
 					// Maybe unserialize
 					$array[ $index ] = maybe_unserialize( $value );

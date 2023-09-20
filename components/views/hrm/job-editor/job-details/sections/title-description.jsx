@@ -66,12 +66,12 @@ export function TitleAndDescription() {
                             placeholder={__('ex. Product designer, Account manager')}
                             value={values.job_title || ''}
                             onChange={(v) => onChange('job_title', v)}
+                            className={input_class}
+                            maxLength={title_allowed_length}
                             onIconClick={(refocus) => {
                                 onChange('job_title', '');
                                 refocus();
                             }}
-                            className={input_class}
-                            maxLength={title_allowed_length}
                         />
                     </div>
                 </div>

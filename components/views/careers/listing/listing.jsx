@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
-import { __, filterObject, filterUniqueColumn } from '../../../utilities/helpers.jsx';
+import { __, filterObject, filterUniqueColumn, parseParams } from '../../../utilities/helpers.jsx';
 import { LoadingIcon } from '../../../materials/loading-icon/loading-icon.jsx';
 import { TextField } from '../../../materials/text-field/text-field.jsx';
 import { CoverImage } from '../../../materials/image/image.jsx';
@@ -14,10 +14,7 @@ import style from './listing.module.scss';
 
 export function Listing({ base_permalink, settings={} }) {
 	const [searchParam, setSearchParam] = useSearchParams();
-	const queryParams = {};
-	for (const [key, value] of searchParam) {
-		queryParams[key] = value;
-	}
+	const queryParams = parseParams( searchParam );
 	const current_page = queryParams.page || 1;
 
 	const [state, setState] = useState({
@@ -71,7 +68,6 @@ export function Listing({ base_permalink, settings={} }) {
 
 	// When URL state changes, put the filters in state
 	useEffect(()=>{
-		console.log(searchParam);
         getJobs();
 	}, [searchParam]);
 

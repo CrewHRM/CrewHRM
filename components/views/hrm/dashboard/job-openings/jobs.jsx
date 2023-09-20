@@ -178,7 +178,9 @@ export function JobOpenings(props) {
 							
 							}
 						);
-					}
+					},
+					null,
+					__('Yes')
 				);
                 break;
         }

@@ -287,6 +287,14 @@ export function calculateJSONSizeInKB(jsonObject) {
     return sizeInKB;
 }
 
+export function parseParams( searchParam ) {
+	const queryParams = {};
+	for (const [key, value] of searchParam) {
+		queryParams[key] = value;
+	}
+	return queryParams;
+}
+
 export const is_production = process.env.NODE_ENV === 'production';
 export const countries_array = getCountries(true);
 export const countries_object = getCountries(false);

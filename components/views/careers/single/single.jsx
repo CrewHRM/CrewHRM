@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useSearchParams } from 'react-router-dom';
 
-import { __ } from '../../../utilities/helpers.jsx';
+import { __, parseParams } from '../../../utilities/helpers.jsx';
 import style from './single.module.scss';
 import { DangerouslySet } from '../../../materials/DangerouslySet.jsx';
 import { Apply } from './apply/apply.jsx';
@@ -9,6 +9,8 @@ import { request } from '../../../utilities/request.jsx';
 import { LoadingIcon } from '../../../materials/loading-icon/loading-icon.jsx';
 import { employment_types } from '../../hrm/job-editor/job-details/sections/employment-details.jsx';
 import { sections_fields } from '../../hrm/job-editor/application-form/form-structure.jsx';
+import { statuses } from '../../hrm/dashboard/job-openings/jobs.jsx';
+import { Conditional } from '../../../materials/conditional.jsx';
 
 const getForm = (_form, attrs) => {
     // Loop through fields
@@ -94,6 +96,8 @@ function RenderMeta({ icon, hint, content }) {
 
 export function Single({ base_permalink }) {
     const { job_action, job_id } = useParams();
+	const [searchParam, setSearchParam] = useSearchParams();
+	const queryParams = parseParams( searchParam );
 
     const [state, setState] = useState({
         job: null,
@@ -108,17 +112,21 @@ export function Single({ base_permalink }) {
             fetching: true
         });
 
-        request('get_single_job_view', { job_id }, (resp) => {
+        request('get_single_job_view', { job_id, preview: queryParams.preview }, (resp) => {
             const {
                 success,
-                data: { job = {}, about_company, message = __('Something Went Wrong!') }
+                data: { 
+					job = {}, 
+					about_company, 
+					message = __('Something Went Wrong!') 
+				}
             } = resp;
 
             setState({
                 ...state,
                 job: {
                     ...job,
-                    application_form: applyFormFields(job.application_form || {})
+                    application_form: success ? applyFormFields(job.application_form || {}) : null
                 },
                 about_company,
                 fetching: false,
@@ -134,6 +142,7 @@ export function Single({ base_permalink }) {
     const {
         department_name,
         job_title,
+		job_status,
         meta = {},
         job_description,
         street_address,
@@ -170,6 +179,9 @@ export function Single({ base_permalink }) {
                         className={'d-block font-size-38 font-weight-600 line-height-24 letter-spacing--38 color-text'.classNames()}
                     >
                         {job_title}
+						<Conditional show={job_status!=='publish'}>
+							&nbsp; <i>( { statuses[job_status]?.label ?? job_status } )</i>
+						</Conditional>
                     </span>
                 </div>
             </div>

@@ -5,7 +5,6 @@ export const InputDebounce = forwardRef((props, ref) => {
 	
 	const {
 		value, 
-		defaultValue, 
 		type, 
 		onFocus, 
 		onBlur, 
@@ -16,7 +15,7 @@ export const InputDebounce = forwardRef((props, ref) => {
 		rateLimit=0
 	} = props;
 
-	const [text, setText] = useState(value || defaultValue || '');
+	const [text, setText] = useState(value || '');
 
 	const _onChange=e=>{
 		setText(e.currentTarget.value);

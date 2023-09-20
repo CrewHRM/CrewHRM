@@ -4,13 +4,14 @@ import style from './warning.module.scss';
 import { __ } from '../../utilities/helpers.jsx';
 import { LoadingIcon } from '../loading-icon/loading-icon.jsx';
 import { Modal } from '../modal.jsx';
+import { Conditional } from '../conditional.jsx';
 
 export const ContextWarning = createContext();
 
 const btn_class =
 	'font-size-15 font-weight-400 letter-spacing--3 padding-vertical-10 padding-horizontal-15 border-radius-5 border-1-5 b-color-tertiary cursor-pointer'.classNames();
 
-function Warning({ onCancel, onConfirm, loading = false, message=__('Are you sure to proceed?') }) {
+function Warning({ onCancel, onConfirm, confirmText, closeText, loading = false, message=__('Are you sure to proceed?') }) {
 
     return (
         <div
@@ -30,18 +31,16 @@ function Warning({ onCancel, onConfirm, loading = false, message=__('Are you sur
                 }
                 onClick={() => onCancel()}
             >
-                {__('Cancel')}
+                {closeText}
             </button>
             <button
                 disabled={loading}
                 className={'delete-button'.classNames(style) + btn_class}
                 onClick={() => onConfirm()}
             >
-                {loading ? (
-                    <LoadingIcon size={18} color={window.CrewHRM.colors.white} />
-                ) : (
-                    __('Delete')
-                )}
+				{confirmText} <Conditional show={loading}>
+					<LoadingIcon size={18} color={window.CrewHRM.colors.white} />
+				</Conditional>
             </button>
         </div>
     );
@@ -52,17 +51,21 @@ export function WarningWrapper({children}) {
 	const [state, setState] = useState({
 		message: null,
 		onConfirm: ()=>{},
-		onClose: ()=>{}
+		onClose: ()=>{},
+		confirmText: null,
+		closeText: null
 	});
 
 	const [loading, setLoading] = useState(false);
 
-	const showWarning=(message, onConfirm, onClose)=>{
+	const showWarning=(message, onConfirm, onClose, confirmText=__('OK'), closeText=__('Cancel'))=>{
 		setState({
 			...state, 
 			message, 
 			onConfirm,
-			onClose
+			onClose,
+			confirmText,
+			closeText
 		});
 	}
 
@@ -93,6 +96,8 @@ export function WarningWrapper({children}) {
                         loading={loading}
                         onCancel={closeWarning}
                         onConfirm={state.onConfirm || (()=>{})}
+						confirmText={state.confirmText}
+						closeText={state.closeText}
                     />
                 </Modal>
             ) : null

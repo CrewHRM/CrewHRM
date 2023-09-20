@@ -59,20 +59,25 @@ export function HeadActions({ application }) {
     };
 
     const changeStage = (stage_id, message = __('Sure to move?')) => {
-		showWarning(message, ()=>{
-			loadingState();
+		showWarning(
+			message, 
+			()=>{
+				loadingState();
 
-			request('move_application_stage', {job_id, stage_id, application_id}, resp=>{
-				const {success} = resp;
-				
-				ajaxToast(resp);
+				request('move_application_stage', {job_id, stage_id, application_id}, resp=>{
+					const {success} = resp;
+					
+					ajaxToast(resp);
 
-				if ( success ) {
-					closeWarning();
-					sessionRefresh();
-				}
-			});
-		});
+					if ( success ) {
+						closeWarning();
+						sessionRefresh();
+					}
+				});
+			},
+			null,
+			__('Yes, Move')
+		);
 	};
 
     const {

@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { StickyBar } from '../../../materials/sticky-bar/sticky-bar.jsx';
 import { __, getRandomString, isEmpty } from '../../../utilities/helpers.jsx';
 import { Tabs } from '../../../materials/tabs/tabs.jsx';
@@ -272,7 +272,10 @@ export function JobEditor() {
 				});
 				
 				closeWarning();
-			}
+			},
+			null,
+			__('Restore'),
+			__('No')
 		);
 
 	}, [state.autosaved_job]);
@@ -309,11 +312,13 @@ export function JobEditor() {
 						</Conditional>
 						
 						<Conditional show={is_last_step}>
-							<button
+							<Link
                                 className={'button button-primary button-outlined'.classNames()}
+								target='_blank'
+								to={`${state.values.job_permalink}?preview=1`}
                             >
                                 {__('Preview Job')}
-                            </button>
+                            </Link>
 						</Conditional>
 						
                         <button
