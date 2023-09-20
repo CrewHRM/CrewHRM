@@ -158,7 +158,7 @@ export function Single({ base_permalink }) {
 
     if (state.error_message) {
         return (
-            <div className={'text-align-center color-danger'.classNames()}>
+            <div className={'text-align-center color-error'.classNames()}>
                 {state.error_message}
             </div>
         );

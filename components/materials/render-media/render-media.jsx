@@ -90,7 +90,7 @@ export function RenderMedia({media, onDelete, theme='grid', overlay=true}) {
 				return <div key={file_id} className={'position-relative'.classNames()}>
 					{
 						onDelete ? <span 
-							className={'cursor-pointer bg-color-danger width-16 height-16 d-flex align-items-center justify-content-center position-absolute'.classNames()} 
+							className={'cursor-pointer bg-color-error width-16 height-16 d-flex align-items-center justify-content-center position-absolute'.classNames()} 
 							style={{borderRadius: '50%', top: '-7px', right: '-7px'}} 
 							onClick={onDelete}
 						>
@@ -167,7 +167,7 @@ export function RenderMediaPreview(props) {
 	
 	return <div className={`preview media-type-${media_type}`.classNames(style) + 'position-fixed left-0 right-0 top-0 bottom-0 w-full h-full padding-50'.classNames()} onClick={onClosePreview}>
 		<span 
-			className={'cursor-pointer bg-color-danger width-20 height-20 d-flex align-items-center justify-content-center position-fixed top-42 right-42'.classNames()} 
+			className={'cursor-pointer bg-color-error width-20 height-20 d-flex align-items-center justify-content-center position-fixed top-42 right-42'.classNames()} 
 			style={{borderRadius: '50%', zIndex: 99}} 
 			onClick={onClosePreview}
 		>

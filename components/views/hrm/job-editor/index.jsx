@@ -190,10 +190,12 @@ export function JobEditor() {
         const current_index = steps.findIndex((s) => s.id == active_tab);
 
         if (tab === 1 || tab === -1) {
-            tab = steps[current_index + tab].id;
+            tab = steps[current_index + tab]?.id;
         }
 
-		setTab(tab);
+		if (tab) {
+			setTab(tab);
+		}
     };
 
     const getJob = () => {
@@ -282,14 +284,14 @@ export function JobEditor() {
 
     if (state.error_message) {
         return (
-            <div className={'text-align-center color-danger'.classNames()}>
+            <div className={'text-align-center color-error'.classNames()}>
                 {state.error_message}
             </div>
         );
     }
 
     return (
-        <ContextJobEditor.Provider value={{ values: state.values, onChange, navigateTab, is_next_disabled }}>
+        <ContextJobEditor.Provider value={{ values: state.values, onChange, navigateTab, onSaveClick, is_next_disabled, saving_mode: state.saving_mode }}>
             <StickyBar title="Job Editor">
                 {[
                     <div key="log" className={'text-align-center'.classNames()}>

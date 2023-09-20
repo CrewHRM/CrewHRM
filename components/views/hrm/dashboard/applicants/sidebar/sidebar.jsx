@@ -29,7 +29,7 @@ const steps = [
     }
 ];
 
-export function Sidebar({ stage_id }) {
+export function Sidebar({ stage_id, onEmpty }) {
     const navigate = useNavigate();
     const { application_id, job_id } = useParams();
     const { session, sessionRefresh } = useContext(ContextApplicationSession);
@@ -83,7 +83,9 @@ export function Sidebar({ stage_id }) {
                     `/dashboard/jobs/${job_id}/applications/${applications[0].application_id}/`,
 					{ replace: true }
                 );
-            }
+            } else {
+				onEmpty();
+			}
         });
     };
 

@@ -16,9 +16,9 @@ class Colors {
 		'text-lighter' => '#BBBFC3',
 		'text-hint'    => '#757C8E',
 		
-		'danger'       => '#EA4545',
 		'success'      => '#5B9215',
 		'warning'      => '#F57A08',
+		'error'        => '#EA4545',
 
 		'black'        => '#000000',
 		'white'        => '#FFFFFF',

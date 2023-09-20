@@ -193,7 +193,7 @@ export function FieldEditorModal(props) {
                                     </div>
                                     <div>
                                         <i
-                                            className={'ch-icon ch-icon-trash font-size-24 color-danger cursor-pointer'.classNames()}
+                                            className={'ch-icon ch-icon-trash font-size-24 color-error cursor-pointer'.classNames()}
                                             onClick={() => deleteOption(id)}
                                         ></i>
                                     </div>

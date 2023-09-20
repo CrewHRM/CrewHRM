@@ -31,7 +31,7 @@ export function IconEmailHasUpdate(props) {
                 cx="19"
                 cy="4"
                 r="3.5"
-                fill={window.CrewHRM.colors['danger']}
+                fill={window.CrewHRM.colors['error']}
                 stroke="#F3F4F5"
             />
         </svg>

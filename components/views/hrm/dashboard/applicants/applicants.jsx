@@ -24,7 +24,8 @@ export function Applications() {
         stages: [],
         job_list: [],
         job: {},
-        candidates: 0
+        candidates: 0,
+		has_applications: true
     });
 
     const getJob = () => {
@@ -67,7 +68,7 @@ export function Applications() {
 
     if (!state.fetching && (!state.job || state.error_message)) {
         return (
-            <div className={'color-danger'.classNames()}>
+            <div className={'color-error'.classNames()}>
                 {state.error_message || __('Something went wrong')}
             </div>
         );
@@ -88,6 +89,7 @@ export function Applications() {
                 <Header
                     job_list={state.job_list}
                     job_id={job_id}
+					job={state.job}
                     stages={state.stages}
                     active_stage_id={state.active_stage_id}
                     candidates={state.candidates}
@@ -96,10 +98,15 @@ export function Applications() {
 
                 <div className={'content-area'.classNames(style)}>
                     <div className={'sidebar-wrapper'.classNames(style)}>
-                        <Sidebar job_id={job_id} stage_id={state.active_stage_id} />
+                        <Sidebar 
+							job_id={job_id} 
+							stage_id={state.active_stage_id} 
+							onEmpty={()=>setState({...state, has_applications: false})}/>
                     </div>
                     <div className={'profile-wrapper'.classNames(style)}>
-                        <Profile job_id={job_id} defaultApplication={state.defaultApplication} />
+                        <Profile 
+							job_id={job_id} 
+							has_applications={state.has_applications}/>
                     </div>
                 </div>
             </div>

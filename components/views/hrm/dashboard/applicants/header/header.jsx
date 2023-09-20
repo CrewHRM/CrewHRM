@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import { __ } from '../../../../../utilities/helpers.jsx';
 import { StatusDot } from '../../../../../materials/status-dot/status-dots.jsx';
@@ -11,6 +11,7 @@ import style from './header.module.scss';
 export function Header({
     job_list,
     job_id,
+	job:{job_permalink},
     stages = [],
     candidates = 0,
     active_stage_id: active_tab,
@@ -70,14 +71,19 @@ export function Header({
                     </div>
                 </div>
                 <div className={'d-flex align-items-center column-gap-15'.classNames()}>
-                    <a href="#" className={'font-size-15 font-weight-400 color-text'.classNames()}>
+                    <Link 
+						to={job_permalink} 
+						target="_blank" 
+						className={'font-size-15 font-weight-400 color-text'.classNames()}>
                         {__('View Post')}
-                    </a>
-                    <button
+                    </Link>
+                    <Link
+						to={job_permalink+'apply/'}
+						target="_blank" 
                         className={'button button-primary button-outlined button-small'.classNames()}
                     >
                         {__('Add Candidates')}
-                    </button>
+                    </Link>
                 </div>
             </div>
             <div>

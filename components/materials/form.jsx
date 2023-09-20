@@ -83,7 +83,7 @@ export function RenderField({ field, defaultEnabled }) {
             <span className={label_class}>
                 {label}
 				<Conditional show={label && required}>
-					<span className={'color-danger'.classNames()}>*</span>
+					<span className={'color-error'.classNames()}>*</span>
 				</Conditional>
             </span>
 

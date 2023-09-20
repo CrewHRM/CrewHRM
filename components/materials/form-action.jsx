@@ -1,5 +1,6 @@
 import React from 'react';
 import { __ } from '../utilities/helpers.jsx';
+import { Conditional } from './conditional.jsx';
 
 export function FormActionButtons(props) {
     const {
@@ -13,8 +14,8 @@ export function FormActionButtons(props) {
 
     return (
         <div className={'d-flex column-gap-40 margin-bottom-30'.classNames()}>
-            {(onBack && (
-                <div style={{ width: '138px' }}>
+			<Conditional show={onBack}>
+				<div style={{ width: '138px' }}>
                     <button
                         disabled={disabledPrevious}
                         className={'d-inline-block button button-primary button-outlined button-outlined-secondary button-full-width'.classNames()}
@@ -23,11 +24,10 @@ export function FormActionButtons(props) {
                         {backText}
                     </button>
                 </div>
-            )) ||
-                null}
-
-            {(onNext && (
-                <div className={'flex-1'.classNames()}>
+			</Conditional>
+			
+			<Conditional show={onNext}>
+				<div className={'flex-1'.classNames()}>
                     <button
                         disabled={disabledNext}
                         className={'button button-primary button-full-width'.classNames()}
@@ -36,8 +36,7 @@ export function FormActionButtons(props) {
                         {nextText}
                     </button>
                 </div>
-            )) ||
-                null}
+			</Conditional>
         </div>
     );
 }

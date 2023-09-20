@@ -41,7 +41,7 @@ export function TitleAndDescription() {
                         <div className={'flex-1'.classNames()}>
                             <span className={field_label_class}>
                                 {__('Job Title')}
-                                <span className={'color-danger'.classNames()}>*</span>
+                                <span className={'color-error'.classNames()}>*</span>
                             </span>
                         </div>
                         <div className={'d-flex align-items-center'.classNames()}>
@@ -90,7 +90,7 @@ export function TitleAndDescription() {
                         <div className={'flex-1 margin-right-10'.classNames()}>
                             <span className={field_label_class}>
                                 {__('Department')}
-                                <span className={'color-danger'.classNames()}>*</span>
+                                <span className={'color-error'.classNames()}>*</span>
                             </span>
                             <DropDown
                                 value={values.department_id}
@@ -123,7 +123,7 @@ export function TitleAndDescription() {
             {/* Job Description* */}
             <span className={field_label_class}>
                 {__('Job Description')}
-                <span className={'color-danger'.classNames()}>*</span>
+                <span className={'color-error'.classNames()}>*</span>
             </span>
             <div className={'d-flex margin-bottom-30'.classNames()}>
                 <div className={'flex-1'.classNames()}>

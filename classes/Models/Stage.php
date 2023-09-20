@@ -308,7 +308,7 @@ class Stage {
 	public static function getStageStatsByJobId( $job_id ) {
 		// Prepare arguments
 		$is_singular = ! is_array( $job_id );
-		$job_ids     = ! $is_singular ? $job_id : array( $job_id );
+		$job_ids     = _Array::castRecursive( ! $is_singular ? $job_id : array( $job_id ) );
 		$ids_in      = implode( ',', $job_ids );
 		if ( empty( $job_ids ) ) {
 			return array();
@@ -317,13 +317,15 @@ class Stage {
 		// Get application counts per stage per job.
 		global $wpdb;
 		$counts = $wpdb->get_results(
-			'SELECT job_id, stage_id, COUNT(application_id) as candidates FROM ' . DB::applications() . " WHERE job_id IN ({$ids_in}) GROUP BY job_id, stage_id",
+			'SELECT job_id, stage_id, COUNT(application_id) as candidates 
+			FROM ' . DB::applications() . " 
+			WHERE job_id IN ({$ids_in}) GROUP BY job_id, stage_id",
 			ARRAY_A
 		);
-		$counts = _Array::castRecursive( $counts );
 		if ( empty( $counts ) ) {
 			return array();
 		}
+		$counts = _Array::castRecursive( $counts );
 
 		// Get job wise total candidate counts
 		$candidate_counts = array();
@@ -338,20 +340,35 @@ class Stage {
 			$candidate_counts[ $_job_id ] += $count['candidates'];
 		}
 
-		// Get the stages sequence to sort (Exclude disqualified as it has no usage in frontend view)
+		// Get the stages sequence to sort.
+		// Exclude disqualified as it is used in special way and has no usage in frontend view.
 		$sequences = $wpdb->get_results(
-			$wpdb->prepare(
-				'SELECT job_id, stage_id, stage_name, sequence FROM ' . DB::stages() . " WHERE job_id IN ({$ids_in}) AND stage_name!='_disqualified_' ORDER BY sequence"
-			),
+			'SELECT job_id, stage_id, stage_name, sequence 
+			FROM ' . DB::stages() . " 
+			WHERE job_id IN ({$ids_in}) 
+				AND stage_name!='_disqualified_' 
+			ORDER BY sequence",
 			ARRAY_A
 		);
 		$sequences = _Array::castRecursive( $sequences );
 
 		// Generate new stage array per job based on sequence order
 		$_stages = array();
+		foreach ( $job_ids as $id ) {
+			// Create place holder to store per job stages
+			$_stages[ $id ] = array();
+		}
 
 		// Loop through sorted sequences
 		foreach ( $sequences as $sequence ) {
+
+			// Put sequenced stage in the new array
+			$_stages[ $sequence['job_id'] ][ $sequence['stage_id'] ] = array_merge(
+				$sequence,
+				array(
+					'candidates' => 0
+				)
+			);
 
 			// Loop through candidate counts
 			foreach ( $counts as $count ) {
@@ -365,21 +382,12 @@ class Stage {
 					continue;
 				}
 
-				// Create the holder if not created yet
-				if ( ! isset( $_stages[ $_job_id ] ) ) {
-					$_stages[ $_job_id ] = array();
-				}
-
 				// Add the stage per job
-				$_stages[ $_job_id ][ $sequence['stage_id'] ] = array_merge(
-					$sequence, 
-					array( 
-						'candidates' => $count['candidates'],
-					) 
-				);
+				$_stages[ $_job_id ][ $sequence['stage_id'] ]['candidates'] = $count['candidates'];
 			}
 		}
 
+		// Remove indexes from stages to avoid casting as object during transfer to browser.
 		foreach ( $_stages as $index => $s ) {
 			$_stages[ $index ] = array_values( $s );
 		}

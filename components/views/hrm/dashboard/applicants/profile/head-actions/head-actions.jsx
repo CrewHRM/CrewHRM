@@ -118,7 +118,7 @@ export function HeadActions({ application }) {
 						</i> : 
 						<i
 							title={__('Disqualify')}
-							className={'ch-icon ch-icon-slash color-danger font-size-20 cursor-pointer'.classNames()}
+							className={'ch-icon ch-icon-slash color-error font-size-20 cursor-pointer'.classNames()}
 							onClick={() => changeStage('_disqualified_', __('Sure to disqualify?'))}
 						></i>
 					}

@@ -33,7 +33,7 @@ function ItemSingle({ id_key, label_key, list_item, renameStage, deleteHandler, 
             {deleteHandler || deleteFlow ? (
                 <i
                     className={
-                        'ch-icon ch-icon-trash font-size-24 color-danger margin-left-20 cursor-pointer'.classNames() +
+                        'ch-icon ch-icon-trash font-size-24 color-error margin-left-20 cursor-pointer'.classNames() +
                         'trash'.classNames(style)
                     }
                     onClick={() =>

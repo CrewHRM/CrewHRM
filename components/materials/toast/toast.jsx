@@ -9,7 +9,7 @@ export const ContextToast = createContext();
 const colors = {
     success: window.CrewHRM.colors['secondary'],
     warning: window.CrewHRM.colors['warning'],
-    error: window.CrewHRM.colors['danger']
+    error: window.CrewHRM.colors['error']
 };
 
 export function ToastWrapper(props) {

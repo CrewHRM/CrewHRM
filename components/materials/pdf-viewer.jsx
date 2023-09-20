@@ -49,7 +49,7 @@ export function PDFViewer({ src, defaultScale, height='750px', width='100%' }) {
             </Worker>
 
             {(state.error && (
-                <div className={'color-danger'.classNames()}>
+                <div className={'color-error'.classNames()}>
                     {__('Failed to open here.')}{' '}
                     <a href={src} target="_blank">
                         {__('Download Instead.')}

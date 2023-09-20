@@ -172,7 +172,7 @@ export function Activity() {
                 let { renderer: Comp, icon } = activity_handlers[type];
 
 				if (activity.type === 'move' && activity.stage_name === '_disqualified_') {
-					icon = 'ch-icon ch-icon-slash color-danger font-size-24';
+					icon = 'ch-icon ch-icon-slash color-error font-size-24';
 					Comp = LayoutDisqualify;
 				}
 
