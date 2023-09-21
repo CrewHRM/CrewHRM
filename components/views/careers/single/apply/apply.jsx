@@ -8,6 +8,7 @@ import { ContextToast } from '../../../../materials/toast/toast.jsx';
 
 import style from './apply.module.scss';
 import { Applied } from './applied.jsx';
+import { Conditional } from '../../../../materials/conditional.jsx';
 
 const steps = [
     {
@@ -184,8 +185,8 @@ export function Apply({ job = {} }) {
                 </div>
             </div>
 
-            {is_segment ? (
-                <div
+			<Conditional show={is_segment}>
+				<div
                     className={
                         'sequence'.classNames(style) +
                         'padding-vertical-20 box-shadow-thin margin-bottom-50'.classNames()
@@ -195,17 +196,19 @@ export function Apply({ job = {} }) {
                         <Tabs active={state.active_tab} tabs={steps} theme="sequence" />
                     </div>
                 </div>
-            ) : null}
-
+			</Conditional>
+			
             <div data-crewhrm-selector="job-application-form" className={'form'.classNames(style)}>
-                {(is_segment && (
-                    <span
+				<Conditional show={is_segment}>
+					<span
                         className={'d-block font-size-20 font-weight-600 color-text margin-bottom-30'.classNames()}
                     >
                         {step.label}
                     </span>
-                )) || (
-                    <div className={'margin-top-48'.classNames()}>
+				</Conditional>
+				
+				<Conditional show={!is_segment}>
+					<div className={'margin-top-48'.classNames()}>
                         <span
                             className={'d-block font-size-20 font-weight-600 color-text margin-bottom-8'.classNames()}
                         >
@@ -217,13 +220,13 @@ export function Apply({ job = {} }) {
                             {__('Fields marked with * are required.')}
                         </span>
                     </div>
-                )}
-
+				</Conditional>
+				
                 <ContextForm.Provider value={{ values: state.values, onChange }}>
                     <FormFields defaultEnabled={false} fields={fields_to_render} />
                 </ContextForm.Provider>
 
-                {(is_segment && (
+                {is_segment ?
                     <div>
                         <FormActionButtons
                             disabledNext={!is_next_enabled}
@@ -239,7 +242,7 @@ export function Apply({ job = {} }) {
                             }
                         />
                     </div>
-                )) || (
+					:
                     <div>
                         <button
                             disabled={!is_next_enabled}
@@ -254,7 +257,7 @@ export function Apply({ job = {} }) {
                             {__('Submit Application')}
                         </button>
                     </div>
-                )}
+                }
             </div>
         </div>
     );
