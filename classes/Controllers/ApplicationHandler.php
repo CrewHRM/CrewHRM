@@ -95,11 +95,25 @@ class ApplicationHandler {
 	 * @return void
 	 */
 	public static function getApplicationsList( array $data ) {
-		$applications = Application::getApplications( $data['filter'] );
+		$filter             = $data['filter'];
+		$is_qualified       = $filter !== 'disqualified';
+		$applications       = Application::getApplications( $filter );
+		$qualified_count    = 0;
+		$disqualified_count = 0;
+
+		if ( $is_qualified ) {
+			$qualified_count    = count( $applications );
+			$disqualified_count = Application::getApplications( array_merge( $filter, array( 'qualification' => 'disqualified' ) ), true );
+		} else {
+			$qualified_count    = Application::getApplications( array_merge( $filter, array( 'qualification' => 'qualified' ) ), true );
+			$disqualified_count = count( $applications );
+		}
 
 		wp_send_json_success(
 			array(
-				'applications' => $applications,
+				'applications'       => $applications,
+				'qualified_count'    => $qualified_count,
+				'disqualified_count' => $disqualified_count
 			)
 		);
 	}

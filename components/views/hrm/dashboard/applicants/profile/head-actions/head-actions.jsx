@@ -76,7 +76,7 @@ export function HeadActions({ application }) {
 				});
 			},
 			null,
-			__('Yes, Move')
+			__('Yes')
 		);
 	};
 

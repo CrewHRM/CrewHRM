@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Tabs } from '../../../../../materials/tabs/tabs.jsx';
-import { __ } from '../../../../../utilities/helpers.jsx';
+import { __, sprintf } from '../../../../../utilities/helpers.jsx';
 import { TextField } from '../../../../../materials/text-field/text-field.jsx';
 import { Line } from '../../../../../materials/line/line.jsx';
 import { CoverImage } from '../../../../../materials/image/image.jsx';
@@ -10,26 +10,7 @@ import { ContextApplicationSession } from '../applicants.jsx';
 
 import style from './sidebar.module.scss';
 
-const steps = [
-    {
-        id: 'qualified',
-        label: (
-            <span className={'font-size-13 font-weight-500 line-height-24'.classNames()}>
-                {__('Qualified')}
-            </span>
-        )
-    },
-    {
-        id: 'disqualified',
-        label: (
-            <span className={'font-size-13 font-weight-500 line-height-24'.classNames()}>
-                {__('Disqualified')}
-            </span>
-        )
-    }
-];
-
-export function Sidebar({ stage_id, onEmpty }) {
+export function Sidebar({ stage_id, hasApplications }) {
     const navigate = useNavigate();
     const { application_id, job_id } = useParams();
     const { session, sessionRefresh } = useContext(ContextApplicationSession);
@@ -42,7 +23,9 @@ export function Sidebar({ stage_id, onEmpty }) {
             page: 1,
             search: null
         },
-        applications: []
+        applications: [],
+		qualified_count: 0, 
+		disqualified_count: 0 
     });
 
     const [searchState, setSearchState] = useState('');
@@ -68,13 +51,19 @@ export function Sidebar({ stage_id, onEmpty }) {
         request('get_applications_list', payload, (resp) => {
             const {
                 success,
-                data: { applications = [] }
+                data: { 
+					applications = [], 
+					qualified_count=0, 
+					disqualified_count=0 
+				}
             } = resp;
 
             setState({
                 ...state,
                 fetching: false,
-                applications
+                applications,
+				qualified_count,
+				disqualified_count
             });
 
             // Set the first profile to open automatacillay
@@ -83,15 +72,22 @@ export function Sidebar({ stage_id, onEmpty }) {
                     `/dashboard/jobs/${job_id}/applications/${applications[0].application_id}/`,
 					{ replace: true }
                 );
-            } else {
-				onEmpty();
-			}
+            } 
+			
+			hasApplications(applications.length ? true : false);
         });
     };
 
     useEffect(() => {
         getApplications();
-    }, [job_id, stage_id, state.filter.page, state.filter.search, state.active_tab, session]);
+    }, [
+		job_id, 
+		stage_id, 
+		state.filter.page, 
+		state.filter.search, 
+		state.active_tab, 
+		session
+	]);
 
     // Debounce for search input
     // To Do: Use this same technique in settings undo/redo and job auto save.
@@ -120,6 +116,25 @@ export function Sidebar({ stage_id, onEmpty }) {
             clearTimeout(timeOutId);
         };
     }, [searchState]);
+
+	const steps = [
+		{
+			id: 'qualified',
+			label: (
+				<span className={'font-size-13 font-weight-500 line-height-24'.classNames()}>
+					{sprintf( __('Qualified (%s)'), state.qualified_count )}
+				</span>
+			)
+		},
+		{
+			id: 'disqualified',
+			label: (
+				<span className={'font-size-13 font-weight-500 line-height-24'.classNames()}>
+					{sprintf( __('Disqualified (%s)'), state.disqualified_count )}
+				</span>
+			)
+		}
+	];
 
     return (
         <div

@@ -60,7 +60,7 @@ export function Profile({ job_id, has_applications }) {
     const getApplication = () => {
         setState({
             ...state,
-            fetching: true
+            fetching: true,
         });
 
         request(
@@ -77,7 +77,7 @@ export function Profile({ job_id, has_applications }) {
 					mounted: true,
                     fetching: false,
                     application,
-                    error_message: success ? null : message
+                    error_message: success ? null : message,
                 });
             }
         );
@@ -91,11 +91,11 @@ export function Profile({ job_id, has_applications }) {
 
     const { application = {} } = state;
 
-	if ( ! has_applications ) {
+	if ( !state.mounted && ! has_applications ) {
 		return <div className={'application-data'.classNames(style) + 'border-radius-5'.classNames()}>
 			<div className={'text-align-center color-error margin-top-30'.classNames()}>
-			{__('No Application Yet')}
-		</div>
+				{__('No Application Yet')}
+			</div>
 		</div> 
 	}
 

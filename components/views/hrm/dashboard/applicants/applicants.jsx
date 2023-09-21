@@ -25,7 +25,8 @@ export function Applications() {
         job_list: [],
         job: {},
         candidates: 0,
-		has_applications: true
+		has_applications: true,
+		mounted: false
     });
 
     const getJob = () => {
@@ -53,16 +54,18 @@ export function Applications() {
                 job,
                 stages,
                 job_list,
-                candidates
+                candidates,
+				mounted: true
             });
         });
     };
 
     useEffect(() => {
         getJob();
-    }, [job_id]);
+    }, [job_id, state.session]);
 
-    if (state.fetching) {
+	// Don't unmount if already mounted, so the auto content loading will work on status changes.
+    if (!state.mounted && state.fetching) {
         return <LoadingIcon center={true} />;
     }
 
@@ -101,7 +104,7 @@ export function Applications() {
                         <Sidebar 
 							job_id={job_id} 
 							stage_id={state.active_stage_id} 
-							onEmpty={()=>setState({...state, has_applications: false})}/>
+							hasApplications={has_applications=>setState({...state, has_applications})}/>
                     </div>
                     <div className={'profile-wrapper'.classNames(style)}>
                         <Profile 

@@ -372,18 +372,9 @@ class Stage {
 
 			// Loop through candidate counts
 			foreach ( $counts as $count ) {
-
-				$_job_id = $count['job_id'];
-
-				// No need to process null. 
-				// Null means the application is not assigned to any stage yet. 
-				// It has been already included in the global candidates count variable $candidate_counts
-				if ( $count['stage_id'] === null || $_job_id !== $sequence['job_id'] ) {
-					continue;
+				if ( $count['stage_id'] === $sequence['stage_id'] ) {
+					$_stages[ $count['job_id'] ][ $sequence['stage_id'] ]['candidates'] = $count['candidates'];
 				}
-
-				// Add the stage per job
-				$_stages[ $_job_id ][ $sequence['stage_id'] ]['candidates'] = $count['candidates'];
 			}
 		}
 

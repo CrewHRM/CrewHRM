@@ -188,7 +188,7 @@ class Application {
 	 * @param array $args
 	 * @return array
 	 */
-	public static function getApplications( array $args ) {
+	public static function getApplications( array $args, $count_only = false ) {
 		global $wpdb;
 
 		// Prepare arguments
@@ -198,9 +198,6 @@ class Application {
 		$get_qualified = $args['qualification'] !== 'disqualified';
 
 		// Prepare limitters
-		$limit        = $args['limit'] ?? 20;
-		$offset       = ( ( $args['page'] ?? 1 ) - 1 ) * $limit;
-		$limit_clause = " LIMIT {$limit} OFFSET {$offset}";
 		$where_clause = "app.job_id={$job_id}";
 
 		// Assign search query
@@ -208,9 +205,14 @@ class Application {
 			$keyowrd       = esc_sql( $args['search'] );
 			$where_clause .= " AND (app.first_name LIKE '%{$keyowrd}%' OR app.last_name LIKE '%{$keyowrd}%')";
 		}
+
+		// Apply specific stage filter
+		if ( ! empty( $stage_id ) ) {
+			$where_clause .= " AND app.stage_id={$stage_id}";
+		}
 		
 		// If it needs applications of specific stage
-		if ( ! empty( $stage_id ) ) {
+		/* if ( ! empty( $stage_id ) ) {
 			$stage_sequence = Field::stages()->getField( array( 'stage_id' => $stage_id ), 'sequence' );
 			$where_clause  .= " AND app.stage_id={$stage_id}";
 
@@ -229,17 +231,39 @@ class Application {
 			} else {
 				$where_clause .= " AND pipe.stage_id={$disq_stage_id}";
 			}
-		}
+		} */
 
+		$disq_ids = $wpdb->get_col(
+			"WITH RankedData AS (
+				SELECT
+					application_id,
+					stage_id,
+					action_date,
+					ROW_NUMBER() OVER (PARTITION BY application_id ORDER BY action_date DESC) AS rn
+				FROM " . DB::pipeline() . "
+			)
+			SELECT application_id
+			FROM RankedData
+			WHERE stage_id={$disq_stage_id} AND rn = 1;"
+		);
+		array_unshift( $disq_ids, 0 );
+		$ids_implode = implode( ',', $disq_ids );
+
+		$operator      = $get_qualified ? 'NOT IN' : 'IN';
+		$where_clause .= " AND app.application_id {$operator} ({$ids_implode})";
+		
 		// Run query and get the application IDs
 		$application_ids = $wpdb->get_col(
-			'SELECT DISTINCT pipe.application_id FROM ' . DB::applications() . ' app
-				LEFT JOIN ' . DB::stages() . ' stage ON app.stage_id=stage.stage_id
-				LEFT JOIN ' . DB::pipeline() . " pipe ON app.application_id=pipe.application_id 
-			WHERE 
-				{$where_clause}
-				GROUP BY pipe.application_id ORDER BY pipe.application_id DESC {$limit_clause}"
+			'SELECT app.application_id 
+			FROM ' . DB::applications() . " app
+				LEFT JOIN " . DB::stages() . " stage ON app.stage_id=stage.stage_id 
+			WHERE {$where_clause} ORDER BY application_date DESC"
 		);
+		
+		if ( $count_only ) {
+			return count( $application_ids );
+		}
+
 		if ( empty( $application_ids ) ) {
 			return array();
 		}
