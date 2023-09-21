@@ -78,6 +78,16 @@ export function Sidebar({ stage_id, hasApplications }) {
         });
     };
 
+	const onSearch=(v)=> {
+		setState({
+			...state,
+			filter: {
+				...state.filter,
+				search: v
+			}
+		});
+    }
+
     useEffect(() => {
         getApplications();
     }, [
@@ -88,34 +98,6 @@ export function Sidebar({ stage_id, hasApplications }) {
 		state.active_tab, 
 		session
 	]);
-
-    // Debounce for search input
-    // To Do: Use this same technique in settings undo/redo and job auto save.
-	// To Do: Fix rich editor glithch with undo/redo. Need to update contents as stage changes.
-    useEffect(() => {
-        // Prevent duplicate ajax call
-        if (!state.mounted) {
-            setState({
-                ...state,
-                mounted: true
-            });
-            return;
-        }
-
-        const timeOutId = setTimeout(() => {
-            setState({
-                ...state,
-                filter: {
-                    ...state.filter,
-                    search: searchState
-                }
-            });
-        }, 500);
-
-        return () => {
-            clearTimeout(timeOutId);
-        };
-    }, [searchState]);
 
 	const steps = [
 		{
@@ -155,7 +137,8 @@ export function Sidebar({ stage_id, hasApplications }) {
                     className={'border-1 b-color-tertiary border-radius-5 padding-vertical-10 padding-horizontal-11 height-40'.classNames()}
                     iconClass={'ch-icon ch-icon-search-normal-1 font-size-16 color-text-light'.classNames()}
                     placeholder={__('Search by name')}
-                    onChange={(v) => setSearchState(v)}
+                    onChange={onSearch}
+					inputDelay={500}
                 />
             </div>
 

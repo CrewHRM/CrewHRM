@@ -12,36 +12,46 @@ export const InputDebounce = forwardRef((props, ref) => {
 		placeholder, 
 		pattern, 
 		className, 
-		rateLimit=0
+		inputDelay
 	} = props;
 
 	const [text, setText] = useState(value || '');
 
 	const _onChange=e=>{
-		setText(e.currentTarget.value);
+
+		const {value} = e.currentTarget;
+
+		if ( !inputDelay ) {
+			onChange(value);
+
+		} else {
+			setText(value);
+		}
+
 	}
 
 	useEffect(()=>{
-		// No need timer as it is zero delay
-		if ( !rateLimit ) {
-			onChange(text);
-			return;
-		}
-
 		const timer = window.setTimeout(()=>{
 			onChange(text);
-		}, rateLimit);
+		}, inputDelay);
 
 		return ()=>window.clearInterval(timer);
 	}, [text]);
 
-	const attr = {ref, type, onFocus, onBlur, placeholder, pattern}
+	const attr = {
+		ref, 
+		type, 
+		onFocus, 
+		onBlur, 
+		placeholder, 
+		pattern,
+		value: !inputDelay ? value : text
+	}
 
 	return <>
 		<Conditional show={type!=='textarea'}>
 			<input 
 				{...attr}
-				value={text} 
 				className={className}
 				onChange={_onChange}/>
 		</Conditional>
@@ -49,7 +59,6 @@ export const InputDebounce = forwardRef((props, ref) => {
 		<Conditional show={type==='textarea'}>
 			<textarea 
 				{...attr}
-				value={text}
 				className={className}
 				onChange={_onChange}></textarea>
 		</Conditional>

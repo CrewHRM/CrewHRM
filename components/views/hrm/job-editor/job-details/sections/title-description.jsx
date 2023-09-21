@@ -11,7 +11,7 @@ import { ContextJobEditor } from '../../index.jsx';
 import style from '../details.module.scss';
 
 export function TitleAndDescription() {
-    const { values, onChange } = useContext(ContextJobEditor);
+    const { values, onChange, session } = useContext(ContextJobEditor);
     const { departments, addDepartment } = useContext(ContextBackendDashboard);
 
     const title_allowed_length = 200;
@@ -128,6 +128,7 @@ export function TitleAndDescription() {
             <div className={'d-flex margin-bottom-30'.classNames()}>
                 <div className={'flex-1'.classNames()}>
                     <TextEditor
+						session={session}
                         onChange={(v) => onChange('job_description', v)}
                         value={values.job_description || ''}
                         placeholder={__(

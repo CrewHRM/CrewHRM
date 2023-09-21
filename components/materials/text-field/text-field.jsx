@@ -17,7 +17,7 @@ export function TextField(props) {
         inputClassName = '',
         pattern,
         value,
-		rateLimit=0,
+		inputDelay,
         maxLength = null,
         expandable = false
     } = props;
@@ -104,20 +104,37 @@ export function TextField(props) {
 			</Conditional>
 			
 			<Conditional show={state.expanded}>
-				<InputDebounce
-					ref={input_ref}
-                    type={type}
-                    value={value}
-					rateLimit={rateLimit}
-					onChange={dispatchChange}
-                    onFocus={() => toggleFocusState(true)}
-                    onBlur={() => toggleFocusState(false)}
-                    placeholder={placeholder}
-                    pattern={pattern}
-                    className={
-                        'text-field-flat font-size-15 font-weight-500 letter-spacing--15 flex-1'.classNames() +
-                        inputClassName
-                    }/>
+				<Conditional show={inputDelay}>
+					<InputDebounce
+						ref={input_ref}
+						type={type}
+						value={value}
+						inputDelay={inputDelay}
+						onChange={dispatchChange}
+						onFocus={() => toggleFocusState(true)}
+						onBlur={() => toggleFocusState(false)}
+						placeholder={placeholder}
+						pattern={pattern}
+						className={
+							'text-field-flat font-size-15 font-weight-500 letter-spacing--15 flex-1'.classNames() +
+							inputClassName
+						}/>
+				</Conditional>
+				<Conditional show={!inputDelay}>
+					<input
+						ref={input_ref}
+						type={type}
+						value={value}
+						onChange={e=>dispatchChange(e.currentTarget.value)}
+						onFocus={() => toggleFocusState(true)}
+						onBlur={() => toggleFocusState(false)}
+						placeholder={placeholder}
+						pattern={pattern}
+						className={
+							'text-field-flat font-size-15 font-weight-500 letter-spacing--15 flex-1'.classNames() +
+							inputClassName
+						}/>
+				</Conditional>
 			</Conditional>
         </div>
     );

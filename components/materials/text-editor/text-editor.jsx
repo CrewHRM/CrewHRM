@@ -9,14 +9,25 @@ import style from './editor.module.scss';
 
 // To Do: Implement disabled state
 
-export function TextEditor({ onChange: dispatchTo, value: html, placeholder, disabled }) {
-    const contentBlock = html ? htmlToDraft(html) : null;
-    const [state, setState] = useState({
-        editorState: contentBlock
-            ? EditorState.createWithContent(
-                  ContentState.createFromBlockArray(contentBlock.contentBlocks)
-              )
-            : EditorState.createEmpty(),
+const createEditorState=(html)=>{
+	const contentBlock = html ? htmlToDraft(html) : null;
+	let state;
+
+	if ( contentBlock ) {
+		state = EditorState.createWithContent(
+			ContentState.createFromBlockArray(contentBlock.contentBlocks)
+		)
+	} else {
+		state = EditorState.createEmpty();
+	}
+
+	return state;
+}
+
+export function TextEditor({ onChange: dispatchTo, value: html, placeholder, session, disabled }) {
+
+	const [state, setState] = useState({
+        editorState: createEditorState(html),
         focus: false
     });
 
@@ -24,6 +35,13 @@ export function TextEditor({ onChange: dispatchTo, value: html, placeholder, dis
         dispatchTo(draftToHtml(convertToRaw(editorState.getCurrentContent())));
         setState({ ...state, editorState });
     };
+
+	useEffect(()=>{
+		setState({
+			...state,
+			editorState: createEditorState(html)
+		});
+	}, [session]);
 
     return (
         <Editor

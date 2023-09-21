@@ -15,6 +15,7 @@ import { ContextWarning } from '../../../materials/warning/warning.jsx';
 
 import logo_extended from '../../../images/logo-extended.svg';
 import style from './editor.module.scss';
+import { InitState } from '../../../materials/init-state.jsx';
 
 export const ContextJobEditor = createContext();
 
@@ -96,6 +97,8 @@ export function JobEditor() {
         error_message: null,
 		saving_mode: null,
 		fetching: false,
+		session: null,
+		mounted: false,
         values: {}
     });
 
@@ -199,14 +202,16 @@ export function JobEditor() {
     };
 
     const getJob = () => {
+		console.log(is_new)
         if (is_new) {
             // As it is new, just use predefined template at mount time
             setState({
                 ...state,
+				session: getRandomString(),
                 values: {
                     job_id: 0,
                     hiring_flow,
-                    application_form: getFieldsToSave(sections_fields)
+                    application_form: getFieldsToSave(sections_fields),
                 }
             });
             return;
@@ -220,15 +225,21 @@ export function JobEditor() {
         request('get_single_job_edit', { job_id }, (resp) => {
             const {
                 success,
-                data: { job = {}, autosaved_job, message = __('Something went wrong!') }
+                data: { 
+					job = {}, 
+					autosaved_job, 
+					message = __('Something went wrong!') 
+				}
             } = resp;
 
             setState({
                 ...state,
                 values: {
                     ...job,
-                    application_form: job.application_form || sections_fields
+					hiring_flow: isEmpty(job.hiring_flow) ? hiring_flow : job.hiring_flow,
+                    application_form: isEmpty( job.application_form ) ? getFieldsToSave(sections_fields) : job.application_form
                 },
+				session: getRandomString(),
 				autosaved_job,
                 fetching: false,
                 error_message: !success ? message : null
@@ -290,8 +301,20 @@ export function JobEditor() {
         );
     }
 
+	if ( !state.session && state.fetching ) {
+		return <InitState fetching={state.fetching}/>
+	}
+
     return (
-        <ContextJobEditor.Provider value={{ values: state.values, onChange, navigateTab, onSaveClick, is_next_disabled, saving_mode: state.saving_mode }}>
+        <ContextJobEditor.Provider value={{
+			values: state.values, 
+			onChange, 
+			navigateTab, 
+			onSaveClick, 
+			is_next_disabled, 
+			saving_mode: state.saving_mode,
+			session: state.session}}>
+
             <StickyBar title="Job Editor">
                 {[
                     <div key="log" className={'text-align-center'.classNames()}>
@@ -333,12 +356,6 @@ export function JobEditor() {
                     </div>
                 ]}
             </StickyBar>
-			
-			<Conditional show={state.fetching}>
-				<div className={'margin-top-20 margin-bottom-20'.classNames()}>
-					<LoadingIcon center={true} />
-				</div>
-			</Conditional>
 
             <div className={'editor-wrapper'.classNames(style)}>
                 <div className={'box-shadow-thin padding-20'.classNames()}>

@@ -84,7 +84,7 @@ export function FilterBar({ is_overview, filters = {}, onChange, fetching }) {
                         expandable={true}
                         value={filters.search}
                         onChange={(v) => onChange('search', v)}
-						rateLimit={500}
+						inputDelay={500}
                     />
                 </div>
             </div>
