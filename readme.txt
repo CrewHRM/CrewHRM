@@ -1,38 +1,97 @@
-=== Crew HRM - Full Featured Human Resource Management System ===
-Contributors: Crew
-Donate link: https://www.getcrewhrm.com
-Tags: hr, human resource, management
-Requires at least: 5.3
-Tested up to: 6.2
-Requires PHP: 7.1
-Stable tag: 1.0.0
-License: GPLv2
-License URI: https://www.gnu.org/licenses/gpl-3.0.html
+=== CrewHRM - Best Online Recruitment System ===
+Contributors: jayedul, badsha_eee 
+Donate Link: https://getcrewhrm.com/pricing/
+Tags:  HR, HRM, Recruitment, Job Listings, Employee management, Leave management, Attendance, Reimbursement, Human Resource Management
+Requires at least: 6.3
+Tested up to: 6.3.1
+Requires PHP: 7.2
+Stable tag: 1.0
+License: GPLv3
+License URI: https://opensource.org/licenses/GPL-3.0
 
-A complete WordPress plugin to manage HR
+The best HRM plugin for online recruitment management. CrewHRM offers a complete solution from creating job posts, sharing them online, managing submissions, screening, asses, and hiring!
 
 == Description ==
 
-Some description about CrewHRM
+CrewHRM plugin is a comprehensive solution for managing your entire hiring process. It includes all the features you need to attract, screen, and hire the best talent, including:
 
-= Features =
+* **Dashboard:** A centralized dashboard where you can manage all aspects of your hiring process.
+* **Post jobs:** Easily post jobs to your WordPress website and other job boards.
+* **File uploads:** Allow candidates to upload their resumes and other relevant documents.
+* **Candidate profile:** View and manage candidate profiles, including their contact information, resume, and work experience.
+* **Review, Collaboration, and Notes:** Collaborate with your team to review candidates and leave notes on their profiles.
+* **Candidate Shortlisting:** Shortlist candidates for further consideration.
+* **Candidate Assessment:** Conduct candidate assessments using various methods, including quizzes, interviews, and case studies.
+* **Interview Calendar:** Schedule and manage interviews with candidates.
+* **Activity Log:** Track all your hiring process-related activities, including job views, applications, and interviews.
+* **Built-in communication system:** Communicate directly with candidates within the plugin.
+* **Hiring Stage Management:** Manage hiring stages like Applied, Shortlisted, Interviewed, Offer Made, and Hired.
+* **Dedicated job post and catalog templates:** Use dedicated job post and catalog templates to create professional-looking job postings and candidate catalogs.
 
-* Some feature 1
-* Some feature 2
-* Some feature 3
+The pro version of the plugin will include additional features, such as:
 
-= PREMIUM FEATURE FOR TUTOR =
+* **Google Meet integration:** Schedule and conduct Google Meet interviews directly from within the plugin.
+* **Appointments:** Schedule and manage appointments with candidates.
+* **Zoom integration:** Schedule and conduct Zoom interviews directly from within the plugin.
 
-* Sample 1: This line should be updated
-* Sample 2: This line should be updated
+The WordPress HRM plugin is the perfect solution for any business that wants to streamline its hiring process and attract the best talent.
+
+== Installation ==
+
+1. Upload the plugin folder to the `/wp-content/plugins/` directory.
+2. Activate the plugin from the WordPress admin dashboard.
+
+**Usage Instructions:**
+
+Once the plugin is activated, you can access the dashboard via **HRM** > **Dashboard**.
+
+You can manage all aspects of your hiring process from the dashboard, including posting jobs, reviewing candidates, and scheduling interviews.
+
+For more detailed instructions on how to use the plugin, please take a look at the documentation.
+
+= Documentatino and Support =
+
+You can visit [CrewHRM Documentation](https://getcrewhrm.com/docs/) to learn about installation, configuration, and using it most productively.
+
+If you have any questions or problems using this plugin, don't hesitate to get in touch with us from here https://getcrewhrm.com/contact/
 
 == Screenshots ==
 
-1. Dashboard: HR management home
-2. Application: Application screen for applications
+1. Get a birds-eye view of the entire recruitment process from the dashboard
+2. Beautiful-looking job detail and listing page templates
+3. Intuitive calendar to view all your schedules.
+4. Communicate with the candidate right from the dashboard.
+5. Dynamic candidate profile.
+
+== Frequently Asked Questions ==
+
+= Do you offer a whitelabeling feature? =
+Yes, we offer a whitelable setting on the Pro version of the plugin to easily change the name and images. If you prefer to use the free version only, you can change the name using translation plugins like Loco Translate or the Say What plugin.
+
+= Can I customize the plugin? =
+Yes, as CrewHRM is offered under the GPL license, you can modify it any way you like. There is no restriction at all. But please remember that we do not offer support on customized plugins.
+
+= Can you develop a custom feature for me? =
+We are unable to offer customizations at this moment. You may hire a developer from a marketplace, and we will gladly assist your developer.
+
+= Is this plugin multisite compatible? =
+No. We are not supporting multisite installations at this moment.
+
+= Can I use this plugin in other languages? =
+Yes, you can translate the plugin into any language you want. You can use the Loco Translate plugin or any other plugin you like. Please check our [documentation](https://getcrewhrm.com/docs/getting-started/translation/) for detailed instructions.
+
+= Do you have video tutorials? =
+We have posted walkthrough videos on the [CrewHRM YouTube Channel](https://www.youtube.com/@crewhrm). If you have requests for video tutorials and discuss different ideas, please feel free to comment on any video or use the contact form on our website.
+
+= How can I suggest new features? =
+You can email us using the contact form on our website to share feature ideas with helpful screenshots, sketches, etc.
 
 == Changelog ==
 
-= 1.0.0 - October 01, 2023
+= v1.0 -> Sep 23, 2023 =
+--------------------------
+* 🥁 First Release! 🎉
 
-New: Initial Release
+== Upgrade Notice ==
+= 2.0 =
+This is a major update. Please MAKE A BACKUP before you hit the update button.
