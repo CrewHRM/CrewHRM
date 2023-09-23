@@ -1,8 +1,9 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 
 import { Popup } from '../popup/index.jsx';
 import style from './dropdown.module.scss';
 import { __ } from '../../utilities/helpers.jsx';
+import { Conditional } from '../conditional.jsx';
 
 const content_style = {
     padding: '0px',
@@ -50,6 +51,10 @@ export function DropDown(props) {
 
     const ref = useRef();
 
+	const [state, setState] = useState({
+		search: ''
+	});
+
     const pop_border =
         className.indexOf('border-1-5') > -1
             ? 'border-1-5'
@@ -57,8 +62,10 @@ export function DropDown(props) {
             ? 'border-1'
             : '';
 
-    const triggerPoint = (
-        <div
+    const triggerPoint = (search=false)=>{
+		const label = selected_value ?? options.find((o) => o.id === selected_value)?.label ?? placeholder;
+
+        return <div
             tabIndex={tabindex}
             className={
                 `select-dropdown ${transparent ? 'transparent' : ''}`.classNames(style) +
@@ -66,14 +73,32 @@ export function DropDown(props) {
                 className
             }
         >
-            <span className={'flex-1 white-space-nowrap'.classNames() + textClassName}>
-                {selected_value !== undefined
-                    ? options.find((o) => o.id === selected_value)?.label || placeholder
-                    : placeholder}
-            </span>
+            <div className={'flex-1 white-space-nowrap'.classNames() + textClassName}>
+				<Conditional show={!search}>
+                	{label}
+				</Conditional>
+				<Conditional show={search}>
+					<input 
+						className={'text-field-flat'.classNames()} 
+						placeholder={__('Search..')}
+						onChange={e=>setState({...state, search: e.currentTarget.value})}/>
+				</Conditional>
+            </div>
             <i className={iconClassName}></i>
         </div>
-    );
+    }
+
+	const closeDropdown=(callback)=>{
+
+		setState({
+			...state, 
+			search: ''
+		});
+
+		if (callback) {
+			callback();
+		}
+	}
 
     return (
         <div data-crewhrm-selector="dropdown" ref={ref}>
@@ -86,7 +111,8 @@ export function DropDown(props) {
                 contentStyle={{ ...content_style, ...cssStyle }}
                 arrow={false}
                 nested={nested}
-                trigger={triggerPoint}
+                trigger={triggerPoint()}
+				onClose={()=>closeDropdown()}
             >
                 {(close) => {
                     // Determine border width, color and radius from the class name to sync the popup accordingly
@@ -104,9 +130,11 @@ export function DropDown(props) {
                             }
                             style={popup_styles}
                         >
-                            <div className={'trigger-point'.classNames(style)}>{triggerPoint}</div>
+                            <div className={'trigger-point'.classNames(style)}>
+								{triggerPoint(options.length>8)}
+							</div>
                             <div className={'list-wrapper'.classNames(style)}>
-                                {options.map((option) => {
+                                {options.filter(o=>!state.search || o.label.toLowerCase().indexOf(state.search.toLowerCase())>-1).map((option) => {
                                     let { id, label } = option;
                                     let classes = `list-item ${
                                         id == selected_value ? 'active' : ''
@@ -118,7 +146,7 @@ export function DropDown(props) {
                                             className={classes.classNames(style) + list_class}
                                             onClick={() => {
                                                 onChange(id);
-                                                close();
+												closeDropdown(close);
                                             }}
                                         >
                                             {label}
@@ -133,8 +161,8 @@ export function DropDown(props) {
                                     className={'add-item'.classNames(style) + list_class}
                                     style={{ paddingTop: '10px', paddingBottom: '10px' }}
                                     onClick={() => {
+										closeDropdown(close);
                                         onAddClick();
-                                        close();
                                     }}
                                 >
                                     <i

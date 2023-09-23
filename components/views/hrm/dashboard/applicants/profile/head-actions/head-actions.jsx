@@ -50,7 +50,6 @@ export function HeadActions({ application }) {
         active_segment: null
     });
 
-    // To Do: Retain form data even after segment switch
     const toggleSegment = (index = null) => {
         setState({
             ...state,

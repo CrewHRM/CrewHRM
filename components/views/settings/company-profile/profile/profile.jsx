@@ -1,4 +1,6 @@
 import React from 'react';
+import moment from 'moment-timezone';
+
 import { __, countries_array, timezones_array } from '../../../../utilities/helpers.jsx';
 import { CoverImage } from '../../../../materials/image/image.jsx';
 
@@ -28,7 +30,12 @@ const business_types = {
     government_publicservices: __('Government & Public Services')
 };
 
-const date_formats = ['F j, Y', 'Y-m-d', 'm/d/Y', 'd/m/Y'];
+const date_formats = [
+	'DD MMM, YYYY', 
+	'Y-mm-D', 
+	'mm/D/Y', 
+	'D/mm/Y'
+];
 
 const time_formats = {
     _12: __('12 Hours'),
@@ -64,9 +71,6 @@ const sections = {
                 name: 'about_company',
                 label: __('About Company'),
                 type: 'textarea_rich',
-                placeholder: __(
-                    'Enter your job description here; include key areas responsibility and specific qualification needed to perform the role.'
-                )
             }
         ]
     },
@@ -124,14 +128,14 @@ const sections = {
                 {
                     name: 'recruiter_email',
                     label: __('Recruiter Email'),
-                    type: 'text',
+                    type: 'email',
                     placeholder: '@company.com',
                     required: true
                 },
                 {
                     name: 'other_email',
                     label: __('Other Email'),
-                    type: 'text',
+                    type: 'email',
                     placeholder: '@company.com'
                 }
             ],
@@ -139,7 +143,7 @@ const sections = {
             {
                 name: 'website',
                 label: __('Website'),
-                type: 'text',
+                type: 'url',
                 placeholder: 'https://'
             }
         ]
@@ -159,7 +163,10 @@ const sections = {
                     label: __('Date Format'),
                     type: 'dropdown',
                     options: date_formats.map((f) => {
-                        return { id: f, label: f };
+                        return { 
+							id: f, 
+							label: moment(new Date().getTime()).format(f)
+						};
                     })
                 },
                 {

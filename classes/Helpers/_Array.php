@@ -4,57 +4,22 @@ namespace CrewHRM\Helpers;
 
 class _Array {
 	/**
-	 * Rename array keys
-	 *
-	 * @param array $array Target array
-	 * @param array $keys Rename mapping
-	 * @return array
-	 */
-	public static function renameKeys( array $array, array $keys ) {
-		$new_array = array();
-
-		foreach ( $array as $_key => $value ) {
-			$new_array[ $keys[ $_key ] ?? $_key ] = $value;
-		}
-
-		return $new_array;
-	}
-
-	/**
-	 * Rename two dimensional array keys
-	 *
-	 * @param array $rows
-	 * @param array $keys
-	 * @return array
-	 */
-	public static function renameColumns( array $rows, array $keys ) {
-		return array_map(
-			function( $row ) use ( $keys ) {
-				return self::renameKeys( $row, $keys );
-			},
-			$rows
-		);
-	}
-
-	/**
 	 * Apply order to every array elements
 	 *
 	 * @param array  $array
-	 * @param string $key
+	 * @param string $order_key
 	 * @return array
 	 */
-	public static function applyOrderRecursive( array $array, string $key, $order = 1 ) {
-		
-		foreach ( $array as $index => $elment ) {
+	public static function addOrderColumn( array $array, string $order_key ) {
+		// Start from
+		$order = 1;
 
-			// Deep level order assignment
-			if ( is_array( $elment ) ) {
-				$array[ $index ] = self::applyOrderRecursive( $elment, $key );
-				continue;
-			}
+		// Loop through the array and assign sequence order
+		foreach ( $array as $index => $element ) {
 
-			$elment[ $key ]  = $order;
-			$array[ $index ] = $elment;
+			$element[ $order_key ] = $order;
+			$array[ $index ] = $element;
+
 			$order++;
 		}
 

@@ -13,31 +13,45 @@ import { request } from '../../../utilities/request.jsx';
 import { ContextToast } from '../../../materials/toast/toast.jsx';
 
 import style from './company.module.scss';
+import { Conditional } from '../../../materials/conditional.jsx';
 
 function CompanyWrapper() {
     const { ajaxToast } = useContext(ContextToast);
     const { sub_page } = useParams();
     const page_id = sub_page || 'profile';
-    const segment = page_id === 'profile' ? 'companyProfile' : 'departments';
 
-    const { clearHistory, can_go_next, onChange, values } = useContext(ContextHistoryFields);
+    const { 
+		clearHistory, 
+		can_go_next, 
+		onChange, 
+		values 
+	} = useContext(ContextHistoryFields);
 
     const saveCompanyProfile = () => {
         let _action;
         let _payload;
 
-        if (segment === 'companyProfile') {
-            (_action = 'save_company_profile'), (_payload = { settings: values[segment] });
-        } else {
+        if (page_id === 'profile') {
+            _action = 'save_company_profile';
+			_payload = { settings: values[page_id] };
+
+        } else if(page_id === 'departments') {
             _action = 'save_company_departments';
-            _payload = { departments: values[segment].departments };
+            _payload = { 
+				departments: values[page_id].departments?.map(d=>{
+					return {
+						department_id: d.id,
+						department_name: d.label
+					}
+				}) ?? []
+			}
         }
 
         request(_action, { ..._payload }, (resp) => {
             ajaxToast(resp);
 
             if (resp?.success) {
-                clearHistory(segment);
+                clearHistory(page_id);
             }
         });
     };
@@ -49,36 +63,36 @@ function CompanyWrapper() {
                 title={pages.find((p) => p.id === page_id)?.label || __('Company Profile')}
             >
                 <div className={'d-flex align-items-center column-gap-30'.classNames()}>
-                    <UndoRedo segment={segment} />
+                    <UndoRedo segment={page_id} />
                     <button
                         className={'button button-primary'.classNames()}
-                        disabled={!can_go_next[segment]}
+                        disabled={!can_go_next[page_id]}
                         onClick={saveCompanyProfile}
                     >
                         {__('Save Changes')}
                     </button>
                 </div>
             </StickyBar>
+
             <div className={'company'.classNames(style) + 'padding-horizontal-15'.classNames()}>
                 <div className={'sidebar'.classNames(style)}>
                     <CompanyProfileSidebar page_id={page_id} />
                 </div>
-                <div className={'content-area'.classNames(style)}>
-                    {(page_id === 'profile' && (
-                        <CompanyProfile
-                            onChange={(name, value) => onChange(name, value, 'companyProfile')}
-                            values={values[segment]}
-                        />
-                    )) ||
-                        null}
 
-                    {(page_id === 'departments' && (
-                        <CompantDepartments
-                            onChange={(name, value) => onChange(name, value, 'departments')}
-                            values={values[segment]}
+                <div className={'content-area'.classNames(style)}>
+					<Conditional show={page_id === 'profile'}>
+						<CompanyProfile
+                            onChange={(name, value) => onChange(name, value, page_id)}
+                            values={values.profile}
                         />
-                    )) ||
-                        null}
+					</Conditional>
+
+					<Conditional show={page_id === 'departments'}>
+						<CompantDepartments
+                            onChange={(name, value) => onChange(name, value, page_id)}
+                            values={values.departments}
+                        />
+					</Conditional>
                 </div>
             </div>
         </>
@@ -86,13 +100,25 @@ function CompanyWrapper() {
 }
 
 export function Company(props) {
-    const { departments = {}, companyProfile = {} } = props;
+    const { departments = [], companyProfile: profile = {} } = props;
+
+	const historyDefaults = {
+		departments: {
+			departments: departments.map(d=>{
+				return {
+					id: d.department_id, 
+					label: d.department_name
+				}
+			})
+		},
+		profile
+	}
 
     return (
         <ContextBackendDashboard.Provider value={{}}>
             <WpDashboardFullPage>
                 <HistoryFields
-                    defaultValues={{ departments: { departments }, companyProfile }}
+                    defaultValues={historyDefaults}
                     segmented={true}
                 >
                     <HashRouter>

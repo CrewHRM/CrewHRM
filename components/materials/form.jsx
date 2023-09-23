@@ -87,10 +87,10 @@ export function RenderField({ field, defaultEnabled }) {
 				</Conditional>
             </span>
 
-			<Conditional show={type == 'text'}>
+			<Conditional show={['text', 'url', 'email'].indexOf(type)>-1}>
 				<input
                     value={values[name] || ''}
-                    type="text"
+                    type={type}
                     className={input_text_class}
                     placeholder={placeholder}
                     onChange={(e) => onChange(name, e.currentTarget.value)}

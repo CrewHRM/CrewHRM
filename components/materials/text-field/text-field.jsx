@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from 'react';
 
 import { Conditional } from '../conditional.jsx';
 import style from './text-field.module.scss';
-import { InputDebounce } from '../input-debounce.jsx';
 
 export function TextField(props) {
     const {
@@ -22,12 +21,15 @@ export function TextField(props) {
         expandable = false
     } = props;
 
+    const input_ref = useRef();
+
+	const [text, setText] = useState(value || '');
+
     const [state, setState] = useState({
         expanded: !expandable,
         focused: false
     });
 
-    const input_ref = useRef();
 
     const dispatchChange = (v) => {
         if (maxLength !== null && v.length > maxLength) {
@@ -76,7 +78,27 @@ export function TextField(props) {
         }
     }, [state.expanded]);
 
+	useEffect(()=>{
+		const timer = window.setTimeout(()=>{
+			dispatchChange(text);
+		}, inputDelay);
+
+		return ()=>window.clearInterval(timer);
+	}, [text]);
+
     const separator = state.expanded ? <span className={'d-inline-block width-6'.classNames()}></span> : null;
+
+	const attr = {
+		type, 
+		pattern,
+		placeholder, 
+		ref: input_ref, 
+		value: !inputDelay ? value : text,
+		onChange: e=>!inputDelay ? dispatchChange(e.currentTarget.value) : setText(e.currentTarget.value),
+		onFocus: () => toggleFocusState(true),
+		onBlur: () => toggleFocusState(false),
+		className: 'text-field-flat font-size-15 font-weight-500 letter-spacing--15 flex-1'.classNames() + inputClassName
+	}
 
     return (
         <div
@@ -104,36 +126,12 @@ export function TextField(props) {
 			</Conditional>
 			
 			<Conditional show={state.expanded}>
-				<Conditional show={inputDelay}>
-					<InputDebounce
-						ref={input_ref}
-						type={type}
-						value={value}
-						inputDelay={inputDelay}
-						onChange={dispatchChange}
-						onFocus={() => toggleFocusState(true)}
-						onBlur={() => toggleFocusState(false)}
-						placeholder={placeholder}
-						pattern={pattern}
-						className={
-							'text-field-flat font-size-15 font-weight-500 letter-spacing--15 flex-1'.classNames() +
-							inputClassName
-						}/>
+				<Conditional show={type!=='textarea'}>
+					<input {...attr}/>
 				</Conditional>
-				<Conditional show={!inputDelay}>
-					<input
-						ref={input_ref}
-						type={type}
-						value={value}
-						onChange={e=>dispatchChange(e.currentTarget.value)}
-						onFocus={() => toggleFocusState(true)}
-						onBlur={() => toggleFocusState(false)}
-						placeholder={placeholder}
-						pattern={pattern}
-						className={
-							'text-field-flat font-size-15 font-weight-500 letter-spacing--15 flex-1'.classNames() +
-							inputClassName
-						}/>
+
+				<Conditional show={type==='textarea'}>
+					<textarea {...attr}></textarea>
 				</Conditional>
 			</Conditional>
         </div>

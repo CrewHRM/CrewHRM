@@ -4,6 +4,7 @@ import { SortableList } from '../sortable-list.jsx';
 import { __, getRandomString } from '../../utilities/helpers.jsx';
 
 import style from './list.module.scss';
+import { Conditional } from '../conditional.jsx';
 
 function ItemSingle({ id_key, label_key, list_item, renameStage, deleteHandler, deleteFlow }) {
     return (
@@ -30,8 +31,8 @@ function ItemSingle({ id_key, label_key, list_item, renameStage, deleteHandler, 
                 />
             </div>
 
-            {deleteHandler || deleteFlow ? (
-                <i
+			<Conditional show={deleteHandler || deleteFlow}>
+				<i
                     className={
                         'ch-icon ch-icon-trash font-size-24 color-error margin-left-20 cursor-pointer'.classNames() +
                         'trash'.classNames(style)
@@ -42,7 +43,7 @@ function ItemSingle({ id_key, label_key, list_item, renameStage, deleteHandler, 
                             : deleteFlow(list_item[id_key])
                     }
                 ></i>
-            ) : null}
+			</Conditional>
         </div>
     );
 }
