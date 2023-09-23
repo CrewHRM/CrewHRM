@@ -13,21 +13,12 @@ class CompanyProfile {
 	const PREREQUISITES = array(
 		'saveCompanyProfile'     => array(
 			'role' => 'administrator',
-			'data' => array(
-				'settings' => 'type:array|required:true',
-			),
 		),
 		'saveCompanyDepartments' => array(
 			'role' => 'administrator',
-			'data' => array(
-				'departments' => 'type:array|required:true',
-			),
 		),
 		'addDepartment'          => array(
 			'role' => array( 'administrator', 'editor' ),
-			'data' => array(
-				'department_name' => 'type:string|required:true',
-			),
 		),
 	);
 

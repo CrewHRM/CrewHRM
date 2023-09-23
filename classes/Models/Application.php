@@ -75,7 +75,6 @@ class Application {
 		// Insert custom added questions
 		foreach ( $application as $key => $value ) {
 			if ( strpos( $key, '_question_' ) === 0 ) {
-				// To Do: Process data based on question type. Like upload file and assign file ID instead as value
 				Meta::application( $app_id )->updateMeta( $key, $value );
 			}
 		}

@@ -3,7 +3,6 @@ import React from 'react';
 import style from './image.module.scss';
 import { generateBackgroundColor, getInitials } from '../../utilities/helpers.jsx';
 
-// To Do: Add a mode to to determine height based on ratio automatically.
 export function CoverImage(props) {
     const {
         src,

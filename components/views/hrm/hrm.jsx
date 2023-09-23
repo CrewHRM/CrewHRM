@@ -98,7 +98,9 @@ export function HRM({ departments = [], applicationStats }) {
     });
 
     // To Do: Fill this function
-    const showNotice = () => {};
+    const showNotice = () => {
+		
+	};
 
     const addDepartment = (add_department_callback = () => {}) => {
         setState({

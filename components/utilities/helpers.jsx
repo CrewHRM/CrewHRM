@@ -295,6 +295,29 @@ export function parseParams( searchParam ) {
 	return queryParams;
 }
 
+export function storage(name, local=false) {
+	const store = local ? 'localStorage' : 'sessionStorage';
+	const _name = 'crewhrm_' + name;
+
+	return {
+		setItem : (value) => {
+			window[store].setItem(_name, JSON.stringify( value ) );
+		},
+		getItem: (_default) => {
+			let json;
+			try {
+				json = JSON.parse( window[store].getItem( _name ) );
+			} catch(e) {
+
+			}
+			return json ?? _default;
+		},
+		removeItem:()=>{
+			window[store].removeItem(_name);
+		}
+	}
+}
+
 export const is_production = process.env.NODE_ENV === 'production';
 export const countries_array = getCountries(true);
 export const countries_object = getCountries(false);

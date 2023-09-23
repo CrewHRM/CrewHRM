@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { __, isEmpty } from '../../../../../../../utilities/helpers.jsx';
+import { __, isEmpty, storage } from '../../../../../../../utilities/helpers.jsx';
 import { request } from '../../../../../../../utilities/request.jsx';
 import { ContextToast } from '../../../../../../../materials/toast/toast.jsx';
 import { ContextApplicationSession } from '../../../applicants.jsx';
@@ -11,19 +11,25 @@ export function Comment(props) {
 	const { ajaxToast } = useContext( ContextToast );
 	const { sessionRefresh } = useContext( ContextApplicationSession );
 
+	const store = storage('application_comment_values', true);
+	const values = store.getItem( {comment_content: ''} );
+
 	const [state, setState] = useState({
-		values: {
-			comment_content: ''
-		}
+		values
 	});
 
 	const setVal=(name, value)=>{
+		
+		const values = {
+			...state.values,
+			[name]: value
+		}
+
+		store.setItem(values);
+
 		setState({
 			...state,
-			values: {
-				...state.values,
-				[name]: value
-			}
+			values
 		});
 	}
 
@@ -35,6 +41,7 @@ export function Comment(props) {
 			ajaxToast( resp );
 
 			if ( resp.success ) {
+				store.removeItem();
 				onClose();
 				sessionRefresh();
 			}
@@ -48,6 +55,7 @@ export function Comment(props) {
                 placeholder={__('Write your comments')}
                 style={{ width: '100%', height: '69%', resize: 'vertical' }}
 				onChange={e=>setVal('comment_content', e.currentTarget.value)}
+				value={state.values.comment_content || ''}
             ></textarea>
 
             <div className={'d-flex align-items-center'.classNames()}>

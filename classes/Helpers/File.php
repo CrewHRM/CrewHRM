@@ -27,7 +27,7 @@ class File {
 	}
 
 	/**
-	 * Organize upload files
+	 * Organize upload files hierarchically.
 	 *
 	 * @param array $files
 	 * @return array

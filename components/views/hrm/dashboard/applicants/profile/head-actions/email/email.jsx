@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { __, isEmpty } from '../../../../../../../utilities/helpers.jsx';
+import { __, isEmpty, storage } from '../../../../../../../utilities/helpers.jsx';
 import { TextEditor } from '../../../../../../../materials/text-editor/text-editor.jsx';
 
 import style from './email.module.scss';
@@ -27,25 +27,31 @@ const fields = {
 
 export function Email({onClose, application}) {
 	const {ajaxToast} = useContext(ContextToast);
+	
+	const store  = storage( 'application_email_values', true );
+	const values = store.getItem({
+		from_address: application.recruiter_email,
+		to: application.email,
+		subject: '',
+		body: ''
+	});
 
     const [state, setState] = useState({
 		sending: false,
-        values: {
-            from_address: application.recruiter_email,
-            to: application.email,
-            subject: '',
-            body: ''
-        }
+        values
     });
 
     const setVal = (name, value) => {
-console.log(value);
-        setState({
+		const values = {
+			...state.values,
+			[name]: value
+		}
+
+		store.setItem(values);
+
+		setState({
             ...state,
-            values: {
-                ...state.values,
-                [name]: value
-            }
+            values
         });
     };
 
@@ -61,6 +67,9 @@ console.log(value);
 			ajaxToast(resp);
 
 			if ( resp.success ) {
+				// Delete the persistent content
+				store.removeItem();
+
 				// Close the mailer if sent successfully
 				onClose();
 

@@ -2,9 +2,8 @@
 
 namespace CrewHRM\Setup;
 
+use CrewHRM\Helpers\_Array;
 use CrewHRM\Main;
-use CrewHRM\Models\DB;
-use CrewHRM\Models\Meta;
 use WP_CLI;
 
 class CLI {
@@ -29,6 +28,7 @@ class CLI {
 	 * @param array $assoc_args Command associative arguments.
 	 */
 	public function inspect( $args, $assoc_args ) {
+		
 		exit;
 	}
 }

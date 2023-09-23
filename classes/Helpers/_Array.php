@@ -166,4 +166,24 @@ class _Array {
 			}
 		}
 	}
+
+	/**
+	 * Sanitize contents recursively
+	 *
+	 * @param array $kses_for Define field name to use wp_kses for instead of sanitize_text_field.
+	 * @param string|int $key Do not use outside of this function. It's for internal use.
+	 * @return array
+	 */
+	public static function sanitizeRecursive( $value, $kses_for = array(), $key = null ) {
+		if ( is_array( $value ) ) {
+			foreach ( $value as $_key => $_value ) {
+				$value[ $_key ] = self::sanitizeRecursive( $_value, $kses_for, $_key );
+			}
+
+		} else if( is_string( $value ) ) {
+			$value = in_array( $key, $kses_for ) ? _String::applyKses( $value ) : sanitize_text_field( $value );
+		}
+
+		return $value;
+	}
 }

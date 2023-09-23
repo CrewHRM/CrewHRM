@@ -14,9 +14,6 @@ class JobManagement {
 	const PREREQUISITES = array(
 		'updateJob'           => array(
 			'role' => array( 'administrator', 'editor' ),
-			'data' => array(
-				'job' => 'type:array',
-			),
 		),
 		'getJobsDashboard'    => array(),
 		'singleJobAction'     => array(),
@@ -25,23 +22,12 @@ class JobManagement {
 		),
 		'getSingleJobEdit'    => array(
 			'role' => array( 'administrator', 'editor' ),
-			'data' => array(
-				'job_id' => 'type:numeric',
-			),
 		),
 		'deleteHiringStage'   => array(
 			'role' => array( 'administrator', 'editor' ),
-			'data' => array(
-				'job_id'   => 'type:numeric',
-				'stage_id' => 'type:numeric',
-				'move_to'  => 'type:numeric|optional:true',
-			),
 		),
 		'getJobViewDashboard' => array(
 			'role' => 'administrator',
-			'data' => array(
-				'job_id' => 'type:numeric',
-			),
 		),
 	);
 
@@ -53,7 +39,7 @@ class JobManagement {
 	 */
 	public static function updateJob( array $data ) {
 		// Can access job directly as it is checked by dispatcher already using prerequisities array
-		$data       = _Array::getArray( $data['job'] );
+		$data       = _Array::sanitizeRecursive( _Array::getArray( $data['job'] ), array( 'job_description' ) );
 		$new_status = $data['job_status'];
 		$is_publish = $new_status === 'publish';
 

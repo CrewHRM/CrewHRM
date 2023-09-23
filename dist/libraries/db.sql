@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Sep 20, 2023 at 04:26 PM
+-- Generation Time: Sep 21, 2023 at 02:23 AM
 -- Server version: 8.0.16
 -- PHP Version: 8.0.0
 
@@ -58,7 +58,7 @@ CREATE TABLE IF NOT EXISTS `wp_crewhrm_applications` (
   `phone` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci NOT NULL,
   `date_of_birth` date DEFAULT NULL,
   `gender` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
-  `cover_letter` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci NOT NULL,
+  `cover_letter` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci,
   `resume_file_id` bigint(20) UNSIGNED NOT NULL,
   `application_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`application_id`),

@@ -14,40 +14,29 @@ class ApplicationHandler {
 	const PREREQUISITES = array(
 		'applyToJob'           => array(
 			'nopriv' => true,
-			'data' => array(
-				'application' => 'type:array',
-				'resume'      => 'type:file',
-				'attachments' => 'type:array/file'
-			),
 		),
 		'getApplicationsList'  => array(
 			'role' => array(
 				'administrator',
 				'editor',
 			),
-			'data' => array(),
 		),
 		'getApplicationSingle' => array(
 			'role' => array(
 				'administrator',
 				'editor',
 			),
-			'data' => array(),
 		),
 		'moveApplicationStage' => array(
 			'role' => array(
 				'administrator',
 				'editor',
 			),
-			'data' => array(),
 		),
 		'mailToApplicant' => array(
 			'role' => array(
 				'administrator',
 				'editor',
-			),
-			'data' => array(
-				'mail' => 'type:array'
 			),
 		),
 		'commentOnApplication' => array(
@@ -64,9 +53,6 @@ class ApplicationHandler {
 		),
 		'getCareersListing' => array(
 			'nopriv' => true,
-			'data' => array(
-				'filters' => 'type:array',
-			)
 		)
 	);
 
