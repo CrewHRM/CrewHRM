@@ -74,11 +74,12 @@ class ApplicationHandler {
 	 * Create application to job.
 	 * Note: There is no edit feature for job application. Just create on submission and retreieve in the application view.
 	 *
-	 * @param array $data Request data containing application informations
+	 * @param array $data  Request data containing application informations
+	 * @param array $files Request files
 	 * @return void
 	 */
-	public static function applyToJob( array $data ) {
-		$files          = File::organizeUploadedHierarchy( $_FILES['application'] ?? array() );
+	public static function applyToJob( array $data, array $files ) {
+		$files          = File::organizeUploadedHierarchy( $files['application'] ?? array() );
 		$application_id = Application::createApplication( $data['application'], $files );
 
 		if ( empty( $application_id ) ) {
@@ -149,13 +150,14 @@ class ApplicationHandler {
 	/**
 	 * Send mail to applicant from single application view interface
 	 *
-	 * @param array $data Request datacontaining mail data
+	 * @param array $data  Request datacontaining mail data
+	 * @param array $files Request files
 	 * @return void
 	 */
-	public static function mailToApplicant( array $data ) {
+	public static function mailToApplicant( array $data, array $files ) {
 
 		// Prepare attachment
-		$attachments = File::organizeUploadedHierarchy( $_FILES['mail'] ?? array(), false );
+		$attachments = File::organizeUploadedHierarchy( $files['mail'] ?? array(), false );
 		$tmp_names   = array_column( $attachments['attachments'] ?? array(), 'tmp_name' );
 
 		// Prepare mailer arg

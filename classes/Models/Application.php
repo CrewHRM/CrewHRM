@@ -318,7 +318,7 @@ class Application {
 		$application = _Array::castRecursive( $application );
 
 		// Assign resume file url
-		$application['resume_file_url'] = is_numeric( $application['resume_file_id'] ) ? wp_get_attachment_url( $application['resume_file_id'] ) : null;
+		$application['resume_file_url'] = is_numeric( $application['resume_file_id'] ) ? File::getRestrictedFileURL( $application['resume_file_id'] ) : null;
 
 		// Assign address
 		$application['address'] = is_numeric( $application['address_id'] ) ? Address::getAddressById( $application['address_id'] ) : null;
@@ -434,7 +434,7 @@ class Application {
 
 		// Get resume
 		$resume_id               = Field::applications()->getField( array( 'application_id' => $application_id ), 'resume_file_id' );
-		$documents['resume_url'] = ! empty( $resume_id ) ? wp_get_attachment_url( $resume_id ) : null;
+		$documents['resume_url'] = ! empty( $resume_id ) ? File::getRestrictedFileURL( $resume_id ) : null;
 
 		// Get attachments
 		$documents['attachments'] = array();
@@ -443,7 +443,7 @@ class Application {
 		foreach ( $attachment_ids as $id ) {
 			$documents['attachments'][] = array(
 				'file_id'   => $id,
-				'file_url'  => wp_get_attachment_url( $id ),
+				'file_url'  => File::getRestrictedFileURL( $id ),
 				'file_name' => get_the_title( $id ),
 				'mime_type' => get_post_mime_type( $id ),
 			);

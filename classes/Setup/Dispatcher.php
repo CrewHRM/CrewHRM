@@ -14,6 +14,7 @@ use CrewHRM\Models\User;
 
 use CrewHRM\Controllers\CompanyProfile;
 use CrewHRM\Controllers\JobManagement;
+use CrewHRM\Controllers\MediaHandler;
 use CrewHRM\Controllers\PluginSettings;
 use CrewHRM\Helpers\_Array;
 use Error;
@@ -32,6 +33,7 @@ class Dispatcher {
 		CompanyProfile::class,
 		JobManagement::class,
 		ApplicationHandler::class,
+		MediaHandler::class,
 	);
 
 	/**
@@ -97,6 +99,7 @@ class Dispatcher {
 		$is_post = isset( $_SERVER['REQUEST_METHOD'] ) ? strtolower( sanitize_text_field( wp_unslash( $_SERVER['REQUEST_METHOD'] ) ) ) === 'post' : null;
 		$data    = $is_post ? $_POST : $_GET; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		$data    = _Array::stripslashesRecursive( _Array::getArray( $data ) );
+		$files   = is_array( $_FILES ) ? $_FILES : array();
 
 		// Verify nonce first of all
 		$matched = wp_verify_nonce( ( $data['nonce'] ?? '' ), get_home_url() );
@@ -111,7 +114,7 @@ class Dispatcher {
 
 		// Now pass to the action handler function
 		if ( class_exists( $class ) && method_exists( $class, $method ) ) {
-			$class::$method( $data );
+			$class::$method( $data, $files );
 		} else {
 			wp_send_json_error( array( 'message' => __( 'Invalid Endpoint!', 'crewhrm' ) ) );
 		}

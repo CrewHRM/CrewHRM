@@ -76,8 +76,7 @@ class FileManager {
 
 		// Add direct file download restriction apache server.
 		if ( ! file_exists( $htaccess_path ) ) {
-			// To Do: Implement file loading with access restriction.
-			// file_put_contents( $htaccess_path, 'deny from all' );
+			file_put_contents( $htaccess_path, 'deny from all' ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_file_put_contents
 		}
 
 		// To Do: nginx doesn't restrict per directory, rather show instruction in dashboard how to restrict directory.

@@ -24,7 +24,7 @@ class File {
 			if ( is_array( $content ) ) {
 				if ( isset( $content['file_id'], $content['file_url'] ) ) {
 					// Assign dynamic url replace for host change support
-					$contents[ $index ]['file_url'] = wp_get_attachment_url( $content['file_id'] );
+					$contents[ $index ]['file_url'] = self::getRestrictedFileURL( $content['file_id'] );
 				}
 
 				$contents[ $index ] = self::applyDynamics( $content );
@@ -92,5 +92,22 @@ class File {
 		}
 
 		return $new_array;
+	}
+
+	/**
+	 * Generate restricted file link to access application files
+	 *
+	 * @param integer $file_id File ID to generate URL for
+	 * @return string
+	 */
+	public static function getRestrictedFileURL( int $file_id ) {
+		$ajaxurl = admin_url( 'admin-ajax.php' );
+		$args    = array(
+			'action'  => 'crewhrm_load_file',
+			'file_id' => $file_id,
+			'nonce'   => wp_create_nonce( get_home_url() ),
+		);
+
+		return add_query_arg( $args, $ajaxurl );
 	}
 }

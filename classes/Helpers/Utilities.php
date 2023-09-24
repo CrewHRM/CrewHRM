@@ -24,12 +24,8 @@ class Utilities extends Main {
 		$is_dashboard = is_admin() && get_admin_page_parent() === self::$configs->root_menu_slug;
 
 		if ( $is_dashboard && null !== $page ) {
-			$pages = ! is_array( $page ) ? array( $page ) : $page;
-
-			// Nonce already verified in dispatcher.
-
-			// phpcs:ignore WordPress.Security.NonceVerification.Recommended
-			$is_dashboard = in_array( $_GET['page'] ?? null, $pages, true );
+			$pages        = ! is_array( $page ) ? array( $page ) : $page;
+			$is_dashboard = in_array( $_GET['page'] ?? null, $pages, true ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		}
 
 		return $is_dashboard;
