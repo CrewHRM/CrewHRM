@@ -1,10 +1,10 @@
 import React, { useContext, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 import { Comment } from './comment/comment.jsx';
 import { Email } from './email/email.jsx';
 import { __ } from '../../../../../../utilities/helpers.jsx';
-import { DropDown } from '../../../../../../materials/dropdown/dropdown.jsx';
+import { DropDown, Options } from '../../../../../../materials/dropdown/dropdown.jsx';
 import { ContextApplicationSession } from '../../applicants.jsx';
 import { ContextWarning } from '../../../../../../materials/warning/warning.jsx';
 import { request } from '../../../../../../utilities/request.jsx';
@@ -12,11 +12,25 @@ import { ContextToast } from '../../../../../../materials/toast/toast.jsx';
 
 import style from './head.module.scss';
 
+const application_actions = [
+	{
+		id: 'disqualify',
+		label: __('Disqualify'),
+		icon: 'ch-icon ch-icon-slash font-size-16 color-text'.classNames()
+	},
+	{
+		id: 'delete',
+		label: __('Delete'),
+		icon: 'ch-icon ch-icon-trash font-size-16 color-text'.classNames()
+	}
+];
+
 export function HeadActions({ application }) {
-    const { stages = [], session, sessionRefresh } = useContext(ContextApplicationSession);
+    const { stages = [], sessionRefresh } = useContext(ContextApplicationSession);
 	const {showWarning, closeWarning, loadingState} = useContext(ContextWarning);
 	const {application_id, job_id} = useParams();
 	const {ajaxToast} = useContext(ContextToast);
+	const navigate = useNavigate();
 
     const segments = [
         {
@@ -79,6 +93,38 @@ export function HeadActions({ application }) {
 		);
 	};
 
+	const onActionClick=action=>{
+		switch(action) {
+			case 'disqualify' :
+				changeStage('_disqualified_', __('Sure to disqualify?'));
+				break;
+
+			case 'delete' :
+				showWarning(
+					__('Sure to delete? It can\'t be undone.'), 
+					()=>{
+						loadingState();
+
+						request('delete_application', {application_id}, resp=>{
+							const {success} = resp;
+							
+							ajaxToast(resp);
+
+							if ( success ) {
+								closeWarning();
+								navigate(`/dashboard/jobs/${job_id}/applications/`, {replace: true});
+								sessionRefresh();
+							}
+						});
+					},
+					null,
+					__('Yes'),
+					__('No')
+				);
+				break;
+		}
+	}
+
     const {
         renderer: ActiveComp,
         icon: active_icon,
@@ -118,7 +164,7 @@ export function HeadActions({ application }) {
 						<i
 							title={__('Disqualify')}
 							className={'ch-icon ch-icon-slash color-error font-size-20 cursor-pointer'.classNames()}
-							onClick={() => changeStage('_disqualified_', __('Sure to disqualify?'))}
+							onClick={() => onActionClick('disqualify')}
 						></i>
 					}
                 </div>
@@ -138,6 +184,15 @@ export function HeadActions({ application }) {
                             };
                         })}
                     />
+
+					<Options
+						options={application_actions}
+						onClick={(action) => onActionClick(action)}
+					>
+						<i
+							className={'ch-icon ch-icon-more color-text-light font-size-20 cursor-pointer d-inline-block'.classNames()}
+						></i>
+					</Options>
                 </div>
             </div>
 

@@ -125,7 +125,10 @@ export function RenderField({ field, defaultEnabled }) {
 			</Conditional>
 			
 			<Conditional show={type == 'date'}>
-				<DateField className={input_text_class} onChange={value=>onChange(name, value)}/>
+				<DateField 
+					value={values[name]}
+					className={input_text_class} 
+					onChange={value=>onChange(name, value)}/>
 			</Conditional>
 			
 			<Conditional show={type == 'checkbox' || type == 'radio'}>

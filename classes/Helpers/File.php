@@ -45,4 +45,21 @@ class File {
 
 		return $organizedFiles;
 	}
+
+	/**
+	 * Delete WP files
+	 *
+	 * @param int|array $file_id File ID or array of files IDs
+	 * @param bool $force_delete Whether to bypass trash and delete permanently. Default false which means move to trash.
+	 * @return void
+	 */
+	public static function deleteFile( $file_id, $force_delete = false ) {
+		if ( ! is_array( $file_id ) ) {
+			$file_id = array( $file_id );
+		}
+
+		foreach ( $file_id as $id ) {
+			wp_delete_attachment( $id, $force_delete );
+		}
+	}
 }

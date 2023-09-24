@@ -151,4 +151,26 @@ class _Array {
 
 		return $value;
 	}
+
+	/**
+	 * Strip slasshes from string in array resursivley. Ideally used in post data.
+	 *
+	 * @param array $array Array of strings or whatever. Only strings will be processed.
+	 * @return array
+	 */
+	public static function stripslashesRecursive( array $array ) {
+		// Loop through array elements
+		foreach ( $array as $index => $element ) {
+			if ( is_array( $element ) ) {
+				$array[ $index ] = self::stripslashesRecursive( $element );
+				continue;
+			}
+
+			if ( is_string( $element ) ) {
+				$array[ $index ] = stripslashes( $element );
+			}
+		}
+
+		return $array;
+	}
 }

@@ -51,28 +51,24 @@ export function getFlag(countryCode) {
     return String.fromCodePoint(...codePoints);
 }
 
-export function prepareTexts(inputText, props = {}) {
-    if (typeof inputText !== 'string') {
-        return inputText;
+export function replaceUrlsWithAnchors(text, props = {}) {
+	if (typeof text !== 'string') {
+        return text;
     }
 
     let { className = '' } = props;
 
-    // To Do: Fix malformed url if comma, dot is right after the url without space in between.
+	// Regular expression to match URLs in the text
+	var urlRegex = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
 
-    // Regular expression to match URLs
-    let urlRegex = /((https?|ftp):\/\/[^\s/$.?#].[^\s]*)/g;
+	// Replace URLs with anchor tags
+	var replacedText = text.replace(urlRegex, function(url) {
+		return '<a href="' + url + '" target="_blank" rel="noopener noreferrer nofollow" class="'+className+'">' + url + '</a>';
+	});
 
-    // Replace URLs with anchor tags
-    let replacedText = inputText.replace(urlRegex, function (url) {
-        return `<a href="${url}" rel="noopener noreferrer nofollow" target="_blank" class="${className}">
-			${url}
-		</a>`;
-    });
+	replacedText = replacedText.replaceAll('\n', '<br/>');
 
-    replacedText = replacedText.replaceAll('\n', '<br/>');
-
-    return replacedText;
+	return replacedText;
 }
 
 export function getSocialIcon(url) {

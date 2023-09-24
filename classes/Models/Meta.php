@@ -142,7 +142,7 @@ class Meta {
 	 * @param string $meta_key
 	 * @return void
 	 */
-	public function deleteMeta( $meta_key = null, $meta_value = null ) {
+	public function deleteMeta( $meta_key = null ) {
 
 		$where = array(
 			'object_id' => $this->object_id,
@@ -150,10 +150,6 @@ class Meta {
 
 		if ( $meta_key !== null ) {
 			$where['meta_key'] = $meta_key;
-		}
-
-		if ( $meta_value !== null ) {
-			$where['meta_value'] = $meta_value;
 		}
 
 		global $wpdb;
@@ -164,21 +160,48 @@ class Meta {
 	}
 
 	/**
+	 * Delete bulk meta for multiple objects
+	 *
+	 * @param array $object_ids Array of object IDs
+	 * @param string $meta_key Specific meta key. It's optional.
+	 * @return void
+	 */
+	public function deleteBulkMeta( array $object_ids, string $meta_key = null ) {
+		if ( empty( $object_ids ) ) {
+			return;
+		}
+
+		$ids_in     = implode( ',', $object_ids );
+		$meta_key   = $meta_key ? esc_sql( $meta_key ) : null;
+		$key_clause = $meta_key ? " AND meta_key='{$meta_key}'" : '';
+
+		global $wpdb;
+		$wpdb->query("DELETE FROM {$this->table} WHERE object_id IN ({$ids_in}) {$key_clause}");
+	}
+
+	/**
 	 * Assign bulk meta to objects array
 	 *
 	 * @param array  $objects
-	 * @param string $id_key
-	 * @return void
+	 * @param string $meta_key
+	 * @return array
 	 */
-	public function assignBulkMeta( array $objects ) {
+	public function assignBulkMeta( array $objects, $meta_key = null ) {
 		global $wpdb;
 
-		$objects = _Array::appendColumn( $objects, 'meta', (object)array() );
-		$obj_ids = array_keys( $objects );
-		$ids_in  = implode( ',', $obj_ids );
+		$objects      = _Array::appendColumn( $objects, 'meta', (object)array() );
+		$obj_ids      = array_keys( $objects );
+		$ids_in       = implode( ',', $obj_ids );
+
+		$where_clause = "object_id IN({$ids_in})";
+
+		if ( $meta_key ) {
+			$key = esc_sql( $meta_key );
+			$where_clause .= " AND meta_key='{$key}'";
+		}
 
 		$meta = $wpdb->get_results(
-			'SELECT * FROM ' . $this->table . " WHERE object_id IN({$ids_in})",
+			'SELECT * FROM ' . $this->table . " WHERE {$where_clause}",
 			ARRAY_A
 		);
 

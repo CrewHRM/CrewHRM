@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useParams, useSearchParams } from 'react-router-dom';
 
-import { __, parseParams } from '../../../utilities/helpers.jsx';
+import { __, getAddress, parseParams } from '../../../utilities/helpers.jsx';
 import style from './single.module.scss';
 import { DangerouslySet } from '../../../materials/DangerouslySet.jsx';
 import { Apply } from './apply/apply.jsx';
@@ -194,8 +194,7 @@ export function Single({ base_permalink }) {
                         <RenderMeta
                             icon={'ch-icon ch-icon-location'}
                             hint={__('Location')}
-                            /* content={(street_address || '') + (country_code ? ', '+countries_object[country_code] : '')} */
-                            content={street_address || ''}
+                            content={getAddress(state.job || {})}
                         />
                         <RenderMeta
                             icon={'ch-icon ch-icon-briefcase'}

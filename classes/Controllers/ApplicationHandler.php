@@ -53,7 +53,13 @@ class ApplicationHandler {
 		),
 		'getCareersListing' => array(
 			'nopriv' => true,
-		)
+		),
+		'deleteApplication' => array(
+			'role' => array(
+				'administrator', 
+				'editor'
+			),
+		),
 	);
 
 	/**
@@ -206,5 +212,16 @@ class ApplicationHandler {
 				'departments' => $jobs['departments']
 			)
 		);
+	}
+
+	/**
+	 * Delete single application from single applicant view or maybe from application list.
+	 *
+	 * @param array $data Request data
+	 * @return void
+	 */
+	public static function deleteApplication( array $data ) {
+		Application::deleteApplication( $data['application_id'] );
+		wp_send_json_success( array( 'message' => __( 'Application deleted', 'crewhrm' ) ) );
 	}
 }

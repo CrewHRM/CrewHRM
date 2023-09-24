@@ -7,8 +7,6 @@ import htmlToDraft from 'html-to-draftjs';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import style from './editor.module.scss';
 
-// To Do: Implement disabled state
-
 const createEditorState=(html)=>{
 	const contentBlock = html ? htmlToDraft(html) : null;
 	let state;
@@ -24,7 +22,7 @@ const createEditorState=(html)=>{
 	return state;
 }
 
-export function TextEditor({ onChange: dispatchTo, value: html, placeholder, session, disabled }) {
+export function TextEditor({ onChange: dispatchTo, value: html, placeholder, session }) {
 
 	const [state, setState] = useState({
         editorState: createEditorState(html),

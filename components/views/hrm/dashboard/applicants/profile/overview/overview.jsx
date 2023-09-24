@@ -1,5 +1,5 @@
 import React from 'react';
-import { __, prepareTexts } from '../../../../../../utilities/helpers.jsx';
+import { __, replaceUrlsWithAnchors } from '../../../../../../utilities/helpers.jsx';
 import { Line } from '../../../../../../materials/line/line.jsx';
 import { DangerouslySet } from '../../../../../../materials/DangerouslySet.jsx';
 
@@ -27,7 +27,7 @@ export function OverView({ application = {} }) {
                                 <DangerouslySet
                                     className={'d-block font-size-15 font-weight-400 line-height-22 letter-spacing--15 color-text'.classNames()}
                                 >
-                                    {prepareTexts(text)}
+                                    {replaceUrlsWithAnchors(text)}
                                 </DangerouslySet>
                             ) : null
                         }

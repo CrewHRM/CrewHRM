@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { Tabs } from '../../../../materials/tabs/tabs.jsx';
-import { __, calculateJSONSizeInKB, countries_object, isEmpty, sprintf } from '../../../../utilities/helpers.jsx';
+import { __, calculateJSONSizeInKB, getAddress, isEmpty, sprintf } from '../../../../utilities/helpers.jsx';
 import { ContextForm, FormFields } from '../../../../materials/form.jsx';
 import { FormActionButtons } from '../../../../materials/form-action.jsx';
 import { request } from '../../../../utilities/request.jsx';
@@ -166,10 +166,11 @@ export function Apply({ job = {} }) {
               .flat();
     let is_next_enabled = isNextEnabled(fields_to_render);
 
-    return state.submitted ? (
-        <Applied error_message={state.error_message} />
-    ) : (
-        <div data-crewhrm-selector="job-application" className={'apply'.classNames(style)}>
+	if (state.submitted) {
+		return <Applied error_message={state.error_message} />
+	}
+
+    return <div data-crewhrm-selector="job-application" className={'apply'.classNames(style)}>
             <div className={'header'.classNames(style) + 'bg-color-tertiary'.classNames()}>
                 <div className={'container'.classNames(style) + 'padding-30'.classNames()}>
                     <span
@@ -180,7 +181,7 @@ export function Apply({ job = {} }) {
                     <span
                         className={'d-block font-size-17 font-weight-500 line-height-25 color-text margin-bottom-10'.classNames()}
                     >
-                        {street_address}, {countries_object[country_code]}
+						{getAddress(job)}
                     </span>
                 </div>
             </div>
@@ -260,5 +261,4 @@ export function Apply({ job = {} }) {
                 }
             </div>
         </div>
-    );
 }

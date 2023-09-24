@@ -97,7 +97,6 @@ export function HRM({ departments = [], applicationStats }) {
         ]
     });
 
-    // To Do: Fill this function
     const showNotice = () => {
 		
 	};

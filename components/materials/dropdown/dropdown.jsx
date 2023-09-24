@@ -63,8 +63,7 @@ export function DropDown(props) {
             : '';
 
     const triggerPoint = (search=false)=>{
-		const label = selected_value ?? options.find((o) => o.id === selected_value)?.label ?? placeholder;
-
+		
         return <div
             tabIndex={tabindex}
             className={
@@ -75,7 +74,7 @@ export function DropDown(props) {
         >
             <div className={'flex-1 white-space-nowrap'.classNames() + textClassName}>
 				<Conditional show={!search}>
-                	{label}
+                	{selected_value !== undefined ? options.find((o) => o.id === selected_value)?.label || placeholder : placeholder}
 				</Conditional>
 				<Conditional show={search}>
 					<input 
@@ -225,18 +224,18 @@ export function Options(props) {
                                     <div
                                         data-crewhrm-selector="options-popup-item"
                                         key={id}
-                                        className={'list-item'.classNames(style) + list_class}
+                                        className={'d-flex align-items-center'.classNames() + 'list-item'.classNames(style) + list_class}
                                         onClick={() => {
                                             onClick(id);
                                             close();
                                         }}
                                     >
-                                        {(icon && (
-                                            <i
+										<Conditional show={icon}>
+											<i
                                                 className={icon + 'margin-right-10'.classNames()}
                                             ></i>
-                                        )) ||
-                                            null}
+										</Conditional>
+										
                                         {label}
                                     </div>
                                 );

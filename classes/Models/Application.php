@@ -102,16 +102,49 @@ class Application {
 	public static function deleteApplication( $application_id ) {
 		global $wpdb;
 
-		$ids         = is_array( $application_id ) ? $application_id : array( $application_id );
-		$ids_in      = implode( ',', $ids );
-		$address_ids = $wpdb->get_col( 'SELECT address_id FROM ' . DB::applications() . " WHERE application_id IN ({$ids_in}) AND address_id>0" );
-
+		$ids          = is_array( $application_id ) ? $application_id : array( $application_id );
+		$ids_in       = implode( ',', $ids );
+		$applications = $wpdb->get_results( 
+			'SELECT application_id, resume_file_id, address_id FROM ' . DB::applications() . " 
+			WHERE application_id IN ({$ids_in})",
+			ARRAY_A
+		);
+		$applications = _Array::indexify( _Array::castRecursive( $applications ), 'application_id' );
+		
 		// Delete associated address
+		$address_ids = array_filter( array_column( $applications, 'address_id' ) ); 
 		Address::deleteAddress( $address_ids );
 
-		// Delete resume
+		// Colelct resume and attachment ids to delete together
+		$_applications  = Meta::application( null )->assignBulkMeta( $applications, 'application_attachments' );
+		$attachment_ids =  array_map(
+			function( $app ) {
+				$attachments = _Array::getArray( $app['meta']->application_attachments ?? array() );
+				return array_filter(
+					$attachments,
+					function( $id ) {
+						return is_numeric( $id );
+					}
+				);
+			},
+			$_applications
+		);
+		$attachment_ids = array_merge( ...$attachment_ids,  );
 
-		// Delete attachments
+		// Add resume IDs into the array
+		$resume_file_ids = array_filter(
+			array_column(
+				$applications,
+				'resume_file_id'
+			)
+		);
+		$attachment_ids = array_filter( array_merge( $attachment_ids, $resume_file_ids ) );
+
+		// Now delete all the files together
+		File::deleteFile( $attachment_ids, true );
+
+		// Delete Attachments meta
+		Meta::application( null )->deleteBulkMeta( $ids );
 
 		// Delete pipelines
 		$wpdb->query(

@@ -75,7 +75,7 @@ export function Header({
 						to={job_permalink} 
 						target="_blank" 
 						className={'font-size-15 font-weight-400 color-text'.classNames()}>
-                        {__('View Post')}
+                        {__('View Job')}
                     </Link>
                     <Link
 						to={job_permalink+'apply/'}

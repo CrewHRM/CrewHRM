@@ -10,98 +10,84 @@ use CrewHRM\Models\User;
 use CrewHRM\Controllers\CompanyProfile;
 use CrewHRM\Controllers\JobManagement;
 use CrewHRM\Controllers\PluginSettings;
+use CrewHRM\Helpers\_Array;
+use Error;
 
 class Dispatcher {
-	
 	/**
-	 * Ajax request endpoints
+	 * Controlles class array
 	 *
 	 * @var array
 	 */
-	private static $endpoints = array(
-		'save_settings'            => PluginSettings::class,
-
-		'save_company_profile'     => CompanyProfile::class,
-		'save_company_departments' => CompanyProfile::class,
-		'add_department'           => CompanyProfile::class,
-
-		'update_job'               => JobManagement::class,
-		'get_jobs_dashboard'       => JobManagement::class,
-		'single_job_action'        => JobManagement::class,
-		'get_single_job_view'      => JobManagement::class,
-		'get_job_view_dashboard'   => JobManagement::class,
-		'get_single_job_edit'      => JobManagement::class,
-		'delete_hiring_stage'      => JobManagement::class,
-
-		'apply_to_job'             => ApplicationHandler::class,
-		'get_applications_list'    => ApplicationHandler::class,
-		'get_application_single'   => ApplicationHandler::class,
-		'move_application_stage'   => ApplicationHandler::class,
-		'mail_to_applicant'        => ApplicationHandler::class,
-		'comment_on_application'   => ApplicationHandler::class,
-		'get_application_pipeline' => ApplicationHandler::class,
-		'get_careers_listing'      => ApplicationHandler::class,
+	private static $controllers = array(
+		PluginSettings::class,
+		CompanyProfile::class,
+		JobManagement::class,
+		ApplicationHandler::class,
 	);
 
 	/**
 	 * Dispatcher registration in constructor
-	 */
-	public function __construct() {
-
-		// Loop through handlers and register
-		foreach ( self::$endpoints as $endpoint => $class ) {
-			// Retrieve prerequisities from controller class
-			$prerequisites = $this->getPrerequisites( $class, $endpoint );
-
-			// Determine ajax handler types
-			$handlers    = [];
-			$handlers [] = 'wp_ajax_' . Main::$configs->app_name . '_' . $endpoint;
-
-			// Check if norpriv necessary
-			if ( ( $prerequisites['nopriv'] ?? false ) === true ) {
-				$handlers[] = 'wp_ajax_nopriv_' . Main::$configs->app_name . '_' . $endpoint;
-			}
-
-			// Loop through the handlers and register
-			foreach ( $handlers as $handler ) {
-				add_action(
-					$handler,
-					function() use ( $endpoint, $prerequisites ) {
-						$this->dispatch( $endpoint, $prerequisites );
-					} 
-				);
-			}
-		}
-	}
-
-	/**
-	 * Get prerequisities for a controller
-	 *
-	 * @param string $class Controller class
-	 * @param string $handler Ajax handler
-	 * @return array
-	 */
-	private function getPrerequisites( $class, $endpoint ) {
-
-		$method = _String::snakeToCamel( $endpoint );
-
-		if ( defined( $class . '::PREREQUISITES' ) && is_array( $class::PREREQUISITES ) && ! empty( $class::PREREQUISITES[ $method ] ) ) {
-			return $class::PREREQUISITES[ $method ];
-		}
-
-		return array();
-	}
-
-	/**
-	 * Dispatch request to target handler after some verification
-	 *
-	 * @param string $endpoint
+	 * 
 	 * @return void
 	 */
-	public function dispatch( $endpoint, $prerequisites ) {
+	public function __construct() {
+		// Register ajax handlers only if it is ajax call
+		if ( ! wp_doing_ajax() ) {
+			return;
+		}
+		
+		$registered_methods = array();
+
+		// Loop through controllers classes
+		foreach ( self::$controllers as $class ) {
+
+			// Loop through controller methods in the class
+			foreach ( $class::PREREQUISITES as $method => $prerequisites ) {
+				if ( in_array( $method, $registered_methods ) ) {
+					throw new Error( __( 'Duplicate endpoint not possible' ) );
+				}
+
+				$endpoint = _String::camelToSnakeCase( $method );
+
+				// Determine ajax handler types
+				$handlers    = array();
+				$handlers [] = 'wp_ajax_' . Main::$configs->app_name . '_' . $endpoint;
+
+				// Check if norpriv necessary
+				if ( ( $prerequisites['nopriv'] ?? false ) === true ) {
+					$handlers[] = 'wp_ajax_nopriv_' . Main::$configs->app_name . '_' . $endpoint;
+				}
+
+				// Loop through the handlers and register
+				foreach ( $handlers as $handler ) {
+					add_action(
+						$handler,
+						function() use ( $class, $method, $prerequisites ) {
+							$this->dispatch( $class, $method, $prerequisites );
+						} 
+					);
+				}
+
+				$registered_methods[] = $method;
+			}
+		}
+	}
+
+	/**
+	 * Dispatch request to target handler after doing verifications
+	 *
+	 * @param string $class
+	 * @param string $method
+	 * @param array $prerequisites Controller access prerequisites
+	 * 
+	 * @return void
+	 */
+	public function dispatch( $class, $method, $prerequisites ) {
 		// Determine post/get data
 		$is_post = isset( $_SERVER['REQUEST_METHOD'] ) ? strtolower( sanitize_text_field( $_SERVER['REQUEST_METHOD'] ) ) === 'post' : null;
 		$data    = $is_post ? $_POST : $_GET; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		$data    = _Array::stripslashesRecursive( _Array::getArray( $data ) );
 
 		// Verify nonce first of all
 		$matched = wp_verify_nonce( ( $data['nonce'] ?? '' ), get_home_url() );
@@ -117,8 +103,6 @@ class Dispatcher {
 		}
 
 		// Now pass to the action handler function
-		$method = _String::snakeToCamel( $endpoint );
-		$class  = self::$endpoints[ $endpoint ];
 		if ( class_exists( $class ) && method_exists( $class, $method ) ) {
 			$class::$method( $data );
 		} else {

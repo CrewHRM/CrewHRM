@@ -52,8 +52,19 @@ export function FilterBar({ is_overview, filters = {}, onChange, fetching }) {
                         transparent={is_overview}
                         placeholder={__('All Departments')}
                         value={filters.department_id}
-                        options={[{id: 0, label: __('All Departments')}, ...departments]}
                         onChange={(v) => onChange('department_id', v)}
+                        options={[
+							{
+								id: 0, 
+								label: __('All Departments')
+							}, 
+							...departments.map(d=>{
+								return {
+									id: d.department_id, 
+									label: d.department_name
+								}
+							})
+						]}
                     />
                 </div>
                 <div className={'d-inline-block'.classNames()} style={{ minWidth: '113px' }}>

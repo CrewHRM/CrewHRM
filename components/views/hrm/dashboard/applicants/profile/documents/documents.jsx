@@ -1,6 +1,6 @@
 import React from 'react';
 import { ExpandableContent } from '../../../../../../materials/ExpandableContent/expandable-content.jsx';
-import { __, prepareTexts } from '../../../../../../utilities/helpers.jsx';
+import { __, replaceUrlsWithAnchors } from '../../../../../../utilities/helpers.jsx';
 import { Line } from '../../../../../../materials/line/line.jsx';
 import { DangerouslySet } from '../../../../../../materials/DangerouslySet.jsx';
 import { PDFViewer } from '../../../../../../materials/pdf-viewer.jsx';
@@ -21,7 +21,7 @@ export function Documents({ application }) {
                 <DangerouslySet
                     className={'d-block font-size-15 font-weight-400 line-height-22 letter-spacing--15 color-text'.classNames()}
                 >
-                    {prepareTexts(cover_letter)}
+                    {replaceUrlsWithAnchors(cover_letter)}
                 </DangerouslySet>
             </ExpandableContent>
 
