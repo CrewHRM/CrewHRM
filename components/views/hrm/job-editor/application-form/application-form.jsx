@@ -16,7 +16,14 @@ const getQuestionId = () => {
 };
 
 export function ApplicationForm() {
-    const { navigateTab, values = {}, onChange, is_next_disabled, onSaveClick, saving_mode } = useContext(ContextJobEditor);
+    const {
+        navigateTab,
+        values = {},
+        onChange,
+        is_next_disabled,
+        onSaveClick,
+        saving_mode
+    } = useContext(ContextJobEditor);
 
     const [state, setState] = useState({
         pointer: null
@@ -122,8 +129,8 @@ export function ApplicationForm() {
 
     return (
         <>
-			<Conditional show={state.pointer}>
-				<FieldEditorModal
+            <Conditional show={state.pointer}>
+                <FieldEditorModal
                     field={
                         values.application_form[state.pointer?.section_name]?.fields?.[
                             state.pointer?.field_index
@@ -131,8 +138,8 @@ export function ApplicationForm() {
                     }
                     updateField={updateField}
                 />
-			</Conditional>
-			
+            </Conditional>
+
             <div
                 data-crewhrm-selector="application-builder"
                 className={'application'.classNames(style)}
@@ -336,11 +343,12 @@ export function ApplicationForm() {
                     );
                 })}
 
-                <FormActionButtons 
-					onBack={() => navigateTab(-1)} 
-					onNext={onSaveClick} 
-					disabledNext={is_next_disabled || saving_mode==='manual'}
-					nextText={__('Publish Now')}/>
+                <FormActionButtons
+                    onBack={() => navigateTab(-1)}
+                    onNext={onSaveClick}
+                    disabledNext={is_next_disabled || saving_mode === 'manual'}
+                    nextText={__('Publish Now')}
+                />
             </div>
         </>
     );

@@ -30,12 +30,7 @@ const business_types = {
     government_publicservices: __('Government & Public Services')
 };
 
-const date_formats = [
-	'DD MMM, YYYY', 
-	'Y-mm-D', 
-	'mm/D/Y', 
-	'D/mm/Y'
-];
+const date_formats = ['DD MMM, YYYY', 'Y-MM-D', 'MM/D/Y', 'D/MM/Y'];
 
 const time_formats = {
     _12: __('12 Hours'),
@@ -71,6 +66,9 @@ const sections = {
                 name: 'about_company',
                 label: __('About Company'),
                 type: 'textarea_rich',
+                placeholder: __(
+                    "Describe your company's mission, values, size, and industry. Highlight unique selling points to give candidates insight into your culture and work environment."
+                )
             }
         ]
     },
@@ -163,10 +161,10 @@ const sections = {
                     label: __('Date Format'),
                     type: 'dropdown',
                     options: date_formats.map((f) => {
-                        return { 
-							id: f, 
-							label: moment(new Date().getTime()).format(f)
-						};
+                        return {
+                            id: f,
+                            label: moment(new Date().getTime()).format(f)
+                        };
                     })
                 },
                 {
@@ -203,9 +201,9 @@ export function CompanyProfile({ onChange, values }) {
                     </span>
 
                     <FileUpload
-                        WpMedia={{width: 200, height: 200}}
+                        WpMedia={{ width: 200, height: 200 }}
                         accept="image/*"
-                        onChange={company_logo => onChange({company_logo})}
+                        onChange={(company_logo) => onChange({ company_logo })}
                         layoutComp={({ onCLick }) => {
                             return (
                                 <button

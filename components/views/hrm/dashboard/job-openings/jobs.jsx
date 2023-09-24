@@ -40,21 +40,21 @@ const options = [
         label: __('Duplicate'),
         icon: 'ch-icon ch-icon-copy',
         for: 'all',
-		warning: __('Are you sure to duplicate?')
+        warning: __('Are you sure to duplicate?')
     },
     {
         name: 'archive',
         label: __('Archive'),
         icon: 'ch-icon ch-icon-archive',
         for: ['publish', 'draft', 'expired'],
-		warning: __('Are you sure to archive?')
+        warning: __('Are you sure to archive?')
     },
     {
         name: 'unarchive',
         label: __('Un-archive'),
         icon: 'ch-icon ch-icon-archive',
         for: ['archive'],
-		warning: __('Are you sure to un-archive?')
+        warning: __('Are you sure to un-archive?')
     },
     {
         name: 'share',
@@ -67,7 +67,7 @@ const options = [
         label: __('Delete'),
         icon: 'ch-icon ch-icon-trash',
         for: 'all',
-		warning: __('Are you sure to delete permanently?')
+        warning: __('Are you sure to delete permanently?')
     }
 ];
 
@@ -95,7 +95,7 @@ export const status_keys = Object.keys(statuses);
 export function JobOpenings(props) {
     let { is_overview, className } = props;
     const { ajaxToast } = useContext(ContextToast);
-	const {showWarning, closeWarning} = useContext(ContextWarning);
+    const { showWarning, closeWarning } = useContext(ContextWarning);
     const navigate = useNavigate();
 
     const [state, setState] = useState({
@@ -103,11 +103,11 @@ export function JobOpenings(props) {
         jobs: [],
         fetching: true,
         in_action: null,
-		segmentation: null,
+        segmentation: null,
         filters: {
             job_status: null,
-			department_id: null,
-			search: '',
+            department_id: null,
+            search: '',
             // country_code: null,
             page: 1
         }
@@ -119,7 +119,7 @@ export function JobOpenings(props) {
             filters: {
                 ...state.filters,
                 [key]: value,
-				page: key==='page' ? value : 1
+                page: key === 'page' ? value : 1
             }
         });
     };
@@ -147,41 +147,36 @@ export function JobOpenings(props) {
             case 'unarchive':
             case 'delete':
             case 'duplicate':
-				showWarning(
-					__(options.find(o=>o.name===action)?.warning || 'Sure to proceed?'),
-					()=>{
-						// Close warning modal and execute in background
-						closeWarning();
+                showWarning(
+                    __(options.find((o) => o.name === action)?.warning || 'Sure to proceed?'),
+                    () => {
+                        // Close warning modal and execute in background
+                        closeWarning();
 
-						// Register loading state
-						setState({
-							...state,
-							in_action: action
-						});
+                        // Register loading state
+                        setState({
+                            ...state,
+                            in_action: action
+                        });
 
-						// Server request for action
-						request(
-							'single_job_action',
-							{ job_action: action, job_id },
-							(resp) => {
-								// Remove loading state
-								setState({
-									...state,
-									in_action: null
-								});
+                        // Server request for action
+                        request('single_job_action', { job_action: action, job_id }, (resp) => {
+                            // Remove loading state
+                            setState({
+                                ...state,
+                                in_action: null
+                            });
 
-								// Show response notice
-								ajaxToast(resp);
+                            // Show response notice
+                            ajaxToast(resp);
 
-								// Get updated job list again
-								getJobs(action === 'duplicate' ? { page: 1 } : {}); // Get to first page to see the duplicated one.
-							
-							}
-						);
-					},
-					null,
-					__('Yes')
-				);
+                            // Get updated job list again
+                            getJobs(action === 'duplicate' ? { page: 1 } : {}); // Get to first page to see the duplicated one.
+                        });
+                    },
+                    null,
+                    __('Yes')
+                );
                 break;
         }
     };
@@ -193,228 +188,240 @@ export function JobOpenings(props) {
         });
 
         const { filters } = state;
-		
-        request(
-            'get_jobs_dashboard',
-            { filters: { ...filters, ...f } },
-            (resp) => {
-                const { success, data: {jobs = [], segmentation={}} } = resp;
 
-				if ( !success ) {
-					ajaxToast(resp);
-				}
+        request('get_jobs_dashboard', { filters: { ...filters, ...f } }, (resp) => {
+            const {
+                success,
+                data: { jobs = [], segmentation = {} }
+            } = resp;
 
-                setState({
-                    ...state,
-                    fetching: false,
-					segmentation,
-                    jobs
-                });
+            if (!success) {
+                ajaxToast(resp);
             }
-        );
+
+            setState({
+                ...state,
+                fetching: false,
+                segmentation,
+                jobs
+            });
+        });
     };
 
     useEffect(() => {
         getJobs();
     }, [state.filters]);
 
-    return <>
-		<Conditional show={state.share_link}>
-			<ShareModal
-				url={state.share_link}
-				closeModal={() => setState({ ...state, share_link: null })}
-			/>
-		</Conditional>
+    return (
+        <>
+            <Conditional show={state.share_link}>
+                <ShareModal
+                    url={state.share_link}
+                    closeModal={() => setState({ ...state, share_link: null })}
+                />
+            </Conditional>
 
-        <div data-crewhrm-selector="job-openings" className={'jobs'.classNames(style) + className}>
-			
-            <FilterBar {...{
-				is_overview, 
-				onChange, 
-				filters: state.filters, 
-				fetching: state.fetching
-			}}/>
+            <div
+                data-crewhrm-selector="job-openings"
+                className={'jobs'.classNames(style) + className}
+            >
+                <FilterBar
+                    {...{
+                        is_overview,
+                        onChange,
+                        filters: state.filters,
+                        fetching: state.fetching
+                    }}
+                />
 
-			<Conditional show={!state.jobs.length && !state.fetching}>
-				<NoJob/>
-			</Conditional>
+                <Conditional show={!state.jobs.length && !state.fetching}>
+                    <NoJob />
+                </Conditional>
 
-			<Conditional show={state.jobs.length}>
-				<div data-crewhrm-selector={'job-list'}>
-                    {state.jobs.map((job) => {
-                        const {
-                            job_id,
-                            job_title,
-                            job_status,
-                            department_name,
-                            street_address,
-                            country_code,
-                            job_type,
-                            vacancy,
-                            application_deadline,
-                            stats: { candidates = 0, stages: application_stages = {} }
-                        } = job;
+                <Conditional show={state.jobs.length}>
+                    <div data-crewhrm-selector={'job-list'}>
+                        {state.jobs.map((job) => {
+                            const {
+                                job_id,
+                                job_title,
+                                job_status,
+                                department_name,
+                                street_address,
+                                country_code,
+                                job_type,
+                                vacancy,
+                                application_deadline,
+                                stats: { candidates = 0, stages: application_stages = {} }
+                            } = job;
 
-                        const meta_data = [
-                            department_name,
-                            street_address || country_code
-                                ? street_address +
-                                  (country_code ? ', ' + getCountries()[country_code] : '')
-                                : null,
-                            job_type,
-                            application_deadline
-                                ? moment(application_deadline).format('DD MMM, YYYY')
-                                : null
-                        ];
+                            const meta_data = [
+                                department_name,
+                                street_address || country_code
+                                    ? street_address +
+                                      (country_code ? ', ' + getCountries()[country_code] : '')
+                                    : null,
+                                job_type,
+                                application_deadline
+                                    ? moment(application_deadline).format('DD MMM, YYYY')
+                                    : null
+                            ];
 
-                        const { color: status_color, label: status_label = __('Unknown Status') } =
-                            statuses[job_status] || {};
+                            const {
+                                color: status_color,
+                                label: status_label = __('Unknown Status')
+                            } = statuses[job_status] || {};
 
-                        const stats = [
-                            {
-                                key: 'sdfsdf',
-                                label: __('Candidates'),
-                                content: candidates
-                            }
-                        ];
+                            const stats = [
+                                {
+                                    key: 'sdfsdf',
+                                    label: __('Candidates'),
+                                    content: candidates
+                                }
+                            ];
 
-                        // Assign data to stats object
-                        Object.keys(application_stages).forEach((id) => {
-                            const { stage_id, stage_name, candidates = 0 } = application_stages[id];
+                            // Assign data to stats object
+                            Object.keys(application_stages).forEach((id) => {
+                                const {
+                                    stage_id,
+                                    stage_name,
+                                    candidates = 0
+                                } = application_stages[id];
 
-                            stats.push({
-                                key: stage_id,
-                                label: special_stages[stage_name] || stage_name,
-                                content:
-                                    stage_name === '_hired_'
-                                        ? candidates + (vacancy ? '/' + vacancy : '')
-                                        : candidates
+                                stats.push({
+                                    key: stage_id,
+                                    label: special_stages[stage_name] || stage_name,
+                                    content:
+                                        stage_name === '_hired_'
+                                            ? candidates + (vacancy ? '/' + vacancy : '')
+                                            : candidates
+                                });
                             });
-                        });
 
-                        const actions = options
-                            .filter((o) => o.for === 'all' || o.for.indexOf(job_status) > -1)
-                            .map((o) => {
-                                return {
-                                    id: o.name,
-                                    label: (
-                                        <span
-                                            className={'d-inline-flex align-items-center column-gap-10'.classNames()}
-                                        >
-                                            {state.action ? (
-                                                <LoadingIcon size={24} />
-                                            ) : (
-                                                <i
-                                                    className={
-                                                        o.icon.classNames() +
-                                                        'font-size-24 color-text'.classNames()
-                                                    }
-                                                ></i>
-                                            )}
-
+                            const actions = options
+                                .filter((o) => o.for === 'all' || o.for.indexOf(job_status) > -1)
+                                .map((o) => {
+                                    return {
+                                        id: o.name,
+                                        label: (
                                             <span
-                                                className={'font-size-15 font-weight-500 line-height-25 color-text'.classNames()}
+                                                className={'d-inline-flex align-items-center column-gap-10'.classNames()}
                                             >
-                                                {o.label}
-                                            </span>
-                                        </span>
-                                    )
-                                };
-                            });
+                                                {state.action ? (
+                                                    <LoadingIcon size={24} />
+                                                ) : (
+                                                    <i
+                                                        className={
+                                                            o.icon.classNames() +
+                                                            'font-size-24 color-text'.classNames()
+                                                        }
+                                                    ></i>
+                                                )}
 
-                        return (
-                            <div
-                                key={job_id}
-                                className={'bg-color-white border-radius-5 margin-bottom-20'.classNames()}
-                            >
+                                                <span
+                                                    className={'font-size-15 font-weight-500 line-height-25 color-text'.classNames()}
+                                                >
+                                                    {o.label}
+                                                </span>
+                                            </span>
+                                        )
+                                    };
+                                });
+
+                            return (
                                 <div
-                                    className={'d-flex align-items-center border-bottom-1 b-color-tertiary padding-vertical-15 padding-horizontal-20'.classNames()}
+                                    key={job_id}
+                                    className={'bg-color-white border-radius-5 margin-bottom-20'.classNames()}
                                 >
-                                    <div className={'flex-1'.classNames()}>
-                                        <div
-                                            className={'d-flex align-items-center margin-bottom-15'.classNames()}
-                                        >
+                                    <div
+                                        className={'d-flex align-items-center border-bottom-1 b-color-tertiary padding-vertical-15 padding-horizontal-20'.classNames()}
+                                    >
+                                        <div className={'flex-1'.classNames()}>
                                             <div
-                                                className={'d-inline-block margin-right-8'.classNames()}
-                                                title={status_label}
+                                                className={'d-flex align-items-center margin-bottom-15'.classNames()}
                                             >
-                                                <StatusDot color={status_color} />
+                                                <div
+                                                    className={'d-inline-block margin-right-8'.classNames()}
+                                                    title={status_label}
+                                                >
+                                                    <StatusDot color={status_color} />
+                                                </div>
+                                                <span
+                                                    className={'d-block color-text font-size-20 font-weight-600'.classNames()}
+                                                >
+                                                    {job_title}
+                                                </span>
                                             </div>
-                                            <span
-                                                className={'d-block color-text font-size-20 font-weight-600'.classNames()}
+                                            <div
+                                                className={'d-flex align-items-center flex-direction-row flex-wrap-wrap column-gap-30 row-gap-5'.classNames()}
                                             >
-                                                {job_title}
-                                            </span>
+                                                {meta_data.map((data, index) => {
+                                                    return !data ? null : (
+                                                        <span
+                                                            key={data}
+                                                            className={'d-inline-block font-size-15 font-weight-400 color-text-light'.classNames()}
+                                                        >
+                                                            {data}
+                                                        </span>
+                                                    );
+                                                })}
+                                            </div>
                                         </div>
-                                        <div
-                                            className={'d-flex align-items-center flex-direction-row flex-wrap-wrap column-gap-30 row-gap-5'.classNames()}
-                                        >
-                                            {meta_data.map((data, index) => {
-                                                return !data ? null : (
-                                                    <span
-                                                        key={data}
-                                                        className={'d-inline-block font-size-15 font-weight-400 color-text-light'.classNames()}
-                                                    >
-                                                        {data}
-                                                    </span>
-                                                );
-                                            })}
+                                        <div>
+                                            <Link
+                                                to={`/dashboard/jobs/${job_id}/applications/`}
+                                                className={'button button-primary button-outlined button-small'.classNames()}
+                                            >
+                                                {__('Details')}
+                                            </Link>
+                                        </div>
+                                        <div className={'d-contents'.classNames()}>
+                                            <Options
+                                                options={actions}
+                                                onClick={(action) => onActionClick(action, job_id)}
+                                            >
+                                                <i
+                                                    className={'ch-icon ch-icon-more color-text-light font-size-20 cursor-pointer d-inline-block margin-left-15'.classNames()}
+                                                ></i>
+                                            </Options>
                                         </div>
                                     </div>
-                                    <div>
-                                        <Link
-                                            to={`/dashboard/jobs/${job_id}/applications/`}
-                                            className={'button button-primary button-outlined button-small'.classNames()}
-                                        >
-                                            {__('Details')}
-                                        </Link>
-                                    </div>
-                                    <div className={'d-contents'.classNames()}>
-                                        <Options
-                                            options={actions}
-                                            onClick={(action) => onActionClick(action, job_id)}
-                                        >
-                                            <i
-                                                className={'ch-icon ch-icon-more color-text-light font-size-20 cursor-pointer d-inline-block margin-left-15'.classNames()}
-                                            ></i>
-                                        </Options>
+                                    <div
+                                        className={'d-flex align-items-center justify-content-space-between padding-vertical-15 padding-horizontal-20'.classNames()}
+                                    >
+                                        <StatsRow stats={stats} />
                                     </div>
                                 </div>
-                                <div
-                                    className={'d-flex align-items-center justify-content-space-between padding-vertical-15 padding-horizontal-20'.classNames()}
-                                >
-                                    <StatsRow stats={stats} />
-                                </div>
-                            </div>
-                        );
-                    })}
-                </div>
-			</Conditional>
-			
-            {/* Show view all button when it is loaded in dashboard as summary */}
-			<Conditional show={is_overview && state.jobs.length}>
-				<Link
-                    to="/dashboard/jobs/"
-                    className={
-                        'button button-primary button-outlined button-full-width-2'.classNames() +
-                        'view-all-button'.classNames(style)
-                    }
-                >
-                    {__('View All Jobs')}
-                </Link>
-			</Conditional>
-			
-            {/* Show pagination when it is loaded as a single view */}
-			<Conditional show={!is_overview}>
-				<div className={'d-flex justify-content-end'.classNames()}>
-                    <Pagination 
-						onChange={page=>onChange('page', page)}
-						pageNumber={state.filters.page}
-						pageCount={state.segmentation?.page_count || 1}/>
-                </div>
-			</Conditional>
-        </div>
-    </>
+                            );
+                        })}
+                    </div>
+                </Conditional>
+
+                {/* Show view all button when it is loaded in dashboard as summary */}
+                <Conditional show={is_overview && state.jobs.length}>
+                    <Link
+                        to="/dashboard/jobs/"
+                        className={
+                            'button button-primary button-outlined button-full-width-2'.classNames() +
+                            'view-all-button'.classNames(style)
+                        }
+                    >
+                        {__('View All Jobs')}
+                    </Link>
+                </Conditional>
+
+                {/* Show pagination when it is loaded as a single view */}
+                <Conditional show={!is_overview}>
+                    <div className={'d-flex justify-content-end'.classNames()}>
+                        <Pagination
+                            onChange={(page) => onChange('page', page)}
+                            pageNumber={state.filters.page}
+                            pageCount={state.segmentation?.page_count || 1}
+                        />
+                    </div>
+                </Conditional>
+            </div>
+        </>
+    );
 }
 
 export function JobOpeningsFullView(props) {

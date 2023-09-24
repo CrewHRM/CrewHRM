@@ -25,8 +25,8 @@ export function Applications() {
         job_list: [],
         job: {},
         candidates: 0,
-		has_applications: true,
-		mounted: false
+        has_applications: true,
+        mounted: false
     });
 
     const getJob = () => {
@@ -55,7 +55,7 @@ export function Applications() {
                 stages,
                 job_list,
                 candidates,
-				mounted: true
+                mounted: true
             });
         });
     };
@@ -64,7 +64,7 @@ export function Applications() {
         getJob();
     }, [job_id, state.session]);
 
-	// Don't unmount if already mounted, so the auto content loading will work on status changes.
+    // Don't unmount if already mounted, so the auto content loading will work on status changes.
     if (!state.mounted && state.fetching) {
         return <LoadingIcon center={true} />;
     }
@@ -92,7 +92,7 @@ export function Applications() {
                 <Header
                     job_list={state.job_list}
                     job_id={job_id}
-					job={state.job}
+                    job={state.job}
                     stages={state.stages}
                     active_stage_id={state.active_stage_id}
                     candidates={state.candidates}
@@ -101,15 +101,16 @@ export function Applications() {
 
                 <div className={'content-area'.classNames(style)}>
                     <div className={'sidebar-wrapper'.classNames(style)}>
-                        <Sidebar 
-							job_id={job_id} 
-							stage_id={state.active_stage_id} 
-							hasApplications={has_applications=>setState({...state, has_applications})}/>
+                        <Sidebar
+                            job_id={job_id}
+                            stage_id={state.active_stage_id}
+                            hasApplications={(has_applications) =>
+                                setState({ ...state, has_applications })
+                            }
+                        />
                     </div>
                     <div className={'profile-wrapper'.classNames(style)}>
-                        <Profile 
-							job_id={job_id} 
-							has_applications={state.has_applications}/>
+                        <Profile job_id={job_id} has_applications={state.has_applications} />
                     </div>
                 </div>
             </div>

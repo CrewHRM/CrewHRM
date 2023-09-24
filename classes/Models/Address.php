@@ -1,7 +1,15 @@
 <?php
+/**
+ * Address handler
+ *
+ * @package crewhrm
+ */
 
 namespace CrewHRM\Models;
 
+/**
+ * Address class
+ */
 class Address {
 	/**
 	 * Create or update an address
@@ -48,7 +56,7 @@ class Address {
 	/**
 	 * Delete address by address ID
 	 *
-	 * @param int $address_id
+	 * @param int $address_id ID to delete by
 	 * @return void
 	 */
 	public static function deleteAddress( $address_id ) {
@@ -64,7 +72,7 @@ class Address {
 	/**
 	 * Get address by id
 	 *
-	 * @param int $address_id
+	 * @param int $address_id ID to get address by
 	 * @return array|null
 	 */
 	public static function getAddressById( $address_id ) {
@@ -88,9 +96,9 @@ class Address {
 	public static function getJobsCountryCodes() {
 		global $wpdb;
 		return $wpdb->get_col(
-			"SELECT DISTINCT address.country_code 
-			FROM " . DB::addresses() . " address 
-				INNER JOIN " . DB::jobs() . " job ON address.address_id=job.address_id
+			'SELECT DISTINCT address.country_code 
+			FROM ' . DB::addresses() . ' address 
+				INNER JOIN ' . DB::jobs() . " job ON address.address_id=job.address_id
 			WHERE job.job_status='publish' AND address.country_code IS NOT NULL AND address.country_code!='' ORDER BY address.country_code ASC"
 		);
 	}

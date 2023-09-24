@@ -1,7 +1,7 @@
 <?php
 /**
  * Static built scripts provider
- * 
+ *
  * @package crewhrm
  */
 

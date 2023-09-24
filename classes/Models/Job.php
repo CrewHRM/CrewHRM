@@ -1,4 +1,9 @@
 <?php
+/**
+ * Job management logics
+ *
+ * @package crewhrm
+ */
 
 namespace CrewHRM\Models;
 
@@ -8,15 +13,15 @@ use CrewHRM\Helpers\Utilities;
 
 /**
  * Job class to manage job related database interactions.
- * 
- * Note: The post data to create/update job, the autosave version in the meta and the return value of getEditableJob method must be the same structure. 
+ *
+ * Note: The post data to create/update job, the autosave version in the meta and the return value of getEditableJob method must be the same structure.
  */
 class Job {
 
 	/**
 	 * Create or update a job
 	 *
-	 * @param array $job
+	 * @param array $job Job data array
 	 * @return array
 	 */
 	public static function createUpdateJob( array $job ) {
@@ -35,7 +40,7 @@ class Job {
 			'salary_b'             => is_numeric( $salary[1] ?? null ) ? $salary[1] : null,
 			'salary_basis'         => $job['salary_basis'] ?? null,
 			'employment_type'      => $job['employment_type'] ?? null,
-			'attendance_type'      => maybe_serialize( $job['attendance_type'] ?? array() ), 
+			'attendance_type'      => maybe_serialize( $job['attendance_type'] ?? array() ),
 			'experience_years'     => $job['experience_years'] ?? null,
 			'experience_level'     => $job['experience_level'] ?? null,
 			'application_deadline' => $job['application_deadline'] ?? null,
@@ -71,7 +76,7 @@ class Job {
 			$job_id = $wpdb->insert_id;
 		}
 
-		if( empty( $job_id ) ) {
+		if ( empty( $job_id ) ) {
 			return null;
 		}
 
@@ -83,7 +88,7 @@ class Job {
 
 		// Insert stages
 		$stage_ids = Stage::createUpdateStages( $job_id, $job['hiring_flow'] ?? array() );
-		
+
 		return array(
 			'job_id'     => $job_id,
 			'address_id' => $address_id,
@@ -94,7 +99,7 @@ class Job {
 	/**
 	 * Get editable job. Just the reverse version of the job that can be saved using createUpdateJob method.
 	 *
-	 * @param int $job_id
+	 * @param int $job_id Job ID
 	 * @return array
 	 */
 	public static function getEditableJob( $job_id ) {
@@ -112,7 +117,7 @@ class Job {
 
 		$job = _Array::castRecursive( $job );
 
-		// Unserialize application form 
+		// Unserialize application form
 		$job['application_form'] = _Array::getArray( maybe_unserialize( $job['application_form'] ) );
 		$job['salary']           = ( $job['salary_a'] ?? '' ) . ( ( ! empty( $job['salary_a'] ) && ! empty( $job['salary_b'] ) ) ? '-' . $job['salary_b'] : '' );
 
@@ -142,8 +147,8 @@ class Job {
 	/**
 	 * Get specific field value of a job
 	 *
-	 * @param int    $job_id
-	 * @param string $field
+	 * @param int    $job_id Job ID
+	 * @param string $field  Field name/column
 	 * @return mixed
 	 */
 	public static function getFiled( $job_id, $field ) {
@@ -162,13 +167,14 @@ class Job {
 	/**
 	 * Get jobs based on args
 	 *
-	 * @param array $args
-	 * @param bool $segmentation
+	 * @param array $args         Jobs args
+	 * @param array $meta_data    Meta data to include int the return array
+	 * @param bool  $segmentation Whether to need segmentation/pagination data
 	 * @return array
 	 */
-	public static function getJobs( $args = array(), $meta_data = array( 'application_count', 'stages' ), $segmentation=false ) {
+	public static function getJobs( $args = array(), $meta_data = array( 'application_count', 'stages' ), $segmentation = false ) {
 		// Prepare limit, offset, where conditions
-		$page   = (int)($args['page'] ?? 1);
+		$page   = (int) ( $args['page'] ?? 1 );
 		$limit  = $args['limit'] ?? 20;
 		$offset = ( $page - 1 ) * $limit;
 
@@ -184,19 +190,19 @@ class Job {
 
 		// Apply department filter
 		if ( ! empty( $args['department_id'] ) ) {
-			$dep = esc_sql( $args['department_id'] );
+			$dep           = esc_sql( $args['department_id'] );
 			$where_clause .= " AND job.department_id={$dep}";
 		}
 
 		// Apply job status
 		if ( ! empty( $args['job_status'] ) ) {
-			$status = esc_sql( $args['job_status'] );
+			$status        = esc_sql( $args['job_status'] );
 			$where_clause .= " AND job.job_status='{$status}'";
 		}
 
 		// Apply search
 		if ( ! empty( $args['search'] ) ) {
-			$keyword = esc_sql( $args['search'] );
+			$keyword       = esc_sql( $args['search'] );
 			$where_clause .= " AND job.job_title LIKE '%{$keyword}%'";
 		}
 
@@ -208,20 +214,20 @@ class Job {
 
 		global $wpdb;
 		if ( $segmentation ) {
-			$total_count = (int)$wpdb->get_var( $query );
-			$page_count = ceil( $total_count / $limit );
+			$total_count = (int) $wpdb->get_var( $query );
+			$page_count  = ceil( $total_count / $limit );
 
 			return array(
 				'total_count' => $total_count,
 				'page_count'  => $page_count,
 				'page'        => $page,
-				'limit'       => $limit
+				'limit'       => $limit,
 			);
 
 		} else {
 			$jobs = $wpdb->get_results( $query, ARRAY_A );
 		}
-		
+
 		// No need further data if it's empty
 		if ( empty( $jobs ) ) {
 			return array();
@@ -235,7 +241,7 @@ class Job {
 		$jobs = Meta::job( null )->assignBulkMeta( $jobs );
 
 		// Assign application count
-		if ( ! empty( $meta_data ) && in_array( 'application_count', $meta_data ) ) {
+		if ( ! empty( $meta_data ) && in_array( 'application_count', $meta_data, true ) ) {
 			$jobs = Application::appendApplicationCounts( $jobs );
 		}
 
@@ -272,7 +278,7 @@ class Job {
 	/**
 	 * Get job listing ideally for careers page that is publicly accessible.
 	 *
-	 * @param array $args
+	 * @param array $args Careers args
 	 * @return array
 	 */
 	public static function getCareersListing( array $args ) {
@@ -286,19 +292,19 @@ class Job {
 		// Add department filter
 		if ( ! empty( $args['department_id'] ) ) {
 			// Keep it in different clause in favour of group by query later.
-			$dep = esc_sql( $args['department_id'] );
+			$dep                = esc_sql( $args['department_id'] );
 			$department_clause .= " AND job.department_id={$dep}";
 		}
 
 		// Add search filter
 		if ( ! empty( $args['search'] ) ) {
-			$keyword = esc_sql( $args['search'] );
+			$keyword       = esc_sql( $args['search'] );
 			$where_clause .= " AND job.job_title LIKE '%{$keyword}%'";
 		}
 
 		// Add country filter
 		if ( ! empty( $args['country_code'] ) ) {
-			$country_code = esc_sql( $args['country_code'] );
+			$country_code  = esc_sql( $args['country_code'] );
 			$where_clause .= " AND address.country_code='{$country_code}'";
 		}
 
@@ -306,9 +312,9 @@ class Job {
 		if ( ! empty( $args['employment_type'] ) ) {
 			// Escape
 			$employment_type = esc_sql( $args['employment_type'] );
-			
+
 			// Like operator because multiple types get stored as serialized array.
-			$where_clause .= " AND job.employment_type LIKE '%{$employment_type}%'"; 
+			$where_clause .= " AND job.employment_type LIKE '%{$employment_type}%'";
 		}
 
 		global $wpdb;
@@ -316,9 +322,9 @@ class Job {
 		// Otherwise prepare other meta data
 		$jobs = $wpdb->get_results(
 			"SELECT DISTINCT {$selects}
-			FROM " . DB::jobs() . " job
-				LEFT JOIN " . DB::addresses() . " address ON job.address_id=address.address_id 
-			WHERE {$where_clause} {$department_clause} {$limit_clause}", 
+			FROM " . DB::jobs() . ' job
+				LEFT JOIN ' . DB::addresses() . " address ON job.address_id=address.address_id 
+			WHERE {$where_clause} {$department_clause} {$limit_clause}",
 			ARRAY_A
 		);
 		$jobs = _Array::getArray( $jobs );
@@ -327,25 +333,26 @@ class Job {
 
 		// Get departments
 		$departments = $wpdb->get_results(
-			"SELECT job.department_id, d.department_name, COUNT(job.job_id) AS job_count
-			FROM " . DB::jobs() . " job
-				LEFT JOIN " . DB::addresses() . " address ON job.address_id=address.address_id 
-				INNER JOIN " . DB::departments() . " d ON d.department_id=job.department_id
+			'SELECT job.department_id, d.department_name, COUNT(job.job_id) AS job_count
+			FROM ' . DB::jobs() . ' job
+				LEFT JOIN ' . DB::addresses() . ' address ON job.address_id=address.address_id 
+				INNER JOIN ' . DB::departments() . " d ON d.department_id=job.department_id
 			WHERE {$where_clause} GROUP BY d.department_id ORDER BY d.sequence",
 			ARRAY_A
 		);
 		$departments = _Array::getArray( $departments );
-		
+
 		return array(
 			'jobs'        => $jobs,
-			'departments' => $departments
+			'departments' => $departments,
 		);
 	}
 
 	/**
 	 * Get single job by job Id
 	 *
-	 * @param int $job_id
+	 * @param int   $job_id Job ID
+	 * @param array $meta   Meta data to include in the job
 	 * @return array
 	 */
 	public static function getJobById( $job_id, $meta = null ) {
@@ -357,13 +364,13 @@ class Job {
 	/**
 	 * Get job permalink by ID
 	 *
-	 * @param int $job_id
+	 * @param int $job_id Job ID to get permalink for
 	 * @return string
 	 */
 	public static function getJobPermalink( $job_id ) {
 		static $careers_permalink = null;
-		
-		if ( $careers_permalink === null ) {
+
+		if ( null === $careers_permalink ) {
 			$careers_id        = Utilities::getCareersPageId();
 			$careers_permalink = ! empty( $careers_id ) ? get_permalink( $careers_id ) : '';
 		}
@@ -374,7 +381,7 @@ class Job {
 	/**
 	 * Toggle archive status of a job
 	 *
-	 * @param int  $job_id
+	 * @param int  $job_id  Job ID
 	 * @param bool $archive True to archive, otherwise unarchive.
 	 * @return void
 	 */
@@ -390,7 +397,7 @@ class Job {
 	/**
 	 * Delete a job permanently
 	 *
-	 * @param int $job_id
+	 * @param int $job_id Job ID to delete job by
 	 * @return void
 	 */
 	public static function deleteJob( $job_id ) {
@@ -424,8 +431,8 @@ class Job {
 	/**
 	 * Duplicate a job
 	 *
-	 * @param int $job_id
-	 * @return void
+	 * @param int $job_id Job ID
+	 * @return bool
 	 */
 	public static function duplicateJob( $job_id ) {
 		global $wpdb;
@@ -480,10 +487,10 @@ class Job {
 
 		// Copy stages from old one to new
 		Stage::copyStages( $old_job_id, $new_job_id );
-		
+
 		// Now copy the meta
 		Meta::job( $old_job_id )->copyMeta( $new_job_id );
-		
+
 		return $new_job_id;
 	}
 }

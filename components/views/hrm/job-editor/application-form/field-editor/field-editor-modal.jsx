@@ -24,11 +24,7 @@ export function FieldEditorModal(props) {
         field: props.field || {}
     });
 
-    const { 
-		type: field_type, 
-		field_options = [], 
-		id: field_id 
-	} = state.field;
+    const { type: field_type, field_options = [], id: field_id } = state.field;
 
     const addOption = () => {
         const id = getRandomString();

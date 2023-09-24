@@ -1,11 +1,18 @@
 <?php
+/**
+ * Company profile handler
+ *
+ * @package crewhrm
+ */
 
 namespace CrewHRM\Controllers;
 
-use CrewHRM\Helpers\_Array;
 use CrewHRM\Models\Department;
 use CrewHRM\Models\Settings;
 
+/**
+ * The controller class to manage ocmpany info
+ */
 class CompanyProfile {
 	/**
 	 * Controller methods prerequisities that will be verified before executing.
@@ -29,7 +36,7 @@ class CompanyProfile {
 	 * @return void
 	 */
 	public static function saveCompanyProfile( array $data ) {
-		
+
 		// Update the settings now
 		Settings::saveCompanyProfile( $data['settings'] );
 
@@ -43,7 +50,7 @@ class CompanyProfile {
 	 * @return void
 	 */
 	public static function saveCompanyDepartments( array $data ) {
-		
+
 		// Save the departments
 		Department::saveDepartments( $data['departments'] );
 

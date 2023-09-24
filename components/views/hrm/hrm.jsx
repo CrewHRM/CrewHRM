@@ -97,9 +97,7 @@ export function HRM({ departments = [], applicationStats }) {
         ]
     });
 
-    const showNotice = () => {
-		
-	};
+    const showNotice = () => {};
 
     const addDepartment = (add_department_callback = () => {}) => {
         setState({
@@ -145,7 +143,7 @@ export function HRM({ departments = [], applicationStats }) {
                 showNotice,
                 deleteNotice,
                 departments: state.departments,
-				applicationStats,
+                applicationStats,
                 addDepartment
             }}
         >

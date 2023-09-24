@@ -1,13 +1,18 @@
 <?php
+/**
+ * Job and application meta handler class
+ *
+ * @package crewhrm
+ */
 
 namespace CrewHRM\Models;
 
 use CrewHRM\Helpers\_Array;
 
 /**
- * Meta table CRUD functionalities. 
- * This doesn't support multiple entry for single meta key unlike WP. 
- * One meta key in the entire table. So no add capability. 
+ * Meta table CRUD functionalities.
+ * This doesn't support multiple entry for single meta key unlike WP.
+ * One meta key in the entire table. So no add capability.
  * Just update and get singular field always.
  */
 class Meta {
@@ -28,18 +33,18 @@ class Meta {
 	/**
 	 * Meta instance
 	 *
-	 * @param string $table
-	 * @param int $object_id
+	 * @param string $table     The table name to run query in
+	 * @param int    $object_id The object ID
 	 */
 	public function __construct( string $table, $object_id ) {
-		$this->table = $table;
+		$this->table     = $table;
 		$this->object_id = $object_id;
 	}
 
 	/**
 	 * Provide an instance of job meta
 	 *
-	 * @param int $job_id
+	 * @param int $job_id Job ID to return meta instance for
 	 * @return Meta
 	 */
 	public static function job( $job_id ) {
@@ -49,7 +54,7 @@ class Meta {
 	/**
 	 * Provide an instance of application meta
 	 *
-	 * @param int $application_id
+	 * @param int $application_id Application ID to return meta instance for
 	 * @return Meta
 	 */
 	public static function application( $application_id ) {
@@ -59,13 +64,13 @@ class Meta {
 	/**
 	 * Get single meta value by object id and meta key
 	 *
-	 * @param string $meta_key
+	 * @param string $meta_key Optional meta key to get specific. Otherwise all.
 	 * @return mixed
 	 */
 	public function getMeta( $meta_key = null ) {
 		$is_singular  = ! empty( $meta_key );
 		$where_clause = $is_singular ? " AND meta_key='" . esc_sql( $meta_key ) . "' " : '';
-		
+
 		global $wpdb;
 		$results = $wpdb->get_results(
 			$wpdb->prepare(
@@ -75,7 +80,7 @@ class Meta {
 			ARRAY_A
 		);
 
-		// New array 
+		// New array
 		$_meta = array();
 
 		// Loop through results and prepare value
@@ -93,9 +98,9 @@ class Meta {
 	/**
 	 * Create or update a meta field. If the value is array, then mismatching values will be removed.
 	 *
-	 * @param string $meta_key
-	 * @param mixed  $meta_value
-	 * @return bool
+	 * @param string $meta_key   Meta key to update for
+	 * @param mixed  $meta_value Meta value to store
+	 * @return void
 	 */
 	public function updateMeta( $meta_key, $meta_value ) {
 		global $wpdb;
@@ -121,9 +126,9 @@ class Meta {
 			$wpdb->update(
 				$this->table,
 				$payload,
-				array( 
+				array(
 					'object_id' => $this->object_id,
-					'meta_key'  => $meta_key, 
+					'meta_key'  => $meta_key,
 				)
 			);
 
@@ -133,13 +138,13 @@ class Meta {
 				$this->table,
 				$payload
 			);
-		} 
+		}
 	}
 
 	/**
 	 * Delete single meta
 	 *
-	 * @param string $meta_key
+	 * @param string $meta_key Optional meta key to delete. Otherwise all meta will be deleted for the object.
 	 * @return void
 	 */
 	public function deleteMeta( $meta_key = null ) {
@@ -148,7 +153,7 @@ class Meta {
 			'object_id' => $this->object_id,
 		);
 
-		if ( $meta_key !== null ) {
+		if ( null !== $meta_key ) {
 			$where['meta_key'] = $meta_key;
 		}
 
@@ -162,8 +167,8 @@ class Meta {
 	/**
 	 * Delete bulk meta for multiple objects
 	 *
-	 * @param array $object_ids Array of object IDs
-	 * @param string $meta_key Specific meta key. It's optional.
+	 * @param array  $object_ids Array of object IDs
+	 * @param string $meta_key   Specific meta key. It's optional.
 	 * @return void
 	 */
 	public function deleteBulkMeta( array $object_ids, string $meta_key = null ) {
@@ -176,27 +181,27 @@ class Meta {
 		$key_clause = $meta_key ? " AND meta_key='{$meta_key}'" : '';
 
 		global $wpdb;
-		$wpdb->query("DELETE FROM {$this->table} WHERE object_id IN ({$ids_in}) {$key_clause}");
+		$wpdb->query( "DELETE FROM {$this->table} WHERE object_id IN ({$ids_in}) {$key_clause}" );
 	}
 
 	/**
 	 * Assign bulk meta to objects array
 	 *
-	 * @param array  $objects
-	 * @param string $meta_key
+	 * @param array  $objects  Array of objects to assign meta into
+	 * @param string $meta_key Optional meta key if needs specific meta data.
 	 * @return array
 	 */
 	public function assignBulkMeta( array $objects, $meta_key = null ) {
 		global $wpdb;
 
-		$objects      = _Array::appendColumn( $objects, 'meta', (object)array() );
-		$obj_ids      = array_keys( $objects );
-		$ids_in       = implode( ',', $obj_ids );
+		$objects = _Array::appendColumn( $objects, 'meta', (object) array() );
+		$obj_ids = array_keys( $objects );
+		$ids_in  = implode( ',', $obj_ids );
 
 		$where_clause = "object_id IN({$ids_in})";
 
 		if ( $meta_key ) {
-			$key = esc_sql( $meta_key );
+			$key           = esc_sql( $meta_key );
 			$where_clause .= " AND meta_key='{$key}'";
 		}
 
@@ -209,7 +214,7 @@ class Meta {
 			$_key   = $m['meta_key'];
 			$_value = maybe_unserialize( $m['meta_value'] );
 
-			$objects[ (int) $m['object_id'] ]['meta']->$_key = $_value;
+			$objects[ (int) $m['object_id'] ]['meta']->$_key = $_value; // phpcs:ignore Squiz.PHP.DisallowMultipleAssignments.Found
 		}
 
 		return $objects;
@@ -218,7 +223,7 @@ class Meta {
 	/**
 	 * Copy meta from one object to another in favour of duplication. This method will not check for duplicate. Just will add.
 	 *
-	 * @param int $to_id
+	 * @param int $to_id The target object ID to copy meta to
 	 * @return void
 	 */
 	public function copyMeta( $to_id ) {

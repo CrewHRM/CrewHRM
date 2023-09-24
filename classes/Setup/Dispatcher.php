@@ -1,4 +1,9 @@
 <?php
+/**
+ * The dispatcher where all the CrewHRM ajax request pass through after validation
+ *
+ * @package crewhrm
+ */
 
 namespace CrewHRM\Setup;
 
@@ -13,6 +18,9 @@ use CrewHRM\Controllers\PluginSettings;
 use CrewHRM\Helpers\_Array;
 use Error;
 
+/**
+ * Dispatcher class
+ */
 class Dispatcher {
 	/**
 	 * Controlles class array
@@ -28,15 +36,16 @@ class Dispatcher {
 
 	/**
 	 * Dispatcher registration in constructor
-	 * 
+	 *
 	 * @return void
+	 * @throws Error If there is any duplicate ajax handler across controllers.
 	 */
 	public function __construct() {
 		// Register ajax handlers only if it is ajax call
 		if ( ! wp_doing_ajax() ) {
 			return;
 		}
-		
+
 		$registered_methods = array();
 
 		// Loop through controllers classes
@@ -44,7 +53,7 @@ class Dispatcher {
 
 			// Loop through controller methods in the class
 			foreach ( $class::PREREQUISITES as $method => $prerequisites ) {
-				if ( in_array( $method, $registered_methods ) ) {
+				if ( in_array( $method, $registered_methods, true ) ) {
 					throw new Error( __( 'Duplicate endpoint not possible' ) );
 				}
 
@@ -65,7 +74,7 @@ class Dispatcher {
 						$handler,
 						function() use ( $class, $method, $prerequisites ) {
 							$this->dispatch( $class, $method, $prerequisites );
-						} 
+						}
 					);
 				}
 
@@ -77,15 +86,15 @@ class Dispatcher {
 	/**
 	 * Dispatch request to target handler after doing verifications
 	 *
-	 * @param string $class
-	 * @param string $method
-	 * @param array $prerequisites Controller access prerequisites
-	 * 
+	 * @param string $class         The class to dispatch the request to
+	 * @param string $method        The method of the class to invoke
+	 * @param array  $prerequisites Controller access prerequisites
+	 *
 	 * @return void
 	 */
 	public function dispatch( $class, $method, $prerequisites ) {
 		// Determine post/get data
-		$is_post = isset( $_SERVER['REQUEST_METHOD'] ) ? strtolower( sanitize_text_field( $_SERVER['REQUEST_METHOD'] ) ) === 'post' : null;
+		$is_post = isset( $_SERVER['REQUEST_METHOD'] ) ? strtolower( sanitize_text_field( wp_unslash( $_SERVER['REQUEST_METHOD'] ) ) ) === 'post' : null;
 		$data    = $is_post ? $_POST : $_GET; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		$data    = _Array::stripslashesRecursive( _Array::getArray( $data ) );
 
@@ -96,10 +105,8 @@ class Dispatcher {
 		}
 
 		// Verify required user role
-		if ( ! empty( $required_roles = $prerequisites['role'] ?? array() ) ) {
-			if ( ! User::validateRole( get_current_user_id(), $required_roles ) ) {
-				wp_send_json_error( array( 'message' => __( 'Access Denied!', 'crewhrm' ) ) );
-			}
+		if ( ! User::validateRole( get_current_user_id(), $prerequisites['role'] ?? array() ) ) {
+			wp_send_json_error( array( 'message' => __( 'Access Denied!', 'crewhrm' ) ) );
 		}
 
 		// Now pass to the action handler function

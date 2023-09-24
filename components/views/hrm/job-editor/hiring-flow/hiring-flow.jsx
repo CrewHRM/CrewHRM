@@ -79,10 +79,11 @@ export function HiringFlow() {
                 addText={__('Add Stage')}
             />
 
-            <FormActionButtons 
-				onBack={() => navigateTab(-1)} 
-				onNext={() => navigateTab(1)} 
-				disabledNext={is_next_disabled}/>
+            <FormActionButtons
+                onBack={() => navigateTab(-1)}
+                onNext={() => navigateTab(1)}
+                disabledNext={is_next_disabled}
+            />
         </div>
     );
 }

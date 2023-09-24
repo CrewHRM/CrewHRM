@@ -1,10 +1,21 @@
 <?php
+/**
+ * Color pallete
+ *
+ * @package crewhrm
+ */
 
 namespace CrewHRM\Helpers;
 
-use CrewHRM\Main;
-
+/**
+ * Color helper class
+ */
 class Colors {
+	/**
+	 * Array of color pallete
+	 *
+	 * @var array
+	 */
 	private static $base_colors = array(
 		'primary'      => '#1A1A1A',
 		'secondary'    => '#236BFE',
@@ -15,7 +26,7 @@ class Colors {
 		'text-light'   => '#72777B',
 		'text-lighter' => '#BBBFC3',
 		'text-hint'    => '#757C8E',
-		
+
 		'success'      => '#5B9215',
 		'warning'      => '#F57A08',
 		'error'        => '#EA4545',
@@ -25,30 +36,42 @@ class Colors {
 		'transparent'  => 'rgba(0, 0, 0, 0)',
 	);
 
-	private static function hexToRgba( $hexColor, $opacity ) {
+	/**
+	 * Convert hexa to rgba color
+	 *
+	 * @param string $hex_color The color to convert
+	 * @param float  $opacity Opacity to achieve
+	 * @return string
+	 */
+	private static function hexToRgba( $hex_color, $opacity ) {
 		// Remove any leading '#' from the hex color code
-		$hexColor = ltrim( $hexColor, '#' );
+		$hex_color = ltrim( $hex_color, '#' );
 
 		// Convert the hex color to RGB values
-		$r = hexdec( substr( $hexColor, 0, 2 ) );
-		$g = hexdec( substr( $hexColor, 2, 2 ) );
-		$b = hexdec( substr( $hexColor, 4, 2 ) );
+		$r = hexdec( substr( $hex_color, 0, 2 ) );
+		$g = hexdec( substr( $hex_color, 2, 2 ) );
+		$b = hexdec( substr( $hex_color, 4, 2 ) );
 
 		// Ensure opacity is within the valid range (0 to 1)
 		$opacity = max( 0, min( 1, $opacity ) );
 
 		// Create the RGBA color string
-		$rgbaColor = "rgba($r, $g, $b, $opacity)";
+		$rgba_color = "rgba($r, $g, $b, $opacity)";
 
-		return $rgbaColor;
+		return $rgba_color;
 	}
 
+	/**
+	 * Get the colors to render in frontend
+	 *
+	 * @return array
+	 */
 	public static function getColors() {
 		$colors = self::$base_colors;
 
 		// Provide some necessary opacity
 		$colors['secondary-15'] = self::hexToRgba( $colors['secondary'], 0.15 );
-		
+
 		return $colors;
 	}
 }

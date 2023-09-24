@@ -1,4 +1,9 @@
 <?php
+/**
+ * The app initiator class
+ *
+ * @package crewhrm
+ */
 
 namespace CrewHRM;
 
@@ -10,6 +15,9 @@ use CrewHRM\Setup\Dispatcher;
 use CrewHRM\Setup\Media;
 use CrewHRM\Setup\Scripts;
 
+/**
+ * The main class to initiate app
+ */
 class Main {
 	/**
 	 * Configs array
@@ -20,9 +28,9 @@ class Main {
 
 	/**
 	 * Initialize Plugin
-	 * 
-	 * @param object $configs
-	 * 
+	 *
+	 * @param object $configs Plugin configurations
+	 *
 	 * @return void
 	 */
 	public function init( object $configs ) {
@@ -52,22 +60,22 @@ class Main {
 	/**
 	 * Autload classes
 	 *
-	 * @param string $className
+	 * @param string $class_name The class name to load file for
 	 * @return void
 	 */
-	public function loader( $className ) {
-		if ( class_exists( $className ) ) {
+	public function loader( $class_name ) {
+		if ( class_exists( $class_name ) ) {
 			return;
 		}
 
-		$className = preg_replace(
+		$class_name = preg_replace(
 			array( '/([a-z])([A-Z])/', '/\\\/' ),
 			array( '$1$2', DIRECTORY_SEPARATOR ),
-			$className
+			$class_name
 		);
 
-		$className = str_replace( 'CrewHRM' . DIRECTORY_SEPARATOR, 'classes' . DIRECTORY_SEPARATOR, $className );
-		$file_name = self::$configs->dir . $className . '.php';
+		$class_name = str_replace( 'CrewHRM' . DIRECTORY_SEPARATOR, 'classes' . DIRECTORY_SEPARATOR, $class_name );
+		$file_name  = self::$configs->dir . $class_name . '.php';
 
 		if ( file_exists( $file_name ) ) {
 			require_once $file_name;

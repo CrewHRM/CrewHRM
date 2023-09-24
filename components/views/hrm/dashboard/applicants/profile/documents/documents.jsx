@@ -7,8 +7,8 @@ import { PDFViewer } from '../../../../../../materials/pdf-viewer.jsx';
 import { RenderMedia } from '../../../../../../materials/render-media/render-media.jsx';
 
 export function Documents({ application }) {
-    const { cover_letter, documents={}  } = application;
-	const { resume_url, attachments=[] } = documents;
+    const { cover_letter, documents = {} } = application;
+    const { resume_url, attachments = [] } = documents;
 
     return (
         <div data-crewhrm-selector="documents">
@@ -25,7 +25,8 @@ export function Documents({ application }) {
                 </DangerouslySet>
             </ExpandableContent>
 
-            {resume_url ? <>
+            {resume_url ? (
+                <>
                     <Line className={'margin-top-20 margin-bottom-20'.classNames()} />
                     <span
                         className={'d-block font-size-17 font-weight-600 line-height-24 letter-spacing--17 color-text margin-bottom-10'.classNames()}
@@ -33,8 +34,8 @@ export function Documents({ application }) {
                         {__('RESUME')}
                     </span>
                     <PDFViewer src={resume_url} />
-                </> : null
-			}
+                </>
+            ) : null}
 
             {(attachments.length && (
                 <>
@@ -44,7 +45,7 @@ export function Documents({ application }) {
                     >
                         {__('ATTACHMENTS')}
                     </span>
-                    <RenderMedia media={attachments}/>
+                    <RenderMedia media={attachments} />
                 </>
             )) ||
                 null}

@@ -1,72 +1,72 @@
 .attachments {
-	&.theme-grid {
-		display: grid;
-		grid-template-columns: repeat(4, 1fr);
-		gap: 15px;
-	}
+    &.theme-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 15px;
+    }
 
-	&.theme-singular {
-		width: auto;
-		height: auto;
-	}
+    &.theme-singular {
+        width: auto;
+        height: auto;
+    }
 
-	.single-attachment {
-		.attachment-overlay.has-thumbnail {
-			display: none;
-			background-color: rgba(26, 26, 26, 0.8);
-		}
+    .single-attachment {
+        .attachment-overlay.has-thumbnail {
+            display: none;
+            background-color: rgba(26, 26, 26, 0.8);
+        }
 
-		&:hover {
-			.has-thumbnail {
-				display: flex;
-			}
+        &:hover {
+            .has-thumbnail {
+                display: flex;
+            }
 
-			.attachment-overlay:not(.has-thumbnail) {
-				filter: brightness(0.75);
-			}
-		}
-	}
+            .attachment-overlay:not(.has-thumbnail) {
+                filter: brightness(0.75);
+            }
+        }
+    }
 }
 
 .preview {
-	background-color: rgba(0, 0, 0, .5);
-	z-index: 9993;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 9993;
 
-	&>div {
-		width: 100%;
-		height: 100%;
-		overflow: hidden;
-		background-color: white;
-		border-radius: 10px;
-	}
+    & > div {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background-color: white;
+        border-radius: 10px;
+    }
 
-	&.media-type-audio {
-		&>div {
-			background-color: transparent;
-		}
-	}
+    &.media-type-audio {
+        & > div {
+            background-color: transparent;
+        }
+    }
 
-	&.media-type-video {
-		&>div {
-			background-color: black;
-		}
-	}
+    &.media-type-video {
+        & > div {
+            background-color: black;
+        }
+    }
 
-	&.media-type-image {
-		figure {
-			width: 100%;
-			height: 100%;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			background-color: white;
+    &.media-type-image {
+        figure {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: white;
 
-			&>img {
-				width: auto;
-				height: auto;
-				max-width: 100%;
-				max-height: 100%;
-			}
-		}
-	}
+            & > img {
+                width: auto;
+                height: auto;
+                max-width: 100%;
+                max-height: 100%;
+            }
+        }
+    }
 }

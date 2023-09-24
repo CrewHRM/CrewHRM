@@ -3,10 +3,10 @@ import ReactPaginate from 'react-paginate';
 
 import style from './pagination.module.scss';
 
-export function Pagination({ onChange, pageNumber=1, pageCount=1 }) {
+export function Pagination({ onChange, pageNumber = 1, pageCount = 1 }) {
     // Invoke when user click to request another page.
     const handlePageClick = (event) => {
-		onChange((event.selected ?? 0)+1);
+        onChange((event.selected ?? 0) + 1);
     };
 
     return (
@@ -26,7 +26,7 @@ export function Pagination({ onChange, pageNumber=1, pageCount=1 }) {
             pageRangeDisplayed={2}
             marginPagesDisplayed={2}
             pageCount={pageCount}
-            forcePage={pageNumber-1}
+            forcePage={pageNumber - 1}
             renderOnZeroPageCount={null}
         />
     );

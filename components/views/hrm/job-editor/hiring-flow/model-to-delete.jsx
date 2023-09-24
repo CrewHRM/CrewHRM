@@ -114,73 +114,71 @@ function MoveContent({
 export function DeletionConfirm(props) {
     const { job_id, stage_id, stage_name, onDelete, closeModal } = props;
     const { ajaxToast } = useContext(ContextToast);
-	const {showWarning, closeWarning, loadingState: warningLoading} = useContext(ContextWarning);
+    const { showWarning, closeWarning, loadingState: warningLoading } = useContext(ContextWarning);
 
     const [state, setState] = useState({
         overview: null,
         loading: false
     });
 
-	const closeModalAll=()=>{
-		closeWarning();
-		closeModal();
-	}
-
-    const deleteStage = (move_to) => {
-		if (move_to) {
-			setState({
-				...state,
-				loading: true
-			});
-		} else {
-			warningLoading();
-		}
-        
-        request(
-            'delete_hiring_stage',
-            { job_id, stage_id, move_to },
-            (resp) => {
-                const { success, data } = resp;
-                const { overview = {} } = data || {};
-
-                if (success) {
-                    // Deleted from server. Now from browser
-                    onDelete();
-					return;
-                }
-				
-				if (overview) {
-                    // Could not delete as target stage not specified and there are applications in the stage
-                    setState({
-                        ...state,
-                        loading: false,
-                        overview
-                    });
-                } else {
-                    ajaxToast(resp);
-                }
-
-				closeModalAll();
-            }
-        );
+    const closeModalAll = () => {
+        closeWarning();
+        closeModal();
     };
 
-	useEffect(()=>{
-		showWarning(
-			__("Are you sure, you want to delete this item. We won't be able to recover it."), 
-			deleteStage,
-			closeModalAll,
-			__('Delete')
-		);
-	}, []);
+    const deleteStage = (move_to) => {
+        if (move_to) {
+            setState({
+                ...state,
+                loading: true
+            });
+        } else {
+            warningLoading();
+        }
 
-    return !state.overview ? null : <Modal>
-		<MoveContent
-			stage_name={stage_name}
-			moveTo={props.moveTo}
-			onCancel={closeModalAll}
-			onConfirm={deleteStage}
-			overview={state.overview}
-		/>
-	</Modal>
+        request('delete_hiring_stage', { job_id, stage_id, move_to }, (resp) => {
+            const { success, data } = resp;
+            const { overview = {} } = data || {};
+
+            if (success) {
+                // Deleted from server. Now from browser
+                onDelete();
+                return;
+            }
+
+            if (overview) {
+                // Could not delete as target stage not specified and there are applications in the stage
+                setState({
+                    ...state,
+                    loading: false,
+                    overview
+                });
+            } else {
+                ajaxToast(resp);
+            }
+
+            closeModalAll();
+        });
+    };
+
+    useEffect(() => {
+        showWarning(
+            __("Are you sure, you want to delete this item. We won't be able to recover it."),
+            deleteStage,
+            closeModalAll,
+            __('Delete')
+        );
+    }, []);
+
+    return !state.overview ? null : (
+        <Modal>
+            <MoveContent
+                stage_name={stage_name}
+                moveTo={props.moveTo}
+                onCancel={closeModalAll}
+                onConfirm={deleteStage}
+                overview={state.overview}
+            />
+        </Modal>
+    );
 }

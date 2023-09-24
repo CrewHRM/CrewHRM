@@ -1,24 +1,35 @@
 <?php
+/**
+ * Utility functions
+ *
+ * @package crewhrm
+ */
 
 namespace CrewHRM\Helpers;
 
 use CrewHRM\Main;
 use CrewHRM\Models\Settings;
 
+/**
+ * The class
+ */
 class Utilities extends Main {
 	/**
 	 * Check if the page is a Crew Dashboard
 	 *
-	 * @param string $page Sub page name to match too
+	 * @param string $page Optional sub page name to match too
 	 * @return boolean
 	 */
 	public static function isCrewDashboard( $page = null ) {
-		$is_dashboard = is_admin() && get_admin_page_parent() == self::$configs->root_menu_slug;
-		
-		if ( $is_dashboard && $page !== null ) {
-			$pages        = ! is_array( $page ) ? array( $page ) : $page;
-			$_page        = ! empty( $_GET['page'] ) ? $_GET['page'] : null;
-			$is_dashboard = in_array( $_page, $pages );
+		$is_dashboard = is_admin() && get_admin_page_parent() === self::$configs->root_menu_slug;
+
+		if ( $is_dashboard && null !== $page ) {
+			$pages = ! is_array( $page ) ? array( $page ) : $page;
+
+			// Nonce already verified in dispatcher.
+
+			// phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			$is_dashboard = in_array( $_GET['page'] ?? null, $pages, true );
 		}
 
 		return $is_dashboard;
@@ -50,9 +61,9 @@ class Utilities extends Main {
 	public static function getPageList() {
 		// Define arguments for get_posts to retrieve pages
 		$args = array(
-			'post_type'   => 'page', // Retrieve only pages
-			'post_status' => 'publish', // Retrieve only published pages
-			'numberposts' => -1, // Retrieve all pages (you can limit it if needed)
+			'post_type'   => 'page',
+			'post_status' => 'publish',
+			'numberposts' => -1, // phpcs:ignore WordPress.WP.PostsPerPageNoUnlimited.posts_per_page_numberposts
 		);
 
 		// Get the list of pages
@@ -67,7 +78,7 @@ class Utilities extends Main {
 			},
 			$pages
 		);
-		
+
 		return $page_list;
 	}
 }

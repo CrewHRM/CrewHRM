@@ -31,13 +31,7 @@ export function IconNotificationHasUpdate(props) {
                 strokeWidth="1.5"
                 strokeMiterlimit="10"
             />
-            <circle
-                cx="17"
-                cy="4"
-                r="3.5"
-                fill={window.CrewHRM.colors['error']}
-                stroke="#F3F4F5"
-            />
+            <circle cx="17" cy="4" r="3.5" fill={window.CrewHRM.colors['error']} stroke="#F3F4F5" />
         </svg>
     );
 }

@@ -24,8 +24,8 @@ export function Sidebar({ stage_id, hasApplications }) {
             search: null
         },
         applications: [],
-		qualified_count: 0, 
-		disqualified_count: 0 
+        qualified_count: 0,
+        disqualified_count: 0
     });
 
     const [searchState, setSearchState] = useState('');
@@ -51,72 +51,61 @@ export function Sidebar({ stage_id, hasApplications }) {
         request('get_applications_list', payload, (resp) => {
             const {
                 success,
-                data: { 
-					applications = [], 
-					qualified_count=0, 
-					disqualified_count=0 
-				}
+                data: { applications = [], qualified_count = 0, disqualified_count = 0 }
             } = resp;
 
             setState({
                 ...state,
                 fetching: false,
                 applications,
-				qualified_count,
-				disqualified_count
+                qualified_count,
+                disqualified_count
             });
 
             // Set the first profile to open automatacillay
             if (applications.length && !application_id) {
                 navigate(
                     `/dashboard/jobs/${job_id}/applications/${applications[0].application_id}/`,
-					{ replace: true }
+                    { replace: true }
                 );
-            } 
-			
-			hasApplications(applications.length ? true : false);
+            }
+
+            hasApplications(applications.length ? true : false);
         });
     };
 
-	const onSearch=(v)=> {
-		setState({
-			...state,
-			filter: {
-				...state.filter,
-				search: v
-			}
-		});
-    }
+    const onSearch = (v) => {
+        setState({
+            ...state,
+            filter: {
+                ...state.filter,
+                search: v
+            }
+        });
+    };
 
     useEffect(() => {
         getApplications();
-    }, [
-		job_id, 
-		stage_id, 
-		state.filter.page, 
-		state.filter.search, 
-		state.active_tab, 
-		session
-	]);
+    }, [job_id, stage_id, state.filter.page, state.filter.search, state.active_tab, session]);
 
-	const steps = [
-		{
-			id: 'qualified',
-			label: (
-				<span className={'font-size-13 font-weight-500 line-height-24'.classNames()}>
-					{sprintf( __('Qualified (%s)'), state.qualified_count )}
-				</span>
-			)
-		},
-		{
-			id: 'disqualified',
-			label: (
-				<span className={'font-size-13 font-weight-500 line-height-24'.classNames()}>
-					{sprintf( __('Disqualified (%s)'), state.disqualified_count )}
-				</span>
-			)
-		}
-	];
+    const steps = [
+        {
+            id: 'qualified',
+            label: (
+                <span className={'font-size-13 font-weight-500 line-height-24'.classNames()}>
+                    {sprintf(__('Qualified (%s)'), state.qualified_count)}
+                </span>
+            )
+        },
+        {
+            id: 'disqualified',
+            label: (
+                <span className={'font-size-13 font-weight-500 line-height-24'.classNames()}>
+                    {sprintf(__('Disqualified (%s)'), state.disqualified_count)}
+                </span>
+            )
+        }
+    ];
 
     return (
         <div
@@ -138,7 +127,7 @@ export function Sidebar({ stage_id, hasApplications }) {
                     iconClass={'ch-icon ch-icon-search-normal-1 font-size-16 color-text-light'.classNames()}
                     placeholder={__('Search by name')}
                     onChange={onSearch}
-					inputDelay={500}
+                    inputDelay={500}
                 />
             </div>
 
@@ -146,10 +135,23 @@ export function Sidebar({ stage_id, hasApplications }) {
 
             <div data-crewhrm-selector="list" className={'list'.classNames(style)}>
                 {state.applications.map((application, i) => {
-                    let { first_name, last_name, application_date, application_id: app_id } = application;
+                    let {
+                        first_name,
+                        last_name,
+                        application_date,
+                        application_id: app_id
+                    } = application;
 
                     return (
-                        <div key={app_id} className={`cursor-pointer bg-color-hover-quaternary bg-color-active-quaternary ${application_id===app_id ? 'active' : ''}`.classNames()} onClick={e=>navigate(`/dashboard/jobs/${job_id}/applications/${app_id}/`)}>
+                        <div
+                            key={app_id}
+                            className={`cursor-pointer bg-color-hover-quaternary bg-color-active-quaternary ${
+                                application_id === app_id ? 'active' : ''
+                            }`.classNames()}
+                            onClick={(e) =>
+                                navigate(`/dashboard/jobs/${job_id}/applications/${app_id}/`)
+                            }
+                        >
                             <div className={'d-flex align-items-center'.classNames()}>
                                 <CoverImage
                                     src={null}

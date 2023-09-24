@@ -8,19 +8,17 @@ import { Line } from '../../../../../../materials/line/line.jsx';
 import { ContextApplicationSession } from '../../applicants.jsx';
 import { request } from '../../../../../../utilities/request.jsx';
 
-import avatar from '../../../../../../images/avatar.svg';
-import attachment from '../../../../../../images/attachment.png';
 import style from './activity.module.scss';
 
 TimeAgo.addDefaultLocale(en);
 const timeAgo = new TimeAgo();
 
-function Ago({timestamp}) {
+function Ago({ timestamp }) {
     return (
         <span
             className={'d-inline-block font-size-15 font-weight-400 line-height-24 letter-spacing--15 color-text-light'.classNames()}
         >
-            &middot; {timeAgo.format(new Date(timestamp*1000))}
+            &middot; {timeAgo.format(new Date(timestamp * 1000))}
         </span>
     );
 }
@@ -67,17 +65,19 @@ function LayoutComment(props) {
                 {comment}
             </div>
 
-            {attachments.length ? <div className={'comment-attachments'.classNames(style)}>
-				{attachments.map((attachment) => {
-					return (
-						<CoverImage
-							src={attachment.url}
-							height={50}
-							className={'border-radius-5'.classNames()}
-						/>
-					);
-				})}
-			</div> : null}
+            {attachments.length ? (
+                <div className={'comment-attachments'.classNames(style)}>
+                    {attachments.map((attachment) => {
+                        return (
+                            <CoverImage
+                                src={attachment.url}
+                                height={50}
+                                className={'border-radius-5'.classNames()}
+                            />
+                        );
+                    })}
+                </div>
+            ) : null}
         </>
     );
 }
@@ -136,34 +136,35 @@ const activity_handlers = {
 };
 
 export function Activity() {
-	const {session} = useContext(ContextApplicationSession);
-	const {application_id} = useParams();
+    const { session } = useContext(ContextApplicationSession);
+    const { application_id } = useParams();
 
-	const [state, setState] = useState({
-		loading: true,
-		pipeline: []
-	});
+    const [state, setState] = useState({
+        loading: true,
+        pipeline: []
+    });
 
-	const getPipeline=()=>{
+    const getPipeline = () => {
+        setState({
+            ...state,
+            loading: true
+        });
 
-		setState({
-			...state,
-			loading: true
-		});
+        request('get_application_pipeline', { application_id }, (resp) => {
+            const {
+                data: { pipeline = [] }
+            } = resp;
+            setState({
+                ...state,
+                loading: false,
+                pipeline
+            });
+        });
+    };
 
-		request( 'get_application_pipeline', {application_id}, resp=> {
-			const {data:{pipeline=[]}} = resp;
-			setState({
-				...state,
-				loading: false,
-				pipeline
-			});
-		});
-	}
-
-	useEffect(()=>{
-		getPipeline();
-	}, [session, application_id]);
+    useEffect(() => {
+        getPipeline();
+    }, [session, application_id]);
 
     return (
         <div data-crewhrm-selector="activity" className={'activities'.classNames(style)}>
@@ -171,35 +172,38 @@ export function Activity() {
                 let { avatar_url, type } = activity;
                 let { renderer: Comp, icon } = activity_handlers[type];
 
-				if (activity.type === 'move' && activity.stage_name === '_disqualified_') {
-					icon = 'ch-icon ch-icon-slash color-error font-size-24';
-					Comp = LayoutDisqualify;
-				}
+                if (activity.type === 'move' && activity.stage_name === '_disqualified_') {
+                    icon = 'ch-icon ch-icon-slash color-error font-size-24';
+                    Comp = LayoutDisqualify;
+                }
 
-                return <div key={i}>
-                    <div className={'d-flex'.classNames()}>
-                        <div>
-                            <CoverImage 
-								src={avatar_url} 
-								width={26} 
-								circle={true}
-								name={activity.by}/>
+                return (
+                    <div key={i}>
+                        <div className={'d-flex'.classNames()}>
+                            <div>
+                                <CoverImage
+                                    src={avatar_url}
+                                    width={26}
+                                    circle={true}
+                                    name={activity.by}
+                                />
+                            </div>
+                            <div className={'flex-1 margin-left-10 margin-right-25'.classNames()}>
+                                <Comp activity={activity} />
+                            </div>
+                            <div className={'align-self-center'.classNames()}>
+                                <i className={icon.classNames()}></i>
+                            </div>
                         </div>
-                        <div className={'flex-1 margin-left-10 margin-right-25'.classNames()}>
-                            <Comp activity={activity} />
-                        </div>
-                        <div className={'align-self-center'.classNames()}>
-                            <i className={icon.classNames()}></i>
-                        </div>
+
+                        {i < state.pipeline.length - 1 ? (
+                            <Line
+                                key={i + '_2'}
+                                className={'margin-top-20 margin-bottom-20'.classNames()}
+                            />
+                        ) : null}
                     </div>
-
-					{
-						i < state.pipeline.length - 1 ? <Line
-							key={i + '_2'}
-							className={'margin-top-20 margin-bottom-20'.classNames()}
-						/> : null
-					}
-				</div>
+                );
             })}
         </div>
     );

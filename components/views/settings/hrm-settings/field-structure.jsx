@@ -69,9 +69,9 @@ export const settings_fields = {
                         label: __('Job application size (KiloByte)'),
                         type: 'number',
                         min: 1,
-						max: window.CrewHRM.wp_max_size,
+                        max: window.CrewHRM.wp_max_size,
                         hint: __(
-                            'Total maximum size of resume, attachments and texts combined in job application',
+                            'Total maximum size of resume, attachments and texts combined in job application'
                         )
                     }
                 }

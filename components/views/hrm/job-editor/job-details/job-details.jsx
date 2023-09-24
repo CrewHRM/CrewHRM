@@ -45,9 +45,10 @@ export function JobDetails() {
             {/* Action Button */}
             <div className={'d-flex margin-bottom-10'.classNames()}>
                 <div className={'flex-1'.classNames()}>
-                    <FormActionButtons 
-						onNext={() => navigateTab(1)} 
-						disabledNext={is_next_disabled}/>
+                    <FormActionButtons
+                        onNext={() => navigateTab(1)}
+                        disabledNext={is_next_disabled}
+                    />
                 </div>
                 <div className={'right-col'.classNames(style)}></div>
             </div>

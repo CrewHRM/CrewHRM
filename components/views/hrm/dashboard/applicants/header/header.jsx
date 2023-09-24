@@ -11,7 +11,7 @@ import style from './header.module.scss';
 export function Header({
     job_list,
     job_id,
-	job:{job_permalink},
+    job: { job_permalink },
     stages = [],
     candidates = 0,
     active_stage_id: active_tab,
@@ -71,15 +71,16 @@ export function Header({
                     </div>
                 </div>
                 <div className={'d-flex align-items-center column-gap-15'.classNames()}>
-                    <Link 
-						to={job_permalink} 
-						target="_blank" 
-						className={'font-size-15 font-weight-400 color-text'.classNames()}>
+                    <Link
+                        to={job_permalink}
+                        target="_blank"
+                        className={'font-size-15 font-weight-400 color-text'.classNames()}
+                    >
                         {__('View Job')}
                     </Link>
                     <Link
-						to={job_permalink+'apply/'}
-						target="_blank" 
+                        to={job_permalink + 'apply/'}
+                        target="_blank"
                         className={'button button-primary button-outlined button-small'.classNames()}
                     >
                         {__('Add Candidates')}

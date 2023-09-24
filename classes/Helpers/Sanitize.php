@@ -1,12 +1,20 @@
 <?php
+/**
+ * Sanitize helper class
+ *
+ * @package crewhrm
+ */
 
 namespace CrewHRM\Helpers;
 
+/**
+ * The helper class methods
+ */
 class Sanitize {
 	/**
 	 * Sanitize array elements
 	 *
-	 * @param array $value
+	 * @param array $array The array to sanitize
 	 * @return array
 	 */
 	public function sanitizeArray( array $array ) {

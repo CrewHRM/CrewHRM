@@ -9,10 +9,16 @@ import { Conditional } from '../conditional.jsx';
 export const ContextWarning = createContext();
 
 const btn_class =
-	'font-size-15 font-weight-400 letter-spacing--3 padding-vertical-10 padding-horizontal-15 border-radius-5 border-1-5 b-color-tertiary cursor-pointer'.classNames();
+    'font-size-15 font-weight-400 letter-spacing--3 padding-vertical-10 padding-horizontal-15 border-radius-5 border-1-5 b-color-tertiary cursor-pointer'.classNames();
 
-function Warning({ onCancel, onConfirm, confirmText, closeText, loading = false, message=__('Are you sure to proceed?') }) {
-
+function Warning({
+    onCancel,
+    onConfirm,
+    confirmText,
+    closeText,
+    loading = false,
+    message = __('Are you sure to proceed?')
+}) {
     return (
         <div
             className={
@@ -38,70 +44,76 @@ function Warning({ onCancel, onConfirm, confirmText, closeText, loading = false,
                 className={'delete-button'.classNames(style) + btn_class}
                 onClick={() => onConfirm()}
             >
-				{confirmText} <Conditional show={loading}>
-					<LoadingIcon size={18} color={window.CrewHRM.colors.white} />
-				</Conditional>
+                {confirmText}{' '}
+                <Conditional show={loading}>
+                    <LoadingIcon size={18} color={window.CrewHRM.colors.white} />
+                </Conditional>
             </button>
         </div>
     );
 }
 
+export function WarningWrapper({ children }) {
+    const [state, setState] = useState({
+        message: null,
+        onConfirm: () => {},
+        onClose: () => {},
+        confirmText: null,
+        closeText: null
+    });
 
-export function WarningWrapper({children}) {
-	const [state, setState] = useState({
-		message: null,
-		onConfirm: ()=>{},
-		onClose: ()=>{},
-		confirmText: null,
-		closeText: null
-	});
+    const [loading, setLoading] = useState(false);
 
-	const [loading, setLoading] = useState(false);
+    const showWarning = (
+        message,
+        onConfirm,
+        onClose,
+        confirmText = __('OK'),
+        closeText = __('Cancel')
+    ) => {
+        setState({
+            ...state,
+            message,
+            onConfirm,
+            onClose,
+            confirmText,
+            closeText
+        });
+    };
 
-	const showWarning=(message, onConfirm, onClose, confirmText=__('OK'), closeText=__('Cancel'))=>{
-		setState({
-			...state, 
-			message, 
-			onConfirm,
-			onClose,
-			confirmText,
-			closeText
-		});
-	}
+    const closeWarning = () => {
+        if (state.onClose) {
+            state.onClose();
+        }
 
-	const closeWarning=()=>{
-		if (state.onClose) {
-			state.onClose();
-		}
+        setState({
+            ...state,
+            message: null,
+            loading: false
+        });
 
-		setState({
-			...state, 
-			message: null,
-			loading: false
-		});
+        setLoading(false);
+    };
 
-		setLoading(false);
-	}
+    const loadingState = (loading = true) => {
+        setLoading(loading);
+    };
 
-	const loadingState=(loading=true)=>{
-		setLoading(loading);
-	}
-
-	return <ContextWarning.Provider value={{showWarning, closeWarning, loadingState}}>
-		{
-		 	state.message ? (
+    return (
+        <ContextWarning.Provider value={{ showWarning, closeWarning, loadingState }}>
+            {state.message ? (
                 <Modal>
                     <Warning
-						message={state.message}
+                        message={state.message}
                         loading={loading}
                         onCancel={closeWarning}
-                        onConfirm={state.onConfirm || (()=>{})}
-						confirmText={state.confirmText}
-						closeText={state.closeText}
+                        onConfirm={state.onConfirm || (() => {})}
+                        confirmText={state.confirmText}
+                        closeText={state.closeText}
                     />
                 </Modal>
-            ) : null
-		}
-		{children}
-	</ContextWarning.Provider>
+            ) : null}
+            {children}
+        </ContextWarning.Provider>
+    );
 }

@@ -123,25 +123,27 @@ export function Options(props) {
                                 null}
 
                             {/* Image upload */}
-                            {type === 'image' ?
+                            {type === 'image' ? (
                                 <>
                                     <div className={'flex-1'.classNames()}>{label_text}</div>
                                     <div className={'flex-1'.classNames()}>
-										{
-											!values[key] ? <FileUpload 
-												accept="image/*"
-												WpMedia={{width: 1200, height: 300}}
-												onChange={file=>onChange(key, file)}/> 
-											: 
-											<RenderMedia
-												theme="singular"
-												media={values[key]}
-												onDelete={()=>onChange(key, null)}
-												overlay={false}/>
-										}
+                                        {!values[key] ? (
+                                            <FileUpload
+                                                accept="image/*"
+                                                WpMedia={{ width: 1200, height: 300 }}
+                                                onChange={(file) => onChange(key, file)}
+                                            />
+                                        ) : (
+                                            <RenderMedia
+                                                theme="singular"
+                                                media={values[key]}
+                                                onDelete={() => onChange(key, null)}
+                                                overlay={false}
+                                            />
+                                        )}
                                     </div>
-                                </> : null
-							}
+                                </>
+                            ) : null}
 
                             {/* Checkbox options */}
                             {((type === 'checkbox' || type == 'radio') && (
@@ -172,7 +174,7 @@ export function Options(props) {
                                     <div className={'flex-2'.classNames()}>
                                         <NumberField
                                             min={min}
-											max={max}
+                                            max={max}
                                             value={values[key]}
                                             className={input_class}
                                             onChange={(v) => onChange(key, v)}

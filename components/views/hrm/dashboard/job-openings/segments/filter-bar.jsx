@@ -12,7 +12,7 @@ import { Conditional } from '../../../../../materials/conditional.jsx';
 import { LoadingIcon } from '../../../../../materials/loading-icon/loading-icon.jsx';
 
 export function FilterBar({ is_overview, filters = {}, onChange, fetching }) {
-	const {departments=[]} = useContext(ContextBackendDashboard);
+    const { departments = [] } = useContext(ContextBackendDashboard);
 
     return (
         <div
@@ -22,8 +22,8 @@ export function FilterBar({ is_overview, filters = {}, onChange, fetching }) {
             }
         >
             <div className={'flex-1 d-flex align-items-center'.classNames()}>
-				<Conditional show={!is_overview}>
-					<Link to="/dashboard/">
+                <Conditional show={!is_overview}>
+                    <Link to="/dashboard/">
                         <i
                             className={
                                 'ch-icon ch-icon-arrow-left color-text cursor-pointer'.classNames() +
@@ -31,8 +31,8 @@ export function FilterBar({ is_overview, filters = {}, onChange, fetching }) {
                             }
                         ></i>
                     </Link>
-				</Conditional>
-				
+                </Conditional>
+
                 <span
                     className={
                         'color-text ' +
@@ -42,7 +42,8 @@ export function FilterBar({ is_overview, filters = {}, onChange, fetching }) {
                         ).classNames()
                     }
                 >
-                    {__('Job Openings')} <LoadingIcon show={fetching} className={'margin-left-5'.classNames()}/>
+                    {__('Job Openings')}{' '}
+                    <LoadingIcon show={fetching} className={'margin-left-5'.classNames()} />
                 </span>
             </div>
             <div className={'d-flex align-items-center column-gap-15'.classNames()}>
@@ -54,17 +55,17 @@ export function FilterBar({ is_overview, filters = {}, onChange, fetching }) {
                         value={filters.department_id}
                         onChange={(v) => onChange('department_id', v)}
                         options={[
-							{
-								id: 0, 
-								label: __('All Departments')
-							}, 
-							...departments.map(d=>{
-								return {
-									id: d.department_id, 
-									label: d.department_name
-								}
-							})
-						]}
+                            {
+                                id: 0,
+                                label: __('All Departments')
+                            },
+                            ...departments.map((d) => {
+                                return {
+                                    id: d.department_id,
+                                    label: d.department_name
+                                };
+                            })
+                        ]}
                     />
                 </div>
                 <div className={'d-inline-block'.classNames()} style={{ minWidth: '113px' }}>
@@ -75,14 +76,14 @@ export function FilterBar({ is_overview, filters = {}, onChange, fetching }) {
                         value={filters.job_status}
                         onChange={(v) => onChange('job_status', v)}
                         options={[
-							{id: 0, label: __('All Status')}, 
-							...status_keys.map((key) => {
-								return { 
-									id: key, 
-									label: statuses[key].label 
-								}
-							})
-						]}
+                            { id: 0, label: __('All Status') },
+                            ...status_keys.map((key) => {
+                                return {
+                                    id: key,
+                                    label: statuses[key].label
+                                };
+                            })
+                        ]}
                     />
                 </div>
                 <div className={'d-inline-block'.classNames()}>
@@ -95,7 +96,7 @@ export function FilterBar({ is_overview, filters = {}, onChange, fetching }) {
                         expandable={true}
                         value={filters.search}
                         onChange={(v) => onChange('search', v)}
-						inputDelay={500}
+                        inputDelay={500}
                     />
                 </div>
             </div>

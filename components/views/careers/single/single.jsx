@@ -96,8 +96,8 @@ function RenderMeta({ icon, hint, content }) {
 
 export function Single({ base_permalink }) {
     const { job_action, job_id } = useParams();
-	const [searchParam, setSearchParam] = useSearchParams();
-	const queryParams = parseParams( searchParam );
+    const [searchParam, setSearchParam] = useSearchParams();
+    const queryParams = parseParams(searchParam);
 
     const [state, setState] = useState({
         job: null,
@@ -115,11 +115,7 @@ export function Single({ base_permalink }) {
         request('get_single_job_view', { job_id, preview: queryParams.preview }, (resp) => {
             const {
                 success,
-                data: { 
-					job = {}, 
-					about_company, 
-					message = __('Something Went Wrong!') 
-				}
+                data: { job = {}, about_company, message = __('Something Went Wrong!') }
             } = resp;
 
             setState({
@@ -142,7 +138,7 @@ export function Single({ base_permalink }) {
     const {
         department_name,
         job_title,
-		job_status,
+        job_status,
         meta = {},
         job_description,
         street_address,
@@ -179,9 +175,9 @@ export function Single({ base_permalink }) {
                         className={'d-block font-size-38 font-weight-600 line-height-24 letter-spacing--38 color-text'.classNames()}
                     >
                         {job_title}
-						<Conditional show={job_status!=='publish'}>
-							&nbsp; <i>( { statuses[job_status]?.label ?? job_status } )</i>
-						</Conditional>
+                        <Conditional show={job_status !== 'publish'}>
+                            &nbsp; <i>( {statuses[job_status]?.label ?? job_status} )</i>
+                        </Conditional>
                     </span>
                 </div>
             </div>

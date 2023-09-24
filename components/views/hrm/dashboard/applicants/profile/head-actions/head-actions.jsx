@@ -13,24 +13,24 @@ import { ContextToast } from '../../../../../../materials/toast/toast.jsx';
 import style from './head.module.scss';
 
 const application_actions = [
-	{
-		id: 'disqualify',
-		label: __('Disqualify'),
-		icon: 'ch-icon ch-icon-slash font-size-16 color-text'.classNames()
-	},
-	{
-		id: 'delete',
-		label: __('Delete'),
-		icon: 'ch-icon ch-icon-trash font-size-16 color-text'.classNames()
-	}
+    {
+        id: 'disqualify',
+        label: __('Disqualify'),
+        icon: 'ch-icon ch-icon-slash font-size-16 color-text'.classNames()
+    },
+    {
+        id: 'delete',
+        label: __('Delete'),
+        icon: 'ch-icon ch-icon-trash font-size-16 color-text'.classNames()
+    }
 ];
 
 export function HeadActions({ application }) {
     const { stages = [], sessionRefresh } = useContext(ContextApplicationSession);
-	const {showWarning, closeWarning, loadingState} = useContext(ContextWarning);
-	const {application_id, job_id} = useParams();
-	const {ajaxToast} = useContext(ContextToast);
-	const navigate = useNavigate();
+    const { showWarning, closeWarning, loadingState } = useContext(ContextWarning);
+    const { application_id, job_id } = useParams();
+    const { ajaxToast } = useContext(ContextToast);
+    const navigate = useNavigate();
 
     const segments = [
         {
@@ -72,58 +72,60 @@ export function HeadActions({ application }) {
     };
 
     const changeStage = (stage_id, message = __('Sure to move?')) => {
-		showWarning(
-			message, 
-			()=>{
-				loadingState();
+        showWarning(
+            message,
+            () => {
+                loadingState();
 
-				request('move_application_stage', {job_id, stage_id, application_id}, resp=>{
-					const {success} = resp;
-					
-					ajaxToast(resp);
+                request('move_application_stage', { job_id, stage_id, application_id }, (resp) => {
+                    const { success } = resp;
 
-					if ( success ) {
-						closeWarning();
-						sessionRefresh();
-					}
-				});
-			},
-			null,
-			__('Yes')
-		);
-	};
+                    ajaxToast(resp);
 
-	const onActionClick=action=>{
-		switch(action) {
-			case 'disqualify' :
-				changeStage('_disqualified_', __('Sure to disqualify?'));
-				break;
+                    if (success) {
+                        closeWarning();
+                        sessionRefresh();
+                    }
+                });
+            },
+            null,
+            __('Yes')
+        );
+    };
 
-			case 'delete' :
-				showWarning(
-					__('Sure to delete? It can\'t be undone.'), 
-					()=>{
-						loadingState();
+    const onActionClick = (action) => {
+        switch (action) {
+            case 'disqualify':
+                changeStage('_disqualified_', __('Sure to disqualify?'));
+                break;
 
-						request('delete_application', {application_id}, resp=>{
-							const {success} = resp;
-							
-							ajaxToast(resp);
+            case 'delete':
+                showWarning(
+                    __("Sure to delete? It can't be undone."),
+                    () => {
+                        loadingState();
 
-							if ( success ) {
-								closeWarning();
-								navigate(`/dashboard/jobs/${job_id}/applications/`, {replace: true});
-								sessionRefresh();
-							}
-						});
-					},
-					null,
-					__('Yes'),
-					__('No')
-				);
-				break;
-		}
-	}
+                        request('delete_application', { application_id }, (resp) => {
+                            const { success } = resp;
+
+                            ajaxToast(resp);
+
+                            if (success) {
+                                closeWarning();
+                                navigate(`/dashboard/jobs/${job_id}/applications/`, {
+                                    replace: true
+                                });
+                                sessionRefresh();
+                            }
+                        });
+                    },
+                    null,
+                    __('Yes'),
+                    __('No')
+                );
+                break;
+        }
+    };
 
     const {
         renderer: ActiveComp,
@@ -157,16 +159,15 @@ export function HeadActions({ application }) {
                         );
                     })}
 
-					{
-						application.disqualified ? <i>
-							{__( 'Disqualified' )}
-						</i> : 
-						<i
-							title={__('Disqualify')}
-							className={'ch-icon ch-icon-slash color-error font-size-20 cursor-pointer'.classNames()}
-							onClick={() => onActionClick('disqualify')}
-						></i>
-					}
+                    {application.disqualified ? (
+                        <i>{__('Disqualified')}</i>
+                    ) : (
+                        <i
+                            title={__('Disqualify')}
+                            className={'ch-icon ch-icon-slash color-error font-size-20 cursor-pointer'.classNames()}
+                            onClick={() => onActionClick('disqualify')}
+                        ></i>
+                    )}
                 </div>
                 <div className={'d-flex align-items-center column-gap-10'.classNames()}>
                     <span className={'font-size-15 font-weight-400 color-text'.classNames()}>
@@ -185,19 +186,19 @@ export function HeadActions({ application }) {
                         })}
                     />
 
-					<Options
-						options={application_actions}
-						onClick={(action) => onActionClick(action)}
-					>
-						<i
-							className={'ch-icon ch-icon-more color-text-light font-size-20 cursor-pointer d-inline-block'.classNames()}
-						></i>
-					</Options>
+                    <Options
+                        options={application_actions}
+                        onClick={(action) => onActionClick(action)}
+                    >
+                        <i
+                            className={'ch-icon ch-icon-more color-text-light font-size-20 cursor-pointer d-inline-block'.classNames()}
+                        ></i>
+                    </Options>
                 </div>
             </div>
 
-            {
-				ActiveComp ? <div
+            {ActiveComp ? (
+                <div
                     data-crewhrm-selector="action-fields"
                     className={'content-area'.classNames(style)}
                 >
@@ -208,7 +209,7 @@ export function HeadActions({ application }) {
                             ></span>{' '}
                             {tagline}
                         </div>
-						
+
                         <div>
                             <i
                                 className={'ch-icon ch-icon-times font-size-24 color-text-light margin-left-10 cursor-pointer'.classNames()}
@@ -217,11 +218,9 @@ export function HeadActions({ application }) {
                         </div>
                     </div>
 
-                    <ActiveComp 
-						onClose={toggleSegment} 
-						application={application}/>
-                </div> : null
-			}
+                    <ActiveComp onClose={toggleSegment} application={application} />
+                </div>
+            ) : null}
         </div>
     );
 }

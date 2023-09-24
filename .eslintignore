@@ -4,6 +4,8 @@ node_modules/
 # Ignore build and dist directories
 build/
 dist/
+vendor/
+tests/
 components/icons/
 components/fonts/
 components/images/

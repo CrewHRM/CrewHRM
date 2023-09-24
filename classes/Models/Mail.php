@@ -1,7 +1,15 @@
 <?php
+/**
+ * Mail handler
+ *
+ * @package crewhrm
+ */
 
 namespace CrewHRM\Models;
 
+/**
+ * Mailer class
+ */
 class Mail {
 	/**
 	 * Args to send mail
@@ -13,25 +21,26 @@ class Mail {
 	/**
 	 * Mailer constructor
 	 *
-	 * @param array $args
+	 * @param array $args Mail data
+	 * @return void
 	 */
 	public function __construct( array $args ) {
 		$this->args = $args;
 	}
-	
+
 	/**
 	 * Trigger mail sending
 	 *
-	 * @return void
+	 * @return bool
 	 */
 	public function send() {
-		$subject         = $this->args['subject'] ?? null;
-		$body            = $this->args['body'] ?? '';
-		$to              = $this->args['to'] ?? '';
+		$subject = $this->args['subject'] ?? null;
+		$body    = $this->args['body'] ?? '';
+		$to      = $this->args['to'] ?? '';
 
 		// Attachment array
 		$attachments = $this->args['attachments'] ?? array();
-		
+
 		// Mail content type headers
 		$headers = array(
 			'Content-Type: text/html; charset=UTF-8',
@@ -54,7 +63,7 @@ class Mail {
 	 *
 	 * @return string
 	 */
-	public function get_from_address(){
+	public function get_from_address() {
 		return $this->args['from_address'] ?? Settings::getRecruiterEmail();
 	}
 }

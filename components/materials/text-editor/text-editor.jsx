@@ -7,24 +7,23 @@ import htmlToDraft from 'html-to-draftjs';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import style from './editor.module.scss';
 
-const createEditorState=(html)=>{
-	const contentBlock = html ? htmlToDraft(html) : null;
-	let state;
+const createEditorState = (html) => {
+    const contentBlock = html ? htmlToDraft(html) : null;
+    let state;
 
-	if ( contentBlock ) {
-		state = EditorState.createWithContent(
-			ContentState.createFromBlockArray(contentBlock.contentBlocks)
-		)
-	} else {
-		state = EditorState.createEmpty();
-	}
+    if (contentBlock) {
+        state = EditorState.createWithContent(
+            ContentState.createFromBlockArray(contentBlock.contentBlocks)
+        );
+    } else {
+        state = EditorState.createEmpty();
+    }
 
-	return state;
-}
+    return state;
+};
 
 export function TextEditor({ onChange: dispatchTo, value: html, placeholder, session }) {
-
-	const [state, setState] = useState({
+    const [state, setState] = useState({
         editorState: createEditorState(html),
         focus: false
     });
@@ -34,12 +33,12 @@ export function TextEditor({ onChange: dispatchTo, value: html, placeholder, ses
         setState({ ...state, editorState });
     };
 
-	useEffect(()=>{
-		setState({
-			...state,
-			editorState: createEditorState(html)
-		});
-	}, [session]);
+    useEffect(() => {
+        setState({
+            ...state,
+            editorState: createEditorState(html)
+        });
+    }, [session]);
 
     return (
         <Editor

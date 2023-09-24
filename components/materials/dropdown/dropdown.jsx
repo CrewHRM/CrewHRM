@@ -51,9 +51,9 @@ export function DropDown(props) {
 
     const ref = useRef();
 
-	const [state, setState] = useState({
-		search: ''
-	});
+    const [state, setState] = useState({
+        search: ''
+    });
 
     const pop_border =
         className.indexOf('border-1-5') > -1
@@ -62,42 +62,45 @@ export function DropDown(props) {
             ? 'border-1'
             : '';
 
-    const triggerPoint = (search=false)=>{
-		
-        return <div
-            tabIndex={tabindex}
-            className={
-                `select-dropdown ${transparent ? 'transparent' : ''}`.classNames(style) +
-                'cursor-pointer d-flex align-items-center border-radius-5'.classNames() +
-                className
-            }
-        >
-            <div className={'flex-1 white-space-nowrap'.classNames() + textClassName}>
-				<Conditional show={!search}>
-                	{selected_value !== undefined ? options.find((o) => o.id === selected_value)?.label || placeholder : placeholder}
-				</Conditional>
-				<Conditional show={search}>
-					<input 
-						className={'text-field-flat'.classNames()} 
-						placeholder={__('Search..')}
-						onChange={e=>setState({...state, search: e.currentTarget.value})}/>
-				</Conditional>
+    const triggerPoint = (search = false) => {
+        return (
+            <div
+                tabIndex={tabindex}
+                className={
+                    `select-dropdown ${transparent ? 'transparent' : ''}`.classNames(style) +
+                    'cursor-pointer d-flex align-items-center border-radius-5'.classNames() +
+                    className
+                }
+            >
+                <div className={'flex-1 white-space-nowrap'.classNames() + textClassName}>
+                    <Conditional show={!search}>
+                        {selected_value !== undefined
+                            ? options.find((o) => o.id === selected_value)?.label || placeholder
+                            : placeholder}
+                    </Conditional>
+                    <Conditional show={search}>
+                        <input
+                            className={'text-field-flat'.classNames()}
+                            placeholder={__('Search..')}
+                            onChange={(e) => setState({ ...state, search: e.currentTarget.value })}
+                        />
+                    </Conditional>
+                </div>
+                <i className={iconClassName}></i>
             </div>
-            <i className={iconClassName}></i>
-        </div>
-    }
+        );
+    };
 
-	const closeDropdown=(callback)=>{
+    const closeDropdown = (callback) => {
+        setState({
+            ...state,
+            search: ''
+        });
 
-		setState({
-			...state, 
-			search: ''
-		});
-
-		if (callback) {
-			callback();
-		}
-	}
+        if (callback) {
+            callback();
+        }
+    };
 
     return (
         <div data-crewhrm-selector="dropdown" ref={ref}>
@@ -111,7 +114,7 @@ export function DropDown(props) {
                 arrow={false}
                 nested={nested}
                 trigger={triggerPoint()}
-				onClose={()=>closeDropdown()}
+                onClose={() => closeDropdown()}
             >
                 {(close) => {
                     // Determine border width, color and radius from the class name to sync the popup accordingly
@@ -130,28 +133,36 @@ export function DropDown(props) {
                             style={popup_styles}
                         >
                             <div className={'trigger-point'.classNames(style)}>
-								{triggerPoint(options.length>8)}
-							</div>
+                                {triggerPoint(options.length > 8)}
+                            </div>
                             <div className={'list-wrapper'.classNames(style)}>
-                                {options.filter(o=>!state.search || o.label.toLowerCase().indexOf(state.search.toLowerCase())>-1).map((option) => {
-                                    let { id, label } = option;
-                                    let classes = `list-item ${
-                                        id == selected_value ? 'active' : ''
-                                    }`;
-                                    return (
-                                        <div
-                                            key={id}
-                                            data-crewhrm-selector="dropdown-item"
-                                            className={classes.classNames(style) + list_class}
-                                            onClick={() => {
-                                                onChange(id);
-												closeDropdown(close);
-                                            }}
-                                        >
-                                            {label}
-                                        </div>
-                                    );
-                                })}
+                                {options
+                                    .filter(
+                                        (o) =>
+                                            !state.search ||
+                                            o.label
+                                                .toLowerCase()
+                                                .indexOf(state.search.toLowerCase()) > -1
+                                    )
+                                    .map((option) => {
+                                        let { id, label } = option;
+                                        let classes = `list-item ${
+                                            id == selected_value ? 'active' : ''
+                                        }`;
+                                        return (
+                                            <div
+                                                key={id}
+                                                data-crewhrm-selector="dropdown-item"
+                                                className={classes.classNames(style) + list_class}
+                                                onClick={() => {
+                                                    onChange(id);
+                                                    closeDropdown(close);
+                                                }}
+                                            >
+                                                {label}
+                                            </div>
+                                        );
+                                    })}
                             </div>
 
                             {addText && (
@@ -160,7 +171,7 @@ export function DropDown(props) {
                                     className={'add-item'.classNames(style) + list_class}
                                     style={{ paddingTop: '10px', paddingBottom: '10px' }}
                                     onClick={() => {
-										closeDropdown(close);
+                                        closeDropdown(close);
                                         onAddClick();
                                     }}
                                 >
@@ -224,18 +235,22 @@ export function Options(props) {
                                     <div
                                         data-crewhrm-selector="options-popup-item"
                                         key={id}
-                                        className={'d-flex align-items-center'.classNames() + 'list-item'.classNames(style) + list_class}
+                                        className={
+                                            'd-flex align-items-center'.classNames() +
+                                            'list-item'.classNames(style) +
+                                            list_class
+                                        }
                                         onClick={() => {
                                             onClick(id);
                                             close();
                                         }}
                                     >
-										<Conditional show={icon}>
-											<i
+                                        <Conditional show={icon}>
+                                            <i
                                                 className={icon + 'margin-right-10'.classNames()}
                                             ></i>
-										</Conditional>
-										
+                                        </Conditional>
+
                                         {label}
                                     </div>
                                 );

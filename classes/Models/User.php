@@ -1,17 +1,30 @@
 <?php
+/**
+ * User functionalities
+ *
+ * @package crewhrm
+ */
 
 namespace CrewHRM\Models;
 
+/**
+ * User functions
+ */
 class User {
 
 	/**
 	 * Validate if a user has required role
 	 *
-	 * @param int          $user_id
-	 * @param string|array $role
+	 * @param int          $user_id The user ID to validate rule
+	 * @param string|array $role    The rule to match
 	 * @return bool
 	 */
 	public static function validateRole( $user_id, $role ) {
+
+		if ( empty( $role ) ) {
+			return true;
+		}
+
 		$roles          = is_array( $role ) ? $role : array( $role );
 		$assigned_roles = self::getUserRoles( $user_id );
 

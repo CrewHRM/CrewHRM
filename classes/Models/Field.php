@@ -1,9 +1,17 @@
 <?php
+/**
+ * Helper class to get fields from tables
+ *
+ * @package crewhrm
+ */
 
 namespace CrewHRM\Models;
 
 use CrewHRM\Helpers\_Array;
 
+/**
+ * The class to get fields
+ */
 class Field {
 	/**
 	 * Get specific field/s from table
@@ -12,6 +20,12 @@ class Field {
 	 */
 	private $table;
 
+	/**
+	 * Set up the table to operate in
+	 *
+	 * @param string $table Table name to get data from
+	 * @return void
+	 */
 	public function __construct( string $table ) {
 		$this->table = $table;
 	}
@@ -19,8 +33,8 @@ class Field {
 	/**
 	 * Get instance by table name
 	 *
-	 * @param string $name
-	 * @param string $arguments
+	 * @param string $name      The table name to get instance for
+	 * @param string $arguments The arguments to make instance with
 	 * @return self
 	 */
 	public static function __callStatic( $name, $arguments ) {
@@ -37,8 +51,8 @@ class Field {
 	/**
 	 * Get specific fields by specific where clause
 	 *
-	 * @param array $where
-	 * @param string|array $field
+	 * @param array        $where Array of values to use as where clause
+	 * @param string|array $field The field or array of fields to get data from the tbale
 	 * @return mixed
 	 */
 	public function getField( array $where, $field ) {
@@ -55,7 +69,7 @@ class Field {
 		$row = $wpdb->get_row(
 			"SELECT {$columns} FROM {$this->table} WHERE {$where_clause} LIMIT 1"
 		);
-		$row = ! empty( $row ) ? (array)$row : array();
+		$row = ! empty( $row ) ? (array) $row : array();
 		$row = _Array::castRecursive( $row );
 
 		return ! is_array( $field ) ? ( $row[ $field ] ?? null ) : $row;

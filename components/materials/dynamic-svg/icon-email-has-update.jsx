@@ -27,13 +27,7 @@ export function IconEmailHasUpdate(props) {
                 strokeLinecap="round"
                 strokeLinejoin="round"
             />
-            <circle
-                cx="19"
-                cy="4"
-                r="3.5"
-                fill={window.CrewHRM.colors['error']}
-                stroke="#F3F4F5"
-            />
+            <circle cx="19" cy="4" r="3.5" fill={window.CrewHRM.colors['error']} stroke="#F3F4F5" />
         </svg>
     );
 }

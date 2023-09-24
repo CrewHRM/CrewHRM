@@ -1,4 +1,9 @@
 <?php
+/**
+ * Application stage management business logics
+ *
+ * @package crewhrm
+ */
 
 namespace CrewHRM\Models;
 
@@ -21,8 +26,8 @@ class Stage {
 	/**
 	 * Copy stages from one to another job
 	 *
-	 * @param int $job_from_id
-	 * @param int $job_to_id
+	 * @param int $job_from_id The job ID to copy stages from
+	 * @param int $job_to_id   The job ID to copy stages to
 	 * @return void
 	 */
 	public static function copyStages( $job_from_id, $job_to_id ) {
@@ -52,21 +57,21 @@ class Stage {
 	/**
 	 * Create/update stages for job editor
 	 *
-	 * @param [type] $job_id
-	 * @param [type] $stages
-	 * @return void
+	 * @param int   $job_id The job ID to create or updated stage for
+	 * @param array $stages Stages array to create or update
+	 * @return array
 	 */
 	public static function createUpdateStages( $job_id, $stages ) {
 		global $wpdb;
 
 		// Exclude reserved from the input array
 		$stages = array_filter(
-			$stages, 
+			$stages,
 			function( $stage ) {
-				return ! in_array( $stage['stage_name'], self::$reserved_stages );
+				return ! in_array( $stage['stage_name'], self::$reserved_stages, true );
 			}
 		);
-		
+
 		// Apply sequence as per the current order now and insert/update based on stage ID
 		$sequence   = 0;
 		$id_mapping = array();
@@ -84,7 +89,7 @@ class Stage {
 				$wpdb->update(
 					DB::stages(),
 					$payload,
-					array( 
+					array(
 						'stage_id' => $stage_id,
 						'job_id'   => $job_id,
 					)
@@ -133,7 +138,7 @@ class Stage {
 	/**
 	 * Get stages of job/s
 	 *
-	 * @param int|array $job_id
+	 * @param int|array $job_id Job ID or array of job IDs
 	 * @return array
 	 */
 	public static function getStagesByJobId( $job_id ) {
@@ -153,7 +158,7 @@ class Stage {
 		// Assign the stages in jobs array
 		foreach ( $stages as $stage ) {
 			$_job_id = $stage['job_id'];
-			
+
 			if ( ! isset( $new_array[ $_job_id ] ) ) {
 				$new_array[ $_job_id ] = array();
 			}
@@ -232,10 +237,10 @@ class Stage {
 	}
 
 	/**
-	 * Get an over view of applications
+	 * Get an over view of applications per stage
 	 *
-	 * @param int $job_id
-	 * @param int $stage_id
+	 * @param int $job_id   Job ID
+	 * @param int $stage_id Stage ID
 	 * @return array
 	 */
 	public static function getApplicationsOverview( $job_id, $stage_id ) {
@@ -268,11 +273,11 @@ class Stage {
 	/**
 	 * Get applications based on arguments
 	 *
-	 * @param array $args
+	 * @param array $args Arguments array to get applications based on
 	 * @return array
 	 */
 	public static function getApplications( array $args ) {
-		
+
 		$order_by = $args['order_by'] ?? 'application_date';
 		$order    = $args['order'] ?? 'DESC';
 		$limit    = $args['limit'] ?? 20;
@@ -302,7 +307,7 @@ class Stage {
 	/**
 	 * Get stages nad application counts for job/s
 	 *
-	 * @param int|array $job_id
+	 * @param int|array $job_id Job ID
 	 * @return array
 	 */
 	public static function getStageStatsByJobId( $job_id ) {
@@ -366,7 +371,7 @@ class Stage {
 			$_stages[ $sequence['job_id'] ][ $sequence['stage_id'] ] = array_merge(
 				$sequence,
 				array(
-					'candidates' => 0
+					'candidates' => 0,
 				)
 			);
 
@@ -392,7 +397,7 @@ class Stage {
 	/**
 	 * Get the stage id of disqualify for a job
 	 *
-	 * @param int $job_id
+	 * @param int $job_id Job ID
 	 * @return int
 	 */
 	public static function getDisqualifyId( $job_id ) {

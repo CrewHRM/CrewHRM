@@ -1,6 +1,12 @@
 import React, { useContext, useState } from 'react';
 import { Tabs } from '../../../../materials/tabs/tabs.jsx';
-import { __, calculateJSONSizeInKB, getAddress, isEmpty, sprintf } from '../../../../utilities/helpers.jsx';
+import {
+    __,
+    calculateJSONSizeInKB,
+    getAddress,
+    isEmpty,
+    sprintf
+} from '../../../../utilities/helpers.jsx';
 import { ContextForm, FormFields } from '../../../../materials/form.jsx';
 import { FormActionButtons } from '../../../../materials/form-action.jsx';
 import { request } from '../../../../utilities/request.jsx';
@@ -80,18 +86,21 @@ export function Apply({ job = {} }) {
     };
 
     const submitApplication = () => {
-		const payload = { application: state.values };
+        const payload = { application: state.values };
 
-		const {application_max_size} = window.CrewHRM;
-		const payload_size = calculateJSONSizeInKB( payload ) + 5;
+        const { application_max_size } = window.CrewHRM;
+        const payload_size = calculateJSONSizeInKB(payload) + 5;
 
-		if ( payload_size >= application_max_size ) {
-			addToast({
-				message: sprintf( __('Total file size exceeds the limit of %s.'), application_max_size+' KB'),
-				status: 'error'
-			});
-			return;
-		}
+        if (payload_size >= application_max_size) {
+            addToast({
+                message: sprintf(
+                    __('Total file size exceeds the limit of %s.'),
+                    application_max_size + ' KB'
+                ),
+                status: 'error'
+            });
+            return;
+        }
 
         request('apply_to_job', payload, (resp) => {
             const {
@@ -131,7 +140,6 @@ export function Apply({ job = {} }) {
 
         // Loop through fields
         for (let i = 0; i < fields.length; i++) {
-
             // If it is already false, break the loop, no more check necessary
             if (!_enabled) {
                 break;
@@ -166,11 +174,12 @@ export function Apply({ job = {} }) {
               .flat();
     let is_next_enabled = isNextEnabled(fields_to_render);
 
-	if (state.submitted) {
-		return <Applied error_message={state.error_message} />
-	}
+    if (state.submitted) {
+        return <Applied error_message={state.error_message} />;
+    }
 
-    return <div data-crewhrm-selector="job-application" className={'apply'.classNames(style)}>
+    return (
+        <div data-crewhrm-selector="job-application" className={'apply'.classNames(style)}>
             <div className={'header'.classNames(style) + 'bg-color-tertiary'.classNames()}>
                 <div className={'container'.classNames(style) + 'padding-30'.classNames()}>
                     <span
@@ -181,13 +190,13 @@ export function Apply({ job = {} }) {
                     <span
                         className={'d-block font-size-17 font-weight-500 line-height-25 color-text margin-bottom-10'.classNames()}
                     >
-						{getAddress(job)}
+                        {getAddress(job)}
                     </span>
                 </div>
             </div>
 
-			<Conditional show={is_segment}>
-				<div
+            <Conditional show={is_segment}>
+                <div
                     className={
                         'sequence'.classNames(style) +
                         'padding-vertical-20 box-shadow-thin margin-bottom-50'.classNames()
@@ -197,19 +206,19 @@ export function Apply({ job = {} }) {
                         <Tabs active={state.active_tab} tabs={steps} theme="sequence" />
                     </div>
                 </div>
-			</Conditional>
-			
+            </Conditional>
+
             <div data-crewhrm-selector="job-application-form" className={'form'.classNames(style)}>
-				<Conditional show={is_segment}>
-					<span
+                <Conditional show={is_segment}>
+                    <span
                         className={'d-block font-size-20 font-weight-600 color-text margin-bottom-30'.classNames()}
                     >
                         {step.label}
                     </span>
-				</Conditional>
-				
-				<Conditional show={!is_segment}>
-					<div className={'margin-top-48'.classNames()}>
+                </Conditional>
+
+                <Conditional show={!is_segment}>
+                    <div className={'margin-top-48'.classNames()}>
                         <span
                             className={'d-block font-size-20 font-weight-600 color-text margin-bottom-8'.classNames()}
                         >
@@ -221,13 +230,13 @@ export function Apply({ job = {} }) {
                             {__('Fields marked with * are required.')}
                         </span>
                     </div>
-				</Conditional>
-				
+                </Conditional>
+
                 <ContextForm.Provider value={{ values: state.values, onChange }}>
                     <FormFields defaultEnabled={false} fields={fields_to_render} />
                 </ContextForm.Provider>
 
-                {is_segment ?
+                {is_segment ? (
                     <div>
                         <FormActionButtons
                             disabledNext={!is_next_enabled}
@@ -243,7 +252,7 @@ export function Apply({ job = {} }) {
                             }
                         />
                     </div>
-					:
+                ) : (
                     <div>
                         <button
                             disabled={!is_next_enabled}
@@ -258,7 +267,8 @@ export function Apply({ job = {} }) {
                             {__('Submit Application')}
                         </button>
                     </div>
-                }
+                )}
             </div>
         </div>
+    );
 }

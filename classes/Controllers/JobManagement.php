@@ -1,15 +1,22 @@
 <?php
+/**
+ * Job controller
+ *
+ * @package crewhrm
+ */
 
 namespace CrewHRM\Controllers;
 
 use CrewHRM\Helpers\_Array;
-use CrewHRM\Models\Address;
 use CrewHRM\Models\Job;
 use CrewHRM\Models\Meta;
 use CrewHRM\Models\Settings;
 use CrewHRM\Models\Stage;
 use CrewHRM\Models\User;
 
+/**
+ * Teh controller class
+ */
 class JobManagement {
 	const PREREQUISITES = array(
 		'updateJob'           => array(
@@ -18,7 +25,7 @@ class JobManagement {
 		'getJobsDashboard'    => array(),
 		'singleJobAction'     => array(),
 		'getSingleJobView'    => array(
-			'nopriv' => true
+			'nopriv' => true,
 		),
 		'getSingleJobEdit'    => array(
 			'role' => array( 'administrator', 'editor' ),
@@ -34,23 +41,23 @@ class JobManagement {
 	/**
 	 * Create or update a job
 	 *
-	 * @param array $data
+	 * @param array $data Request data
 	 * @return void
 	 */
 	public static function updateJob( array $data ) {
 		// Can access job directly as it is checked by dispatcher already using prerequisities array
 		$data       = _Array::sanitizeRecursive( _Array::getArray( $data['job'] ), array( 'job_description' ) );
 		$new_status = $data['job_status'];
-		$is_publish = $new_status === 'publish';
+		$is_publish = 'publish' === $new_status;
 
 		// If it is autosave while there is a published version, put it in meta instead to avoid conflict between edited and published version.
-		// Editor will show prompt in next opening that there's a cached autosaved version. 
+		// Editor will show prompt in next opening that there's a cached autosaved version.
 		if ( ! empty( $data['job_id'] ) ) {
 
 			$_status = Job::getFiled( $data['job_id'], 'job_status' );
 
 			// Auto save
-			if ( $_status === 'publish' && ! $is_publish ) {
+			if ( 'publish' === $_status && ! $is_publish ) {
 				Meta::job( $data['job_id'] )->updateMeta( 'autosaved_job', $data );
 				wp_send_json_success();
 				return;
@@ -63,11 +70,10 @@ class JobManagement {
 		if ( empty( $job ) ) {
 			wp_send_json_error( array( 'message' => __( 'Failed to save job', 'crewhrm' ) ) );
 		} else {
-			error_log('Here');
 			// Delete meta cache as the job saved in job table directly, no matter the job status.
 			Meta::job( $job['job_id'] )->deleteMeta( 'autosaved_job' );
 		}
-		
+
 		wp_send_json_success(
 			array(
 				'message'    => $is_publish ? __( 'Job published', 'crewhrm' ) : __( 'Job saved', 'crewhrm' ),
@@ -92,19 +98,25 @@ class JobManagement {
 		wp_send_json_success(
 			array(
 				'jobs'         => array_values( $jobs ),
-				'segmentation' => $segmentation
+				'segmentation' => $segmentation,
 			)
 		);
 	}
 
+	/**
+	 * Single job actions like duplicate, delete etc.
+	 *
+	 * @param array $data Request data
+	 * @return void
+	 */
 	public static function singleJobAction( $data ) {
 		$job_id = $data['job_id'];
 		$action = $data['job_action'];
-		
+
 		switch ( $action ) {
 			case 'archive':
 			case 'unarchive':
-				$do_archive = $action === 'archive';
+				$do_archive = 'archive' === $action;
 				Job::toggleArchiveState( $job_id, $do_archive );
 				wp_send_json_success(
 					array(
@@ -140,24 +152,24 @@ class JobManagement {
 		$job    = Job::getJobById( $job_id );
 
 		// Determine if the current user can visit the job
-		$can_visit = ! empty( $job );
+		$can_visit  = ! empty( $job );
 		$privileged = User::validateRole( get_current_user_id(), array( 'administrator', 'editor' ) );
 
 		// Only admin and editor can visit the job even if not published
-		if ( $can_visit && $job['job_status'] !== 'publish' ) {
+		if ( $can_visit && 'publish' !== $job['job_status'] ) {
 			// If not published yet, then only privieleged users can see the job.
 			$can_visit = $privileged;
 		}
 
 		// Provide preview content for admin and editor
 		// Only the privileged users can see preview content which is not in the main job yet.
-		if ( $can_visit && (int)( $data['preview'] ?? 0 ) === 1 && $privileged ) {
+		if ( $can_visit && (int) ( $data['preview'] ?? 0 ) === 1 && $privileged ) {
 			$autosaved = Meta::job( $job_id )->getMeta( 'autosaved_job' );
 			if ( ! empty( $autosaved ) ) {
 				$job = $autosaved;
 			}
 		}
-		
+
 		if ( ! $can_visit ) {
 			wp_send_json_error( array( 'message' => __( 'Job not found' ) ) );
 		} else {
@@ -173,7 +185,7 @@ class JobManagement {
 	/**
 	 * Get job for edit purpose
 	 *
-	 * @param array $data
+	 * @param array $data Request data
 	 * @return void
 	 */
 	public static function getSingleJobEdit( array $data ) {
@@ -185,9 +197,9 @@ class JobManagement {
 		}
 
 		wp_send_json_success(
-			array( 
-				'job'            => $job,
-				'autosaved_job' => Meta::job( $job_id )->getMeta( 'autosaved_job' )
+			array(
+				'job'           => $job,
+				'autosaved_job' => Meta::job( $job_id )->getMeta( 'autosaved_job' ),
 			)
 		);
 	}
@@ -195,7 +207,7 @@ class JobManagement {
 	/**
 	 * Delete hiring stage from individual job
 	 *
-	 * @param array $data
+	 * @param array $data Request data
 	 * @return void
 	 */
 	public static function deleteHiringStage( array $data ) {
@@ -203,20 +215,20 @@ class JobManagement {
 		// Run delete
 		$deletion = Stage::deleteStage(
 			$data['job_id'],
-			$data['stage_id'], 
+			$data['stage_id'],
 			$data['move_to'] ?? null
 		);
 
-		if ( $deletion === true ) {
+		if ( true === $deletion ) {
 			// Deleted successfully as there are no application in the stage
 			wp_send_json_success();
 
 		} elseif ( is_array( $deletion ) ) {
 			// There are applications in the stage
 			wp_send_json_error( array( 'overview' => $deletion ) );
-			
+
 		} else {
-			$message = $deletion === false ? __( 'Stage not found to move to', 'crewhrm' ) : __( 'Something went wrong!' );
+			$message = false === $deletion ? __( 'Stage not found to move to', 'crewhrm' ) : __( 'Something went wrong!' );
 			wp_send_json_error( array( 'message' => $message ) );
 		}
 	}

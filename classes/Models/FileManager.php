@@ -1,7 +1,15 @@
 <?php
+/**
+ * File uploader functionalities
+ *
+ * @package crewhrm
+ */
 
 namespace CrewHRM\Models;
 
+/**
+ * File and directory handler class
+ */
 class FileManager {
 
 	/**
@@ -28,8 +36,8 @@ class FileManager {
 	/**
 	 * Alter upload directory by hook
 	 *
-	 * @param string $upload
-	 * @return void
+	 * @param array $upload Dir configs
+	 * @return array
 	 */
 	public static function customUploadDirectory( $upload ) {
 		// Define the new upload directory
@@ -46,15 +54,15 @@ class FileManager {
 
 		return $upload;
 	}
-	
+
 	/**
 	 * Create custom directory for files
 	 *
-	 * @param int $content_id
+	 * @param int $content_id Create directory for specific content, ideally job application.
 	 * @return void
 	 */
 	private static function createUploadDir( $content_id ) {
-		
+
 		$wp_upload_dir = wp_upload_dir(); // Get the path and URL of the wp-uploads directory
 
 		// Create the full path of the custom directory
@@ -78,13 +86,13 @@ class FileManager {
 	/**
 	 * Process upload of a file using native WP methods
 	 *
-	 * @param int $content_id
-	 * @param array $file
-	 * @param string $file_title
-	 * @return void
+	 * @param int    $content_id The content/application ID to upload file for
+	 * @param array  $file       File array with size, tmp_name etc.
+	 * @param string $file_title Custom file title to use
+	 * @return int|null
 	 */
 	public static function uploadFile( $content_id, array $file, string $file_title ) {
-		
+
 		// Store to make available in upload_dir hook handler
 		self::$content_id = $content_id;
 
@@ -109,23 +117,22 @@ class FileManager {
 
 		if ( isset( $upload['file'] ) ) {
 			// Create a post for the file
-			$attachment = array(
+			$attachment    = array(
 				'post_mime_type' => $upload['type'],
 				'post_title'     => $file_title,
 				'post_content'   => '',
 				'post_status'    => 'private',
-				'guid'           => $upload['url']
+				'guid'           => $upload['url'],
 			);
 			$attachment_id = wp_insert_attachment( $attachment, $file_path );
-			require_once( ABSPATH . 'wp-admin/includes/image.php' );
+			require_once ABSPATH . 'wp-admin/includes/image.php';
 
 			// Generate meta data for the file
 			$attachment_data = wp_generate_attachment_metadata( $attachment_id, $file_path );
 			wp_update_attachment_metadata( $attachment_id, $attachment_data );
 			update_post_meta( $attachment_id, self::$crewhrm_meta_key, true );
 		} else {
-			// Error uploading the file
-			error_log( __FILE__ . ' ' . __LINE__ . ' ' . var_export( $upload['error'], true ) ) ;
+			$attachment_id = null;
 		}
 
 		// Remove filters

@@ -20,12 +20,7 @@ function CompanyWrapper() {
     const { sub_page } = useParams();
     const page_id = sub_page || 'profile';
 
-    const { 
-		clearHistory, 
-		can_go_next, 
-		onChange, 
-		values 
-	} = useContext(ContextHistoryFields);
+    const { clearHistory, can_go_next, onChange, values } = useContext(ContextHistoryFields);
 
     const saveCompanyProfile = () => {
         let _action;
@@ -33,18 +28,18 @@ function CompanyWrapper() {
 
         if (page_id === 'profile') {
             _action = 'save_company_profile';
-			_payload = { settings: values[page_id] };
-
-        } else if(page_id === 'departments') {
+            _payload = { settings: values[page_id] };
+        } else if (page_id === 'departments') {
             _action = 'save_company_departments';
-            _payload = { 
-				departments: values[page_id].departments?.map(d=>{
-					return {
-						department_id: d.id,
-						department_name: d.label
-					}
-				}) ?? []
-			}
+            _payload = {
+                departments:
+                    values[page_id].departments?.map((d) => {
+                        return {
+                            department_id: d.id,
+                            department_name: d.label
+                        };
+                    }) ?? []
+            };
         }
 
         request(_action, { ..._payload }, (resp) => {
@@ -80,19 +75,19 @@ function CompanyWrapper() {
                 </div>
 
                 <div className={'content-area'.classNames(style)}>
-					<Conditional show={page_id === 'profile'}>
-						<CompanyProfile
+                    <Conditional show={page_id === 'profile'}>
+                        <CompanyProfile
                             onChange={(name, value) => onChange(name, value, page_id)}
                             values={values.profile}
                         />
-					</Conditional>
+                    </Conditional>
 
-					<Conditional show={page_id === 'departments'}>
-						<CompantDepartments
+                    <Conditional show={page_id === 'departments'}>
+                        <CompantDepartments
                             onChange={(name, value) => onChange(name, value, page_id)}
                             values={values.departments}
                         />
-					</Conditional>
+                    </Conditional>
                 </div>
             </div>
         </>
@@ -102,25 +97,22 @@ function CompanyWrapper() {
 export function Company(props) {
     const { departments = [], companyProfile: profile = {} } = props;
 
-	const historyDefaults = {
-		departments: {
-			departments: departments.map(d=>{
-				return {
-					id: d.department_id, 
-					label: d.department_name
-				}
-			})
-		},
-		profile
-	}
+    const historyDefaults = {
+        departments: {
+            departments: departments.map((d) => {
+                return {
+                    id: d.department_id,
+                    label: d.department_name
+                };
+            })
+        },
+        profile
+    };
 
     return (
         <ContextBackendDashboard.Provider value={{}}>
             <WpDashboardFullPage>
-                <HistoryFields
-                    defaultValues={historyDefaults}
-                    segmented={true}
-                >
+                <HistoryFields defaultValues={historyDefaults} segmented={true}>
                     <HashRouter>
                         <Routes>
                             <Route

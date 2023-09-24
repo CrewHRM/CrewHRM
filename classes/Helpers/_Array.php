@@ -1,13 +1,21 @@
 <?php
+/**
+ * Helper class to do array related operations
+ *
+ * @package crewhrm
+ */
 
 namespace CrewHRM\Helpers;
 
+/**
+ * The enriched array class
+ */
 class _Array {
 	/**
 	 * Apply order to every array elements
 	 *
-	 * @param array  $array
-	 * @param string $order_key
+	 * @param array  $array     The array to add order ins
+	 * @param string $order_key The key to store order index
 	 * @return array
 	 */
 	public static function addOrderColumn( array $array, string $order_key ) {
@@ -18,7 +26,7 @@ class _Array {
 		foreach ( $array as $index => $element ) {
 
 			$element[ $order_key ] = $order;
-			$array[ $index ] = $element;
+			$array[ $index ]       = $element;
 
 			$order++;
 		}
@@ -29,7 +37,7 @@ class _Array {
 	/**
 	 * Return array no matter what. And cast values to appropriate data type.
 	 *
-	 * @param mixed $value
+	 * @param mixed $value The value to get array of and cast before. If not retruns empty array.
 	 * @return array
 	 */
 	public static function getArray( $value ) {
@@ -39,7 +47,7 @@ class _Array {
 	/**
 	 * Cast number, bool from string.
 	 *
-	 * @param array $array
+	 * @param array $array The array to cast data recursively
 	 * @return array
 	 */
 	public static function castRecursive( array $array ) {
@@ -58,19 +66,19 @@ class _Array {
 					// Cast number
 					$array[ $index ] = (int) $value;
 
-				} else if ( $value === 'true' ) {
+				} elseif ( 'true' === $value ) {
 					// Cast boolean true
 					$array[ $index ] = true;
 
-				} else if ( $value === 'false' ) {
+				} elseif ( 'false' === $value ) {
 					// Cast boolean false
 					$array[ $index ] = false;
 
-				} else if ( $value === 'null' ) {
+				} elseif ( 'null' === $value ) {
 					// Cast null
 					$array[ $index ] = null;
 
-				} else if( $value === '[]' ) {
+				} elseif ( '[]' === $value ) {
 					// Cast empty array
 					$array[ $index ] = array();
 
@@ -87,8 +95,8 @@ class _Array {
 	/**
 	 * Make an array column value index of the array
 	 *
-	 * @param array  $array
-	 * @param string $column
+	 * @param array  $array  Array to indexify
+	 * @param string $column The field to use the value as index
 	 * @return array
 	 */
 	public static function indexify( array $array, string $column ) {
@@ -103,9 +111,9 @@ class _Array {
 	/**
 	 * Append column to a two dimensional array
 	 *
-	 * @param array  $array
-	 * @param string $key
-	 * @param array  $new
+	 * @param array  $array The array to append column into
+	 * @param string $key   The key to use as index of the column
+	 * @param array  $new   New field to use as the value
 	 * @return array
 	 */
 	public static function appendColumn( array $array, string $key, $new ) {
@@ -119,9 +127,9 @@ class _Array {
 	/**
 	 * Get object from array by object key value match, similar to js find method.
 	 *
-	 * @param array  $array
-	 * @param string $key
-	 * @param mixed  $value
+	 * @param array  $array The array to find objects in
+	 * @param string $key   The key to match in the object
+	 * @param mixed  $value The value to match in the object
 	 * @return mixed
 	 */
 	public static function find( array $array, $key, $value ) {
@@ -135,8 +143,9 @@ class _Array {
 	/**
 	 * Sanitize contents recursively
 	 *
-	 * @param array $kses_for Define field name to use wp_kses for instead of sanitize_text_field.
-	 * @param string|int $key Do not use outside of this function. It's for internal use.
+	 * @param array      $value    The array to run kses through
+	 * @param array      $kses_for Define field name to use wp_kses for instead of sanitize_text_field.
+	 * @param string|int $key      Do not use outside of this function. It's for internal use.
 	 * @return array
 	 */
 	public static function sanitizeRecursive( $value, $kses_for = array(), $key = null ) {
@@ -144,9 +153,8 @@ class _Array {
 			foreach ( $value as $_key => $_value ) {
 				$value[ $_key ] = self::sanitizeRecursive( $_value, $kses_for, $_key );
 			}
-
-		} else if( is_string( $value ) ) {
-			$value = in_array( $key, $kses_for ) ? _String::applyKses( $value ) : sanitize_text_field( $value );
+		} elseif ( is_string( $value ) ) {
+			$value = in_array( $key, $kses_for, true ) ? _String::applyKses( $value ) : sanitize_text_field( $value );
 		}
 
 		return $value;
@@ -177,14 +185,14 @@ class _Array {
 	/**
 	 * Convert multidimensional array into one
 	 *
-	 * @param array $array
+	 * @param array $array The array to flatten
 	 * @return array
 	 */
 	public static function flattenArray( array $array ) {
 		$result = array();
-		foreach ($array as $element) {
-			if (is_array($element)) {
-				$result = array_merge($result, self::flattenArray($element));
+		foreach ( $array as $element ) {
+			if ( is_array( $element ) ) {
+				$result = array_merge( $result, self::flattenArray( $element ) );
 			} else {
 				$result[] = $element;
 			}

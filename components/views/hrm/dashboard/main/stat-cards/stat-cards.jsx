@@ -7,38 +7,37 @@ import curtains from '../../../../../images/curtains.svg';
 import style from './cards.module.scss';
 
 export function StatCards({ className = '' }) {
+    const {
+        applicationStats: {
+            total_jobs = 0,
+            total_applications = 0,
+            total_pending_applications = 0,
+            total_hired = 0
+        }
+    } = useContext(ContextBackendDashboard);
 
-	const {
-		applicationStats:{
-			total_jobs = 0,
-			total_applications = 0,
-			total_pending_applications = 0,
-			total_hired = 0
-		}
-	} = useContext(ContextBackendDashboard);
-
-	const card_stats = [
-		{
-			label: __('Total Job Posts'),
-			count: total_jobs,
-			icon: curtains
-		},
-		{
-			label: __('Total Applications'),
-			count: total_applications,
-			icon: curtains
-		},
-		{
-			label: __('Total Hired'),
-			count: total_hired,
-			icon: curtains
-		},
-		{
-			label: __('Total Pending'),
-			count: total_pending_applications,
-			icon: curtains
-		}
-	];
+    const card_stats = [
+        {
+            label: __('Total Job Posts'),
+            count: total_jobs,
+            icon: curtains
+        },
+        {
+            label: __('Total Applications'),
+            count: total_applications,
+            icon: curtains
+        },
+        {
+            label: __('Total Hired'),
+            count: total_hired,
+            icon: curtains
+        },
+        {
+            label: __('Total Pending'),
+            count: total_pending_applications,
+            icon: curtains
+        }
+    ];
 
     return (
         <div

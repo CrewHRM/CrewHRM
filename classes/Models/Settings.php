@@ -1,10 +1,18 @@
 <?php
+/**
+ * Plugin settings handler
+ *
+ * @package crewhrm
+ */
 
 namespace CrewHRM\Models;
 
 use CrewHRM\Helpers\_Array;
 use CrewHRM\Helpers\File;
 
+/**
+ * Settings manager class
+ */
 class Settings {
 	const KEY_COMPANY  = 'crewhrm_company_profile';
 	const KEY_SETTINGS = 'crewhrm_plugins_settings';
@@ -12,15 +20,15 @@ class Settings {
 	/**
 	 * Commn method to get settings for both
 	 *
-	 * @param string $source
+	 * @param string $source The source to get settings. Settings or company profile
 	 * @return array
 	 */
 	private static function get( string $source ) {
 		$defaults = array(
 			self::KEY_SETTINGS => array(
 				'careers_search'  => true,
-				'careers_sidebar' => true
-			)
+				'careers_sidebar' => true,
+			),
 		);
 
 		$data = get_option( $source );
@@ -34,24 +42,25 @@ class Settings {
 	/**
 	 * Get company profile from options and add dynamic meta data like image logo url
 	 *
-	 * @param string $name
-	 * @param mixed  $default
+	 * @param string $key     Optional specific settings name to get value. Otherwise returns whole settings.
+	 * @param mixed  $default Default value to return if the setting not found. Empty array will be provided if it is not singular one.
 	 * @return mixed
 	 */
 	public static function getCompanyProfile( $key = null, $default = null ) {
-		$data = self::get( self::KEY_COMPANY ); 
-		return $key !== null ? ( $data[ $key ] ?? $default ) : $data;
+		$data = self::get( self::KEY_COMPANY );
+		return null !== $key ? ( $data[ $key ] ?? $default ) : $data;
 	}
 
 	/**
 	 * Get plugin settings
 	 *
-	 * @param string|null $name
+	 * @param string|null $name    Settings name
+	 * @param mixed       $default Default return value
 	 * @return mixed
 	 */
 	public static function getSettings( $name = null, $default = null ) {
 		$data = self::get( self::KEY_SETTINGS );
-		
+
 		// Convert to kilobyte
 		$max_upload = self::getWpMaxUploadSize();
 
@@ -60,11 +69,11 @@ class Settings {
 			$data['attachment_max_upload_size'] = $max_upload;
 		}
 
-		return $name !== null ? ( $data[ $name ] ?? $default ) : $data;
+		return null !== $name ? ( $data[ $name ] ?? $default ) : $data;
 	}
 
 	/**
-	 * Get the max size in KB allowed for job application 
+	 * Get the max size in KB allowed for job application
 	 *
 	 * @return int
 	 */
@@ -84,7 +93,8 @@ class Settings {
 	/**
 	 * Get specific settings
 	 *
-	 * @param string $name
+	 * @param string $name    Get specific setting value
+	 * @param mixed  $default Default return value
 	 * @return mixed
 	 */
 	public static function getSetting( string $name, $default = null ) {
@@ -94,9 +104,8 @@ class Settings {
 	/**
 	 * Save company profile data coming from ideally settings page
 	 *
-	 * @param array  $data  Text type settings
-	 * @param string $name Option name to save under as it is used for both general settings and company profile
-	 * 
+	 * @param array  $data        Settings to save
+	 * @param string $option_name Option name to store the settings in
 	 * @return void
 	 */
 	public static function saveSettings( array $data, $option_name = self::KEY_SETTINGS ) {
@@ -110,7 +119,7 @@ class Settings {
 	/**
 	 * Save company profile
 	 *
-	 * @param array $data
+	 * @param array $data COmpany profile array to save
 	 * @return void
 	 */
 	public static function saveCompanyProfile( array $data ) {
@@ -128,7 +137,7 @@ class Settings {
 
 		// Then from global settings
 		if ( empty( $mail ) ) {
-			$mail = get_option('admin_email');
+			$mail = get_option( 'admin_email' );
 		}
 
 		return empty( $mail ) ? null : $mail;

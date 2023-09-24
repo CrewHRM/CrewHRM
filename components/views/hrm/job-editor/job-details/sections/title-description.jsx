@@ -128,7 +128,7 @@ export function TitleAndDescription() {
             <div className={'d-flex margin-bottom-30'.classNames()}>
                 <div className={'flex-1'.classNames()}>
                     <TextEditor
-						session={session}
+                        session={session}
                         onChange={(v) => onChange('job_description', v)}
                         value={values.job_description || ''}
                         placeholder={__(

@@ -1,4 +1,9 @@
 <?php
+/**
+ * Application related request handlers
+ *
+ * @package crewhrm
+ */
 
 namespace CrewHRM\Controllers;
 
@@ -10,36 +15,39 @@ use CrewHRM\Models\Mail;
 use CrewHRM\Models\Pipeline;
 use CrewHRM\Models\Settings;
 
+/**
+ * Application request controller class
+ */
 class ApplicationHandler {
 	const PREREQUISITES = array(
-		'applyToJob'           => array(
+		'applyToJob'             => array(
 			'nopriv' => true,
 		),
-		'getApplicationsList'  => array(
+		'getApplicationsList'    => array(
 			'role' => array(
 				'administrator',
 				'editor',
 			),
 		),
-		'getApplicationSingle' => array(
+		'getApplicationSingle'   => array(
 			'role' => array(
 				'administrator',
 				'editor',
 			),
 		),
-		'moveApplicationStage' => array(
+		'moveApplicationStage'   => array(
 			'role' => array(
 				'administrator',
 				'editor',
 			),
 		),
-		'mailToApplicant' => array(
+		'mailToApplicant'        => array(
 			'role' => array(
 				'administrator',
 				'editor',
 			),
 		),
-		'commentOnApplication' => array(
+		'commentOnApplication'   => array(
 			'role' => array(
 				'administrator',
 				'editor',
@@ -51,22 +59,22 @@ class ApplicationHandler {
 				'editor',
 			),
 		),
-		'getCareersListing' => array(
+		'getCareersListing'      => array(
 			'nopriv' => true,
 		),
-		'deleteApplication' => array(
+		'deleteApplication'      => array(
 			'role' => array(
-				'administrator', 
-				'editor'
+				'administrator',
+				'editor',
 			),
 		),
 	);
 
 	/**
-	 * Create application to job. 
+	 * Create application to job.
 	 * Note: There is no edit feature for job application. Just create on submission and retreieve in the application view.
 	 *
-	 * @param array $data
+	 * @param array $data Request data containing application informations
 	 * @return void
 	 */
 	public static function applyToJob( array $data ) {
@@ -88,7 +96,7 @@ class ApplicationHandler {
 	 */
 	public static function getApplicationsList( array $data ) {
 		$filter             = $data['filter'];
-		$is_qualified       = $filter !== 'disqualified';
+		$is_qualified       = 'disqualified' !== $filter;
 		$applications       = Application::getApplications( $filter );
 		$qualified_count    = 0;
 		$disqualified_count = 0;
@@ -105,19 +113,19 @@ class ApplicationHandler {
 			array(
 				'applications'       => $applications,
 				'qualified_count'    => $qualified_count,
-				'disqualified_count' => $disqualified_count
+				'disqualified_count' => $disqualified_count,
 			)
 		);
 	}
 
 	/**
 	 * Get single application profile
-	 * 
+	 *
 	 * @param array $data Request data
 	 * @return void
 	 */
 	public static function getApplicationSingle( array $data ) {
-		$application = Application::getSingleApplication( $data['job_id'], $data['application_id'] );
+		$application                    = Application::getSingleApplication( $data['job_id'], $data['application_id'] );
 		$application['recruiter_email'] = Settings::getRecruiterEmail();
 
 		wp_send_json_success(
@@ -130,7 +138,7 @@ class ApplicationHandler {
 	/**
 	 * Move singular application stage
 	 *
-	 * @param array $data
+	 * @param array $data Request data containing applications stage info
 	 * @return void
 	 */
 	public static function moveApplicationStage( array $data ) {
@@ -141,11 +149,11 @@ class ApplicationHandler {
 	/**
 	 * Send mail to applicant from single application view interface
 	 *
-	 * @param array $data
+	 * @param array $data Request datacontaining mail data
 	 * @return void
 	 */
 	public static function mailToApplicant( array $data ) {
-		
+
 		// Prepare attachment
 		$attachments = File::organizeUploadedHierarchy( $_FILES['mail'] ?? array(), false );
 		$tmp_names   = array_column( $attachments['attachments'] ?? array(), 'tmp_name' );
@@ -157,7 +165,7 @@ class ApplicationHandler {
 		);
 
 		// To Do: Add attachment support
-		$sent = (new Mail( $args ))->send();
+		$sent = ( new Mail( $args ) )->send();
 
 		if ( $sent ) {
 			wp_send_json_success( array( 'message' => __( 'Email sent!', 'crewhrm' ) ) );
@@ -169,7 +177,7 @@ class ApplicationHandler {
 	/**
 	 * Create comment on application from single application view
 	 *
-	 * @param array $data Request data
+	 * @param array $data Request data containing comments
 	 * @return void
 	 */
 	public static function commentOnApplication( array $data ) {
@@ -202,19 +210,18 @@ class ApplicationHandler {
 	/**
 	 * Provide listing for careers page
 	 *
-	 * @param array $data
+	 * @param array $data Request data containing careers filter arguments
 	 * @return void
 	 */
 	public static function getCareersListing( array $data ) {
 		$jobs = Job::getCareersListing( $data['filters'] );
 
-		// 
-		wp_send_json_success(
-			array(
-				'jobs' => array_values( $jobs['jobs'] ),
-				'departments' => $jobs['departments']
-			)
-		);
+				wp_send_json_success(
+					array(
+						'jobs'        => array_values( $jobs['jobs'] ),
+						'departments' => $jobs['departments'],
+					)
+				);
 	}
 
 	/**

@@ -35,10 +35,10 @@ export function Location() {
                         value={values.attendance_type || []}
                         onChange={(types) => onChange('attendance_type', types)}
                         options={Object.keys(attendance_types).map((a) => {
-                            return { 
-								id: a, 
-								label: attendance_types[a] 
-							};
+                            return {
+                                id: a,
+                                label: attendance_types[a]
+                            };
                         })}
                     />
                 </div>

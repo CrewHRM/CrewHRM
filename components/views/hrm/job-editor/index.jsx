@@ -22,11 +22,7 @@ const steps = [
     {
         id: 'job-details',
         label: __('Job Details'),
-		required: [
-			'job_title',
-			'department_id',
-			'job_description'
-		]
+        required: ['job_title', 'department_id', 'job_description']
     },
     {
         id: 'hiring-flow',
@@ -84,28 +80,29 @@ function getFieldsToSave(sections_fields) {
 }
 
 export function JobEditor() {
-	const {showWarning, closeWarning} = useContext(ContextWarning);
+    const { showWarning, closeWarning } = useContext(ContextWarning);
     let { job_id } = useParams();
     const { ajaxToast } = useContext(ContextToast);
-	const navigate = useNavigate();
-	const is_new = job_id==='new';
+    const navigate = useNavigate();
+    const is_new = job_id === 'new';
 
     const [state, setState] = useState({
-		edit_session: null,
-		autosaved_job: null,
+        edit_session: null,
+        autosaved_job: null,
         error_message: null,
-		saving_mode: null,
-		fetching: false,
-		session: null,
-		mounted: false,
+        saving_mode: null,
+        fetching: false,
+        session: null,
+        mounted: false,
         values: {}
     });
 
-	const [active_tab, setTab] = useState('job-details');
+    const [active_tab, setTab] = useState('job-details');
 
-	const active_index = steps.findIndex(s=>s.id===active_tab);
+    const active_index = steps.findIndex((s) => s.id === active_tab);
     const is_last_step = active_tab === steps[steps.length - 1].id;
-	const is_next_disabled = steps[active_index]?.required?.filter(f=>isEmpty(state.values[f]))?.length>0;
+    const is_next_disabled =
+        steps[active_index]?.required?.filter((f) => isEmpty(state.values[f]))?.length > 0;
 
     const onChange = (name, value) => {
         setState({
@@ -118,32 +115,32 @@ export function JobEditor() {
         });
     };
 
-	const onSaveClick=()=>{
-		if ( !is_last_step ) {
-			navigateTab(1);
-			return;
-		}
-		
-		saveJob(!is_last_step); 
-	}
+    const onSaveClick = () => {
+        if (!is_last_step) {
+            navigateTab(1);
+            return;
+        }
+
+        saveJob(!is_last_step);
+    };
 
     const saveJob = (auto) => {
-		// Save only if the required fields are filled no matter if it is auto or manual save
-		if (is_next_disabled) {
-			return;
-		}
-		
+        // Save only if the required fields are filled no matter if it is auto or manual save
+        if (is_next_disabled) {
+            return;
+        }
+
         setState({
-			...state,
-			saving_mode: auto ? 'auto' : 'manual',
+            ...state,
+            saving_mode: auto ? 'auto' : 'manual'
         });
 
-		const payload = {
-			job: {
-				...state.values, 
-				job_status: auto ? 'draft' : 'publish'
-			}
-		}
+        const payload = {
+            job: {
+                ...state.values,
+                job_status: auto ? 'draft' : 'publish'
+            }
+        };
 
         request('update_job', payload, (resp) => {
             const {
@@ -155,10 +152,10 @@ export function JobEditor() {
                 ajaxToast(resp);
             }
 
-			const new_state = {
-				...state,
-				saving_mode: null,
-			}
+            const new_state = {
+                ...state,
+                saving_mode: null
+            };
 
             // Add job id and address id to the job object
             if (success) {
@@ -170,21 +167,21 @@ export function JobEditor() {
                     };
                 });
 
-				new_state.values = {
-					...state.values,
-					hiring_flow,
-					job_id: job_id || state.values.job_id,
-					address_id: address_id || state.values.address_id,
-					edit_session: null,
-				}
+                new_state.values = {
+                    ...state.values,
+                    hiring_flow,
+                    job_id: job_id || state.values.job_id,
+                    address_id: address_id || state.values.address_id,
+                    edit_session: null
+                };
 
-				// Replace url state with job ID if it was new previously. So reload will be supported. 
-				if ( is_new ) {
-					navigate(`/dashboard/jobs/editor/${job_id}/`, {replace: true});
-				}
+                // Replace url state with job ID if it was new previously. So reload will be supported.
+                if (is_new) {
+                    navigate(`/dashboard/jobs/editor/${job_id}/`, { replace: true });
+                }
             }
 
-			setState(new_state);
+            setState(new_state);
         });
     };
 
@@ -195,22 +192,22 @@ export function JobEditor() {
             tab = steps[current_index + tab]?.id;
         }
 
-		if (tab) {
-			setTab(tab);
-		}
+        if (tab) {
+            setTab(tab);
+        }
     };
 
     const getJob = () => {
-		console.log(is_new)
+        console.log(is_new);
         if (is_new) {
             // As it is new, just use predefined template at mount time
             setState({
                 ...state,
-				session: getRandomString(),
+                session: getRandomString(),
                 values: {
                     job_id: 0,
                     hiring_flow,
-                    application_form: getFieldsToSave(sections_fields),
+                    application_form: getFieldsToSave(sections_fields)
                 }
             });
             return;
@@ -224,73 +221,68 @@ export function JobEditor() {
         request('get_single_job_edit', { job_id }, (resp) => {
             const {
                 success,
-                data: { 
-					job = {}, 
-					autosaved_job, 
-					message = __('Something went wrong!') 
-				}
+                data: { job = {}, autosaved_job, message = __('Something went wrong!') }
             } = resp;
 
             setState({
                 ...state,
                 values: {
                     ...job,
-					hiring_flow: isEmpty(job.hiring_flow) ? hiring_flow : job.hiring_flow,
-                    application_form: isEmpty( job.application_form ) ? getFieldsToSave(sections_fields) : job.application_form
+                    hiring_flow: isEmpty(job.hiring_flow) ? hiring_flow : job.hiring_flow,
+                    application_form: isEmpty(job.application_form)
+                        ? getFieldsToSave(sections_fields)
+                        : job.application_form
                 },
-				session: getRandomString(),
-				autosaved_job,
+                session: getRandomString(),
+                autosaved_job,
                 fetching: false,
                 error_message: !success ? message : null
             });
         });
     };
 
-	// Load the job in editor from server whenever job_id change in url
+    // Load the job in editor from server whenever job_id change in url
     useEffect(() => {
         getJob();
     }, [job_id]);
 
-	// Auto save job after certain times
-	useEffect(()=>{
+    // Auto save job after certain times
+    useEffect(() => {
+        if (!state.edit_session) {
+            return;
+        }
 
-		if ( !state.edit_session ) {
-			return;
-		}
+        const timer = window.setTimeout(() => {
+            saveJob(true);
+        }, 3000);
 
-		const timer = window.setTimeout(() => {
-        	saveJob(true);
-		}, 3000);
+        return () => {
+            window.clearTimeout(timer);
+        };
+    }, [state.edit_session]);
 
-		return ()=>{
-			window.clearTimeout(timer);
-		}
-		
-	}, [state.edit_session]);
+    // Show prompt to reinstate auto saved job from any previous session.
+    useEffect(() => {
+        if (!state.autosaved_job) {
+            return;
+        }
 
-	// Show prompt to reinstate auto saved job from any previous session.
-	useEffect(()=>{
-		if( !state.autosaved_job ) {
-			return;
-		}
+        showWarning(
+            __('There is an auto saved version of this job. Would you like to restore?'),
+            () => {
+                setState({
+                    ...state,
+                    autosaved_job: null,
+                    values: state.autosaved_job
+                });
 
-		showWarning(
-			__('There is an auto saved version of this job. Would you like to restore?'), 
-			()=>{
-				setState({
-					...state,
-					autosaved_job: null,
-					values: state.autosaved_job
-				});
-				
-				closeWarning();
-			},
-			null,
-			__('Restore'),
-			__('No')
-		);
-
-	}, [state.autosaved_job]);
+                closeWarning();
+            },
+            null,
+            __('Restore'),
+            __('No')
+        );
+    }, [state.autosaved_job]);
 
     if (state.error_message) {
         return (
@@ -300,53 +292,57 @@ export function JobEditor() {
         );
     }
 
-	if ( !state.session && state.fetching ) {
-		return <InitState fetching={state.fetching}/>
-	}
+    if (!state.session && state.fetching) {
+        return <InitState fetching={state.fetching} />;
+    }
 
     return (
-        <ContextJobEditor.Provider value={{
-			values: state.values, 
-			onChange, 
-			navigateTab, 
-			onSaveClick, 
-			is_next_disabled, 
-			saving_mode: state.saving_mode,
-			session: state.session}}>
-
+        <ContextJobEditor.Provider
+            value={{
+                values: state.values,
+                onChange,
+                navigateTab,
+                onSaveClick,
+                is_next_disabled,
+                saving_mode: state.saving_mode,
+                session: state.session
+            }}
+        >
             <StickyBar title="Job Editor">
                 {[
                     <div key="log" className={'text-align-center'.classNames()}>
-						<div className={'d-inline-block'.classNames()}>
-							<LogoExtended height={16}/>
-						</div>
+                        <div className={'d-inline-block'.classNames()}>
+                            <LogoExtended height={16} />
+                        </div>
                     </div>,
                     <div
                         key="action"
                         className={'d-flex align-items-center column-gap-20 justify-content-end'.classNames()}
                     >
-						<Conditional show={state.saving_mode === 'auto'}>
-							<span
+                        <Conditional show={state.saving_mode === 'auto'}>
+                            <span
                                 className={'font-size-15 font-weight-400 letter-spacing--3 color-text-light margin-right-20'.classNames()}
                             >
                                 {__('Auto saving ...')}
                             </span>
-						</Conditional>
-						
-						<Conditional show={is_last_step}>
-							<Link
+                        </Conditional>
+
+                        <Conditional show={is_last_step}>
+                            <Link
                                 className={'button button-primary button-outlined'.classNames()}
-								target='_blank'
-								to={`${state.values.job_permalink}?preview=1`}
+                                target="_blank"
+                                to={`${state.values.job_permalink}?preview=1`}
                             >
                                 {__('Preview Job')}
                             </Link>
-						</Conditional>
-						
+                        </Conditional>
+
                         <button
                             className={'button button-primary'.classNames()}
-                            disabled={is_next_disabled || state.saving_mode != null || !state.edit_session}
-							onClick={onSaveClick}
+                            disabled={
+                                is_next_disabled || state.saving_mode != null || !state.edit_session
+                            }
+                            onClick={onSaveClick}
                         >
                             {is_last_step ? __('Publish') : __('Save & Continue')}
                         </button>

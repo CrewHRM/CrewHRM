@@ -1,12 +1,20 @@
 <?php
+/**
+ * File related activities
+ *
+ * @package crewhrm
+ */
 
 namespace CrewHRM\Helpers;
 
+/**
+ * File handler class
+ */
 class File {
 	/**
 	 * Find file object in array and assign dynamic file URL
 	 *
-	 * @param array $contents
+	 * @param array $contents The content array to assign dynamic url to
 	 * @return array
 	 */
 	public static function applyDynamics( array $contents ) {
@@ -29,8 +37,8 @@ class File {
 	/**
 	 * Delete WP files
 	 *
-	 * @param int|array $file_id File ID or array of files IDs
-	 * @param bool $force_delete Whether to bypass trash and delete permanently. Default false which means move to trash.
+	 * @param int|array $file_id      File ID or array of files IDs
+	 * @param bool      $force_delete Whether to bypass trash and delete permanently. Default false which means move to trash.
 	 * @return void
 	 */
 	public static function deleteFile( $file_id, $force_delete = false ) {
@@ -46,7 +54,7 @@ class File {
 	/**
 	 * Organize uploaded files hierarchy
 	 *
-	 * @param array $file
+	 * @param array $file_s The file holder array to organize
 	 * @return array
 	 */
 	public static function organizeUploadedHierarchy( array $file_s ) {
@@ -72,17 +80,17 @@ class File {
 					$new_array[ $post_name ][ $column ] = $data_list;
 					continue;
 				}
-				
+
 				foreach ( $data_list as $index => $data ) {
 					if ( ! isset( $new_array[ $post_name ][ $index ] ) ) {
 						$new_array[ $post_name ][ $index ] = array();
 					}
-				
+
 					$new_array[ $post_name ][ $index ][ $column ] = $data;
 				}
 			}
 		}
-		
+
 		return $new_array;
 	}
 }

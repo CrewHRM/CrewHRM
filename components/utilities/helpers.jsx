@@ -2,68 +2,78 @@ import { tz } from 'moment-timezone';
 import icons from '../icons/crewhrm/style.module.scss';
 
 export function getElementDataSet(element) {
-    let { dataset = {} } = element;
-    let data = {};
+	let { dataset = {} } = element;
+	let data = {};
 
-    for (let k in dataset) {
-        let _json;
-        try {
-            _json = JSON.parse(dataset[k]);
-        } catch (error) {}
+	for (let k in dataset) {
+		let _json;
+		try {
+			_json = JSON.parse(dataset[k]);
+		} catch (error) {
+			console.log(error);
+		}
 
-        data[k] = _json ? _json : dataset[k];
-    }
+		data[k] = _json ? _json : dataset[k];
+	}
 
-    return data;
+	return data;
 }
 
 export function getRandomString() {
-    const timestamp = new Date().getTime().toString();
-    const randomPortion = Math.random().toString(36).substring(2);
-    return '_' + timestamp + randomPortion;
+	const timestamp = new Date().getTime().toString();
+	const randomPortion = Math.random().toString(36).substring(2);
+	return '_' + timestamp + randomPortion;
 }
 
 export function __(txt) {
-    const { __ } = window.wp?.i18n || {};
-    return typeof __ == 'function' ? __(txt, 'crewhrm') : txt;
+	const { __ } = window.wp?.i18n || {};
+	return typeof __ == 'function' ? __(txt, 'crewhrm') : txt;
 }
 
 export function sprintf(str, ...params) {
-    let find = '%s';
+	let find = '%s';
 
-    while (true) {
-        let replace = params.shift();
-        if (replace === undefined || str.indexOf(find) === -1) {
-            break;
-        }
+	while (true) {
+		let replace = params.shift();
+		if (replace === undefined || str.indexOf(find) === -1) {
+			break;
+		}
 
-        str = str.replace(find, replace);
-    }
+		str = str.replace(find, replace);
+	}
 
-    return str;
+	return str;
 }
 
 export function getFlag(countryCode) {
-    const codePoints = (countryCode || '')
-        .toUpperCase()
-        .split('')
-        .map((char) => 127397 + char.charCodeAt());
-    return String.fromCodePoint(...codePoints);
+	const codePoints = (countryCode || '')
+		.toUpperCase()
+		.split('')
+		.map((char) => 127397 + char.charCodeAt());
+	return String.fromCodePoint(...codePoints);
 }
 
 export function replaceUrlsWithAnchors(text, props = {}) {
 	if (typeof text !== 'string') {
-        return text;
-    }
+		return text;
+	}
 
-    let { className = '' } = props;
+	let { className = '' } = props;
 
 	// Regular expression to match URLs in the text
-	var urlRegex = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
+	var urlRegex = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gi;
 
 	// Replace URLs with anchor tags
-	var replacedText = text.replace(urlRegex, function(url) {
-		return '<a href="' + url + '" target="_blank" rel="noopener noreferrer nofollow" class="'+className+'">' + url + '</a>';
+	var replacedText = text.replace(urlRegex, function (url) {
+		return (
+			'<a href="' +
+            url +
+            '" target="_blank" rel="noopener noreferrer nofollow" class="' +
+            className +
+            '">' +
+            url +
+            '</a>'
+		);
 	});
 
 	replacedText = replacedText.replaceAll('\n', '<br/>');
@@ -72,69 +82,69 @@ export function replaceUrlsWithAnchors(text, props = {}) {
 }
 
 export function getSocialIcon(url) {
-    const { host } = new URL(url);
-    const brand = host.slice(0, host.indexOf('.'));
-    const class_name = 'ch-icon-' + brand;
-    const final_class = `ch-icon ${icons[class_name] ? class_name : 'ch-icon-anchor'}`.classNames();
+	const { host } = new URL(url);
+	const brand = host.slice(0, host.indexOf('.'));
+	const class_name = 'ch-icon-' + brand;
+	const final_class = `ch-icon ${icons[class_name] ? class_name : 'ch-icon-anchor'}`.classNames();
 
-    return final_class;
+	return final_class;
 }
 
 export function getCountries(ret_array = false, lang = 'en') {
-    const A = 65;
-    const Z = 90;
-    const countryName = new Intl.DisplayNames([lang], { type: 'region' });
-    const countries = {};
-    const countries_array = [];
+	const A = 65;
+	const Z = 90;
+	const countryName = new Intl.DisplayNames([lang], { type: 'region' });
+	const countries = {};
+	const countries_array = [];
 
-    for (let i = A; i <= Z; ++i) {
-        for (let j = A; j <= Z; ++j) {
-            let code = String.fromCharCode(i) + String.fromCharCode(j);
-            let name = countryName.of(code);
-            if (code !== name) {
-                if (ret_array) {
-                    countries_array.push({
-                        id: code,
-                        label: name
-                    });
-                } else {
-                    countries[code] = name;
-                }
-            }
-        }
-    }
+	for (let i = A; i <= Z; ++i) {
+		for (let j = A; j <= Z; ++j) {
+			let code = String.fromCharCode(i) + String.fromCharCode(j);
+			let name = countryName.of(code);
+			if (code !== name) {
+				if (ret_array) {
+					countries_array.push({
+						id: code,
+						label: name
+					});
+				} else {
+					countries[code] = name;
+				}
+			}
+		}
+	}
 
-    return ret_array ? countries_array : countries;
+	return ret_array ? countries_array : countries;
 }
 
 export function copyToClipboard(text, addToast) {
-    navigator.clipboard
-        .writeText(text)
-        .then(() => {
-            addToast(__('Copied to clipboard'));
-        })
-        .catch((error) => {
-            addToast(__('Error copying to clipboard'));
-        });
+	navigator.clipboard
+		.writeText(text)
+		.then(() => {
+			addToast(__('Copied to clipboard'));
+		})
+		.catch((error) => {
+			console.log(error);
+			addToast(__('Error copying to clipboard'));
+		});
 }
 
 export function getInitials(name) {
-    const words = name.trim().split(' ');
+	const words = name.trim().split(' ');
 
-    if (words.length === 0) {
-        return '';
-    }
+	if (words.length === 0) {
+		return '';
+	}
 
-    const initials = words
-        .map((word) => word.charAt(0).toUpperCase())
-        .join('')
-        .substring(0, 2);
+	const initials = words
+		.map((word) => word.charAt(0).toUpperCase())
+		.join('')
+		.substring(0, 2);
 
-    return initials;
+	return initials;
 }
 
 export function generateBackgroundColor(name) {
-
 	// Generate a hash value from the user's name
 	let hash = 0;
 	for (let i = 0; i < name.length; i++) {
@@ -142,23 +152,22 @@ export function generateBackgroundColor(name) {
 	}
 
 	// Use a fixed range of hues (0-360 degrees) based on the hash value for consistency
-	const hue = (Math.abs(hash) % 360);
+	const hue = Math.abs(hash) % 360;
 
 	// Use random saturation and lightness values for variability
 	const saturation = 30 + 0.5 * 40; // Adjust the range (40) for more variability
-	const lightness = 40 + 0.5 * 40;  // Adjust the range (40) for more variability
+	const lightness = 40 + 0.5 * 40; // Adjust the range (40) for more variability
 	const color = `hsl(${hue}, ${saturation}%, ${lightness}%)`;
 
 	return color;
 }
 
-export function getFileId( file ) {
-	if ( file instanceof File ) {
+export function getFileId(file) {
+	if (file instanceof File) {
 		// If it is uploaded file from system
-		const {lastModified, name, size, type} = file;
+		const { lastModified, name, size, type } = file;
 		return lastModified + '_' + size + '_' + type + '_' + (name || '').replaceAll(' ', '_');
-
-	} else if ( typeof file === 'object' ) {
+	} else if (typeof file === 'object') {
 		// If it is from WP media selection
 		return file.file_id;
 	}
@@ -170,20 +179,19 @@ export function scrollLock(lock) {
 }
 
 export function getAddress({ street_address, city, province, zip_code, country_code }) {
-    return [street_address, city, province + ' ' + zip_code, countries_object[country_code]]
-        .map((a) => (a || '').trim())
-        .filter((a) => a)
-        .join(', ');
+	return [street_address, city, province + ' ' + zip_code, countries_object[country_code]]
+		.map((a) => (a || '').trim())
+		.filter((a) => a)
+		.join(', ');
 }
 
 export function filterUniqueColumn(array, column) {
-	
-	let _values   = [];
-	
-	return array.filter(a=>{
+	let _values = [];
+
+	return array.filter((a) => {
 		let _v = a[column];
 
-		if ( _values.indexOf(_v) > -1 ) {
+		if (_values.indexOf(_v) > -1) {
 			return false;
 		}
 
@@ -195,8 +203,8 @@ export function filterUniqueColumn(array, column) {
 export function filterObject(ob, cb) {
 	const new_object = {};
 
-	for ( let k in ob ) {
-		if ( cb( ob[k], k ) ) {
+	for (let k in ob) {
+		if (cb(ob[k], k)) {
 			new_object[k] = ob[k];
 		}
 	}
@@ -225,7 +233,7 @@ export function isEmpty(value, treatNumericAsEmpty = false) {
 	}
 
 	// Check for empty strings
-	if (typeof value === 'string' && (value.trim() === '' || !hasTextInHTML( value ))) {
+	if (typeof value === 'string' && (value.trim() === '' || !hasTextInHTML(value))) {
 		return true;
 	}
 
@@ -249,41 +257,41 @@ export function isEmpty(value, treatNumericAsEmpty = false) {
 
 // Caluclatate JSON object size including text, file etc.
 export function calculateJSONSizeInKB(jsonObject) {
-    function calculateSize(obj) {
-        if (typeof obj === 'object' && obj instanceof File) {
-            // If it's a File object, add its size
-            return obj.size;
-        } else if (typeof obj === 'object') {
-            let size = 0;
-            if (Array.isArray(obj)) {
-                for (const item of obj) {
-                    size += calculateSize(item);
-                }
-            } else {
-                for (const key in obj) {
-                    size += calculateSize(obj[key]);
-                }
-            }
-            return size;
-        } else if (typeof obj === 'string') {
-            // Estimate the size of the string as bytes (UTF-16 encoding)
-            return obj.length * 2;
-        } else  {
-            // For other types, assume a small constant size
-            return 16; // Adjust as needed
-        }
-    }
+	function calculateSize(obj) {
+		if (typeof obj === 'object' && obj instanceof File) {
+			// If it's a File object, add its size
+			return obj.size;
+		} else if (typeof obj === 'object') {
+			let size = 0;
+			if (Array.isArray(obj)) {
+				for (const item of obj) {
+					size += calculateSize(item);
+				}
+			} else {
+				for (const key in obj) {
+					size += calculateSize(obj[key]);
+				}
+			}
+			return size;
+		} else if (typeof obj === 'string') {
+			// Estimate the size of the string as bytes (UTF-16 encoding)
+			return obj.length * 2;
+		} else {
+			// For other types, assume a small constant size
+			return 16; // Adjust as needed
+		}
+	}
 
-    // Calculate the size recursively
-    const sizeInBytes = calculateSize(jsonObject);
+	// Calculate the size recursively
+	const sizeInBytes = calculateSize(jsonObject);
 
-    // Convert bytes to kilobytes (KB)
-    const sizeInKB = sizeInBytes / 1024;
+	// Convert bytes to kilobytes (KB)
+	const sizeInKB = sizeInBytes / 1024;
 
-    return sizeInKB;
+	return sizeInKB;
 }
 
-export function parseParams( searchParam ) {
+export function parseParams(searchParam) {
 	const queryParams = {};
 	for (const [key, value] of searchParam) {
 		queryParams[key] = value;
@@ -291,32 +299,30 @@ export function parseParams( searchParam ) {
 	return queryParams;
 }
 
-export function storage(name, local=false) {
+export function storage(name, local = false) {
 	const store = local ? 'localStorage' : 'sessionStorage';
 	const _name = 'crewhrm_' + name;
 
 	return {
-		setItem : (value) => {
-			window[store].setItem(_name, JSON.stringify( value ) );
+		setItem: (value) => {
+			window[store].setItem(_name, JSON.stringify(value));
 		},
 		getItem: (_default) => {
 			let json;
 			try {
-				json = JSON.parse( window[store].getItem( _name ) );
-			} catch(e) {
-
-			}
+				json = JSON.parse(window[store].getItem(_name));
+			} catch (e) {}
 			return json ?? _default;
 		},
-		removeItem:()=>{
+		removeItem: () => {
 			window[store].removeItem(_name);
 		}
-	}
+	};
 }
 
 export const is_production = process.env.NODE_ENV === 'production';
 export const countries_array = getCountries(true);
 export const countries_object = getCountries(false);
 export const timezones_array = tz.names().map((z) => {
-    return { id: z, label: z };
+	return { id: z, label: z };
 });

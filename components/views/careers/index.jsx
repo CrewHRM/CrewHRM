@@ -8,13 +8,13 @@ import { MountPoint } from '../../materials/mountpoint.jsx';
 import { Listing } from './listing/listing.jsx';
 import { Single } from './single/single.jsx';
 
-function CareersRouter({ base_permalink, settings={} }) {
+function CareersRouter({ base_permalink, settings = {} }) {
     return (
         <BrowserRouter>
             <Routes>
                 <Route
                     path={`/${base_permalink}/`}
-                    element={<Listing base_permalink={base_permalink} settings={settings}/>}
+                    element={<Listing base_permalink={base_permalink} settings={settings} />}
                 />
                 <Route
                     path={`/${base_permalink}/:job_id/:job_action?/`}

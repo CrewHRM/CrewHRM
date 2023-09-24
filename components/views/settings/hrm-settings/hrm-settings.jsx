@@ -14,7 +14,7 @@ import { ContextToast } from '../../../materials/toast/toast.jsx';
 export const ContextSettings = createContext();
 
 function Wrapper({ children }) {
-    const { clearHistory, can_go_next, values={}, onChange } = useContext(ContextHistoryFields);
+    const { clearHistory, can_go_next, values = {}, onChange } = useContext(ContextHistoryFields);
 
     const { ajaxToast } = useContext(ContextToast);
 

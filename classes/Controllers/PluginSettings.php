@@ -1,9 +1,17 @@
 <?php
+/**
+ * Plugin settings related controller
+ *
+ * @package crewhrm
+ */
 
 namespace CrewHRM\Controllers;
 
 use CrewHRM\Models\Settings;
 
+/**
+ * The controller class to manage plugin settings
+ */
 class PluginSettings {
 	const PREREQUISITES = array(
 		'saveSettings' => array(

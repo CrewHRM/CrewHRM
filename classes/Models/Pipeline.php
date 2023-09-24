@@ -1,16 +1,24 @@
 <?php
+/**
+ * Application pipeline logics
+ *
+ * @package crewhrm
+ */
 
 namespace CrewHRM\Models;
 
 use CrewHRM\Helpers\_Array;
 
+/**
+ * Pipeline manager class
+ */
 class Pipeline {
 	/**
 	 * Create pipeline entry
 	 *
-	 * @param int $application_id
-	 * @param int $stage_id
-	 * @param int $action_taker_id
+	 * @param int $application_id  Application ID
+	 * @param int $stage_id        Stage ID
+	 * @param int $action_taker_id The user ID who takes the action
 	 * @return void
 	 */
 	public static function create( $application_id, $stage_id, $action_taker_id ) {
@@ -29,9 +37,9 @@ class Pipeline {
 	 * Get activity/pipeline for an application.
 	 * -----------------------------------------
 	 * We're combining all type of activities in a single array without pagination.
-	 * Because single applicant acitvity log is never expected to be bigger than 100 which also too long in this case. 
+	 * Because single applicant acitvity log is never expected to be bigger than 100 which also too long in this case.
 	 *
-	 * @param int $application_id
+	 * @param int $application_id Application ID
 	 * @return array|null
 	 */
 	public static function getPipeLine( $application_id ) {
@@ -53,7 +61,7 @@ class Pipeline {
 			'type'       => 'apply',
 			'by'         => $application['first_name'] . ' ' . $application['last_name'],
 			'avatar_url' => null,
-			'timestamp'  => $application['timestamp']
+			'timestamp'  => $application['timestamp'],
 		);
 
 		// ---------------- Add comments ----------------
@@ -64,14 +72,14 @@ class Pipeline {
 				'by'         => $comment['commenter_name'],
 				'avatar_url' => get_avatar_url( $comment['commenter_id'] ),
 				'comment'    => $comment['comment_content'],
-				'timestamp'  => $comment['timestamp']
+				'timestamp'  => $comment['timestamp'],
 			);
 		}
 
 		// --------------- Add application stage changes ---------------
 		$logs = $wpdb->get_results(
 			$wpdb->prepare(
-				"SELECT 
+				'SELECT 
 					pipe.application_id, 
 					pipe.stage_id, 
 					pipe.action_taker_id, 
@@ -79,8 +87,8 @@ class Pipeline {
 					stage.stage_name, 
 					_user.display_name AS action_taker_name
 				FROM 
-					" . DB::pipeline() . " pipe
-					LEFT JOIN " . DB::stages() . " stage ON pipe.stage_id=stage.stage_id
+					' . DB::pipeline() . ' pipe
+					LEFT JOIN ' . DB::stages() . " stage ON pipe.stage_id=stage.stage_id
 					LEFT JOIN {$wpdb->users} _user ON pipe.action_taker_id=_user.ID
 				WHERE
 					pipe.application_id=%d",
@@ -105,7 +113,7 @@ class Pipeline {
 		}
 
 		// ---------- Now sort all by timestamp ----------
-		$_pipeline = array();
+		$_pipeline  = array();
 		$timestamps = array_unique( array_column( $pipeline, 'timestamp' ) );
 		rsort( $timestamps );
 
