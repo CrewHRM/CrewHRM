@@ -9,13 +9,12 @@ import { ApplicationForm } from './application-form/application-form.jsx';
 import { sections_fields } from './application-form/form-structure.jsx';
 import { request } from '../../../utilities/request.jsx';
 import { ContextToast } from '../../../materials/toast/toast.jsx';
-import { LoadingIcon } from '../../../materials/loading-icon/loading-icon.jsx';
 import { Conditional } from '../../../materials/conditional.jsx';
 import { ContextWarning } from '../../../materials/warning/warning.jsx';
-
-import logo_extended from '../../../images/logo-extended.svg';
-import style from './editor.module.scss';
 import { InitState } from '../../../materials/init-state.jsx';
+import { LogoExtended } from '../../../materials/dynamic-svg/logo-extended.jsx';
+
+import style from './editor.module.scss';
 
 export const ContextJobEditor = createContext();
 
@@ -318,11 +317,9 @@ export function JobEditor() {
             <StickyBar title="Job Editor">
                 {[
                     <div key="log" className={'text-align-center'.classNames()}>
-                        <img
-                            src={logo_extended}
-                            style={{ width: 'auto', height: '16px' }}
-                            className={'d-inline-block'.classNames()}
-                        />
+						<div className={'d-inline-block'.classNames()}>
+							<LogoExtended height={16}/>
+						</div>
                     </div>,
                     <div
                         key="action"

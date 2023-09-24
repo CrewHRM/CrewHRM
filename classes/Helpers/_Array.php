@@ -173,4 +173,22 @@ class _Array {
 
 		return $array;
 	}
+
+	/**
+	 * Convert multidimensional array into one
+	 *
+	 * @param array $array
+	 * @return array
+	 */
+	public static function flattenArray( array $array ) {
+		$result = array();
+		foreach ($array as $element) {
+			if (is_array($element)) {
+				$result = array_merge($result, self::flattenArray($element));
+			} else {
+				$result[] = $element;
+			}
+		}
+		return $result;
+	}
 }

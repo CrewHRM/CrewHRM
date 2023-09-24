@@ -128,7 +128,7 @@ class Application {
 			},
 			$_applications
 		);
-		$attachment_ids = array_merge( ...$attachment_ids,  );
+		$attachment_ids = _Array::flattenArray( $attachment_ids );
 
 		// Add resume IDs into the array
 		$resume_file_ids = array_filter(
@@ -137,7 +137,7 @@ class Application {
 				'resume_file_id'
 			)
 		);
-		$attachment_ids = array_filter( array_merge( $attachment_ids, $resume_file_ids ) );
+		$attachment_ids = array_unique( array_filter( array_merge( $attachment_ids, $resume_file_ids ) ) );
 
 		// Now delete all the files together
 		File::deleteFile( $attachment_ids, true );
