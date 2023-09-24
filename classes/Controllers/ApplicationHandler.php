@@ -148,7 +148,7 @@ class ApplicationHandler {
 		
 		// Prepare attachment
 		$attachments = File::organizeUploadedHierarchy( $_FILES['mail'] ?? array(), false );
-		$tmp_names   = array_column( $attachments, 'tmp_name' );
+		$tmp_names   = array_column( $attachments['attachments'] ?? array(), 'tmp_name' );
 
 		// Prepare mailer arg
 		$args = array_merge(

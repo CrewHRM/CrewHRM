@@ -40,9 +40,6 @@ class Mail {
 		// Register mailer from address hook
 		add_filter( 'wp_mail_from', array( $this, 'get_from_address' ) );
 
-
-		error_log( var_export( $attachments, true ) );
-
 		// Send mail
 		$sent = wp_mail( $to, $subject, $body, $headers, $attachments );
 
