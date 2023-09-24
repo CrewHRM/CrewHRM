@@ -70,7 +70,7 @@ class ApplicationHandler {
 	 * @return void
 	 */
 	public static function applyToJob( array $data ) {
-		$files          = File::organizeUploadedFiles( $_FILES['application'] ?? array() );
+		$files          = File::organizeUploadedHierarchy( $_FILES['application'] ?? array() );
 		$application_id = Application::createApplication( $data['application'], $files );
 
 		if ( empty( $application_id ) ) {
@@ -145,16 +145,19 @@ class ApplicationHandler {
 	 * @return void
 	 */
 	public static function mailToApplicant( array $data ) {
-		// Mail array
-		$mail = $data['mail'];
-
+		
 		// Prepare attachment
-		if ( isset( $_FILES['attachment'] ) && $_FILES['attachment']['error'] === UPLOAD_ERR_OK ) {
-			$mail['attachment_path'] = $_FILES['attachment']['tmp_name'];
-		}
+		$attachments = File::organizeUploadedHierarchy( $_FILES['mail'] ?? array(), false );
+		$tmp_names   = array_column( $attachments, 'tmp_name' );
+
+		// Prepare mailer arg
+		$args = array_merge(
+			$data['mail'],
+			array( 'attachments' => $tmp_names )
+		);
 
 		// To Do: Add attachment support
-		$sent = (new Mail( $data['mail'] ))->send();
+		$sent = (new Mail( $args ))->send();
 
 		if ( $sent ) {
 			wp_send_json_success( array( 'message' => __( 'Email sent!', 'crewhrm' ) ) );

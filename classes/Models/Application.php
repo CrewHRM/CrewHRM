@@ -61,7 +61,6 @@ class Application {
 		// Insert attachments
 		$attachment_ids = array();
 		$attachments    = $files['file_attachment'] ?? array();
-		$attachments    = File::organizeUploadedFiles( $attachments );
 		
 		foreach ( $attachments as $attachment ) {
 			$name   = 'Attachment-' . $app_id . '-' . _String::getRandomString();

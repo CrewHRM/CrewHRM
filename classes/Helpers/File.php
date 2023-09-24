@@ -27,26 +27,6 @@ class File {
 	}
 
 	/**
-	 * Organize upload files hierarchically.
-	 *
-	 * @param array $files
-	 * @return array
-	 */
-	public static function organizeUploadedFiles( array $files ) {
-		$organizedFiles = [];
-
-		foreach ($files as $key => $value) {
-			if (is_array($value)) {
-				foreach ($value as $index => $fileInfo) {
-					$organizedFiles[$index][$key] = $fileInfo;
-				}
-			}
-		}
-
-		return $organizedFiles;
-	}
-
-	/**
 	 * Delete WP files
 	 *
 	 * @param int|array $file_id File ID or array of files IDs
@@ -61,5 +41,48 @@ class File {
 		foreach ( $file_id as $id ) {
 			wp_delete_attachment( $id, $force_delete );
 		}
+	}
+
+	/**
+	 * Organize uploaded files hierarchy
+	 *
+	 * @param array $file
+	 * @return array
+	 */
+	public static function organizeUploadedHierarchy( array $file_s ) {
+		$new_array = array();
+
+		$columns = array( 'name', 'size', 'type', 'tmp_name', 'error' );
+
+		// Loop through data types like name, tmp_name etc.
+		foreach ( $columns as $column ) {
+
+			if ( ! isset( $file_s[ $column ] ) ) {
+				continue;
+			}
+
+			// Loop through data
+			foreach ( $file_s[ $column ] as $post_name => $data_list ) {
+
+				if ( ! isset( $new_array[ $post_name ] ) ) {
+					$new_array[ $post_name ] = array();
+				}
+
+				if ( ! is_array( $data_list ) ) {
+					$new_array[ $post_name ][ $column ] = $data_list;
+					continue;
+				}
+				
+				foreach ( $data_list as $index => $data ) {
+					if ( ! isset( $new_array[ $post_name ][ $index ] ) ) {
+						$new_array[ $post_name ][ $index ] = array();
+					}
+				
+					$new_array[ $post_name ][ $index ][ $column ] = $data;
+				}
+			}
+		}
+		
+		return $new_array;
 	}
 }

@@ -2,6 +2,7 @@ import React, { useRef, useState } from 'react';
 
 import style from './upload.module.scss';
 import { __, getFileId } from '../../utilities/helpers.jsx';
+import { ListFile } from '../file-list.jsx';
 
 /**
  * Returns a set of options, computed from the attached image data and
@@ -122,11 +123,9 @@ export function FileUpload(props) {
         _onChange(files.slice(0, maxlenth));
     };
 
-    const removeFile = (e, id) => {
-        e.stopPropagation();
-
+    const removeFile = (index) => {
         const _files = stateFiles;
-        _files.splice(id, 1);
+        _files.splice(index, 1);
         _onChange(_files);
     };
 
@@ -139,7 +138,8 @@ export function FileUpload(props) {
     };
 
     const openPicker = () => {
-        if (!WpMedia) {
+		// Open file system media picker if notto use WP API
+        if ( ! WpMedia ) {
 			input_ref.value = '';
             input_ref.current.click();
             return;
@@ -294,31 +294,11 @@ export function FileUpload(props) {
                 </div>
                 <Input />
             </div>
-            {stateFiles.map((file, index) => {
-				
-				const file_name = file instanceof File ? file.name : file.file_name;
-				const file_id   = getFileId(file);
-
-                return (
-                    <div
-                        data-crewhrm-selector="upload-items"
-                        key={file_id}
-                        className={'d-flex align-items-center column-gap-14 padding-vertical-10 padding-horizontal-20 margin-top-10 border-radius-10 border-1 b-color-tertiary'.classNames()}
-                        style={{ maxWidth: '552px' }}
-                    >
-                        <span
-                            className={'flex-1 font-size-15 font-weight-400 line-height-19 color-text'.classNames()}
-                        >
-                            {file_name}
-                        </span>
-
-                        <i
-                            className={'ch-icon ch-icon-times cursor-pointer font-size-15 color-text-lighter color-hover-text'.classNames()}
-                            onClick={(e) => removeFile(e, index)}
-                        ></i>
-                    </div>
-                );
-            })}
+			
+			<ListFile 
+				files={stateFiles} 
+				style={{ maxWidth: '552px' }}
+				onRemove={removeFile}/>
         </>
     );
 }

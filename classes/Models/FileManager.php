@@ -84,6 +84,7 @@ class FileManager {
 	 * @return void
 	 */
 	public static function uploadFile( $content_id, array $file, string $file_title ) {
+		
 		// Store to make available in upload_dir hook handler
 		self::$content_id = $content_id;
 
@@ -131,34 +132,5 @@ class FileManager {
 		remove_filter( 'upload_dir', array( __CLASS__, 'customUploadDirectory' ) );
 
 		return $attachment_id;
-	}
-
-	/**
-	 * Delete file for a single application
-	 *
-	 * @param int|array
-	 * @return void
-	 */
-	public static function deleteFile( $release_ids ) {
-		/* if ( ! is_array( $release_ids ) ) {
-			$release_ids = array( $release_ids );
-		}
-
-		$implodes = implode( ',', $release_ids );
-		if ( empty( $implodes ) ) {
-			return;
-		}
-
-		global $wpdb;
-		$file_ids = $wpdb->get_col(
-			"SELECT file_id FROM " . self::table( 'releases' ) . " WHERE release_id IN (" . $implodes . ")"
-		);
-
-		if ( ! empty( $file_ids ) && is_array( $file_ids ) ) {
-			// Now delete files one by one
-			foreach ( $file_ids as $id ) {
-				wp_delete_attachment( $id, true );
-			}
-		} */
 	}
 }
