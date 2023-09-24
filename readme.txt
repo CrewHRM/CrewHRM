@@ -55,6 +55,8 @@ You can visit [CrewHRM Documentation](https://getcrewhrm.com/docs/) to learn abo
 
 If you have any questions or problems using this plugin, don't hesitate to get in touch with us from here https://getcrewhrm.com/contact/
 
+Please note that this plugin is developed using React.js. If you want to access the unminified files for this plugin, you can do so from [here](https://github.com/CrewHRM/CrewHRM)
+
 == Screenshots ==
 
 1. Get a birds-eye view of the entire recruitment process from the dashboard
