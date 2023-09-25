@@ -1,5 +1,13 @@
 import { tz } from 'moment-timezone';
+
 import icons from '../icons/crewhrm/style.module.scss';
+
+const patterns = {
+	email: /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/,
+	phone: /^[a-zA-Z0-9\-()\+\s]{10,15}$/,
+	zip_code: /^[A-Za-z0-9\s-]{4,10}$/,
+	url: /^(http|https):\/\/[A-Za-z0-9.-]+(\.[A-Za-z]{2,})?(:\d+)?(\/\S*)?$/,
+}
 
 export function getElementDataSet(element) {
 	let { dataset = {} } = element;
@@ -318,6 +326,70 @@ export function storage(name, local = false) {
 			window[store].removeItem(_name);
 		}
 	};
+}
+
+export function flattenArray(arr) {
+    const result = [];
+
+    function recursiveFlatten(innerArr) {
+        for (let i = 0; i < innerArr.length; i++) {
+            if (Array.isArray(innerArr[i])) {
+                // If the element is an array, recursively flatten it
+                recursiveFlatten(innerArr[i]);
+            } else {
+                // If it's not an array, push it to the result
+                result.push(innerArr[i]);
+            }
+        }
+    }
+
+    recursiveFlatten( Array.isArray( arr ) ? arr : [] );
+    return result;
+}
+
+export function validateValues(values={}, rules=[]) {
+	
+	// Loop through rules
+	for ( let i=0; i<rules.length; i++ ) {
+		
+		// Rules
+		const { 
+			validate: validate_as, 
+			required, 
+			name 
+		} = rules[i];
+
+		const value = values[name];
+		const empty_value = isEmpty( value );
+
+		if ( required && empty_value ) {
+			return false;
+		}
+
+		// No need to check format on optional empty values
+		if ( empty_value ) {
+			continue;
+		}
+		
+		switch(validate_as) {
+			case 'phone' :
+			case 'url':
+			case 'zip_code':
+			case 'email' :
+				if ( ! patterns[validate_as].test( value ) ) {
+					return false;
+				}
+				break;
+
+			default:
+				if ( validate_as ) {
+					console.error('Unresolved validator', validate_as);
+					return false;
+				}
+		}
+	}
+	
+	return true;
 }
 
 export const is_production = process.env.NODE_ENV === 'production';

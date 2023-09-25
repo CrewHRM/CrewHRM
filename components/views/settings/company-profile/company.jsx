@@ -22,6 +22,10 @@ function CompanyWrapper() {
 
     const { clearHistory, can_go_next, onChange, values } = useContext(ContextHistoryFields);
 
+	const [state, setState] = useState({
+		can_save: {}
+	});
+
     const saveCompanyProfile = () => {
         let _action;
         let _payload;
@@ -51,6 +55,17 @@ function CompanyWrapper() {
         });
     };
 
+	const toggleSaveState=(page_id, can)=>{
+
+		setState({
+			...state,
+			can_save: {
+				...state.can_save,
+				[page_id]: can
+			}
+		});
+	}
+
     return (
         <>
             <StickyBar
@@ -61,7 +76,7 @@ function CompanyWrapper() {
                     <UndoRedo segment={page_id} />
                     <button
                         className={'button button-primary'.classNames()}
-                        disabled={!can_go_next[page_id]}
+                        disabled={!can_go_next[page_id] || !(state.can_save[page_id] ?? true)}
                         onClick={saveCompanyProfile}
                     >
                         {__('Save Changes')}
@@ -77,6 +92,7 @@ function CompanyWrapper() {
                 <div className={'content-area'.classNames(style)}>
                     <Conditional show={page_id === 'profile'}>
                         <CompanyProfile
+							canSave={toggleSaveState}
                             onChange={(name, value) => onChange(name, value, page_id)}
                             values={values.profile}
                         />

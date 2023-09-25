@@ -166,7 +166,6 @@ class ApplicationHandler {
 			array( 'attachments' => $tmp_names )
 		);
 
-		// To Do: Add attachment support
 		$sent = ( new Mail( $args ) )->send();
 
 		if ( $sent ) {

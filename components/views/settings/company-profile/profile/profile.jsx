@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import moment from 'moment-timezone';
 
-import { __, countries_array, timezones_array } from '../../../../utilities/helpers.jsx';
+import { __, countries_array, flattenArray, timezones_array, validateValues } from '../../../../utilities/helpers.jsx';
 import { CoverImage } from '../../../../materials/image/image.jsx';
 
 import logo_placeholder from '../../../../images/logo-placeholder.svg';
-import { Form } from '../../../../materials/form.jsx';
+import { ContextForm, FormFields } from '../../../../materials/form.jsx';
 import { FileUpload } from '../../../../materials/file-ipload/file-upload.jsx';
 
 // Do not edit or delete keys. Only can add more.
@@ -97,6 +97,7 @@ const sections = {
                 {
                     name: 'zip_code',
                     type: 'text',
+					validate: 'zip_code',
                     placeholder: __('Postal/Zip Code')
                 },
                 {
@@ -112,12 +113,14 @@ const sections = {
                     name: 'phone_number',
                     label: __('Phone'),
                     type: 'text',
+					validate: 'phone',
                     placeholder: '123 456 789'
                 },
                 {
                     name: 'mobile_number',
                     label: __('Mobile'),
                     type: 'text',
+					validate: 'phone',
                     placeholder: '123 456 789'
                 }
             ],
@@ -127,6 +130,7 @@ const sections = {
                     name: 'recruiter_email',
                     label: __('Recruiter Email'),
                     type: 'email',
+					validate: 'email',
                     placeholder: '@company.com',
                     required: true
                 },
@@ -134,6 +138,7 @@ const sections = {
                     name: 'other_email',
                     label: __('Other Email'),
                     type: 'email',
+					validate: 'email',
                     placeholder: '@company.com'
                 }
             ],
@@ -142,6 +147,7 @@ const sections = {
                 name: 'website',
                 label: __('Website'),
                 type: 'url',
+				validate: 'url',
                 placeholder: 'https://'
             }
         ]
@@ -180,7 +186,23 @@ const sections = {
     }
 };
 
-export function CompanyProfile({ onChange, values }) {
+// Prepare rules for validation
+let field_rules = [];
+for( let section_name in sections ) {
+	const fields = sections[section_name].fields.filter(f=>f);
+	
+	for( let i=0; i<fields.length; i++ ) {		
+		const field = Array.isArray(fields[i]) ? flattenArray(fields[i]).filter(a=>a) : [fields[i]];
+		field_rules = [...field_rules, ...field];
+	}
+}
+
+export function CompanyProfile({ onChange, values, canSave }) {
+
+	useEffect(()=>{
+		canSave('profile', validateValues( values, field_rules ));
+	}, [values]);
+
     return (
         <>
             <div
@@ -218,7 +240,24 @@ export function CompanyProfile({ onChange, values }) {
                 </div>
             </div>
 
-            <Form fields={sections} onChange={onChange} values={values} />
+			<ContextForm.Provider value={{ values, onChange }}>
+				{Object.keys(sections).map((section_key) => {
+					const { section_label, fields = [] } = sections[section_key];
+					return (
+						<div
+							data-crewhrm-selector="form-section"
+							key={section_key}
+							className={'margin-bottom-30'.classNames()}
+						>
+							<span className={'d-block font-size-17 font-weight-600 line-height-24 letter-spacing--17 color-text-light text-transform-uppercase margin-bottom-20'.classNames()}>
+								{section_label}
+							</span>
+
+							<FormFields {...{ fields }} />
+						</div>
+					);
+				})}
+			</ContextForm.Provider>
         </>
     );
 }

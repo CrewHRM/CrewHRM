@@ -97,9 +97,7 @@ export function HistoryFields({ defaultValues = {}, children, segmented = false 
 	const [state, setState] = useState(_history);
 
 	const onChange = (name, value, segment = _primary) => {
-		console.log(segment, state);
 		const { index = 0, history = [] } = state[segment];
-
 		const obj_value = typeof name === 'object' ? name : { [name]: value };
 
 		// Finally update state

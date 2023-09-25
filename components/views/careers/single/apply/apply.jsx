@@ -1,5 +1,12 @@
 import React, { useContext, useState } from 'react';
+
 import { Tabs } from '../../../../materials/tabs/tabs.jsx';
+import { ContextForm, FormFields } from '../../../../materials/form.jsx';
+import { FormActionButtons } from '../../../../materials/form-action.jsx';
+import { request } from '../../../../utilities/request.jsx';
+import { ContextToast } from '../../../../materials/toast/toast.jsx';
+import { Applied } from './applied.jsx';
+import { Conditional } from '../../../../materials/conditional.jsx';
 import {
     __,
     calculateJSONSizeInKB,
@@ -7,14 +14,8 @@ import {
     isEmpty,
     sprintf
 } from '../../../../utilities/helpers.jsx';
-import { ContextForm, FormFields } from '../../../../materials/form.jsx';
-import { FormActionButtons } from '../../../../materials/form-action.jsx';
-import { request } from '../../../../utilities/request.jsx';
-import { ContextToast } from '../../../../materials/toast/toast.jsx';
 
 import style from './apply.module.scss';
-import { Applied } from './applied.jsx';
-import { Conditional } from '../../../../materials/conditional.jsx';
 
 const steps = [
     {
@@ -32,7 +33,7 @@ const steps = [
 ];
 
 export function Apply({ job = {} }) {
-    const { job_id, job_title, street_address, country_code, application_form: fields = {} } = job;
+    const { job_id, job_title, application_form: fields = {} } = job;
 
     const [state, setState] = useState({
         active_tab: 'personal',

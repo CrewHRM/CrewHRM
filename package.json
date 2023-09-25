@@ -22,7 +22,17 @@
     "type": "git",
     "url": "git+https://github.com/CrewHRM/CrewHRM.git"
   },
-  "keywords": ["HR", "HRM", "Recruitment", "Job Listings", "Employee management", "Leave management", "Attendance", "Reimbursement", "Human Resource Management"],
+  "keywords": [
+    "HR",
+    "HRM",
+    "Recruitment",
+    "Job Listings",
+    "Employee management",
+    "Leave management",
+    "Attendance",
+    "Reimbursement",
+    "Human Resource Management"
+  ],
   "author": "CrewHRM",
   "license": "GPL-3.0",
   "bugs": {

@@ -7,8 +7,6 @@ import { ExpandableContent } from './ExpandableContent/expandable-content.jsx';
 import { TextEditor } from './text-editor/text-editor.jsx';
 import { Conditional } from './conditional.jsx';
 
-const section_label_class =
-    'd-block font-size-17 font-weight-600 line-height-24 letter-spacing--17 color-text-light text-transform-uppercase margin-bottom-20'.classNames();
 const label_class = 'd-block font-size-15 font-weight-500 margin-bottom-10 color-text'.classNames();
 const input_text_class =
     'd-block w-full height-48 padding-15 border-1-5 border-radius-10 b-color-tertiary b-color-active-primary font-size-15 font-weight-400 line-height-24 letter-spacing--15 color-text'.classNames();
@@ -178,6 +176,8 @@ export function RenderField({ field, defaultEnabled }) {
 
 export function FormFields({ fields, defaultEnabled = true }) {
 	return fields.map((field, index) => {
+
+		// Apply gap if the field is null and the previous one is not null
 		if (field === null && fields[index - 1] !== null) {
 			return (
 				<div
@@ -207,25 +207,4 @@ export function FormFields({ fields, defaultEnabled = true }) {
 			</div>
 		);
 	});
-}
-
-export function Form({ fields: sections, values, onChange }) {
-	return (
-		<ContextForm.Provider value={{ values, onChange }}>
-			{Object.keys(sections).map((section_key) => {
-				const { section_label, fields = [] } = sections[section_key];
-				return (
-					<div
-						data-crewhrm-selector="form-section"
-						key={section_key}
-						className={'margin-bottom-30'.classNames()}
-					>
-						<span className={section_label_class}>{section_label}</span>
-
-						<FormFields {...{ fields }} />
-					</div>
-				);
-			})}
-		</ContextForm.Provider>
-	);
 }
