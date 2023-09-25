@@ -198,8 +198,8 @@ export function JobEditor() {
     };
 
     const getJob = () => {
-        console.log(is_new);
-        if (is_new) {
+
+		if (is_new) {
             // As it is new, just use predefined template at mount time
             setState({
                 ...state,

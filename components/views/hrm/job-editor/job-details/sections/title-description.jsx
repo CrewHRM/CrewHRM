@@ -12,7 +12,7 @@ import style from '../details.module.scss';
 
 export function TitleAndDescription() {
     const { values, onChange, session } = useContext(ContextJobEditor);
-    const { departments, addDepartment } = useContext(ContextBackendDashboard);
+    const { departments=[], addDepartment } = useContext(ContextBackendDashboard);
 
     const title_allowed_length = 200;
     const job_title_length = values.job_title?.length || 0;
@@ -94,15 +94,20 @@ export function TitleAndDescription() {
                             </span>
                             <DropDown
                                 value={values.department_id}
-                                options={departments}
                                 onChange={(v) => onChange('department_id', v)}
                                 className={input_class}
                                 tabindex={2}
                                 addText={__('Add Depertment')}
+                                textClassName={'font-size-17 font-weight-500 line-height-25 color-text-light'.classNames()}
                                 onAddClick={() =>
                                     addDepartment((id) => onChange('department_id', id))
                                 }
-                                textClassName={'font-size-17 font-weight-500 line-height-25 color-text-light'.classNames()}
+                                options={departments.map(d=>{
+									return {
+										id: d.department_id, 
+										label: d.department_name
+									}
+								})}
                             />
                         </div>
                         <div className={'flex-1 margin-left-10'.classNames()}>

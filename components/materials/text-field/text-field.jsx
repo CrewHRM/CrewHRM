@@ -43,8 +43,6 @@ export function TextField(props) {
             clickHandler(() => {
                 if (input_ref?.current) {
                     input_ref.current.focus();
-                } else {
-                    console.log('noo');
                 }
             });
             return;

@@ -12,6 +12,7 @@ import {
     calculateJSONSizeInKB,
     getAddress,
     isEmpty,
+    patterns,
     sprintf
 } from '../../../../utilities/helpers.jsx';
 
@@ -159,10 +160,29 @@ export function Apply({ job = {} }) {
 
             const { name, required } = fields[i];
             const value = state.values[name];
+			const is_empty = isEmpty(value);
 
-            if (required && isEmpty(value)) {
+			// Determine how to validate
+			let validate_pattern;
+			for ( let key in patterns ) {
+				if ( name.indexOf(key)>-1 ) {
+					validate_pattern = patterns[key];
+					break;
+				}
+			}
+
+            if (required && is_empty ) {
                 _enabled = false;
             }
+
+			// No need format check if it optional one is empty
+			if ( is_empty || ! validate_pattern ) {
+				continue;
+			}
+
+			if ( ! validate_pattern.test( value.replace(/\s+/g, ' ').trim() ) ) {
+				_enabled = false;
+			}
         }
 
         return _enabled;

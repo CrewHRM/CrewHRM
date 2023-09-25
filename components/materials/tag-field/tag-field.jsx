@@ -26,7 +26,6 @@ export function TagField({
             _value.push(id);
         }
 
-        console.log(_value);
         onChange(_value);
     };
 

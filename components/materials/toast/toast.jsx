@@ -79,7 +79,6 @@ export function ToastWrapper(props) {
     };
 
     const setMouseState = (over) => {
-        console.log(over);
         setState({
             ...state,
             mouse_over: over

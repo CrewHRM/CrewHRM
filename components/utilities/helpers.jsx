@@ -2,7 +2,7 @@ import { tz } from 'moment-timezone';
 
 import icons from '../icons/crewhrm/style.module.scss';
 
-const patterns = {
+export const patterns = {
 	email: /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/,
 	phone: /^[a-zA-Z0-9\-()\+\s]{10,15}$/,
 	zip_code: /^[A-Za-z0-9\s-]{4,10}$/,
@@ -18,7 +18,7 @@ export function getElementDataSet(element) {
 		try {
 			_json = JSON.parse(dataset[k]);
 		} catch (error) {
-			console.log(error);
+
 		}
 
 		data[k] = _json ? _json : dataset[k];
@@ -132,7 +132,6 @@ export function copyToClipboard(text, addToast) {
 			addToast(__('Copied to clipboard'));
 		})
 		.catch((error) => {
-			console.log(error);
 			addToast(__('Error copying to clipboard'));
 		});
 }
