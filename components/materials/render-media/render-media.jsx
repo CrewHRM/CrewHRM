@@ -177,7 +177,7 @@ export function RenderMediaPreview(props) {
         >
             <span
                 className={'cursor-pointer bg-color-error width-20 height-20 d-flex align-items-center justify-content-center position-fixed top-42 right-42'.classNames()}
-                style={{ borderRadius: '50%', zIndex: 99 }}
+                style={{ borderRadius: '50%', zIndex: 9992 }}
                 onClick={onClosePreview}
             >
                 <i className={'ch-icon ch-icon-times color-white font-size-12'.classNames()}></i>

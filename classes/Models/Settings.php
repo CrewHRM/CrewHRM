@@ -94,7 +94,7 @@ class Settings {
 	public static function getDateFormat() {
 		$format = self::getSettings( 'date_format' );
 		if ( empty( $format ) ) {
-			$format = get_option('date_format');
+			$format = 'DD MMM, YYYY';
 		}
 
 		return $format;

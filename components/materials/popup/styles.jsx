@@ -1,8 +1,11 @@
+// z-index = 9993;
+const zIndex = 9993;
+
 const Style = {
     popupContent: {
         tooltip: {
             position: 'absolute',
-            zIndex: 999
+            zIndex
         },
         modal: {
             position: 'relative',
@@ -24,7 +27,7 @@ const Style = {
             bottom: '0',
             left: '0',
             right: '0',
-            zIndex: 999
+            zIndex
         },
         modal: {
             position: 'fixed',
@@ -33,7 +36,7 @@ const Style = {
             left: '0',
             right: '0',
             display: 'flex',
-            zIndex: 999
+            zIndex
         }
     }
 };

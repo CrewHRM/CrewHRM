@@ -76,6 +76,10 @@ export function TextField(props) {
     }, [state.expanded]);
 
     useEffect(() => {
+		if ( ! inputDelay ) {
+			return;
+		}
+		
         const timer = window.setTimeout(() => {
             dispatchChange(text);
         }, inputDelay);

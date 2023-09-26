@@ -189,7 +189,6 @@ export function JobOpenings(props) {
     };
 
     useEffect(() => {
-		console.log(state.filters);
         getJobs();
     }, [state.filters]);
 

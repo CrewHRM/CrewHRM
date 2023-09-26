@@ -25,3 +25,5 @@ export const statuses = {
         label: __('Expired')
     }
 };
+
+export const date_formats = ['DD MMM, YYYY', 'Y-MM-D', 'MM/D/Y', 'D/MM/Y'];

@@ -7,6 +7,7 @@ import { CoverImage } from '../../../../materials/image/image.jsx';
 import logo_placeholder from '../../../../images/logo-placeholder.svg';
 import { ContextForm, FormFields } from '../../../../materials/form.jsx';
 import { FileUpload } from '../../../../materials/file-ipload/file-upload.jsx';
+import { date_formats } from '../../../../utilities/data.jsx';
 
 // Do not edit or delete keys. Only can add more.
 const business_types = {
@@ -29,8 +30,6 @@ const business_types = {
     nonprofit_socialservices: __('Non-Profit & Social Services'),
     government_publicservices: __('Government & Public Services')
 };
-
-const date_formats = ['DD MMM, YYYY', 'Y-MM-D', 'MM/D/Y', 'D/MM/Y'];
 
 const time_formats = {
     _12: __('12 Hours'),

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Sep 21, 2023 at 02:23 AM
+-- Generation Time: Sep 26, 2023 at 04:33 AM
 -- Server version: 8.0.16
 -- PHP Version: 8.0.0
 
@@ -107,7 +107,7 @@ CREATE TABLE IF NOT EXISTS `wp_crewhrm_comments` (
 CREATE TABLE IF NOT EXISTS `wp_crewhrm_departments` (
   `department_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
   `department_name` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci NOT NULL,
-  `parent_id` bigint(20) UNSIGNED NOT NULL,
+  `parent_id` bigint(20) UNSIGNED DEFAULT NULL,
   `sequence` smallint(5) UNSIGNED NOT NULL,
   PRIMARY KEY (`department_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
