@@ -224,7 +224,7 @@ export function Apply({ job = {} }) {
                     }
                 >
                     <div>
-                        <Tabs active={state.active_tab} tabs={steps} theme="sequence" />
+                        <Tabs active={state.active_tab} tabs={steps} theme="sequence" scrollIntoViewOnChange={true}/>
                     </div>
                 </div>
             </Conditional>

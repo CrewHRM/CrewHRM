@@ -22,6 +22,7 @@ export function DahboardMain() {
                     image="megaphone"
                     orientation="vertical"
                     className={'margin-bottom-20'.classNames()}
+					style={{ backgroundPosition: 'center bottom -41px'}}
                 >
                     <span
                         className={'d-block color-text font-size-28 font-weight-600 line-height-32 margin-bottom-15'.classNames()}

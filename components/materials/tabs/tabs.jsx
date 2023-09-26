@@ -4,7 +4,7 @@ import { Conditional } from '../conditional.jsx';
 import style from './tabs.module.scss';
 
 export function Tabs(props) {
-    const { onNavigate, active, tabs = [], theme, className = '', style: cssStyle = {} } = props;
+    const { onNavigate, active, tabs = [], theme, className = '', style: cssStyle = {}, scrollIntoViewOnChange=false } = props;
     const active_index = tabs.findIndex((tab) => tab.id == active);
 
 	const ref = useRef();
@@ -14,6 +14,10 @@ export function Tabs(props) {
 	});
 
 	useEffect(()=>{
+		if ( ! scrollIntoViewOnChange ) {
+			return;
+		}
+		
 		if ( !state.mounted ) {
 			setState({...state, mounted: true});
 			return;

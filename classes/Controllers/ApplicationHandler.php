@@ -97,17 +97,20 @@ class ApplicationHandler {
 	 */
 	public static function getApplicationsList( array $data ) {
 		$filter             = $data['filter'];
-		$is_qualified       = 'disqualified' !== $filter;
+		$is_qualified       = 'disqualified' !== ( $filter['qualification'] ?? 'qualified' );
 		$applications       = Application::getApplications( $filter );
 		$qualified_count    = 0;
 		$disqualified_count = 0;
 
 		if ( $is_qualified ) {
-			$qualified_count    = count( $applications );
-			$disqualified_count = Application::getApplications( array_merge( $filter, array( 'qualification' => 'disqualified' ) ), true );
+			$qualified_count         = count( $applications );
+			$filter['qualification'] = 'disqualified';
+			$disqualified_count      = Application::getApplications( $filter, true );
+
 		} else {
-			$qualified_count    = Application::getApplications( array_merge( $filter, array( 'qualification' => 'qualified' ) ), true );
-			$disqualified_count = count( $applications );
+			$filter['qualification'] = 'qualified';
+			$qualified_count         = Application::getApplications( $filter, true );
+			$disqualified_count      = count( $applications );
 		}
 
 		wp_send_json_success(

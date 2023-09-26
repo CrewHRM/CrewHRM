@@ -13,7 +13,7 @@ const images = {
 };
 
 export function IntroCard(props) {
-    const { image, className = '', orientation = 'horizontal' } = props;
+    const { image, className = '', orientation = 'horizontal', style: cssStyle={} } = props;
 
     const is_horizontal = orientation == 'horizontal';
     const image_url = images[image];
@@ -26,7 +26,7 @@ export function IntroCard(props) {
                 'bg-color-white border-radius-5'.classNames() +
                 className
             }
-            style={{ backgroundImage: 'url(' + image_url + ')' }}
+            style={{ backgroundImage: 'url(' + image_url + ')', ...cssStyle }}
         >
             <div className={'content'.classNames(style)}>{props.children}</div>
             <div className={'image'.classNames(style)}>

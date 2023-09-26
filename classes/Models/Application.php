@@ -234,7 +234,7 @@ class Application {
 		$job_id        = $args['job_id'];
 		$stage_id      = $args['stage_id'] ?? null;
 		$disq_stage_id = Stage::getDisqualifyId( $job_id );
-		$get_qualified = 'disqualified' !== $args['qualification'];
+		$get_qualified = 'disqualified' !== ( $args['qualification'] ?? 'qualified' );
 
 		// Prepare limitters
 		$where_clause = "app.job_id={$job_id}";
