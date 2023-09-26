@@ -1,12 +1,6 @@
 import React from 'react';
 import { __, countries_array } from '../../../../utilities/helpers.jsx';
-
-const genders = {
-    male: __('Male'),
-    female: __('Female'),
-    other: __('Other'),
-    decline: __('Decline to self Identity')
-};
+import { genders } from '../../../../utilities/data.jsx';
 
 const gender_disclaimer = (
     <>

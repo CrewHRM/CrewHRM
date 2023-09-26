@@ -4,7 +4,7 @@ import { Helmet } from 'react-helmet';
 import logo from '../../images/logo.svg';
 import style from './style.module.scss';
 
-export function StickyBar({ title, children, backTo, midWidth }) {
+export function StickyBar({ title, children, canBack, midWidth }) {
     const is_children_array = Array.isArray(children);
 
     return (
@@ -26,11 +26,11 @@ export function StickyBar({ title, children, backTo, midWidth }) {
                         <span className={'d-flex align-items-center column-gap-15'.classNames()}>
                             <i
                                 className={`ch-icon ${
-                                    backTo
+                                    canBack
                                         ? 'ch-icon-arrow-left cursor-pointer font-size-15 color-hover-secondary'
                                         : 'ch-icon-menu font-size-10'
                                 } color-text`.classNames()}
-                                onClick={() => (backTo ? window.history.back() : 0)}
+                                onClick={() => (canBack ? window.history.back() : 0)}
                             ></i>
 
                             <span

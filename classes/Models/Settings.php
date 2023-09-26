@@ -24,19 +24,23 @@ class Settings {
 	 * @return array
 	 */
 	private static function get( string $source ) {
-		$defaults = array(
-			self::KEY_SETTINGS => array(
-				'careers_search'  => true,
-				'careers_sidebar' => true,
-			),
-		);
+		static $data = array();
+		
+		if ( ! isset( $data[ $source ] )) {
+			$defaults = array(
+				self::KEY_SETTINGS => array(
+					'careers_search'  => true,
+					'careers_sidebar' => true,
+				),
+			);
 
-		$data = get_option( $source );
-		$data = _Array::getArray( $data );
-		$data = array_merge( $defaults[ $source ] ?? array(), $data );
-		$data = File::applyDynamics( $data );
-
-		return $data;
+			$_data           = get_option( $source );
+			$_data           = _Array::getArray( $_data );
+			$_data           = array_merge( $defaults[ $source ] ?? array(), $_data );
+			$data[ $source ] = File::applyDynamics( $_data );
+		}
+		
+		return $data[ $source ];
 	}
 
 	/**
@@ -60,15 +64,6 @@ class Settings {
 	 */
 	public static function getSettings( $name = null, $default = null ) {
 		$data = self::get( self::KEY_SETTINGS );
-
-		// Convert to kilobyte
-		$max_upload = self::getWpMaxUploadSize();
-
-		// Safe max range
-		if ( empty( $data['attachment_max_upload_size'] ) || $data['attachment_max_upload_size'] > $max_upload ) {
-			$data['attachment_max_upload_size'] = $max_upload;
-		}
-
 		return null !== $name ? ( $data[ $name ] ?? $default ) : $data;
 	}
 
@@ -78,7 +73,45 @@ class Settings {
 	 * @return int
 	 */
 	public static function getApplicationMaxSize() {
-		return self::getSettings( 'attachment_max_upload_size' );
+		$size = self::getSettings( 'attachment_max_upload_size' );
+
+		// Convert to kilobyte
+		$max_upload = self::getWpMaxUploadSize();
+
+		// Safe max range
+		if ( empty( $size ) || ! is_numeric( $size ) || $size > $max_upload || $size <= 0 ) {
+			$size = $max_upload;
+		}
+
+		return $size;
+	}
+
+	/**
+	 * Get date format
+	 *
+	 * @return string
+	 */
+	public static function getDateFormat() {
+		$format = self::getSettings( 'date_format' );
+		if ( empty( $format ) ) {
+			$format = get_option('date_format');
+		}
+
+		return $format;
+	}
+
+	/**
+	 * Get time format
+	 *
+	 * @return void
+	 */
+	public static function getTimeFormat() {
+		$format = self::getSettings( 'time_format' );
+		if ( empty( $format ) ) {
+			$format = get_option('time_format');
+		}
+
+		return $format;
 	}
 
 	/**

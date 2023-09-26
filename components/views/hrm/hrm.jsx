@@ -14,10 +14,10 @@ import { AddDepartmentModal } from '../settings/company-profile/departments/add-
 
 export const ContextBackendDashboard = createContext();
 
-export function DashboardBar(props) {
+export function DashboardBar({title=__('Dashboard'), canBack}) {
     return (
         <>
-            <StickyBar title="Dashboard">
+            <StickyBar title={title} canBack={canBack}>
                 <div className={'d-flex align-items-center column-gap-30'.classNames()}>
                     {/* <NotificationsOnSite/>
 				<NotificationsEmail/> */}
@@ -168,7 +168,7 @@ export function HRM({ departments = [], applicationStats }) {
                             path="/dashboard/jobs/"
                             element={
                                 <>
-                                    <DashboardBar />
+                                    <DashboardBar title={__('Job List')} canBack={true}/>
                                     <JobOpeningsFullView />
                                 </>
                             }
@@ -178,8 +178,8 @@ export function HRM({ departments = [], applicationStats }) {
                             path="/dashboard/jobs/:job_id/applications/:application_id?/"
                             element={
                                 <>
-                                    <DashboardBar />
-                                    <Applications />
+                                    <DashboardBar title={__('Applications')} canBack={true}/>
+                                    <Applications/>
                                 </>
                             }
                         />

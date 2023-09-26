@@ -37,7 +37,7 @@ class Application {
 			'last_name'      => $application['last_name'] ?? '',
 			'email'          => $application['email'] ?? '',
 			'phone'          => $application['phone'] ?? '',
-			'gender'         => $application['phone'] ?? null,
+			'gender'         => $application['gender'] ?? null,
 			'date_of_birth'  => $application['date_of_birth'] ?? null,
 			'cover_letter'   => $application['cover_letter'] ?? null,
 			'resume_file_id' => 0,
@@ -289,7 +289,7 @@ class Application {
 		$application_ids = _Array::castRecursive( $application_ids );
 		$ids_in          = implode( ',', $application_ids );
 		$results         = $wpdb->get_results(
-			'SELECT * FROM ' . DB::applications() . " WHERE application_id IN ({$ids_in})"
+			'SELECT * FROM ' . DB::applications() . " WHERE application_id IN ({$ids_in}) ORDER BY application_date DESC"
 		);
 
 		return _Array::castRecursive( $results );

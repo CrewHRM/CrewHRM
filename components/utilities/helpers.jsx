@@ -1,4 +1,4 @@
-import { tz } from 'moment-timezone';
+import moment, { tz } from 'moment-timezone';
 
 import icons from '../icons/crewhrm/style.module.scss';
 
@@ -389,6 +389,10 @@ export function validateValues(values={}, rules=[]) {
 	}
 	
 	return true;
+}
+
+export function formatDate( date_string, format = window.CrewHRM.date_format ) {
+	return moment(date_string).format(format);
 }
 
 export const is_production = process.env.NODE_ENV === 'production';

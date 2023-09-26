@@ -95,9 +95,11 @@ class Scripts extends Main {
 			'colors'               => $dynamic_colors,
 			'reserved_stages'      => Stage::$reserved_stages,
 			'timeouts'             => (object) array(),
-			'nonce'                => wp_create_nonce( get_home_url() ),
+			'nonce'                => wp_create_nonce( Main::$configs->app_name ),
 			'wp_max_size'          => Settings::getWpMaxUploadSize(),
 			'application_max_size' => Settings::getApplicationMaxSize(),
+			'date_format'          => Settings::getDateFormat(),
+			'time_format'          => Settings::getTimeFormat(),
 		);
 
 		echo '<script>window.CrewHRM=' . wp_json_encode( $data ) . '</script>';

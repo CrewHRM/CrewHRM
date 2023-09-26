@@ -59,12 +59,12 @@ export function Comment(props) {
 
             <div className={'d-flex align-items-center'.classNames()}>
                 <div className={'flex-1'.classNames()}>
-                    <i
+                    {/* <i
                         className={'ch-icon ch-icon-paperclip-2 font-size-20 color-text vertical-align-middle'.classNames()}
                     ></i>{' '}
                     <span className={'font-size-15 font-weight-400 color-text'.classNames()}>
                         {__('Attach a file')}
-                    </span>
+                    </span> */}
                 </div>
                 <div>
                     <button

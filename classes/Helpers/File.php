@@ -7,6 +7,8 @@
 
 namespace CrewHRM\Helpers;
 
+use CrewHRM\Main;
+
 /**
  * File handler class
  */
@@ -105,7 +107,7 @@ class File {
 		$args    = array(
 			'action'  => 'crewhrm_load_file',
 			'file_id' => $file_id,
-			'nonce'   => wp_create_nonce( get_home_url() ),
+			'nonce'   => wp_create_nonce( Main::$configs->app_name ),
 		);
 
 		return add_query_arg( $args, $ajaxurl );

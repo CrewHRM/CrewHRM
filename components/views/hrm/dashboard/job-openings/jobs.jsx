@@ -16,6 +16,7 @@ import { LoadingIcon } from '../../../../materials/loading-icon/loading-icon.jsx
 import { ContextToast } from '../../../../materials/toast/toast.jsx';
 import { ContextWarning } from '../../../../materials/warning/warning.jsx';
 import { Conditional } from '../../../../materials/conditional.jsx';
+import { statuses } from '../../../../utilities/data.jsx';
 
 const special_stages = {
     _hired_: __('Hired'),
@@ -70,27 +71,6 @@ const options = [
         warning: __('Are you sure to delete permanently?')
     }
 ];
-
-export const statuses = {
-    publish: {
-        color: '#73BF45',
-        label: __('Published')
-    },
-    draft: {
-        color: '#EE940D',
-        label: __('Draft')
-    },
-    archive: {
-        color: '#BBBFC3',
-        label: __('Archived')
-    },
-    expired: {
-        color: '#FF180A',
-        label: __('Expired')
-    }
-};
-
-export const status_keys = Object.keys(statuses);
 
 export function JobOpenings(props) {
     let { is_overview, className } = props;
@@ -209,6 +189,7 @@ export function JobOpenings(props) {
     };
 
     useEffect(() => {
+		console.log(state.filters);
         getJobs();
     }, [state.filters]);
 
@@ -251,6 +232,7 @@ export function JobOpenings(props) {
                                 job_type,
                                 vacancy,
                                 application_deadline,
+								job_permalink,
                                 stats: { candidates = 0, stages: application_stages = {} }
                             } = job;
 
@@ -345,11 +327,13 @@ export function JobOpenings(props) {
                                                 >
                                                     <StatusDot color={status_color} />
                                                 </div>
-                                                <span
-                                                    className={'d-block color-text font-size-20 font-weight-600'.classNames()}
+                                                <a
+													href={job_permalink}
+													target='_blank'
+                                                    className={'d-block color-text font-size-20 font-weight-600 hover-underline'.classNames()}
                                                 >
                                                     {job_title}
-                                                </span>
+                                                </a>
                                             </div>
                                             <div
                                                 className={'d-flex align-items-center flex-direction-row flex-wrap-wrap column-gap-30 row-gap-5'.classNames()}

@@ -9,8 +9,8 @@ import { request } from '../../../utilities/request.jsx';
 import { LoadingIcon } from '../../../materials/loading-icon/loading-icon.jsx';
 import { employment_types } from '../../hrm/job-editor/job-details/sections/employment-details.jsx';
 import { sections_fields } from '../../hrm/job-editor/application-form/form-structure.jsx';
-import { statuses } from '../../hrm/dashboard/job-openings/jobs.jsx';
 import { Conditional } from '../../../materials/conditional.jsx';
+import { statuses } from '../../../utilities/data.jsx';
 
 const getForm = (_form, attrs) => {
     // Loop through fields

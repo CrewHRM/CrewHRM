@@ -34,7 +34,7 @@ function Wrapper({ children }) {
 
     return (
         <ContextSettings.Provider value={{ values, onChange }}>
-            <StickyBar backTo={sub_title ? true : false} title={title}>
+            <StickyBar canBack={sub_title ? true : false} title={title}>
                 <div className={'d-flex align-items-center column-gap-30'.classNames()}>
                     <UndoRedo />
                     <button

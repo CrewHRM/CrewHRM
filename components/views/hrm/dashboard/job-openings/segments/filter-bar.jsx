@@ -1,15 +1,17 @@
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 
-import { __, countries_array } from '../../../../../utilities/helpers.jsx';
+import { __ } from '../../../../../utilities/helpers.jsx';
 import { DropDown } from '../../../../../materials/dropdown/dropdown.jsx';
-import { status_keys, statuses } from '../jobs.jsx';
 import { TextField } from '../../../../../materials/text-field/text-field.jsx';
 import { ContextBackendDashboard } from '../../../hrm.jsx';
-
-import style from '../jobs.module.scss';
 import { Conditional } from '../../../../../materials/conditional.jsx';
 import { LoadingIcon } from '../../../../../materials/loading-icon/loading-icon.jsx';
+import { statuses } from '../../../../../utilities/data.jsx';
+
+import style from '../jobs.module.scss';
+
+export const status_keys = Object.keys(statuses);
 
 export function FilterBar({ is_overview, filters = {}, onChange, fetching }) {
     const { departments = [] } = useContext(ContextBackendDashboard);
