@@ -2,7 +2,6 @@ import React, { useContext, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import { Comment } from './comment/comment.jsx';
-import { Email } from './email/email.jsx';
 import { __ } from '../../../../../../utilities/helpers.jsx';
 import { DropDown, Options } from '../../../../../../materials/dropdown/dropdown.jsx';
 import { ContextApplicationSession } from '../../applicants.jsx';
@@ -33,16 +32,6 @@ export function HeadActions({ application }) {
     const navigate = useNavigate();
 
     const segments = [
-        {
-            icon: 'ch-icon ch-icon-sms',
-            title: __('Send Email'),
-            renderer: Email,
-            tagline: (
-                <span className={'font-size-15 font-weight-500 color-text'.classNames()}>
-                    {__('Email')}
-                </span>
-            )
-        },
         {
             icon: 'ch-icon ch-icon-message',
             title: __('Internal Comment'),

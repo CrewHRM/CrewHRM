@@ -11,7 +11,6 @@ use CrewHRM\Helpers\File;
 use CrewHRM\Models\Application;
 use CrewHRM\Models\Comment;
 use CrewHRM\Models\Job;
-use CrewHRM\Models\Mail;
 use CrewHRM\Models\Pipeline;
 use CrewHRM\Models\Settings;
 
@@ -36,12 +35,6 @@ class ApplicationHandler {
 			),
 		),
 		'moveApplicationStage'   => array(
-			'role' => array(
-				'administrator',
-				'editor',
-			),
-		),
-		'mailToApplicant'        => array(
 			'role' => array(
 				'administrator',
 				'editor',
@@ -148,34 +141,6 @@ class ApplicationHandler {
 	public static function moveApplicationStage( array $data ) {
 		Application::changeApplicationStage( $data['job_id'], $data['application_id'], $data['stage_id'] );
 		wp_send_json_success( array( 'message' => __( 'Application stage changed successfully!' ) ) );
-	}
-
-	/**
-	 * Send mail to applicant from single application view interface
-	 *
-	 * @param array $data  Request datacontaining mail data
-	 * @param array $files Request files
-	 * @return void
-	 */
-	public static function mailToApplicant( array $data, array $files ) {
-
-		// Prepare attachment
-		$attachments = File::organizeUploadedHierarchy( $files['mail'] ?? array(), false );
-		$tmp_names   = array_column( $attachments['attachments'] ?? array(), 'tmp_name' );
-
-		// Prepare mailer arg
-		$args = array_merge(
-			$data['mail'],
-			array( 'attachments' => $tmp_names )
-		);
-
-		$sent = ( new Mail( $args ) )->send();
-
-		if ( $sent ) {
-			wp_send_json_success( array( 'message' => __( 'Email sent!', 'crewhrm' ) ) );
-		} else {
-			wp_send_json_error( array( 'message' => __( 'Failed to send mail!', 'crewhrm' ) ) );
-		}
 	}
 
 	/**
