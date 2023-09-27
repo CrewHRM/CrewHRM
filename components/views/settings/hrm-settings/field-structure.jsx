@@ -50,7 +50,7 @@ export const settings_fields = {
                     }
                 }
             },
-            attachment: {
+            /* attachment: {
                 label: __('Files & Attachments'),
                 icon: 'ch-icon ch-icon-paperclip-2',
                 fields: {
@@ -75,7 +75,7 @@ export const settings_fields = {
                         )
                     }
                 }
-            }
+            } */
         }
     }
 };

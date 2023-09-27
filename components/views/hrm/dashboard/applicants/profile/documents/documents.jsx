@@ -37,7 +37,7 @@ export function Documents({ application }) {
                 </>
             ) : null}
 
-            {(attachments.length && (
+            {/* (attachments.length && (
                 <>
                     <Line className={'margin-top-20 margin-bottom-20'.classNames()} />
                     <span
@@ -48,7 +48,7 @@ export function Documents({ application }) {
                     <RenderMedia media={attachments} />
                 </>
             )) ||
-                null}
+                null */}
         </div>
     );
 }
