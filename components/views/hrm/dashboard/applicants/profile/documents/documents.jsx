@@ -5,6 +5,7 @@ import { Line } from '../../../../../../materials/line/line.jsx';
 import { DangerouslySet } from '../../../../../../materials/DangerouslySet.jsx';
 import { PDFViewer } from '../../../../../../materials/pdf-viewer.jsx';
 import { RenderMedia } from '../../../../../../materials/render-media/render-media.jsx';
+import { Conditional } from '../../../../../../materials/conditional.jsx';
 
 export function Documents({ application }) {
     const { cover_letter, documents = {} } = application;
@@ -37,18 +38,15 @@ export function Documents({ application }) {
                 </>
             ) : null}
 
-            {/* (attachments.length && (
-                <>
-                    <Line className={'margin-top-20 margin-bottom-20'.classNames()} />
-                    <span
-                        className={'d-block font-size-17 font-weight-600 line-height-24 letter-spacing--17 color-text margin-bottom-10'.classNames()}
-                    >
-                        {__('ATTACHMENTS')}
-                    </span>
-                    <RenderMedia media={attachments} />
-                </>
-            )) ||
-                null */}
+			<Conditional show={attachments.length}>
+				<Line className={'margin-top-20 margin-bottom-20'.classNames()} />
+				<span
+					className={'d-block font-size-17 font-weight-600 line-height-24 letter-spacing--17 color-text margin-bottom-10'.classNames()}
+				>
+					{__('ATTACHMENTS')}
+				</span>
+				<RenderMedia media={attachments} />
+			</Conditional>
         </div>
     );
 }

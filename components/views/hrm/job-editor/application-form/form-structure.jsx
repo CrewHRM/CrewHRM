@@ -168,7 +168,7 @@ export const sections_fields = {
                     null
                 ]
             },
-            /* {
+            {
                 id: 'file_attachment',
                 label: __('File Attachment'),
                 form: [
@@ -181,7 +181,7 @@ export const sections_fields = {
                     },
                     null
                 ]
-            } */
+            }
         ]
     },
     profile: {

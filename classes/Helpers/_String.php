@@ -111,4 +111,14 @@ class _String {
 
 		return wp_kses( $string, $allowed );
 	}
+
+	/**
+	 * Check if a value is float
+	 *
+	 * @param string|int|float $numericString
+	 * @return boolean
+	 */
+	public static function isFloat( $numericString ) {
+		return is_numeric( $numericString ) && strpos( $numericString, '.' ) !== false;
+	}
 }

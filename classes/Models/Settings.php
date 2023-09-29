@@ -68,12 +68,12 @@ class Settings {
 	}
 
 	/**
-	 * Get the max size in KB allowed for job application
+	 * Get the max applicaiton size in MB allowed for job application
 	 *
 	 * @return int
 	 */
 	public static function getApplicationMaxSize() {
-		$size = self::getSettings( 'attachment_max_upload_size' );
+		$size = self::getSettings( 'application_max_size_mb' );
 
 		// Convert to kilobyte
 		$max_upload = self::getWpMaxUploadSize();
@@ -115,12 +115,12 @@ class Settings {
 	}
 
 	/**
-	 * Get WP max upload size in KB.
+	 * Get WP max upload size in MB.
 	 *
 	 * @return int
 	 */
 	public static function getWpMaxUploadSize() {
-		return floor( wp_max_upload_size() / 1024 );
+		return floor( ( wp_max_upload_size() / 1024 ) / 1024 );
 	}
 
 	/**

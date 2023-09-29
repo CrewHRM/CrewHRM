@@ -64,7 +64,7 @@ class _Array {
 
 				if ( is_numeric( $value ) ) {
 					// Cast number
-					$array[ $index ] = (int) $value;
+					$array[ $index ] = _String::isFloat( $value ) ? (float) $value : (int) $value;
 
 				} elseif ( 'true' === $value ) {
 					// Cast boolean true

@@ -50,7 +50,7 @@ export const settings_fields = {
                     }
                 }
             },
-            /* attachment: {
+            attachment: {
                 label: __('Files & Attachments'),
                 icon: 'ch-icon ch-icon-paperclip-2',
                 fields: {
@@ -65,8 +65,8 @@ export const settings_fields = {
                             'Not specifying any removes restriction. To disable upload, turn off attachment per job post.'
                         )
                     },
-                    attachment_max_upload_size: {
-                        label: __('Job application size (KiloByte)'),
+                    application_max_size_mb: {
+                        label: __('Job application size (MB)'),
                         type: 'number',
                         min: 1,
                         max: window.CrewHRM.wp_max_size,
@@ -75,7 +75,7 @@ export const settings_fields = {
                         )
                     }
                 }
-            } */
+            }
         }
     }
 };

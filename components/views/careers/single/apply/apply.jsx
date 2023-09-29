@@ -90,14 +90,14 @@ export function Apply({ job = {} }) {
     const submitApplication = () => {
         const payload = { application: state.values };
 
-        const { application_max_size } = window.CrewHRM;
-        const payload_size = calculateJSONSizeInKB(payload) + 5;
+        const { application_max_size_mb } = window.CrewHRM;
+        const payload_size = (calculateJSONSizeInKB(payload) + 5)/1024; // In MB.
 
-        if (payload_size >= application_max_size) {
+        if (payload_size >= application_max_size_mb) {
             addToast({
                 message: sprintf(
                     __('Total file size exceeds the limit of %s.'),
-                    application_max_size + ' KB'
+                    application_max_size_mb + ' MB'
                 ),
                 status: 'error'
             });
