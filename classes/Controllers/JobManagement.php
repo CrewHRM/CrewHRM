@@ -171,7 +171,7 @@ class JobManagement {
 		}
 
 		// Assign acceptable attachment formats
-		$documents = &$job['application_form']['documents']['fields'];
+		$documents        = &$job['application_form']['documents']['fields'];
 		$attachment_index = _Array::findIndex( $documents, 'id', 'file_attachment' );
 		if ( isset( $documents[ $attachment_index ] ) ) {
 			$documents[ $attachment_index ]['accept'] = Settings::getApplicationAttachmentFormats();

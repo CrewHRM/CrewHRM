@@ -140,9 +140,9 @@ class _Array {
 	/**
 	 * Find index of object in two dimensional array
 	 *
-	 * @param array $array The array to find index of object in
-	 * @param string $key  The key to match in the object
-	 * @param mixed $value The value to match in the object
+	 * @param array  $array The array to find index of object in
+	 * @param string $key   The key to match in the object
+	 * @param mixed  $value The value to match in the object
 	 * @return int|null
 	 */
 	public static function findIndex( array $array, $key, $value ) {

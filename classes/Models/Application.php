@@ -78,12 +78,14 @@ class Application {
 		}
 		Meta::application( $app_id )->updateMeta( 'application_attachments', $attachment_ids );
 
-		// Insert custom added questions
-		/* foreach ( $application as $key => $value ) {
+		/*
+		Insert custom added questions
+		foreach ( $application as $key => $value ) {
 			if ( strpos( $key, '_question_' ) === 0 ) {
 				Meta::application( $app_id )->updateMeta( $key, $value );
 			}
-		} */
+		}
+		*/
 
 		return $app_id;
 	}

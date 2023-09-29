@@ -115,10 +115,10 @@ class _String {
 	/**
 	 * Check if a value is float
 	 *
-	 * @param string|int|float $numericString
+	 * @param string|int|float $numeric_string The value to check if float
 	 * @return boolean
 	 */
-	public static function isFloat( $numericString ) {
-		return is_numeric( $numericString ) && strpos( $numericString, '.' ) !== false;
+	public static function isFloat( $numeric_string ) {
+		return is_numeric( $numeric_string ) && strpos( $numeric_string, '.' ) !== false;
 	}
 }

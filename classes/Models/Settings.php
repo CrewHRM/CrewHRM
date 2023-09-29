@@ -25,8 +25,8 @@ class Settings {
 	 */
 	private static function get( string $source ) {
 		static $data = array();
-		
-		if ( ! isset( $data[ $source ] )) {
+
+		if ( ! isset( $data[ $source ] ) ) {
 			$defaults = array(
 				self::KEY_SETTINGS => array(
 					'careers_search'  => true,
@@ -39,7 +39,7 @@ class Settings {
 			$_data           = array_merge( $defaults[ $source ] ?? array(), $_data );
 			$data[ $source ] = File::applyDynamics( $_data );
 		}
-		
+
 		return $data[ $source ];
 	}
 
@@ -66,7 +66,7 @@ class Settings {
 		$data = self::get( self::KEY_SETTINGS );
 
 		// Assign Application max size
-		$size = $data['application_max_size_mb'] ?? 0;
+		$size       = $data['application_max_size_mb'] ?? 0;
 		$max_upload = self::getWpMaxUploadSize();
 		if ( empty( $size ) || ! is_numeric( $size ) || $size > $max_upload || $size <= 0 ) {
 			$data['application_max_size_mb'] = $max_upload;
@@ -75,10 +75,10 @@ class Settings {
 		// Assign application attachment formats
 		if ( ! is_array( $data['application_attachment_formats'] ?? null ) ) {
 			$data['application_attachment_formats'] = array(
-				'pdf'
+				'pdf',
 			);
 		}
-		
+
 		return null !== $name ? ( $data[ $name ] ?? $default ) : $data;
 	}
 
@@ -117,12 +117,12 @@ class Settings {
 	/**
 	 * Get time format
 	 *
-	 * @return void
+	 * @return string
 	 */
 	public static function getTimeFormat() {
 		$format = self::getSettings( 'time_format' );
 		if ( empty( $format ) ) {
-			$format = get_option('time_format');
+			$format = get_option( 'time_format' );
 		}
 
 		return $format;

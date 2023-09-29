@@ -85,22 +85,22 @@ class Scripts extends Main {
 
 		// Load JS variables
 		$data = array(
-			'app_name'                => self::$configs->app_name,
-			'action_hooks'            => array(),
-			'filter_hooks'            => array(),
-			'home_url'                => get_home_url(),
-			'dist_url'                => self::$configs->dist_url,
-			'plugin_url'              => self::$configs->url,
-			'ajaxurl'                 => admin_url( 'admin-ajax.php' ),
-			'colors'                  => $dynamic_colors,
-			'reserved_stages'         => Stage::$reserved_stages,
-			'timeouts'                => (object) array(),
-			'nonce'                   => wp_create_nonce( Main::$configs->app_name ),
-			'wp_max_size'             => Settings::getWpMaxUploadSize(),
-			'application_max_size_mb' => Settings::getApplicationMaxSize(),
-			'application_file_formats'=> Settings::getApplicationAttachmentFormats(),
-			'date_format'             => Settings::getDateFormat(),
-			'time_format'             => Settings::getTimeFormat(),
+			'app_name'                 => self::$configs->app_name,
+			'action_hooks'             => array(),
+			'filter_hooks'             => array(),
+			'home_url'                 => get_home_url(),
+			'dist_url'                 => self::$configs->dist_url,
+			'plugin_url'               => self::$configs->url,
+			'ajaxurl'                  => admin_url( 'admin-ajax.php' ),
+			'colors'                   => $dynamic_colors,
+			'reserved_stages'          => Stage::$reserved_stages,
+			'timeouts'                 => (object) array(),
+			'nonce'                    => wp_create_nonce( Main::$configs->app_name ),
+			'wp_max_size'              => Settings::getWpMaxUploadSize(),
+			'application_max_size_mb'  => Settings::getApplicationMaxSize(),
+			'application_file_formats' => Settings::getApplicationAttachmentFormats(),
+			'date_format'              => Settings::getDateFormat(),
+			'time_format'              => Settings::getTimeFormat(),
 		);
 
 		echo '<script>window.CrewHRM=' . wp_json_encode( $data ) . '</script>';
