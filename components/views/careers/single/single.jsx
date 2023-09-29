@@ -58,7 +58,7 @@ function applyFormFields(fields) {
                 .filter((f) => f)
                 .flat(),
 
-            ...fields.questions.fields
+            /* ...fields.questions.fields
                 .map((question) => {
                     return [
                         {
@@ -73,7 +73,7 @@ function applyFormFields(fields) {
                     ];
                 })
                 .filter((q) => q)
-                .flat()
+                .flat() */
         ]
     };
 }

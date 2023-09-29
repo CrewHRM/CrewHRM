@@ -79,11 +79,11 @@ class Application {
 		Meta::application( $app_id )->updateMeta( 'application_attachments', $attachment_ids );
 
 		// Insert custom added questions
-		foreach ( $application as $key => $value ) {
+		/* foreach ( $application as $key => $value ) {
 			if ( strpos( $key, '_question_' ) === 0 ) {
 				Meta::application( $app_id )->updateMeta( $key, $value );
 			}
-		}
+		} */
 
 		return $app_id;
 	}
@@ -324,7 +324,7 @@ class Application {
 		$application['address'] = is_numeric( $application['address_id'] ) ? Address::getAddressById( $application['address_id'] ) : null;
 
 		// Set overview
-		$application['overview'] = self::getApplicationOverview( $application_id, $job_id );
+		$application['overview'] = array(); // self::getApplicationOverview( $application_id, $job_id );
 
 		// Set documents
 		$application['documents'] = self::getApplicationDocuments( $application_id, $job_id );
@@ -371,7 +371,7 @@ class Application {
 		// Loop through all the meta data of the application
 		foreach ( $meta as $meta_key => $meta_value ) {
 
-			// Loop through all the application form sections such as personal, documents, profile and questions.
+			// Loop through all the application form sections such as personal, documents, profile.
 			foreach ( $form as $section ) {
 
 				// Loop thorugh all the fields under the section to identify which meta is for which field

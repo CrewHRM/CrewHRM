@@ -159,8 +159,8 @@ export function ApplicationForm() {
                         sortable
                     } = values.application_form[section_name];
 
-                    // Prepare popup options to delete, edit etc. questions
-                    const { options = {} } = sections_fields[section_name];
+                    // Prepare popup options to delete, edit etc.
+                    const { options = {} } = sections_fields[section_name] || {};
                     const options_array = Object.keys(options).map((option_name) => {
                         return {
                             id: option_name,

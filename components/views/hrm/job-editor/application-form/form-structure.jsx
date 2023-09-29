@@ -221,7 +221,7 @@ export const sections_fields = {
             }
         ]
     },
-    questions: {
+    /* questions: {
         label: __('Add Questions'),
         sortable: true,
         addLabel: __('Add a question'),
@@ -240,5 +240,5 @@ export const sections_fields = {
             }
         },
         fields: []
-    }
+    } */
 };
