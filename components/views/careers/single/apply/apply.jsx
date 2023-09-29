@@ -27,10 +27,10 @@ const steps = [
         id: 'documents',
         label: __('Documents')
     },
-    {
+    /* {
         id: 'other',
         label: __('Other Information')
-    }
+    } */
 ];
 
 export function Apply({ job = {} }) {

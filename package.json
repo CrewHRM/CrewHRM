@@ -12,10 +12,8 @@
     "lint:fix": "eslint --fix ./components/**/*.jsx && prettier --write './components/**/*.{jsx,scss}' --config ./.prettierrc",
     "cypress:open": "cypress open --config-file tests/cypress/config.config.js",
     "cypress:run": "cypress run --config-file tests/cypress/config.config.js",
-    "env": "wp-env",
     "env:start": "wp-env start",
     "env:stop": "wp-env stop",
-    "postenv:start": "./tests/bin/initialize.sh",
     "mocha": "npx mochawesome-merge ./tests/cypress/reports/*.json -o tests/cypress/reports/mochawesome.json && rm -rf ./tests/cypress/reports/mochawesome-*.json && npx mochawesome-json-to-md -p ./tests/cypress/reports/mochawesome.json -o ./tests/cypress/reports/mochawesome.md && npx mochawesome-report-generator tests/cypress/reports/mochawesome.json -o tests/cypress/reports/"
   },
   "repository": {

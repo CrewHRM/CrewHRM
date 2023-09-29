@@ -12,7 +12,7 @@ use CrewHRM\Main;
 /**
  * Databse handler class
  */
-class DB extends Main {
+class DB {
 	/**
 	 * Prepare the table name, add prefixes
 	 *
@@ -22,7 +22,7 @@ class DB extends Main {
 	 */
 	public static function __callStatic( $name, $arguments ) {
 		global $wpdb;
-		return $wpdb->prefix . self::$configs->db_prefix . $name;
+		return $wpdb->prefix . Main::$configs->db_prefix . $name;
 	}
 
 	/**
@@ -51,7 +51,7 @@ class DB extends Main {
 		return array_map(
 			function ( $query ) use ( $wpdb, $charset_collate ) {
 				// Replace table prefix
-				$query = str_replace( 'wp_crewhrm_', $wpdb->prefix . self::$configs->db_prefix, $query );
+				$query = str_replace( 'wp_crewhrm_', $wpdb->prefix . Main::$configs->db_prefix, $query );
 
 				// Replace table configs
 				$query = str_replace( 'ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci', $charset_collate, $query );
