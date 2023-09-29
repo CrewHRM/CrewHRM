@@ -33,21 +33,24 @@ export function RadioCheckbox({
 	let check_array = Array.isArray(value) ? value : [];
 
 	return options.map((option) => {
-		let { label, id } = option;
+		let { label, id, disabled } = option;
 		return (
-			<label
-				key={id}
-				className={'d-flex align-items-center column-gap-10'.classNames() + className}
-			>
-				<input
-					type={type}
-					name={name}
-					value={id}
-					checked={type === 'radio' ? value === id : check_array.indexOf(id) > -1}
-					onChange={(e) => onChange(checkBoxRadioValue(e, value))}
-				/>
-				<span className={spanClassName}>{label}</span>
-			</label>
+			<div>
+				<label
+					key={id}
+					className={`d-inline-flex align-items-center column-gap-10 ${disabled ? 'cursor-not-allowed' : 'cursor-pointer'}`.classNames() + className}
+				>
+					<input
+						type={type}
+						name={name}
+						value={id}
+						disabled={disabled}
+						checked={type === 'radio' ? value === id : check_array.indexOf(id) > -1}
+						onChange={(e) => onChange(checkBoxRadioValue(e, value))}
+					/>
+					<span className={spanClassName}>{label}</span>
+				</label>
+			</div>
 		);
 	});
 }

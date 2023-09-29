@@ -98,6 +98,7 @@ class Scripts extends Main {
 			'nonce'                   => wp_create_nonce( Main::$configs->app_name ),
 			'wp_max_size'             => Settings::getWpMaxUploadSize(),
 			'application_max_size_mb' => Settings::getApplicationMaxSize(),
+			'application_file_formats'=> Settings::getApplicationAttachmentFormats(),
 			'date_format'             => Settings::getDateFormat(),
 			'time_format'             => Settings::getTimeFormat(),
 		);

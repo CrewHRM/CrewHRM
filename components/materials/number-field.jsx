@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 
 export function NumberField(props) {
-	const { onChange, className = '', value, max, min } = props;
+	const { onChange, className = '', value, max, min, disabled } = props;
 	const ref = useRef();
 	const [state, setState] = useState({
 		focused: false
@@ -45,7 +45,7 @@ export function NumberField(props) {
 		<div
 			data-crewhrm-selector="number-field"
 			className={
-				`d-flex align-items-center ${
+				`d-flex align-items-center ${disabled ? 'cursor-not-allowed' : ''} ${
 					state.focused ? 'active color-active-parent' : ''
 				}`.classNames() + className
 			}
@@ -60,6 +60,7 @@ export function NumberField(props) {
 				<input
 					ref={ref}
 					type="text"
+					disabled={disabled}
 					onChange={(e) => changeValue(null, e.currentTarget.value)}
 					value={value}
 					onFocus={() => toggleFocusState(true)}

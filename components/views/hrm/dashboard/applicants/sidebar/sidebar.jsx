@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Tabs } from '../../../../../materials/tabs/tabs.jsx';
-import { __, sprintf } from '../../../../../utilities/helpers.jsx';
+import { __, formatDate, sprintf } from '../../../../../utilities/helpers.jsx';
 import { TextField } from '../../../../../materials/text-field/text-field.jsx';
 import { Line } from '../../../../../materials/line/line.jsx';
 import { CoverImage } from '../../../../../materials/image/image.jsx';
@@ -168,7 +168,7 @@ export function Sidebar({ stage_id, hasApplications }) {
                                     <span
                                         className={'font-size-13 font-weight-400 line-height-24 color-text-light'.classNames()}
                                     >
-                                        {application_date}
+                                        {formatDate(application_date)}
                                     </span>
                                 </div>
                             </div>

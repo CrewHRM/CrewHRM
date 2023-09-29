@@ -67,7 +67,7 @@ export function Options(props) {
                 </span>
 
                 {field_keys.map((key, index) => {
-                    const { label, type, options, when, direction, hint, placeholder, min, max } =
+                    const { label, type, options, when, direction, hint, placeholder, min, max, disabled } =
                         fields[key];
                     const is_last = index == field_keys.length - 1;
 
@@ -175,6 +175,7 @@ export function Options(props) {
                                         <NumberField
                                             min={min}
                                             max={max}
+											disabled={disabled}
                                             value={values[key]}
                                             className={input_class}
                                             onChange={(v) => onChange(key, v)}

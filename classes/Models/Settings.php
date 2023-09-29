@@ -64,6 +64,21 @@ class Settings {
 	 */
 	public static function getSettings( $name = null, $default = null ) {
 		$data = self::get( self::KEY_SETTINGS );
+
+		// Assign Application max size
+		$size = $data['application_max_size_mb'] ?? 0;
+		$max_upload = self::getWpMaxUploadSize();
+		if ( empty( $size ) || ! is_numeric( $size ) || $size > $max_upload || $size <= 0 ) {
+			$data['application_max_size_mb'] = $max_upload;
+		}
+
+		// Assign application attachment formats
+		if ( ! is_array( $data['application_attachment_formats'] ?? null ) ) {
+			$data['application_attachment_formats'] = array(
+				'pdf'
+			);
+		}
+		
 		return null !== $name ? ( $data[ $name ] ?? $default ) : $data;
 	}
 
@@ -73,17 +88,16 @@ class Settings {
 	 * @return int
 	 */
 	public static function getApplicationMaxSize() {
-		$size = self::getSettings( 'application_max_size_mb' );
+		return self::getSettings( 'application_max_size_mb' );
+	}
 
-		// Convert to kilobyte
-		$max_upload = self::getWpMaxUploadSize();
-
-		// Safe max range
-		if ( empty( $size ) || ! is_numeric( $size ) || $size > $max_upload || $size <= 0 ) {
-			$size = $max_upload;
-		}
-
-		return $size;
+	/**
+	 * Get supported application attachment formats
+	 *
+	 * @return array
+	 */
+	public static function getApplicationAttachmentFormats() {
+		return self::getSettings( 'application_attachment_formats' );
 	}
 
 	/**

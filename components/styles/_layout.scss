@@ -84,7 +84,7 @@ $align_selfs: 'center', 'auto';
 }
 
 // Cursors
-$cursors: 'pointer', 'default';
+$cursors: 'pointer', 'default', 'not-allowed';
 @each $cursor in $cursors {
     .cursor-#{$cursor} {
         cursor: #{$cursor};

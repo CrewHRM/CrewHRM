@@ -1,13 +1,5 @@
 import { __ } from '../../../utilities/helpers.jsx';
-
-export const attachment_formats = {
-    audio: __('Audio'),
-    video: __('Video'),
-    image: __('Image'),
-    pdf: __('PDF'),
-    zip: __('ZIP'),
-    rar: __('RAR')
-};
+import { attachment_formats } from '../../../utilities/data.jsx';
 
 export const settings_fields = {
     general: {
@@ -54,12 +46,17 @@ export const settings_fields = {
                 label: __('Files & Attachments'),
                 icon: 'ch-icon ch-icon-paperclip-2',
                 fields: {
-                    attachment_formats: {
+                    application_attachment_formats: {
                         label: __('Attachment upload formats'),
                         type: 'checkbox',
                         direction: 'column',
                         options: Object.keys(attachment_formats).map((format) => {
-                            return { id: format, label: attachment_formats[format] };
+							const {label, disabled} = attachment_formats[format];
+                            return {
+								label,
+								disabled,
+								id: format, 
+							};
                         }),
                         hint: __(
                             'Not specifying any removes restriction. To disable upload, turn off attachment per job post.'
@@ -70,6 +67,7 @@ export const settings_fields = {
                         type: 'number',
                         min: 1,
                         max: window.CrewHRM.wp_max_size,
+						disabled: true,
                         hint: __(
                             'Total maximum size of resume, attachments and texts combined in job application'
                         )

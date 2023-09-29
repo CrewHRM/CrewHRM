@@ -65,7 +65,7 @@ export function FileUpload(props) {
         textSecondary = __('or, Just drop it here'),
         value,
         onChange,
-        accept,
+        accept=[],
         WpMedia,
         layoutComp
     } = props;
@@ -234,11 +234,18 @@ export function FileUpload(props) {
     };
 
     function Input() {
+		
+		let _accept = Array.isArray(accept) ? accept : [accept];
+
+		_accept = _accept.map(a=>{
+			return (a.indexOf('/')>-1 || a.indexOf('.')===0) ? a : '.'+a;
+		}).join(',');
+
         return (
             <input
                 ref={input_ref}
                 type="file"
-                accept={accept}
+                accept={_accept}
                 multiple={!singular}
                 className={'d-none'.classNames()}
                 onChange={(e) => {

@@ -26,4 +26,36 @@ export const statuses = {
     }
 };
 
+export const attachment_formats = {
+    pdf: {
+		label: __('PDF'),
+	},
+	doc: {
+		label: __('DOC')
+	},
+	docx: {
+		label: __('DOCX')
+	},
+    audio: {
+		label: __('Audio'),
+		disabled: true
+	},
+    video: {
+		label: __('Video'),
+		disabled: true
+	},
+    image: {
+		label: __('Image'),
+		disabled: true
+	},
+    zip: {
+		label: __('ZIP'),
+		disabled: true
+	},
+    rar: {
+		label: __('RAR'),
+		disabled: true
+	}
+};
+
 export const date_formats = ['DD MMM, YYYY', 'Y-MM-D', 'MM/D/Y', 'D/MM/Y'];

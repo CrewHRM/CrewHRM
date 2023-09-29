@@ -30,11 +30,12 @@ const getForm = (_form, attrs) => {
 const prepareField = (category, field = {}) => {
     let { form: _form = [] } =
         sections_fields[category].fields.find((f) => f.id === field.id) || {};
-    const { required, enabled, readonly } = field;
+    const { required, enabled, readonly, accept } = field;
 
     let attrs = {
         required: required || readonly,
-        enabled: enabled || readonly
+        enabled: enabled || readonly,
+		accept
     };
 
     return getForm(_form, attrs);
@@ -139,10 +140,7 @@ export function Single({ base_permalink }) {
         department_name,
         job_title,
         job_status,
-        meta = {},
         job_description,
-        street_address,
-        country_code,
         employment_type,
         salary_a,
         salary_b
