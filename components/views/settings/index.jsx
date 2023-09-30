@@ -11,7 +11,7 @@ import { HRMSettings } from './hrm-settings/hrm-settings.jsx';
 const profile = document.getElementById('crewhrm_company_profile');
 if (profile) {
     ReactDOM.createRoot(profile).render(
-        <MountPoint element={profile}>
+        <MountPoint>
             <Company {...getElementDataSet(profile)} />
         </MountPoint>
     );
@@ -21,7 +21,7 @@ if (profile) {
 const settings = document.getElementById('crewhrm_settings');
 if (settings) {
     ReactDOM.createRoot(settings).render(
-        <MountPoint element={settings}>
+        <MountPoint>
             <HRMSettings {...getElementDataSet(settings)} />
         </MountPoint>
     );

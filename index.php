@@ -13,7 +13,7 @@
  * @package crewhrm
  */
 
-// Load autoloader
+// Load App
 require_once __DIR__ . '/classes/Main.php';
 
 // Initialize Plugin

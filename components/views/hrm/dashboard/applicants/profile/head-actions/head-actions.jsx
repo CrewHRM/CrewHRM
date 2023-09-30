@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import { Comment } from './comment/comment.jsx';
@@ -8,6 +8,8 @@ import { ContextApplicationSession } from '../../applicants.jsx';
 import { ContextWarning } from '../../../../../../materials/warning/warning.jsx';
 import { request } from '../../../../../../utilities/request.jsx';
 import { ContextToast } from '../../../../../../materials/toast/toast.jsx';
+import { applyFilters } from '../../../../../../utilities/hooks.jsx';
+import { RenderExternal } from '../../../../../../materials/render-external.jsx';
 
 import style from './head.module.scss';
 
@@ -31,23 +33,26 @@ export function HeadActions({ application }) {
     const { ajaxToast } = useContext(ContextToast);
     const navigate = useNavigate();
 
-    const segments = [
-        {
-            icon: 'ch-icon ch-icon-message',
-            title: __('Internal Comment'),
-            renderer: Comment,
-            tagline: (
-                <>
-                    <span className={'font-size-15 font-weight-500 color-text'.classNames()}>
-                        {__('Add a comment')}
-                    </span>{' '}
-                    <span className={'font-size-13 font-weight-400 color-text-light'}>
-                        {__('Candidates never see comments.')}
-                    </span>
-                </>
-            )
-        }
-    ];
+    const segments = applyFilters(
+		'applicant_profile_communication_channels',
+		[
+			{
+				icon: 'ch-icon ch-icon-message',
+				title: __('Internal Comment'),
+				renderer: Comment,
+				tagline: (
+					<>
+						<span className={'font-size-15 font-weight-500 color-text'.classNames()}>
+							{__('Add a comment')}
+						</span>{' '}
+						<span className={'font-size-13 font-weight-400 color-text-light'}>
+							{__('Candidates never see comments.')}
+						</span>
+					</>
+				)
+			}
+		]
+	);
 
     const [state, setState] = useState({
         active_segment: null
@@ -115,9 +120,10 @@ export function HeadActions({ application }) {
                 break;
         }
     };
+	
 
     const {
-        renderer: ActiveComp,
+        renderer,
         icon: active_icon,
         tagline
     } = segments[state.active_segment] || {};
@@ -186,7 +192,7 @@ export function HeadActions({ application }) {
                 </div>
             </div>
 
-            {ActiveComp ? (
+            {renderer ? (
                 <div
                     data-crewhrm-selector="action-fields"
                     className={'content-area'.classNames(style)}
@@ -206,8 +212,7 @@ export function HeadActions({ application }) {
                             ></i>
                         </div>
                     </div>
-
-                    <ActiveComp onClose={toggleSegment} application={application} />
+					<RenderExternal component={renderer} payload={{application}}/>
                 </div>
             ) : null}
         </div>

@@ -1,3 +1,5 @@
+@import './mixins';
+
 // Displays
 $displays: 'block', 'flex', 'inline', 'inline-block', 'inline-flex', 'contents', 'none';
 @each $display in $displays {
@@ -68,44 +70,19 @@ $attrs: 'font-size', 'margin', 'margin-top', 'margin-bottom', 'margin-left', 'ma
 }
 
 // Flex content justify
-$justifications: 'space-between', 'space-around', 'center', 'end', 'flex-end';
-@each $justfication in $justifications {
-    .justify-content-#{$justfication} {
-        justify-content: #{$justfication};
-    }
-}
+@include looper('justify-content', 'space-between', 'space-around', 'center', 'end', 'flex-end');
 
 // Align self
-$align_selfs: 'center', 'auto';
-@each $align_self in $align_selfs {
-    .align-self-#{$align_self} {
-        align-self: #{$align_self};
-    }
-}
+@include looper('align-self', 'center', 'auto');
 
 // Cursors
-$cursors: 'pointer', 'default', 'not-allowed';
-@each $cursor in $cursors {
-    .cursor-#{$cursor} {
-        cursor: #{$cursor};
-    }
-}
+@include looper('cursor', 'pointer', 'default', 'not-allowed');
 
 // Vertical alignments
-$v_alignments: 'middle', 'top';
-@each $v_alignment in $v_alignments {
-    .vertical-align-#{$v_alignment} {
-        vertical-align: #{$v_alignment};
-    }
-}
+@include looper('vertical-align', 'middle', 'top');
 
 // Positions
-$positions: 'absolute', 'fixed', 'static', 'relative', 'sticky';
-@each $position in $positions {
-    .position-#{$position} {
-        position: #{$position};
-    }
-}
+@include looper('position', 'absolute', 'fixed', 'static', 'relative', 'sticky');
 
 // Borders
 $borders: 'border', 'border-bottom', 'border-top', 'border-left', 'border-right';
@@ -136,20 +113,13 @@ $borders: 'border', 'border-bottom', 'border-top', 'border-left', 'border-right'
 }
 
 // Flex flows
-$flows: 'column', 'row', 'row-reverse', 'column-reverse';
-@each $flow in $flows {
-    .flex-direction-#{$flow} {
-        flex-direction: #{$flow};
-    }
-}
+@include looper('flex-direction', 'column', 'row', 'row-reverse', 'column-reverse');
 
 // Flex wrap
-$wraps: 'wrap', 'nowrap';
-@each $wrap in $wraps {
-    .flex-wrap-#{$wrap} {
-        flex-wrap: #{$wrap};
-    }
-}
+@include looper('flex-wrap', 'wrap', 'nowrap');
+
+// Background sizes
+@include looper('background-size', 'cover');
 
 // Autos
 $autos: 'width', 'height', 'margin';

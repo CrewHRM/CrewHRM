@@ -16,7 +16,7 @@ use CrewHRM\Models\Settings;
 /**
  * The setup class
  */
-class Admin extends Main {
+class Admin {
 	const SLUG_COMPANY_PROFILE = 'crewhrm-settings';
 	const SLUG_SETTINGS        = 'crewhrm-company';
 	const MOUNTPOINT_SETTINGS  = 'crewhrm_settings';
@@ -51,14 +51,14 @@ class Admin extends Main {
 			__( 'Crew HRM', 'crewhrm' ),
 			__( 'Crew HRM', 'crewhrm' ),
 			'administrator',
-			self::$configs->root_menu_slug,
+			Main::$configs->root_menu_slug,
 			array( $this, 'mainPage' ),
 			$logo
 		);
 
 		// Company profile
 		add_submenu_page(
-			self::$configs->root_menu_slug,
+			Main::$configs->root_menu_slug,
 			__( 'Company', 'crewhrm' ),
 			__( 'Company', 'crewhrm' ),
 			'administrator',
@@ -68,7 +68,7 @@ class Admin extends Main {
 
 		// Setting page
 		add_submenu_page(
-			self::$configs->root_menu_slug,
+			Main::$configs->root_menu_slug,
 			__( 'Settings', 'crewhrm' ),
 			__( 'Settings', 'crewhrm' ),
 			'administrator',

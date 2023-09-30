@@ -30,7 +30,7 @@ function CareersRouter({ base_permalink, settings = {} }) {
 const careers = document.getElementById('crewhrm_careers');
 if (careers) {
     ReactDOM.createRoot(careers).render(
-        <MountPoint element={careers}>
+        <MountPoint>
             <CareersRouter {...getElementDataSet(careers)} />
         </MountPoint>
     );

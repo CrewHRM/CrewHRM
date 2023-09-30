@@ -16,7 +16,7 @@ use CrewHRM\Models\Stage;
 /**
  * Script handler class
  */
-class Scripts extends Main {
+class Scripts {
 
 	/**
 	 * Script handler constructor
@@ -37,11 +37,11 @@ class Scripts extends Main {
 	 */
 	public function adminScripts() {
 		// Load script for the main hrm dashboard
-		if ( Utilities::isCrewDashboard( self::$configs->root_menu_slug ) ) {
+		if ( Utilities::isCrewDashboard() ) {
 			if ( current_user_can( 'upload_files' ) ) {
 				wp_enqueue_media();
 			}
-			wp_enqueue_script( 'crewhrm-hrm', self::$configs->dist_url . 'hrm.js', array( 'jquery', 'wp-i18n' ), self::$configs->version, true );
+			wp_enqueue_script( 'crewhrm-hrm', Main::$configs->dist_url . 'hrm.js', array( 'jquery', 'wp-i18n' ), Main::$configs->version, true );
 		}
 
 		// Load scripts for setting and company profile
@@ -49,7 +49,7 @@ class Scripts extends Main {
 			if ( current_user_can( 'upload_files' ) ) {
 				wp_enqueue_media();
 			}
-			wp_enqueue_script( 'crewhrm-settings', self::$configs->dist_url . 'settings.js', array( 'jquery', 'wp-i18n' ), self::$configs->version, true );
+			wp_enqueue_script( 'crewhrm-settings', Main::$configs->dist_url . 'settings.js', array( 'jquery', 'wp-i18n' ), Main::$configs->version, true );
 		}
 	}
 
@@ -60,7 +60,7 @@ class Scripts extends Main {
 	 */
 	public function frontendScripts() {
 		if ( Utilities::isCareersPage() ) {
-			wp_enqueue_script( 'crewhrm-careers', self::$configs->dist_url . 'careers.js', array( 'jquery', 'wp-i18n' ), self::$configs->version, true );
+			wp_enqueue_script( 'crewhrm-careers', Main::$configs->dist_url . 'careers.js', array( 'jquery', 'wp-i18n' ), Main::$configs->version, true );
 		}
 	}
 
@@ -85,12 +85,12 @@ class Scripts extends Main {
 
 		// Load JS variables
 		$data = array(
-			'app_name'                 => self::$configs->app_name,
+			'app_name'                 => Main::$configs->app_name,
 			'action_hooks'             => array(),
 			'filter_hooks'             => array(),
 			'home_url'                 => get_home_url(),
-			'dist_url'                 => self::$configs->dist_url,
-			'plugin_url'               => self::$configs->url,
+			'dist_url'                 => Main::$configs->dist_url,
+			'plugin_url'               => Main::$configs->url,
 			'ajaxurl'                  => admin_url( 'admin-ajax.php' ),
 			'colors'                   => $dynamic_colors,
 			'reserved_stages'          => Stage::$reserved_stages,

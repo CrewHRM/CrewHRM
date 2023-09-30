@@ -12,7 +12,7 @@ const colors = {
     error: window.CrewHRM.colors['error']
 };
 
-export function ToastWrapper(props) {
+export function ToastWrapper({children}) {
     const ref = useRef();
 
     const [state, setState] = useState({
@@ -95,7 +95,7 @@ export function ToastWrapper(props) {
 
     return (
         <ContextToast.Provider value={{ addToast, ajaxToast }}>
-            {props.children}
+            {children}
 
             {(state.toasts.length && (
                 <div

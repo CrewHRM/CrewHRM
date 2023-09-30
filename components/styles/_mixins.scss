@@ -10,6 +10,14 @@
     }
 }
 
+@mixin looper( $class, $values... ) {
+	@each $value in $values {
+		.#{$class}-#{$value} {
+			#{$class}: #{$value};
+		}
+	}
+}
+
 // Media Query Mixins ( mobile - 576, tablet - 768, desktop - 992, desktop-lg - 1200 )
 
 // @include breakpoint-min(tablet) { ... }

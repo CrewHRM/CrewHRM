@@ -35,9 +35,8 @@ export function RadioCheckbox({
 	return options.map((option) => {
 		let { label, id, disabled } = option;
 		return (
-			<div>
+			<div key={id}>
 				<label
-					key={id}
 					className={`d-inline-flex align-items-center column-gap-10 ${disabled ? 'cursor-not-allowed' : 'cursor-pointer'}`.classNames() + className}
 				>
 					<input
