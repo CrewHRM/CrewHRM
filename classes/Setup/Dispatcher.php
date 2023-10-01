@@ -48,10 +48,21 @@ class Dispatcher {
 			return;
 		}
 
+		add_action( 'plugins_loaded', array( $this, 'registerControllers' ), 11 );
+	}
+
+	/**
+	 * Register ajax request handlers
+	 *
+	 * @return void
+	 */
+	public function registerControllers(){
+
 		$registered_methods = array();
+		$controllers        = apply_filters( 'crewhrm_controllers', self::$controllers );
 
 		// Loop through controllers classes
-		foreach ( self::$controllers as $class ) {
+		foreach ( $controllers as $class ) {
 
 			// Loop through controller methods in the class
 			foreach ( $class::PREREQUISITES as $method => $prerequisites ) {
