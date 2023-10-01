@@ -1,5 +1,5 @@
 import React from 'react';
-import { __ } from '../../../../utilities/helpers.jsx';
+import { __ } from 'crewhrm-materials/helpers.jsx';
 import { Link, useParams } from 'react-router-dom';
 
 export const pages = [

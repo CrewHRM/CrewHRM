@@ -2,9 +2,9 @@ import React, { useEffect, useState } from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 
-import '../../utilities/prototypes.jsx';
-import { __, getElementDataSet } from '../../utilities/helpers.jsx';
-import { MountPoint } from '../../materials/mountpoint.jsx';
+import 'crewhrm-materials/prototypes.jsx';
+import { __, getElementDataSet } from 'crewhrm-materials/helpers.jsx';
+import { MountPoint } from 'crewhrm-materials/mountpoint.jsx';
 import { Listing } from './listing/listing.jsx';
 import { Single } from './single/single.jsx';
 

@@ -3,10 +3,10 @@ import TimeAgo from 'javascript-time-ago';
 import { useParams } from 'react-router-dom';
 import en from 'javascript-time-ago/locale/en';
 
-import { CoverImage } from '../../../../../../materials/image/image.jsx';
-import { Line } from '../../../../../../materials/line/line.jsx';
+import { CoverImage } from 'crewhrm-materials/image/image.jsx';
+import { Line } from 'crewhrm-materials/line/line.jsx';
 import { ContextApplicationSession } from '../../applicants.jsx';
-import { request } from '../../../../../../utilities/request.jsx';
+import { request } from 'crewhrm-materials/request.jsx';
 
 import style from './activity.module.scss';
 

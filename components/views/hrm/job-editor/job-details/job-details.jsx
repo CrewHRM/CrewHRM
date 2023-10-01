@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState } from 'react';
 
-import { __ } from '../../../../utilities/helpers.jsx';
+import { __ } from 'crewhrm-materials/helpers.jsx';
 import { TitleAndDescription } from './sections/title-description.jsx';
 import { EmploymentDetails } from './sections/employment-details.jsx';
 import { Experience } from './sections/required-experience.jsx';
@@ -8,7 +8,7 @@ import { Experience } from './sections/required-experience.jsx';
 import style from './details.module.scss';
 import { Salary } from './sections/salary.jsx';
 import { Location } from './sections/location.jsx';
-import { FormActionButtons } from '../../../../materials/form-action.jsx';
+import { FormActionButtons } from 'crewhrm-materials/form-action.jsx';
 import { ContextJobEditor } from '../index.jsx';
 
 export const textarea_class =

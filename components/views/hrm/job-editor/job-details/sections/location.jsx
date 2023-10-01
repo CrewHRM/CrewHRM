@@ -1,10 +1,10 @@
 import React, { useContext } from 'react';
 
-import { __, countries_array } from '../../../../../utilities/helpers.jsx';
+import { __, countries_array } from 'crewhrm-materials/helpers.jsx';
 import { input_class, section_title_class, field_label_class } from '../job-details.jsx';
 import style from '../details.module.scss';
-import { DropDown } from '../../../../../materials/dropdown/dropdown.jsx';
-import { TagField } from '../../../../../materials/tag-field/tag-field.jsx';
+import { DropDown } from 'crewhrm-materials/dropdown/dropdown.jsx';
+import { TagField } from 'crewhrm-materials/tag-field/tag-field.jsx';
 import { ContextJobEditor } from '../../index.jsx';
 
 const attendance_types = {

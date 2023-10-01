@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { __, getAddress } from '../../../utilities/helpers.jsx';
-import { Conditional } from '../../../materials/conditional.jsx';
+import { __, getAddress } from 'crewhrm-materials/helpers.jsx';
+import { Conditional } from 'crewhrm-materials/conditional.jsx';
 
 import style from './listing.module.scss';
 import { employment_types } from '../../hrm/job-editor/job-details/sections/employment-details.jsx';

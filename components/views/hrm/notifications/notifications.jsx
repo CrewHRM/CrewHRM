@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { DropDownUnmanaged } from '../../../materials/dropdown/dropdown.jsx';
-import { IconNotification } from '../../../materials/dynamic-svg/icon-notification.jsx';
-import { IconNotificationHasUpdate } from '../../../materials/dynamic-svg/icon-notification-has-update.jsx';
-import { IconEmail } from '../../../materials/dynamic-svg/icon-email.jsx';
-import { IconEmailHasUpdate } from '../../../materials/dynamic-svg/icon-email-has-update.jsx';
+import { DropDownUnmanaged } from 'crewhrm-materials/dropdown/dropdown.jsx';
+import { IconNotification } from 'crewhrm-materials/dynamic-svg/icon-notification.jsx';
+import { IconNotificationHasUpdate } from 'crewhrm-materials/dynamic-svg/icon-notification-has-update.jsx';
+import { IconEmail } from 'crewhrm-materials/dynamic-svg/icon-email.jsx';
+import { IconEmailHasUpdate } from 'crewhrm-materials/dynamic-svg/icon-email-has-update.jsx';
 
 export function NotificationsEmail() {
     const [state, setState] = useState({

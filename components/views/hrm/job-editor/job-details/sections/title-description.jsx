@@ -1,10 +1,10 @@
 import React, { useContext, useState } from 'react';
 import { field_label_class, input_class, section_title_class } from '../job-details.jsx';
-import { DropDown } from '../../../../../materials/dropdown/dropdown.jsx';
-import { __ } from '../../../../../utilities/helpers.jsx';
-import { TextField } from '../../../../../materials/text-field/text-field.jsx';
-import { CircularProgress } from '../../../../../materials/circular.jsx';
-import { TextEditor } from '../../../../../materials/text-editor/text-editor.jsx';
+import { DropDown } from 'crewhrm-materials/dropdown/dropdown.jsx';
+import { __ } from 'crewhrm-materials/helpers.jsx';
+import { TextField } from 'crewhrm-materials/text-field/text-field.jsx';
+import { CircularProgress } from 'crewhrm-materials/circular.jsx';
+import { TextEditor } from 'crewhrm-materials/text-editor/text-editor.jsx';
 import { ContextBackendDashboard } from '../../../hrm.jsx';
 import { ContextJobEditor } from '../../index.jsx';
 

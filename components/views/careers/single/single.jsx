@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useParams, useSearchParams } from 'react-router-dom';
 
-import { __, getAddress, parseParams } from '../../../utilities/helpers.jsx';
+import { __, getAddress, parseParams } from 'crewhrm-materials/helpers.jsx';
 import style from './single.module.scss';
-import { DangerouslySet } from '../../../materials/DangerouslySet.jsx';
+import { DangerouslySet } from 'crewhrm-materials/DangerouslySet.jsx';
 import { Apply } from './apply/apply.jsx';
-import { request } from '../../../utilities/request.jsx';
-import { LoadingIcon } from '../../../materials/loading-icon/loading-icon.jsx';
+import { request } from 'crewhrm-materials/request.jsx';
+import { LoadingIcon } from 'crewhrm-materials/loading-icon/loading-icon.jsx';
 import { employment_types } from '../../hrm/job-editor/job-details/sections/employment-details.jsx';
 import { sections_fields } from '../../hrm/job-editor/application-form/form-structure.jsx';
-import { Conditional } from '../../../materials/conditional.jsx';
-import { statuses } from '../../../utilities/data.jsx';
+import { Conditional } from 'crewhrm-materials/conditional.jsx';
+import { statuses } from 'crewhrm-materials/data.jsx';
 
 const getForm = (_form, attrs) => {
     // Loop through fields

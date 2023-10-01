@@ -1,10 +1,10 @@
 import React, { useContext } from 'react';
 
-import { __ } from '../../../../../utilities/helpers.jsx';
+import { __ } from 'crewhrm-materials/helpers.jsx';
 import { field_label_class, input_class, section_title_class } from '../job-details.jsx';
 import style from '../details.module.scss';
-import { DropDown } from '../../../../../materials/dropdown/dropdown.jsx';
-import { TagField } from '../../../../../materials/tag-field/tag-field.jsx';
+import { DropDown } from 'crewhrm-materials/dropdown/dropdown.jsx';
+import { TagField } from 'crewhrm-materials/tag-field/tag-field.jsx';
 import { ContextJobEditor } from '../../index.jsx';
 
 const salary_types = {

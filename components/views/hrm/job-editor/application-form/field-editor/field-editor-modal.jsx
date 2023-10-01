@@ -1,9 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Modal } from '../../../../../materials/modal.jsx';
-import { __, getRandomString } from '../../../../../utilities/helpers.jsx';
-import { DropDown } from '../../../../../materials/dropdown/dropdown.jsx';
-import { ToggleSwitch } from '../../../../../materials/toggle-switch/ToggleSwitch.jsx';
-import { Line } from '../../../../../materials/line/line.jsx';
+import { Modal } from 'crewhrm-materials/modal.jsx';
+import { __, getRandomString } from 'crewhrm-materials/helpers.jsx';
+import { DropDown } from 'crewhrm-materials/dropdown/dropdown.jsx';
+import { ToggleSwitch } from 'crewhrm-materials/toggle-switch/ToggleSwitch.jsx';
+import { Line } from 'crewhrm-materials/line/line.jsx';
 
 const question_types = {
     textarea: __('Paragraph'),

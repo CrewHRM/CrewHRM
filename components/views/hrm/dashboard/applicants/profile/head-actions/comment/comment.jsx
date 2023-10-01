@@ -1,8 +1,8 @@
 import React, { useContext, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { __, isEmpty, storage } from '../../../../../../../utilities/helpers.jsx';
-import { request } from '../../../../../../../utilities/request.jsx';
-import { ContextToast } from '../../../../../../../materials/toast/toast.jsx';
+import { __, isEmpty, storage } from 'crewhrm-materials/helpers.jsx';
+import { request } from 'crewhrm-materials/request.jsx';
+import { ContextToast } from 'crewhrm-materials/toast/toast.jsx';
 import { ContextApplicationSession } from '../../../applicants.jsx';
 
 export function Comment(props) {

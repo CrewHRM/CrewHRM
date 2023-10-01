@@ -46,6 +46,7 @@
     "@wordpress/env": "^8.6.0",
     "babel-eslint": "^10.1.0",
     "babel-loader": "^9.1.3",
+    "crewhrm-materials": "github:CrewHRM/Materials",
     "css-loader": "^6.8.1",
     "css-minimizer-webpack-plugin": "^5.0.1",
     "cypress": "^11.2.0",

@@ -1,10 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Tabs } from '../../../../../materials/tabs/tabs.jsx';
-import { __, formatDate, sprintf } from '../../../../../utilities/helpers.jsx';
-import { TextField } from '../../../../../materials/text-field/text-field.jsx';
-import { Line } from '../../../../../materials/line/line.jsx';
-import { CoverImage } from '../../../../../materials/image/image.jsx';
-import { request } from '../../../../../utilities/request.jsx';
+import { Tabs } from 'crewhrm-materials/tabs/tabs.jsx';
+import { __, formatDate, sprintf } from 'crewhrm-materials/helpers.jsx';
+import { TextField } from 'crewhrm-materials/text-field/text-field.jsx';
+import { Line } from 'crewhrm-materials/line/line.jsx';
+import { CoverImage } from 'crewhrm-materials/image/image.jsx';
+import { request } from 'crewhrm-materials/request.jsx';
 import { useNavigate, useParams } from 'react-router-dom';
 import { ContextApplicationSession } from '../applicants.jsx';
 

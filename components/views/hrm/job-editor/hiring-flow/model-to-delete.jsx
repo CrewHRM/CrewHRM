@@ -1,13 +1,13 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Modal } from '../../../../materials/modal.jsx';
-import { __, sprintf } from '../../../../utilities/helpers.jsx';
-import { CoverImage } from '../../../../materials/image/image.jsx';
-import { DropDown } from '../../../../materials/dropdown/dropdown.jsx';
-import { ContextWarning } from '../../../../materials/warning/warning.jsx';
-import { request } from '../../../../utilities/request.jsx';
-import { ContextToast } from '../../../../materials/toast/toast.jsx';
+import { Modal } from 'crewhrm-materials/modal.jsx';
+import { __, sprintf } from 'crewhrm-materials/helpers.jsx';
+import { CoverImage } from 'crewhrm-materials/image/image.jsx';
+import { DropDown } from 'crewhrm-materials/dropdown/dropdown.jsx';
+import { ContextWarning } from 'crewhrm-materials/warning/warning.jsx';
+import { request } from 'crewhrm-materials/request.jsx';
+import { ContextToast } from 'crewhrm-materials/toast/toast.jsx';
 
-import avatar from '../../../../images/avatar.svg';
+import avatar from 'crewhrm-materials/static/images/avatar.svg';
 
 function MoveContent({
     stage_name,

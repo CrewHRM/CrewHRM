@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 
-import { DropDown } from '../../../../../materials/dropdown/dropdown.jsx';
-import { __ } from '../../../../../utilities/helpers.jsx';
+import { DropDown } from 'crewhrm-materials/dropdown/dropdown.jsx';
+import { __ } from 'crewhrm-materials/helpers.jsx';
 import { input_class, field_label_class, section_title_class } from '../job-details.jsx';
 import style from '../details.module.scss';
 import { ContextJobEditor } from '../../index.jsx';

@@ -1,11 +1,11 @@
 import React, { useContext } from 'react';
 import { input_class, section_title_class, field_label_class } from '../job-details.jsx';
 
-import { __ } from '../../../../../utilities/helpers.jsx';
+import { __ } from 'crewhrm-materials/helpers.jsx';
 import style from '../details.module.scss';
-import { NumberField } from '../../../../../materials/number-field.jsx';
-import { DateField } from '../../../../../materials/date-time.jsx';
-import { TagField } from '../../../../../materials/tag-field/tag-field.jsx';
+import { NumberField } from 'crewhrm-materials/number-field.jsx';
+import { DateField } from 'crewhrm-materials/date-time.jsx';
+import { TagField } from 'crewhrm-materials/tag-field/tag-field.jsx';
 import { ContextJobEditor } from '../../index.jsx';
 
 export const employment_types = {

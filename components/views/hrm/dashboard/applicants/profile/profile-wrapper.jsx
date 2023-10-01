@@ -1,20 +1,20 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { __, getAddress, getFlag } from '../../../../../utilities/helpers.jsx';
+import { __, getAddress, getFlag } from 'crewhrm-materials/helpers.jsx';
 import { HeadActions } from './head-actions/head-actions.jsx';
-import { Tabs } from '../../../../../materials/tabs/tabs.jsx';
+import { Tabs } from 'crewhrm-materials/tabs/tabs.jsx';
 import { OverView } from './overview/overview.jsx';
 import { Documents } from './documents/documents.jsx';
 import { Activity } from './activity/activity.jsx';
-import { CoverImage } from '../../../../../materials/image/image.jsx';
-import { Line } from '../../../../../materials/line/line.jsx';
-import { request } from '../../../../../utilities/request.jsx';
-import { InitState } from '../../../../../materials/init-state.jsx';
+import { CoverImage } from 'crewhrm-materials/image/image.jsx';
+import { Line } from 'crewhrm-materials/line/line.jsx';
+import { request } from 'crewhrm-materials/request.jsx';
+import { InitState } from 'crewhrm-materials/init-state.jsx';
 import { ContextApplicationSession } from '../applicants.jsx';
 
 import style from './profile.module.scss';
-import { Conditional } from '../../../../../materials/conditional.jsx';
+import { Conditional } from 'crewhrm-materials/conditional.jsx';
 
 const tab_class =
     'd-flex align-items-center justify-content-center font-size-15 font-weight-500 line-height-24'.classNames();

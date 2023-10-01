@@ -1,7 +1,7 @@
 import React from 'react';
-import { TagField } from '../../../materials/tag-field/tag-field.jsx';
+import { TagField } from 'crewhrm-materials/tag-field/tag-field.jsx';
 import { employment_types } from '../../hrm/job-editor/job-details/sections/employment-details.jsx';
-import { countries_object, __ } from '../../../utilities/helpers.jsx';
+import { countries_object, __ } from 'crewhrm-materials/helpers.jsx';
 
 import style from './listing.module.scss';
 

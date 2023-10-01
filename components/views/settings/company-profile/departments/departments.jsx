@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { __ } from '../../../../utilities/helpers.jsx';
-import { ListManager } from '../../../../materials/list-manager/list-manager.jsx';
+import { __ } from 'crewhrm-materials/helpers.jsx';
+import { ListManager } from 'crewhrm-materials/list-manager/list-manager.jsx';
 
 export function CompantDepartments({ onChange, values }) {
     return (

@@ -1,6 +1,6 @@
 import React from 'react';
-import { __, countries_array } from '../../../../utilities/helpers.jsx';
-import { genders } from '../../../../utilities/data.jsx';
+import { __, countries_array } from 'crewhrm-materials/helpers.jsx';
+import { genders } from 'crewhrm-materials/data.jsx';
 
 const gender_disclaimer = (
     <>

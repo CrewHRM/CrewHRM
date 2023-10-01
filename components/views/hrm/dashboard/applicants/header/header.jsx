@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
-import { __ } from '../../../../../utilities/helpers.jsx';
-import { StatusDot } from '../../../../../materials/status-dot/status-dots.jsx';
-import { DropDown } from '../../../../../materials/dropdown/dropdown.jsx';
-import { Tabs } from '../../../../../materials/tabs/tabs.jsx';
+import { __ } from 'crewhrm-materials/helpers.jsx';
+import { StatusDot } from 'crewhrm-materials/status-dot/status-dots.jsx';
+import { DropDown } from 'crewhrm-materials/dropdown/dropdown.jsx';
+import { Tabs } from 'crewhrm-materials/tabs/tabs.jsx';
 
 import style from './header.module.scss';
 

@@ -3,18 +3,18 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { settings_fields } from '../field-structure.jsx';
 import { ContextSettings } from '../hrm-settings.jsx';
-import { ToggleSwitch } from '../../../../materials/toggle-switch/ToggleSwitch.jsx';
-import { TextField } from '../../../../materials/text-field/text-field.jsx';
+import { ToggleSwitch } from 'crewhrm-materials/toggle-switch/ToggleSwitch.jsx';
+import { TextField } from 'crewhrm-materials/text-field/text-field.jsx';
 import { input_class } from '../../../hrm/job-editor/job-details/job-details.jsx';
-import { FileUpload } from '../../../../materials/file-ipload/file-upload.jsx';
-import { __ } from '../../../../utilities/helpers.jsx';
-import { NumberField } from '../../../../materials/number-field.jsx';
-import { RadioCheckbox } from '../../../../materials/radio-checkbox.jsx';
-import { DropDown } from '../../../../materials/dropdown/dropdown.jsx';
+import { FileUpload } from 'crewhrm-materials/file-ipload/file-upload.jsx';
+import { __ } from 'crewhrm-materials/helpers.jsx';
+import { NumberField } from 'crewhrm-materials/number-field.jsx';
+import { RadioCheckbox } from 'crewhrm-materials/radio-checkbox.jsx';
+import { DropDown } from 'crewhrm-materials/dropdown/dropdown.jsx';
 import { ContextBackendDashboard } from '../../../hrm/hrm.jsx';
 
 import style from './options.module.scss';
-import { RenderMedia } from '../../../../materials/render-media/render-media.jsx';
+import { RenderMedia } from 'crewhrm-materials/render-media/render-media.jsx';
 
 const label_class =
     'd-block font-size-17 font-weight-500 line-height-24 letter-spacing--17 color-text'.classNames();

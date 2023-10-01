@@ -1,7 +1,7 @@
 import React from 'react';
 
-import img from '../../../../../images/no-job.svg';
-import { __ } from '../../../../../utilities/helpers.jsx';
+import img from 'crewhrm-materials/static/images/no-job.svg';
+import { __ } from 'crewhrm-materials/helpers.jsx';
 
 export function NoJob() {
     return (

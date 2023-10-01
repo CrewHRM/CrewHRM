@@ -1,13 +1,13 @@
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 
-import { __ } from '../../../../../utilities/helpers.jsx';
-import { DropDown } from '../../../../../materials/dropdown/dropdown.jsx';
-import { TextField } from '../../../../../materials/text-field/text-field.jsx';
+import { __ } from 'crewhrm-materials/helpers.jsx';
+import { DropDown } from 'crewhrm-materials/dropdown/dropdown.jsx';
+import { TextField } from 'crewhrm-materials/text-field/text-field.jsx';
 import { ContextBackendDashboard } from '../../../hrm.jsx';
-import { Conditional } from '../../../../../materials/conditional.jsx';
-import { LoadingIcon } from '../../../../../materials/loading-icon/loading-icon.jsx';
-import { statuses } from '../../../../../utilities/data.jsx';
+import { Conditional } from 'crewhrm-materials/conditional.jsx';
+import { LoadingIcon } from 'crewhrm-materials/loading-icon/loading-icon.jsx';
+import { statuses } from 'crewhrm-materials/data.jsx';
 
 import style from '../jobs.module.scss';
 

@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { __, getRandomString } from '../../../../utilities/helpers.jsx';
+import { __, getRandomString } from 'crewhrm-materials/helpers.jsx';
 
 import style from './hiring.module.scss';
-import { FormActionButtons } from '../../../../materials/form-action.jsx';
-import { ListManager } from '../../../../materials/list-manager/list-manager.jsx';
+import { FormActionButtons } from 'crewhrm-materials/form-action.jsx';
+import { ListManager } from 'crewhrm-materials/list-manager/list-manager.jsx';
 import { DeletionConfirm } from './model-to-delete.jsx';
 import { ContextJobEditor } from '../index.jsx';
 

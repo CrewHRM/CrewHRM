@@ -1,18 +1,18 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { StickyBar } from '../../../materials/sticky-bar/sticky-bar.jsx';
-import { __, getRandomString, isEmpty } from '../../../utilities/helpers.jsx';
-import { Tabs } from '../../../materials/tabs/tabs.jsx';
+import { StickyBar } from 'crewhrm-materials/sticky-bar/sticky-bar.jsx';
+import { __, getRandomString, isEmpty } from 'crewhrm-materials/helpers.jsx';
+import { Tabs } from 'crewhrm-materials/tabs/tabs.jsx';
 import { JobDetails } from './job-details/job-details.jsx';
 import { HiringFlow } from './hiring-flow/hiring-flow.jsx';
 import { ApplicationForm } from './application-form/application-form.jsx';
 import { sections_fields } from './application-form/form-structure.jsx';
-import { request } from '../../../utilities/request.jsx';
-import { ContextToast } from '../../../materials/toast/toast.jsx';
-import { Conditional } from '../../../materials/conditional.jsx';
-import { ContextWarning } from '../../../materials/warning/warning.jsx';
-import { InitState } from '../../../materials/init-state.jsx';
-import { LogoExtended } from '../../../materials/dynamic-svg/logo-extended.jsx';
+import { request } from 'crewhrm-materials/request.jsx';
+import { ContextToast } from 'crewhrm-materials/toast/toast.jsx';
+import { Conditional } from 'crewhrm-materials/conditional.jsx';
+import { ContextWarning } from 'crewhrm-materials/warning/warning.jsx';
+import { InitState } from 'crewhrm-materials/init-state.jsx';
+import { LogoExtended } from 'crewhrm-materials/dynamic-svg/logo-extended.jsx';
 
 import style from './editor.module.scss';
 

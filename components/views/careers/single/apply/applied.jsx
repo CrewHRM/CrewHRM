@@ -1,6 +1,6 @@
 import React from 'react';
-import { __ } from '../../../../utilities/helpers.jsx';
-import { Conditional } from '../../../../materials/conditional.jsx';
+import { __ } from 'crewhrm-materials/helpers.jsx';
+import { Conditional } from 'crewhrm-materials/conditional.jsx';
 
 export function Applied({ error_message }) {
     return (

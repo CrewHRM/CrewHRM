@@ -1,12 +1,12 @@
 import React, { useContext, useState } from 'react';
 
-import { Tabs } from '../../../../materials/tabs/tabs.jsx';
-import { ContextForm, FormFields } from '../../../../materials/form.jsx';
-import { FormActionButtons } from '../../../../materials/form-action.jsx';
-import { request } from '../../../../utilities/request.jsx';
-import { ContextToast } from '../../../../materials/toast/toast.jsx';
+import { Tabs } from 'crewhrm-materials/tabs/tabs.jsx';
+import { ContextForm, FormFields } from 'crewhrm-materials/form.jsx';
+import { FormActionButtons } from 'crewhrm-materials/form-action.jsx';
+import { request } from 'crewhrm-materials/request.jsx';
+import { ContextToast } from 'crewhrm-materials/toast/toast.jsx';
 import { Applied } from './applied.jsx';
-import { Conditional } from '../../../../materials/conditional.jsx';
+import { Conditional } from 'crewhrm-materials/conditional.jsx';
 import {
     __,
     calculateJSONSizeInKB,
@@ -14,7 +14,7 @@ import {
     isEmpty,
     patterns,
     sprintf
-} from '../../../../utilities/helpers.jsx';
+} from 'crewhrm-materials/helpers.jsx';
 
 import style from './apply.module.scss';
 

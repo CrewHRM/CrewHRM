@@ -1,12 +1,12 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { __, getRandomString } from '../../../../utilities/helpers.jsx';
+import { __, getRandomString } from 'crewhrm-materials/helpers.jsx';
 import { Header } from './header/header.jsx';
 import { Sidebar } from './sidebar/sidebar.jsx';
 import { Profile } from './profile/profile-wrapper.jsx';
-import { LoadingIcon } from '../../../../materials/loading-icon/loading-icon.jsx';
-import { request } from '../../../../utilities/request.jsx';
+import { LoadingIcon } from 'crewhrm-materials/loading-icon/loading-icon.jsx';
+import { request } from 'crewhrm-materials/request.jsx';
 
 import style from './applicants.module.scss';
 

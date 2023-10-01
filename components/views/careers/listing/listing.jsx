@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
-import { __, filterObject, filterUniqueColumn, parseParams } from '../../../utilities/helpers.jsx';
-import { LoadingIcon } from '../../../materials/loading-icon/loading-icon.jsx';
-import { TextField } from '../../../materials/text-field/text-field.jsx';
-import { CoverImage } from '../../../materials/image/image.jsx';
+import { __, filterObject, filterUniqueColumn, parseParams } from 'crewhrm-materials/helpers.jsx';
+import { LoadingIcon } from 'crewhrm-materials/loading-icon/loading-icon.jsx';
+import { TextField } from 'crewhrm-materials/text-field/text-field.jsx';
+import { CoverImage } from 'crewhrm-materials/image/image.jsx';
 import { CareersSidebar } from './sidebar.jsx';
 import { CareersLoop } from './loop.jsx';
-import { request } from '../../../utilities/request.jsx';
-import { Conditional } from '../../../materials/conditional.jsx';
+import { request } from 'crewhrm-materials/request.jsx';
+import { Conditional } from 'crewhrm-materials/conditional.jsx';
 
 import style from './listing.module.scss';
 

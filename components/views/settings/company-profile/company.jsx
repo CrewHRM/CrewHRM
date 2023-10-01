@@ -1,19 +1,19 @@
 import React, { useContext, useState } from 'react';
 import { HashRouter, Route, Routes, useParams, Navigate } from 'react-router-dom';
 
-import { WpDashboardFullPage } from '../../../materials/backend-dashboard-container/full-page-container.jsx';
+import { WpDashboardFullPage } from 'crewhrm-materials/backend-dashboard-container/full-page-container.jsx';
 import { ContextBackendDashboard } from '../../hrm/hrm.jsx';
-import { StickyBar } from '../../../materials/sticky-bar/sticky-bar.jsx';
+import { StickyBar } from 'crewhrm-materials/sticky-bar/sticky-bar.jsx';
 import { CompanyProfileSidebar, pages } from './sidebar/sidebar.jsx';
 import { CompantDepartments } from './departments/departments.jsx';
 import { CompanyProfile } from './profile/profile.jsx';
-import { __ } from '../../../utilities/helpers.jsx';
-import { ContextHistoryFields, HistoryFields, UndoRedo } from '../../../materials/undo-redo.jsx';
-import { request } from '../../../utilities/request.jsx';
-import { ContextToast } from '../../../materials/toast/toast.jsx';
+import { __ } from 'crewhrm-materials/helpers.jsx';
+import { ContextHistoryFields, HistoryFields, UndoRedo } from 'crewhrm-materials/undo-redo.jsx';
+import { request } from 'crewhrm-materials/request.jsx';
+import { ContextToast } from 'crewhrm-materials/toast/toast.jsx';
 
 import style from './company.module.scss';
-import { Conditional } from '../../../materials/conditional.jsx';
+import { Conditional } from 'crewhrm-materials/conditional.jsx';
 
 function CompanyWrapper() {
     const { ajaxToast } = useContext(ContextToast);

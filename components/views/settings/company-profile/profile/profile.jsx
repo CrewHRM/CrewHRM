@@ -1,13 +1,13 @@
 import React, { useEffect } from 'react';
 import moment from 'moment-timezone';
 
-import { __, countries_array, flattenArray, timezones_array, validateValues } from '../../../../utilities/helpers.jsx';
-import { CoverImage } from '../../../../materials/image/image.jsx';
+import { __, countries_array, flattenArray, timezones_array, validateValues } from 'crewhrm-materials/helpers.jsx';
+import { CoverImage } from 'crewhrm-materials/image/image.jsx';
 
-import logo_placeholder from '../../../../images/logo-placeholder.svg';
-import { ContextForm, FormFields } from '../../../../materials/form.jsx';
-import { FileUpload } from '../../../../materials/file-ipload/file-upload.jsx';
-import { date_formats } from '../../../../utilities/data.jsx';
+import logo_placeholder from 'crewhrm-materials/static/images/logo-placeholder.svg';
+import { ContextForm, FormFields } from 'crewhrm-materials/form.jsx';
+import { FileUpload } from 'crewhrm-materials/file-ipload/file-upload.jsx';
+import { date_formats } from 'crewhrm-materials/data.jsx';
 
 // Do not edit or delete keys. Only can add more.
 const business_types = {

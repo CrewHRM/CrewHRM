@@ -1,15 +1,15 @@
 import React, { useContext, useState } from 'react';
 
 import style from './application.module.scss';
-import { __, getRandomString } from '../../../../utilities/helpers.jsx';
-import { ToggleSwitch } from '../../../../materials/toggle-switch/ToggleSwitch.jsx';
-import { Options } from '../../../../materials/dropdown/dropdown.jsx';
+import { __, getRandomString } from 'crewhrm-materials/helpers.jsx';
+import { ToggleSwitch } from 'crewhrm-materials/toggle-switch/ToggleSwitch.jsx';
+import { Options } from 'crewhrm-materials/dropdown/dropdown.jsx';
 import { FieldEditorModal } from './field-editor/field-editor-modal.jsx';
-import { FormActionButtons } from '../../../../materials/form-action.jsx';
-import { SortableList } from '../../../../materials/sortable-list.jsx';
+import { FormActionButtons } from 'crewhrm-materials/form-action.jsx';
+import { SortableList } from 'crewhrm-materials/sortable-list.jsx';
 import { ContextJobEditor } from '../index.jsx';
 import { sections_fields } from './form-structure.jsx';
-import { Conditional } from '../../../../materials/conditional.jsx';
+import { Conditional } from 'crewhrm-materials/conditional.jsx';
 
 const getQuestionId = () => {
     return '_question_' + getRandomString();

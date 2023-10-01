@@ -1,11 +1,12 @@
 import React from 'react';
-import { __, formatDate, replaceUrlsWithAnchors } from '../../../../../../utilities/helpers.jsx';
-import { Line } from '../../../../../../materials/line/line.jsx';
-import { DangerouslySet } from '../../../../../../materials/DangerouslySet.jsx';
+
+import { __, formatDate, replaceUrlsWithAnchors } from 'crewhrm-materials/helpers.jsx';
+import { Line } from 'crewhrm-materials/line/line.jsx';
+import { DangerouslySet } from 'crewhrm-materials/DangerouslySet.jsx';
+import { Conditional } from 'crewhrm-materials/conditional.jsx';
+import { genders } from 'crewhrm-materials/data.jsx';
 
 import style from './overview.module.scss';
-import { Conditional } from '../../../../../../materials/conditional.jsx';
-import { genders } from '../../../../../../utilities/data.jsx';
 
 export function OverView({ application = {} }) {
     const { overview = [], gender, date_of_birth } = application;

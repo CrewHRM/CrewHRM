@@ -1,5 +1,5 @@
-import { __ } from '../../../utilities/helpers.jsx';
-import { attachment_formats } from '../../../utilities/data.jsx';
+import { __ } from 'crewhrm-materials/helpers.jsx';
+import { attachment_formats } from 'crewhrm-materials/data.jsx';
 
 export const settings_fields = {
     general: {

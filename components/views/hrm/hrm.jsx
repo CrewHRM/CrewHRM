@@ -1,13 +1,13 @@
 import React, { createContext, useState } from 'react';
 import { HashRouter, Route, Navigate, Routes, Link } from 'react-router-dom';
-import { WpDashboardFullPage } from '../../materials/backend-dashboard-container/full-page-container.jsx';
+import { WpDashboardFullPage } from 'crewhrm-materials/backend-dashboard-container/full-page-container.jsx';
 
 import { JobEditor } from './job-editor/index.jsx';
 import { DahboardMain } from './dashboard/main/main.jsx';
 import { JobOpeningsFullView } from './dashboard/job-openings/jobs.jsx';
 import { Applications } from './dashboard/applicants/applicants.jsx';
-import { StickyBar } from '../../materials/sticky-bar/sticky-bar.jsx';
-import { __, getRandomString } from '../../utilities/helpers.jsx';
+import { StickyBar } from 'crewhrm-materials/sticky-bar/sticky-bar.jsx';
+import { __, getRandomString } from 'crewhrm-materials/helpers.jsx';
 // import { NotificationsEmail, NotificationsOnSite } from "./notifications/notifications.jsx";
 import { NoticeBar } from './notifications/notice/notice-bar.jsx';
 import { AddDepartmentModal } from '../settings/company-profile/departments/add-department.jsx';

@@ -1,9 +1,9 @@
 import React, { useContext } from 'react';
 
-import { __ } from '../../../../../utilities/helpers.jsx';
+import { __ } from 'crewhrm-materials/helpers.jsx';
 import { ContextBackendDashboard } from '../../../hrm.jsx';
 
-import curtains from '../../../../../images/curtains.svg';
+import curtains from 'crewhrm-materials/static/images/curtains.svg';
 import style from './cards.module.scss';
 
 export function StatCards({ className = '' }) {

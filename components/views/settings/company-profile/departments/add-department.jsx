@@ -1,8 +1,8 @@
 import React, { useContext, useState } from 'react';
-import { Modal } from '../../../../materials/modal.jsx';
-import { __ } from '../../../../utilities/helpers.jsx';
-import { request } from '../../../../utilities/request.jsx';
-import { ContextToast } from '../../../../materials/toast/toast.jsx';
+import { Modal } from 'crewhrm-materials/modal.jsx';
+import { __ } from 'crewhrm-materials/helpers.jsx';
+import { request } from 'crewhrm-materials/request.jsx';
+import { ContextToast } from 'crewhrm-materials/toast/toast.jsx';
 
 export function AddDepartmentModal({ closeModal, onAdd }) {
     const { ajaxToast } = useContext(ContextToast);

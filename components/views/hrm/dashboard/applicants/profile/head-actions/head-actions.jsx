@@ -2,14 +2,14 @@ import React, { useContext, useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import { Comment } from './comment/comment.jsx';
-import { __ } from '../../../../../../utilities/helpers.jsx';
-import { DropDown, Options } from '../../../../../../materials/dropdown/dropdown.jsx';
+import { __ } from 'crewhrm-materials/helpers.jsx';
+import { DropDown, Options } from 'crewhrm-materials/dropdown/dropdown.jsx';
 import { ContextApplicationSession } from '../../applicants.jsx';
-import { ContextWarning } from '../../../../../../materials/warning/warning.jsx';
-import { request } from '../../../../../../utilities/request.jsx';
-import { ContextToast } from '../../../../../../materials/toast/toast.jsx';
-import { applyFilters } from '../../../../../../utilities/hooks.jsx';
-import { RenderExternal } from '../../../../../../materials/render-external.jsx';
+import { ContextWarning } from 'crewhrm-materials/warning/warning.jsx';
+import { request } from 'crewhrm-materials/request.jsx';
+import { ContextToast } from 'crewhrm-materials/toast/toast.jsx';
+import { applyFilters } from 'crewhrm-materials/hooks.jsx';
+import { RenderExternal } from 'crewhrm-materials/render-external.jsx';
 
 import style from './head.module.scss';
 

@@ -1,11 +1,11 @@
 import React from 'react';
-import { ExpandableContent } from '../../../../../../materials/ExpandableContent/expandable-content.jsx';
-import { __, replaceUrlsWithAnchors } from '../../../../../../utilities/helpers.jsx';
-import { Line } from '../../../../../../materials/line/line.jsx';
-import { DangerouslySet } from '../../../../../../materials/DangerouslySet.jsx';
-import { PDFViewer } from '../../../../../../materials/pdf-viewer.jsx';
-import { RenderMedia } from '../../../../../../materials/render-media/render-media.jsx';
-import { Conditional } from '../../../../../../materials/conditional.jsx';
+import { ExpandableContent } from 'crewhrm-materials/ExpandableContent/expandable-content.jsx';
+import { __, replaceUrlsWithAnchors } from 'crewhrm-materials/helpers.jsx';
+import { Line } from 'crewhrm-materials/line/line.jsx';
+import { DangerouslySet } from 'crewhrm-materials/DangerouslySet.jsx';
+import { PDFViewer } from 'crewhrm-materials/pdf-viewer.jsx';
+import { RenderMedia } from 'crewhrm-materials/render-media/render-media.jsx';
+import { Conditional } from 'crewhrm-materials/conditional.jsx';
 
 export function Documents({ application }) {
     const { cover_letter, documents = {} } = application;

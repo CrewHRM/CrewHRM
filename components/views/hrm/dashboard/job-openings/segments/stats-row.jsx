@@ -1,5 +1,5 @@
 import React from 'react';
-import { Line } from '../../../../../materials/line/line.jsx';
+import { Line } from 'crewhrm-materials/line/line.jsx';
 
 export function StatsRow({ stats }) {
     return stats.map(({ key, label, content }, index) => {
