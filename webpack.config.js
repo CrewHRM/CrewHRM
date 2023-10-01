@@ -1,3 +1,4 @@
+const { readdirSync, lstatSync, unlinkSync } = require('fs');
 const path = require('path');
 const TerserPlugin = require('terser-webpack-plugin');
 
@@ -62,6 +63,14 @@ module.exports = (env, options) => {
     var configEditors = [];
     for (let i = 0; i < react_blueprints.length; i++) {
         let { src_files, dest_path } = react_blueprints[i];
+		
+		// Delete older build files first
+		readdirSync(dest_path).forEach(f=>{
+			const file_path = `${dest_path}/${f}`;
+			if ( lstatSync(file_path).isFile() ) {
+				unlinkSync(file_path);
+			}
+		});
 
         configEditors.push(
             Object.assign({}, config, {

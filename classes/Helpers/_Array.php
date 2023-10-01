@@ -214,4 +214,41 @@ class _Array {
 		}
 		return $result;
 	}
+
+	/**
+	 * Parse comments from php file as array
+	 *
+	 * @param string $path
+	 * @return array
+	 */
+	public static function getManifestArray(string $path) {
+		$result = [];
+
+		// Use regular expressions to match the first PHP comment block
+		preg_match('/\/\*\*(.*?)\*\//s', file_get_contents( $path ), $matches);
+
+		if (isset($matches[1])) {
+			$comment = $matches[1];
+
+			// Remove leading asterisks and split lines
+			$lines = preg_split('/\r\n|\r|\n/', trim(preg_replace('/^\s*\*\s*/m', '', $comment)));
+
+			foreach ($lines as $line) {
+				// Check if the line contains a colon
+				if (strpos($line, ':') !== false) {
+					list($key, $value) = array_map('trim', explode(':', $line, 2));
+
+					$key = strtolower( str_replace( ' ', '_', $key ) );
+					$result[$key] = $value;
+				}
+			}
+		}
+
+		$result['file']     = $path;
+		$result['dir']      = dirname( $path ) . '/';
+		$result['url']      = plugin_dir_url( $path );
+		$result['dist_url'] = $result['url'] . 'dist/';
+
+		return $result;
+	}
 }

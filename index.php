@@ -22,11 +22,8 @@ require_once __DIR__ . '/classes/Main.php';
 		'app_name'       => 'crewhrm',
 		'root_menu_slug' => 'crewhrm',
 		'db_prefix'      => 'crewhrm_',
-		'version'        => '1.0.0',
 		'mode'           => 'development',
 		'file'           => __FILE__,
-		'dir'            => __DIR__ . DIRECTORY_SEPARATOR,
-		'url'            => plugin_dir_url( __FILE__ ),
-		'dist_url'       => plugin_dir_url( __FILE__ ) . 'dist/',
+		'dir'            => __DIR__ . '/'
 	)
 );

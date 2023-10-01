@@ -7,6 +7,7 @@
 
 namespace CrewHRM;
 
+use CrewHRM\Helpers\_Array;
 use CrewHRM\Setup\Admin;
 use CrewHRM\Setup\Careers;
 use CrewHRM\Setup\CLI;
@@ -23,6 +24,14 @@ class Main {
 	 * Configs array
 	 *
 	 * @var object
+	 * @property string $plugin_name
+	 * @property string $description
+	 * @property string $version
+	 * @property string $author
+	 * @property string $file
+	 * @property string $dir
+	 * @property string $url
+	 * @property string $dist_url
 	 */
 	public static $configs;
 
@@ -41,6 +50,10 @@ class Main {
 		// Loading Autoloader
 		spl_autoload_register( array( $this, 'loader' ) );
 
+		// Store configs in runtime static property
+		$manifest = _Array::getManifestArray( $configs->dir . 'index.php' );
+		self::$configs = (object) array_merge( $manifest, (array) self::$configs );
+
 		// Register Activation/Deactivation Hook
 		register_activation_hook( self::$configs->file, array( $this, 'activate' ) );
 		register_deactivation_hook( self::$configs->file, array( $this, 'deactivate' ) );
@@ -55,6 +68,8 @@ class Main {
 		new Dispatcher();
 		new Admin();
 		new Careers();
+
+		do_action( 'crewhrm_loaded' );
 	}
 
 	/**
@@ -70,15 +85,18 @@ class Main {
 
 		$class_name = preg_replace(
 			array( '/([a-z])([A-Z])/', '/\\\/' ),
-			array( '$1$2', DIRECTORY_SEPARATOR ),
+			array( '$1$2', '/' ),
 			$class_name
 		);
 
-		$class_name = str_replace( 'CrewHRM' . DIRECTORY_SEPARATOR, 'classes' . DIRECTORY_SEPARATOR, $class_name );
-		$file_name  = self::$configs->dir . $class_name . '.php';
+		if ( strpos( $class_name, 'CrewHRM/' ) === 0 ) {
+			$class_name = str_replace( 'CrewHRM/', 'classes/', $class_name );
+			$file_path  = self::$configs->dir . $class_name . '.php';
+			$file_path  = str_replace( '/', DIRECTORY_SEPARATOR, preg_replace( '#[\\\\/]+#', '/', $file_path ) );
 
-		if ( file_exists( $file_name ) ) {
-			require_once $file_name;
+			if ( file_exists( $file_path ) ) {
+				require_once $file_path;
+			}
 		}
 	}
 
