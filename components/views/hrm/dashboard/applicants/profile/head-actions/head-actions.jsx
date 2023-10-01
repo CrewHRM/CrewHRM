@@ -212,7 +212,9 @@ export function HeadActions({ application }) {
                             ></i>
                         </div>
                     </div>
-					<RenderExternal component={renderer} payload={{application}}/>
+					<RenderExternal 
+						component={renderer} 
+						payload={{application, onClose:()=>toggleSegment(null)}}/>
                 </div>
             ) : null}
         </div>

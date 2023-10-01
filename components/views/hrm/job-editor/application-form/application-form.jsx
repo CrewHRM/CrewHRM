@@ -152,6 +152,13 @@ export function ApplicationForm() {
 
                 {/* General fields with toggle switch */}
                 {Object.keys(values.application_form).map((section_name) => {
+					// Make sure the section is available in the structure. 
+					// If someone create job with pro, and move to free, the section remains as it is saved in database.
+					// So exclude it here if not in the section.
+					if ( ! sections_fields[section_name] ) {
+						return null;
+					}
+
                     const {
                         label,
                         fields: input_fields,
@@ -160,7 +167,7 @@ export function ApplicationForm() {
                     } = values.application_form[section_name];
 
                     // Prepare popup options to delete, edit etc.
-                    const { options = {} } = sections_fields[section_name] || {};
+                    const { options = {} } = sections_fields[section_name];
                     const options_array = Object.keys(options).map((option_name) => {
                         return {
                             id: option_name,

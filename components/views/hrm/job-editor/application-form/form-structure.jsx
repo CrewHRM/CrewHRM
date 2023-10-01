@@ -1,5 +1,6 @@
 import React from 'react';
 import { __, countries_array } from 'crewhrm-materials/helpers.jsx';
+import { applyFilters } from 'crewhrm-materials/hooks.jsx';
 import { genders } from 'crewhrm-materials/data.jsx';
 
 const gender_disclaimer = (
@@ -42,7 +43,7 @@ const gender_disclaimer = (
     </>
 );
 
-export const sections_fields = {
+export const sections_fields = applyFilters('job_application_fields', {
     personal_info: {
         label: __('Personal information'),
         fields: [
@@ -220,25 +221,5 @@ export const sections_fields = {
                 ]
             }
         ]
-    },
-    /* questions: {
-        label: __('Add Questions'),
-        sortable: true,
-        addLabel: __('Add a question'),
-        options: {
-            edit: {
-                label: __('Edit'),
-                icon: 'ch-icon ch-icon-edit-2'
-            },
-            duplicate: {
-                label: __('Duplicate'),
-                icon: 'ch-icon ch-icon-copy'
-            },
-            delete: {
-                label: __('Delete'),
-                icon: 'ch-icon ch-icon-trash'
-            }
-        },
-        fields: []
-    } */
-};
+    }
+});
