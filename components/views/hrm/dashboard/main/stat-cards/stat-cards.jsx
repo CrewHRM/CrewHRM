@@ -3,7 +3,11 @@ import React, { useContext } from 'react';
 import { __ } from 'crewhrm-materials/helpers.jsx';
 import { ContextBackendDashboard } from '../../../hrm.jsx';
 
-import curtains from 'crewhrm-materials/static/images/curtains.svg';
+import icon_learning from 'crewhrm-materials/static/images/Icon-learning.svg';
+import icon_users from 'crewhrm-materials/static/images/Icon-users.svg';
+import icon_essential from 'crewhrm-materials/static/images/Icon-essential.svg';
+import icon_time from 'crewhrm-materials/static/images/Icon-time.svg';
+
 import style from './cards.module.scss';
 
 export function StatCards({ className = '' }) {
@@ -20,22 +24,22 @@ export function StatCards({ className = '' }) {
         {
             label: __('Total Job Posts'),
             count: total_jobs,
-            icon: curtains
+            icon: icon_learning
         },
         {
             label: __('Total Applications'),
             count: total_applications,
-            icon: curtains
+            icon: icon_users
         },
         {
             label: __('Total Hired'),
             count: total_hired,
-            icon: curtains
+            icon: icon_essential
         },
         {
             label: __('Total Pending'),
             count: total_pending_applications,
-            icon: curtains
+            icon: icon_time
         }
     ];
 

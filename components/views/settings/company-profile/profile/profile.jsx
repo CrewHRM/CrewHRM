@@ -6,30 +6,8 @@ import { CoverImage } from 'crewhrm-materials/image/image.jsx';
 
 import logo_placeholder from 'crewhrm-materials/static/images/logo-placeholder.svg';
 import { ContextForm, FormFields } from 'crewhrm-materials/form.jsx';
-import { FileUpload } from 'crewhrm-materials/file-ipload/file-upload.jsx';
-import { date_formats } from 'crewhrm-materials/data.jsx';
-
-// Do not edit or delete keys. Only can add more.
-const business_types = {
-    agriculture_naturalresources: __('Agriculture & Natural Resources'),
-    extraction_mining: __('Extraction & Mining'),
-    energy_utilities: __('Energy & Utilities'),
-    construction_infrastructure: __('Construction & Infrastructure'),
-    manufacturing_production: __('Manufacturing & Production'),
-    wholesale_distribution: __('Wholesale & Distribution'),
-    retail_consumergoods: __('Retail & Consumer Goods'),
-    transportation_logistics: __('Transportation & Logistics'),
-    technology_communication: __('Technology & Communication'),
-    finance_insurance: __('Finance & Insurance'),
-    realestate_property: __('Real Estate & Property'),
-    professionalservices: __('Professional Services'),
-    healthcare_wellness: __('Healthcare & Wellness'),
-    entertainment_media: __('Entertainment & Media'),
-    hospitality_tourism: __('Hospitality & Tourism'),
-    education_training: __('Education & Training'),
-    nonprofit_socialservices: __('Non-Profit & Social Services'),
-    government_publicservices: __('Government & Public Services')
-};
+import { FileUpload } from 'crewhrm-materials/file-upload/file-upload.jsx';
+import { date_formats, business_types } from 'crewhrm-materials/data.jsx';
 
 const time_formats = {
     _12: __('12 Hours'),

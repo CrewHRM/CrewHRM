@@ -6,7 +6,7 @@ import { ContextSettings } from '../hrm-settings.jsx';
 import { ToggleSwitch } from 'crewhrm-materials/toggle-switch/ToggleSwitch.jsx';
 import { TextField } from 'crewhrm-materials/text-field/text-field.jsx';
 import { input_class } from '../../../hrm/job-editor/job-details/job-details.jsx';
-import { FileUpload } from 'crewhrm-materials/file-ipload/file-upload.jsx';
+import { FileUpload } from 'crewhrm-materials/file-upload/file-upload.jsx';
 import { __ } from 'crewhrm-materials/helpers.jsx';
 import { NumberField } from 'crewhrm-materials/number-field.jsx';
 import { RadioCheckbox } from 'crewhrm-materials/radio-checkbox.jsx';
