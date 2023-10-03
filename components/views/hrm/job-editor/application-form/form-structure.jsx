@@ -64,7 +64,6 @@ export const sections_fields = applyFilters('job_application_fields', {
                             type: 'text'
                         }
                     ],
-                    null // null is used to set vertical gap based on
                 ]
             },
             {
@@ -73,36 +72,10 @@ export const sections_fields = applyFilters('job_application_fields', {
                 readonly: true,
                 form: [
                     {
-                        name: 'street_address',
+                        name: 'address',
                         label: __('Address'),
-                        type: 'text',
-                        placeholder: __('Street Address')
+                        type: 'address',
                     },
-                    [
-                        {
-                            name: 'city',
-                            type: 'text',
-                            placeholder: __('City')
-                        },
-                        {
-                            name: 'province',
-                            type: 'text',
-                            placeholder: __('Province/State')
-                        }
-                    ],
-                    [
-                        {
-                            name: 'zip_code',
-                            type: 'text',
-                            placeholder: __('Postal/Zip Code')
-                        },
-                        {
-                            name: 'country_code',
-                            type: 'dropdown',
-                            options: countries_array
-                        }
-                    ],
-                    null
                 ]
             },
             {
@@ -116,8 +89,7 @@ export const sections_fields = applyFilters('job_application_fields', {
                         type: 'text',
                         required: true,
                         placeholder: __('123 456 789')
-                    },
-                    null
+                    }
                 ]
             },
             {
@@ -131,8 +103,7 @@ export const sections_fields = applyFilters('job_application_fields', {
                         type: 'text',
                         required: true,
                         placeholder: __('@company.com')
-                    },
-                    null
+                    }
                 ]
             }
         ]
@@ -152,8 +123,7 @@ export const sections_fields = applyFilters('job_application_fields', {
                         accept: 'application/pdf',
                         placeholder: __('Browse resume'),
                         required: true
-                    },
-                    null
+                    }
                 ]
             },
             {
@@ -165,8 +135,7 @@ export const sections_fields = applyFilters('job_application_fields', {
                         label: __('Cover Letter'),
                         type: 'textarea_rich',
                         placeholder: __('Write your cover letter here')
-                    },
-                    null
+                    }
                 ]
             },
             {
@@ -179,8 +148,7 @@ export const sections_fields = applyFilters('job_application_fields', {
                         type: 'file',
                         placeholder: __('Browse Files'),
                         maxlenth: 3
-                    },
-                    null
+                    }
                 ]
             }
         ]
@@ -196,8 +164,7 @@ export const sections_fields = applyFilters('job_application_fields', {
                         name: 'date_of_birth',
                         label: __('Date of Birth'),
                         type: 'date'
-                    },
-                    null
+                    }
                 ]
             },
             {
@@ -216,8 +183,7 @@ export const sections_fields = applyFilters('job_application_fields', {
                             heading: __('Gender and Race/Ethnicity'),
                             description: gender_disclaimer
                         }
-                    },
-                    null
+                    }
                 ]
             }
         ]

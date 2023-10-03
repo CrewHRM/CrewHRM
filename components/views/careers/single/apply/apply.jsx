@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 
 import { Tabs } from 'crewhrm-materials/tabs/tabs.jsx';
-import { ContextForm, FormFields } from './apply-form.jsx';
+import { RenderField } from './apply-form.jsx';
 import { FormActionButtons } from 'crewhrm-materials/form-action.jsx';
 import { request } from 'crewhrm-materials/request.jsx';
 import { ContextToast } from 'crewhrm-materials/toast/toast.jsx';
@@ -40,7 +40,7 @@ export function Apply({ job = {} }) {
 			id: 'other',
 			label: __('Other Information')
 		}
-	].filter(step=>!isEmpty(fields[step.id]));
+	].filter(step=>!isEmpty(fields[step.id]?.filter(f=>f.enabled)));
 
     const [state, setState] = useState({
         active_tab: 'personal',
@@ -143,8 +143,21 @@ export function Apply({ job = {} }) {
         });
     };
 
-    const isNextEnabled = (fields) => {
+    const isNextEnabled = (fields=[]) => {
         let _enabled = true;
+
+		// Handle address field exceptionally as the singular fields are not defined in the object dorectly in favour of reusing AddressFields component.
+		const _address_index = fields.findIndex(f=>f.name==='address');
+		if ( _address_index>-1 ) {
+			const {required} = fields[_address_index];
+			fields.splice(_address_index, 1);
+			
+			fields.push({name: 'street_address', required});
+			fields.push({name: 'city', required});
+			fields.push({name: 'province', required});
+			fields.push({name: 'zip_code', required});
+			fields.push({name: 'country_code', required});
+		}
 
         // Loop through fields
         for (let i = 0; i < fields.length; i++) {
@@ -156,11 +169,6 @@ export function Apply({ job = {} }) {
             // If it is array, use recursion
             if (Array.isArray(fields[i])) {
                 _enabled = isNextEnabled(fields[i]);
-                continue;
-            }
-
-            // Skip null that is used for line break
-            if (!fields[i] || !fields[i].name) {
                 continue;
             }
 
@@ -199,7 +207,7 @@ export function Apply({ job = {} }) {
         : Object.keys(fields)
               .map((key) => fields[key])
               .flat();
-    let is_next_enabled = isNextEnabled(fields_to_render);
+    let is_next_enabled = isNextEnabled([...fields_to_render]);
 
     if (state.submitted) {
         return <Applied error_message={state.error_message} />;
@@ -263,9 +271,14 @@ export function Apply({ job = {} }) {
                     </div>
                 </Conditional>
 
-                <ContextForm.Provider value={{ values: state.values, onChange }}>
-                    <FormFields defaultEnabled={false} fields={fields_to_render} />
-                </ContextForm.Provider>
+				{fields_to_render.map((f, i) => (
+					<div key={i} className={'margin-bottom-30'.classNames()}>
+						<RenderField 
+							field={f} 
+							values={state.values} 
+							onChange={onChange}/>
+					</div>
+				))}
 
                 {is_segment ? (
                     <div>

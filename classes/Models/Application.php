@@ -78,14 +78,12 @@ class Application {
 		}
 		Meta::application( $app_id )->updateMeta( 'application_attachments', $attachment_ids );
 
-		/*
-		Insert custom added questions
+		// Insert custom added questions
 		foreach ( $application as $key => $value ) {
 			if ( strpos( $key, '_question_' ) === 0 ) {
 				Meta::application( $app_id )->updateMeta( $key, $value );
 			}
 		}
-		*/
 
 		return $app_id;
 	}
@@ -326,7 +324,7 @@ class Application {
 		$application['address'] = is_numeric( $application['address_id'] ) ? Address::getAddressById( $application['address_id'] ) : null;
 
 		// Set overview
-		$application['overview'] = array(); // self::getApplicationOverview( $application_id, $job_id );
+		$application['overview'] = self::getApplicationOverview( $application_id, $job_id );
 
 		// Set documents
 		$application['documents'] = self::getApplicationDocuments( $application_id, $job_id );

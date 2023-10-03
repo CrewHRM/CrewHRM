@@ -1,4 +1,4 @@
-import React, { createContext, useContext } from 'react';
+import React from 'react';
 import { DropDown } from 'crewhrm-materials/dropdown/dropdown.jsx';
 import { FileUpload } from 'crewhrm-materials/file-upload/file-upload.jsx';
 import { __ } from 'crewhrm-materials/helpers.jsx';
@@ -6,6 +6,7 @@ import { DateField } from 'crewhrm-materials/date-time.jsx';
 import { ExpandableContent } from 'crewhrm-materials/ExpandableContent/expandable-content.jsx';
 import { TextEditor } from 'crewhrm-materials/text-editor/text-editor.jsx';
 import { Conditional } from 'crewhrm-materials/conditional.jsx';
+import { AddressFields } from 'crewhrm-materials/address-fields.jsx';
 
 const label_class = 'd-block font-size-15 font-weight-500 margin-bottom-10 color-text'.classNames();
 const input_text_class =
@@ -13,24 +14,29 @@ const input_text_class =
 const text_area_class =
     'd-block w-full padding-vertical-15 padding-horizontal-20 border-1-5 border-radius-10 b-color-tertiary b-color-active-primary font-size-15 font-weight-400 line-height-25 color-text'.classNames();
 
-export const ContextForm = createContext();
+export function RenderField({ field={}, onChange=()=>{}, values = {}, grouped=false }) {
+	if ( Array.isArray(field) ) {
+		return <div className={'d-flex align-items-center column-gap-20'.classNames()}>
+			{field.map(f=>{
+				return <div key={f.name} className={'flex-1'.classNames()}>
+					<RenderField {...{field:f, onChange, values}} grouped={true}/>
+				</div>
+			})}
+		</div>
+	}
 
-export function RenderField({ field, defaultEnabled }) {
 	const {
 		name,
 		label,
 		type,
 		placeholder,
 		maxlenth,
-		flex = 1,
 		options,
 		disclaimer,
 		required,
 		accept,
-		enabled = defaultEnabled
+		enabled
 	} = field;
-
-	const { onChange = () => {}, values = {} } = useContext(ContextForm);
 
 	const dispatchChecks = (e) => {
 		const { checked, name, value } = e.currentTarget;
@@ -63,7 +69,7 @@ export function RenderField({ field, defaultEnabled }) {
 
 	return (
 		<Conditional show={enabled}>
-			<div data-crewhrm-selector="single-field" className={('flex-' + flex).classNames()}>
+			<div data-crewhrm-selector="single-field">
 				<Conditional show={disclaimer}>
 					<ExpandableContent className={'margin-bottom-30'.classNames()}>
 						<span
@@ -150,7 +156,7 @@ export function RenderField({ field, defaultEnabled }) {
 									className={'d-flex flex-direction-row align-items-center column-gap-7 cursor-pointer'.classNames()}
 								>
 									<input
-										{...{ type, name, value, checked }}
+										{...{ type, name, value: value || '', checked }}
 										onChange={dispatchChecks}
 									/>
                                     &nbsp; {label}
@@ -169,42 +175,14 @@ export function RenderField({ field, defaultEnabled }) {
 						onChange={(files) => onChange(name, files)}
 					/>
 				</Conditional>
+				
+				<Conditional show={type==='address'}>
+					<AddressFields 
+						values={values} 
+						className={input_text_class} 
+						onChange={onChange}/>
+				</Conditional>
 			</div>
 		</Conditional>
 	);
-}
-
-export function FormFields({ fields, defaultEnabled = true }) {
-	return fields.map((field, index) => {
-
-		// Apply gap if the field is null and the previous one is not null
-		if (field === null && fields[index - 1] !== null) {
-			return (
-				<div
-					data-crewhrm-selector="field-line-break"
-					key={index}
-					className={'margin-bottom-30'.classNames()}
-				></div>
-			);
-		}
-
-		return (
-			<div data-crewhrm-selector="field-wrapper" key={index}>
-				{(!Array.isArray(field) && (
-					<RenderField field={field} defaultEnabled={defaultEnabled} />
-				)) || (
-					<div
-						data-crewhrm-selector="field-group"
-						className={`d-flex flex-break-sm ${
-							field.find((f) => f.label) ? 'break-gap-30' : ''
-						} column-gap-10`.classNames()}
-					>
-						{field.map((f, i) => (
-							<RenderField key={i} field={f} defaultEnabled={defaultEnabled} />
-						))}
-					</div>
-				)}
-			</div>
-		);
-	});
 }

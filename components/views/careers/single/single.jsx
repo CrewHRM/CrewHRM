@@ -30,9 +30,14 @@ const getForm = (_form, attrs) => {
     return _form;
 };
 
+/**
+ * 
+ * @param {string} category The field category like personal, questions etc.
+ * @param {object} field The field to add input field structure from hard coded sections.
+ * @returns {object}
+ */
 const prepareField = (category, field = {}) => {
-    let { form: _form = [] } =
-        sections_fields[category].fields.find((f) => f.id === field.id) || {};
+    let { form: _form = [] } = sections_fields[category].fields.find((f) => f.id === field.id) || {};
     const { required, enabled, readonly, accept } = field;
 
     let attrs = {
@@ -44,6 +49,11 @@ const prepareField = (category, field = {}) => {
     return getForm(_form, attrs);
 };
 
+/**
+ * 
+ * @param {object} fields 
+ * @returns {object} The prepared fields object
+ */
 function applyFormFields(fields) {
     return applyFilters(
 		'crewhrm_application_form_fields', 
