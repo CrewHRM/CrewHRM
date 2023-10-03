@@ -1,7 +1,7 @@
 import React from 'react';
-import { __, countries_array } from 'crewhrm-materials/helpers.jsx';
+import { __ } from 'crewhrm-materials/helpers.jsx';
 import { applyFilters } from 'crewhrm-materials/hooks.jsx';
-import { genders } from 'crewhrm-materials/data.jsx';
+import { genders, countries_array } from 'crewhrm-materials/data.jsx';
 
 const gender_disclaimer = (
     <>

@@ -14,45 +14,26 @@ use CrewHRM\Helpers\File;
  * Settings manager class
  */
 class Settings {
-	const KEY_COMPANY  = 'crewhrm_company_profile';
 	const KEY_SETTINGS = 'crewhrm_plugins_settings';
 
 	/**
 	 * Commn method to get settings for both
 	 *
-	 * @param string $source The source to get settings. Settings or company profile
 	 * @return array
 	 */
-	private static function get( string $source ) {
-		static $data = array();
-
-		if ( ! isset( $data[ $source ] ) ) {
-			$defaults = array(
-				self::KEY_SETTINGS => array(
-					'careers_search'  => true,
-					'careers_sidebar' => true,
-				),
-			);
-
-			$_data           = get_option( $source );
-			$_data           = _Array::getArray( $_data );
-			$_data           = array_merge( $defaults[ $source ] ?? array(), $_data );
-			$data[ $source ] = File::applyDynamics( $_data );
-		}
-
-		return $data[ $source ];
-	}
-
-	/**
-	 * Get company profile from options and add dynamic meta data like image logo url
-	 *
-	 * @param string $key     Optional specific settings name to get value. Otherwise returns whole settings.
-	 * @param mixed  $default Default value to return if the setting not found. Empty array will be provided if it is not singular one.
-	 * @return mixed
-	 */
-	public static function getCompanyProfile( $key = null, $default = null ) {
-		$data = self::get( self::KEY_COMPANY );
-		return null !== $key ? ( $data[ $key ] ?? $default ) : $data;
+	private static function get() {
+		
+		$defaults = array(
+			'careers_search'  => true,
+			'careers_sidebar' => true,
+		);
+		
+		$_data = get_option( self::KEY_SETTINGS );
+		$_data = _Array::getArray( $_data );
+		$_data = array_merge( $defaults, $_data );
+		$_data = File::applyDynamics( $_data );
+		
+		return $_data;
 	}
 
 	/**
@@ -63,7 +44,7 @@ class Settings {
 	 * @return mixed
 	 */
 	public static function getSettings( $name = null, $default = null ) {
-		$data = self::get( self::KEY_SETTINGS );
+		$data = self::get();
 
 		// Assign Application max size
 		$size       = $data['application_max_size_mb'] ?? 0;
@@ -151,26 +132,21 @@ class Settings {
 	/**
 	 * Save company profile data coming from ideally settings page
 	 *
-	 * @param array  $data        Settings to save
-	 * @param string $option_name Option name to store the settings in
+	 * @param array  $data Settings to save
 	 * @return void
 	 */
-	public static function saveSettings( array $data, $option_name = self::KEY_SETTINGS ) {
+	public static function saveSettings( array $data, $merge = false ) {
+		
+		// In case you need to update only on option inside the array
+		if ( $merge === true ) {
+			$data = array_merge( self::get(), $data );
+		}
+
 		// Save general info
-		update_option( $option_name, $data );
+		update_option( self::KEY_SETTINGS, apply_filters( 'crewhrm_save_settings', $data ) );
 
 		// Flush rewrite rule to apply dashboard page change
 		flush_rewrite_rules();
-	}
-
-	/**
-	 * Save company profile
-	 *
-	 * @param array $data COmpany profile array to save
-	 * @return void
-	 */
-	public static function saveCompanyProfile( array $data ) {
-		self::saveSettings( $data, self::KEY_COMPANY );
 	}
 
 	/**
@@ -180,7 +156,7 @@ class Settings {
 	 */
 	public static function getRecruiterEmail() {
 		// Get From company settings first
-		$mail = self::getCompanyProfile( 'recruiter_email' );
+		$mail = self::getSettings( 'recruiter_email' );
 
 		// Then from global settings
 		if ( empty( $mail ) ) {

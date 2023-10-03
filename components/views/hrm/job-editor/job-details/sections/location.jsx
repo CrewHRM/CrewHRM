@@ -1,17 +1,14 @@
 import React, { useContext } from 'react';
 
-import { __, countries_array } from 'crewhrm-materials/helpers.jsx';
-import { input_class, section_title_class, field_label_class } from '../job-details.jsx';
-import style from '../details.module.scss';
+import { __ } from 'crewhrm-materials/helpers.jsx';
+import { countries_array, attendance_types } from 'crewhrm-materials/data.jsx';
 import { DropDown } from 'crewhrm-materials/dropdown/dropdown.jsx';
 import { TagField } from 'crewhrm-materials/tag-field/tag-field.jsx';
+
+import { input_class, section_title_class, field_label_class } from '../job-details.jsx';
 import { ContextJobEditor } from '../../index.jsx';
 
-const attendance_types = {
-    on_site: __('On-Site'),
-    remote: __('Fully Remote'),
-    hybrid: __('Hybrid')
-};
+import style from '../details.module.scss';
 
 export function Location() {
     const { values, onChange } = useContext(ContextJobEditor);

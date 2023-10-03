@@ -1,15 +1,17 @@
 import React, { createContext, useContext } from 'react';
 import { HashRouter, Navigate, Route, Routes, useParams } from 'react-router-dom';
-import { ContextBackendDashboard } from '../../hrm/hrm.jsx';
+
 import { WpDashboardFullPage } from 'crewhrm-materials/backend-dashboard-container/full-page-container.jsx';
-import { Options } from './options/options.jsx';
-import { Segments } from './segments/segments.jsx';
 import { StickyBar } from 'crewhrm-materials/sticky-bar/sticky-bar.jsx';
 import { __ } from 'crewhrm-materials/helpers.jsx';
-import { settings_fields } from './field-structure.jsx';
 import { request } from 'crewhrm-materials/request.jsx';
 import { ContextHistoryFields, HistoryFields, UndoRedo } from 'crewhrm-materials/undo-redo.jsx';
 import { ContextToast } from 'crewhrm-materials/toast/toast.jsx';
+
+import { ContextBackendDashboard } from '../../hrm/hrm.jsx';
+import { Options } from './options/options.jsx';
+import { Segments } from './segments/segments.jsx';
+import { settings_fields } from './field-structure.jsx';
 
 export const ContextSettings = createContext();
 
@@ -20,10 +22,13 @@ function Wrapper({ children }) {
 
     const saveSettings = () => {
         request('save_settings', { settings: values }, (resp) => {
+
+			const {success, data:{settings={}}} = resp;
+
             ajaxToast(resp);
 
-            if (resp?.success) {
-                clearHistory();
+            if (success) {
+                clearHistory(undefined, settings);
             }
         });
     };
@@ -46,7 +51,9 @@ function Wrapper({ children }) {
                     </button>
                 </div>
             </StickyBar>
-            <div className={'padding-horizontal-15'.classNames()}>{children}</div>
+            <div className={'padding-horizontal-15 overflow-auto'.classNames()}>
+				{children}
+			</div>
         </ContextSettings.Provider>
     );
 }

@@ -1,20 +1,25 @@
-import React, { useContext, useEffect, useState } from 'react';
-
+import React, { useContext } from 'react';
 import { useParams } from 'react-router-dom';
-import { settings_fields } from '../field-structure.jsx';
-import { ContextSettings } from '../hrm-settings.jsx';
+
 import { ToggleSwitch } from 'crewhrm-materials/toggle-switch/ToggleSwitch.jsx';
 import { TextField } from 'crewhrm-materials/text-field/text-field.jsx';
-import { input_class } from '../../../hrm/job-editor/job-details/job-details.jsx';
 import { FileUpload } from 'crewhrm-materials/file-upload/file-upload.jsx';
 import { __ } from 'crewhrm-materials/helpers.jsx';
 import { NumberField } from 'crewhrm-materials/number-field.jsx';
 import { RadioCheckbox } from 'crewhrm-materials/radio-checkbox.jsx';
 import { DropDown } from 'crewhrm-materials/dropdown/dropdown.jsx';
+import { RenderMedia } from 'crewhrm-materials/render-media/render-media.jsx';
+import { CoverImage } from 'crewhrm-materials/image/image.jsx';
+import logo_placeholder from 'crewhrm-materials/static/images/logo-placeholder.svg';
+import { ListManager } from 'crewhrm-materials/list-manager/list-manager.jsx';
+
+import { input_class } from '../../../hrm/job-editor/job-details/job-details.jsx';
+import { settings_fields } from '../field-structure.jsx';
+import { ContextSettings } from '../hrm-settings.jsx';
 import { ContextBackendDashboard } from '../../../hrm/hrm.jsx';
 
 import style from './options.module.scss';
-import { RenderMedia } from 'crewhrm-materials/render-media/render-media.jsx';
+import { AddressFields } from './addr.jsx';
 
 const label_class =
     'd-block font-size-17 font-weight-500 line-height-24 letter-spacing--17 color-text'.classNames();
@@ -22,13 +27,9 @@ const label_class =
 const hint_class =
     'd-block margin-top-3 font-size-15 font-weight-400 line-height-24 letter-spacing--15 color-text-light'.classNames();
 
-export function Options(props) {
-    const { segment, sub_segment } = useParams();
+function OptionFields({fields=[], vertical, separator, is_group=false}) {
     const { values = {}, onChange } = useContext(ContextSettings);
     const { resources = {} } = useContext(ContextBackendDashboard);
-
-    const { fields, icon, label } = settings_fields[segment].segments[sub_segment];
-    const field_keys = Object.keys(fields);
 
     const satisfyLogic = (when) => {
         const pointer = when[0];
@@ -51,161 +52,253 @@ export function Options(props) {
         return _return;
     };
 
-    return (
-        <div
-            className={
-                'container'.classNames(style) + 'padding-top-50 padding-bottom-50'.classNames()
-            }
-        >
-            <div
-                className={'padding-30 bg-color-white border-radius-5 box-shadow-thin'.classNames()}
-            >
-                <span
-                    className={'d-block font-size-17 font-weight-600 line-height-24 letter-spacing--17 color-text-light'.classNames()}
-                >
-                    {label}
-                </span>
+    return fields.map((field, i) => {
+		// Render grouped fields in same line horizontally
+		if ( Array.isArray(field) ) {
+			return <div key={i} className={'d-flex align-items-end column-gap-20'.classNames()}>
+				{field.map(f=>{
+					return <div key={f.name} className={'flex-1'.classNames()}>
+						<OptionFields fields={[f]} is_group={true} vertical={true}/>
+					</div> 
+				})}
+			</div>
+		}
 
-                {field_keys.map((key, index) => {
-                    const { label, type, options, when, direction, hint, placeholder, min, max, disabled } =
-                        fields[key];
-                    const is_last = index == field_keys.length - 1;
+		const { 
+			name,
+			label, 
+			type, 
+			add_text=__('Add New'),
+			key_map={},
+			options, 
+			when, 
+			direction, 
+			hint, 
+			placeholder, 
+			min, 
+			max, 
+			disabled
+		} = field;
 
-                    if (when && !satisfyLogic(when)) {
-                        return null;
-                    }
+		const show_separator = separator && !is_group && i !== fields.length - 1;
 
-                    const label_text = (
-                        <>
-                            <span className={label_class}>{label}</span>
-                            {(hint && <span className={hint_class}>{hint}</span>) || null}
-                        </>
-                    );
+		if (when && !satisfyLogic(when)) {
+			return null;
+		}
 
-                    return (
-                        <div
-                            key={key}
-                            className={`d-flex ${
-                                direction === 'column'
-                                    ? 'flex-direction-column'
-                                    : 'flex-direction-row align-items-center'
-                            } flex-wrap-wrap padding-vertical-25 ${
-                                !is_last ? 'border-bottom-1 b-color-tertiary' : ''
-                            } ${when ? 'fade-in' : ''}`.classNames()}
-                        >
-                            {/* Toggle switch option */}
-                            {(type === 'switch' && (
-                                <>
-                                    <div className={'flex-1'.classNames()}>{label_text}</div>
-                                    <div>
-                                        <ToggleSwitch
-                                            checked={values[key] ? true : false}
-                                            onChange={(enabled) => onChange(key, enabled)}
-                                        />
-                                    </div>
-                                </>
-                            )) ||
-                                null}
+		const label_text = (
+			<>
+				<span className={label_class}>{label}</span>
+				{(hint && <span className={hint_class}>{hint}</span>) || null}
+			</>
+		);
 
-                            {/* Text input field */}
-                            {(type === 'text' && (
-                                <>
-                                    <div className={'flex-1'.classNames()}>{label_text}</div>
-                                    <div className={'flex-1'.classNames()}>
-                                        <TextField
-                                            value={values[key]}
-                                            className={input_class}
-                                            onChange={(v) => onChange(key, v)}
-                                        />
-                                    </div>
-                                </>
-                            )) ||
-                                null}
+		return (
+			<div
+				key={name}
+				className={`${vertical ? '' : 'd-flex'} ${
+					direction === 'column'
+						? 'flex-direction-column'
+						: 'flex-direction-row align-items-center'
+				} flex-wrap-wrap ${
+					show_separator ? 'padding-vertical-25 border-bottom-1 b-color-tertiary' : 'padding-vertical-10'
+				} ${when ? 'fade-in' : ''}`.classNames()}
+			>
+				{/* Toggle switch option */}
+				{(type === 'switch' && (
+					<>
+						<div className={'flex-1'.classNames()}>{label_text}</div>
+						<div>
+							<ToggleSwitch
+								checked={values[name] ? true : false}
+								onChange={(enabled) => onChange(name, enabled)}
+							/>
+						</div>
+					</>
+				)) ||
+					null}
 
-                            {/* Image upload */}
-                            {type === 'image' ? (
-                                <>
-                                    <div className={'flex-1'.classNames()}>{label_text}</div>
-                                    <div className={'flex-1'.classNames()}>
-                                        {!values[key] ? (
-                                            <FileUpload
-                                                accept="image/*"
-                                                WpMedia={{ width: 1200, height: 300 }}
-                                                onChange={(file) => onChange(key, file)}
-                                            />
-                                        ) : (
-                                            <RenderMedia
-                                                theme="singular"
-                                                media={values[key]}
-                                                onDelete={() => onChange(key, null)}
-                                                overlay={false}
-                                            />
-                                        )}
-                                    </div>
-                                </>
-                            ) : null}
+				{/* Text input field */}
+				{(['text', 'url', 'email'].indexOf(type)>-1 && (
+					<>
+						<div className={'flex-1'.classNames()}>{label_text}</div>
+						<div className={'flex-1'.classNames()}>
+							<TextField
+								value={values[name]}
+								className={input_class}
+								onChange={(v) => onChange(name, v)}
+								placeholder={placeholder}
+							/>
+						</div>
+					</>
+				)) ||
+					null}
 
-                            {/* Checkbox options */}
-                            {((type === 'checkbox' || type == 'radio') && (
-                                <>
-                                    <div className={'margin-bottom-15'.classNames()}>
-                                        {label_text}
-                                    </div>
-                                    <div
-                                        className={'d-flex flex-direction-column row-gap-10'.classNames()}
-                                    >
-                                        <RadioCheckbox
-                                            type={type}
-                                            name={key}
-                                            value={values[key]}
-                                            options={options}
-                                            onChange={(value) => onChange(key, value)}
-                                            spanClassName={'font-size-15 font-weight-400 line-height-24 letter-spacing--15 color-text'.classNames()}
-                                        />
-                                    </div>
-                                </>
-                            )) ||
-                                null}
+				{/* Image upload */}
+				{type === 'image' ? (
+					<>
+						<div className={'flex-1'.classNames()}>{label_text}</div>
+						<div className={'flex-1'.classNames()}>
+							{!values[name] ? (
+								<FileUpload
+									accept="image/*"
+									WpMedia={{ width: 1200, height: 300 }}
+									onChange={(file) => onChange(name, file)}
+								/>
+							) : (
+								<RenderMedia
+									theme="singular"
+									media={values[name]}
+									onDelete={() => onChange(name, null)}
+									overlay={false}
+								/>
+							)}
+						</div>
+					</>
+				) : null}
 
-                            {/* Number field options */}
-                            {type === 'number' ? (
-                                <>
-                                    <div className={'flex-5'.classNames()}>{label_text}</div>
-                                    <div className={'flex-2'.classNames()}>
-                                        <NumberField
-                                            min={min}
-                                            max={max}
-											disabled={disabled}
-                                            value={values[key]}
-                                            className={input_class}
-                                            onChange={(v) => onChange(key, v)}
-                                        />
-                                    </div>
-                                </>
-                            ) : null}
+				{/* Checkbox options */}
+				{((type === 'checkbox' || type == 'radio') && (
+					<>
+						<div className={'margin-bottom-15'.classNames()}>
+							{label_text}
+						</div>
+						<div
+							className={'d-flex flex-direction-column row-gap-10'.classNames()}
+						>
+							<RadioCheckbox
+								type={type}
+								name={name}
+								value={values[name]}
+								options={options}
+								onChange={(value) => onChange(name, value)}
+								spanClassName={'font-size-15 font-weight-400 line-height-24 letter-spacing--15 color-text'.classNames()}
+							/>
+						</div>
+					</>
+				)) ||
+					null}
 
-                            {type == 'dropdown' ? (
-                                <>
-                                    <div className={'flex-5'.classNames()}>{label_text}</div>
-                                    <div className={'flex-2'.classNames()}>
-                                        <DropDown
-                                            className={input_class}
-                                            value={values[key]}
-                                            onChange={(v) => onChange(key, v)}
-                                            options={
-                                                typeof options === 'string'
-                                                    ? resources[options] || []
-                                                    : []
-                                            }
-                                            placeholder={placeholder}
-                                        />
-                                    </div>
-                                </>
-                            ) : null}
-                        </div>
-                    );
-                })}
-            </div>
-        </div>
-    );
+				{/* Number field options */}
+				{type === 'number' ? (
+					<>
+						<div className={'flex-5'.classNames()}>{label_text}</div>
+						<div className={'flex-2'.classNames()}>
+							<NumberField
+								min={min}
+								max={max}
+								disabled={disabled}
+								value={values[name]}
+								className={input_class}
+								onChange={(v) => onChange(name, v)}
+							/>
+						</div>
+					</>
+				) : null}
+
+				{type == 'dropdown' ? (
+					<>
+						<div className={'flex-5'.classNames()}>{label_text}</div>
+						<div className={'flex-2'.classNames()}>
+							<DropDown
+								className={input_class}
+								value={values[name]}
+								onChange={(v) => onChange(name, v)}
+								options={typeof options === 'string' ? resources[options] : options}
+								placeholder={placeholder}
+							/>
+						</div>
+					</>
+				) : null}
+
+				{type==='address' ? <>
+					<div className={'flex-5'.classNames()}>{label_text}</div>
+					<div>
+						<AddressFields 
+							values={values} 
+							className={input_class} 
+							onChange={onChange}/>
+					</div>
+				</> : null}
+
+				{type=='company_logo' ? 
+					<div
+						className={'d-flex align-items-end column-gap-28 margin-bottom-32'.classNames()}
+						style={{ marginTop: '-70px' }}
+					>
+						<CoverImage
+							src={values?.company_logo?.file_url || logo_placeholder}
+							width={120}
+							backgroundColor="white"
+							className={'border-5 b-color-tertiary border-radius-10'.classNames()}
+						/>
+						<div>
+							<span
+								className={'d-block font-size-15 font-weight-500 color-text-light margin-bottom-10'.classNames()}
+							>
+								{__('Company Logo')}
+							</span>
+
+							<FileUpload
+								WpMedia={{ width: 200, height: 200 }}
+								accept="image/*"
+								onChange={(company_logo) => onChange('company_logo', company_logo )}
+								layoutComp={({ onCLick }) => {
+									return (
+										<button
+											className={'button button-primary button-outlined button-small margin-bottom-5'.classNames()}
+											onClick={onCLick}
+										>
+											{__('Upload Logo')}
+										</button>
+									);
+								}}
+							/>
+						</div>
+					</div> : null
+				}
+
+				{type==='list' ? 
+					<>
+						<div className={'flex-5'.classNames()}>{label_text}</div>
+						<div>
+							<ListManager
+								addText={add_text}
+								mode="stack"
+								list={(values[name] || []).map(item=>{
+									return {
+										id: item[key_map.id || 'id'],
+										label: item[key_map.label || 'label']
+									}
+								})}
+								onChange={(items) => onChange(name, items.map(item=>{
+									return {
+										[key_map.id || 'id']: item.id,
+										[key_map.label || 'label']: item.label
+									}
+								}))}
+							/>
+						</div>
+					</> : null
+				}
+			</div>
+		);
+	});
+}
+
+export function Options() {
+    const { segment, sub_segment } = useParams();
+    const { sections={} } = settings_fields[segment].segments[sub_segment];
+
+	return <div style={{marginTop: '79px', marginBottom: '79px'}}>
+		{Object.keys(sections).map(section_name=>{
+			const {fields=[], vertical, separator} = sections[section_name];
+
+			return <div key={section_name} className={'section'.classNames(style)}>
+				<div className={'padding-30 bg-color-white box-shadow-thin'.classNames()} style={{borderRadius: '5px'}}>
+					<OptionFields {...{fields, vertical, separator}}/>
+				</div>
+			</div> 
+		})}
+	</div>
 }

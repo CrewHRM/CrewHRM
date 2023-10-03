@@ -1,22 +1,24 @@
 import React, { useContext, useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import moment from 'moment-timezone';
 
-import { __, getCountries } from 'crewhrm-materials/helpers.jsx';
-import style from './jobs.module.scss';
+import { __ } from 'crewhrm-materials/helpers.jsx';
 import { StatusDot } from 'crewhrm-materials/status-dot/status-dots.jsx';
-import { NoJob } from './segments/no-job.jsx';
-import { Link, useNavigate } from 'react-router-dom';
 import { Options } from 'crewhrm-materials/dropdown/dropdown.jsx';
 import { ShareModal } from 'crewhrm-materials/share-modal.jsx';
 import { Pagination } from 'crewhrm-materials/pagination/pagination.jsx';
 import { request } from 'crewhrm-materials/request.jsx';
-import { StatsRow } from './segments/stats-row.jsx';
-import { FilterBar } from './segments/filter-bar.jsx';
 import { LoadingIcon } from 'crewhrm-materials/loading-icon/loading-icon.jsx';
 import { ContextToast } from 'crewhrm-materials/toast/toast.jsx';
 import { ContextWarning } from 'crewhrm-materials/warning/warning.jsx';
 import { Conditional } from 'crewhrm-materials/conditional.jsx';
-import { statuses } from 'crewhrm-materials/data.jsx';
+import { statuses, countries_object } from 'crewhrm-materials/data.jsx';
+
+import { NoJob } from './segments/no-job.jsx';
+import { StatsRow } from './segments/stats-row.jsx';
+import { FilterBar } from './segments/filter-bar.jsx';
+
+import style from './jobs.module.scss';
 
 const special_stages = {
     _hired_: __('Hired'),
@@ -239,7 +241,7 @@ export function JobOpenings(props) {
                                 department_name,
                                 street_address || country_code
                                     ? street_address +
-                                      (country_code ? ', ' + getCountries()[country_code] : '')
+                                      (country_code ? ', ' + countries_object[country_code] : '')
                                     : null,
                                 job_type,
                                 application_deadline

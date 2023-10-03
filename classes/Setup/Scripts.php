@@ -45,7 +45,7 @@ class Scripts {
 		}
 
 		// Load scripts for setting and company profile
-		if ( Utilities::isCrewDashboard( array( Admin::SLUG_SETTINGS, Admin::SLUG_COMPANY_PROFILE ) ) ) {
+		if ( Utilities::isCrewDashboard( array( Admin::SLUG_SETTINGS ) ) ) {
 			if ( current_user_can( 'upload_files' ) ) {
 				wp_enqueue_media();
 			}

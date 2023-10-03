@@ -183,7 +183,7 @@ class JobManagement {
 			wp_send_json_success(
 				array(
 					'job'           => $job,
-					'about_company' => Settings::getCompanyProfile( 'about_company' ),
+					'about_company' => Settings::getSettings( 'about_company' ),
 				)
 			);
 		}

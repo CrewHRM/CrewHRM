@@ -9,6 +9,7 @@ namespace CrewHRM\Setup;
 
 use CrewHRM\Helpers\Utilities;
 use CrewHRM\Models\Address;
+use CrewHRM\Models\Department;
 use CrewHRM\Models\Settings;
 
 /**
@@ -29,6 +30,7 @@ class Careers {
 		add_filter( 'query_vars', array( $this, 'registerQueryVars' ) );
 		add_action( 'generate_rewrite_rules', array( $this, 'addRewriteRules' ) );
 		add_filter( 'the_content', array( $this, 'renderCareers' ) );
+		add_filter( 'crewhrm_save_settings', array( $this, 'saveDepartments' ) );
 	}
 
 	/**
@@ -86,5 +88,20 @@ class Careers {
 				id="' . esc_attr( self::MOUNTPOINT ) . '" 
 				data-base_permalink="' . trim( str_replace( get_home_url(), '', get_permalink( get_the_ID() ) ), '/' ) . '"
 				data-settings="' . esc_attr( wp_json_encode( $settings ) ) . '"></div>';
+	}
+
+	/**
+	 * Save departments exclusively
+	 *
+	 * @param array $settings Whole settings array
+	 * @return void
+	 */
+	public function saveDepartments( $settings ) {
+		if ( is_array( $settings ) && is_array( $settings['departments'] ?? null ) ) {
+			Department::saveDepartments( $settings['departments'] );
+			$settings['departments'] = Department::getDepartments();
+		}
+
+		return $settings;
 	}
 }

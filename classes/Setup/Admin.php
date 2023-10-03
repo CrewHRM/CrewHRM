@@ -17,10 +17,8 @@ use CrewHRM\Models\Settings;
  * The setup class
  */
 class Admin {
-	const SLUG_COMPANY_PROFILE = 'crewhrm-settings';
 	const SLUG_SETTINGS        = 'crewhrm-company';
 	const MOUNTPOINT_SETTINGS  = 'crewhrm_settings';
-	const MOUNTPOINT_COMPANY   = 'crewhrm_company_profile';
 	const MOUNTPOINT_DASHBOARD = 'crewhrm_dashboard';
 
 	/**
@@ -56,16 +54,6 @@ class Admin {
 			$logo
 		);
 
-		// Company profile
-		add_submenu_page(
-			Main::$configs->root_menu_slug,
-			__( 'Company', 'crewhrm' ),
-			__( 'Company', 'crewhrm' ),
-			'administrator',
-			self::SLUG_COMPANY_PROFILE,
-			array( $this, 'companyProfilePage' )
-		);
-
 		// Setting page
 		add_submenu_page(
 			Main::$configs->root_menu_slug,
@@ -88,18 +76,6 @@ class Admin {
 				id="' . esc_attr( self::MOUNTPOINT_DASHBOARD ) . '" 
 				data-departments="' . esc_attr( wp_json_encode( Department::getDepartments() ) ) . '"
 				data-application-stats="' . esc_attr( wp_json_encode( $application_overview ) ) . '"></div>';
-	}
-
-	/**
-	 * Setting page content
-	 *
-	 * @return void
-	 */
-	public function companyProfilePage() {
-		echo '<div 
-				id="' . esc_attr( self::MOUNTPOINT_COMPANY ) . '" 
-				data-company-profile="' . esc_attr( wp_json_encode( (object) Settings::getCompanyProfile() ) ) . '"
-				data-departments="' . esc_attr( wp_json_encode( Department::getDepartments() ) ) . '"></div>';
 	}
 
 	/**

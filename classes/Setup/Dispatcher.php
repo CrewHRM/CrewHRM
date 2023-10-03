@@ -12,7 +12,6 @@ use CrewHRM\Helpers\_String;
 use CrewHRM\Main;
 use CrewHRM\Models\User;
 
-use CrewHRM\Controllers\CompanyProfile;
 use CrewHRM\Controllers\JobManagement;
 use CrewHRM\Controllers\MediaHandler;
 use CrewHRM\Controllers\PluginSettings;
@@ -30,7 +29,6 @@ class Dispatcher {
 	 */
 	private static $controllers = array(
 		PluginSettings::class,
-		CompanyProfile::class,
 		JobManagement::class,
 		ApplicationHandler::class,
 		MediaHandler::class,
