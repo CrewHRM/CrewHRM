@@ -28,7 +28,7 @@ function Wrapper({ children }) {
             ajaxToast(resp);
 
             if (success) {
-                clearHistory(undefined, settings);
+                clearHistory(settings);
             }
         });
     };

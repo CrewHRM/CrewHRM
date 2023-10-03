@@ -12,6 +12,7 @@ import { RenderMedia } from 'crewhrm-materials/render-media/render-media.jsx';
 import { CoverImage } from 'crewhrm-materials/image/image.jsx';
 import logo_placeholder from 'crewhrm-materials/static/images/logo-placeholder.svg';
 import { ListManager } from 'crewhrm-materials/list-manager/list-manager.jsx';
+import { AddressFields } from 'crewhrm-materials/address-fields.jsx';
 
 import { input_class } from '../../../hrm/job-editor/job-details/job-details.jsx';
 import { settings_fields } from '../field-structure.jsx';
@@ -19,7 +20,6 @@ import { ContextSettings } from '../hrm-settings.jsx';
 import { ContextBackendDashboard } from '../../../hrm/hrm.jsx';
 
 import style from './options.module.scss';
-import { AddressFields } from './addr.jsx';
 
 const label_class =
     'd-block font-size-17 font-weight-500 line-height-24 letter-spacing--17 color-text'.classNames();

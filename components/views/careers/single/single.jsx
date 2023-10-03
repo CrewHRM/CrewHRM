@@ -2,15 +2,18 @@ import React, { useEffect, useState } from 'react';
 import { Link, useParams, useSearchParams } from 'react-router-dom';
 
 import { __, getAddress, parseParams } from 'crewhrm-materials/helpers.jsx';
-import style from './single.module.scss';
 import { DangerouslySet } from 'crewhrm-materials/DangerouslySet.jsx';
-import { Apply } from './apply/apply.jsx';
 import { request } from 'crewhrm-materials/request.jsx';
 import { LoadingIcon } from 'crewhrm-materials/loading-icon/loading-icon.jsx';
-import { employment_types } from '../../hrm/job-editor/job-details/sections/employment-details.jsx';
-import { sections_fields } from '../../hrm/job-editor/application-form/form-structure.jsx';
 import { Conditional } from 'crewhrm-materials/conditional.jsx';
 import { statuses } from 'crewhrm-materials/data.jsx';
+import { applyFilters } from 'crewhrm-materials/hooks.jsx';
+
+import { Apply } from './apply/apply.jsx';
+import { employment_types } from '../../hrm/job-editor/job-details/sections/employment-details.jsx';
+import { sections_fields } from '../../hrm/job-editor/application-form/form-structure.jsx';
+
+import style from './single.module.scss';
 
 const getForm = (_form, attrs) => {
     // Loop through fields
@@ -42,41 +45,28 @@ const prepareField = (category, field = {}) => {
 };
 
 function applyFormFields(fields) {
-    return {
-        personal: fields.personal_info.fields
-            .map((f) => prepareField('personal_info', f))
-            .filter((f) => f)
-            .flat(),
+    return applyFilters(
+		'crewhrm_application_form_fields', 
+		{
+			personal: fields.personal_info.fields
+				.map((f) => prepareField('personal_info', f))
+				.filter((f) => f)
+				.flat(),
 
-        documents: fields.documents.fields
-            .map((f) => prepareField('documents', f))
-            .filter((f) => f)
-            .flat(),
+			documents: fields.documents.fields
+				.map((f) => prepareField('documents', f))
+				.filter((f) => f)
+				.flat(),
 
-        other: [
-            ...fields.profile.fields
-                .map((f) => prepareField('profile', f))
-                .filter((f) => f)
-                .flat(),
-
-            /* ...fields.questions.fields
-                .map((question) => {
-                    return [
-                        {
-                            name: question.id,
-                            label: question.label,
-                            type: question.type,
-                            options: question.field_options,
-                            enabled: question.enabled,
-                            required: question.required
-                        },
-                        null
-                    ];
-                })
-                .filter((q) => q)
-                .flat() */
-        ]
-    };
+			other: [
+				...fields.profile.fields
+					.map((f) => prepareField('profile', f))
+					.filter((f) => f)
+					.flat()
+			]
+		},
+		fields
+	);
 }
 
 function RenderMeta({ icon, hint, content }) {

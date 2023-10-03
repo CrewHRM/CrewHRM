@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 
 import { Tabs } from 'crewhrm-materials/tabs/tabs.jsx';
-import { ContextForm, FormFields } from 'crewhrm-materials/form.jsx';
+import { ContextForm, FormFields } from './apply-form.jsx';
 import { FormActionButtons } from 'crewhrm-materials/form-action.jsx';
 import { request } from 'crewhrm-materials/request.jsx';
 import { ContextToast } from 'crewhrm-materials/toast/toast.jsx';
@@ -18,23 +18,29 @@ import {
 
 import style from './apply.module.scss';
 
-const steps = [
-    {
-        id: 'personal',
-        label: __('Personal Information')
-    },
-    {
-        id: 'documents',
-        label: __('Documents')
-    },
-    /* {
-        id: 'other',
-        label: __('Other Information')
-    } */
-];
 
 export function Apply({ job = {} }) {
-    const { job_id, job_title, application_form: fields = {} } = job;
+
+    const { 
+		job_id, 
+		job_title, 
+		application_form: fields = {} 
+	} = job;
+
+	const steps = [
+		{
+			id: 'personal',
+			label: __('Personal Information')
+		},
+		{
+			id: 'documents',
+			label: __('Documents')
+		},
+		{
+			id: 'other',
+			label: __('Other Information')
+		}
+	].filter(step=>!isEmpty(fields[step.id]));
 
     const [state, setState] = useState({
         active_tab: 'personal',
@@ -224,7 +230,11 @@ export function Apply({ job = {} }) {
                     }
                 >
                     <div>
-                        <Tabs active={state.active_tab} tabs={steps} theme="sequence" scrollIntoViewOnChange={true}/>
+                        <Tabs 
+							active={state.active_tab} 
+							tabs={steps} 
+							theme="sequence" 
+							scrollIntoViewOnChange={true}/>
                     </div>
                 </div>
             </Conditional>
