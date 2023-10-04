@@ -12,7 +12,7 @@ To discuss ideas with us in private, please use the contact form on our website 
 - Run <kbd>cd CrewHRM</kbd>
 - Run <kbd>npm install</kbd>
 - Run <kbd>npm run build</kbd> to compile scirpts in production mode and create releasable zip file.
-- Or, Run <kbd>npm run watch</kbd> if you'd like the codes to be compiled in development mode and need continous compilation on code changes.
+- Or, Run <kbd>npm run watch</kbd> if you'd like the codes to be compiled in development mode and need continuous compilation on code changes.
 
 If it is cloned already, and need to pull updated codebase then 
 - open terminal at <kbd>~wp-content/plugins/CrewHRM/</kbd>

@@ -138,19 +138,6 @@ export const sections_fields = applyFilters('job_application_fields', {
                     }
                 ]
             },
-            {
-                id: 'file_attachment',
-                label: __('File Attachment'),
-                form: [
-                    {
-                        name: 'file_attachment',
-                        label: __('Upload attachments. Max 3.'),
-                        type: 'file',
-                        placeholder: __('Browse Files'),
-                        maxlenth: 3
-                    }
-                ]
-            }
         ]
     },
     profile: {

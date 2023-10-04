@@ -65,26 +65,16 @@ class Application {
 			}
 		}
 
-		// Insert attachments
-		$attachment_ids = array();
-		$attachments    = $files['file_attachment'] ?? array();
-
-		foreach ( $attachments as $attachment ) {
-			$name   = 'Attachment-' . $app_id . '-' . _String::getRandomString();
-			$new_id = FileManager::uploadFile( $app_id, $attachment, $name );
-			if ( ! empty( $new_id ) ) {
-				$attachment_ids[] = $new_id;
-			}
-		}
-		Meta::application( $app_id )->updateMeta( 'application_attachments', $attachment_ids );
-
-		// Insert custom added questions
-		foreach ( $application as $key => $value ) {
-			if ( strpos( $key, '_question_' ) === 0 ) {
-				Meta::application( $app_id )->updateMeta( $key, $value );
-			}
-		}
-
+		/**
+		 * Action hook that runs after job application created.
+		 *
+		 * @param int   $app_id       Newly created application ID.
+		 * @param array $_application Prepared application data array that was inserted into database.
+		 * @param array $files        Files array that was sent to application creator method.
+		 * @param array $application  Raw array that was sent to application creator method.
+		 */
+		do_action( 'crewhrm_job_application_created', $app_id, $_application, $files, $application );
+		
 		return $app_id;
 	}
 
@@ -324,7 +314,7 @@ class Application {
 		$application['address'] = is_numeric( $application['address_id'] ) ? Address::getAddressById( $application['address_id'] ) : null;
 
 		// Set overview
-		$application['overview'] = self::getApplicationOverview( $application_id, $job_id );
+		$application['overview'] = apply_filters( 'crewhrm_application_overview', array(), $application_id, $job_id );
 
 		// Set documents
 		$application['documents'] = self::getApplicationDocuments( $application_id, $job_id );
@@ -354,73 +344,6 @@ class Application {
 		);
 
 		return '_disqualified_' === $stage_name;
-	}
-
-	/**
-	 * Prepare application overview for single application view
-	 *
-	 * @param int $application_id Application ID
-	 * @param int $job_id         Job ID
-	 * @return array
-	 */
-	public static function getApplicationOverview( $application_id, $job_id ) {
-		$overview = array();
-		$meta     = Meta::application( $application_id )->getMeta();
-		$form     = Job::getFiled( $job_id, 'application_form' );
-
-		// Loop through all the meta data of the application
-		foreach ( $meta as $meta_key => $meta_value ) {
-
-			// Loop through all the application form sections such as personal, documents, profile.
-			foreach ( $form as $section ) {
-
-				// Loop thorugh all the fields under the section to identify which meta is for which field
-				foreach ( $section['fields'] as $field ) {
-
-					// Gather field data like id, label, and options (if it is multiple checkbox type)
-					$id            = $field['id'];
-					$label         = $field['label'];
-					$field_options = $field['field_options'] ?? array();
-
-					// Make sure to use appropriate questionaire only
-					if ( $meta_key !== $id || ! ( strpos( $id, '_question__' ) === 0 ) ) {
-						continue;
-					}
-
-					switch ( $field['type'] ) {
-						case 'file':
-							break;
-
-						// Pick option label from the application form settings
-						case 'checkbox':
-							$overview[] = array(
-								'id'           => $id,
-								'label'        => $label,
-								'text_options' => array_filter(
-									array_map(
-										function( $value_id ) use ( $field_options ) {
-											return _Array::find( $field_options, 'id', $value_id );
-										},
-										$meta_value
-									)
-								),
-							);
-							break;
-
-						// As it is normal text based answer, just add to overview.
-						// Even values from dropdown and radio button are also applicable here as those are single value ultimately unlike multi checkbox or file.
-						default:
-							$overview[] = array(
-								'id'    => $id,
-								'label' => $label,
-								'text'  => $meta_value,
-							);
-					}
-				}
-			}
-		}
-
-		return _Array::castRecursive( $overview );
 	}
 
 	/**

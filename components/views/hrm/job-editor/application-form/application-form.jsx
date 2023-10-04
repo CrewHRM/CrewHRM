@@ -166,6 +166,13 @@ export function ApplicationForm() {
                         sortable
                     } = values.application_form[section_name];
 
+					// Exclude fields if it is not in the hard coded or filter hooked blueprints. 
+					// These are supposed to be registered from pro, and supposed to be missing if the pro or addon is not enabled.
+					// However it is not applicable for question exceptionally is it is little bit different, I mean the fields are dynamic.
+					const _input_fields = input_fields.filter(field=>{
+						return section_name=='questions' || sections_fields[section_name].fields.find(f=>f.id===field.id)
+					});
+
                     // Prepare popup options to delete, edit etc.
                     const { options = {} } = sections_fields[section_name];
                     const options_array = Object.keys(options).map((option_name) => {
@@ -190,12 +197,12 @@ export function ApplicationForm() {
                                 {label}
                             </strong>
 
-                            {(input_fields.length && (
+                            {(_input_fields.length && (
                                 <div className={'list-container'.classNames(style)}>
                                     <SortableList
                                         disabled={!sortable}
                                         onReorder={(list) => updateFields(section_name, list)}
-                                        items={input_fields.map((field, index) => {
+                                        items={_input_fields.map((field, index) => {
                                             const {
                                                 label: field_label,
                                                 enabled = false,
@@ -204,7 +211,7 @@ export function ApplicationForm() {
                                                 id: field_id
                                             } = field;
                                             const checkbox_id = 'crewhrm-checkbox-' + field_id;
-                                            const is_last = index == input_fields.length - 1;
+                                            const is_last = index == _input_fields.length - 1;
 
                                             return {
                                                 ...field,
@@ -330,7 +337,7 @@ export function ApplicationForm() {
                             {addLabel && (
                                 <div
                                     className={`d-flex align-items-center column-gap-10 padding-vertical-10 padding-horizontal-15 border-1 border-radius-10 b-color-secondary cursor-pointer ${
-                                        input_fields.length ? 'margin-top-10' : ''
+                                        _input_fields.length ? 'margin-top-10' : ''
                                     }`.classNames()}
                                     onClick={() =>
                                         setState({ ...state, pointer: { section_name } })
