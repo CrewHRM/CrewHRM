@@ -51,7 +51,7 @@ class Main {
 		spl_autoload_register( array( $this, 'loader' ) );
 
 		// Store configs in runtime static property
-		$manifest = _Array::getManifestArray( $configs->dir . 'index.php' );
+		$manifest = _Array::getManifestArray( $configs->dir . 'index.php', ARRAY_A );
 		self::$configs = (object) array_merge( $manifest, (array) self::$configs );
 
 		// Register Activation/Deactivation Hook

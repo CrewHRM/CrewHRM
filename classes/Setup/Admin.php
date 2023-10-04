@@ -27,7 +27,7 @@ class Admin {
 	 * @return void
 	 */
 	public function __construct() {
-		add_action( 'admin_menu', array( $this, 'registerMenu' ) );
+		add_action( 'admin_menu', array( $this, 'registerMenu' ), 10 );
 	}
 
 	/**

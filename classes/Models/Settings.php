@@ -143,7 +143,7 @@ class Settings {
 		}
 
 		// Save general info
-		update_option( self::KEY_SETTINGS, apply_filters( 'crewhrm_save_settings', $data ) );
+		update_option( self::KEY_SETTINGS, apply_filters( 'crewhrm_save_settings', $data ), true );
 
 		// Flush rewrite rule to apply dashboard page change
 		flush_rewrite_rules();

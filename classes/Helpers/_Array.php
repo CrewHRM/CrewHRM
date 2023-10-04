@@ -219,9 +219,10 @@ class _Array {
 	 * Parse comments from php file as array
 	 *
 	 * @param string $path
-	 * @return array
+	 * @param ARRAY_A|OBJECT $ret_type Either object or array to return
+	 * @return array|object
 	 */
-	public static function getManifestArray(string $path) {
+	public static function getManifestArray( string $path, $ret_type = OBJECT ) {
 		$result = [];
 
 		// Use regular expressions to match the first PHP comment block
@@ -249,6 +250,8 @@ class _Array {
 		$result['url']      = plugin_dir_url( $path );
 		$result['dist_url'] = $result['url'] . 'dist/';
 
-		return $result;
+		$result = _Array::castRecursive( $result );
+
+		return $ret_type === ARRAY_A ? $result : (object)$result;
 	}
 }

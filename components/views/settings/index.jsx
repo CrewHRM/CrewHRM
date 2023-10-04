@@ -1,9 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 
-import 'crewhrm-materials/prototypes.jsx';
-import { getElementDataSet } from 'crewhrm-materials/helpers.jsx';
 import { MountPoint } from 'crewhrm-materials/mountpoint.jsx';
+import { getElementDataSet } from 'crewhrm-materials/helpers.jsx';
 import { HRMSettings } from './hrm-settings/hrm-settings.jsx';
 
 // Render hrm settings
