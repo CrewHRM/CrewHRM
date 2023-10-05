@@ -35,7 +35,7 @@ export function Applications() {
             fetching: true
         });
 
-        request('get_job_view_dashboard', { job_id }, (resp) => {
+        request('getJobViewDashboard', { job_id }, (resp) => {
             const {
                 success,
                 data: {

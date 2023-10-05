@@ -7,7 +7,8 @@
  * Version: 1.0.0
  * Author URI: https://getcrewhrm.com
  * Requires at least: 5.3
- * Tested up to: 6.3
+ * Tested up to: 6.3.1
+ * Requires PHP: 7.4
  * Text Domain: crewhrm
  *
  * @package crewhrm

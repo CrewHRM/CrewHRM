@@ -14,7 +14,7 @@ export function AddDepartmentModal({ closeModal, onAdd }) {
     const addNow = () => {
         const { department_name } = state;
 
-        request('add_department', { department_name }, (resp) => {
+        request('addDepartment', { department_name }, (resp) => {
             ajaxToast(resp);
 
             if (resp?.success) {

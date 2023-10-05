@@ -65,18 +65,16 @@ class Dispatcher {
 			// Loop through controller methods in the class
 			foreach ( $class::PREREQUISITES as $method => $prerequisites ) {
 				if ( in_array( $method, $registered_methods, true ) ) {
-					throw new Error( __( 'Duplicate endpoint not possible' ) );
+					throw new Error( __( 'Duplicate endpoint ' . $method . ' not possible' ) );
 				}
-
-				$endpoint = _String::camelToSnakeCase( $method );
 
 				// Determine ajax handler types
 				$handlers    = array();
-				$handlers [] = 'wp_ajax_' . Main::$configs->app_name . '_' . $endpoint;
+				$handlers [] = 'wp_ajax_' . Main::$configs->app_name . '_' . $method;
 
 				// Check if norpriv necessary
 				if ( ( $prerequisites['nopriv'] ?? false ) === true ) {
-					$handlers[] = 'wp_ajax_nopriv_' . Main::$configs->app_name . '_' . $endpoint;
+					$handlers[] = 'wp_ajax_nopriv_' . Main::$configs->app_name . '_' . $method;
 				}
 
 				// Loop through the handlers and register

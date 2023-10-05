@@ -4,7 +4,7 @@ Donate Link: https://getcrewhrm.com/pricing/
 Tags:  HR, HRM, Recruitment, Job Listings, Employee management, Leave management, Attendance, Reimbursement, Human Resource Management
 Requires at least: 5.3
 Tested up to: 6.3.1
-Requires PHP: 7.2
+Requires PHP: 7.4
 Stable tag: 1.0
 License: GPLv3
 License URI: https://opensource.org/licenses/GPL-3.0

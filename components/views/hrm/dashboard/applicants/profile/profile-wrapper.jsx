@@ -63,7 +63,7 @@ export function Profile({ job_id, has_applications }) {
             fetching: true
         });
 
-        request('get_application_single', { job_id, application_id }, (resp) => {
+        request('getApplicationSingle', { job_id, application_id }, (resp) => {
             const {
                 success,
                 data: { application = {}, message = __('Something went wrong!') }

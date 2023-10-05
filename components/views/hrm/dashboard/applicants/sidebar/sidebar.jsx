@@ -48,7 +48,7 @@ export function Sidebar({ stage_id, hasApplications }) {
         };
 
         // Send request
-        request('get_applications_list', payload, (resp) => {
+        request('getApplicationsList', payload, (resp) => {
             const {
                 success,
                 data: { applications = [], qualified_count = 0, disqualified_count = 0 }

@@ -110,7 +110,7 @@ export function Apply({ job = {} }) {
             return;
         }
 
-        request('apply_to_job', payload, (resp) => {
+        request('applyToJob', payload, (resp) => {
             const {
                 success,
                 data: { notice, message }

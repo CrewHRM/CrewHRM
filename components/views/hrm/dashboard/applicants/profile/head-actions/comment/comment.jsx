@@ -36,7 +36,7 @@ export function Comment(props) {
         const { values = {} } = state;
         const { comment_content } = values;
 
-        request('comment_on_application', { comment_content, application_id }, (resp) => {
+        request('commentOnApplication', { comment_content, application_id }, (resp) => {
             ajaxToast(resp);
 
             if (resp.success) {

@@ -21,7 +21,7 @@ function Wrapper({ children }) {
     const { ajaxToast } = useContext(ContextToast);
 
     const saveSettings = () => {
-        request('save_settings', { settings: values }, (resp) => {
+        request('saveSettings', { settings: values }, (resp) => {
 
 			const {success, data:{settings={}}} = resp;
 

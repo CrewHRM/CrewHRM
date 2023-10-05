@@ -136,7 +136,7 @@ export function DeletionConfirm(props) {
             warningLoading();
         }
 
-        request('delete_hiring_stage', { job_id, stage_id, move_to }, (resp) => {
+        request('deleteHiringStage', { job_id, stage_id, move_to }, (resp) => {
             const { success, data } = resp;
             const { overview = {} } = data || {};
 

@@ -13,6 +13,7 @@ import { CoverImage } from 'crewhrm-materials/image/image.jsx';
 import logo_placeholder from 'crewhrm-materials/static/images/logo-placeholder.svg';
 import { ListManager } from 'crewhrm-materials/list-manager/list-manager.jsx';
 import { AddressFields } from 'crewhrm-materials/address-fields.jsx';
+import { RenderExternal } from 'crewhrm-materials/render-external.jsx';
 
 import { input_class } from '../../../hrm/job-editor/job-details/job-details.jsx';
 import { settings_fields } from '../field-structure.jsx';
@@ -288,17 +289,31 @@ function OptionFields({fields=[], vertical, separator, is_group=false}) {
 
 export function Options() {
     const { segment, sub_segment } = useParams();
-    const { sections={} } = settings_fields[segment].segments[sub_segment];
+    const { sections={}, component } = settings_fields[segment].segments[sub_segment];
+
+	const wrapper_attrs = {
+		className: 'padding-30 bg-color-white box-shadow-thin'.classNames(),
+		style: {borderRadius: '5px'}
+	}
 
 	return <div style={{marginTop: '79px', marginBottom: '79px'}}>
-		{Object.keys(sections).map(section_name=>{
-			const {fields=[], vertical, separator} = sections[section_name];
-
-			return <div key={section_name} className={'section'.classNames(style)}>
-				<div className={'padding-30 bg-color-white box-shadow-thin'.classNames()} style={{borderRadius: '5px'}}>
-					<OptionFields {...{fields, vertical, separator}}/>
+		{
+			component ? 
+				<div className={'section'.classNames(style)}>
+					<div {...wrapper_attrs}>
+						<RenderExternal component={component}/>
+					</div>
 				</div>
-			</div> 
-		})}
+				:
+				Object.keys(sections).map(section_name=>{
+					const {fields=[], vertical, separator} = sections[section_name];
+
+					return <div key={section_name} className={'section'.classNames(style)}>
+						<div {...wrapper_attrs}>
+							<OptionFields {...{fields, vertical, separator}}/>
+						</div>
+					</div> 
+				})
+		}
 	</div>
 }

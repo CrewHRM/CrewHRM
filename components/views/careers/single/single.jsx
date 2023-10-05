@@ -113,7 +113,7 @@ export function Single({ base_permalink }) {
             fetching: true
         });
 
-        request('get_single_job_view', { job_id, preview: queryParams.preview }, (resp) => {
+        request('getSingleJobView', { job_id, preview: queryParams.preview }, (resp) => {
             const {
                 success,
                 data: { job = {}, about_company, message = __('Something Went Wrong!') }

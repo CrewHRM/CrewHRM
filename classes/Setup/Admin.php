@@ -17,7 +17,7 @@ use CrewHRM\Models\Settings;
  * The setup class
  */
 class Admin {
-	const SLUG_SETTINGS        = 'crewhrm-company';
+	const SLUG_SETTINGS        = 'crewhrm-settings';
 	const MOUNTPOINT_SETTINGS  = 'crewhrm_settings';
 	const MOUNTPOINT_DASHBOARD = 'crewhrm_dashboard';
 

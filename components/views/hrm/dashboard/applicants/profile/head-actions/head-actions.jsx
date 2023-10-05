@@ -71,7 +71,7 @@ export function HeadActions({ application }) {
             () => {
                 loadingState();
 
-                request('move_application_stage', { job_id, stage_id, application_id }, (resp) => {
+                request('moveApplicationStage', { job_id, stage_id, application_id }, (resp) => {
                     const { success } = resp;
 
                     ajaxToast(resp);
@@ -99,7 +99,7 @@ export function HeadActions({ application }) {
                     () => {
                         loadingState();
 
-                        request('delete_application', { application_id }, (resp) => {
+                        request('deleteApplication', { application_id }, (resp) => {
                             const { success } = resp;
 
                             ajaxToast(resp);

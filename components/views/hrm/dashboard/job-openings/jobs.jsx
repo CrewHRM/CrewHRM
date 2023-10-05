@@ -142,7 +142,7 @@ export function JobOpenings(props) {
                         });
 
                         // Server request for action
-                        request('single_job_action', { job_action: action, job_id }, (resp) => {
+                        request('singleJobAction', { job_action: action, job_id }, (resp) => {
                             // Remove loading state
                             setState({
                                 ...state,
@@ -171,7 +171,7 @@ export function JobOpenings(props) {
 
         const { filters } = state;
 
-        request('get_jobs_dashboard', { filters: { ...filters, ...f } }, (resp) => {
+        request('getJobsDashboard', { filters: { ...filters, ...f } }, (resp) => {
             const {
                 success,
                 data: { jobs = [], segmentation = {} }

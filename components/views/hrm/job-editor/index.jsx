@@ -142,7 +142,7 @@ export function JobEditor() {
             }
         };
 
-        request('update_job', payload, (resp) => {
+        request('updateJob', payload, (resp) => {
             const {
                 success,
                 data: { job_id, address_id, stage_ids = {} }
@@ -218,7 +218,7 @@ export function JobEditor() {
             fetching: true
         });
 
-        request('get_single_job_edit', { job_id }, (resp) => {
+        request('getSingleJobEdit', { job_id }, (resp) => {
             const {
                 success,
                 data: { job = {}, autosaved_job, message = __('Something went wrong!') }

@@ -150,7 +150,7 @@ export function Activity() {
             loading: true
         });
 
-        request('get_application_pipeline', { application_id }, (resp) => {
+        request('getApplicationPipeline', { application_id }, (resp) => {
             const {
                 data: { pipeline = [] }
             } = resp;

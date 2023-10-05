@@ -4,7 +4,7 @@ import { settings_fields } from '../field-structure.jsx';
 import style from './segments.module.scss';
 import { Link } from 'react-router-dom';
 
-export function Segments(props) {
+export function Segments() {
     return (
         <div
             className={
@@ -12,10 +12,10 @@ export function Segments(props) {
             }
         >
             {Object.keys(settings_fields).map((key) => {
-                const { label, description, segments = {} } = settings_fields[key];
+                const { label, description, segments = {}, component } = settings_fields[key];
                 const segment_keys = Object.keys(segments);
 
-                return (
+                return (!segment_keys.length && !component) ? null : (
                     <div key={key} className={'margin-bottom-30'.classNames()}>
                         <span
                             className={'d-block font-size-17 font-weight-600 color-text margin-bottom-10'.classNames()}

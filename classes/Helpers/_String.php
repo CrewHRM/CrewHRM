@@ -43,34 +43,6 @@ class _String {
 	);
 
 	/**
-	 * Convert snake case to camel
-	 *
-	 * @param string $input The string to convert from snake to camel
-	 * @return string
-	 */
-	public static function snakeToCamel( $input ) {
-		$parts      = explode( '_', $input );
-		$camel_case = $parts[0];
-		$counts     = count( $parts );
-
-		for ( $i = 1; $i < $counts; $i++ ) {
-			$camel_case .= ucfirst( $parts[ $i ] ); // phpcs:ignore Generic.CodeAnalysis.ForLoopWithTestFunctionCall.NotAllowed
-		}
-
-		return $camel_case;
-	}
-
-	/**
-	 * Convert camel case to snake case
-	 *
-	 * @param string $input The string to convert camel to snake case
-	 * @return string
-	 */
-	public static function camelToSnakeCase( $input ) {
-		return strtolower( preg_replace( '/([a-z])([A-Z])/', '$1_$2', $input ) );
-	}
-
-	/**
 	 * Generate random string
 	 *
 	 * @param int $length The length to generate random stirng

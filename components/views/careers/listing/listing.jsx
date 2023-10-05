@@ -49,7 +49,7 @@ export function Listing({ base_permalink, settings = {} }) {
             loading: true
         });
 
-        request('get_careers_listing', { filters: { page: 1, ...queryParams } }, (resp) => {
+        request('getCareersListing', { filters: { page: 1, ...queryParams } }, (resp) => {
             const {
                 data: { jobs = [], departments = [] }
             } = resp;
