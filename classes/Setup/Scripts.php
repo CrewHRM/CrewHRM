@@ -101,8 +101,10 @@ class Scripts {
 			'wp_max_size'              => Settings::getWpMaxUploadSize(),
 			'application_max_size_mb'  => Settings::getApplicationMaxSize(),
 			'application_file_formats' => Settings::getApplicationAttachmentFormats(),
-			'date_format'              => Settings::getDateFormat(),
-			'time_format'              => Settings::getTimeFormat(),
+			'date_format'              => get_option( 'date_format' ),
+			'time_format'              => get_option( 'time_format' ),
+			'timezone_offset'          => get_option( 'gmt_offset' ),
+			'timezone_string'          => get_option( 'timezone_string' ),
 		);
 
 		echo '<script>window.CrewHRM=' . wp_json_encode( $data ) . '</script>';

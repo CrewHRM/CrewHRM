@@ -82,34 +82,6 @@ class Settings {
 	}
 
 	/**
-	 * Get date format
-	 *
-	 * @return string
-	 */
-	public static function getDateFormat() {
-		$format = self::getSettings( 'date_format' );
-		if ( empty( $format ) ) {
-			$format = 'DD MMM, YYYY';
-		}
-
-		return $format;
-	}
-
-	/**
-	 * Get time format
-	 *
-	 * @return string
-	 */
-	public static function getTimeFormat() {
-		$format = self::getSettings( 'time_format' );
-		if ( empty( $format ) ) {
-			$format = get_option( 'time_format' );
-		}
-
-		return $format;
-	}
-
-	/**
 	 * Get WP max upload size in MB.
 	 *
 	 * @return int
