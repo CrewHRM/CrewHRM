@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { input_class, section_title_class, field_label_class } from '../job-details.jsx';
+import { section_title_class, field_label_class } from '../job-details.jsx';
 
 import { __ } from 'crewhrm-materials/helpers.jsx';
 import style from '../details.module.scss';
@@ -56,7 +56,6 @@ export function EmploymentDetails(props) {
                             </span>
                             <NumberField
                                 min={1}
-                                className={input_class}
                                 value={values.vacancy || 1}
                                 onChange={(v) => onChange('vacancy', v)}
                             />
@@ -64,7 +63,6 @@ export function EmploymentDetails(props) {
                         <div className={'flex-1'.classNames()}>
                             <span className={field_label_class}>{__('Submission Deadline')}</span>
                             <DateField
-                                className={input_class}
                                 value={values.application_deadline}
                                 onChange={(v) => onChange('application_deadline', v)}
                             />

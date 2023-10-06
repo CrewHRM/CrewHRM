@@ -2,15 +2,13 @@ import React, { useContext } from 'react';
 
 import { DropDown } from 'crewhrm-materials/dropdown/dropdown.jsx';
 import { __ } from 'crewhrm-materials/helpers.jsx';
-import { input_class, field_label_class, section_title_class } from '../job-details.jsx';
-import style from '../details.module.scss';
+import { experience_levels } from 'crewhrm-materials/data.jsx';
+import { TextField } from 'crewhrm-materials/text-field/text-field.jsx';
+
+import { field_label_class, section_title_class } from '../job-details.jsx';
 import { ContextJobEditor } from '../../index.jsx';
 
-const experience_levels = {
-    beginner: __('Beginner'),
-    intermidiate: __('Intermidiate'),
-    adanced: __('Advanced')
-};
+import style from '../details.module.scss';
 
 export function Experience() {
     const { values, onChange } = useContext(ContextJobEditor);
@@ -37,18 +35,16 @@ export function Experience() {
                                 return { id: l, label: experience_levels[l] };
                             })}
                             onChange={(v) => onChange('experience_level', v)}
-                            className={input_class}
                         />
                     </div>
                     <div className={'flex-1 margin-left-10'.classNames()}>
                         <span className={field_label_class + 'white-space-nowrap'.classNames()}>
                             {__('Years of Experience')}
                         </span>
-                        <input
+                        <TextField
                             placeholder={__('ex 2-3 Years')}
-                            className={input_class}
                             value={values.experience_years || ''}
-                            onChange={(e) => onChange('experience_years', e.currentTarget.value)}
+                            onChange={v => onChange('experience_years', v)}
                         />
                     </div>
                 </div>

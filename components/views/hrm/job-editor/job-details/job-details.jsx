@@ -13,8 +13,6 @@ import { ContextJobEditor } from '../index.jsx';
 
 export const textarea_class =
     'padding-vertical-15 padding-horizontal-20 border-radius-10 border-1-5 b-color-tertiary b-color-active-primary w-full d-block font-size-15 font-weight-400 line-height-25 color-text'.classNames();
-export const input_class =
-    'padding-15 border-radius-10 border-1-5 b-color-tertiary b-color-active-primary w-full d-block height-48 font-size-15 font-weight-400 line-height-25 color-text'.classNames();
 export const section_title_class =
     'font-size-20 font-weight-600 color-text color-text'.classNames();
 export const field_label_class =

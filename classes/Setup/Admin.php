@@ -46,8 +46,8 @@ class Admin {
 
 		// Main page
 		add_menu_page(
-			__( 'Crew HRM', 'crewhrm' ),
-			__( 'Crew HRM', 'crewhrm' ),
+			__( 'CrewHRM', 'crewhrm' ),
+			__( 'CrewHRM', 'crewhrm' ),
 			'administrator',
 			Main::$configs->root_menu_slug,
 			array( $this, 'mainPage' ),

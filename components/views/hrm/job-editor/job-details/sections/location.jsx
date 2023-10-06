@@ -4,8 +4,9 @@ import { __ } from 'crewhrm-materials/helpers.jsx';
 import { countries_array, attendance_types } from 'crewhrm-materials/data.jsx';
 import { DropDown } from 'crewhrm-materials/dropdown/dropdown.jsx';
 import { TagField } from 'crewhrm-materials/tag-field/tag-field.jsx';
+import { TextField } from 'crewhrm-materials/text-field/text-field.jsx';
 
-import { input_class, section_title_class, field_label_class } from '../job-details.jsx';
+import { section_title_class, field_label_class } from '../job-details.jsx';
 import { ContextJobEditor } from '../../index.jsx';
 
 import style from '../details.module.scss';
@@ -47,12 +48,10 @@ export function Location() {
                 <div className={'flex-1'.classNames()}>
                     <span className={field_label_class}>{__('Street Address')}</span>
                     <div>
-                        <input
-                            type="text"
+                        <TextField
                             placeholder={__('ex. New York, NY 00010, USA')}
-                            className={input_class}
                             value={values.street_address || ''}
-                            onChange={(e) => onChange('street_address', e.currentTarget.value)}
+                            onChange={v=> onChange('street_address', v)}
                         />
                     </div>
                 </div>
@@ -71,12 +70,10 @@ export function Location() {
                         <span className={field_label_class + 'white-space-nowrap'.classNames()}>
                             {__('Zip/Postal Code')}
                         </span>
-                        <input
-                            type="text"
-                            className={input_class}
+                        <TextField
                             placeholder={__('ex. NY 00010')}
                             value={values.zip_code || ''}
-                            onChange={(e) => onChange('zip_code', e.currentTarget.value)}
+                            onChange={v => onChange('zip_code', v)}
                         />
                     </div>
                     <div className={'flex-1 margin-left-10'.classNames()}>
@@ -85,7 +82,6 @@ export function Location() {
                             value={values.country_code}
                             options={countries_array}
                             onChange={(v) => onChange('country_code', v)}
-                            className={input_class}
                         />
                     </div>
                 </div>
