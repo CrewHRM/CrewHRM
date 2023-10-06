@@ -1,19 +1,15 @@
 import React, { useContext } from 'react';
 
 import { __ } from 'crewhrm-materials/helpers.jsx';
-import { field_label_class, input_class, section_title_class } from '../job-details.jsx';
-import style from '../details.module.scss';
 import { DropDown } from 'crewhrm-materials/dropdown/dropdown.jsx';
 import { TagField } from 'crewhrm-materials/tag-field/tag-field.jsx';
-import { ContextJobEditor } from '../../index.jsx';
+import { TextField } from 'crewhrm-materials/text-field/text-field.jsx';
+import { salary_types } from 'crewhrm-materials/data.jsx';
 
-const salary_types = {
-    hourly: __('Hourly'),
-    daily: __('Daily'),
-    weekly: __('Weekly'),
-    monthly: __('Monthly'),
-    yearly: __('Yearly')
-};
+import { ContextJobEditor } from '../../index.jsx';
+import { field_label_class, section_title_class } from '../job-details.jsx';
+
+import style from '../details.module.scss';
 
 export function Salary() {
     const { values = {}, onChange } = useContext(ContextJobEditor);
@@ -36,12 +32,15 @@ export function Salary() {
                         theme="button"
                         behavior="radio"
                         value={values.salary_basis}
-                        options={Object.keys(salary_types).map((type) => {
-                            return { id: type, label: salary_types[type] };
-                        })}
                         onChange={(value) => onChange('salary_basis', value)}
                         fullWidth={true}
                         className={'margin-bottom-30'.classNames()}
+                        options={Object.keys(salary_types).map((type) => {
+                            return { 
+								id: type, 
+								label: salary_types[type] 
+							};
+                        })}
                     />
 
                     {/* Salary and Currency */}
@@ -52,20 +51,21 @@ export function Salary() {
                             </span>
                             <DropDown
                                 value={values.currency}
-                                options={Intl.supportedValuesOf('currency').map((c) => {
-                                    return { id: c, label: c };
-                                })}
                                 onChange={(v) => onChange('currency', v)}
-                                className={input_class}
+                                options={Intl.supportedValuesOf('currency').map((c) => {
+                                    return { 
+										id: c, 
+										label: c 
+									};
+                                })}
                             />
                         </div>
                         <div className={'flex-1 margin-left-10'.classNames()}>
                             <span className={field_label_class}>{__('Salary')}</span>
-                            <input
-                                className={input_class}
+                            <TextField
                                 placeholder={__('ex 70000-90000')}
                                 value={values.salary || ''}
-                                onChange={(e) => onChange('salary', e.currentTarget.value)}
+                                onChange={v => onChange('salary', v)}
                             />
                         </div>
                     </div>

@@ -1,10 +1,11 @@
-import React, { useContext, useState } from 'react';
-import { field_label_class, input_class, section_title_class } from '../job-details.jsx';
+import React, { useContext } from 'react';
 import { DropDown } from 'crewhrm-materials/dropdown/dropdown.jsx';
 import { __ } from 'crewhrm-materials/helpers.jsx';
 import { TextField } from 'crewhrm-materials/text-field/text-field.jsx';
 import { CircularProgress } from 'crewhrm-materials/circular.jsx';
 import { TextEditor } from 'crewhrm-materials/text-editor/text-editor.jsx';
+
+import { field_label_class, section_title_class } from '../job-details.jsx';
 import { ContextBackendDashboard } from '../../../hrm.jsx';
 import { ContextJobEditor } from '../../index.jsx';
 
@@ -66,7 +67,6 @@ export function TitleAndDescription() {
                             placeholder={__('ex. Product designer, Account manager')}
                             value={values.job_title || ''}
                             onChange={(v) => onChange('job_title', v)}
-                            className={input_class}
                             maxLength={title_allowed_length}
                             onIconClick={(refocus) => {
                                 onChange('job_title', '');
@@ -95,7 +95,6 @@ export function TitleAndDescription() {
                             <DropDown
                                 value={values.department_id}
                                 onChange={(v) => onChange('department_id', v)}
-                                className={input_class}
                                 tabindex={2}
                                 addText={__('Add Depertment')}
                                 textClassName={'font-size-17 font-weight-500 line-height-25 color-text-light'.classNames()}
@@ -112,12 +111,10 @@ export function TitleAndDescription() {
                         </div>
                         <div className={'flex-1 margin-left-10'.classNames()}>
                             <span className={field_label_class}>{__('Internal Job code')}</span>
-                            <input
-                                type="text"
+                            <TextField
                                 placeholder={__('ex. 001')}
-                                className={input_class}
                                 value={values.job_code || ''}
-                                onChange={(e) => onChange('job_code', e.currentTarget.value)}
+                                onChange={v => onChange('job_code', v)}
                             />
                         </div>
                     </div>

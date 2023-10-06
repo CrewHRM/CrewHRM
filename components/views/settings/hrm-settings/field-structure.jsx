@@ -1,8 +1,7 @@
-import moment from 'moment-timezone';
 import { __ } from 'crewhrm-materials/helpers.jsx';
 import { applyFilters } from 'crewhrm-materials/hooks.jsx';
 
-import { attachment_formats, business_types, date_formats, time_formats, timezones_array } from 'crewhrm-materials/data.jsx';
+import { attachment_formats, business_types } from 'crewhrm-materials/data.jsx';
 
 export const settings_fields = applyFilters(
 	'crewhrm_setting_fields',
@@ -200,44 +199,6 @@ export const settings_fields = applyFilters(
 								}
 							]
 						},
-						date_time: {
-							label: __('Date and Time'),
-							description: __('Configure date time'),
-							separator: false,
-							vertical: true,
-							fields: [
-								{
-									name: 'timezone',
-									label: __('Time Zone'),
-									type: 'dropdown',
-									options: timezones_array
-								},
-								[
-									{
-										name: 'date_format',
-										label: __('Date Format'),
-										type: 'dropdown',
-										options: date_formats.map((f) => {
-											return {
-												id: f,
-												label: moment(new Date().getTime()).format(f)
-											};
-										})
-									},
-									{
-										name: 'time_format',
-										label: __('Time Format'),
-										type: 'dropdown',
-										options: Object.keys(time_formats).map((f) => {
-											return { 
-												id: f, 
-												label: time_formats[f] 
-											}
-										})
-									}
-								]
-							]
-						}
 					}
 				},
 				departments: {

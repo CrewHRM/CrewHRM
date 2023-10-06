@@ -76,7 +76,7 @@ gulp.task('makepot', function () {
         .pipe(
             wpPot({
                 domain: 'crewhrm',
-                package: 'Crew HRM'
+                package: 'CrewHRM'
             })
         )
         .pipe(gulp.dest('languages/crewhrm.pot'));

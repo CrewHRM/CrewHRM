@@ -84,7 +84,8 @@ class Scripts {
 		echo '<style>:root{' . $_colors . '}</style>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 
 		// Load JS variables
-		$data = array(
+		$nonce_action = '_crewhrm_' . str_replace( '-', '_', date( 'Y-m-d' ) );
+		$data         = array(
 			'app_name'                 => Main::$configs->app_name,
 			'action_hooks'             => array(),
 			'filter_hooks'             => array(),
@@ -95,12 +96,15 @@ class Scripts {
 			'colors'                   => $dynamic_colors,
 			'reserved_stages'          => Stage::$reserved_stages,
 			'timeouts'                 => (object) array(),
-			'nonce'                    => wp_create_nonce( Main::$configs->app_name ),
+			'nonce_action'             => $nonce_action,
+			'nonce'                    => wp_create_nonce( $nonce_action ),
 			'wp_max_size'              => Settings::getWpMaxUploadSize(),
 			'application_max_size_mb'  => Settings::getApplicationMaxSize(),
 			'application_file_formats' => Settings::getApplicationAttachmentFormats(),
-			'date_format'              => Settings::getDateFormat(),
-			'time_format'              => Settings::getTimeFormat(),
+			'date_format'              => get_option( 'date_format' ),
+			'time_format'              => get_option( 'time_format' ),
+			'timezone_offset'          => get_option( 'gmt_offset' ),
+			'timezone_string'          => get_option( 'timezone_string' ),
 		);
 
 		echo '<script>window.CrewHRM=' . wp_json_encode( $data ) . '</script>';

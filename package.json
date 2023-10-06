@@ -61,7 +61,6 @@
     "gulp-zip": "^5.1.0",
     "html-to-draftjs": "^1.5.0",
     "javascript-time-ago": "^2.5.9",
-    "moment-timezone": "^0.5.43",
     "node-sass": "^9.0.0",
     "path": "^0.12.7",
     "pdfjs-dist": "^3.9.179",

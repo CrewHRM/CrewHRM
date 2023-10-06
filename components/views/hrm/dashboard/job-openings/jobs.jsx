@@ -1,8 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import moment from 'moment-timezone';
 
-import { __ } from 'crewhrm-materials/helpers.jsx';
+import { __, formatDate } from 'crewhrm-materials/helpers.jsx';
 import { StatusDot } from 'crewhrm-materials/status-dot/status-dots.jsx';
 import { Options } from 'crewhrm-materials/dropdown/dropdown.jsx';
 import { ShareModal } from 'crewhrm-materials/share-modal.jsx';
@@ -245,7 +244,7 @@ export function JobOpenings(props) {
                                     : null,
                                 job_type,
                                 application_deadline
-                                    ? moment(application_deadline).format('DD MMM, YYYY')
+                                    ? formatDate(application_deadline)
                                     : null
                             ];
 

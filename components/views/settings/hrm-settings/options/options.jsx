@@ -15,7 +15,6 @@ import { ListManager } from 'crewhrm-materials/list-manager/list-manager.jsx';
 import { AddressFields } from 'crewhrm-materials/address-fields.jsx';
 import { RenderExternal } from 'crewhrm-materials/render-external.jsx';
 
-import { input_class } from '../../../hrm/job-editor/job-details/job-details.jsx';
 import { settings_fields } from '../field-structure.jsx';
 import { ContextSettings } from '../hrm-settings.jsx';
 import { ContextBackendDashboard } from '../../../hrm/hrm.jsx';
@@ -126,7 +125,6 @@ function OptionFields({fields=[], vertical, separator, is_group=false}) {
 						<div className={'flex-1'.classNames()}>
 							<TextField
 								value={values[name]}
-								className={input_class}
 								onChange={(v) => onChange(name, v)}
 								placeholder={placeholder}
 							/>
@@ -190,7 +188,6 @@ function OptionFields({fields=[], vertical, separator, is_group=false}) {
 								max={max}
 								disabled={disabled}
 								value={values[name]}
-								className={input_class}
 								onChange={(v) => onChange(name, v)}
 							/>
 						</div>
@@ -202,7 +199,6 @@ function OptionFields({fields=[], vertical, separator, is_group=false}) {
 						<div className={'flex-5'.classNames()}>{label_text}</div>
 						<div className={'flex-2'.classNames()}>
 							<DropDown
-								className={input_class}
 								value={values[name]}
 								onChange={(v) => onChange(name, v)}
 								options={typeof options === 'string' ? resources[options] : options}
@@ -217,7 +213,6 @@ function OptionFields({fields=[], vertical, separator, is_group=false}) {
 					<div>
 						<AddressFields 
 							values={values} 
-							className={input_class} 
 							onChange={onChange}/>
 					</div>
 				</> : null}

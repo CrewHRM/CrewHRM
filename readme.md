@@ -1,4 +1,4 @@
-## Crew HRM
+## CrewHRM
 
 WordPress Plugin for human resource management system. This is the free version repository where you can report bugs, vote on feature ideas, etc.
 
