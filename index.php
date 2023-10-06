@@ -2,7 +2,7 @@
 /**
  * Plugin Name: CrewHRM
  * Plugin URI: https://getcrewhrm.com/pricing/
- * Description: The best HRM plugin for online recruitment management. CrewHRM offers a complete solution from creating job posts, sharing them online, managing submissions, screening, asses, and hiring!
+ * Description: Post jobs on your site and hire talent - all inside your website for free!
  * Author: CrewHRM
  * Version: 1.0.0
  * Author URI: https://getcrewhrm.com
