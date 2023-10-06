@@ -8,42 +8,42 @@ export const settings_fields = applyFilters(
 	'crewhrm_setting_fields',
 	{
 		general: {
-			label: __('General'),
+			label: __('Recruitment'),
 			description: __(
-				'Use these settings to define plugin general settings and default settings for your services and appointments'
+				'These settings will work for to show the job posts and control the allowed attachment types and maximum size.'
 			),
 			segments: {
 				careers: {
-					label: __('Careers'),
+					label: __('Job Listing Page'),
 					icon: 'ch-icon ch-icon-building-4',
 					sections: {
 						careers_settings:{
-							label: __('Careers Settings'),
+							label: __('Job Listing Page'),
 							description: __('Configure careers page features and application submission'),
 							separator: true,
 							vertical: false,
 							fields: [
 								{
 									name: 'careers_page_id',
-									label: __('Careers Page'),
+									label: __('Job Listing Page'),
 									type: 'dropdown',
 									options: 'pages',
 									placeholder: __('Select Page')
 								},
 								{
 									name: 'careers_header',
-									label: __('Show Header'),
+									label: __('Show Banner'),
 									type: 'switch'
 								},
 								{
 									name: 'careers_tagline',
-									label: __('Tagline'),
+									label: __('Banner Text'),
 									type: 'text',
 									when: ['careers_header', true]
 								},
 								{
 									name: 'careers_hero_image',
-									label: __('Hero Image'),
+									label: __('Banner Image'),
 									type: 'image',
 									when: ['careers_header', true]
 								},
@@ -73,7 +73,7 @@ export const settings_fields = applyFilters(
 							fields: [
 								{
 									name: 'application_attachment_formats',
-									label: __('Attachment upload formats'),
+									label: __('Allowed file types'),
 									type: 'checkbox',
 									direction: 'column',
 									options: Object.keys(attachment_formats).map((format) => {
@@ -85,18 +85,18 @@ export const settings_fields = applyFilters(
 										};
 									}),
 									hint: __(
-										'Not specifying any removes restriction. To disable upload, turn off attachment per job post.'
+										'Please specify which file types you want to accept'
 									)
 								},
 								{
 									name: 'application_max_size_mb',
-									label: __('Job application size (MB)'),
+									label: __('Attachment Size (MB)'),
 									type: 'number',
 									min: 1,
 									max: window.CrewHRM.wp_max_size,
 									disabled: true,
 									hint: __(
-										'Total maximum size of resume, attachments and texts combined in job application'
+										'The combined total of allowed file size per applicant'
 									)
 								}
 							]
@@ -108,11 +108,11 @@ export const settings_fields = applyFilters(
 		company: {
 			label: __('Company'),
 			description: __(
-				'Use these settings to define company informations and and configurations'
+				'Share your company identity and information here. These information will be used on the applicable places.'
 			),
 			segments: {
 				profile: {
-					label: __('Company Info'),
+					label: __('Basic information'),
 					icon: 'ch-icon ch-icon-building-4',
 					sections: {
 						basic_info: {
@@ -153,7 +153,7 @@ export const settings_fields = applyFilters(
 						},
 						address: {
 							label: __('Location'),
-							description: __('Set your company location informations'),
+							description: __('Set your company location information'),
 							vertical: true,
 							separator: false,
 							fields:[
@@ -179,10 +179,11 @@ export const settings_fields = applyFilters(
 								[
 									{
 										name: 'recruiter_email',
-										label: __('Recruiter Email'),
+										label: __('HR Email'),
+										description: __('This email address will be used to communicate with the candidates and employees.'),
 										type: 'email',
 										required: true,
-										placeholder: __('@company.com')
+										placeholder: __('hr@company.com')
 									},
 									{
 										name: 'other_email',
@@ -240,12 +241,12 @@ export const settings_fields = applyFilters(
 					}
 				},
 				departments: {
-					label: __('Department'),
+					label: __('Departments'),
 					icon: 'ch-icon ch-icon-hierarchy',
 					sections: {
 						departments: {
 							label: __('Departments'),
-							description: __('Define company departments for career listing and job application classifications'),
+							description: __('Add your company departments to use for job posts and employee profiles.'),
 							separator: false,
 							vertical: true,
 							fields: [
