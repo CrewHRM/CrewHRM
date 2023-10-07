@@ -207,7 +207,10 @@ export function JobEditor() {
                 values: {
                     job_id: 0,
                     hiring_flow,
-                    application_form: getFieldsToSave(sections_fields)
+                    application_form: getFieldsToSave(sections_fields),
+					street_address: window.CrewHRM.company_address.street_address,
+					zip_code: window.CrewHRM.company_address.zip_code,
+					country_code: window.CrewHRM.company_address.country_code,
                 }
             });
             return;

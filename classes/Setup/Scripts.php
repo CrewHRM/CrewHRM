@@ -110,6 +110,13 @@ class Scripts {
 				'time_format'              => get_option( 'time_format' ),
 				'timezone_offset'          => get_option( 'gmt_offset' ),
 				'timezone_string'          => get_option( 'timezone_string' ),
+				'company_address'          => array(
+					'street_address' => Settings::getSetting( 'street_address', '' ),
+					'city'           => Settings::getSetting( 'city', '' ),
+					'province'       => Settings::getSetting( 'province', '' ),
+					'zip_code'       => Settings::getSetting( 'zip_code', '' ),
+					'country_code'   => Settings::getSetting( 'country_code', '' ),
+				)
 			)
 		);
 
