@@ -170,6 +170,7 @@ class _Array {
 			}
 		} elseif ( is_string( $value ) ) {
 			$value = in_array( $key, $kses_for, true ) ? _String::applyKses( $value ) : sanitize_text_field( $value );
+			$value = trim( $value );
 		}
 
 		return $value;
