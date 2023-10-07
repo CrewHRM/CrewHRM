@@ -7,6 +7,9 @@ import { CoverImage } from 'crewhrm-materials/image/image.jsx';
 import { Line } from 'crewhrm-materials/line/line.jsx';
 import { ContextApplicationSession } from '../../applicants.jsx';
 import { request } from 'crewhrm-materials/request.jsx';
+import { applyFilters } from 'crewhrm-materials/hooks.jsx';
+import { getLocalFromUnix } from 'crewhrm-materials/helpers.jsx';
+import { RenderExternal } from 'crewhrm-materials/render-external.jsx';
 
 import style from './activity.module.scss';
 
@@ -18,7 +21,7 @@ function Ago({ timestamp }) {
         <span
             className={'d-inline-block font-size-15 font-weight-400 line-height-24 letter-spacing--15 color-text-light'.classNames()}
         >
-            &middot; {timeAgo.format(new Date(timestamp * 1000))}
+            &middot; {timeAgo.format(getLocalFromUnix(timestamp))}
         </span>
     );
 }
@@ -120,20 +123,23 @@ function LayoutApply(props) {
     );
 }
 
-const activity_handlers = {
-    apply: {
-        icon: 'ch-icon ch-icon-user-tick font-size-24 color-text-light',
-        renderer: LayoutApply
-    },
-    comment: {
-        icon: 'ch-icon ch-icon-message-text-1 font-size-24 color-text-light',
-        renderer: LayoutComment
-    },
-    move: {
-        icon: 'ch-icon ch-icon-trello font-size-24 color-text-light',
-        renderer: LayoutMove
-    }
-};
+const activity_handlers = applyFilters(
+	'crewhrm_activity_renderers',
+	{
+		apply: {
+			icon: 'ch-icon ch-icon-user-tick font-size-24 color-text-light'.classNames(),
+			renderer: LayoutApply
+		},
+		comment: {
+			icon: 'ch-icon ch-icon-message-text-1 font-size-24 color-text-light'.classNames(),
+			renderer: LayoutComment
+		},
+		move: {
+			icon: 'ch-icon ch-icon-trello font-size-24 color-text-light'.classNames(),
+			renderer: LayoutMove
+		}
+	}
+);
 
 export function Activity() {
     const { session } = useContext(ContextApplicationSession);
@@ -170,10 +176,15 @@ export function Activity() {
         <div data-crewhrm-selector="activity" className={'activities'.classNames(style)}>
             {state.pipeline.map((activity, i) => {
                 let { avatar_url, type } = activity;
-                let { renderer: Comp, icon } = activity_handlers[type];
+                let { renderer: Comp, icon } = activity_handlers[type] || {};
+
+				if ( ! Comp ) {
+					console.warn('Renderer not found for ' + type);
+					return null;
+				}
 
                 if (activity.type === 'move' && activity.stage_name === '_disqualified_') {
-                    icon = 'ch-icon ch-icon-slash color-error font-size-24';
+                    icon = 'ch-icon ch-icon-slash color-error'.classNames();
                     Comp = LayoutDisqualify;
                 }
 
@@ -189,10 +200,10 @@ export function Activity() {
                                 />
                             </div>
                             <div className={'flex-1 margin-left-10 margin-right-25'.classNames()}>
-                                <Comp activity={activity} />
+								<RenderExternal component={Comp} payload={{activity}}/>
                             </div>
                             <div className={'align-self-center'.classNames()}>
-                                <i className={icon.classNames()}></i>
+                                <i className={icon + 'font-size-24'.classNames()}></i>
                             </div>
                         </div>
 

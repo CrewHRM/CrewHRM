@@ -60,13 +60,20 @@ class Job {
 
 		// Update the job now if it is present
 		if ( ! empty( $job_id ) ) {
+
+			$_job['updated_at'] = gmdate( 'Y-m-d H:i:s' );
+
 			$wpdb->update(
 				DB::jobs(),
 				$_job,
 				array( 'job_id' => $job_id )
 			);
+
 		} else {
 			// Insert new if the id empty
+
+			$_job['created_at'] = gmdate( 'Y-m-d H:i:s' );
+
 			$wpdb->insert(
 				DB::jobs(),
 				$_job

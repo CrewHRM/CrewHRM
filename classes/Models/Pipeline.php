@@ -29,6 +29,7 @@ class Pipeline {
 				'application_id'  => $application_id,
 				'stage_id'        => $stage_id,
 				'action_taker_id' => $action_taker_id,
+				'action_date'     => gmdate( 'Y-m-d H:i:s' ),
 			)
 		);
 	}
@@ -111,6 +112,9 @@ class Pipeline {
 				'stage_name' => $log['stage_name'],
 			);
 		}
+
+		// Load more from hooks
+		$pipeline = apply_filters( 'crewhrm_application_pipeline', $pipeline, $application_id );
 
 		// ---------- Now sort all by timestamp ----------
 		$_pipeline  = array();

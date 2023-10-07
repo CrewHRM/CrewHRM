@@ -30,17 +30,18 @@ class Application {
 		$address_id = Address::createUpdateAddress( $application );
 
 		$_application = array(
-			'job_id'         => $application['job_id'],
-			'address_id'     => $address_id,
-			'stage_id'       => null, // Initially no stage.
-			'first_name'     => $application['first_name'] ?? '',
-			'last_name'      => $application['last_name'] ?? '',
-			'email'          => $application['email'] ?? '',
-			'phone'          => $application['phone'] ?? '',
-			'gender'         => $application['gender'] ?? null,
-			'date_of_birth'  => $application['date_of_birth'] ?? null,
-			'cover_letter'   => $application['cover_letter'] ?? null,
-			'resume_file_id' => 0,
+			'job_id'           => $application['job_id'],
+			'address_id'       => $address_id,
+			'stage_id'         => null, // Initially no stage.
+			'first_name'       => $application['first_name'] ?? '',
+			'last_name'        => $application['last_name'] ?? '',
+			'email'            => $application['email'] ?? '',
+			'phone'            => $application['phone'] ?? '',
+			'gender'           => $application['gender'] ?? null,
+			'date_of_birth'    => $application['date_of_birth'] ?? null,
+			'cover_letter'     => $application['cover_letter'] ?? null,
+			'resume_file_id'   => 0,
+			'application_date' => gmdate('Y-m-d H:i:s'),
 		);
 
 		// Insert the main job data

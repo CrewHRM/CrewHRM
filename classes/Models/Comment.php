@@ -24,6 +24,7 @@ class Comment {
 			'application_id'  => $comment['application_id'],
 			'comment_content' => $comment['comment_content'] ?? '',
 			'commenter_id'    => $comment['commenter_id'] ?? get_current_user_id(),
+			'comment_date'    => gmdate( 'Y-m-d H:i:s' ),
 		);
 
 		$comment_id = $comment['comment_id'] ?? null;
