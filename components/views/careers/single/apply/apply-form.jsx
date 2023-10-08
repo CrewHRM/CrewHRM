@@ -5,14 +5,9 @@ import { __ } from 'crewhrm-materials/helpers.jsx';
 import { DateField } from 'crewhrm-materials/date-time.jsx';
 import { ExpandableContent } from 'crewhrm-materials/ExpandableContent/expandable-content.jsx';
 import { TextEditor } from 'crewhrm-materials/text-editor/text-editor.jsx';
+import { TextField } from 'crewhrm-materials/text-field/text-field.jsx';
 import { Conditional } from 'crewhrm-materials/conditional.jsx';
 import { AddressFields } from 'crewhrm-materials/address-fields.jsx';
-
-const label_class = 'd-block font-size-15 font-weight-500 margin-bottom-10 color-text'.classNames();
-const input_text_class =
-    'd-block w-full height-48 padding-15 border-1-5 border-radius-10 b-color-tertiary b-color-active-primary font-size-15 font-weight-400 line-height-24 letter-spacing--15 color-text'.classNames();
-const text_area_class =
-    'd-block w-full padding-vertical-15 padding-horizontal-20 border-1-5 border-radius-10 b-color-tertiary b-color-active-primary font-size-15 font-weight-400 line-height-25 color-text'.classNames();
 
 export function RenderField({ field={}, onChange=()=>{}, values = {}, grouped=false }) {
 	if ( Array.isArray(field) ) {
@@ -31,6 +26,7 @@ export function RenderField({ field={}, onChange=()=>{}, values = {}, grouped=fa
 		type,
 		placeholder,
 		maxlenth,
+		maxsize,
 		options,
 		disclaimer,
 		required,
@@ -85,7 +81,7 @@ export function RenderField({ field={}, onChange=()=>{}, values = {}, grouped=fa
 					</ExpandableContent>
 				</Conditional>
 
-				<span className={label_class}>
+				<span className={'d-block font-size-15 font-weight-500 margin-bottom-10 color-text'.classNames()}>
 					{label}
 					<Conditional show={label && required}>
 						<span className={'color-error'.classNames()}>*</span>
@@ -93,22 +89,21 @@ export function RenderField({ field={}, onChange=()=>{}, values = {}, grouped=fa
 				</span>
 
 				<Conditional show={['text', 'url', 'email'].indexOf(type) > -1}>
-					<input
+					<TextField
 						value={values[name] || ''}
 						type={type}
-						className={input_text_class}
 						placeholder={placeholder}
-						onChange={(e) => onChange(name, e.currentTarget.value)}
+						onChange={v => onChange(name, v)}
 					/>
 				</Conditional>
 
 				<Conditional show={type == 'textarea'}>
-					<textarea
+					<TextField
+						type="textarea"
 						value={values[name] || ''}
-						className={text_area_class}
 						placeholder={placeholder}
-						onChange={(e) => onChange(name, e.currentTarget.value)}
-					></textarea>
+						onChange={v => onChange(name, v)}
+					/>
 				</Conditional>
 
 				<Conditional show={type == 'textarea_rich'}>
@@ -124,7 +119,6 @@ export function RenderField({ field={}, onChange=()=>{}, values = {}, grouped=fa
 						value={values[name]}
 						options={options}
 						placeholder={placeholder}
-						className={input_text_class}
 						onChange={(value) => onChange(name, value)}
 					/>
 				</Conditional>
@@ -132,7 +126,6 @@ export function RenderField({ field={}, onChange=()=>{}, values = {}, grouped=fa
 				<Conditional show={type == 'date'}>
 					<DateField
 						value={values[name]}
-						className={input_text_class}
 						onChange={(value) => onChange(name, value)}
 					/>
 				</Conditional>
@@ -171,6 +164,7 @@ export function RenderField({ field={}, onChange=()=>{}, values = {}, grouped=fa
 						value={values[name]}
 						textPrimary={placeholder}
 						maxlenth={maxlenth}
+						maxsize={maxsize}
 						accept={accept}
 						onChange={(files) => onChange(name, files)}
 					/>
@@ -179,7 +173,6 @@ export function RenderField({ field={}, onChange=()=>{}, values = {}, grouped=fa
 				<Conditional show={type==='address'}>
 					<AddressFields 
 						values={values} 
-						className={input_text_class} 
 						onChange={onChange}/>
 				</Conditional>
 			</div>

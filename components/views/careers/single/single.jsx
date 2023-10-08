@@ -95,7 +95,7 @@ function RenderMeta({ icon, hint, content }) {
     ) : null;
 }
 
-export function Single({ base_permalink }) {
+export function Single({ base_permalink, settings={} }) {
     const { job_action, job_id } = useParams();
     const [searchParam, setSearchParam] = useSearchParams();
     const queryParams = parseParams(searchParam);
@@ -159,7 +159,7 @@ export function Single({ base_permalink }) {
     }
 
     return job_action === 'apply' ? (
-        <Apply job={state.job} />
+        <Apply job={state.job} settings={settings}/>
     ) : (
         <div className={'single'.classNames(style)}>
             <div className={'header'.classNames(style) + 'bg-color-tertiary'.classNames()}>

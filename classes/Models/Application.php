@@ -20,10 +20,9 @@ class Application {
 	 * ---------------------
 	 *
 	 * @param array $application Textual application data
-	 * @param array $files Resume and attachments
 	 * @return bool
 	 */
-	public static function createApplication( array $application, array $files ) {
+	public static function createApplication( array $application ) {
 		global $wpdb;
 
 		// Create address first to insert the id in application row
@@ -40,7 +39,7 @@ class Application {
 			'gender'           => $application['gender'] ?? null,
 			'date_of_birth'    => $application['date_of_birth'] ?? null,
 			'cover_letter'     => $application['cover_letter'] ?? null,
-			'resume_file_id'   => 0,
+			'resume_file_id'   => null, // It will be saved in separate request
 			'application_date' => gmdate('Y-m-d H:i:s'),
 		);
 
@@ -54,29 +53,42 @@ class Application {
 			return;
 		}
 
-		// Insert resume
-		if ( ! empty( $files['resume'] ) ) {
-			$resume_id = FileManager::uploadFile( $app_id, $files['resume'], 'Resume-' . $app_id . '-' . _String::getRandomString() );
-			if ( ! empty( $resume_id ) ) {
-				$wpdb->update(
-					DB::applications(),
-					array( 'resume_file_id' => $resume_id ),
-					array( 'application_id' => $app_id )
-				);
-			}
-		}
-
 		/**
 		 * Action hook that runs after job application created.
 		 *
 		 * @param int   $app_id       Newly created application ID.
 		 * @param array $_application Prepared application data array that was inserted into database.
-		 * @param array $files        Files array that was sent to application creator method.
 		 * @param array $application  Raw array that was sent to application creator method.
 		 */
-		do_action( 'crewhrm_job_application_created', $app_id, $_application, $files, $application );
+		do_action( 'crewhrm_job_application_created', $app_id, $_application, $application );
 		
 		return $app_id;
+	}
+
+	/**
+	 * Save job application files
+	 *
+	 * @param int    $application_id The application ID to store files for
+	 * @param string $field_name     The field name to upload for
+	 * @param array  $file           Uploaded file
+	 * @return bool
+	 */
+	public static function uploadApplicationFile( $application_id, $field_name, $file ) {
+
+		// Insert resume
+		if ( 'resume' === $field_name ) {
+			$resume_id = FileManager::uploadFile( $application_id, $file, 'Resume-' . $application_id . '-' . _String::getRandomString() );
+			if ( ! empty( $resume_id ) ) {
+				global $wpdb;
+				$wpdb->update(
+					DB::applications(),
+					array( 'resume_file_id' => $resume_id ),
+					array( 'application_id' => $application_id )
+				);
+			}
+		}
+
+		do_action( 'crewhrm_upload_application_file', $application_id, $field_name, $file );
 	}
 
 	/**

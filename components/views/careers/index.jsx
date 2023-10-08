@@ -17,7 +17,7 @@ function CareersRouter({ base_permalink, settings = {} }) {
                 />
                 <Route
                     path={`/${base_permalink}/:job_id/:job_action?/`}
-                    element={<Single base_permalink={base_permalink} />}
+                    element={<Single base_permalink={base_permalink} settings={settings}/>}
                 />
                 <Route path={'*'} element={<Navigate to={`/${base_permalink}/`} replace />} />
             </Routes>

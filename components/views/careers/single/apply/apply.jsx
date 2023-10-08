@@ -7,19 +7,20 @@ import { request } from 'crewhrm-materials/request.jsx';
 import { ContextToast } from 'crewhrm-materials/toast/toast.jsx';
 import { Applied } from './applied.jsx';
 import { Conditional } from 'crewhrm-materials/conditional.jsx';
+import { LoadingIcon } from 'crewhrm-materials/loading-icon/loading-icon.jsx';
 import {
     __,
-    calculateJSONSizeInKB,
     getAddress,
     isEmpty,
     patterns,
-    sprintf
+	filterObject,
+	flattenArray
 } from 'crewhrm-materials/helpers.jsx';
 
 import style from './apply.module.scss';
 
 
-export function Apply({ job = {} }) {
+export function Apply({ job = {}, settings={} }) {
 
     const { 
 		job_id, 
@@ -45,18 +46,26 @@ export function Apply({ job = {} }) {
     const [state, setState] = useState({
         active_tab: 'personal',
         submitted: false,
+		submitting: false,
         error_message: null,
         values: {
             job_id
         }
     });
 
-    const { addToast } = useContext(ContextToast);
+    const { addToast, ajaxToast } = useContext(ContextToast);
 
     const step_index = steps.findIndex((s) => s.id === state.active_tab);
     const step = steps[step_index];
-    const is_segment = true;
+    const is_segment = settings.form_layout!=='single_form';
     const is_last_tab = step_index >= steps.length - 1;
+
+	// Determine which fields to render, whether segmented or alltogether
+    const fields_to_render = is_segment
+        ? fields[state.active_tab]
+        : Object.keys(fields)
+              .map((key) => fields[key])
+              .flat();
 
     const onChange = (name, v) => {
         setState({
@@ -93,27 +102,81 @@ export function Apply({ job = {} }) {
         });
     };
 
+	const uploadApplicationFiles=(application_id, files=[])=>{
+		if ( ! files.length ) {
+			setState({
+				...state,
+				submitted: true,
+				submitting: false
+			});
+			return;
+		}
+
+		const file = files.shift();
+		const payload = {
+			application_id, 
+			field_name: file.name, 
+			file: file.file,
+			finalize: !files.length
+		}
+		
+		request('uploadApplicationFile', payload, resp=>{
+			const {success} = resp;
+
+			if ( success ) {
+				uploadApplicationFiles(application_id, files);
+				return;
+			}
+			
+			ajaxToast(resp);
+		});
+	}
+
     const submitApplication = () => {
         const payload = { application: state.values };
+		const files = [];
 
-        const { application_max_size_mb } = window.CrewHRM;
-        const payload_size = (calculateJSONSizeInKB(payload) + 5)/1024; // In MB.
+		// Put files in different variable to upload separately one by one to obey max upload size limit.
+		const _fields = flattenArray(fields_to_render);
+		payload.application = filterObject(
+			payload.application,
+			function(value, name) {
 
-        if (payload_size >= application_max_size_mb) {
-            addToast({
-                message: sprintf(
-                    __('Total file size exceeds the limit of %s.'),
-                    application_max_size_mb + ' MB'
-                ),
-                status: 'error'
-            });
-            return;
-        }
+				// Check if it is file input, if file, put the file array and return false to exclude from the textual data object
+				if (_fields.find(_field=>_field.name===name && _field.type==='file')) {
+					
+					// If multiple file upload 
+					if ( Array.isArray(value) ) {
+						for( let i=0; i<value.length; i++ ) {
+							files.push({
+								name,
+								file: value[i]
+							});
+						}
+
+					} else {
+						files.push({
+							name,
+							file: value
+						});
+					}
+					
+					// Return false to exclude from data object as it is file
+					return false;
+				}
+				return true;
+			}
+		);
+
+		setState({
+			...state,
+			submitting: true
+		});
 
         request('applyToJob', payload, (resp) => {
             const {
                 success,
-                data: { notice, message }
+                data: { notice, message, application_id }
             } = resp;
 
             // If failed to submit application
@@ -135,10 +198,7 @@ export function Apply({ job = {} }) {
                 }
             } else {
                 // This block means submitted successfully
-                setState({
-                    ...state,
-                    submitted: true
-                });
+                uploadApplicationFiles(application_id, files);
             }
         });
     };
@@ -146,7 +206,7 @@ export function Apply({ job = {} }) {
     const isNextEnabled = (fields=[]) => {
         let _enabled = true;
 
-		// Handle address field exceptionally as the singular fields are not defined in the object dorectly in favour of reusing AddressFields component.
+		// Handle address field exceptionally as the singular fields are not defined in the object corectly in favour of reusing AddressFields component.
 		const _address_index = fields.findIndex(f=>f.name==='address');
 		if ( _address_index>-1 ) {
 			const {required} = fields[_address_index];
@@ -164,12 +224,6 @@ export function Apply({ job = {} }) {
             // If it is already false, break the loop, no more check necessary
             if (!_enabled) {
                 break;
-            }
-
-            // If it is array, use recursion
-            if (Array.isArray(fields[i])) {
-                _enabled = isNextEnabled(fields[i]);
-                continue;
             }
 
             const { name, required } = fields[i];
@@ -202,12 +256,10 @@ export function Apply({ job = {} }) {
         return _enabled;
     };
 
-    let fields_to_render = is_segment
-        ? fields[state.active_tab]
-        : Object.keys(fields)
-              .map((key) => fields[key])
-              .flat();
-    let is_next_enabled = isNextEnabled([...fields_to_render]);
+	// Flatten before checking as grouping is not necessary there. 
+	// Grouping is for only in rendering multiple field in same line.
+	// For example first name and last name
+    let is_next_enabled = isNextEnabled(flattenArray(fields_to_render));
 
     if (state.submitted) {
         return <Applied error_message={state.error_message} />;
@@ -299,7 +351,7 @@ export function Apply({ job = {} }) {
                 ) : (
                     <div>
                         <button
-                            disabled={!is_next_enabled}
+                            disabled={!is_next_enabled || state.submitting}
                             title={
                                 !is_next_enabled
                                     ? __('Please fill all the required fields to submit')
@@ -308,7 +360,7 @@ export function Apply({ job = {} }) {
                             className={'button button-primary button-full-width'.classNames()}
                             onClick={submitApplication}
                         >
-                            {__('Submit Application')}
+                            {__('Submit Application')} <LoadingIcon show={state.submitting}/>
                         </button>
                     </div>
                 )}

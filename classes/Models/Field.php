@@ -74,4 +74,16 @@ class Field {
 
 		return ! is_array( $field ) ? ( $row[ $field ] ?? null ) : $row;
 	}
+
+	/**
+	 * Update fields
+	 *
+	 * @param array $update
+	 * @param array $where
+	 * @return void
+	 */
+	public function updateField( array $update, array $where ) {
+		global $wpdb;
+		$wpdb->update( $this->table, $update, $where );
+	}
 }

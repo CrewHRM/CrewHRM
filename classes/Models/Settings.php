@@ -44,41 +44,18 @@ class Settings {
 	 * @return mixed
 	 */
 	public static function getSettings( $name = null, $default = null ) {
+
 		$data = self::get();
 
-		// Assign Application max size
-		$size       = $data['application_max_size_mb'] ?? 0;
-		$max_upload = self::getWpMaxUploadSize();
-		if ( empty( $size ) || ! is_numeric( $size ) || $size > $max_upload || $size <= 0 ) {
-			$data['application_max_size_mb'] = $max_upload;
+		// Assing default values
+		if ( empty( $data['application_form_layout'] ) ) {
+			$data['application_form_layout'] = 'segmented_form';
 		}
 
-		// Assign application attachment formats
-		if ( ! is_array( $data['application_attachment_formats'] ?? null ) ) {
-			$data['application_attachment_formats'] = array(
-				'pdf',
-			);
-		}
-
+		// Pass through fitlers for pro default options ideally
+		$data = apply_filters( 'crewhrm_settings', $data );
+		
 		return null !== $name ? ( $data[ $name ] ?? $default ) : $data;
-	}
-
-	/**
-	 * Get the max applicaiton size in MB allowed for job application
-	 *
-	 * @return int
-	 */
-	public static function getApplicationMaxSize() {
-		return self::getSettings( 'application_max_size_mb' );
-	}
-
-	/**
-	 * Get supported application attachment formats
-	 *
-	 * @return array
-	 */
-	public static function getApplicationAttachmentFormats() {
-		return self::getSettings( 'application_attachment_formats' );
 	}
 
 	/**

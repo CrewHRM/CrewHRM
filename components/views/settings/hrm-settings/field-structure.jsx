@@ -1,12 +1,12 @@
 import { __ } from 'crewhrm-materials/helpers.jsx';
 import { applyFilters } from 'crewhrm-materials/hooks.jsx';
 
-import { attachment_formats, business_types } from 'crewhrm-materials/data.jsx';
+import { business_types } from 'crewhrm-materials/data.jsx';
 
 export const settings_fields = applyFilters(
 	'crewhrm_setting_fields',
 	{
-		general: {
+		recruitment: {
 			label: __('Recruitment'),
 			description: __(
 				'These settings will work for to show the job posts and control the allowed attachment types and maximum size.'
@@ -55,48 +55,21 @@ export const settings_fields = applyFilters(
 									name: 'careers_search',
 									label: __('Search Field'),
 									type: 'switch'
-								}
-							]
-						}
-					}
-				},
-				attachment: {
-					label: __('Files & Attachments'),
-					icon: 'ch-icon ch-icon-paperclip-2',
-					sections: {
-						attachment_settings: {
-							label: '',
-							description: '',
-							separator: true,
-							vertical: false,
-							fields: [
-								{
-									name: 'application_attachment_formats',
-									label: __('Allowed file types'),
-									type: 'checkbox',
-									direction: 'column',
-									options: Object.keys(attachment_formats).map((format) => {
-										const {label, disabled} = attachment_formats[format];
-										return {
-											label,
-											disabled,
-											id: format, 
-										};
-									}),
-									hint: __(
-										'Please specify which file types you want to accept'
-									)
 								},
 								{
-									name: 'application_max_size_mb',
-									label: __('Attachment Size (MB)'),
-									type: 'number',
-									min: 1,
-									max: window.CrewHRM.wp_max_size,
-									disabled: true,
-									hint: __(
-										'The combined total of allowed file size per applicant'
-									)
+									name: 'application_form_layout',
+									label: __('Application form layout'),
+									type: 'dropdown',
+									options: [
+										{
+											id: 'segmented_form',
+											label: __('Segmented Form')
+										},
+										{
+											id: 'single_form',
+											label: __('Single Form')
+										}
+									]
 								}
 							]
 						}

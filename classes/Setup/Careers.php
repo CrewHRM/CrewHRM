@@ -82,6 +82,7 @@ class Careers {
 			'search'         => $settings['careers_search'] ?? false,
 			'hero_image_url' => is_array( $settings['careers_hero_image'] ?? null ) ? ( $settings['careers_hero_image']['file_url'] ) : '',
 			'country_codes'  => Address::getJobsCountryCodes(),
+			'form_layout'    => Settings::getSetting( 'application_form_layout' )
 		);
 
 		return '<div 

@@ -8,8 +8,10 @@
 namespace CrewHRM\Controllers;
 
 use CrewHRM\Helpers\File;
+use CrewHRM\Helpers\Number;
 use CrewHRM\Models\Application;
 use CrewHRM\Models\Comment;
+use CrewHRM\Models\Field;
 use CrewHRM\Models\Job;
 use CrewHRM\Models\Pipeline;
 use CrewHRM\Models\Settings;
@@ -19,7 +21,13 @@ use CrewHRM\Models\Settings;
  */
 class ApplicationHandler {
 	const PREREQUISITES = array(
+		'getCareersListing'      => array(
+			'nopriv' => true,
+		),
 		'applyToJob'             => array(
+			'nopriv' => true,
+		),
+		'uploadApplicationFile' => array(
 			'nopriv' => true,
 		),
 		'getApplicationsList'    => array(
@@ -52,9 +60,6 @@ class ApplicationHandler {
 				'editor',
 			),
 		),
-		'getCareersListing'      => array(
-			'nopriv' => true,
-		),
 		'deleteApplication'      => array(
 			'role' => array(
 				'administrator',
@@ -71,15 +76,60 @@ class ApplicationHandler {
 	 * @param array $files Request files
 	 * @return void
 	 */
-	public static function applyToJob( array $data, array $files ) {
-		$files          = File::organizeUploadedHierarchy( $files['application'] ?? array() );
-		$application_id = Application::createApplication( $data['application'], $files );
+	public static function applyToJob( array $data ) {
+		$application_id = Application::createApplication( $data['application'] );
 
 		if ( empty( $application_id ) ) {
-			wp_send_json_error( array( 'notice' => __( 'Application submission failed!', 'crewhrm' ) ) );
+			wp_send_json_error(
+				array( 
+					'notice' => __( 'Application submission failed!', 'crewhrm' ) 
+				)
+			);
 		} else {
-			wp_send_json_success( array( 'message' => __( 'Application submitted successfully' ) ) );
+			wp_send_json_success( 
+				array( 
+					'application_id' => $application_id,
+					'message'        => __( 'Application submitted successfully' ),
+				)
+			);
 		}
+	}
+
+	/**
+	 * Upload application attachment
+	 *
+	 * @param array $data Request Data
+	 * @param array $file Request files
+	 * @return void
+	 */
+	public static function uploadApplicationFile( array $data, array $file ) {
+		$application_id = Number::getInt( $data['application_id'] ?? 0 );
+		$field_name     = $data['field_name'] ?? null;
+		$finalize       = $data['finalize'] ?? false;
+		
+		// Check if file is valid
+		if ( ! is_array( $file['file'] ?? null ) || 0 !== ( $file['file']['error'] ?? null ) ) {
+			wp_send_json_error( array( 'message' => __( 'Invalid file', 'crewhrm' ) ) );
+		}
+
+		// Check if application exists and the status is incomplete
+		$is_complete = Field::applications()->getField( array( 'application_id' => $application_id ), 'is_complete' );
+		if ( null === $is_complete || 0 !== $is_complete ) {
+			wp_send_json_error( array( 'message' => __( 'Invalid request', 'crewhrm' ) ) );
+		}
+
+		// Process upload now
+		Application::uploadApplicationFile( $application_id, $field_name, $file['file'] );
+
+		// If file upload complete, mark the application as complete
+		if ( $finalize === true ) {
+			Field::applications()->updateField(
+				array( 'is_complete' => 1 ),
+				array( 'application_id' => $application_id )
+			);
+		}
+
+		wp_send_json_success();
 	}
 
 	/**

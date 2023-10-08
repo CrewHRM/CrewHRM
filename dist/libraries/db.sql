@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Oct 06, 2023 at 01:43 AM
+-- Generation Time: Oct 08, 2023 at 05:47 AM
 -- Server version: 8.0.16
 -- PHP Version: 7.4.1
 
@@ -59,7 +59,8 @@ CREATE TABLE IF NOT EXISTS `wp_crewhrm_applications` (
   `date_of_birth` date DEFAULT NULL,
   `gender` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
   `cover_letter` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci,
-  `resume_file_id` bigint(20) UNSIGNED NOT NULL,
+  `resume_file_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `is_complete` tinyint(1) DEFAULT '0' COMMENT 'It will be null until all the files are uploaded one by one. Null means application not completed yet. ',
   `application_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`application_id`),
   KEY `job_id` (`job_id`,`stage_id`)
@@ -125,7 +126,8 @@ CREATE TABLE IF NOT EXISTS `wp_crewhrm_events` (
   `starts_at` timestamp NOT NULL,
   `ends_at` timestamp NULL DEFAULT NULL,
   `channel` varchar(10) COLLATE utf8mb4_unicode_520_ci NOT NULL COMMENT 'zoom, meet, in_person etc.',
-  `event_dest` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT 'zoom or meet id, address id etc.',
+  `event_dest` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci COMMENT 'zoom or meet id, address id etc.',
+  `application_id` bigint(20) UNSIGNED DEFAULT NULL,
   `creator_id` bigint(20) UNSIGNED NOT NULL COMMENT 'The user ID who creates event',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`event_id`)
