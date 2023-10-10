@@ -44,6 +44,7 @@ export const settings_fields = applyFilters(
 									name: 'careers_hero_image',
 									label: __('Banner Image'),
 									type: 'image',
+									WpMedia: { width: 1200, height: 300 },
 									when: ['careers_header', true]
 								},
 								{
@@ -198,13 +199,6 @@ export const settings_fields = applyFilters(
 						}
 					}
 				},
-				white_label: {
-					label: __('White-Label'),
-					icon: 'ch-icon ch-icon-building-4',
-					sections: {
-
-					}
-				}
 			}
 		},
 		integrations: {

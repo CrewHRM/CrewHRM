@@ -315,7 +315,11 @@ export function JobEditor() {
                 {[
                     <div key="log" className={'text-align-center'.classNames()}>
                         <div className={'d-inline-block'.classNames()}>
-                            <LogoExtended height={16} />
+                            {
+								window.CrewHRM.white_label.app_logo_extended
+									? <img src={window.CrewHRM.white_label.app_logo_extended} style={{width: 'autp', height: '30px'}}/> 
+									: <LogoExtended height={16} />
+							}
                         </div>
                     </div>,
                     <div

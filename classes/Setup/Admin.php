@@ -44,19 +44,35 @@ class Admin {
 		'
 		);
 
+		$white_label = Utilities::getWhiteLabel();
+		if ( ! empty( $white_label['app_logo'] ) ) {
+			add_action(
+				'admin_head',
+				function() use($white_label){
+					?>
+					<style>
+						.toplevel_page_crewhrm .wp-menu-image.svg {
+							background-image: url(<?php echo $white_label['app_logo']; ?>) !important;
+						}
+					</style>
+					<?php
+				}
+			);
+		}
+
 		// Main page
 		add_menu_page(
-			__( 'CrewHRM', 'crewhrm' ),
-			__( 'CrewHRM', 'crewhrm' ),
+			__( $white_label['app_label'], 'crewhrm' ),
+			__( $white_label['app_label'], 'crewhrm' ),
 			'administrator',
-			Main::$configs->root_menu_slug,
+			Main::$configs->app_name,
 			array( $this, 'mainPage' ),
 			$logo
 		);
 
 		// Setting page
 		add_submenu_page(
-			Main::$configs->root_menu_slug,
+			Main::$configs->app_name,
 			__( 'Settings', 'crewhrm' ),
 			__( 'Settings', 'crewhrm' ),
 			'administrator',

@@ -21,7 +21,7 @@ class Utilities {
 	 * @return boolean
 	 */
 	public static function isCrewDashboard( $sub_page = null ) {
-		$is_dashboard = is_admin() && get_admin_page_parent() === Main::$configs->root_menu_slug;
+		$is_dashboard = is_admin() && get_admin_page_parent() === Main::$configs->app_name;
 
 		if ( $is_dashboard && null !== $sub_page ) {
 			$pages        = ! is_array( $sub_page ) ? array( $sub_page ) : $sub_page;
@@ -76,5 +76,18 @@ class Utilities {
 		);
 
 		return $page_list;
+	}
+
+	/**
+	 * Return white label data
+	 *
+	 * @return array
+	 */
+	public static function getWhiteLabel() {
+		return array(
+			'app_label'         => apply_filters( 'crewhrm_app_label', Main::$configs->plugin_name ),
+			'app_logo'          => apply_filters( 'crewhrm_app_logo', null ),
+			'app_logo_extended' => apply_filters( 'crewhrm_app_logo_extended', null )
+		);
 	}
 }

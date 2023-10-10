@@ -77,7 +77,8 @@ function OptionFields({fields=[], vertical, separator, is_group=false}) {
 			placeholder, 
 			min, 
 			max, 
-			disabled
+			disabled,
+			WpMedia
 		} = field;
 
 		const show_separator = separator && !is_group && i !== fields.length - 1;
@@ -124,7 +125,7 @@ function OptionFields({fields=[], vertical, separator, is_group=false}) {
 						<div className={'flex-1'.classNames()}>{label_text}</div>
 						<div className={'flex-1'.classNames()}>
 							<TextField
-								value={values[name]}
+								value={values[name] || ''}
 								onChange={(v) => onChange(name, v)}
 								placeholder={placeholder}
 							/>
@@ -141,7 +142,7 @@ function OptionFields({fields=[], vertical, separator, is_group=false}) {
 							{!values[name] ? (
 								<FileUpload
 									accept="image/*"
-									WpMedia={{ width: 1200, height: 300 }}
+									WpMedia={WpMedia}
 									onChange={(file) => onChange(name, file)}
 								/>
 							) : (

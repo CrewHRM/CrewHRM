@@ -20,11 +20,10 @@ require_once __DIR__ . '/classes/Main.php';
 // Initialize Plugin
 ( new \CrewHRM\Main() )->init(
 	(object) array(
-		'app_name'       => 'crewhrm',
-		'root_menu_slug' => 'crewhrm',
-		'db_prefix'      => 'crewhrm_',
-		'mode'           => 'development',
-		'file'           => __FILE__,
-		'dir'            => __DIR__ . '/'
+		'app_name'  => 'crewhrm',
+		'db_prefix' => 'crewhrm_',
+		'mode'      => 'development',
+		'file'      => __FILE__,
+		'dir'       => __DIR__ . '/'
 	)
 );
