@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
-import { __, formatDate } from 'crewhrm-materials/helpers.jsx';
+import { __, formatDate, getAddress } from 'crewhrm-materials/helpers.jsx';
 import { StatusDot } from 'crewhrm-materials/status-dot/status-dots.jsx';
 import { Options } from 'crewhrm-materials/dropdown/dropdown.jsx';
 import { ShareModal } from 'crewhrm-materials/share-modal.jsx';
@@ -220,7 +220,7 @@ export function JobOpenings(props) {
                 </Conditional>
 
                 <Conditional show={state.jobs.length}>
-                    <div data-crewhrm-selector={'job-list'}>
+                    <div data-crewhrm-selector="jobs-dashboard">
                         {state.jobs.map((job) => {
                             const {
                                 job_id,
@@ -238,15 +238,10 @@ export function JobOpenings(props) {
 
                             const meta_data = [
                                 department_name,
-                                street_address || country_code
-                                    ? street_address +
-                                      (country_code ? ', ' + countries_object[country_code] : '')
-                                    : null,
+								getAddress({street_address, country_code}),
                                 job_type,
-                                application_deadline
-                                    ? formatDate(application_deadline)
-                                    : null
-                            ];
+                                formatDate(application_deadline)
+                            ].filter(d=>d);
 
                             const {
                                 color: status_color,
@@ -339,14 +334,12 @@ export function JobOpenings(props) {
                                                 className={'d-flex align-items-center flex-direction-row flex-wrap-wrap column-gap-30 row-gap-5'.classNames()}
                                             >
                                                 {meta_data.map((data, index) => {
-                                                    return !data ? null : (
-                                                        <span
-                                                            key={data}
-                                                            className={'d-inline-block font-size-15 font-weight-400 color-text-light'.classNames()}
-                                                        >
-                                                            {data}
-                                                        </span>
-                                                    );
+                                                    return <span
+														key={index}
+														className={'d-inline-block font-size-15 font-weight-400 color-text-light'.classNames()}
+													>
+														{data}
+													</span>
                                                 })}
                                             </div>
                                         </div>

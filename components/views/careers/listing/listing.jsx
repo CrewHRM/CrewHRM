@@ -128,7 +128,6 @@ export function Listing({ base_permalink, settings = {} }) {
                             iconClass={'ch-icon ch-icon-search-normal-1'.classNames()}
                             value={searchState === null ? '' : searchState}
                             onChange={(v) => setSearchState(v)}
-                            className={'padding-vertical-10 padding-horizontal-11 border-1 b-color-tertiary b-color-active-primary border-radius-5'.classNames()}
                         />
                     </Conditional>
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { __ } from 'crewhrm-materials/helpers.jsx';
 import { applyFilters } from 'crewhrm-materials/hooks.jsx';
-import { genders, countries_array } from 'crewhrm-materials/data.jsx';
+import { genders, patterns } from 'crewhrm-materials/data.jsx';
 
 const gender_disclaimer = (
     <>
@@ -56,12 +56,14 @@ export const sections_fields = applyFilters('job_application_fields', {
                         {
                             name: 'first_name',
                             label: __('First Name'),
-                            type: 'text'
+                            type: 'text',
+							regex: /\S+/
                         },
                         {
                             name: 'last_name',
                             label: __('Last Name'),
-                            type: 'text'
+                            type: 'text',
+							regex: /\S+/
                         }
                     ],
                 ]
@@ -75,6 +77,7 @@ export const sections_fields = applyFilters('job_application_fields', {
                         name: 'address',
                         label: __('Address'),
                         type: 'address',
+						regex: /\S+/
                     },
                 ]
             },
@@ -88,7 +91,8 @@ export const sections_fields = applyFilters('job_application_fields', {
                         label: __('Phone'),
                         type: 'text',
                         required: true,
-                        placeholder: __('123 456 789')
+                        placeholder: __('123 456 789'),
+						regex: patterns.phone
                     }
                 ]
             },
@@ -102,7 +106,8 @@ export const sections_fields = applyFilters('job_application_fields', {
                         label: __('Email'),
                         type: 'text',
                         required: true,
-                        placeholder: __('@company.com')
+                        placeholder: __('@company.com'),
+						regex: patterns.email
                     }
                 ]
             }

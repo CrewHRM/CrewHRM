@@ -1,24 +1,24 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useRef, useState } from 'react';
 
 import { Tabs } from 'crewhrm-materials/tabs/tabs.jsx';
-import { RenderField } from './apply-form.jsx';
 import { FormActionButtons } from 'crewhrm-materials/form-action.jsx';
 import { request } from 'crewhrm-materials/request.jsx';
 import { ContextToast } from 'crewhrm-materials/toast/toast.jsx';
-import { Applied } from './applied.jsx';
 import { Conditional } from 'crewhrm-materials/conditional.jsx';
 import { LoadingIcon } from 'crewhrm-materials/loading-icon/loading-icon.jsx';
+import { patterns } from 'crewhrm-materials/data.jsx';
 import {
     __,
     getAddress,
     isEmpty,
-    patterns,
 	filterObject,
 	flattenArray
 } from 'crewhrm-materials/helpers.jsx';
 
-import style from './apply.module.scss';
+import { RenderField } from './apply-form.jsx';
+import { Applied } from './applied.jsx';
 
+import style from './apply.module.scss';
 
 export function Apply({ job = {}, settings={} }) {
 
@@ -55,6 +55,7 @@ export function Apply({ job = {}, settings={} }) {
 
     const { addToast, ajaxToast } = useContext(ContextToast);
 
+	const wrapper = useRef();
     const step_index = steps.findIndex((s) => s.id === state.active_tab);
     const step = steps[step_index];
     const is_segment = settings.form_layout!=='single_form';
@@ -132,12 +133,30 @@ export function Apply({ job = {}, settings={} }) {
 		});
 	}
 
+	const goNext=()=>{
+		if ( ! isNextEnabled(flattenArray(fields_to_render)) ) {
+			wrapper.current.scrollIntoView(true);
+			return;
+		}
+
+		if (is_segment) {
+			if(is_last_tab){
+				submitApplication()
+			} else {
+				navigateTab(1);
+			}
+		} else {
+			submitApplication();
+		}
+	}
+
     const submitApplication = () => {
         const payload = { application: state.values };
 		const files = [];
 
 		// Put files in different variable to upload separately one by one to obey max upload size limit.
-		const _fields = flattenArray(fields_to_render);
+		const _fields = Object.keys(fields).map((key) => fields[key]).flat();
+		
 		payload.application = filterObject(
 			payload.application,
 			function(value, name) {
@@ -164,6 +183,7 @@ export function Apply({ job = {}, settings={} }) {
 					// Return false to exclude from data object as it is file
 					return false;
 				}
+				
 				return true;
 			}
 		);
@@ -256,17 +276,12 @@ export function Apply({ job = {}, settings={} }) {
         return _enabled;
     };
 
-	// Flatten before checking as grouping is not necessary there. 
-	// Grouping is for only in rendering multiple field in same line.
-	// For example first name and last name
-    let is_next_enabled = isNextEnabled(flattenArray(fields_to_render));
-
     if (state.submitted) {
         return <Applied error_message={state.error_message} />;
     }
 
     return (
-        <div data-crewhrm-selector="job-application" className={'apply'.classNames(style)}>
+        <div data-crewhrm-selector="job-application" className={'apply'.classNames(style)} ref={wrapper}>
             <div className={'header'.classNames(style) + 'bg-color-tertiary'.classNames()}>
                 <div className={'container'.classNames(style) + 'padding-30'.classNames()}>
                     <span
@@ -335,14 +350,8 @@ export function Apply({ job = {}, settings={} }) {
                 {is_segment ? (
                     <div>
                         <FormActionButtons
-                            disabledNext={!is_next_enabled}
-                            title={
-                                !is_next_enabled
-                                    ? __('Please fill all the required fields first')
-                                    : null
-                            }
                             onBack={() => navigateTab(-1)}
-                            onNext={() => (is_last_tab ? submitApplication() : navigateTab(1))}
+                            onNext={goNext}
                             nextText={
                                 is_last_tab ? __('Submit Application') : __('Save & Continue')
                             }
@@ -351,14 +360,9 @@ export function Apply({ job = {}, settings={} }) {
                 ) : (
                     <div>
                         <button
-                            disabled={!is_next_enabled || state.submitting}
-                            title={
-                                !is_next_enabled
-                                    ? __('Please fill all the required fields to submit')
-                                    : null
-                            }
+                            disabled={state.submitting}
                             className={'button button-primary button-full-width'.classNames()}
-                            onClick={submitApplication}
+                            onClick={goNext}
                         >
                             {__('Submit Application')} <LoadingIcon show={state.submitting}/>
                         </button>

@@ -89,7 +89,7 @@ class ApplicationHandler {
 			wp_send_json_success( 
 				array( 
 					'application_id' => $application_id,
-					'message'        => __( 'Application submitted successfully' ),
+					'message'        => __( 'Application has been created in draft mode. Watinging for file uploads.' ),
 				)
 			);
 		}

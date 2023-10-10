@@ -31,7 +31,8 @@ export function RenderField({ field={}, onChange=()=>{}, values = {}, grouped=fa
 		disclaimer,
 		required,
 		accept,
-		enabled
+		enabled,
+		regex
 	} = field;
 
 	const dispatchChecks = (e) => {
@@ -94,6 +95,7 @@ export function RenderField({ field={}, onChange=()=>{}, values = {}, grouped=fa
 						type={type}
 						placeholder={placeholder}
 						onChange={v => onChange(name, v)}
+						regex={regex}
 					/>
 				</Conditional>
 

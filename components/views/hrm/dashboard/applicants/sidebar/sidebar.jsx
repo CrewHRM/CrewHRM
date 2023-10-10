@@ -123,8 +123,8 @@ export function Sidebar({ stage_id, hasApplications }) {
             <div className={'padding-15'.classNames()}>
                 <TextField
                     value={searchState}
-                    className={'border-1 b-color-tertiary border-radius-5 padding-vertical-10 padding-horizontal-11 height-40'.classNames()}
                     iconClass={'ch-icon ch-icon-search-normal-1 font-size-16 color-text-light'.classNames()}
+					style={{height: '40px'}}
                     placeholder={__('Search by name')}
                     onChange={onSearch}
                     inputDelay={500}
