@@ -3,7 +3,7 @@ import { DropDown } from 'crewhrm-materials/dropdown/dropdown.jsx';
 import { FileUpload } from 'crewhrm-materials/file-upload/file-upload.jsx';
 import { __ } from 'crewhrm-materials/helpers.jsx';
 import { DateField } from 'crewhrm-materials/date-time.jsx';
-import { ExpandableContent } from 'crewhrm-materials/ExpandableContent/expandable-content.jsx';
+import { ExpandableContent } from 'crewhrm-materials/expandable-content/expandable-content.jsx';
 import { TextEditor } from 'crewhrm-materials/text-editor/text-editor.jsx';
 import { TextField } from 'crewhrm-materials/text-field/text-field.jsx';
 import { Conditional } from 'crewhrm-materials/conditional.jsx';

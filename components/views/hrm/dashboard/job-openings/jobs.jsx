@@ -284,7 +284,7 @@ export function JobOpenings(props) {
                                                 className={'d-inline-flex align-items-center column-gap-10'.classNames()}
                                             >
                                                 {state.action ? (
-                                                    <LoadingIcon size={24} />
+                                                    <LoadingIcon/>
                                                 ) : (
                                                     <i
                                                         className={

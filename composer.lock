@@ -13,12 +13,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/10up/phpcs-composer.git",
-                "reference": "9c085cf0554a0b5311623548663aa9e4d8f52587"
+                "reference": "4a2f47d5ed0493836ef33ee2edad32192699fad6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/10up/phpcs-composer/zipball/9c085cf0554a0b5311623548663aa9e4d8f52587",
-                "reference": "9c085cf0554a0b5311623548663aa9e4d8f52587",
+                "url": "https://api.github.com/repos/10up/phpcs-composer/zipball/4a2f47d5ed0493836ef33ee2edad32192699fad6",
+                "reference": "4a2f47d5ed0493836ef33ee2edad32192699fad6",
                 "shasum": ""
             },
             "require": {
@@ -36,15 +36,16 @@
             ],
             "authors": [
                 {
-                    "name": "Ephraim Gregor",
-                    "email": "ephraim.gregor@10up.com"
+                    "name": "10up",
+                    "homepage": "https://10up.com/"
                 }
             ],
+            "description": "10up's PHP CodeSniffer Ruleset",
             "support": {
                 "issues": "https://github.com/10up/phpcs-composer/issues",
-                "source": "https://github.com/10up/phpcs-composer/tree/master"
+                "source": "https://github.com/10up/phpcs-composer/tree/2.0.1"
             },
-            "time": "2023-05-10T22:44:49+00:00"
+            "time": "2023-09-14T12:16:59+00:00"
         },
         {
             "name": "automattic/vipwpcs",
@@ -526,5 +527,5 @@
     "prefer-lowest": false,
     "platform": [],
     "platform-dev": [],
-    "plugin-api-version": "2.3.0"
+    "plugin-api-version": "2.1.0"
 }

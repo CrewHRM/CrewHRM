@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link, useParams, useSearchParams } from 'react-router-dom';
 
 import { __, getAddress, parseParams } from 'crewhrm-materials/helpers.jsx';
-import { DangerouslySet } from 'crewhrm-materials/DangerouslySet.jsx';
+import { DangerouslySet } from 'crewhrm-materials/dangerously-set.jsx';
 import { request } from 'crewhrm-materials/request.jsx';
 import { LoadingIcon } from 'crewhrm-materials/loading-icon/loading-icon.jsx';
 import { Conditional } from 'crewhrm-materials/conditional.jsx';
@@ -147,7 +147,7 @@ export function Single({ base_permalink, settings={} }) {
     } = state.job || {};
 
     if (state.fetching) {
-        return <LoadingIcon size={34} center={true} />;
+        return <LoadingIcon center={true} />;
     }
 
     if (state.error_message) {

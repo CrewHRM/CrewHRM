@@ -5,7 +5,7 @@ import { __ } from 'crewhrm-materials/helpers.jsx';
 import { StatCards } from './stat-cards/stat-cards.jsx';
 import { JobOpenings } from '../job-openings/jobs.jsx';
 import { IntroCard } from 'crewhrm-materials/intro-card/intro-card.jsx';
-import { DangerouslySet } from 'crewhrm-materials/DangerouslySet.jsx';
+import { DangerouslySet } from 'crewhrm-materials/dangerously-set.jsx';
 
 import style from './main.module.scss';
 

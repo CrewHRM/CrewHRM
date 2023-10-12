@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Oct 08, 2023 at 05:47 AM
+-- Generation Time: Oct 11, 2023 at 08:41 PM
 -- Server version: 8.0.16
 -- PHP Version: 7.4.1
 
@@ -60,7 +60,7 @@ CREATE TABLE IF NOT EXISTS `wp_crewhrm_applications` (
   `gender` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
   `cover_letter` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci,
   `resume_file_id` bigint(20) UNSIGNED DEFAULT NULL,
-  `is_complete` tinyint(1) DEFAULT '0' COMMENT 'It will be null until all the files are uploaded one by one. Null means application not completed yet. ',
+  `is_complete` tinyint(1) UNSIGNED DEFAULT '0' COMMENT 'It will be null until all the files are uploaded one by one. Null means application not completed yet. ',
   `application_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`application_id`),
   KEY `job_id` (`job_id`,`stage_id`)

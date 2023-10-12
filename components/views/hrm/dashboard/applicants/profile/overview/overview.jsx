@@ -2,7 +2,7 @@ import React from 'react';
 
 import { __, formatDate, replaceUrlsWithAnchors } from 'crewhrm-materials/helpers.jsx';
 import { Line } from 'crewhrm-materials/line/line.jsx';
-import { DangerouslySet } from 'crewhrm-materials/DangerouslySet.jsx';
+import { DangerouslySet } from 'crewhrm-materials/dangerously-set.jsx';
 import { Conditional } from 'crewhrm-materials/conditional.jsx';
 import { genders } from 'crewhrm-materials/data.jsx';
 
