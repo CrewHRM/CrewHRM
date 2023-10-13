@@ -5,9 +5,41 @@ import { __ } from 'crewhrm-materials/helpers.jsx';
 import { StatCards } from './stat-cards/stat-cards.jsx';
 import { JobOpenings } from '../job-openings/jobs.jsx';
 import { IntroCard } from 'crewhrm-materials/intro-card/intro-card.jsx';
-import { DangerouslySet } from 'crewhrm-materials/dangerously-set.jsx';
+import { RenderExternal } from 'crewhrm-materials/render-external.jsx';
+import { applyFilters } from 'crewhrm-materials/hooks.jsx';
+// import { DangerouslySet } from 'crewhrm-materials/dangerously-set.jsx';
 
 import style from './main.module.scss';
+
+function CreateJobIntro({orientation="vertical"}) {
+	return <IntroCard
+		image="megaphone"
+		orientation={orientation}
+		className={'margin-bottom-20'.classNames()}
+		style={{ backgroundPosition: orientation=="vertical" ? 'center bottom -41px' : 'right'}}
+	>
+		<span
+			className={'d-block color-text font-size-28 font-weight-600 line-height-32 margin-bottom-15'.classNames()}
+		>
+			{__('Find the person you want to hire ')}
+		</span>
+		<small
+			className={'color-text-light font-size-15 font-weight-400 margin-bottom-30 d-block'.classNames()}
+		>
+			{__('Candidates see your logo and description on job posts, and more')}
+		</small>
+		<Link
+			to="/dashboard/jobs/editor/new/"
+			className={'button button-primary button-medium'.classNames()}
+		>
+			{__('Create A New Job')}
+		</Link>
+	</IntroCard>
+}
+
+function CreateJobIntroHorizontal() {
+	return <CreateJobIntro orientation='horizontal'/>
+}
 
 export function DahboardMain() {
     return (
@@ -17,33 +49,11 @@ export function DahboardMain() {
         >
             <div className={'sidebar'.classNames(style)}>
                 <StatCards className={'margin-bottom-20'.classNames()} />
-
-                <IntroCard
-                    image="megaphone"
-                    orientation="vertical"
-                    className={'margin-bottom-20'.classNames()}
-					style={{ backgroundPosition: 'center bottom -41px'}}
-                >
-                    <span
-                        className={'d-block color-text font-size-28 font-weight-600 line-height-32 margin-bottom-15'.classNames()}
-                    >
-                        {__('Find the person you want to hire ')}
-                    </span>
-                    <small
-                        className={'color-text-light font-size-15 font-weight-400 margin-bottom-30 d-block'.classNames()}
-                    >
-                        {__('Candidates see your logo and description on job posts, and more')}
-                    </small>
-                    <Link
-                        to="/dashboard/jobs/editor/new/"
-                        className={'button button-primary button-medium'.classNames()}
-                    >
-                        {__('Create A New Job')}
-                    </Link>
-                </IntroCard>
+				<RenderExternal component={applyFilters('crewhrm_dashboard_vertical_card', CreateJobIntro)}/>
             </div>
 
             <div className={'content-area'.classNames(style)}>
+				<RenderExternal component={applyFilters('crewhrm_dashboard_horizontal_card', null, CreateJobIntroHorizontal)}/>
                 <JobOpenings is_overview={true} className={'margin-bottom-20'.classNames()} />
                 {/* <div className={'d-flex align-items-center margin-bottom-20'.classNames()}>
                     <div className={'flex-1'.classNames()}>

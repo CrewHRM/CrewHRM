@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Oct 11, 2023 at 08:41 PM
+-- Generation Time: Oct 12, 2023 at 03:09 AM
 -- Server version: 8.0.16
 -- PHP Version: 7.4.1
 
@@ -127,6 +127,7 @@ CREATE TABLE IF NOT EXISTS `wp_crewhrm_events` (
   `ends_at` timestamp NULL DEFAULT NULL,
   `channel` varchar(10) COLLATE utf8mb4_unicode_520_ci NOT NULL COMMENT 'zoom, meet, in_person etc.',
   `event_dest` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci COMMENT 'zoom or meet id, address id etc.',
+  `password` varchar(20) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
   `application_id` bigint(20) UNSIGNED DEFAULT NULL,
   `creator_id` bigint(20) UNSIGNED NOT NULL COMMENT 'The user ID who creates event',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -141,7 +142,7 @@ CREATE TABLE IF NOT EXISTS `wp_crewhrm_events` (
 
 CREATE TABLE IF NOT EXISTS `wp_crewhrm_event_attendees` (
   `attendee_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `meeting_id` bigint(20) UNSIGNED NOT NULL,
+  `event_id` bigint(20) UNSIGNED NOT NULL,
   `user_id` bigint(20) UNSIGNED DEFAULT NULL,
   `user_email` varchar(100) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT 'If the attendee is not registered user, just invited through email. ',
   `attendee_role` varchar(20) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
