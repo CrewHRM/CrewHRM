@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Oct 12, 2023 at 03:09 AM
+-- Generation Time: Oct 14, 2023 at 05:47 AM
 -- Server version: 8.0.16
 -- PHP Version: 7.4.1
 
@@ -144,7 +144,7 @@ CREATE TABLE IF NOT EXISTS `wp_crewhrm_event_attendees` (
   `attendee_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
   `event_id` bigint(20) UNSIGNED NOT NULL,
   `user_id` bigint(20) UNSIGNED DEFAULT NULL,
-  `user_email` varchar(100) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT 'If the attendee is not registered user, just invited through email. ',
+  `email` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT 'If the attendee is not registered user, just invited through email. ',
   `attendee_role` varchar(20) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
   PRIMARY KEY (`attendee_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
