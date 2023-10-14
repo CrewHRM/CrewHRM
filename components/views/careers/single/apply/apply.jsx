@@ -135,7 +135,9 @@ export function Apply({ job = {}, settings={} }) {
 
 	const goNext=()=>{
 		if ( ! isNextEnabled(flattenArray(fields_to_render)) ) {
-			wrapper.current.scrollIntoView(true);
+			if ( wrapper?.current ) {
+				wrapper.current.scrollIntoView(true);
+			}
 			return;
 		}
 
