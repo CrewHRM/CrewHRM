@@ -225,6 +225,10 @@ class Application {
 	 * Get application list by args.
 	 * Disqualified stage will never be added to the application table directly.
 	 * Rather it will be in the pipeline table and use SQL to determine.
+	 * 
+	 * Incomplete applications will be excluded from the query. 
+	 * Incomplete means file uploading not completed after clicking submit. 
+	 * Maybe still in progress, or disconnected or closed window/tab.
 	 *
 	 * @param array $args Application args
 	 * @param bool  $count_only Whether to return only count instead of data
@@ -240,7 +244,7 @@ class Application {
 		$get_qualified = 'disqualified' !== ( $args['qualification'] ?? 'qualified' );
 
 		// Prepare limitters
-		$where_clause = "app.job_id={$job_id}";
+		$where_clause = "app.job_id={$job_id} AND app.is_complete=1";
 
 		// Assign search query
 		if ( ! empty( $args['search'] ) ) {
@@ -316,6 +320,10 @@ class Application {
 			),
 			ARRAY_A
 		);
+
+		if ( empty( $application ) ) {
+			return null;
+		}
 
 		// Cast
 		$application = _Array::castRecursive( $application );

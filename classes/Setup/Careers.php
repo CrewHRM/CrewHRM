@@ -9,7 +9,9 @@ namespace CrewHRM\Setup;
 
 use CrewHRM\Helpers\Utilities;
 use CrewHRM\Models\Address;
+use CrewHRM\Models\Application;
 use CrewHRM\Models\Department;
+use CrewHRM\Models\Field;
 use CrewHRM\Models\Settings;
 
 /**
@@ -31,6 +33,10 @@ class Careers {
 		add_action( 'generate_rewrite_rules', array( $this, 'addRewriteRules' ) );
 		add_filter( 'the_content', array( $this, 'renderCareers' ) );
 		add_filter( 'crewhrm_save_settings', array( $this, 'saveDepartments' ) );
+
+		// Delete incomplete applications twice per day
+		add_action( 'crewhrm_clear_incomplete_applications', array( $this, 'clearApplications' ) );
+		add_action( 'init', array( $this, 'scheduleDeletion' ) );
 	}
 
 	/**
@@ -104,5 +110,29 @@ class Careers {
 		}
 
 		return $settings;
+	}
+
+	/**
+	 * Delete incomplete applications twice per day.
+	 * Which means an incomplete application will not last more than 12 hours.
+	 *
+	 * @return void
+	 */
+	public function clearApplications() {
+		$app_ids = Field::applications()->getCol( array( 'is_complete' => 0 ), 'application_id' );
+		if ( ! empty( $app_ids ) ) {
+			Application::deleteApplication( $app_ids );
+		}
+	}
+
+	/**
+	 * Add scheduler to call the clearer hook.
+	 *
+	 * @return void
+	 */
+	public function scheduleDeletion() {
+		if ( ! wp_next_scheduled( 'crewhrm_clear_incomplete_applications' ) ) {
+			wp_schedule_event( time(), 'twicedaily', 'crewhrm_clear_incomplete_applications' );
+		}
 	}
 }

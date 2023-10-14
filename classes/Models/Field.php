@@ -76,6 +76,30 @@ class Field {
 	}
 
 	/**
+	 * Get specifc column by where clause
+	 *
+	 * @param array $where
+	 * @param string $col_name
+	 * @return array
+	 */
+	public function getCol( array $where, string $col_name ) {
+
+		$where_clause = '1=1';
+
+		// Loop through conditions
+		foreach ( $where as $col => $val ) {
+			$where_clause .= " AND {$col}='{$val}'";
+		}
+
+		global $wpdb;
+		$col = $wpdb->get_col(
+			"SELECT {$col_name} FROM {$this->table} WHERE {$where_clause}"
+		);
+
+		return _Array::getArray( $col );
+	}
+
+	/**
 	 * Update fields
 	 *
 	 * @param array $update

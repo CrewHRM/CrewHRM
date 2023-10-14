@@ -12,6 +12,7 @@ import { ContextToast } from 'crewhrm-materials/toast/toast.jsx';
 import { Conditional } from 'crewhrm-materials/conditional.jsx';
 import { ContextWarning } from 'crewhrm-materials/warning/warning.jsx';
 import { InitState } from 'crewhrm-materials/init-state.jsx';
+import { ErrorBoundary } from 'crewhrm-materials/error-boundary.jsx';
 import { LogoExtended } from 'crewhrm-materials/dynamic-svg/logo-extended.jsx';
 
 import style from './editor.module.scss';
@@ -390,11 +391,11 @@ export function JobEditor() {
                     }
                 >
                     <div>
-                        {active_tab == 'job-details' ? <JobDetails /> : null}
+                        {active_tab == 'job-details' ? <ErrorBoundary><JobDetails /></ErrorBoundary> : null}
 
-                        {active_tab == 'hiring-flow' ? <HiringFlow /> : null}
+                        {active_tab == 'hiring-flow' ? <ErrorBoundary><HiringFlow /></ErrorBoundary> : null}
 
-                        {active_tab == 'application-form' ? <ApplicationForm /> : null}
+                        {active_tab == 'application-form' ? <ErrorBoundary><ApplicationForm /></ErrorBoundary> : null}
                     </div>
                 </div>
             </div>

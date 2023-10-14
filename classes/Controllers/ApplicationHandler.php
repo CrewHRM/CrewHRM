@@ -179,9 +179,14 @@ class ApplicationHandler {
 	 * @return void
 	 */
 	public static function getApplicationSingle( array $data ) {
-		$application                    = Application::getSingleApplication( $data['job_id'], $data['application_id'] );
-		$application['recruiter_email'] = Settings::getRecruiterEmail();
+		$application = Application::getSingleApplication( $data['job_id'], $data['application_id'] );
 
+		if ( empty( $application ) ) {
+			wp_send_json_error( array( 'message' => __( 'Application not found', 'crewhrm' ) ) );
+			return;
+		} 
+	
+		$application['recruiter_email'] = Settings::getRecruiterEmail();
 		wp_send_json_success(
 			array(
 				'application' => $application,

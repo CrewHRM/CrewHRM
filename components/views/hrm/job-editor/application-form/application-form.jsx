@@ -10,6 +10,7 @@ import { SortableList } from 'crewhrm-materials/sortable-list.jsx';
 import { ContextJobEditor } from '../index.jsx';
 import { sections_fields } from './form-structure.jsx';
 import { Conditional } from 'crewhrm-materials/conditional.jsx';
+import { ErrorBoundary } from 'crewhrm-materials/error-boundary.jsx';
 
 const getQuestionId = () => {
     return '_question_' + getRandomString();
@@ -130,14 +131,16 @@ export function ApplicationForm() {
     return (
         <>
             <Conditional show={state.pointer}>
-                <FieldEditorModal
-                    field={
-                        values.application_form[state.pointer?.section_name]?.fields?.[
-                            state.pointer?.field_index
-                        ] || {}
-                    }
-                    updateField={updateField}
-                />
+				<ErrorBoundary>
+					<FieldEditorModal
+						field={
+							values.application_form[state.pointer?.section_name]?.fields?.[
+								state.pointer?.field_index
+							] || {}
+						}
+						updateField={updateField}
+					/>
+				</ErrorBoundary>
             </Conditional>
 
             <div

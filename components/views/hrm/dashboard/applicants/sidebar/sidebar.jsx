@@ -19,16 +19,14 @@ export function Sidebar({ stage_id, hasApplications }) {
         mounted: false,
         fetching: false,
         active_tab: 'qualified',
+        applications: [],
+        qualified_count: 0,
+        disqualified_count: 0,
         filter: {
             page: 1,
             search: null
         },
-        applications: [],
-        qualified_count: 0,
-        disqualified_count: 0
     });
-
-    const [searchState, setSearchState] = useState('');
 
     const getApplications = () => {
         setState({
@@ -122,12 +120,11 @@ export function Sidebar({ stage_id, hasApplications }) {
 
             <div className={'padding-15'.classNames()}>
                 <TextField
-                    value={searchState}
                     iconClass={'ch-icon ch-icon-search-normal-1 font-size-16 color-text-light'.classNames()}
 					style={{height: '40px'}}
                     placeholder={__('Search by name')}
                     onChange={onSearch}
-                    inputDelay={500}
+                    inputDelay={300}
                 />
             </div>
 

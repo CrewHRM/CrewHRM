@@ -2,19 +2,20 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { __, getAddress, getFlag } from 'crewhrm-materials/helpers.jsx';
-import { HeadActions } from './head-actions/head-actions.jsx';
 import { Tabs } from 'crewhrm-materials/tabs/tabs.jsx';
-import { OverView } from './overview/overview.jsx';
-import { Documents } from './documents/documents.jsx';
-import { Activity } from './activity/activity.jsx';
 import { CoverImage } from 'crewhrm-materials/image/image.jsx';
 import { Line } from 'crewhrm-materials/line/line.jsx';
 import { request } from 'crewhrm-materials/request.jsx';
 import { InitState } from 'crewhrm-materials/init-state.jsx';
+import { ErrorBoundary } from 'crewhrm-materials/error-boundary.jsx';
+
+import { HeadActions } from './head-actions/head-actions.jsx';
+import { OverView } from './overview/overview.jsx';
+import { Documents } from './documents/documents.jsx';
+import { Activity } from './activity/activity.jsx';
 import { ContextApplicationSession } from '../applicants.jsx';
 
 import style from './profile.module.scss';
-import { Conditional } from 'crewhrm-materials/conditional.jsx';
 
 const tab_class =
     'd-flex align-items-center justify-content-center font-size-15 font-weight-500 line-height-24'.classNames();
@@ -101,8 +102,8 @@ export function Profile({ job_id, has_applications }) {
         return <InitState fetching={state.fetching} error_message={state.error_message} />;
     }
 
-    return (
-        <Conditional show={application_id}>
+    return ( !application_id ? null :
+        <>
             <HeadActions application={application} />
             <div className={'application-data'.classNames(style) + 'border-radius-5'.classNames()}>
                 {/* Basic Personal Info Heading */}
@@ -159,10 +160,10 @@ export function Profile({ job_id, has_applications }) {
                 />
 
                 {/* Profile contents per selected tab */}
-                {state.active_tab == 'overview' ? <OverView application={application} /> : null}
-                {state.active_tab == 'documents' ? <Documents application={application} /> : null}
-                {state.active_tab == 'activity' ? <Activity application={application} /> : null}
+                {state.active_tab == 'overview' ? <ErrorBoundary><OverView application={application} /></ErrorBoundary> : null}
+                {state.active_tab == 'documents' ? <ErrorBoundary><Documents application={application} /></ErrorBoundary> : null}
+                {state.active_tab == 'activity' ? <ErrorBoundary><Activity application={application} /></ErrorBoundary> : null}
             </div>
-        </Conditional>
+        </>
     );
 }

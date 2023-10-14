@@ -7,6 +7,7 @@ import { Sidebar } from './sidebar/sidebar.jsx';
 import { Profile } from './profile/profile-wrapper.jsx';
 import { LoadingIcon } from 'crewhrm-materials/loading-icon/loading-icon.jsx';
 import { request } from 'crewhrm-materials/request.jsx';
+import { ErrorBoundary } from 'crewhrm-materials/error-boundary.jsx';
 
 import style from './applicants.module.scss';
 
@@ -101,16 +102,20 @@ export function Applications() {
 
                 <div className={'content-area'.classNames(style)}>
                     <div className={'sidebar-wrapper'.classNames(style)}>
-                        <Sidebar
-                            job_id={job_id}
-                            stage_id={state.active_stage_id}
-                            hasApplications={(has_applications) =>
-                                setState({ ...state, has_applications })
-                            }
-                        />
+						<ErrorBoundary>
+							<Sidebar
+								job_id={job_id}
+								stage_id={state.active_stage_id}
+								hasApplications={(has_applications) =>
+									setState({ ...state, has_applications })
+								}
+							/>
+						</ErrorBoundary>
                     </div>
                     <div className={'profile-wrapper'.classNames(style)}>
-                        <Profile job_id={job_id} has_applications={state.has_applications} />
+						<ErrorBoundary>
+                        	<Profile job_id={job_id} has_applications={state.has_applications} />
+						</ErrorBoundary>
                     </div>
                 </div>
             </div>
