@@ -125,6 +125,7 @@ export const sections_fields = applyFilters('job_application_fields', {
                         name: 'resume',
                         label: __('Resume (PDF)'),
                         type: 'file',
+						maxsize: 0.2,
                         accept: 'application/pdf',
                         placeholder: __('Browse resume'),
                         required: true

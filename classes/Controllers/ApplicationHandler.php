@@ -15,6 +15,7 @@ use CrewHRM\Models\Field;
 use CrewHRM\Models\Job;
 use CrewHRM\Models\Pipeline;
 use CrewHRM\Models\Settings;
+use CrewHRM\Models\User;
 
 /**
  * Application request controller class
@@ -61,6 +62,12 @@ class ApplicationHandler {
 			),
 		),
 		'deleteApplication'      => array(
+			'role' => array(
+				'administrator',
+				'editor',
+			),
+		),
+		'searchUser'             => array(
 			'role' => array(
 				'administrator',
 				'editor',
@@ -252,5 +259,19 @@ class ApplicationHandler {
 	public static function deleteApplication( array $data ) {
 		Application::deleteApplication( $data['application_id'] );
 		wp_send_json_success( array( 'message' => __( 'Application deleted', 'crewhrm' ) ) );
+	}
+
+	/**
+	 * Search for usrs
+	 *
+	 * @param array $data Request data
+	 * @return void
+	 */
+	public static function searchUser( array $data ) {
+		$keyword = $data['keyword'] ?? '';
+		$exclude = $data['exclude'] ?? array();
+		$users = User::searchUser( $keyword, is_array( $exclude ) ? $exclude : array() );
+
+		wp_send_json_success( array( 'users' => $users ) );
 	}
 }
