@@ -28,6 +28,9 @@ class Scripts {
 		// Color pallete
 		add_action( 'wp_head', array( $this, 'loadVariables' ), 1000 );
 		add_action( 'admin_head', array( $this, 'loadVariables' ), 1000 );
+
+		// Load text domain
+		add_action( 'init', array( $this, 'loadTextDomain' ) );
 	}
 
 	/**
@@ -119,5 +122,14 @@ class Scripts {
 		);
 
 		echo '<script>window.CrewHRM=' . wp_json_encode( $data ) . '</script>';
+	}
+
+	/**
+	 * Load text domain for translations
+	 *
+	 * @return void
+	 */
+	public function loadTextDomain() {
+		load_plugin_textdomain( Main::$configs->text_domain, false, Main::$configs->dir . 'languages' );
 	}
 }

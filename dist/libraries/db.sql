@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Oct 14, 2023 at 05:34 PM
+-- Generation Time: Oct 14, 2023 at 06:15 PM
 -- Server version: 8.0.16
 -- PHP Version: 7.4.1
 
@@ -35,8 +35,6 @@ CREATE TABLE IF NOT EXISTS `wp_crewhrm_addresses` (
   `zip_code` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci NOT NULL,
   `country_code` varchar(5) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci NOT NULL,
   `timezone` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
-  `date_format` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
-  `time_format` tinyint(3) UNSIGNED DEFAULT '24' COMMENT '12 or 24 based',
   PRIMARY KEY (`address_id`),
   KEY `province` (`province`,`country_code`,`timezone`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;

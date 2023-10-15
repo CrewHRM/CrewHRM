@@ -25,8 +25,6 @@ class Address {
 			'zip_code'       => $address['zip_code'] ?? '',
 			'country_code'   => $address['country_code'] ?? '',
 			'timezone'       => $address['timezone'] ?? null,
-			'date_format'    => $address['date_format'] ?? 'Y-m-d',
-			'time_format'    => $address['time_format'] ?? 24,
 		);
 
 		global $wpdb;

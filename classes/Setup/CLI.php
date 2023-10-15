@@ -40,7 +40,6 @@ class CLI {
 	 * @param array $assoc_args Command associative arguments.
 	 */
 	public function inspect( $args, $assoc_args ) {
-		do_action( 'crewhrm_clear_incomplete_applications' );
 		exit;
 	}
 }

@@ -43,7 +43,7 @@ class Job {
 			'attendance_type'      => maybe_serialize( $job['attendance_type'] ?? array() ),
 			'experience_years'     => $job['experience_years'] ?? null,
 			'experience_level'     => $job['experience_level'] ?? null,
-			'application_deadline' => $job['application_deadline'] ?? null,
+			'application_deadline' => ! empty( $job['application_deadline'] ) ? gmdate( 'Y-m-d\TH:i:s', $job['application_deadline'] ) : null,
 			'application_form'     => maybe_serialize( $job['application_form'] ?? array() ),
 			'job_status'           => $job['job_status'] ?? 'draft',
 			'currency'             => $job['currency'] ?? null,
@@ -213,11 +213,41 @@ class Job {
 			$where_clause .= " AND job.job_title LIKE '%{$keyword}%'";
 		}
 
-		$selects = $segmentation ? 'COUNT(job.job_id)' : 'job.*, department.department_name, address.*';
-		$query   = "SELECT {$selects} FROM " . DB::jobs() . ' job 
+		// Determine what to select
+		if ( $segmentation ) {
+			$selects = 'COUNT(job.job_id)';
+		} else {
+			$selects = '
+				job.job_id,
+				job.job_code,
+				job.job_title,
+				job.job_description,
+				job.job_status,
+				job.department_id,
+				job.vacancy,
+				job.address_id,
+				job.currency,
+				job.salary_a,
+				job.salary_b,
+				job.salary_basis,
+				job.employment_type,
+				job.attendance_type,
+				job.experience_level,
+				job.experience_years,
+				job.application_form,
+				UNIX_TIMESTAMP(job.application_deadline) AS application_deadline,
+				UNIX_TIMESTAMP(job.created_at) AS created_at,
+				UNIX_TIMESTAMP(job.updated_at) AS updated_at,
+				department.department_name, 
+				address.*';
+		}
+
+		// Build the query
+		$query = "SELECT {$selects} 
+				  FROM " . DB::jobs() . ' job 
 					LEFT JOIN ' . DB::departments() . ' department ON job.department_id=department.department_id
 					LEFT JOIN ' . DB::addresses() . " address ON job.address_id=address.address_id
-				WHERE {$where_clause} " . ( $segmentation ? '' : "{$order_by} {$limit_clause}" );
+				  WHERE {$where_clause} " . ( $segmentation ? '' : "{$order_by} {$limit_clause}" );
 
 		global $wpdb;
 		if ( $segmentation ) {

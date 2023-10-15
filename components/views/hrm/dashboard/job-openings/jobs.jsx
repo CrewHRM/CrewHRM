@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
-import { __, formatDate, getAddress } from 'crewhrm-materials/helpers.jsx';
+import { __, formatDate, getAddress, sprintf } from 'crewhrm-materials/helpers.jsx';
 import { StatusDot } from 'crewhrm-materials/status-dot/status-dots.jsx';
 import { Options } from 'crewhrm-materials/dropdown/dropdown.jsx';
 import { ShareModal } from 'crewhrm-materials/share-modal.jsx';
@@ -236,13 +236,21 @@ export function JobOpenings(props) {
                                 stats: { candidates = 0, stages: application_stages = {} }
                             } = job;
 
+							// Get deadlien in local timezone
+							let _deadline = application_deadline ? formatDate(application_deadline, window.CrewHRM.date_format + ' ' + window.CrewHRM.time_format) : null;
+							if ( _deadline ) {
+								_deadline = sprintf(__('Deadline: %s'), _deadline);
+							}
+
+							// Combine meta data andfilter before rendering
                             const meta_data = [
                                 department_name,
 								getAddress({street_address, country_code}),
                                 job_type,
-                                formatDate(application_deadline)
+                                _deadline
                             ].filter(d=>d);
 
+							// Determine dot color per job status
                             const {
                                 color: status_color,
                                 label: status_label = __('Unknown Status')
@@ -250,7 +258,7 @@ export function JobOpenings(props) {
 
                             const stats = [
                                 {
-                                    key: 'sdfsdf',
+                                    key: '_any_',
                                     label: __('Candidates'),
                                     content: candidates
                                 }

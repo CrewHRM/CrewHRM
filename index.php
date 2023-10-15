@@ -24,6 +24,5 @@ require_once __DIR__ . '/classes/Main.php';
 		'db_prefix' => 'crewhrm_',
 		'mode'      => 'development',
 		'file'      => __FILE__,
-		'dir'       => __DIR__ . '/'
 	)
 );

@@ -62,9 +62,15 @@ class Comment {
 		$comments = $wpdb->get_results(
 			$wpdb->prepare(
 				'SELECT 
-					_comment.*, 
-					_user.display_name AS commenter_name, 
-					UNIX_TIMESTAMP(_comment.comment_date) AS timestamp 
+					_comment.comment_id, 
+					_comment.comment_content, 
+					_comment.comment_type, 
+					_comment.comment_parent_id, 
+					_comment.application_id, 
+					_comment.commenter_id, 
+					UNIX_TIMESTAMP(_comment.comment_date) AS comment_date,
+					UNIX_TIMESTAMP(_comment.comment_edit_date) AS comment_edit_date, 
+					_user.display_name AS commenter_name
 				FROM ' . DB::comments() . " _comment
 					LEFT JOIN {$wpdb->users} _user on _comment.commenter_id=_user.ID
 				WHERE _comment.application_id=%d AND _comment.comment_parent_id IS NULL",

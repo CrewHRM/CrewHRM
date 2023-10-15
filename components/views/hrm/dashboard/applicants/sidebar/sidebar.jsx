@@ -24,9 +24,10 @@ export function Sidebar({ stage_id, hasApplications }) {
         disqualified_count: 0,
         filter: {
             page: 1,
-            search: null
         },
     });
+
+	const [keyWord, setKeyword] = useState('');
 
     const getApplications = () => {
         setState({
@@ -41,7 +42,8 @@ export function Sidebar({ stage_id, hasApplications }) {
                 job_id,
                 stage_id,
                 qualification: state.active_tab,
-                page: 1
+                page: 1,
+				search: keyWord
             }
         };
 
@@ -72,19 +74,9 @@ export function Sidebar({ stage_id, hasApplications }) {
         });
     };
 
-    const onSearch = (v) => {
-        setState({
-            ...state,
-            filter: {
-                ...state.filter,
-                search: v
-            }
-        });
-    };
-
     useEffect(() => {
         getApplications();
-    }, [job_id, stage_id, state.filter.page, state.filter.search, state.active_tab, session]);
+    }, [job_id, stage_id, state.filter.page, keyWord, state.active_tab, session]);
 
     const steps = [
         {
@@ -123,7 +115,7 @@ export function Sidebar({ stage_id, hasApplications }) {
                     iconClass={'ch-icon ch-icon-search-normal-1 font-size-16 color-text-light'.classNames()}
 					style={{height: '40px'}}
                     placeholder={__('Search by name')}
-                    onChange={onSearch}
+                    onChange={setKeyword}
                     inputDelay={300}
                 />
             </div>

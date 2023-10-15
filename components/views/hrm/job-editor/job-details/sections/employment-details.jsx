@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import { section_title_class, field_label_class } from '../job-details.jsx';
 
-import { __ } from 'crewhrm-materials/helpers.jsx';
+import { __, formatDate, getLastOfDay, getUnixTimestamp } from 'crewhrm-materials/helpers.jsx';
 import style from '../details.module.scss';
 import { NumberField } from 'crewhrm-materials/number-field.jsx';
 import { DateField } from 'crewhrm-materials/date-time.jsx';
@@ -61,10 +61,12 @@ export function EmploymentDetails(props) {
                             />
                         </div>
                         <div className={'flex-1'.classNames()}>
-                            <span className={field_label_class}>{__('Submission Deadline')}</span>
+                            <span className={field_label_class}>
+								{__('Submission Deadline')}
+							</span>
                             <DateField
-                                value={values.application_deadline}
-                                onChange={(v) => onChange('application_deadline', v)}
+                                value={values.application_deadline ? formatDate( values.application_deadline, 'Y-m-d' ) : ''}
+                                onChange={(v) => onChange('application_deadline', getUnixTimestamp( getLastOfDay( new Date( v ) ) ) )}
                             />
                         </div>
                     </div>

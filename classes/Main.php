@@ -45,13 +45,14 @@ class Main {
 	public function init( object $configs ) {
 
 		// Store configs in runtime static property
-		self::$configs = $configs;
+		self::$configs      = $configs;
+		self::$configs->dir = dirname( $configs->file ) . '/';
 
 		// Loading Autoloader
 		spl_autoload_register( array( $this, 'loader' ) );
 
 		// Store configs in runtime static property
-		$manifest = _Array::getManifestArray( $configs->dir . 'index.php', ARRAY_A );
+		$manifest = _Array::getManifestArray( $configs->file, ARRAY_A );
 		self::$configs = (object) array_merge( $manifest, (array) self::$configs );
 
 		// Register Activation/Deactivation Hook

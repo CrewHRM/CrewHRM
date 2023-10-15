@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import { __ } from 'crewhrm-materials/helpers.jsx';
@@ -15,6 +15,9 @@ export const status_keys = Object.keys(statuses);
 
 export function FilterBar({ is_overview, filters = {}, onChange, fetching }) {
     const { departments = [] } = useContext(ContextBackendDashboard);
+	const [keyWord, setKeyword] = useState('');
+	
+	useEffect(()=>onChange('search', keyWord), [keyWord]);
 
     return (
         <div
@@ -96,8 +99,7 @@ export function FilterBar({ is_overview, filters = {}, onChange, fetching }) {
                         iconClass={'ch-icon ch-icon-search-normal-1 font-size-18 color-text cursor-pointer'.classNames()}
                         icon_position="right"
                         expandable={true}
-                        value={filters.search}
-                        onChange={(v) => onChange('search', v)}
+                        onChange={setKeyword}
                         inputDelay={500}
                     />
                 </div>

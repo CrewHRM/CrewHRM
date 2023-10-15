@@ -73,7 +73,7 @@ class Pipeline {
 				'by'         => $comment['commenter_name'],
 				'avatar_url' => get_avatar_url( $comment['commenter_id'] ),
 				'comment'    => $comment['comment_content'],
-				'timestamp'  => $comment['timestamp'],
+				'timestamp'  => $comment['comment_date'],
 			);
 		}
 

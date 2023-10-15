@@ -296,7 +296,23 @@ class Application {
 		$application_ids = _Array::castRecursive( $application_ids );
 		$ids_in          = implode( ',', $application_ids );
 		$results         = $wpdb->get_results(
-			'SELECT * FROM ' . DB::applications() . " WHERE application_id IN ({$ids_in}) ORDER BY application_date DESC"
+			'SELECT 
+				application_id,
+				job_id,
+				stage_id,
+				address_id,
+				first_name,
+				last_name,
+				email,
+				phone,
+				date_of_birth,
+				gender,
+				cover_letter,
+				resume_file_id,
+				is_complete, 
+				UNIX_TIMESTAMP(application_date) AS application_date 
+			FROM ' . DB::applications() . " WHERE application_id IN ({$ids_in}) ORDER BY application_date DESC",
+			ARRAY_A
 		);
 
 		return _Array::castRecursive( $results );
