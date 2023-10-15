@@ -164,6 +164,9 @@ class Application {
 		$wpdb->query(
 			'DELETE FROM ' . DB::applications() . " WHERE application_id IN({$ids_in})"
 		);
+
+		// Execute hook to delete more pro dependencies
+		do_action( 'crewhrm_job_applications_deleted', $ids );
 	}
 
 	/**

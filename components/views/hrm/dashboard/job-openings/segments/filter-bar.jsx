@@ -100,7 +100,7 @@ export function FilterBar({ is_overview, filters = {}, onChange, fetching }) {
                         icon_position="right"
                         expandable={true}
                         onChange={setKeyword}
-                        inputDelay={500}
+                        inputDelay={300}
                     />
                 </div>
             </div>
