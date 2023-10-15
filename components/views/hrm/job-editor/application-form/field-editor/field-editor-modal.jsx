@@ -122,10 +122,11 @@ export function FieldEditorModal(props) {
                         nested={true}
                         placeholder={__('Select Question Type')}
                         value={field_type}
+                        onChange={(value) => onChange('type', value)}
+						clearable={false}
                         options={Object.keys(question_types).map((t) => {
                             return { id: t, label: question_types[t] };
                         })}
-                        onChange={(value) => onChange('type', value)}
                     />
                 </div>
                 <div

@@ -8,13 +8,14 @@ import { TextEditor } from 'crewhrm-materials/text-editor/text-editor.jsx';
 import { TextField } from 'crewhrm-materials/text-field/text-field.jsx';
 import { Conditional } from 'crewhrm-materials/conditional.jsx';
 import { AddressFields } from 'crewhrm-materials/address-fields.jsx';
+import { RadioCheckbox } from 'crewhrm-materials/radio-checkbox.jsx';
 
-export function RenderField({ field={}, onChange=()=>{}, values = {}, grouped=false }) {
+export function RenderField({ field={}, onChange=()=>{}, values = {}, showErrorsAlways}) {
 	if ( Array.isArray(field) ) {
 		return <div className={'d-flex align-items-center column-gap-20'.classNames()}>
 			{field.map(f=>{
 				return <div key={f.name} className={'flex-1'.classNames()}>
-					<RenderField {...{field:f, onChange, values}} grouped={true}/>
+					<RenderField {...{field:f, onChange, values, showErrorsAlways}}/>
 				</div>
 			})}
 		</div>
@@ -89,22 +90,15 @@ export function RenderField({ field={}, onChange=()=>{}, values = {}, grouped=fa
 					</Conditional>
 				</span>
 
-				<Conditional show={['text', 'url', 'email'].indexOf(type) > -1}>
+				<Conditional show={['text', 'url', 'email', 'textarea'].indexOf(type) > -1}>
 					<TextField
 						value={values[name] || ''}
-						type={type}
+						type={type==='textarea' ? 'textarea' : type}
 						placeholder={placeholder}
 						onChange={v => onChange(name, v)}
 						regex={regex}
-					/>
-				</Conditional>
-
-				<Conditional show={type == 'textarea'}>
-					<TextField
-						type="textarea"
-						value={values[name] || ''}
-						placeholder={placeholder}
-						onChange={v => onChange(name, v)}
+						showErrorsAlways={showErrorsAlways}
+						required={required}
 					/>
 				</Conditional>
 
@@ -113,6 +107,8 @@ export function RenderField({ field={}, onChange=()=>{}, values = {}, grouped=fa
 						onChange={(v) => onChange(name, v)}
 						value={values[name] || ''}
 						placeholder={placeholder}
+						required={required}
+						showErrorsAlways={showErrorsAlways}
 					/>
 				</Conditional>
 
@@ -122,6 +118,8 @@ export function RenderField({ field={}, onChange=()=>{}, values = {}, grouped=fa
 						options={options}
 						placeholder={placeholder}
 						onChange={(value) => onChange(name, value)}
+						required={required}
+						showErrorsAlways={showErrorsAlways}
 					/>
 				</Conditional>
 
@@ -129,53 +127,41 @@ export function RenderField({ field={}, onChange=()=>{}, values = {}, grouped=fa
 					<DateField
 						value={values[name]}
 						onChange={(value) => onChange(name, value)}
+						required={required}
+						showErrorsAlways={showErrorsAlways}
 					/>
 				</Conditional>
 
 				<Conditional show={type == 'checkbox' || type == 'radio'}>
-					<div className={'d-flex flex-direction-row column-gap-20'.classNames()}>
-						{options?.map(({ id: value, label }) => {
-							const _value = values[name];
-							let checked = false;
-
-							if (type === 'radio') {
-								checked = _value === value;
-							} else if (Array.isArray(_value)) {
-								checked = _value.findIndex((v) => v == value) > -1;
-							}
-
-							return (
-								<label
-									data-crewhrm-selector={'field-' + type}
-									key={value}
-									className={'d-flex flex-direction-row align-items-center column-gap-7 cursor-pointer'.classNames()}
-								>
-									<input
-										{...{ type, name, value: value || '', checked }}
-										onChange={dispatchChecks}
-									/>
-                                    &nbsp; {label}
-								</label>
-							);
-						})}
-					</div>
+					<RadioCheckbox
+						type={type}
+						name={name}
+						value={values[name]}
+						options={options || []}
+						onChange={value=>onChange(name, value)}
+						required={required}
+						showErrorsAlways={showErrorsAlways}/>
 				</Conditional>
 
 				<Conditional show={type == 'file'}>
 					<FileUpload
 						value={values[name]}
 						textPrimary={placeholder}
+						minlength={required ? 1 : 0}
 						maxlenth={maxlenth}
 						maxsize={maxsize}
 						accept={accept}
 						onChange={(files) => onChange(name, files)}
+						showErrorsAlways={showErrorsAlways}
 					/>
 				</Conditional>
 				
 				<Conditional show={type==='address'}>
 					<AddressFields 
 						values={values} 
-						onChange={onChange}/>
+						onChange={onChange}
+						showErrorsAlways={showErrorsAlways}
+						required={required}/>
 				</Conditional>
 			</div>
 		</Conditional>

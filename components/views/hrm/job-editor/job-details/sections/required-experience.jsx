@@ -31,10 +31,10 @@ export function Experience() {
                         </span>
                         <DropDown
                             value={values.experience_level}
+                            onChange={(v) => onChange('experience_level', v)}
                             options={Object.keys(experience_levels).map((l) => {
                                 return { id: l, label: experience_levels[l] };
                             })}
-                            onChange={(v) => onChange('experience_level', v)}
                         />
                     </div>
                     <div className={'flex-1 margin-left-10'.classNames()}>

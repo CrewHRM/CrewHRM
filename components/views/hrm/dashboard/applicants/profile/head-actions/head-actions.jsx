@@ -173,6 +173,7 @@ export function HeadActions({ application }) {
                         className={'padding-vertical-5 padding-horizontal-12 border-1 b-color-text border-radius-5'.classNames()}
                         value={application.disqualified ? 0 : application.stage_id}
                         onChange={changeStage}
+						clearable={false}
                         options={stages.map((s) => {
                             return {
                                 id: s.stage_id,

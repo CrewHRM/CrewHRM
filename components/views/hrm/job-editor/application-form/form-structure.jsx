@@ -77,7 +77,6 @@ export const sections_fields = applyFilters('job_application_fields', {
                         name: 'address',
                         label: __('Address'),
                         type: 'address',
-						regex: /\S+/
                     },
                 ]
             },

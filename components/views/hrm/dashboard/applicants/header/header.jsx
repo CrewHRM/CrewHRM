@@ -60,13 +60,14 @@ export function Header({
                     <div>
                         <DropDown
                             value={job_id}
-                            options={job_list.map((j) => {
-                                return { id: j.job_id, label: j.job_title };
-                            })}
                             onChange={(v) => navigate(`/dashboard/jobs/${v}/applications/`)}
                             transparent={true}
                             className={'padding-vertical-8 padding-horizontal-15'.classNames()}
                             textClassName={'font-size-24 font-weight-600 color-text'.classNames()}
+							clearable={false}
+                            options={job_list.map((j) => {
+                                return { id: j.job_id, label: j.job_title };
+                            })}
                         />
                     </div>
                 </div>

@@ -48,6 +48,7 @@ export function Apply({ job = {}, settings={} }) {
         submitted: false,
 		submitting: false,
         error_message: null,
+		showErrorsAlways: false,
         values: {
             job_id
         }
@@ -99,7 +100,8 @@ export function Apply({ job = {}, settings={} }) {
 
         setState({
             ...state,
-            active_tab: typeof to === 'string' ? to : steps[index].id
+            active_tab: typeof to === 'string' ? to : steps[index].id,
+			showErrorsAlways: false
         });
     };
 
@@ -134,20 +136,32 @@ export function Apply({ job = {}, settings={} }) {
 	}
 
 	const goNext=()=>{
+		// Check if is next enabled or not first
 		if ( ! isNextEnabled(flattenArray(fields_to_render)) ) {
+
+			// Show all the error
+			setState({
+				...state,
+				showErrorsAlways: true
+			});
+
+			// Scroll to top, so user can scroll down and see where are the errors
 			if ( wrapper?.current ) {
 				wrapper.current.scrollIntoView(true);
 			}
+
 			return;
 		}
 
 		if (is_segment) {
+			// If segmented forms, go to next step or submit if it is already last
 			if(is_last_tab){
 				submitApplication()
 			} else {
 				navigateTab(1);
 			}
 		} else {
+			// If single form layout, just submit
 			submitApplication();
 		}
 	}
@@ -345,7 +359,8 @@ export function Apply({ job = {}, settings={} }) {
 						<RenderField 
 							field={f} 
 							values={state.values} 
-							onChange={onChange}/>
+							onChange={onChange}
+							showErrorsAlways={state.showErrorsAlways}/>
 					</div>
 				))}
 

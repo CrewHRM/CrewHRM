@@ -204,6 +204,7 @@ function OptionFields({fields=[], vertical, separator, is_group=false}) {
 								onChange={(v) => onChange(name, v)}
 								options={typeof options === 'string' ? resources[options] : options}
 								placeholder={placeholder}
+								clearable={false}
 							/>
 						</div>
 					</>
