@@ -7,10 +7,8 @@
 
 namespace CrewHRM\Controllers;
 
-use CrewHRM\Helpers\File;
 use CrewHRM\Helpers\Number;
 use CrewHRM\Models\Application;
-use CrewHRM\Models\Comment;
 use CrewHRM\Models\Field;
 use CrewHRM\Models\Job;
 use CrewHRM\Models\Pipeline;
@@ -44,12 +42,6 @@ class ApplicationHandler {
 			),
 		),
 		'moveApplicationStage'   => array(
-			'role' => array(
-				'administrator',
-				'editor',
-			),
-		),
-		'commentOnApplication'   => array(
 			'role' => array(
 				'administrator',
 				'editor',
@@ -203,23 +195,6 @@ class ApplicationHandler {
 	public static function moveApplicationStage( array $data ) {
 		Application::changeApplicationStage( $data['job_id'], $data['application_id'], $data['stage_id'] );
 		wp_send_json_success( array( 'message' => __( 'Application stage changed successfully!' ) ) );
-	}
-
-	/**
-	 * Create comment on application from single application view
-	 *
-	 * @param array $data Request data containing comments
-	 * @return void
-	 */
-	public static function commentOnApplication( array $data ) {
-		// Create or update comment
-		$comment_id = Comment::createUpdateComment( $data );
-
-		if ( ! empty( $comment_id ) ) {
-			wp_send_json_success( array( 'message' => __( 'Comment submitted successfully!', 'crewhrm' ) ) );
-		} else {
-			wp_send_json_error( array( 'message' => __( 'Failed to process comment!', 'crewhrm' ) ) );
-		}
 	}
 
 	/**

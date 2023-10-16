@@ -1,7 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
-import { Comment } from './comment/comment.jsx';
 import { __ } from 'crewhrm-materials/helpers.jsx';
 import { DropDown, Options } from 'crewhrm-materials/dropdown/dropdown.jsx';
 import { ContextApplicationSession } from '../../applicants.jsx';
@@ -33,26 +32,7 @@ export function HeadActions({ application }) {
     const { ajaxToast } = useContext(ContextToast);
     const navigate = useNavigate();
 
-    const segments = applyFilters(
-		'applicant_profile_communication_channels',
-		[
-			{
-				icon: 'ch-icon ch-icon-message',
-				title: __('Internal Comment'),
-				renderer: Comment,
-				tagline: (
-					<>
-						<span className={'font-size-15 font-weight-500 color-text'.classNames()}>
-							{__('Add a comment')}
-						</span>{' '}
-						<span className={'font-size-13 font-weight-400 color-text-light'}>
-							{__('Candidates never see comments.')}
-						</span>
-					</>
-				)
-			}
-		]
-	);
+    const segments = applyFilters( 'applicant_profile_communication_channels', [] );
 
     const [state, setState] = useState({
         active_segment: null
@@ -121,13 +101,6 @@ export function HeadActions({ application }) {
         }
     };
 	
-
-    const {
-        renderer,
-        icon: active_icon,
-        tagline
-    } = segments[state.active_segment] || {};
-
     return (
         <div
             data-crewhrm-selector="application"
@@ -193,31 +166,40 @@ export function HeadActions({ application }) {
                 </div>
             </div>
 
-            {renderer ? (
-                <div
-                    data-crewhrm-selector="action-fields"
-                    className={'content-area'.classNames(style)}
-                >
-                    <div className={'d-flex align-items-center margin-bottom-15'.classNames()}>
-                        <div className={'flex-1'.classNames()}>
-                            <span
-                                className={`d-inline-block ch-icon ${active_icon} font-size-20 color-text margin-right-10 vertical-align-middle`.classNames()}
-                            ></span>{' '}
-                            {tagline}
-                        </div>
+			{segments.map((segment, i)=>{
 
-                        <div>
-                            <i
-                                className={'ch-icon ch-icon-times font-size-24 color-text-light margin-left-10 cursor-pointer'.classNames()}
-                                onClick={() => toggleSegment()}
-                            ></i>
-                        </div>
-                    </div>
+				const {
+					renderer,
+					icon: active_icon,
+					tagline
+				} = segment;
+
+				// Render all together and show using css in favour of showing persistent content between component switch.
+				return <div
+						key={i}
+						className={'content-area'.classNames(style)}
+						style={{display: state.active_segment===i ? '' : 'none'}}
+					>
+					<div className={'d-flex align-items-center margin-bottom-15'.classNames()}>
+						<div className={'flex-1'.classNames()}>
+							<span
+								className={`d-inline-block ch-icon ${active_icon} font-size-20 color-text margin-right-10 vertical-align-middle`.classNames()}
+							></span>{' '}
+							{tagline}
+						</div>
+
+						<div>
+							<i
+								className={'ch-icon ch-icon-times font-size-24 color-text-light margin-left-10 cursor-pointer'.classNames()}
+								onClick={() => toggleSegment()}
+							></i>
+						</div>
+					</div>
 					<RenderExternal 
 						component={renderer} 
-						payload={{application, onClose:()=>toggleSegment(null)}}/>
-                </div>
-            ) : null}
+						payload={{application, sessionRefresh, onClose:()=>toggleSegment(null)}}/>
+				</div>
+			})}
         </div>
     );
 }

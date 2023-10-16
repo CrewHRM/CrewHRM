@@ -1,30 +1,15 @@
 import React, { useContext, useEffect, useState } from 'react';
-import TimeAgo from 'javascript-time-ago';
 import { useParams } from 'react-router-dom';
-import en from 'javascript-time-ago/locale/en';
 
 import { CoverImage } from 'crewhrm-materials/image/image.jsx';
 import { Line } from 'crewhrm-materials/line/line.jsx';
 import { ContextApplicationSession } from '../../applicants.jsx';
 import { request } from 'crewhrm-materials/request.jsx';
 import { applyFilters } from 'crewhrm-materials/hooks.jsx';
-import { getLocalFromUnix } from 'crewhrm-materials/helpers.jsx';
+import { timeAgoOrAfter } from 'crewhrm-materials/helpers.jsx';
 import { RenderExternal } from 'crewhrm-materials/render-external.jsx';
 
 import style from './activity.module.scss';
-
-TimeAgo.addDefaultLocale(en);
-const timeAgo = new TimeAgo();
-
-function Ago({ timestamp }) {
-    return (
-        <span
-            className={'d-inline-block font-size-15 font-weight-400 line-height-24 letter-spacing--15 color-text-light'.classNames()}
-        >
-            &middot; {timeAgo.format(getLocalFromUnix(timestamp))}
-        </span>
-    );
-}
 
 function LayoutDisqualify(props) {
     let { by, timestamp } = props.activity;
@@ -40,47 +25,7 @@ function LayoutDisqualify(props) {
             >
                 {by}
             </span>{' '}
-            <Ago timestamp={timestamp} />
-        </>
-    );
-}
-
-function LayoutComment(props) {
-    let { by, timestamp, comment, attachments = [] } = props.activity;
-    return (
-        <>
-            <div className={'margin-bottom-5'.classNames()}>
-                <span
-                    className={'font-size-17 font-weight-600 line-height-24 letter-spacing--17 color-text'.classNames()}
-                >
-                    {by}
-                </span>{' '}
-                <span
-                    className={'font-size-17 font-weight-400 line-height-24 letter-spacing--17 color-text'.classNames()}
-                >
-                    added a comment
-                </span>{' '}
-                <Ago timestamp={timestamp} />
-            </div>
-            <div
-                className={'font-size-15 font-weight-400 line-height-24 letter-spacing--15 color-text'.classNames()}
-            >
-                {comment}
-            </div>
-
-            {attachments.length ? (
-                <div className={'comment-attachments'.classNames(style)}>
-                    {attachments.map((attachment) => {
-                        return (
-                            <CoverImage
-                                src={attachment.url}
-                                height={50}
-                                className={'border-radius-5'.classNames()}
-                            />
-                        );
-                    })}
-                </div>
-            ) : null}
+			{timeAgoOrAfter(timestamp)}
         </>
     );
 }
@@ -99,7 +44,7 @@ function LayoutMove(props) {
             >
                 {by}
             </span>{' '}
-            <Ago timestamp={timestamp} />
+			{timeAgoOrAfter(timestamp)}
         </>
     );
 }
@@ -118,7 +63,7 @@ function LayoutApply(props) {
             >
                 applied
             </span>{' '}
-            <Ago timestamp={timestamp} />
+			{timeAgoOrAfter(timestamp)}
         </>
     );
 }
@@ -129,10 +74,6 @@ const activity_handlers = applyFilters(
 		apply: {
 			icon: 'ch-icon ch-icon-user-tick font-size-24 color-text-light'.classNames(),
 			renderer: LayoutApply
-		},
-		comment: {
-			icon: 'ch-icon ch-icon-message-text-1 font-size-24 color-text-light'.classNames(),
-			renderer: LayoutComment
 		},
 		move: {
 			icon: 'ch-icon ch-icon-trello font-size-24 color-text-light'.classNames(),

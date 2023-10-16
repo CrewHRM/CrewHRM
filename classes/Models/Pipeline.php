@@ -65,18 +65,6 @@ class Pipeline {
 			'timestamp'  => $application['timestamp'],
 		);
 
-		// ---------------- Add comments ----------------
-		$comments = Comment::getComments( $application_id );
-		foreach ( $comments as $comment ) {
-			$pipeline[] = array(
-				'type'       => 'comment',
-				'by'         => $comment['commenter_name'],
-				'avatar_url' => get_avatar_url( $comment['commenter_id'] ),
-				'comment'    => $comment['comment_content'],
-				'timestamp'  => $comment['comment_date'],
-			);
-		}
-
 		// --------------- Add application stage changes ---------------
 		$logs = $wpdb->get_results(
 			$wpdb->prepare(
