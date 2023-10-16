@@ -4,9 +4,10 @@
   "description": "HR Management System",
   "main": "index.js",
   "scripts": {
-    "compile": "webpack --env=build --mode=production",
-    "build": "npm run compile && gulp build",
-    "watch": "webpack --watch --mode=development",
+    "pro-addons": "node ./components/builders/get-pro-addons.js",
+    "compile": "npm run pro-addons && webpack --env=build --mode=production",
+    "build": "npm run pro-addons && npm run compile && gulp build",
+    "watch": "npm run pro-addons && webpack --watch --mode=development",
     "lint": "eslint ./components/**/*.jsx",
     "lint:fix": "eslint --fix ./components/**/*.jsx && prettier --write './components/**/*.{jsx,scss}' --config ./.prettierrc",
     "cypress:open": "cypress open --config-file tests/cypress/config.config.js",

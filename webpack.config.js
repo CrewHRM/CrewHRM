@@ -53,6 +53,7 @@ module.exports = (env, options) => {
         {
             dest_path: './dist',
             src_files: {
+				'addons-page': './components/views/addons/addons-page.jsx',
                 hrm: './components/views/hrm/index.jsx',
                 careers: './components/views/careers/index.jsx',
                 settings: './components/views/settings/index.jsx'

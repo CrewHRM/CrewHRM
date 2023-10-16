@@ -7,8 +7,8 @@
 
 namespace CrewHRM\Setup;
 
+use CrewHRM\Controllers\AddonController;
 use CrewHRM\Controllers\ApplicationHandler;
-use CrewHRM\Helpers\_String;
 use CrewHRM\Main;
 use CrewHRM\Models\User;
 
@@ -28,6 +28,7 @@ class Dispatcher {
 	 * @var array
 	 */
 	private static $controllers = array(
+		AddonController::class,
 		PluginSettings::class,
 		JobManagement::class,
 		ApplicationHandler::class,

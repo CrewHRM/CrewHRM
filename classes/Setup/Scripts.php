@@ -54,6 +54,10 @@ class Scripts {
 			}
 			wp_enqueue_script( 'crewhrm-settings', Main::$configs->dist_url . 'settings.js', array( 'jquery', 'wp-i18n' ), Main::$configs->version, true );
 		}
+
+		if ( Utilities::isCrewDashboard( Addon::PAGE_SLUG ) ) {
+			wp_enqueue_script( 'crewhrm-addons-script', Main::$configs->dist_url . 'addons-page.js', array( 'jquery', 'wp-i18n' ), Main::$configs->version, true );
+		}
 	}
 
 	/**

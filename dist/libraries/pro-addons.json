@@ -1,0 +1,72 @@
+[
+	{
+		"plugin_name": "CrewHRM - Assessment",
+		"plugin_uri": "https://getcrewhrm.com/pricing/",
+		"description": "Add custom field support in job application",
+		"author": "CrewHRM",
+		"version": "1.0.0",
+		"author_uri": "https://getcrewhrm.com",
+		"requires_at_least": "5.3",
+		"tested_up_to": "6.3",
+		"text_domain": "crewhrm-pro",
+		"crewhrm_id": "assessment",
+		"crewhrm_external": false,
+		"crewhrm_controlled": true
+	},
+	{
+		"plugin_name": "CrewHRM - Attachment",
+		"plugin_uri": "https://getcrewhrm.com/pricing/",
+		"description": "Attachment support in job application",
+		"author": "CrewHRM",
+		"version": "1.0.0",
+		"author_uri": "https://getcrewhrm.com",
+		"requires_at_least": "5.3",
+		"tested_up_to": "6.3",
+		"text_domain": "crewhrm-pro",
+		"crewhrm_id": "attachment",
+		"crewhrm_external": false,
+		"crewhrm_controlled": true
+	},
+	{
+		"plugin_name": "CrewHRM - Email",
+		"plugin_uri": "https://getcrewhrm.com/pricing/",
+		"description": "Add email communication",
+		"author": "CrewHRM",
+		"version": "1.0.0",
+		"author_uri": "https://getcrewhrm.com",
+		"requires_at_least": "5.3",
+		"tested_up_to": "6.3",
+		"text_domain": "crewhrm-pro",
+		"crewhrm_id": "email",
+		"crewhrm_external": false,
+		"crewhrm_controlled": true
+	},
+	{
+		"plugin_name": "CrewHRM - Google Meet",
+		"plugin_uri": "https://getcrewhrm.com/pricing/",
+		"description": "Google Meet integration for meeting",
+		"author": "CrewHRM",
+		"version": "1.0.0",
+		"author_uri": "https://getcrewhrm.com",
+		"requires_at_least": "5.3",
+		"tested_up_to": "6.3",
+		"text_domain": "crewhrm-pro",
+		"crewhrm_id": "google-meet",
+		"crewhrm_external": false,
+		"crewhrm_controlled": true
+	},
+	{
+		"plugin_name": "CrewHRM - Zoom",
+		"plugin_uri": "https://getcrewhrm.com/pricing/",
+		"description": "Zoom integration for meeting",
+		"author": "CrewHRM",
+		"version": "1.0.0",
+		"author_uri": "https://getcrewhrm.com",
+		"requires_at_least": "5.3",
+		"tested_up_to": "6.3",
+		"text_domain": "crewhrm-pro",
+		"crewhrm_id": "zoom",
+		"crewhrm_external": false,
+		"crewhrm_controlled": true
+	}
+]

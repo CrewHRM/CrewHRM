@@ -8,6 +8,7 @@
 namespace CrewHRM;
 
 use CrewHRM\Helpers\_Array;
+use CrewHRM\Setup\Addon;
 use CrewHRM\Setup\Admin;
 use CrewHRM\Setup\Careers;
 use CrewHRM\Setup\CLI;
@@ -62,7 +63,8 @@ class Main {
 		// Core
 		new Database();
 		new CLI();
-
+		new Addon();
+		
 		// Load apps now
 		new Scripts();
 		new Media();
