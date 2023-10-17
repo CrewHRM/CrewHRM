@@ -80,4 +80,19 @@ class User {
 
 		return $users;
 	}
+	
+	/**
+	 * Get the role to register admin menu as it doesn't support array
+	 *
+	 * @param int $user_id The user to register admin menu for
+	 * @return string
+	 */
+	public static function getAdminMenuRole( $user_id ) {
+		$user_roles     = self::getUserRoles( $user_id );
+		$required_roles = apply_filters( 'crewhrm_hr_roles', array( 'administrator' ) );
+		$has_role       = array_values( array_intersect( $required_roles, $user_roles ) );
+
+		// Return any of the common rules. No matter administrator or hr-manager. Both will allow accessing crew features.
+		return $has_role[0] ?? null;
+	}
 }

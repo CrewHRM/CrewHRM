@@ -19,7 +19,7 @@ class PluginSettings {
 			'role' => 'administrator',
 		),
 		'addDepartment' => array(
-			'role' => array( 'administrator', 'editor' ),
+			'role' => array( 'administrator' ),
 		),
 	);
 

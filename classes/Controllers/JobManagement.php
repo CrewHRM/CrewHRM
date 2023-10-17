@@ -20,7 +20,7 @@ use CrewHRM\Models\User;
 class JobManagement {
 	const PREREQUISITES = array(
 		'updateJob'           => array(
-			'role' => array( 'administrator', 'editor' ),
+			'role' => array( 'administrator' ),
 		),
 		'getJobsDashboard'    => array(),
 		'singleJobAction'     => array(),
@@ -28,10 +28,10 @@ class JobManagement {
 			'nopriv' => true,
 		),
 		'getSingleJobEdit'    => array(
-			'role' => array( 'administrator', 'editor' ),
+			'role' => array( 'administrator' ),
 		),
 		'deleteHiringStage'   => array(
-			'role' => array( 'administrator', 'editor' ),
+			'role' => array( 'administrator' ),
 		),
 		'getJobViewDashboard' => array(
 			'role' => 'administrator',
@@ -153,9 +153,9 @@ class JobManagement {
 
 		// Determine if the current user can visit the job
 		$can_visit  = ! empty( $job );
-		$privileged = User::validateRole( get_current_user_id(), array( 'administrator', 'editor' ) );
+		$privileged = User::validateRole( get_current_user_id(), apply_filters( 'crewhrm_hr_roles', array( 'administrator' ) ) );
 
-		// Only admin and editor can visit the job even if not published
+		// Only admin and hr manager(pro) can visit the job even if not published
 		if ( $can_visit && 'publish' !== $job['job_status'] ) {
 			// If not published yet, then only privieleged users can see the job.
 			$can_visit = $privileged;

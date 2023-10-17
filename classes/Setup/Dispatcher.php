@@ -116,7 +116,10 @@ class Dispatcher {
 		}
 
 		// Verify required user role
-		if ( ! User::validateRole( get_current_user_id(), $prerequisites['role'] ?? array() ) ) {
+		$_required_roles = $prerequisites['role'] ?? array();
+		$_required_roles = is_array( $_required_roles ) ? $_required_roles : array( $_required_roles );
+		$_required_roles = apply_filters( 'crewhrm_hr_roles', $_required_roles );
+		if ( ! User::validateRole( get_current_user_id(), $_required_roles ) ) {
 			wp_send_json_error( array( 'message' => __( 'Access Denied!', 'crewhrm' ) ) );
 		}
 

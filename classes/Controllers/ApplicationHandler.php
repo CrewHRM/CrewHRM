@@ -32,37 +32,31 @@ class ApplicationHandler {
 		'getApplicationsList'    => array(
 			'role' => array(
 				'administrator',
-				'editor',
 			),
 		),
 		'getApplicationSingle'   => array(
 			'role' => array(
 				'administrator',
-				'editor',
 			),
 		),
 		'moveApplicationStage'   => array(
 			'role' => array(
 				'administrator',
-				'editor',
 			),
 		),
 		'getApplicationPipeline' => array(
 			'role' => array(
 				'administrator',
-				'editor',
 			),
 		),
 		'deleteApplication'      => array(
 			'role' => array(
 				'administrator',
-				'editor',
 			),
 		),
 		'searchUser'             => array(
 			'role' => array(
 				'administrator',
-				'editor',
 			),
 		),
 	);

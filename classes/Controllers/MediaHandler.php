@@ -13,7 +13,7 @@ namespace CrewHRM\Controllers;
 class MediaHandler {
 	const PREREQUISITES = array(
 		'loadFile' => array(
-			'role' => array( 'administrator', 'editor' ),
+			'role' => array( 'administrator' ),
 		),
 	);
 

@@ -5,6 +5,7 @@ namespace CrewHRM\Setup;
 use CrewHRM\Helpers\_Array;
 use CrewHRM\Main;
 use CrewHRM\Models\AddonManager;
+use CrewHRM\Models\User;
 
 class Addon {
 	/**
@@ -90,7 +91,7 @@ class Addon {
 			Main::$configs->app_name,
 			__( 'Addons', 'crewhrm' ),
 			__( 'Addons', 'crewhrm' ),
-			'administrator',
+			User::getAdminMenuRole( get_current_user_id() ),
 			self::PAGE_SLUG,
 			array( $this, 'addOnPage' )
 		);

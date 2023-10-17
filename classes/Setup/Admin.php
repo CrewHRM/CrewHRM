@@ -12,6 +12,7 @@ use CrewHRM\Main;
 use CrewHRM\Models\Application;
 use CrewHRM\Models\Department;
 use CrewHRM\Models\Settings;
+use CrewHRM\Models\User;
 
 /**
  * The setup class
@@ -64,7 +65,7 @@ class Admin {
 		add_menu_page(
 			__( $white_label['app_label'], 'crewhrm' ),
 			__( $white_label['app_label'], 'crewhrm' ),
-			'administrator',
+			User::getAdminMenuRole( get_current_user_id() ),
 			Main::$configs->app_name,
 			array( $this, 'mainPage' ),
 			$logo
@@ -75,7 +76,7 @@ class Admin {
 			Main::$configs->app_name,
 			__( 'Settings', 'crewhrm' ),
 			__( 'Settings', 'crewhrm' ),
-			'administrator',
+			User::getAdminMenuRole( get_current_user_id() ),
 			self::SLUG_SETTINGS,
 			array( $this, 'settingPage' )
 		);
