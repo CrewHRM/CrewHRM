@@ -6,7 +6,7 @@ import { __ } from 'crewhrm-materials/helpers.jsx';
 export function NoJob() {
     return (
         <div
-            data-crewhrm-selector="no-job-openings"
+            data-crew="no-job-openings"
             className={'bg-color-white text-align-center padding-30 border-radius-5'.classNames()}
         >
             <img src={img} />

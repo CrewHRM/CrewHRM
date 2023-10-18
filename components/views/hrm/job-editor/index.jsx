@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { StickyBar } from 'crewhrm-materials/sticky-bar/sticky-bar.jsx';
+import { StickyBar } from 'crewhrm-materials/sticky-bar.jsx';
 import { __, getRandomString, isEmpty } from 'crewhrm-materials/helpers.jsx';
 import { Tabs } from 'crewhrm-materials/tabs/tabs.jsx';
 import { JobDetails } from './job-details/job-details.jsx';

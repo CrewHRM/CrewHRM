@@ -114,7 +114,7 @@ export function Activity() {
     }, [session, application_id]);
 
     return (
-        <div data-crewhrm-selector="activity" className={'activities'.classNames(style)}>
+        <div data-crew="activity" className={'activities'.classNames(style)}>
             {state.pipeline.map((activity, i) => {
                 let { avatar_url, type } = activity;
                 let { renderer: Comp, icon } = activity_handlers[type] || {};

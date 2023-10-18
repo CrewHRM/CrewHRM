@@ -203,7 +203,7 @@ export function JobOpenings(props) {
             </Conditional>
 
             <div
-                data-crewhrm-selector="job-openings"
+                data-crew="job-openings"
                 className={'jobs'.classNames(style) + className}
             >
                 <FilterBar
@@ -220,7 +220,7 @@ export function JobOpenings(props) {
                 </Conditional>
 
                 <Conditional show={state.jobs.length}>
-                    <div data-crewhrm-selector="jobs-dashboard">
+                    <div data-crew="jobs-dashboard">
                         {state.jobs.map((job) => {
                             const {
                                 job_id,
@@ -412,7 +412,7 @@ export function JobOpenings(props) {
 export function JobOpeningsFullView(props) {
     return (
         <div
-            data-crewhrm-selector="job-openings-full-view"
+            data-crew="job-openings-full-view"
             className={'padding-30'.classNames()}
             style={{ maxWidth: '988px', margin: '0 auto' }}
         >

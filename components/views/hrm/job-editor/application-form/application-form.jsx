@@ -144,7 +144,7 @@ export function ApplicationForm() {
             </Conditional>
 
             <div
-                data-crewhrm-selector="application-builder"
+                data-crew="application-builder"
                 className={'application'.classNames(style)}
             >
                 <span
@@ -190,7 +190,7 @@ export function ApplicationForm() {
 
                     return (
                         <div
-                            data-crewhrm-selector="section"
+                            data-crew="section"
                             key={section_name}
                             className={'section-container'.classNames(style)}
                         >
@@ -221,7 +221,7 @@ export function ApplicationForm() {
                                                 id: field_id, // Just to make sure it requires id
                                                 rendered: (
                                                     <div
-                                                        data-crewhrm-selector="fields"
+                                                        data-crew="fields"
                                                         key={field_id}
                                                         className={
                                                             'single-row'.classNames(style) +

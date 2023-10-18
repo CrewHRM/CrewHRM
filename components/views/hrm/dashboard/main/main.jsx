@@ -44,7 +44,7 @@ function CreateJobIntroHorizontal() {
 export function DahboardMain() {
     return (
         <div
-            data-crewhrm-selector="hrm-main"
+            data-crew="hrm-main"
             className={'h-full'.classNames() + 'wrapper'.classNames(style)}
         >
             <div className={'sidebar'.classNames(style)}>

@@ -37,7 +37,7 @@ export function OverView({ application = {} }) {
 	];
 
     return (
-        <div data-crewhrm-selector="overview" className={'overview'.classNames(style)}>
+        <div data-crew="overview" className={'overview'.classNames(style)}>
             {data_list.map((q, i) => {
                 const { id, label, text, text_options = [] } = q;
 
@@ -59,7 +59,7 @@ export function OverView({ application = {} }) {
 						
 						<Conditional show={text_options}>
 							<div
-								data-crewhrm-selector="skills"
+								data-crew="skills"
 								className={'d-flex flex-wrap-wrap flex-direction-row row-gap-15 column-gap-15'.classNames()}
 							>
 								{(text_options || []).map((o) => {

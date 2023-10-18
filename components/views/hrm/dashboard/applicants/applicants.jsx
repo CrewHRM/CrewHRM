@@ -87,7 +87,7 @@ export function Applications() {
             }}
         >
             <div
-                data-crewhrm-selector="application-wrapper"
+                data-crew="application-wrapper"
                 className={'applications'.classNames(style)}
             >
                 <Header

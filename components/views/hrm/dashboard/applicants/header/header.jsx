@@ -49,7 +49,7 @@ export function Header({
 
     return (
         <div
-            data-crewhrm-selector="application-header"
+            data-crew="application-header"
             className={'header'.classNames(style) + 'box-shadow-thin'.classNames()}
         >
             <div className={'d-flex margin-bottom-20'.classNames()}>

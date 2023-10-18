@@ -14,7 +14,7 @@ export function NoticeBar() {
 
                     return (
                         <div
-                            data-crewhrm-selector="notice"
+                            data-crew="notice"
                             key={id}
                             className={
                                 'd-flex align-items-center justify-content-center padding-vertical-8 padding-horizontal-20 w-full margin-bottom-2'.classNames() +

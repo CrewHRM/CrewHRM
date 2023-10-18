@@ -46,7 +46,7 @@ export function CareersSidebar({ setFilter, filters, jobs_country_codes = [], de
     };
 
     return (
-        <div data-crewhrm-selector="sidebar" className={'sidebar'.classNames(style)}>
+        <div data-crew="sidebar" className={'sidebar'.classNames(style)}>
             <div>
                 {Object.keys(filterList).map((filter_key) => {
                     let { section_label, selection_type, options = [] } = filterList[filter_key];

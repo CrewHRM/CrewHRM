@@ -12,7 +12,7 @@ export function Documents({ application }) {
     const { resume_url } = documents;
 
     return (
-        <div data-crewhrm-selector="documents">
+        <div data-crew="documents">
 			<Slot name="application_documents_view" payload={{application}}>
 				<Conditional show={!isEmpty(cover_letter)}>
 					<span

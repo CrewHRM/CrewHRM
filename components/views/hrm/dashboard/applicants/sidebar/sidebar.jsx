@@ -99,7 +99,7 @@ export function Sidebar({ stage_id, hasApplications }) {
 
     return (
         <div
-            data-crewhrm-selector="application-sidebar"
+            data-crew="application-sidebar"
             className={'sidebar'.classNames(style) + 'position-sticky'.classNames()}
             style={{ top: '120px' }}
         >
@@ -122,7 +122,7 @@ export function Sidebar({ stage_id, hasApplications }) {
 
             <Line />
 
-            <div data-crewhrm-selector="list" className={'list'.classNames(style)}>
+            <div data-crew="list" className={'list'.classNames(style)}>
                 {state.applications.map((application, i) => {
                     let {
                         first_name,

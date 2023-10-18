@@ -89,7 +89,7 @@ export function Listing({ base_permalink, settings = {} }) {
     return (
         <>
             {settings.header ? (
-                <div data-crewhrm-selector="careers-header">
+                <div data-crew="careers-header">
                     <CoverImage
                         src={settings.hero_image_url}
                         style={{ minHeight: '355px' }}
@@ -105,7 +105,7 @@ export function Listing({ base_permalink, settings = {} }) {
             ) : null}
 
             <div
-                data-crewhrm-selector="job-listing"
+                data-crew="job-listing"
                 className={'listing'.classNames(style)}
                 style={{ marginTop: '59px' }}
             >
@@ -119,7 +119,7 @@ export function Listing({ base_permalink, settings = {} }) {
                 </Conditional>
 
                 <div
-                    data-crewhrm-selector="listing"
+                    data-crew="listing"
                     className={'content-area'.classNames(style) + 'flex-1'.classNames()}
                 >
                     <Conditional show={settings.search}>
@@ -143,7 +143,7 @@ export function Listing({ base_permalink, settings = {} }) {
 
                     <Conditional show={!state.no_more}>
                         <div
-                            data-crewhrm-selector="loading"
+                            data-crew="loading"
                             className={'text-align-center'.classNames()}
                         >
                             <LoadingIcon show={state.loading} />

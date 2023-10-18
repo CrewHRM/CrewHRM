@@ -99,7 +99,7 @@ export function FieldEditorModal(props) {
     return (
         <Modal nested={true}>
             <div
-                data-crewhrm-selector="question-head"
+                data-crew="question-head"
                 className={'d-flex align-items-center margin-bottom-30'.classNames()}
             >
                 <div className={'flex-1'.classNames()}>
@@ -113,7 +113,7 @@ export function FieldEditorModal(props) {
             </div>
 
             <div
-                data-crewhrm-selector="question-type"
+                data-crew="question-type"
                 className={'d-flex align-items-center margin-bottom-15'.classNames()}
             >
                 <div className={'flex-4'.classNames()}>
@@ -160,7 +160,7 @@ export function FieldEditorModal(props) {
 
             {(need_options && (
                 <div
-                    data-crewhrm-selector="question-options"
+                    data-crew="question-options"
                     className={'margin-bottom-15'.classNames()}
                 >
                     <span
@@ -219,7 +219,7 @@ export function FieldEditorModal(props) {
                 null}
 
             <div
-                data-crewhrm-selector="question-action"
+                data-crew="question-action"
                 className={'d-flex align-items-center justify-content-end column-gap-21'.classNames()}
             >
                 <span

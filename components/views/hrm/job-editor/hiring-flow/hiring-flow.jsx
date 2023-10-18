@@ -46,7 +46,7 @@ export function HiringFlow() {
         });
 
     return (
-        <div data-crewhrm-selector="hiring-flow-builder" className={'hiring'.classNames(style)}>
+        <div data-crew="hiring-flow-builder" className={'hiring'.classNames(style)}>
             {state.to_delete ? (
                 <DeletionConfirm
                     job_id={values.job_id}

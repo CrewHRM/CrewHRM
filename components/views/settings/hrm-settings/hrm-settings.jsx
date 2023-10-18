@@ -2,7 +2,7 @@ import React, { createContext, useContext } from 'react';
 import { HashRouter, Navigate, Route, Routes, useParams } from 'react-router-dom';
 
 import { WpDashboardFullPage } from 'crewhrm-materials/backend-dashboard-container/full-page-container.jsx';
-import { StickyBar } from 'crewhrm-materials/sticky-bar/sticky-bar.jsx';
+import { StickyBar } from 'crewhrm-materials/sticky-bar.jsx';
 import { __ } from 'crewhrm-materials/helpers.jsx';
 import { request } from 'crewhrm-materials/request.jsx';
 import { ContextHistoryFields, HistoryFields, UndoRedo } from 'crewhrm-materials/undo-redo.jsx';

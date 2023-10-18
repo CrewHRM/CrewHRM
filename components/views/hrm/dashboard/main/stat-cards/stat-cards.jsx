@@ -45,7 +45,7 @@ export function StatCards({ className = '' }) {
 
     return (
         <div
-            data-crewhrm-selector="hrm-stat"
+            data-crew="hrm-stat"
             className={'card-wrapper'.classNames(style) + className}
         >
             {card_stats.map((stat) => {

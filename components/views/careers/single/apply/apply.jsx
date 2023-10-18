@@ -297,7 +297,7 @@ export function Apply({ job = {}, settings={} }) {
     }
 
     return (
-        <div data-crewhrm-selector="job-application" className={'apply'.classNames(style)} ref={wrapper}>
+        <div data-crew="job-application" className={'apply'.classNames(style)} ref={wrapper}>
             <div className={'header'.classNames(style) + 'bg-color-tertiary'.classNames()}>
                 <div className={'container'.classNames(style) + 'padding-30'.classNames()}>
                     <span
@@ -330,7 +330,7 @@ export function Apply({ job = {}, settings={} }) {
                 </div>
             </Conditional>
 
-            <div data-crewhrm-selector="job-application-form" className={'form'.classNames(style)}>
+            <div data-crew="job-application-form" className={'form'.classNames(style)}>
                 <Conditional show={is_segment}>
                     <span
                         className={'d-block font-size-20 font-weight-600 color-text margin-bottom-30'.classNames()}

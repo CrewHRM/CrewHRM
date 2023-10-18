@@ -103,11 +103,11 @@ export function HeadActions({ application }) {
 	
     return (
         <div
-            data-crewhrm-selector="application"
+            data-crew="application"
             className={'head'.classNames(style) + 'margin-bottom-13'.classNames()}
         >
             <div
-                data-crewhrm-selector="action"
+                data-crew="action"
                 className={'d-flex align-items-center box-shadow-thin padding-vertical-15 padding-horizontal-30'.classNames()}
             >
                 <div className={'flex-1 d-flex align-items-center'.classNames()}>
