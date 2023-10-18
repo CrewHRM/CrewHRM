@@ -55,64 +55,6 @@ export function DahboardMain() {
             <div className={'content-area'.classNames(style)}>
 				<RenderExternal component={applyFilters('crewhrm_dashboard_horizontal_card', null, CreateJobIntroHorizontal)}/>
                 <JobOpenings is_overview={true} className={'margin-bottom-20'.classNames()} />
-                {/* <div className={'d-flex align-items-center margin-bottom-20'.classNames()}>
-                    <div className={'flex-1'.classNames()}>
-                        <span className={'color-text font-size-17 font-weight-500'.classNames()}>
-                            {__('Suggested Action')}
-                        </span>
-                    </div>
-                    <div>
-                        <span className={'color-text font-size-14 font-weight-400'.classNames()}>
-                            {__('Don’t show again')}
-                        </span>
-                    </div>
-                </div>
-                <div className={'column'.classNames()}>
-                    <div>
-                        <IntroCard image="designer_working">
-                            <span
-                                className={'d-block font-size-20 font-weight-600 color-text margin-bottom-8'.classNames()}
-                            >
-                                {__('Question Bank')}
-                            </span>
-                            <DangerouslySet
-                                className={'d-block font-size-14 font-weight-400 color-text-light margin-bottom-26'.classNames()}
-                            >
-                                {__(
-                                    'Let’s create a questionnaire for <br/> hiring the right people.'
-                                )}
-                            </DangerouslySet>
-                            <a
-                                href="#"
-                                className={'button button-primary button-outlined button-medium'.classNames()}
-                            >
-                                {__('Choose Templates')}
-                            </a>
-                        </IntroCard>
-                    </div>
-                    <div>
-                        <IntroCard image="being_creative">
-                            <span
-                                className={'d-block font-size-20 font-weight-600 color-text margin-bottom-8'.classNames()}
-                            >
-                                {__('Design your page')}
-                            </span>
-                            <span
-                                className={'d-block font-size-14 font-weight-400 color-text-light margin-bottom-26'.classNames()}
-                            >
-                                {__(
-                                    'Keep your great talented candidate on file in the Talent Pool.'
-                                )}
-                            </span>
-                            <a
-                                href="#"
-                                className={'button button-primary button-outlined button-medium'.classNames()}
-                            >
-                                {__('Choose Templates')}
-                            </a>
-                        </IntroCard>
-                    </div>
-                </div> */}
             </div>
         </div>
     );

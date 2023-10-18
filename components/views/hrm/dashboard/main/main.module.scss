@@ -1,10 +1,8 @@
 .wrapper {
     max-width: 1366px;
     margin: 0 auto;
-    display: flex;
-
-    .sidebar,
-    .content-area {
+	
+    .sidebar, .content-area {
         float: left;
     }
 
@@ -15,7 +13,7 @@
     }
 
     .content-area {
-        flex: 1;
-        padding: 36px;
+		padding: 36px 49px;
+        width: calc(100% - 461px);
     }
 }

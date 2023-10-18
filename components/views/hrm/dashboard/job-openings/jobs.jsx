@@ -11,7 +11,7 @@ import { LoadingIcon } from 'crewhrm-materials/loading-icon/loading-icon.jsx';
 import { ContextToast } from 'crewhrm-materials/toast/toast.jsx';
 import { ContextWarning } from 'crewhrm-materials/warning/warning.jsx';
 import { Conditional } from 'crewhrm-materials/conditional.jsx';
-import { statuses, countries_object } from 'crewhrm-materials/data.jsx';
+import { statuses } from 'crewhrm-materials/data.jsx';
 
 import { NoJob } from './segments/no-job.jsx';
 import { StatsRow } from './segments/stats-row.jsx';
@@ -370,11 +370,7 @@ export function JobOpenings(props) {
                                             </Options>
                                         </div>
                                     </div>
-                                    <div
-                                        className={'d-flex align-items-center justify-content-space-between padding-vertical-15 padding-horizontal-20'.classNames()}
-                                    >
-                                        <StatsRow stats={stats} />
-                                    </div>
+									<StatsRow stats={stats} />
                                 </div>
                             );
                         })}
