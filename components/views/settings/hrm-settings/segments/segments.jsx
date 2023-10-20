@@ -44,12 +44,16 @@ export function Segments() {
                                         } color-hover-parent`.classNames()}
                                     >
                                         <div>
-                                            <i
-                                                className={
-                                                    icon.classNames() +
-                                                    'font-size-24 color-secondary'.classNames()
-                                                }
-                                            ></i>
+											{
+												icon.indexOf('http')>-1 ? 
+													<img className={'width-24 height-auto'.classNames()} src={icon}/> : 
+													<i
+														className={
+															icon.classNames() +
+															'font-size-24 color-secondary'.classNames()
+														}
+													></i>
+											}
                                         </div>
                                         <div className={'flex-1'.classNames()}>
                                             <span
