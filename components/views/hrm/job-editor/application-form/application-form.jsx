@@ -188,6 +188,9 @@ export function ApplicationForm() {
                         };
                     });
 
+					// Can sort
+					const can_sort = sortable && _input_fields.length>1;
+
                     return (
                         <div
                             data-crew="section"
@@ -203,7 +206,7 @@ export function ApplicationForm() {
                             {(_input_fields.length && (
                                 <div className={'list-container'.classNames(style)}>
                                     <SortableList
-                                        disabled={!sortable}
+                                        disabled={!can_sort}
                                         onReorder={(list) => updateFields(section_name, list)}
                                         items={_input_fields.map((field, index) => {
                                             const {
@@ -232,8 +235,8 @@ export function ApplicationForm() {
                                                             }`.classNames()
                                                         }
                                                     >
-                                                        {(sortable && (
-                                                            <div
+														<Conditional show={can_sort}>
+															<div
                                                                 className={
                                                                     'd-flex align-items-center position-absolute'.classNames() +
                                                                     'drag-icon'.classNames(style)
@@ -244,8 +247,8 @@ export function ApplicationForm() {
                                                                     style={{ left: '-50px' }}
                                                                 ></i>
                                                             </div>
-                                                        )) ||
-                                                            null}
+														</Conditional>
+														
                                                         <div>
                                                             <input
                                                                 id={checkbox_id}
