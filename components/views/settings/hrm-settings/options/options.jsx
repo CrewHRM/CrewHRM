@@ -5,7 +5,7 @@ import { ToggleSwitch } from 'crewhrm-materials/toggle-switch/ToggleSwitch.jsx';
 import { TextField } from 'crewhrm-materials/text-field/text-field.jsx';
 import { FileUpload } from 'crewhrm-materials/file-upload/file-upload.jsx';
 import { __ } from 'crewhrm-materials/helpers.jsx';
-import { NumberField } from 'crewhrm-materials/number-field.jsx';
+import { NumberField } from 'crewhrm-materials/number-field';
 import { RadioCheckbox } from 'crewhrm-materials/radio-checkbox.jsx';
 import { DropDown } from 'crewhrm-materials/dropdown/dropdown.jsx';
 import { RenderMedia } from 'crewhrm-materials/render-media/render-media.jsx';
