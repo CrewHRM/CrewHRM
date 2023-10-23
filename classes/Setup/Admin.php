@@ -29,6 +29,7 @@ class Admin {
 	 */
 	public function __construct() {
 		add_action( 'admin_menu', array( $this, 'registerMenu' ), 10 );
+		add_filter( 'plugin_action_links_' . plugin_basename( Main::$configs->file ), array( $this, 'pluginActionLinks' ) );
 	}
 
 	/**
@@ -109,5 +110,26 @@ class Admin {
 			id="' . esc_attr( self::MOUNTPOINT_SETTINGS ) . '" 
 			data-settings="' . esc_attr( wp_json_encode( (object) Settings::getSettings() ) ) . '"
 			data-resources="' . esc_attr( wp_json_encode( $resources ) ) . '"></div>';
+	}
+
+	/**
+	 * Add plugin action links in plugins page
+	 *
+	 * @return void
+	 */
+	public function pluginActionLinks( array $actions ) {
+
+		$_actions = array(
+			'crewhrm_dashboard' => '<a href="admin.php?page=' . Main::$configs->app_name . '">' . __( 'Dashboard', 'crewhrm' ) . '</a>',
+			'crewhrm_pro_link'  => '<a href="https://getcrewhrm.com/pricing/" target="_blank">
+										<span style="color: #ff7742; font-weight: bold;">' .
+											__( 'Get Pro', 'crewhrm' ) .
+										'</span>
+									</a>'
+		);
+
+		$_actions = apply_filters( 'crewhrm_plugin_action_menus', $_actions );
+		
+		return array_merge( $actions, $_actions );
 	}
 }

@@ -108,7 +108,7 @@ class Main {
 	 *
 	 * @return void
 	 */
-	public static function activate() {
+	public function activate() {
 		do_action( 'crewhrm_activated' );
 	}
 
@@ -117,7 +117,7 @@ class Main {
 	 *
 	 * @return void
 	 */
-	public static function deactivate() {
+	public function deactivate() {
 		do_action( 'crewhrm_deactivated' );
 	}
 }
