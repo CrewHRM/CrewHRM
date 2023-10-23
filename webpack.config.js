@@ -7,6 +7,27 @@ module.exports = (env, options) => {
 
     const config = {
         mode,
+		snapshot: {
+			managedPaths: [path.resolve(__dirname, '../node_modules')],
+			immutablePaths: [],
+			buildDependencies: {
+				hash: true,
+				timestamp: true,
+			},
+			module: {
+				timestamp: true,
+			},
+			resolve: {
+				timestamp: true,
+			},
+			resolveBuildDependencies: {
+				hash: true,
+				timestamp: true,
+			},
+		},
+		resolve: {
+			extensions: ['.js', '.jsx', '.json'],
+		},
         module: {
             rules: [
                 {
