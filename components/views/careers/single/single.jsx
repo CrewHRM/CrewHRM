@@ -6,12 +6,11 @@ import { DangerouslySet } from 'crewhrm-materials/dangerously-set.jsx';
 import { request } from 'crewhrm-materials/request.jsx';
 import { LoadingIcon } from 'crewhrm-materials/loading-icon/loading-icon.jsx';
 import { Conditional } from 'crewhrm-materials/conditional.jsx';
-import { statuses } from 'crewhrm-materials/data.jsx';
+import { statuses, employment_types } from 'crewhrm-materials/data.jsx';
 import { applyFilters } from 'crewhrm-materials/hooks.jsx';
 
-import { Apply } from './apply/apply.jsx';
-import { employment_types } from '../../hrm/job-editor/job-details/sections/employment-details.jsx';
 import { sections_fields } from '../../hrm/job-editor/application-form/form-structure.jsx';
+import { Apply } from './apply/apply.jsx';
 
 import style from './single.module.scss';
 

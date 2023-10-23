@@ -1,20 +1,15 @@
 import React, { useContext } from 'react';
-import { section_title_class, field_label_class } from '../job-details.jsx';
 
 import { __, formatDate, getLastOfDay, getUnixTimestamp } from 'crewhrm-materials/helpers.jsx';
-import style from '../details.module.scss';
 import { NumberField } from 'crewhrm-materials/number-field.jsx';
 import { DateField } from 'crewhrm-materials/date-time.jsx';
 import { TagField } from 'crewhrm-materials/tag-field/tag-field.jsx';
+import { employment_types } from 'crewhrm-materials/data.jsx';
+
+import { section_title_class, field_label_class } from '../job-details.jsx';
 import { ContextJobEditor } from '../../index.jsx';
 
-export const employment_types = {
-    full_time: __('Full Time'),
-    part_time: __('Part Time'),
-    contract: __('Contract'),
-    temporary: __('Temporary'),
-    trainee: __('Trainee')
-};
+import style from '../details.module.scss';
 
 export function EmploymentDetails(props) {
     const { values, onChange } = useContext(ContextJobEditor);

@@ -11,7 +11,7 @@ import { LoadingIcon } from 'crewhrm-materials/loading-icon/loading-icon.jsx';
 import { ContextToast } from 'crewhrm-materials/toast/toast.jsx';
 import { ContextWarning } from 'crewhrm-materials/warning/warning.jsx';
 import { Conditional } from 'crewhrm-materials/conditional.jsx';
-import { statuses } from 'crewhrm-materials/data.jsx';
+import { statuses, employment_types } from 'crewhrm-materials/data.jsx';
 
 import { NoJob } from './segments/no-job.jsx';
 import { StatsRow } from './segments/stats-row.jsx';
@@ -229,7 +229,7 @@ export function JobOpenings(props) {
                                 department_name,
                                 street_address,
                                 country_code,
-                                job_type,
+                                employment_type,
                                 vacancy,
                                 application_deadline,
 								job_permalink,
@@ -245,9 +245,9 @@ export function JobOpenings(props) {
 							// Combine meta data andfilter before rendering
                             const meta_data = [
                                 department_name,
-								getAddress({street_address, country_code}),
-                                job_type,
-                                _deadline
+								// getAddress({street_address, country_code}),
+                                employment_types[employment_type],
+                                // _deadline
                             ].filter(d=>d);
 
 							// Determine dot color per job status

@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { __, getAddress } from 'crewhrm-materials/helpers.jsx';
 import { Conditional } from 'crewhrm-materials/conditional.jsx';
+import { employment_types } from 'crewhrm-materials/data.jsx';
 
 import style from './listing.module.scss';
-import { employment_types } from '../../hrm/job-editor/job-details/sections/employment-details.jsx';
 
 export function CareersLoop({ jobs, base_permalink }) {
     const [state, setState] = useState({
