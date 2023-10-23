@@ -1,3 +1,17 @@
+.highlight {
+    animation: crewHighlight 1.5s ease-in-out forwards 1; /* Added "1" for iteration count */
+}
+
+@keyframes crewHighlight {
+    from {
+        background-color: #d6bd1f;
+    }
+	
+    to {
+		background-color: transparent;
+    }
+}
+
 .section {
     max-width: 582px;
     margin: 0 auto 30px;

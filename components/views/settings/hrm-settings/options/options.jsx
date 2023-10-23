@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useRef } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { ToggleSwitch } from 'crewhrm-materials/toggle-switch/ToggleSwitch.jsx';
@@ -30,6 +30,16 @@ const hint_class =
 function OptionFields({fields=[], vertical, separator, is_group=false}) {
     const { values = {}, onChange } = useContext(ContextSettings);
     const { resources = {} } = useContext(ContextBackendDashboard);
+	
+	const highlight_ref = useRef();
+	const highlight_field = new URL(window.location.href).searchParams.get("highlight");
+
+	useEffect(()=>{
+		if ( highlight_ref?.current ) {
+			highlight_ref.current.scrollIntoView(true);
+			highlight_ref.current.classList.add('highlight'.classNames(style).split(' ')[0] || '');
+		}
+	}, [highlight_ref]);
 
     const satisfyLogic = (when) => {
         const pointer = when[0];
@@ -104,6 +114,7 @@ function OptionFields({fields=[], vertical, separator, is_group=false}) {
 				} flex-wrap-wrap ${
 					show_separator ? 'padding-vertical-25 border-bottom-1 b-color-tertiary' : 'padding-vertical-10'
 				} ${when ? 'fade-in' : ''}`.classNames()}
+				ref={highlight_field===name ? highlight_ref : null}
 			>
 				{/* Toggle switch option */}
 				{(type === 'switch' && (

@@ -30,6 +30,7 @@ class Admin {
 	public function __construct() {
 		add_action( 'admin_menu', array( $this, 'registerMenu' ), 10 );
 		add_filter( 'plugin_action_links_' . plugin_basename( Main::$configs->file ), array( $this, 'pluginActionLinks' ) );
+		add_action( 'admin_notices', array( $this, 'showCareersPageError' ) );
 	}
 
 	/**
@@ -131,5 +132,24 @@ class Admin {
 		$_actions = apply_filters( 'crewhrm_plugin_action_menus', $_actions );
 		
 		return array_merge( $actions, $_actions );
+	}
+
+	/**
+	 * Show error notice if careers page is not setup
+	 *
+	 * @return void
+	 */
+	public function showCareersPageError() {
+		$page_id = (int) Settings::getSetting( 'careers_page_id' );
+		if ( $page_id > 0 ) {
+			return;
+		}
+		
+		$link = admin_url( 'admin.php?page=' . self::SLUG_SETTINGS . '&highlight=careers_page_id#/settings/recruitment/careers/' );
+		?>
+		<div class="notice notice-warning">
+			<p><?php echo sprintf( __( 'Please <a href="%s">set up</a> a page to display the job posts.', 'crewhrm-pro' ), $link ); ?></p>
+		</div>
+		<?php
 	}
 }
