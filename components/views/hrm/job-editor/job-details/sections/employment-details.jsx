@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 
 import { __, formatDate, getLastOfDay, getUnixTimestamp } from 'crewhrm-materials/helpers.jsx';
-import { NumberField } from 'crewhrm-materials/number-field.jsx';
+import { NumberField } from 'crewhrm-materials/number-field';
 import { DateField } from 'crewhrm-materials/date-time.jsx';
 import { TagField } from 'crewhrm-materials/tag-field/tag-field.jsx';
 import { employment_types } from 'crewhrm-materials/data.jsx';
