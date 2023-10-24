@@ -68,6 +68,7 @@ export function Header({
                             options={job_list.map((j) => {
                                 return { id: j.job_id, label: j.job_title };
                             })}
+                            variant='borderless'
                         />
                     </div>
                 </div>

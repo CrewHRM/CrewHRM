@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 import React, { useContext, useEffect, useState } from 'react';
 import { Modal } from 'crewhrm-materials/modal.jsx';
 import { __, getRandomString } from 'crewhrm-materials/helpers.jsx';
@@ -127,6 +128,8 @@ export function FieldEditorModal(props) {
                         options={Object.keys(question_types).map((t) => {
                             return { id: t, label: question_types[t] };
                         })}
+                        variant='primary'
+                        size="md"
                     />
                 </div>
                 <div

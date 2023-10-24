@@ -152,6 +152,8 @@ export function HeadActions({ application }) {
                                 label: s.stage_name === '_hired_' ? __('Hired') : s.stage_name
                             };
                         })}
+                        variant='primary'
+                        size='sm'
                     />
 
                     <Options

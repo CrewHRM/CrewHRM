@@ -71,6 +71,7 @@ export function FilterBar({ is_overview, filters = {}, onChange, fetching }) {
                                 };
                             })
                         ]}
+                        variant="borderless"
                     />
                 </div>
                 <div className={'d-inline-block'.classNames()} style={{ minWidth: '113px' }}>
@@ -89,6 +90,7 @@ export function FilterBar({ is_overview, filters = {}, onChange, fetching }) {
                                 };
                             })
                         ]}
+                        variant="borderless"
                     />
                 </div>
                 <div className={'d-inline-block'.classNames()}>
