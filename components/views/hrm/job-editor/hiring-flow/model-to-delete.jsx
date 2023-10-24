@@ -90,6 +90,8 @@ function MoveContent({
                                 onChange={(move_to) => setState({ move_to })}
                                 placeholder={__('Select Stage')}
 								clearable={false}
+                                variant='primary'
+                                size='md'
                             />
                         </div>
                         <div>
