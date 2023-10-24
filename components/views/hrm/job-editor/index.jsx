@@ -1,12 +1,9 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
+
 import { StickyBar } from 'crewhrm-materials/sticky-bar.jsx';
 import { __, getRandomString, isEmpty } from 'crewhrm-materials/helpers.jsx';
 import { Tabs } from 'crewhrm-materials/tabs/tabs.jsx';
-import { JobDetails } from './job-details/job-details.jsx';
-import { HiringFlow } from './hiring-flow/hiring-flow.jsx';
-import { ApplicationForm } from './application-form/application-form.jsx';
-import { sections_fields } from './application-form/form-structure.jsx';
 import { request } from 'crewhrm-materials/request.jsx';
 import { ContextToast } from 'crewhrm-materials/toast/toast.jsx';
 import { Conditional } from 'crewhrm-materials/conditional.jsx';
@@ -14,6 +11,12 @@ import { ContextWarning } from 'crewhrm-materials/warning/warning.jsx';
 import { InitState } from 'crewhrm-materials/init-state.jsx';
 import { ErrorBoundary } from 'crewhrm-materials/error-boundary.jsx';
 import { LogoExtended } from 'crewhrm-materials/dynamic-svg/logo-extended.jsx';
+
+import { JobDetails } from './job-details/job-details.jsx';
+import { HiringFlow } from './hiring-flow/hiring-flow.jsx';
+import { ApplicationForm } from './application-form/application-form.jsx';
+import { sections_fields } from './application-form/form-structure.jsx';
+import { Congrats } from './congrats/congrats.jsx';
 
 import style from './editor.module.scss';
 
@@ -83,7 +86,7 @@ function getFieldsToSave(sections_fields) {
 export function JobEditor() {
     const { showWarning, closeWarning } = useContext(ContextWarning);
     let { job_id } = useParams();
-    const { addToast } = useContext(ContextToast);
+    const { addToast, ajaxToast } = useContext(ContextToast);
     const navigate = useNavigate();
     const is_new = job_id === 'new';
 
@@ -95,7 +98,8 @@ export function JobEditor() {
         fetching: false,
         session: null,
         mounted: false,
-        values: {}
+        values: {},
+		show_congrats: false
     });
 
     const [active_tab, setTab] = useState('job-details');
@@ -155,26 +159,16 @@ export function JobEditor() {
 				}
             } = resp;
 
-            if (!auto || (auto && !success)) {
-                addToast({
-					status: success ? 'success' : 'error',
-					message: <span>
-						<span className={'d-inline-block margin-right-7'.classNames()}>
-							{__('Published!')}
-						</span>
-						{
-							!job_permalink ? null :
-								<a href={job_permalink} target='_blank' className={'cursor-pointer hover-underline color-white font-weight-500'.classNames()}>
-									{__('View Job.')}
-								</a>
-						}
-					</span>
-				});
-            }
-
+			if (auto && !success) {
+				// Show response message toast if auto draft failed
+				ajaxToast(resp);
+			}
+			
             const new_state = {
                 ...state,
-                saving_mode: null
+                saving_mode: null,
+				show_congrats: !auto && success,
+				job_permalink
             };
 
             // Add job id and address id to the job object
@@ -319,8 +313,15 @@ export function JobEditor() {
         return <InitState fetching={state.fetching} />;
     }
 
-    return (
-        <ContextJobEditor.Provider
+    return <>
+		{
+			!state.show_congrats ? null : 
+				<Congrats 
+					job_permalink={state.job_permalink} 
+					onClose={()=>setState({...state, show_congrats: false})}/>
+		}
+        
+		<ContextJobEditor.Provider
             value={{
                 values: state.values,
                 onChange,
@@ -419,5 +420,5 @@ export function JobEditor() {
                 </div>
             </div>
         </ContextJobEditor.Provider>
-    );
+    </>
 }

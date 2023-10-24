@@ -85,11 +85,11 @@ export const settings_fields = applyFilters(
 			),
 			segments: {
 				profile: {
-					label: __('Basic information'),
+					label: __('Company Info'),
 					icon: 'ch-icon ch-icon-building-4',
 					sections: {
 						basic_info: {
-							label: __('Basic Info'),
+							label: __('Company Info'),
 							description: __('Set your company informations'),
 							separator: false,
 							vertical: true,
