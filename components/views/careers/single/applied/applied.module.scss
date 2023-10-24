@@ -1,0 +1,29 @@
+.applied {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	gap: 40px;
+	max-width: 753px;
+	margin: 0 auto;
+	padding: 30px;
+
+	@media (max-width:460px) {
+		grid-template-columns: repeat(1, 1fr);
+	}
+
+	&>div{
+		display: flex;
+		align-items: center;
+
+		&:first-child {
+			justify-content: center;
+
+			img {
+				width: auto;
+				height: auto;
+				max-width: 100%;
+				max-height: 100%;
+				margin: auto;
+			}
+		}
+	}
+}

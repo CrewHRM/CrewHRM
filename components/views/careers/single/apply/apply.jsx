@@ -16,7 +16,7 @@ import {
 } from 'crewhrm-materials/helpers.jsx';
 
 import { RenderField } from './apply-form.jsx';
-import { Applied } from './applied.jsx';
+import { Applied } from '../applied/applied.jsx';
 
 import style from './apply.module.scss';
 
