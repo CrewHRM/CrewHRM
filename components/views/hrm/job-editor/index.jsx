@@ -271,9 +271,9 @@ export function JobEditor() {
             return;
         }
 
-        showWarning(
-            __('There is an auto saved version of this job. Would you like to restore?'),
-            () => {
+        showWarning({
+            message: __('There is an auto saved version of this job. Would you like to restore?'),
+            onConfirm: () => {
                 setState({
                     ...state,
                     autosaved_job: null,
@@ -282,10 +282,10 @@ export function JobEditor() {
 
                 closeWarning();
             },
-            null,
-            __('Restore'),
-            __('No')
-        );
+            confirmText: __('Restore'),
+            closeText: __('No'),
+			mode: 'normal'
+        });
     }, [state.autosaved_job]);
 
     if (state.error_message) {

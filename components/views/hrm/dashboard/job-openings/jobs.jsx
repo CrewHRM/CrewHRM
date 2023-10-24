@@ -128,9 +128,9 @@ export function JobOpenings(props) {
             case 'unarchive':
             case 'delete':
             case 'duplicate':
-                showWarning(
-                    __(options.find((o) => o.name === action)?.warning || 'Sure to proceed?'),
-                    () => {
+                showWarning({
+                    message: __(options.find((o) => o.name === action)?.warning || 'Sure to proceed?'),
+                    onConfirm: () => {
                         // Close warning modal and execute in background
                         closeWarning();
 
@@ -155,9 +155,9 @@ export function JobOpenings(props) {
                             getJobs(action === 'duplicate' ? { page: 1 } : {}); // Get to first page to see the duplicated one.
                         });
                     },
-                    null,
-                    __('Yes')
-                );
+                    confirmText: __('Yes'),
+					mode: action === 'delete' ? 'danger' : 'normal'
+                });
                 break;
         }
     };

@@ -163,12 +163,13 @@ export function DeletionConfirm(props) {
     };
 
     useEffect(() => {
-        showWarning(
-            __("Are you sure, you want to delete this item. We won't be able to recover it."),
-            deleteStage,
-            closeModalAll,
-            __('Delete')
-        );
+        showWarning({
+            message: __("Are you sure, you want to delete this item. We won't be able to recover it."),
+            onConfirm: deleteStage,
+            onClose: closeModalAll,
+            confirmText: __('Delete'),
+			mode: 'danger'
+        });
     }, []);
 
     return !state.overview ? null : (

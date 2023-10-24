@@ -1,4 +1,4 @@
-import React, { createContext, useContext } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 import { HashRouter, Navigate, Route, Routes, useParams } from 'react-router-dom';
 
 import { WpDashboardFullPage } from 'crewhrm-materials/backend-dashboard-container/full-page-container.jsx';
@@ -7,6 +7,7 @@ import { __ } from 'crewhrm-materials/helpers.jsx';
 import { request } from 'crewhrm-materials/request.jsx';
 import { ContextHistoryFields, HistoryFields, UndoRedo } from 'crewhrm-materials/undo-redo.jsx';
 import { ContextToast } from 'crewhrm-materials/toast/toast.jsx';
+import { LoadingIcon } from 'crewhrm-materials/loading-icon/loading-icon.jsx';
 
 import { ContextBackendDashboard } from '../../hrm/hrm.jsx';
 import { Options } from './options/options.jsx';
@@ -17,19 +18,14 @@ export const ContextSettings = createContext();
 
 function Wrapper({ children }) {
     const { clearHistory, can_go_next, values = {}, onChange } = useContext(ContextHistoryFields);
-
     const { ajaxToast } = useContext(ContextToast);
+	const [savingState, setSavingState] = useState(false);
 
     const saveSettings = () => {
+		setSavingState(true);
         request('saveSettings', { settings: values }, (resp) => {
-
-			const {success, data:{settings={}}} = resp;
-
             ajaxToast(resp);
-
-            if (success) {
-                clearHistory(settings);
-            }
+			setSavingState(false);
         });
     };
 
@@ -47,7 +43,7 @@ function Wrapper({ children }) {
                         onClick={saveSettings}
                         disabled={!can_go_next}
                     >
-                        {__('Save Changes')}
+                        {__('Save Changes')} <LoadingIcon show={savingState}/>
                     </button>
                 </div>
             </StickyBar>

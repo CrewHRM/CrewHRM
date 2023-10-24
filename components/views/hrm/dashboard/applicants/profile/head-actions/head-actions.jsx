@@ -46,11 +46,10 @@ export function HeadActions({ application }) {
     };
 
     const changeStage = (stage_id, message = __('Sure to move?')) => {
-        showWarning(
+        showWarning({
             message,
-            () => {
+            onConfirm: () => {
                 loadingState();
-
                 request('moveApplicationStage', { job_id, stage_id, application_id }, (resp) => {
                     const { success } = resp;
 
@@ -62,9 +61,9 @@ export function HeadActions({ application }) {
                     }
                 });
             },
-            null,
-            __('Yes')
-        );
+            confirmText: __('Yes'),
+			mode: 'danger'
+        });
     };
 
     const onActionClick = (action) => {
@@ -74,9 +73,9 @@ export function HeadActions({ application }) {
                 break;
 
             case 'delete':
-                showWarning(
-                    __("Sure to delete? It can't be undone."),
-                    () => {
+                showWarning({
+                    message: __("Sure to delete? It can't be undone."),
+                    onConfirm: () => {
                         loadingState();
 
                         request('deleteApplication', { application_id }, (resp) => {
@@ -93,10 +92,10 @@ export function HeadActions({ application }) {
                             }
                         });
                     },
-                    null,
-                    __('Yes'),
-                    __('No')
-                );
+                    confirmText: __('Yes'),
+                    closeText: __('No'),
+					mode: 'danger'
+                });
                 break;
         }
     };
