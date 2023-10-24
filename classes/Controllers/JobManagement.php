@@ -76,10 +76,11 @@ class JobManagement {
 
 		wp_send_json_success(
 			array(
-				'message'    => $is_publish ? __( 'Job published', 'crewhrm' ) : __( 'Job saved', 'crewhrm' ),
-				'address_id' => $job['address_id'],
-				'stage_ids'  => $job['stage_ids'],
-				'job_id'     => $job['job_id'],
+				'message'       => $is_publish ? __( 'Job published', 'crewhrm' ) : __( 'Job saved', 'crewhrm' ),
+				'job_permalink' => Job::getJobPermalink( $job['job_id'] ),
+				'address_id'    => $job['address_id'],
+				'stage_ids'     => $job['stage_ids'],
+				'job_id'        => $job['job_id'],
 			)
 		);
 	}

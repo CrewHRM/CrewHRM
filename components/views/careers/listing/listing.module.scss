@@ -5,7 +5,7 @@
     display: flex;
 
     .sidebar {
-        width: 232px;
+        max-width: 232px;
         margin-right: 74px;
 
         & > div {

@@ -83,7 +83,7 @@ function getFieldsToSave(sections_fields) {
 export function JobEditor() {
     const { showWarning, closeWarning } = useContext(ContextWarning);
     let { job_id } = useParams();
-    const { ajaxToast } = useContext(ContextToast);
+    const { addToast } = useContext(ContextToast);
     const navigate = useNavigate();
     const is_new = job_id === 'new';
 
@@ -146,11 +146,30 @@ export function JobEditor() {
         request('updateJob', payload, (resp) => {
             const {
                 success,
-                data: { job_id, address_id, stage_ids = {} }
+                data: { 
+					message,
+					job_id, 
+					address_id, 
+					stage_ids = {},
+					job_permalink 
+				}
             } = resp;
 
             if (!auto || (auto && !success)) {
-                ajaxToast(resp);
+                addToast({
+					status: success ? 'success' : 'error',
+					message: <span>
+						<span className={'d-inline-block margin-right-7'.classNames()}>
+							{__('Published!')}
+						</span>
+						{
+							!job_permalink ? null :
+								<a href={job_permalink} target='_blank' className={'cursor-pointer hover-underline color-white font-weight-500'.classNames()}>
+									{__('View Job.')}
+								</a>
+						}
+					</span>
+				});
             }
 
             const new_state = {
