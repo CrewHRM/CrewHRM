@@ -6,6 +6,7 @@ import { DropDown } from 'crewhrm-materials/dropdown/dropdown.jsx';
 import { ContextWarning } from 'crewhrm-materials/warning/warning.jsx';
 import { request } from 'crewhrm-materials/request.jsx';
 import { ContextToast } from 'crewhrm-materials/toast/toast.jsx';
+import { LoadingIcon } from 'crewhrm-materials/loading-icon/loading-icon.jsx';
 
 import avatar from 'crewhrm-materials/static/images/avatar.svg';
 
@@ -18,7 +19,8 @@ function MoveContent({
 }) {
     const more = count - peak.length;
     const [state, setState] = useState({
-        move_to: null
+        move_to: null,
+		moving: false
     });
 
     return (
@@ -87,7 +89,7 @@ function MoveContent({
                                 className={'w-full padding-vertical-5 padding-horizontal-12 border-1 b-color-text height-40'.classNames()}
                                 value={state.move_to}
                                 options={moveTo}
-                                onChange={(move_to) => setState({ move_to })}
+                                onChange={(move_to) => setState({...state, move_to })}
                                 placeholder={__('Select Stage')}
 								clearable={false}
                                 variant='primary'
@@ -97,10 +99,16 @@ function MoveContent({
                         <div>
                             <button
                                 className={'button button-primary'.classNames()}
-                                onClick={() => onConfirm(state.move_to)}
-                                disabled={!state.move_to}
+                                disabled={!state.move_to || state.moving}
+                                onClick={() => {
+									setState({
+										...state,
+										moving: true
+									});
+									onConfirm(state.move_to);
+								}}
                             >
-                                {__('Move')}
+                                {__('Move')} <LoadingIcon show={state.moving}/>
                             </button>
                         </div>
                     </div>
@@ -141,26 +149,27 @@ export function DeletionConfirm(props) {
 
         request('deleteHiringStage', { job_id, stage_id, move_to }, (resp) => {
             const { success, data } = resp;
-            const { overview = {} } = data || {};
+            const { overview } = data || {};
 
             if (success) {
                 // Deleted from server. Now from browser
                 onDelete();
-                return;
-            }
+				closeModalAll();
 
-            if (overview) {
-                // Could not delete as target stage not specified and there are applications in the stage
-                setState({
-                    ...state,
-                    loading: false,
-                    overview
-                });
             } else {
-                ajaxToast(resp);
-            }
+				if ( overview ) {
+					// Could not delete as target stage not specified and there are applications in the stage
+					setState({
+						...state,
+						loading: false,
+						overview
+					});
 
-            closeModalAll();
+				} else {
+					ajaxToast(resp);
+					closeModalAll();
+				}
+			}
         });
     };
 

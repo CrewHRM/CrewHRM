@@ -239,7 +239,7 @@ class JobManagement {
 			wp_send_json_error( array( 'overview' => $deletion ) );
 
 		} else {
-			$message = false === $deletion ? __( 'Stage not found to move to', 'crewhrm' ) : __( 'Something went wrong!' );
+			$message = false === $deletion ? __( 'Stage not found to move to', 'crewhrm' ) : __( 'Something went wrong!', 'crewhrm' );
 			wp_send_json_error( array( 'message' => $message ) );
 		}
 	}

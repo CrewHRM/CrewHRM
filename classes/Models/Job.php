@@ -26,9 +26,18 @@ class Job {
 	 */
 	public static function createUpdateJob( array $job ) {
 
-		$salary = $job['salary'] ?? '';
-		$salary = explode( '-', $salary );
+		// Prepare salary field
+		$salary   = $job['salary'] ?? '';
+		$salary   = explode( '-', $salary );
 
+		// Prepare deadline field
+		$deadline = null;
+		if ( ! empty( $job['application_deadline'] ) ) {
+			$deadline = $job['application_deadline'];
+			$deadline = ! is_numeric( $deadline ) ? strtotime( $deadline ) : (int) $deadline;
+			$deadline = gmdate( 'Y-m-d\TH:i:s', $deadline );
+		}
+		
 		$_job = array(
 			'job_title'            => $job['job_title'] ?? '',
 			'job_description'      => $job['job_description'] ?? '',
@@ -43,7 +52,7 @@ class Job {
 			'attendance_type'      => maybe_serialize( $job['attendance_type'] ?? array() ),
 			'experience_years'     => $job['experience_years'] ?? null,
 			'experience_level'     => $job['experience_level'] ?? null,
-			'application_deadline' => ! empty( $job['application_deadline'] ) ? gmdate( 'Y-m-d\TH:i:s', $job['application_deadline'] ) : null,
+			'application_deadline' => $deadline,
 			'application_form'     => maybe_serialize( $job['application_form'] ?? array() ),
 			'job_status'           => $job['job_status'] ?? 'draft',
 			'currency'             => $job['currency'] ?? null,

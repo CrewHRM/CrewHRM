@@ -14,7 +14,7 @@ export const settings_fields = applyFilters(
 			segments: {
 				careers: {
 					label: __('Job Listing Page'),
-					icon: 'ch-icon ch-icon-building-4',
+					icon: 'ch-icon ch-icon-bill',
 					sections: {
 						careers_settings:{
 							label: __('Job Listing Page'),
@@ -177,7 +177,7 @@ export const settings_fields = applyFilters(
 				},
 				departments: {
 					label: __('Departments'),
-					icon: 'ch-icon ch-icon-hierarchy',
+					icon: 'ch-icon ch-icon-programming-arrow',
 					sections: {
 						departments: {
 							label: __('Departments'),

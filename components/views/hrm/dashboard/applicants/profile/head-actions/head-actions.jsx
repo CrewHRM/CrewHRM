@@ -62,7 +62,7 @@ export function HeadActions({ application }) {
                 });
             },
             confirmText: __('Yes'),
-			mode: 'danger'
+			mode: 'normal'
         });
     };
 

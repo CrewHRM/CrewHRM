@@ -11,25 +11,21 @@ export function HiringFlow() {
     const { values = {}, onChange, navigateTab, is_next_disabled } = useContext(ContextJobEditor);
     const hiring_flow = Array.isArray(values.hiring_flow) ? values.hiring_flow : [];
 
-    const [state, setState] = useState({
-        to_delete: null
-    });
+	const [deleteID, setDeleteState] = useState(null);
 
     const deleteFlow = (id) => {
-        const { hiring_flow = [] } = values;
-
+		
+		// null will be passed only to close the warning
         if (id !== null) {
+			const { hiring_flow = [] } = values;
             const index = hiring_flow.findIndex((s) => s.stage_id === id);
             hiring_flow.splice(index, 1);
+				
+			// Mark the state as modal to close now
+			onChange('hiring_flow', hiring_flow);
         }
 
-        // Mark the state as modal to close now
-        onChange('hiring_flow', hiring_flow);
-
-        setState({
-            ...state,
-            to_delete: null
-        });
+		setDeleteState(null);
     };
 
     const list_manager_stages = hiring_flow
@@ -47,19 +43,20 @@ export function HiringFlow() {
 
     return (
         <div data-crew="hiring-flow-builder" className={'hiring'.classNames(style)}>
-            {state.to_delete ? (
+            {
+				!deleteID ? null : (
                 <DeletionConfirm
                     job_id={values.job_id}
-                    {...hiring_flow.find((s) => s.stage_id == state.to_delete)}
+                    {...hiring_flow.find((s) => s.stage_id == deleteID)}
                     closeModal={() => deleteFlow(null)}
-                    onDelete={() => deleteFlow(state.to_delete)}
+                    onDelete={() => deleteFlow(deleteID)}
                     moveTo={list_manager_stages
-                        .filter((f) => f.stage_id !== state.to_delete)
+                        .filter((f) => f.stage_id !== deleteID)
                         .map((f) => {
                             return { id: f.stage_id, label: f.stage_name };
                         })}
-                />
-            ) : null}
+                />)
+			}
 
             <span
                 className={'d-block font-size-20 font-weight-600 color-text margin-bottom-40'.classNames()}
@@ -75,7 +72,7 @@ export function HiringFlow() {
                 onChange={(hiring_flow) => onChange('hiring_flow', hiring_flow)}
                 readOnyAfter={[{ stage_id: 'a', stage_name: __('Hired') }]}
                 className={'margin-bottom-50'.classNames()}
-                deleteItem={(id) => setState({ ...state, to_delete: id })}
+                deleteItem={setDeleteState}
                 addText={__('Add Stage')}
             />
 

@@ -188,6 +188,8 @@ class Stage {
 		// Get the applications in the deletable stage
 		$overview = self::getApplicationsOverview( $job_id, $stage_id );
 
+		error_log( var_export( $overview, true ) );
+
 		// Move the applications to new target if necessary
 		if ( ! empty( $overview['count'] ) ) {
 
