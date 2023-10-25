@@ -22,11 +22,11 @@ export function FilterBar({ is_overview, filters = {}, onChange, fetching }) {
     return (
         <div
             className={
-                'd-flex align-items-center margin-bottom-20'.classNames() +
+                'd-flex align-items-center justify-content-end flex-wrap-wrap margin-bottom-20'.classNames() +
                 'filter'.classNames(style)
             }
         >
-            <div className={'flex-1 d-flex align-items-center'.classNames()}>
+            <div className={'flex-1 d-flex align-items-center white-space-nowrap'.classNames()}>
                 <Conditional show={!is_overview}>
                     <Link to="/dashboard/">
                         <i
@@ -51,7 +51,7 @@ export function FilterBar({ is_overview, filters = {}, onChange, fetching }) {
                     <LoadingIcon show={fetching} className={'margin-left-5'.classNames()} />
                 </span>
             </div>
-            <div className={'d-flex align-items-center column-gap-15'.classNames()}>
+            <div className={'d-flex align-items-center justify-content-end flex-wrap-wrap column-gap-15'.classNames()}>
                 <div className={'d-inline-block'.classNames()} style={{ minWidth: '113px' }}>
                     <DropDown
                         className={'padding-vertical-8 padding-horizontal-15'.classNames()}

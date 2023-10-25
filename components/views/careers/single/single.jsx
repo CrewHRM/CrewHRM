@@ -78,7 +78,7 @@ function applyFormFields(fields) {
 	);
 }
 
-function RenderMeta({ icon, hint, content }) {
+function RenderMeta({ icon, hint, content, contentClass='' }) {
     return content ? (
         <div>
             <i className={`${icon} font-size-16 color-text-light`.classNames()}></i>
@@ -87,7 +87,7 @@ function RenderMeta({ icon, hint, content }) {
             >
                 {hint}
             </span>
-            <span className={'font-size-17 font-weight-500 line-height-25 color-text'.classNames()}>
+            <span className={'font-size-17 font-weight-500 line-height-25 color-text'.classNames() + contentClass}>
                 {content}
             </span>
         </div>
@@ -181,7 +181,7 @@ export function Single({ base_permalink, settings={} }) {
             <div className={'details'.classNames(style)}>
                 <div className={'container'.classNames(style)}>
                     <div
-                        className={'d-flex align-items-center justify-content-space-between flex-break-sm break-align-items-start break-gap-20 padding-vertical-20 padding-horizontal-30 bg-color-white border-radius-10 box-shadow-thick'.classNames()}
+                        className={'d-flex align-items-center justify-content-space-between flex-wrap-wrap column-gap-20 row-gap-20 padding-vertical-20 padding-horizontal-30 bg-color-white border-radius-10 box-shadow-thick'.classNames()}
                         style={{ marginTop: '-51px', marginBottom: '79px' }}
                     >
                         <RenderMeta
@@ -192,12 +192,14 @@ export function Single({ base_permalink, settings={} }) {
                         <RenderMeta
                             icon={'ch-icon ch-icon-briefcase'}
                             hint={__('Job Type')}
+							contentClass={'white-space-nowrap'.classNames()}
                             content={employment_types[employment_type]}
                         />
                         <RenderMeta
                             icon={'ch-icon ch-icon-empty-wallet'}
                             hint={__('Salary')}
                             content={(salary_a || '') + (salary_b ? '-' + salary_b : '')}
+							contentClass={'white-space-nowrap'.classNames()}
                         />
                         <div className={'align-self-center'.classNames()}>
                             <Link
