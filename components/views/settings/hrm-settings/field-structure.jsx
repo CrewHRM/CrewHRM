@@ -58,6 +58,11 @@ export const settings_fields = applyFilters(
 									type: 'switch'
 								},
 								{
+									name: 'job_post_per_page',
+									label: __('Job Post Per Page'),
+									type: 'number'
+								},
+								{
 									name: 'application_form_layout',
 									label: __('Application form layout'),
 									type: 'dropdown',

@@ -24,8 +24,10 @@ class Settings {
 	private static function get() {
 		
 		$defaults = array(
-			'careers_search'  => true,
-			'careers_sidebar' => true,
+			'careers_search'          => true,
+			'careers_sidebar'         => true,
+			'application_form_layout' => 'segmented_form',
+			'job_post_per_page'       => 20,
 		);
 		
 		$_data = get_option( self::KEY_SETTINGS );
@@ -45,17 +47,10 @@ class Settings {
 	 */
 	public static function getSettings( $name = null, $default = null ) {
 
-		$data = self::get();
-
-		// Assing default values
-		if ( empty( $data['application_form_layout'] ) ) {
-			$data['application_form_layout'] = 'segmented_form';
-		}
-
 		// Pass through fitlers for pro default options ideally
-		$data = apply_filters( 'crewhrm_settings', $data );
+		$settings = apply_filters( 'crewhrm_settings', self::get() );
 		
-		return null !== $name ? ( $data[ $name ] ?? $default ) : $data;
+		return null !== $name ? ( $settings[ $name ] ?? $default ) : $settings;
 	}
 
 	/**

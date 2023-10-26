@@ -191,7 +191,7 @@ class Job {
 	public static function getJobs( $args = array(), $meta_data = array( 'application_count', 'stages' ), $segmentation = false ) {
 		// Prepare limit, offset, where conditions
 		$page   = (int) ( $args['page'] ?? 1 );
-		$limit  = $args['limit'] ?? 20;
+		$limit  = $args['limit'] ?? Settings::getSetting( 'job_post_per_page', 20 );
 		$offset = ( $page - 1 ) * $limit;
 
 		// SQL parts
@@ -328,8 +328,8 @@ class Job {
 	 * @return array
 	 */
 	public static function getCareersListing( array $args ) {
-		$selects           = 'job.job_id, job.job_title, address.*';
-		$limit             = Number::getInt( ( $args['limit'] ?? 20 ), 1, 20 );
+		$selects           = 'job.job_id, job.job_title, job.employment_type, address.*';
+		$limit             = Number::getInt( $args['limit'] ?? Settings::getSetting( 'job_post_per_page', 20 ), 1, 20 );
 		$offset            = ( Number::getInt( $args['page'] ?? 1, 1 ) - 1 ) * $limit;
 		$limit_clause      = " LIMIT {$limit} OFFSET {$offset}";
 		$where_clause      = "job.job_status='publish'";

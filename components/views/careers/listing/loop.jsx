@@ -12,12 +12,16 @@ export function CareersLoop({ jobs, base_permalink }) {
     });
 
     return jobs?.map((job) => {
-        const { job_id, job_title, meta: job_meta = {} } = job;
+        const { job_id, job_title, employment_type, city, province, street_address, country_code } = job;
 
         const meta = [
-            job_title,
-            getAddress(job),
-            employment_types[job_meta?.employment_type]
+            getAddress({
+				city, 
+				province: !city ? province : null,
+				street_address: (!city && !province) ? street_address : null,
+				country_code
+			}),
+            employment_types[employment_type]
         ].filter((m) => m);
 
         return (
@@ -25,19 +29,19 @@ export function CareersLoop({ jobs, base_permalink }) {
                 key={job_id}
                 className={
                     'single-job'.classNames(style) +
-                    'd-flex align-items-center padding-15 margin-bottom-20 border-radius-5'.classNames()
+                    'd-flex align-items-center column-gap-10 padding-vertical-12 padding-horizontal-15 margin-bottom-20 border-radius-5'.classNames()
                 }
                 onMouseOver={() => setState({ ...state, hovered_job: job_id })}
                 onMouseOut={() => setState({ ...state, hovered_job: null })}
             >
                 <div className={'flex-1'.classNames()}>
                     <span
-                        className={'d-block font-size-17 font-weight-600 line-height-24 letter-spacing--17 color-text'.classNames()}
+                        className={'d-block font-size-17 font-weight-600 line-height-15 letter-spacing--17 color-text'.classNames()}
                     >
                         {job_title}
                     </span>
                     <span
-                        className={'font-size-13 font-weight-400 line-height-24 letter-spacing--13 color-text-light'.classNames()}
+                        className={'font-size-13 font-weight-400 line-height-15 letter-spacing--13 color-text-light'.classNames()}
                     >
                         {meta.map((m, i) => {
                             return (

@@ -15,7 +15,7 @@ import style from './listing.module.scss';
 export function Listing({ base_permalink, settings = {} }) {
     const [searchParam, setSearchParam] = useSearchParams();
     const queryParams = parseParams(searchParam);
-    const current_page = queryParams.page || 1;
+    const current_page = parseInt( queryParams.page || 1 );
 
     const [state, setState] = useState({
         jobs: [],
@@ -24,11 +24,9 @@ export function Listing({ base_permalink, settings = {} }) {
         no_more: false
     });
 
-    const [searchState, setSearchState] = useState(null);
-
     // Push the filters to URL state
     const setFilter = (key, value) => {
-        const filters = {
+        const filters = typeof key === 'object' ? key : {
             ...queryParams,
             page: 1,
             [key]: value
@@ -73,19 +71,6 @@ export function Listing({ base_permalink, settings = {} }) {
         getJobs();
     }, [searchParam]);
 
-    // Use debounce for search input to prevent excessive request
-    useEffect(() => {
-        if (searchState === null) {
-            return;
-        }
-
-        const timer = window.setTimeout(() => {
-            setFilter('search', searchState);
-        }, 500);
-
-        return () => window.clearTimeout(timer);
-    }, [searchState]);
-
     return (
         <>
             {settings.header ? (
@@ -96,7 +81,7 @@ export function Listing({ base_permalink, settings = {} }) {
                         className={'padding-15 text-align-center'.classNames()}
                     >
                         <span
-                            className={'d-block font-size-38 font-weight-500 line-height-24 letter-spacing--38 color-white padding-vertical-50 margin-top-25 margin-bottom-25'.classNames()}
+                            className={'d-block font-size-38 font-weight-500 line-height-40 letter-spacing--38 color-white padding-vertical-50 margin-top-25 margin-bottom-25'.classNames()}
                         >
                             {settings.tagline}
                         </span>
@@ -126,19 +111,25 @@ export function Listing({ base_permalink, settings = {} }) {
                         <TextField
                             placeholder={__('Search Keywords')}
                             iconClass={'ch-icon ch-icon-search-normal-1'.classNames()}
-                            value={searchState === null ? '' : searchState}
-                            onChange={(v) => setSearchState(v)}
+                            value={queryParams.search || ''}
+                            onChange={(v) => setFilter( 'search', v )}
+							inputDelay={300}
                         />
                     </Conditional>
 
                     <Conditional show={!state.loading && !state.jobs.length}>
                         <div
-                            className={'text-align-center margin-top-10 margin-bottom-10'.classNames()}
+                            className={'text-align-center font-size-12 font-weight-500 letter-spacing--12 padding-15 color-text-light'.classNames()}
                         >
                             {__('No Job Found!')}
                         </div>
                     </Conditional>
 
+					<Conditional show={state.jobs.length}>
+						<div className={'font-size-12 font-weight-500 letter-spacing--12 padding-15 color-text-light'.classNames()}>
+							{__('Jobs')}
+						</div>
+					</Conditional>
                     <CareersLoop jobs={state.jobs} base_permalink={base_permalink} />
 
                     <Conditional show={!state.no_more}>

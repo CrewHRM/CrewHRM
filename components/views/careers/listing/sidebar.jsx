@@ -2,6 +2,7 @@ import React from 'react';
 import { TagField } from 'crewhrm-materials/tag-field/tag-field.jsx';
 import { __ } from 'crewhrm-materials/helpers.jsx';
 import { countries_object, employment_types } from 'crewhrm-materials/data.jsx';
+import { Conditional } from 'crewhrm-materials/conditional.jsx';
 
 import style from './listing.module.scss';
 
@@ -56,7 +57,7 @@ export function CareersSidebar({ setFilter, filters, jobs_country_codes = [], de
                             className={'margin-bottom-23 overflow-auto'.classNames()}
                         >
                             <span
-                                className={'d-block font-size-14 font-weight-700 line-height-24 letter-spacing--14 color-text-light margin-bottom-16'.classNames()}
+                                className={'d-block font-size-14 font-weight-700 line-height-24 letter-spacing--14 color-text-light margin-bottom-16 text-transform-uppercase'.classNames()}
                             >
                                 {section_label}
                             </span>
@@ -68,11 +69,7 @@ export function CareersSidebar({ setFilter, filters, jobs_country_codes = [], de
                                       return (
                                           <span
                                               key={id}
-                                              className={`d-block font-size-14 cursor-pointer margin-bottom-18 ${
-                                                  is_active
-                                                      ? 'font-weight-600 color-text'
-                                                      : 'font-weight-500 color-text-light'
-                                              }`.classNames()}
+                                              className={`d-block font-size-14 cursor-pointer margin-bottom-18 font-weight-500 ${is_active ? 'color-text' : 'color-text-light'}`.classNames()}
                                               onClick={() => _setFilter(filter_key, id)}
                                           >
                                               {label} {count ? `(${count})` : null}
@@ -95,6 +92,12 @@ export function CareersSidebar({ setFilter, filters, jobs_country_codes = [], de
                         </div>
                     ) : null;
                 })}
+
+				<Conditional show={Object.keys(filters).length>1 || filters.page>1}>
+					<span className={'d-flex align-items-center column-gap-6 font-size-14 color-text-light color-hover-text cursor-pointer'.classNames()} onClick={()=>setFilter({})} style={{marginLeft: '-3px'}}>
+						<i className={'ch-icon ch-icon-times font-size-18'.classNames()}></i> {__('Clear Filters')}
+					</span>
+				</Conditional>
             </div>
         </div>
     );

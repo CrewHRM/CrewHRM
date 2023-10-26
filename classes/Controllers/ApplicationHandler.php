@@ -215,13 +215,12 @@ class ApplicationHandler {
 	 */
 	public static function getCareersListing( array $data ) {
 		$jobs = Job::getCareersListing( $data['filters'] );
-
-				wp_send_json_success(
-					array(
-						'jobs'        => array_values( $jobs['jobs'] ),
-						'departments' => $jobs['departments'],
-					)
-				);
+		wp_send_json_success(
+			array(
+				'jobs'        => array_values( $jobs['jobs'] ),
+				'departments' => $jobs['departments'],
+			)
+		);
 	}
 
 	/**
