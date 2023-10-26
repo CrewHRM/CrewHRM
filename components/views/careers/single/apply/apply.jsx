@@ -301,7 +301,7 @@ export function Apply({ job = {}, settings={} }) {
             <div className={'header'.classNames(style) + 'bg-color-tertiary'.classNames()}>
                 <div className={'container'.classNames(style) + 'padding-30'.classNames()}>
                     <span
-                        className={'d-block font-size-24 font-weight-600 line-height-24 letter-spacing--24 color-text'.classNames()}
+                        className={'d-block font-size-24 font-weight-600 line-height-32 letter-spacing--24 color-text'.classNames()}
                     >
                         {job_title}
                     </span>

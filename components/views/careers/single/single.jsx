@@ -169,7 +169,7 @@ export function Single({ base_permalink, settings={} }) {
                         {department_name}
                     </span>
                     <span
-                        className={'d-block font-size-38 font-weight-600 line-height-24 letter-spacing--38 color-text'.classNames()}
+                        className={'d-block font-size-38 font-weight-600 line-height-40 letter-spacing--38 color-text'.classNames()}
                     >
                         {job_title}
                         <Conditional show={job_status !== 'publish'}>

@@ -1,44 +1,17 @@
 import React from 'react';
 
-import { __, formatDate, replaceUrlsWithAnchors } from 'crewhrm-materials/helpers.jsx';
+import { __, replaceUrlsWithAnchors } from 'crewhrm-materials/helpers.jsx';
 import { Line } from 'crewhrm-materials/line/line.jsx';
 import { DangerouslySet } from 'crewhrm-materials/dangerously-set.jsx';
 import { Conditional } from 'crewhrm-materials/conditional.jsx';
-import { genders } from 'crewhrm-materials/data.jsx';
 
 import style from './overview.module.scss';
 
-export function OverView({ application = {} }) {
-    const { overview = [], gender, date_of_birth } = application;
-
-	const basics = [];
-
-	// Gender
-	if (gender) {
-		basics.push({
-			id: 'gender',
-			label: __('Gender'),
-			text: genders[ gender ] || gender
-		})
-	}
-
-	// DOB
-	if (date_of_birth) {
-		basics.push({
-			id: 'dob',
-			label: __('Date of Birth'),
-			text: formatDate( date_of_birth )
-		})
-	}
-
-	const data_list = [
-		...basics, 
-		...overview
-	];
-
+export function OverView({ overview=[] }) {
+    
     return (
         <div data-crew="overview" className={'overview'.classNames(style)}>
-            {data_list.map((q, i) => {
+            {overview.map((q, i) => {
                 const { id, label, text, text_options = [] } = q;
 
                 return (
@@ -80,16 +53,12 @@ export function OverView({ application = {} }) {
 						</Conditional>
 						
                         <Line
-                            show={i < data_list.length - 1}
+                            show={i < overview.length - 1}
                             className={'margin-top-20 margin-bottom-20'.classNames()}
                         />
                     </div>
                 );
             })}
-
-			<Conditional show={!data_list.length}>
-				<div className={'color-warning'.classNames()}>{__('No data!')}</div>
-			</Conditional>
         </div>
     );
 }

@@ -170,7 +170,7 @@ export function JobOpenings(props) {
 
         const { filters } = state;
 
-        request('getJobsDashboard', { filters: { ...filters, ...f } }, (resp) => {
+        request('getJobsDashboard', { filters: { ...filters, ...f, limit: is_overview ? 4 : 20 } }, (resp) => {
             const {
                 success,
                 data: { jobs = [], segmentation = {} }

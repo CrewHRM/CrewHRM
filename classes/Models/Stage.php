@@ -282,7 +282,7 @@ class Stage {
 
 		$order_by = $args['order_by'] ?? 'application_date';
 		$order    = $args['order'] ?? 'DESC';
-		$limit    = $args['limit'] ?? 20;
+		$limit    = $args['limit'] ?? 2;
 		$offset   = ( ( $args['page'] ?? 1 ) - 1 ) * $limit;
 
 		$where_clause = '';

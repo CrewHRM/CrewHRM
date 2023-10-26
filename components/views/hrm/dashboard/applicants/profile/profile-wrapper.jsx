@@ -1,13 +1,14 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
-import { __, getAddress, getFlag } from 'crewhrm-materials/helpers.jsx';
+import { __, getAddress, getFlag, formatDate } from 'crewhrm-materials/helpers.jsx';
 import { Tabs } from 'crewhrm-materials/tabs/tabs.jsx';
 import { CoverImage } from 'crewhrm-materials/image/image.jsx';
 import { Line } from 'crewhrm-materials/line/line.jsx';
 import { request } from 'crewhrm-materials/request.jsx';
 import { InitState } from 'crewhrm-materials/init-state.jsx';
 import { ErrorBoundary } from 'crewhrm-materials/error-boundary.jsx';
+import { genders } from 'crewhrm-materials/data.jsx';
 
 import { HeadActions } from './head-actions/head-actions.jsx';
 import { OverView } from './overview/overview.jsx';
@@ -80,13 +81,46 @@ export function Profile({ job_id, has_applications }) {
         });
     };
 
+	const getOverview=()=>{
+    
+		const { overview = [], gender, date_of_birth } = state.application;
+
+		const basics = [];
+
+		// Gender
+		if (gender) {
+			basics.push({
+				id: 'gender',
+				label: __('Gender'),
+				text: genders[ gender ] || gender
+			})
+		}
+
+		// DOB
+		if (date_of_birth) {
+			basics.push({
+				id: 'dob',
+				label: __('Date of Birth'),
+				text: formatDate( date_of_birth )
+			})
+		}
+
+		return  [
+			...basics, 
+			...overview
+		];
+	}
+
     useEffect(() => {
         if (application_id) {
             getApplication();
         }
     }, [application_id, session]);
 
+	const _overview = getOverview();
     const { application = {} } = state;
+	const _current_tab = _overview.length ? state.active_tab : (state.active_tab=='overview' ? 'documents' : state.active_tab);
+	const _tabs = _overview.length ? tabs : tabs.filter(t=>t.id!='overview');
 
     if (!state.mounted && !has_applications) {
         return (
@@ -152,17 +186,17 @@ export function Profile({ job_id, has_applications }) {
 
                 {/* Profile Contents Tab */}
                 <Tabs
-                    active={state.active_tab}
-                    tabs={tabs}
+                    active={_current_tab}
+                    tabs={_tabs}
                     onNavigate={(active_tab) => setState({ ...state, active_tab })}
-                    theme={'transparent'}
+                    theme='transparent'
                     className={'margin-bottom-20'.classNames()}
                 />
 
                 {/* Profile contents per selected tab */}
-                {state.active_tab == 'overview' ? <ErrorBoundary><OverView application={application} /></ErrorBoundary> : null}
-                {state.active_tab == 'documents' ? <ErrorBoundary><Documents application={application} /></ErrorBoundary> : null}
-                {state.active_tab == 'activity' ? <ErrorBoundary><Activity application={application} /></ErrorBoundary> : null}
+                {_current_tab == 'overview' ? <ErrorBoundary><OverView application={application} overview={_overview}/></ErrorBoundary> : null}
+                {_current_tab == 'documents' ? <ErrorBoundary><Documents application={application} /></ErrorBoundary> : null}
+                {_current_tab == 'activity' ? <ErrorBoundary><Activity application={application} /></ErrorBoundary> : null}
             </div>
         </>
     );
