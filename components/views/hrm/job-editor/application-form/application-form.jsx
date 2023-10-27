@@ -366,7 +366,7 @@ export function ApplicationForm() {
                 <FormActionButtons
                     onBack={() => navigateTab(-1)}
                     onNext={onSaveClick}
-                    disabledNext={is_next_disabled || saving_mode === 'manual'}
+                    disabledNext={is_next_disabled || saving_mode}
                     nextText={__('Publish Now')}
                 />
             </div>

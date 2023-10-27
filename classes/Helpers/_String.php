@@ -17,13 +17,26 @@ class _String {
 	 * @var array
 	 */
 	private static $allowed_html = array(
-		'strong',
-		'p',
-		'div',
-		'b',
-		'i',
-		'br',
 		'a',
+		'b',
+		'br',
+		'code',
+		'del',
+		'div',
+		'em',
+		'i',
+		'ins',
+		'kbd',
+		'li',
+		'ol',
+		'p',
+		'small',
+		'span',
+		'strong',
+		'sub',
+		'sup',
+		'u',
+		'ul',
 	);
 
 	/**
@@ -40,6 +53,7 @@ class _String {
 		'title'  => array(),
 		'width'  => array(),
 		'height' => array(),
+		'size'   => array()
 	);
 
 	/**

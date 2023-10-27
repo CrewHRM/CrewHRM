@@ -278,7 +278,7 @@ class Stage {
 	 * @param array $args Arguments array to get applications based on
 	 * @return array
 	 */
-	public static function getApplications( array $args ) {
+	private static function getApplications( array $args ) {
 
 		$order_by = $args['order_by'] ?? 'application_date';
 		$order    = $args['order'] ?? 'DESC';

@@ -7,6 +7,7 @@
 
 namespace CrewHRM\Controllers;
 
+use CrewHRM\Helpers\_Array;
 use CrewHRM\Helpers\Number;
 use CrewHRM\Models\Application;
 use CrewHRM\Models\Field;
@@ -70,7 +71,13 @@ class ApplicationHandler {
 	 * @return void
 	 */
 	public static function applyToJob( array $data ) {
-		$application_id = Application::createApplication( $data['application'] );
+		// Check data
+		if ( ! is_array( $data['application'] ?? null ) ) {
+			wp_send_json_error( array( 'message' => __( 'Invalid request data', 'crewhrm' ) ) );
+		}
+
+		$application    = _Array::sanitizeRecursive( $data['application'], array( 'cover_letter' ) );
+		$application_id = Application::createApplication( $application );
 
 		if ( empty( $application_id ) ) {
 			wp_send_json_error(

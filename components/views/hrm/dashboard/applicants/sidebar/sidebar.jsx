@@ -135,7 +135,7 @@ export function Sidebar({ stage_id, hasApplications }) {
                         <div
                             key={app_id}
                             className={`cursor-pointer bg-color-hover-quaternary bg-color-active-quaternary ${
-                                application_id === app_id ? 'active' : ''
+                                application_id == app_id ? 'active' : ''
                             }`.classNames()}
                             onClick={(e) =>
                                 navigate(`/dashboard/jobs/${job_id}/applications/${app_id}/`)

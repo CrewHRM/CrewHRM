@@ -131,7 +131,8 @@ export function JobEditor() {
 
     const saveJob = (auto) => {
         // Save only if the required fields are filled no matter if it is auto or manual save
-        if (is_next_disabled) {
+		// And no other request is in progress
+        if (is_next_disabled || state.saving_mode) {
             return;
         }
 
@@ -355,7 +356,7 @@ export function JobEditor() {
                             </span>
                         </Conditional>
 
-                        <Conditional show={is_last_step}>
+                        <Conditional show={is_last_step && !state.saving_mode}>
                             <Link
                                 className={'button button-primary button-outlined'.classNames()}
                                 target="_blank"

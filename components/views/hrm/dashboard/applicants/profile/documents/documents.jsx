@@ -3,7 +3,7 @@ import { ExpandableContent } from 'crewhrm-materials/expandable-content/expandab
 import { __, replaceUrlsWithAnchors, isEmpty } from 'crewhrm-materials/helpers.jsx';
 import { Line } from 'crewhrm-materials/line/line.jsx';
 import { DangerouslySet } from 'crewhrm-materials/dangerously-set.jsx';
-import { PDFViewer } from 'crewhrm-materials/pdf-viewer.jsx';
+import { PDFViewer } from 'crewhrm-materials/pdf-viewer/pdf-viewer.jsx';
 import { Conditional } from 'crewhrm-materials/conditional.jsx';
 import { Slot } from 'crewhrm-materials/mountpoint.jsx';
 
