@@ -11,6 +11,7 @@ import { AddressFields } from 'crewhrm-materials/address-fields.jsx';
 import { RadioCheckbox } from 'crewhrm-materials/radio-checkbox.jsx';
 
 export function RenderField({ field={}, onChange=()=>{}, values = {}, showErrorsAlways}) {
+	
 	if ( Array.isArray(field) ) {
 		return <div className={'d-flex align-items-center column-gap-20'.classNames()}>
 			{field.map(f=>{
@@ -35,35 +36,6 @@ export function RenderField({ field={}, onChange=()=>{}, values = {}, showErrors
 		enabled,
 		regex
 	} = field;
-
-	const dispatchChecks = (e) => {
-		const { checked, name, value } = e.currentTarget;
-
-		// If radio button, directly set boolean value
-		if (type === 'radio') {
-			if (checked) {
-				onChange(name, value);
-			}
-			return;
-		}
-
-		// If checkbox, put the value in the array
-		const array = Array.isArray(values[name]) ? values[name] : [];
-		if (checked) {
-			// Store the value in array if not already
-			if (array.indexOf(value) === -1) {
-				array.push(value);
-			}
-		} else {
-			// Delete the value from the array if exists
-			const index = array.findIndex((element) => element === value);
-			if (index > -1) {
-				array.splice(index, 1);
-			}
-		}
-
-		onChange(name, array);
-	};
 
 	return (
 		<Conditional show={enabled}>

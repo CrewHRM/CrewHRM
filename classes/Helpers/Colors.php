@@ -67,11 +67,12 @@ class Colors {
 	 * @return array
 	 */
 	public static function getColors() {
+		
 		$colors = self::$base_colors;
 
 		// Provide some necessary opacity
 		$colors['secondary-15'] = self::hexToRgba( $colors['secondary'], 0.15 );
 
-		return $colors;
+		return apply_filters( 'crewhrm_color_palette', $colors );
 	}
 }

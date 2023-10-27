@@ -2,7 +2,7 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 
 import { StickyBar } from 'crewhrm-materials/sticky-bar.jsx';
-import { __, getRandomString, isEmpty } from 'crewhrm-materials/helpers.jsx';
+import { __, filterObject, getRandomString, isEmpty } from 'crewhrm-materials/helpers.jsx';
 import { Tabs } from 'crewhrm-materials/tabs/tabs.jsx';
 import { request } from 'crewhrm-materials/request.jsx';
 import { ContextToast } from 'crewhrm-materials/toast/toast.jsx';
@@ -51,11 +51,17 @@ export const hiring_flow = [
 });
 
 // Remove unnecessary properties before saving
-function getFieldsToSave(sections_fields) {
+function getFieldsToSave(sections_fields, section_name) {
     const _new = {};
 
     // Loop through the sections
     for (let section in sections_fields) {
+
+		// Add support of specific section name
+		if ( section_name && section!==section_name ) {
+			continue;
+		}
+
         // Spread section properties into new object
         _new[section] = { ...sections_fields[section] };
 
@@ -81,6 +87,60 @@ function getFieldsToSave(sections_fields) {
     }
 
     return _new;
+}
+
+function justifyFields( section_fields, application_form ) {
+
+	// Remove obsolete sections from saved form
+	let _application_form = filterObject(application_form, (value, key)=>{
+		return section_fields[key] ? true : false;
+	});
+
+	// Remove obsolete singular fields from saved form except questions as it is managed by addon
+	for ( let section_name in _application_form ) {
+		const {fields=[]} = _application_form[section_name];
+		_application_form[section_name].fields = fields.filter(field=>{
+			return section_name=='questions' || section_fields[section_name].fields.find(f=>f.id===field.id)
+		});
+	}
+
+	// Add outstanding section to saved form
+	for ( let section_name in sections_fields ) {
+		if ( !_application_form[section_name] ) {
+			_application_form = {
+				..._application_form, 
+				...getFieldsToSave(section_fields, section_name)
+			}
+		}
+
+		// Add outstanding singular fields to saved form
+		if ( section_name !== 'questions' ) {
+			const {fields=[]} = section_fields[section_name];
+			const {fields: _fields=[]} = _application_form[section_name];
+
+			// Loop through run time form fields
+			runtime_loop: for ( let i=0; i<fields.length; i++ ) {
+
+				// Loop through saved form fields
+				for( let n=0; n<_fields.length; n++ ) {
+					if ( fields[i].id === _fields[n].id ) {
+						continue runtime_loop;
+					}
+				}
+
+				// As it is reached here, the field is outstanding and not in saved form
+				if ( ! Array.isArray( _application_form[section_name].fields ) ) {
+					_application_form[section_name].fields = [];
+				}
+				
+				delete fields[i].form;
+				
+				_application_form[section_name].fields = [..._fields, fields[i]];
+			}
+		}
+	}
+
+	return _application_form;
 }
 
 export function JobEditor() {
@@ -248,8 +308,8 @@ export function JobEditor() {
                     ...job,
                     hiring_flow: isEmpty(job.hiring_flow) ? hiring_flow : job.hiring_flow,
                     application_form: isEmpty(job.application_form)
-                        ? getFieldsToSave(sections_fields)
-                        : job.application_form
+                        ? getFieldsToSave( sections_fields )
+                        : justifyFields( sections_fields, job.application_form )
                 },
                 session: getRandomString(),
                 autosaved_job,
@@ -291,7 +351,10 @@ export function JobEditor() {
                 setState({
                     ...state,
                     autosaved_job: null,
-                    values: state.autosaved_job
+                    values: {
+						...state.autosaved_job,
+						application_form: justifyFields(sections_fields, state.autosaved_job.application_form )
+					}
                 });
 
                 closeWarning();
