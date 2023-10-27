@@ -16,12 +16,12 @@ export function Congrats({job_permalink, onClose}) {
 				style={{width: '217px'}}/>
 
 			<div className={'font-size-28 font-weight-600 color-text margin-bottom-15 line-height-38'.classNames()}>
-				{__('Congratulation')}<br/>
-				{__('Your job post is live')}
+				{__('Congratulations!')}<br/>
+				{__('The job post is published')}
 			</div>
 
 			<div className={'font-size-15 font-weight-400 color-text-light margin-bottom-20'.classNames()}>
-				{__('Candidates see your logo and description on job posts, and more')}
+				{__('You can now share the job post anywhere you like.')}
 			</div>
 
 			<div className={'margin-bottom-17'.classNames()}>
