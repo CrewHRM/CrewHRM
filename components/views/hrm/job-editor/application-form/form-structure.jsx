@@ -57,13 +57,13 @@ export const sections_fields = applyFilters('job_application_fields', {
                             name: 'first_name',
                             label: __('First Name'),
                             type: 'text',
-							regex: /\S+/
+							regex: patterns.first_name
                         },
                         {
                             name: 'last_name',
                             label: __('Last Name'),
                             type: 'text',
-							regex: /\S+/
+							regex: patterns.last_name
                         }
                     ],
                 ]

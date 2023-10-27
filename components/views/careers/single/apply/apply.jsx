@@ -263,17 +263,9 @@ export function Apply({ job = {}, settings={} }) {
             }
 
             const { name, required } = fields[i];
+			const {regex: validate_pattern = patterns[name]} = fields[i];
             const value = state.values[name];
 			const is_empty = isEmpty(value);
-
-			// Determine how to validate
-			let validate_pattern;
-			for ( let key in patterns ) {
-				if ( name.indexOf(key)>-1 ) {
-					validate_pattern = patterns[key];
-					break;
-				}
-			}
 
             if (required && is_empty ) {
                 _enabled = false;

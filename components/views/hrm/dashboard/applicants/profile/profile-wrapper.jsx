@@ -21,6 +21,8 @@ import style from './profile.module.scss';
 const tab_class =
     'd-flex align-items-center justify-content-center font-size-15 font-weight-500 line-height-24'.classNames();
 
+const mail_phone_class = 'd-block font-size-15 font-weight-400 line-height-24 color-text-light color-hover-text margin-bottom-2 cursor-pointer'.classNames();
+
 const tabs = [
     {
         id: 'overview',
@@ -169,16 +171,13 @@ export function Profile({ job_id, has_applications }) {
                             </span>
                         ) : null}
 
-                        <span
-                            className={'d-block font-size-15 font-weight-400 line-height-24 color-text-light margin-bottom-2'.classNames()}
-                        >
+                        <a href={'mailto:'+application.email} target='_blank' className={mail_phone_class}>
                             {application.email}
-                        </span>
-                        <span
-                            className={'d-block font-size-15 font-weight-400 line-height-24 color-text-light margin-bottom-2'.classNames()}
-                        >
+                        </a>
+
+                        <a href={'tel:'+application.phone} className={mail_phone_class}>
                             {application.phone}
-                        </span>
+                        </a>
                     </div>
                 </div>
 

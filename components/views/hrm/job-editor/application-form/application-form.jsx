@@ -155,26 +155,13 @@ export function ApplicationForm() {
 
                 {/* General fields with toggle switch */}
                 {Object.keys(values.application_form).map((section_name) => {
-					// Make sure the section is available in the structure. 
-					// If someone create job with pro, and move to free, the section remains as it is saved in database.
-					// So exclude it here if not in the section.
-					if ( ! sections_fields[section_name] ) {
-						return null;
-					}
-
+					
                     const {
                         label,
-                        fields: input_fields,
+                        fields: _input_fields,
                         addLabel,
                         sortable
                     } = values.application_form[section_name];
-
-					// Exclude fields if it is not in the hard coded or filter hooked blueprints. 
-					// These are supposed to be registered from pro, and supposed to be missing if the pro or addon is not enabled.
-					// However it is not applicable for question exceptionally is it is little bit different, I mean the fields are dynamic.
-					const _input_fields = input_fields.filter(field=>{
-						return section_name=='questions' || sections_fields[section_name].fields.find(f=>f.id===field.id)
-					});
 
                     // Prepare popup options to delete, edit etc.
                     const { options = {} } = sections_fields[section_name];
