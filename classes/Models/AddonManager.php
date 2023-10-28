@@ -17,7 +17,7 @@ class AddonManager {
 	 *
 	 * @return object
 	 */
-	public static function getAddonsStates(  ) {
+	public static function getAddonsStates() {
 		$states   = _Array::getArray( Settings::getSetting( self::SETTING_NAME ) );
 		$defaults = array(
 			'assessment' => true,

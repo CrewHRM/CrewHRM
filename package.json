@@ -71,6 +71,8 @@
     "react-beautiful-dnd": "^13.1.1",
     "react-dom": "^18.2.0",
     "react-draft-wysiwyg": "^1.15.0",
+    "react-google-recaptcha": "^3.1.0",
+    "react-google-recaptcha-v3": "^1.10.1",
     "react-helmet": "^6.1.0",
     "react-image-zooom": "^1.2.0",
     "react-paginate": "^8.2.0",

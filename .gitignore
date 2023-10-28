@@ -2,6 +2,7 @@
 node_modules/
 dist/*
 !dist/libraries/
+dist/libraries/pro/*
 vendor/
 build/
 *.zip

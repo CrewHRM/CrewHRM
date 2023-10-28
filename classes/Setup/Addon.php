@@ -69,6 +69,7 @@ class Addon {
 
 		// Parse individual addon configs
 		$configs                              = _Array::getManifestArray( $index_path );
+		$configs->thumbnail_url               = $configs->url . 'thumbnail.png';
 		self::$addons[ $configs->crewhrm_id ] = $configs;
 
 		// Call addon initiator if it is enabled or must use one.
@@ -98,10 +99,16 @@ class Addon {
 	}
 
 	private function getProAddons() {
-		$json_path = Main::$configs->dir . 'dist/libraries/pro-addons.json';
+		$json_path = Main::$configs->dir . 'dist/libraries/pro/addons.json';
+		$thumb_url = Main::$configs->url . 'dist/libraries/pro/thumbnails/';
 		$addons    = file_exists( $json_path ) ? json_decode( file_get_contents( $json_path ), true ) : array();
 		$addons    = _Array::appendColumn( $addons, 'locked', true );
 		$addons    = _Array::indexify( $addons, 'crewhrm_id' );
+
+		// Assign addon thumbnail urls
+		foreach ( $addons as $id => $addon ) {
+			$addons[ $id ]['thumbnail_url'] = $thumb_url . $id . '.png';
+		}
 
 		return apply_filters( 'crewhrm_pro_locked_addons', $addons );
 	}
@@ -110,9 +117,21 @@ class Addon {
 	 * Contents for the addons page
 	 */
 	public function addOnPage() {
+		// Filter sensitive data out
+		$addons = self::$addons;
+		foreach ( $addons as $index => $addon ) {
+			unset( $addon->dir );
+			unset( $addon->file );
+			$addons[ $index ] = $addon;
+		}
+
+		// Include pro addon list too to show when pro is not installed
+		$addons        = array_merge( $addons, $this->getProAddons() );
+		$enable_states = (object) AddonManager::getAddonsStates();
+
 		echo '<div 
 				id="crewhrm_addons_page"
-				data-addon-states="' . esc_attr( wp_json_encode( (object) AddonManager::getAddonsStates() ) ) . '"
-				data-addons="' . esc_attr( wp_json_encode( array_merge( self::$addons, $this->getProAddons() )  ) ) . '"></div>';
+				data-addon-states="' . esc_attr( wp_json_encode( $enable_states ) ) . '"
+				data-addons="' . esc_attr( wp_json_encode( $addons  ) ) . '"></div>';
 	}
 }
