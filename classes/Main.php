@@ -47,8 +47,9 @@ class Main {
 	public function init( object $configs ) {
 
 		// Store configs in runtime static property
-		self::$configs      = $configs;
-		self::$configs->dir = dirname( $configs->file ) . '/';
+		self::$configs          = $configs;
+		self::$configs->dir     = dirname( $configs->file ) . '/';
+		self::$configs->has_pro = false;
 
 		// Loading Autoloader
 		spl_autoload_register( array( $this, 'loader' ) );
@@ -73,6 +74,14 @@ class Main {
 		new Admin();
 		new Careers();
 		new Mails();
+
+		// Set pro flag
+		add_action(
+			'crewhrm_pro_loaded', 
+			function(){
+				self::$configs->has_pro = true;
+			}
+		);
 
 		do_action( 'crewhrm_loaded' );
 	}

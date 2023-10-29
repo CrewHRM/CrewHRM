@@ -1,7 +1,12 @@
+import React from 'react';
 import { __ } from 'crewhrm-materials/helpers.jsx';
 import { applyFilters } from 'crewhrm-materials/hooks.jsx';
 
 import { business_types } from 'crewhrm-materials/data.jsx';
+import { Promote } from '../../../promote/promote';
+
+import zoom_svg from 'crewhrm-materials/static/images/brands/zoom.svg';
+import meet_svg from 'crewhrm-materials/static/images/brands/meet.svg';
 
 export const settings_fields = applyFilters(
 	'crewhrm_setting_fields',
@@ -96,16 +101,25 @@ export const settings_fields = applyFilters(
 									label: __('Email Notifications'),
 									hint: __('CrewHRM sends updates by email to admins and applicants. Turn them on as needed.'),
 									type: 'checkbox',
-									options: [
-										{
-											id: 'application-confirmation',
-											label: __('Application received confirmation email to applicants.')
-										}
-									],
+									options: applyFilters(
+										'outgoing_email_event_list', 
+										[
+											{
+												id: 'application-confirmation',
+												label: __('Application received confirmation email to applicants.')
+											}
+										]
+									),
 								}
 							]
 						}
 					}
+				},
+				attachment: {
+					label: __('Files & Attachments'),
+					icon: 'ch-icon ch-icon-paperclip-2',
+					overflow: false,
+					component: ()=><Promote content="attachment_settings"/>
 				}
 			}
 		},
@@ -237,7 +251,20 @@ export const settings_fields = applyFilters(
 			description: __(
 				'Manage External API integrations'
 			),
-			segments: {}
+			segments: {
+				'google-meet': {
+					label: __('Google Meet'),
+					icon: meet_svg,
+					overflow: false,
+					component: ()=><div style={{minHeight: '600px'}}><Promote content='meet_settings'/></div>
+				},
+				zoom: {
+					label: __('Zoom'),
+					icon: zoom_svg,
+					overflow: false,
+					component: ()=><div style={{minHeight: '600px'}}><Promote content='zoom_settings'/></div>
+				}
+			}
 		}
 	}
 );

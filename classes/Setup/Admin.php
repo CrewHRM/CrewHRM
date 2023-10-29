@@ -21,6 +21,7 @@ class Admin {
 	const SLUG_SETTINGS        = 'crewhrm-settings';
 	const MOUNTPOINT_SETTINGS  = 'crewhrm_settings';
 	const MOUNTPOINT_DASHBOARD = 'crewhrm_dashboard';
+	const PAGE_SLUG_CALENDAR   = 'crewhrm-event-calendar';
 
 	/**
 	 * Setup admin menus
@@ -29,8 +30,39 @@ class Admin {
 	 */
 	public function __construct() {
 		add_action( 'admin_menu', array( $this, 'registerMenu' ), 10 );
+		add_action( 'admin_menu', array( $this, 'registerCalendar' ), 10 );
 		add_filter( 'plugin_action_links_' . plugin_basename( Main::$configs->file ), array( $this, 'pluginActionLinks' ) );
 		add_action( 'admin_notices', array( $this, 'showCareersPageError' ) );
+	}
+
+	/**
+	 * Register calendar promotion
+	 *
+	 * @return void
+	 */
+	public function registerCalendar() {
+		
+		// Do not register if pro plugin is active
+		if ( Main::$configs->has_pro ) {
+			return;
+		}
+
+		// Setting page
+		add_submenu_page(
+			Main::$configs->app_name,
+			__( 'Event Calendar', 'crewhrm' ),
+			__( 'Event Calendar', 'crewhrm' ),
+			User::getAdminMenuRole( get_current_user_id() ),
+			self::PAGE_SLUG_CALENDAR, // The slug must be same as the pro one, so the url will remain same.
+			array( $this, 'calendarPage' )
+		);
+	}
+
+	/**
+	 * Contents for the addons page
+	 */
+	public function calendarPage() {
+		echo '<div id="crewhrm_event_calendar_page_promotion"></div>';
 	}
 
 	/**
