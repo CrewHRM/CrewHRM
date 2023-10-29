@@ -111,6 +111,7 @@ class Scripts {
 				'timeouts'          => (object) array(),
 				'nonce_action'      => $nonce_action,
 				'nonce'             => $nonce,
+				'has_pro'           => Main::$configs->has_pro,
 				'wp_max_size'       => Settings::getWpMaxUploadSize(),
 				'date_format'       => get_option( 'date_format' ),
 				'time_format'       => get_option( 'time_format' ),

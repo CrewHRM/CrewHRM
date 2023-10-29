@@ -297,10 +297,10 @@ function OptionFields({fields=[], vertical, separator, is_group=false}) {
 
 export function Options() {
     const { segment, sub_segment } = useParams();
-    const { sections={}, component } = settings_fields[segment].segments[sub_segment];
+    const { sections={}, component, overflow=true } = settings_fields[segment].segments[sub_segment];
 
 	const wrapper_attrs = {
-		className: 'padding-30 bg-color-white box-shadow-thin'.classNames(),
+		className: `position-relative ${overflow ? '' : 'overflow-hidden'} padding-30 bg-color-white box-shadow-thin`.classNames(),
 		style: {borderRadius: '5px'}
 	}
 

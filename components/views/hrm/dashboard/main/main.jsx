@@ -9,6 +9,8 @@ import { RenderExternal } from 'crewhrm-materials/render-external.jsx';
 import { applyFilters } from 'crewhrm-materials/hooks.jsx';
 // import { DangerouslySet } from 'crewhrm-materials/dangerously-set.jsx';
 
+import { Promote } from '../../../../promote/promote.jsx';
+
 import style from './main.module.scss';
 
 function CreateJobIntro({orientation="vertical"}) {
@@ -37,10 +39,6 @@ function CreateJobIntro({orientation="vertical"}) {
 	</IntroCard>
 }
 
-function CreateJobIntroHorizontal() {
-	return <CreateJobIntro orientation='horizontal'/>
-}
-
 export function DahboardMain() {
     return (
         <div
@@ -49,11 +47,13 @@ export function DahboardMain() {
         >
             <div className={'sidebar'.classNames(style)}>
                 <StatCards className={'margin-bottom-20'.classNames()} />
-				<RenderExternal component={applyFilters('crewhrm_dashboard_vertical_card', CreateJobIntro)}/>
+				<div className={'position-relative border-radius-5 overflow-hidden'.classNames()}>
+					<RenderExternal component={applyFilters('crewhrm_dashboard_vertical_card', ()=><Promote content="calendar_widget"/>)}/>
+				</div>
             </div>
 
             <div className={'content-area'.classNames(style)}>
-				<RenderExternal component={applyFilters('crewhrm_dashboard_horizontal_card', null, CreateJobIntroHorizontal)}/>
+				<CreateJobIntro orientation='horizontal'/>
                 <JobOpenings is_overview={true} className={'margin-bottom-20'.classNames()} />
             </div>
         </div>

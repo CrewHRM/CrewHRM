@@ -10,6 +10,8 @@ import { ContextToast } from 'crewhrm-materials/toast/toast.jsx';
 import { applyFilters } from 'crewhrm-materials/hooks.jsx';
 import { RenderExternal } from 'crewhrm-materials/render-external.jsx';
 
+import { Promote } from '../../../../../../promote/promote.jsx';
+
 import style from './head.module.scss';
 
 const application_actions = [
@@ -31,8 +33,30 @@ export function HeadActions({ application }) {
     const { application_id, job_id } = useParams();
     const { ajaxToast } = useContext(ContextToast);
     const navigate = useNavigate();
+	const {has_pro} = window.CrewHRM;
 
-    const segments = applyFilters( 'applicant_profile_communication_channels', [] );
+    const segments = applyFilters( 'applicant_profile_communication_channels', has_pro ? [] : [
+		{
+            icon: 'ch-icon ch-icon-note-favorite',
+            title: __('Event'),
+            renderer: ()=><Promote content="event_editor"/>,
+            tagline: (
+                <span className={'font-size-15 font-weight-500 color-text'.classNames()}>
+                    {__('Email')}
+                </span>
+            )
+        },
+		{
+            icon: 'ch-icon ch-icon-message',
+            title: __('Internal Comment'),
+            renderer: ()=><Promote content="comment" style={{minHeight: '600px'}}/>,
+            tagline: (
+                <span className={'font-size-15 font-weight-500 color-text'.classNames()}>
+                    {__('Internal Comment')}
+                </span>
+            )
+        }
+	] );
 
     const [state, setState] = useState({
         active_segment: null
@@ -103,7 +127,7 @@ export function HeadActions({ application }) {
     return (
         <div
             data-crew="application"
-            className={'head'.classNames(style) + 'margin-bottom-13'.classNames()}
+            className={'head'.classNames(style) + 'border-radius-6 margin-bottom-13'.classNames()}
         >
             <div
                 data-crew="action"
@@ -178,7 +202,7 @@ export function HeadActions({ application }) {
 				// Render all together and show using css in favour of showing persistent content between component switch.
 				return <div
 						key={i}
-						className={'content-area'.classNames(style)}
+						className={'position-relative'.classNames() + 'content-area'.classNames(style)}
 						style={{display: state.active_segment===i ? '' : 'none'}}
 					>
 					<div className={'d-flex align-items-center margin-bottom-15'.classNames()}>

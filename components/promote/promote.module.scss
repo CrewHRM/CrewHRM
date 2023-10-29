@@ -1,0 +1,12 @@
+.promote {
+	.overlay {
+		backdrop-filter: blur(3.5px);
+		background-color: rgba(0, 0, 0, 0.17);
+		
+		.footer {
+			border-radius: 0px 0px 8px 8px;
+			background: linear-gradient(62deg, #FF7B04 0%, #FF1BE8 99.52%);
+			margin: 0 3px 3px;
+		}
+	}
+}
