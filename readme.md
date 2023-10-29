@@ -18,3 +18,5 @@ If it is cloned already, and need to pull updated codebase then
 - open terminal at <kbd>~wp-content/plugins/CrewHRM/</kbd>
 - run <kbd>git pull</kbd> 
 - and then <kbd>npm run build</kbd> or <kbd>npm run watch</kbd>
+
+Whenever you pull updates to local repository, don't forget to run <kbd>npm install</kbd> and <kbd>npm run build</kbd> or <kbd>watch</kbd> again.
