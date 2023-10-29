@@ -19,7 +19,7 @@ function UpgraderBar() {
 			Get a 50% discount on the PRO license and <span className={'font-weight-600'.classNames()}>enjoy full access to all add-ons!</span>
 		</div>
 		<div>
-			<a className={'button button-secondary'.classNames()}>
+			<a href="https://getcrewhrm.com/pricing/" target="_blank" className={'button button-secondary'.classNames()}>
 				{__('Upgrade now')}
 			</a>
 		</div>
@@ -115,7 +115,7 @@ function AddonsPage({addons={}, addonStates={}}) {
 							
 							<div>
 								<Conditional show={locked}>
-									<a href="http://getcrewhrm.com/pricing/" target="_blank" className={'d-block text-align-center button button-primary button-outlined w-full d-block'.classNames()}>
+									<a href="https://getcrewhrm.com/pricing/" target="_blank" className={'d-block text-align-center button button-primary button-outlined w-full d-block'.classNames()}>
 										{__('Unlock Now')}
 									</a>
 								</Conditional>

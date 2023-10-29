@@ -3,6 +3,7 @@ node_modules/
 dist/*
 !dist/libraries/
 dist/libraries/pro/*
+templates/email/layout.css
 vendor/
 build/
 *.zip

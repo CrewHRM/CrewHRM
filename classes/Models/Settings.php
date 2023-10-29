@@ -28,6 +28,9 @@ class Settings {
 			'careers_sidebar'         => true,
 			'application_form_layout' => 'segmented_form',
 			'job_post_per_page'       => 20,
+			'outgoing_email_events'   => array(
+				'application-confirmation'
+			)
 		);
 		
 		$_data = get_option( self::KEY_SETTINGS );

@@ -14,6 +14,7 @@ use CrewHRM\Setup\Careers;
 use CrewHRM\Setup\CLI;
 use CrewHRM\Setup\Database;
 use CrewHRM\Setup\Dispatcher;
+use CrewHRM\Setup\Mails;
 use CrewHRM\Setup\Media;
 use CrewHRM\Setup\Scripts;
 
@@ -71,6 +72,7 @@ class Main {
 		new Dispatcher();
 		new Admin();
 		new Careers();
+		new Mails();
 
 		do_action( 'crewhrm_loaded' );
 	}

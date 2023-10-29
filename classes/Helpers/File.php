@@ -116,4 +116,29 @@ class File {
 
 		return add_query_arg( $args, $ajaxurl );
 	}
+
+	/**
+	 * List files in a directory
+	 *
+	 * @param string $directory The directory to list files in
+	 * @return array
+	 */
+	public static function getFilesInDirectory( string $directory ) {
+		
+		$files = array();
+
+		// Check if the directory exists
+		if ( is_dir( $directory ) ) {
+			$iterator = new \DirectoryIterator( $directory );
+
+			foreach ( $iterator as $fileInfo ) {
+				if ( $fileInfo->isFile() ) {
+					$filename = pathinfo( $fileInfo->getFilename(), PATHINFO_FILENAME );
+					$files[$filename] = $fileInfo->getPathname();
+				}
+			}
+		}
+
+		return $files;
+	}
 }

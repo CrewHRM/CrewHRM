@@ -6,6 +6,8 @@ var gulp = require('gulp'),
     zip = require('gulp-zip'),
     fs = require('fs'),
     path = require('path'),
+	rename = require("gulp-rename"),
+	sass = require('gulp-sass')(require('node-sass'));
     build_name = 'crewhrm-' + require('./package.json').version + '.zip';
 
 var onError = function (err) {
@@ -141,10 +143,22 @@ gulp.task('make-zip', function () {
     return gulp.src('./build/**/*.*').pipe(zip(build_name)).pipe(gulp.dest('./'));
 });
 
-/**
- * Export tasks
- */
+// Compile SCSS to CSS for mailer
+gulp.task('mailer-sass', function () {
+  return gulp
+    .src('../Materials/styles/index.module.scss')
+    .pipe(sass().on('error', sass.logError))
+	.pipe(rename('layout.css'))
+    .pipe(gulp.dest('templates/email'));
+});
+
+// Watch for changes and reload the browser
+gulp.task('watch', function () {
+  gulp.watch('../Materials/styles/**/*.scss', gulp.series('mailer-sass'));
+});
+
 exports.build = gulp.series(
+	'mailer-sass',
     'clean-zip',
     'clean-build',
     'makepot',
@@ -152,3 +166,6 @@ exports.build = gulp.series(
     'copy',
     'make-zip'
 );
+
+// Default task
+gulp.task('default', gulp.series('mailer-sass', 'watch'));

@@ -107,4 +107,27 @@ class _String {
 	public static function isFloat( $numeric_string ) {
 		return is_numeric( $numeric_string ) && strpos( $numeric_string, '.' ) !== false;
 	}
+
+	/**
+	 * Minify html
+	 *
+	 * @param string $html
+	 * @return string
+	 */
+	public static function minifyHTML( $html ) {
+		// Remove HTML comments
+		$html = preg_replace('/<!--(.|\s)*?-->/', '', $html);
+		
+		// Remove line breaks
+		$html = preg_replace('/\n/', '', $html);
+		$html = preg_replace('/\r/', '', $html);
+
+		// Remove excess whitespace
+		$html = preg_replace('/\s+/', ' ', $html);
+		
+		// Remove leading and trailing spaces
+		$html = trim($html);
+
+		return $html;
+	}
 }

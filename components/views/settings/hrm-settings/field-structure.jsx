@@ -80,6 +80,32 @@ export const settings_fields = applyFilters(
 							]
 						}
 					}
+				},
+				'outgoing-email': {
+					label: __('Outgoing Email'),
+					icon: 'ch-icon ch-icon-sms',
+					sections: {
+						email_settings:{
+							label: __('Outgoing Email'),
+							description: __('Configure outgoing emails'),
+							separator: false,
+							vertical: true,
+							fields: [
+								{
+									name: 'outgoing_email_events',
+									label: __('Email Notifications'),
+									hint: __('CrewHRM sends updates by email to admins and applicants. Turn them on as needed.'),
+									type: 'checkbox',
+									options: [
+										{
+											id: 'application-confirmation',
+											label: __('Application received confirmation email to applicants.')
+										}
+									],
+								}
+							]
+						}
+					}
 				}
 			}
 		},
