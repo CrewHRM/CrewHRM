@@ -80,14 +80,13 @@ class Main {
 		$api_host = self::$configs->mode === 'development' ? 'http://localhost:10028' : 'https://getcrewhrm.com';
 		new Updater(
 			array(
-				'main_file'           => self::$configs->file,
-				'product_name'        => 'crewhrm-free',
-				'product_title'       => self::$configs->plugin_name,
-				'basename'            => plugin_basename( self::$configs->file ),
-				'current_version'     => self::$configs->version,
-				'purchase_link'       => "https://getcrewhrm.com/pricing/",
-				'api_endpoint'        => "{$api_host}/updates-api/",
-				'continuous_update_check' => true
+				'main_file'       => self::$configs->file,
+				'product_name'    => 'crewhrm-free',
+				'product_title'   => self::$configs->plugin_name,
+				'basename'        => plugin_basename( self::$configs->file ),
+				'current_version' => self::$configs->version,
+				'purchase_link'   => "https://getcrewhrm.com/pricing/",
+				'api_endpoint'    => "{$api_host}/updates-api/",
 			)
 		);
 
