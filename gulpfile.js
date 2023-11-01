@@ -146,7 +146,7 @@ gulp.task('make-zip', function () {
 // Compile SCSS to CSS for mailer
 gulp.task('mailer-sass', function () {
   return gulp
-    .src('../Materials/styles/index.module.scss')
+    .src('../Materials/styles/email.module.scss')
     .pipe(sass().on('error', sass.logError))
 	.pipe(rename('layout.css'))
     .pipe(gulp.dest('templates/email'));

@@ -17,6 +17,7 @@ use CrewHRM\Setup\Dispatcher;
 use CrewHRM\Setup\Mails;
 use CrewHRM\Setup\Media;
 use CrewHRM\Setup\Scripts;
+use CrewHRM\Updater\Updater;
 
 /**
  * The main class to initiate app
@@ -74,6 +75,21 @@ class Main {
 		new Admin();
 		new Careers();
 		new Mails();
+
+		// Register updater
+		$api_host = self::$configs->mode === 'development' ? 'http://localhost:10028' : 'https://getcrewhrm.com';
+		new Updater(
+			array(
+				'main_file'           => self::$configs->file,
+				'product_name'        => 'crewhrm-free',
+				'product_title'       => self::$configs->plugin_name,
+				'basename'            => plugin_basename( self::$configs->file ),
+				'current_version'     => self::$configs->version,
+				'purchase_link'       => "https://getcrewhrm.com/pricing/",
+				'api_endpoint'        => "{$api_host}/updates-api/",
+				'continuous_update_check' => true
+			)
+		);
 
 		// Set pro flag
 		add_action(
