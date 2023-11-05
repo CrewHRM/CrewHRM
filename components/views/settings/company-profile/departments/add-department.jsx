@@ -43,7 +43,7 @@ export function AddDepartmentModal({ closeModal, onAdd }) {
 
                 <input
                     type="text"
-                    className={'w-full padding-15 border-1-5 b-color-tertiary b-color-active-primary border-radius-10 height-48 font-size-15 font-weight-400 line-height-25 color-text'.classNames()}
+                    className={'width-p-100 padding-15 border-1-5 b-color-tertiary b-color-active-primary border-radius-10 height-48 font-size-15 font-weight-400 line-height-25 color-text'.classNames()}
                     onChange={(e) => setState({ ...state, department_name: e.currentTarget.value })}
                 />
             </div>

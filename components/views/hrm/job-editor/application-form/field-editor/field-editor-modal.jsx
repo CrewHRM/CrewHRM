@@ -155,7 +155,7 @@ export function FieldEditorModal(props) {
                 </span>
                 <input
                     value={state.field.label || ''}
-                    className={'d-block padding-15 border-1-5 b-color-tertiary b-color-active-primary border-radius-10 font-size-15 font-weight-400 line-height-25 color-text w-full height-48'.classNames()}
+                    className={'d-block padding-15 border-1-5 b-color-tertiary b-color-active-primary border-radius-10 font-size-15 font-weight-400 line-height-25 color-text width-p-100 height-48'.classNames()}
                     placeholder={__('ex. How did you hear about this job?')}
                     onChange={(e) => onChange('label', e.currentTarget.value)}
                 />

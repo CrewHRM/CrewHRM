@@ -28,7 +28,7 @@ export function Promote({content, className='', style: cssStyle={}, children}) {
 		className={'promote'.classNames(style) + className}
 		style={cssStyle} 
 	>
-		{children ? children : <img src={screenshots[content]} className={'w-full height-auto'.classNames()}/>}
+		{children ? children : <img src={screenshots[content]} className={'width-p-100 height-auto'.classNames()}/>}
 		
 		<div
 			className={'position-absolute left-0 right-0 top-0 bottom-0 d-flex align-items-center justify-content-center'.classNames() + 'overlay'.classNames(style)}

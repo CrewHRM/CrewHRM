@@ -86,7 +86,7 @@ function MoveContent({
                     <div className={'d-flex align-items-center column-gap-10'.classNames()}>
                         <div className={'flex-1'.classNames()}>
                             <DropDown
-                                className={'w-full padding-vertical-5 padding-horizontal-12 border-1 b-color-text height-40'.classNames()}
+                                className={'width-p-100 padding-vertical-5 padding-horizontal-12 border-1 b-color-text height-40'.classNames()}
                                 value={state.move_to}
                                 options={moveTo}
                                 onChange={(move_to) => setState({...state, move_to })}

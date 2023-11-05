@@ -19,7 +19,7 @@ function UpgraderBar() {
 			Get a 50% discount on the PRO license and <span className={'font-weight-600'.classNames()}>enjoy full access to all add-ons!</span>
 		</div>
 		<div>
-			<a href="https://getcrewhrm.com/pricing/" target="_blank" className={'button button-secondary'.classNames()}>
+			<a href="https://getcrewhrm.com/pricing/" target="_blank" className={'button button-secondary'.classNames()} style={{padding: '5.5px 15px'}}>
 				{__('Upgrade now')}
 			</a>
 		</div>
@@ -97,13 +97,13 @@ function AddonsPage({addons={}, addonStates={}}) {
 						let {plugin_name: addon_name='', description, crewhrm_id, locked, thumbnail_url} = state.addons[id];
 						let enabled = state.addonStates[crewhrm_id] ? true : false;
 
-						return <div key={id} className={'d-flex flex-direction-column justify-content-space-between position-relative h-full b-color-tertiary border-radius-5 padding-vertical-30 padding-horizontal-20 bg-color-white'.classNames()}>
+						return <div key={id} className={'d-flex flex-direction-column justify-content-space-between position-relative height-p-100 b-color-tertiary border-radius-5 padding-vertical-30 padding-horizontal-20 bg-color-white'.classNames()}>
 							<Conditional show={locked}>
-								<i className={'ch-icon ch-icon-lock position-absolute right-15 top-15 color-light font-size-18'.classNames()}></i>
+								<i className={'ch-icon ch-icon-lock position-absolute right-15 top-15 color-text-light font-size-18'.classNames()}></i>
 							</Conditional>
 
 							<div className={''.classNames()}>
-								<img src={thumbnail_url} className={'w-full height-auto d-block margin-auto margin-bottom-15'.classNames()} style={{maxWidth: '160px'}}/>
+								<img src={thumbnail_url} className={'width-p-100 height-auto d-block margin-auto margin-bottom-15'.classNames()} style={{maxWidth: '160px'}}/>
 								
 								<strong className={'d-block margin-bottom-15 font-size-20 font-weight-600 color-text'.classNames()}>
 									{addon_name.replace('CrewHRM - ', '')}
@@ -115,7 +115,7 @@ function AddonsPage({addons={}, addonStates={}}) {
 							
 							<div>
 								<Conditional show={locked}>
-									<a href="https://getcrewhrm.com/pricing/" target="_blank" className={'d-block text-align-center button button-primary button-outlined w-full d-block'.classNames()}>
+									<a href="https://getcrewhrm.com/pricing/" target="_blank" className={'d-block text-align-center button button-primary button-outlined width-p-100 d-block'.classNames()}>
 										{__('Unlock Now')}
 									</a>
 								</Conditional>
@@ -123,7 +123,7 @@ function AddonsPage({addons={}, addonStates={}}) {
 								<Conditional show={!locked}>
 									<button 
 										disabled={loadingState[id]}
-										className={`button button-primary button-outlined ${enabled ? '' : 'button-outlined-light'} w-full d-block`.classNames()} onClick={()=>toggleState(id, !enabled)}
+										className={`button button-primary button-outlined ${enabled ? '' : 'button-outlined-light'} width-p-100 d-block`.classNames()} onClick={()=>toggleState(id, !enabled)}
 									>
 										{enabled ? __('Deactivate') : __('Activate')} <LoadingIcon show={loadingState[id] ? true : false}/>
 									</button>

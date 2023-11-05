@@ -43,7 +43,7 @@ export function DahboardMain() {
     return (
         <div
             data-crew="hrm-main"
-            className={'h-full'.classNames() + 'wrapper'.classNames(style)}
+            className={'height-p-100'.classNames() + 'wrapper'.classNames(style)}
         >
             <div className={'sidebar'.classNames(style)}>
                 <StatCards className={'margin-bottom-20'.classNames()} />

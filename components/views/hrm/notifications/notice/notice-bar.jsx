@@ -17,7 +17,7 @@ export function NoticeBar() {
                             data-crew="notice"
                             key={id}
                             className={
-                                'd-flex align-items-center justify-content-center padding-vertical-8 padding-horizontal-20 w-full margin-bottom-2'.classNames() +
+                                'd-flex align-items-center justify-content-center padding-vertical-8 padding-horizontal-20 width-p-100 margin-bottom-2'.classNames() +
                                 `notice ${type}`.classNames(style)
                             }
                         >

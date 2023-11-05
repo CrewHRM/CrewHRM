@@ -1,6 +1,6 @@
 {
   "name": "crewhrm",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "HR Management System",
   "main": "index.js",
   "scripts": {

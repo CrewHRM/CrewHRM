@@ -164,7 +164,7 @@ export function Single({ base_permalink, settings={} }) {
             <div className={'header'.classNames(style) + 'bg-color-tertiary'.classNames()}>
                 <div className={'container'.classNames(style)}>
                     <span
-                        className={'d-block font-size-15 font-weight-700 line-height-25 letter-spacing_3 color-text margin-bottom-10'.classNames()}
+                        className={'d-block font-size-15 font-weight-700 line-height-25 letter-spacing-3 color-text margin-bottom-10'.classNames()}
                     >
                         {department_name}
                     </span>
