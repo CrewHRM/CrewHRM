@@ -101,14 +101,31 @@ class Mailer {
 
 		// Register mailer from address hook
 		add_filter( 'wp_mail_from', array( $this, 'get_from_address' ) );
+		add_filter( 'wp_mail_from_name', array( $this, 'get_from_name' ) );
+		add_filter( 'wp_mail_content_type', array( $this, 'get_content_type' ) );
 
 		// Send mail
 		$sent = wp_mail( $to, $subject, $body, $headers, $attachments );
 
 		// Remove the hook
+		remove_filter( 'wp_mail_from_name', array( $this, 'get_from_name' ) );
 		remove_filter( 'wp_mail_from', array( $this, 'get_from_address' ) );
+		remove_filter( 'wp_mail_content_type', array( $this, 'get_content_type' ) );
 
 		return $sent;
+	}
+
+	public function get_from_name() {
+		return $this->args['from_address'] ?? get_bloginfo( 'name' );
+	}
+
+	/**
+	 * Set content type html
+	 *
+	 * @return void
+	 */
+	public function get_content_type() {
+		return 'text/html';
 	}
 
 	/**
@@ -150,9 +167,10 @@ class Mailer {
 		$replaces = array_values( $dynamics );
 		
 		// Replace parameters in the template
-		$contents = file_get_contents( $mail_templates[ $template ] );
+		ob_start();
+		include $mail_templates[ $template ];
+		$contents = ob_get_clean();
 		$contents = str_replace( $finds, $replaces, $contents );
-		$contents = _String::minifyHTML( $contents );
 		
 		// Note: This $contents variable is used in the file included below.
 

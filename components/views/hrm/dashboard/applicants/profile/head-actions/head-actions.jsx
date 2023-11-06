@@ -178,6 +178,7 @@ export function HeadActions({ application }) {
                         })}
                         variant='primary'
                         size='sm'
+						iconSizeClass={'font-size-20'.classNames()}
                     />
 
                     <Options

@@ -8,7 +8,7 @@
     "sync-materials": "node ./components/builders/sync-materials.js",
     "compile": "npm run pro-addons && webpack --env=build --mode=production",
     "build": "npm run pro-addons && npm run compile && gulp build",
-    "watch": "npm run pro-addons && concurrently \"npm run sync-materials\" \"webpack --watch --mode=development\" \"gulp watch\"",
+    "watch": "npm run pro-addons && concurrently \"npm run sync-materials\" \"webpack --watch --mode=development\"",
     "lint": "eslint ./components/**/*.jsx",
     "lint:fix": "eslint --fix ./components/**/*.jsx && prettier --write './components/**/*.{jsx,scss}' --config ./.prettierrc",
     "cypress:open": "cypress open --config-file tests/cypress/config.config.js",

@@ -47,8 +47,8 @@ export function FilterBar({ is_overview, filters = {}, onChange, fetching }) {
                         ).classNames()
                     }
                 >
-                    {__('Job Openings')}{' '}
-                    <LoadingIcon show={fetching} className={'margin-left-5'.classNames()} />
+                    {__('Job Openings')}
+					<LoadingIcon show={fetching} className={'margin-left-5'.classNames()} />
                 </span>
             </div>
             <div className={'d-flex align-items-center justify-content-end flex-wrap-wrap column-gap-15'.classNames()}>
@@ -72,6 +72,7 @@ export function FilterBar({ is_overview, filters = {}, onChange, fetching }) {
                             })
                         ]}
                         variant="borderless"
+						iconSizeClass={'font-size-18'.classNames()}
                     />
                 </div>
                 <div className={'d-inline-block'.classNames()} style={{ minWidth: '113px' }}>
@@ -91,6 +92,7 @@ export function FilterBar({ is_overview, filters = {}, onChange, fetching }) {
                             })
                         ]}
                         variant="borderless"
+						iconSizeClass={'font-size-18'.classNames()}
                     />
                 </div>
                 <div className={'d-inline-block'.classNames()}>

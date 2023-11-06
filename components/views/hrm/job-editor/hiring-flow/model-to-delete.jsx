@@ -94,6 +94,7 @@ function MoveContent({
 								clearable={false}
                                 variant='primary'
                                 size='md'
+								iconSizeClass={'font-size-20'.classNames()}
                             />
                         </div>
                         <div>
