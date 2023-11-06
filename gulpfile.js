@@ -144,7 +144,6 @@ gulp.task('make-zip', function () {
 });
 
 exports.build = gulp.series(
-	'mailer-sass',
     'clean-zip',
     'clean-build',
     'makepot',
