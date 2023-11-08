@@ -3,6 +3,7 @@
 namespace CrewHRM\Setup;
 
 use CrewHRM\Models\Mailer;
+use CrewHRM\Models\Settings;
 
 class Mails {
 	public function __construct() {
@@ -24,16 +25,16 @@ class Mails {
 			function( Mailer $instance ) use( $application ) {
 
 				$args = array(
-					'to'      => $application['email'],
-					'subject' => __( 'Application received', 'crewhrm' )
+					'to'           => $application['email'],
+					'subject'      => __( 'Application received', 'crewhrm' ),
 				);
 
 				// The dynamic data to apply into static contents
 				$dynamics = array(
-					'first_name' => $application['first_name']
+					'first_name'    => $application['first_name'],
+					'company_name'  => Settings::getSetting( 'company_name', '' ),
+					'primary_email' => Settings::getRecruiterEmail()
 				);
-
-				error_log( 'Here' );
 
 				$instance->setArgs( $args )->send( $dynamics );
 			}

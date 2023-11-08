@@ -52,7 +52,6 @@ class Mailer {
 	 */
 	public static function isEventEnabled( string $event ) {
 		$events = Settings::getSetting( 'outgoing_email_events' );
-		error_log( var_export( $events, true ) );
 		return is_array( $events ) ? in_array( $event, $events ) : false;
 	}
 
@@ -66,8 +65,6 @@ class Mailer {
 	public static function init( string $event, callable $callback ) {
 		if ( self::isEventEnabled( $event ) ) {
 			$callback( ( new self( array() ) )->setEvent( $event ) );
-		} else {
-			error_log( 'Not enabled ' . $event );
 		}
 	}
 
@@ -116,7 +113,7 @@ class Mailer {
 	}
 
 	public function get_from_name() {
-		return $this->args['from_address'] ?? get_bloginfo( 'name' );
+		return $this->args['from_name'] ?? get_bloginfo( 'name' );
 	}
 
 	/**
@@ -169,13 +166,17 @@ class Mailer {
 		// Replace parameters in the template
 		ob_start();
 		include $mail_templates[ $template ];
+
 		$contents = ob_get_clean();
+		$contents = apply_filters( 'crewhrm_email_content_before_dynamics', $contents );
+
 		$contents = str_replace( $finds, $replaces, $contents );
+		$contents = apply_filters( 'crewhrm_email_content_after_dynamics', $contents );
 		
 		// Note: This $contents variable is used in the file included below.
 
 		ob_start();
 		require Main::$configs->dir . 'templates/email/layout.php';
-		return ob_get_clean();
+		return apply_filters( 'crewhrm_email_content_final', ob_get_clean() );
 	}
 }
