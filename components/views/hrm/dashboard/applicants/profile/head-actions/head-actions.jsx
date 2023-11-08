@@ -30,7 +30,7 @@ const application_actions = [
 export function HeadActions({ application }) {
     const { stages = [], sessionRefresh } = useContext(ContextApplicationSession);
     const { showWarning, closeWarning, loadingState } = useContext(ContextWarning);
-    const { application_id, job_id } = useParams();
+    const { application_id, job_id, stage_id=0 } = useParams();
     const { ajaxToast } = useContext(ContextToast);
     const navigate = useNavigate();
 	const {has_pro} = window.CrewHRM;
@@ -109,7 +109,7 @@ export function HeadActions({ application }) {
 
                             if (success) {
                                 closeWarning();
-                                navigate(`/dashboard/jobs/${job_id}/applications/`, {
+                                navigate(`/dashboard/jobs/${job_id}/${stage_id}/`, {
                                     replace: true
                                 });
                                 sessionRefresh();

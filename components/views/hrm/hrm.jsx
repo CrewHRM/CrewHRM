@@ -175,7 +175,7 @@ export function HRM({ departments = [], applicationStats }) {
                         />
 
                         <Route
-                            path="/dashboard/jobs/:job_id/applications/:application_id?/"
+                            path="/dashboard/jobs/:job_id/:stage_id?/:application_id?/"
                             element={
                                 <>
                                     <DashboardBar title={__('Applications')} canBack={true}/>

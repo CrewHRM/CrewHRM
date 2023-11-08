@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 
 import { __ } from 'crewhrm-materials/helpers.jsx';
 import { StatusDot } from 'crewhrm-materials/status-dot/status-dots.jsx';
@@ -10,13 +10,11 @@ import style from './header.module.scss';
 
 export function Header({
     job_list,
-    job_id,
     job: { job_permalink },
     stages = [],
-    candidates = 0,
-    active_stage_id: active_tab,
-    navigateStage
+    candidates = 0
 }) {
+	const {stage_id, job_id} = useParams();
     const navigate = useNavigate();
 
     const _candidates = {
@@ -59,14 +57,17 @@ export function Header({
                     </div>
                     <div>
                         <DropDown
-                            value={job_id}
-                            onChange={(v) => navigate(`/dashboard/jobs/${v}/applications/`)}
+                            value={parseInt(job_id)}
+                            onChange={(v) => navigate(`/dashboard/jobs/${v}/0/`)}
                             transparent={true}
                             className={'padding-vertical-8 padding-horizontal-15'.classNames()}
                             textClassName={'font-size-24 font-weight-600 color-text'.classNames()}
 							clearable={false}
                             options={job_list.map((j) => {
-                                return { id: j.job_id, label: j.job_title };
+                                return {
+									id: j.job_id, 
+									label: j.job_title 
+								}
                             })}
                             variant='borderless'
                         />
@@ -92,8 +93,8 @@ export function Header({
             <div>
                 <Tabs
                     tabs={header_tabs}
-                    active={active_tab}
-                    onNavigate={navigateStage}
+                    active={parseInt(stage_id)}
+                    onNavigate={stage_id=>navigate(`/dashboard/jobs/${job_id}/${stage_id}/`)}
                     theme="button"
                 />
             </div>

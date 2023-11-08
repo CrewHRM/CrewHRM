@@ -14,13 +14,11 @@ import style from './applicants.module.scss';
 export const ContextApplicationSession = createContext();
 
 export function Applications() {
-    const { job_id: raw_job_id } = useParams();
-    const job_id = parseInt(raw_job_id);
+    const { job_id } = useParams();
 
     const [state, setState] = useState({
         session: getRandomString(),
         fetching: true,
-        active_stage_id: 0,
         error_message: null,
         stages: [],
         job_list: [],
@@ -92,20 +90,15 @@ export function Applications() {
             >
                 <Header
                     job_list={state.job_list}
-                    job_id={job_id}
                     job={state.job}
                     stages={state.stages}
-                    active_stage_id={state.active_stage_id}
                     candidates={state.candidates}
-                    navigateStage={(active_stage_id) => setState({ ...state, active_stage_id })}
                 />
 
                 <div className={'content-area'.classNames(style)}>
                     <div className={'sidebar-wrapper'.classNames(style)}>
 						<ErrorBoundary>
 							<Sidebar
-								job_id={job_id}
-								stage_id={state.active_stage_id}
 								hasApplications={(has_applications) =>
 									setState({ ...state, has_applications })
 								}
@@ -114,7 +107,7 @@ export function Applications() {
                     </div>
                     <div className={'profile-wrapper'.classNames(style)}>
 						<ErrorBoundary>
-                        	<Profile job_id={job_id} has_applications={state.has_applications} />
+                        	<Profile has_applications={state.has_applications} />
 						</ErrorBoundary>
                     </div>
                 </div>

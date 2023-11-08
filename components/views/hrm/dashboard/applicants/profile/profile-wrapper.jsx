@@ -16,7 +16,7 @@ import { Documents } from './documents/documents.jsx';
 import { Activity } from './activity/activity.jsx';
 import { ContextApplicationSession } from '../applicants.jsx';
 
-import style from './profile.module.scss';
+import no_app_image from './no.png';
 
 const tab_class =
     'd-flex align-items-center justify-content-center font-size-15 font-weight-500 line-height-24'.classNames();
@@ -49,8 +49,8 @@ const tabs = [
     }
 ];
 
-export function Profile({ job_id, has_applications }) {
-    const { application_id } = useParams();
+export function Profile({ has_applications }) {
+    const { application_id, job_id=0 } = useParams();
     const { session } = useContext(ContextApplicationSession);
 
     const [state, setState] = useState({
@@ -124,24 +124,30 @@ export function Profile({ job_id, has_applications }) {
 	const _current_tab = _overview.length ? state.active_tab : (state.active_tab=='overview' ? 'documents' : state.active_tab);
 	const _tabs = _overview.length ? tabs : tabs.filter(t=>t.id!='overview');
 
-    if (!state.mounted && !has_applications) {
+    if ((!state.mounted && state.fetching) || state.error_message) {
+        return <InitState 
+				fetching={state.fetching} 
+				error_message={state.error_message} />
+
+    } else if ( ! has_applications ) {
         return (
-            <div className={'application-data'.classNames(style) + 'border-radius-5'.classNames()}>
-                <div className={'text-align-center color-error margin-top-30'.classNames()}>
-                    {__('No Application Yet')}
-                </div>
+            <div className={'bg-color-white border-radius-5 padding-vertical-50'.classNames()}>
+				<div className={'padding-vertical-30'.classNames()}>
+					<div className={'text-align-center margin-bottom-10'.classNames()}>
+						<img src={no_app_image} className={'height-auto'.classNames()} style={{width: '100px'}}/>
+					</div>
+					<div className={'text-align-center font-size-20 font-weight-500 color-text-light'.classNames()}>
+						{__('No candidates yet')}
+					</div>
+				</div>
             </div>
         );
-    }
-
-    if ((!state.mounted && state.fetching) || state.error_message) {
-        return <InitState fetching={state.fetching} error_message={state.error_message} />;
     }
 
     return ( !application_id ? null :
         <>
             <HeadActions application={application} />
-            <div className={'application-data'.classNames(style) + 'border-radius-5'.classNames()}>
+            <div className={'bg-color-white border-radius-5 padding-horizontal-30 padding-bottom-30'.classNames()}>
                 {/* Basic Personal Info Heading */}
                 <div className={'d-flex align-items-center padding-20'.classNames()}>
                     <CoverImage

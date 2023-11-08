@@ -54,7 +54,7 @@ export function Promote({content, className='', style: cssStyle={}, children}) {
 						</a>
 					</div>
 					
-					<a className={'font-size-15 font-weight-500 letter-spacing--3 color-text-light hover-underline'.classNames()}>
+					<a href="https://getcrewhrm.com/my-account/downloads/" target="_blank" className={'font-size-15 font-weight-500 letter-spacing--3 color-text-light hover-underline'.classNames()}>
 						{__('Already Purchased?')}
 					</a>
 				</div>

@@ -353,7 +353,7 @@ export function JobOpenings(props) {
                                         </div>
                                         <div>
                                             <Link
-                                                to={`/dashboard/jobs/${job_id}/applications/`}
+                                                to={`/dashboard/jobs/${job_id}/0/`}
                                                 className={'button button-primary button-outlined button-small'.classNames()}
                                             >
                                                 {__('Review')}
