@@ -140,9 +140,8 @@ export function HeadActions({ application }) {
                         let classes = 'font-size-20 cursor-pointer ';
                         classes += state.active_segment === i ? 'color-text' : 'color-text-lighter';
 
-                        return <ToolTip tooltip={title} position='bottom center'>
+                        return <ToolTip key={i} tooltip={title} position='bottom center'>
 							<i
-                                key={i}
                                 className={icon.classNames() + classes.classNames()}
                                 onClick={() => toggleSegment(i)}
                             ></i>

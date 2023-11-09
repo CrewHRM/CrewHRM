@@ -80,17 +80,13 @@ class Mailer {
 	 */
 	public function send( array $dynamics ) {
 		
-		$subject     = $this->args['subject'] ?? null;
+		$subject     = $this->applyDynamics( $this->args['subject'] ?? '', $dynamics, $this->event );
 		$to          = $this->args['to'] ?? '';
 		$attachments = $this->args['attachments'] ?? array();
-
-		// Mail content type headers
-		$headers = array(
+		$body        = $this->wrapWithLayout( $this->event, $dynamics );
+		$headers     = array(
 			'Content-Type: text/html; charset=UTF-8',
 		);
-
-		// Prepare email body
-		$body = $this->wrapWithLayout( $this->event, $dynamics );
 
 		if ( empty( $body ) ) {
 			trigger_error( 'Could not generate CrewHRM email for ' . $this->event, E_USER_WARNING );
@@ -148,17 +144,14 @@ class Mailer {
 		$mail_templates = array();
 		foreach ( $templates as $filename => $path ) {
 			
-			$meta = _Array::getManifestArray( $path, ARRAY_A );			
-			if ( ! empty( $meta['template_label'] ) ) {
-				$mail_templates[ $filename ] = array(
-					'id'    => $filename,
-					'label' => $meta['template_label']
-				);
-
-				if ( $add_path ) {
-					$mail_templates['path'] = $path;
-				}
-			}
+			$meta = _Array::getManifestArray( $path, ARRAY_A );	
+			
+			$mail_templates[ $filename ] = array(
+				'id'                    => $filename,
+				'label'                 => $meta['template_label'] ?? 'Untitled',
+				'exclude_from_settings' => $meta['exclude_from_settings'] ?? false,
+				'path'                  => $add_path ? $path : null
+			);
 		}
 
 		return $mail_templates;
@@ -179,18 +172,6 @@ class Mailer {
 			trigger_error( 'Email template not found:' . $template, E_USER_WARNING );
 			return false;
 		}
-
-		// Enclose parameters with brackets to search
-		$finds = array_keys( $dynamics );
-		$finds = array_map(
-			function( $find ) {
-				return '{' . $find . '}';
-			},
-			$finds
-		);
-
-		// Get data to replace
-		$replaces = array_values( $dynamics );
 		
 		// Replace parameters in the template
 		ob_start();
@@ -199,7 +180,7 @@ class Mailer {
 		$contents = ob_get_clean();
 		$contents = apply_filters( 'crewhrm_email_content_before_dynamics', $contents, $template, $dynamics );
 
-		$contents = str_replace( $finds, $replaces, $contents );
+		$contents = $this->applyDynamics( $contents, $dynamics, $template );
 		$contents = apply_filters( 'crewhrm_email_content_after_dynamics', $contents, $template, $dynamics );
 		
 		// Note: This $contents variable is used in the file included below.
@@ -207,5 +188,30 @@ class Mailer {
 		ob_start();
 		require Main::$configs->dir . 'templates/email/layout.php';
 		return apply_filters( 'crewhrm_email_content_final', ob_get_clean(), $template, $dynamics );
+	}
+
+	/**
+	 * Apply dynamic variables in static string
+	 *
+	 * @param string $contents
+	 * @param array $dynamics
+	 * @param array $event
+	 * @return string
+	 */
+	private function applyDynamics( string $contents, array $dynamics, string $event ) {
+
+		$dynamics = apply_filters( 'crewhrm_email_dynamic_variables', $dynamics, $event );
+		$finds    = array_keys( $dynamics );
+		$finds    = array_map(
+			function( $find ) {
+				return '{' . $find . '}';
+			},
+			$finds
+		);
+
+		// Get data to replace
+		$replaces = array_values( $dynamics );
+
+		return str_replace( $finds, $replaces, $contents );
 	}
 }

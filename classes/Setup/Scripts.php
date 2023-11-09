@@ -107,7 +107,7 @@ class Scripts {
 				'plugin_url'        => Main::$configs->url,
 				'ajaxurl'           => admin_url( 'admin-ajax.php' ),
 				'colors'            => $dynamic_colors,
-				'reserved_stages'   => Stage::$reserved_stages,
+				'reserved_stages'   => array_keys( Stage::$reserved_stages ),
 				'timeouts'          => (object) array(),
 				'nonce_action'      => $nonce_action,
 				'nonce'             => $nonce,

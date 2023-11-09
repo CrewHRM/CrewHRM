@@ -95,4 +95,15 @@ class User {
 		// Return any of the common rules. No matter administrator or hr-manager. Both will allow accessing crew features.
 		return $has_role[0] ?? null;
 	}
+
+	/**
+	 * Get name of a user
+	 *
+	 * @param int $user_id
+	 * @return string
+	 */
+	public static function getName( $user_id ) {
+		$user = get_userdata( $user_id );
+		return $user->display_name;
+	}
 }

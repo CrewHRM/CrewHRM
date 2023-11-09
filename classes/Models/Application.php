@@ -420,16 +420,22 @@ class Application {
 	 *
 	 * @param int        $job_id         Job ID
 	 * @param int        $application_id Application ID
-	 * @param int|string $stage_id Stage ID (or _disqualify_ only in case of disqualification)
+	 * @param int|string $stage_id Stage ID (or _disqualify_ only in case of disqualification, from single application view)
 	 * @return bool
 	 */
 	public static function changeApplicationStage( $job_id, $application_id, $stage_id ) {
+		
+		// Determine whether to disqualify the application
 		$is_disqualify = '_disqualified_' === $stage_id;
+		$old_stage_id  = Stage::getCurrentStageIdByApplicationId( $application_id );
 
 		if ( $is_disqualify ) {
+			// If it is to disqualify, get the numeric ID of the disqualification stage.
 			$stage_id = Stage::getDisqualifyId( $job_id );
 		} else {
-			$disqname      = Field::stages()->getField(
+			// If not to disqualify explicitly, then check if the stage ID refers to disqualify either way. 
+			// And set them that way.
+			$disqname = Field::stages()->getField(
 				array(
 					'job_id'   => $job_id,
 					'stage_id' => $stage_id,
@@ -456,6 +462,8 @@ class Application {
 
 		// Now insert an entry to the pipeline
 		Pipeline::create( $application_id, $stage_id, get_current_user_id() );
+
+		do_action( 'crewhrm_application_stage_changed', $application_id, $stage_id, $old_stage_id, $job_id );
 
 		return true;
 	}

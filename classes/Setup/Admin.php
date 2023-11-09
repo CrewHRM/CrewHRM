@@ -139,7 +139,7 @@ class Admin {
 
 		$mail_templates = Mailer::getMailTemplates();
 
-		// Add promotional email lists
+		// Add promotional email lists from prebuilt JSON
 		if ( ! Main::$configs->has_pro ) {
 			$json_path = Main::$configs->dir . 'dist/libraries/pro/mail-templates.json';
 			$pro_mails = json_decode( file_get_contents( $json_path, true ) );
@@ -151,9 +151,19 @@ class Admin {
 			}
 		}
 
+		// Prepare the overall mail templates array
+		$mail_templates = array_filter(
+			$mail_templates,
+			function( $template ) {
+				return ! ( $template['exclude_from_settings'] ?? false );
+			}
+		);
+		$mail_templates = array_values( $mail_templates );
+
+		// Build final resource
 		$resources = array(
 			'pages'        => Utilities::getPageList(),
-			'email_events' => array_values( $mail_templates ),
+			'email_events' => $mail_templates,
 		);
 
 		echo '<div 

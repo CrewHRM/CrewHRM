@@ -19,8 +19,8 @@ class Stage {
 	 * @var array
 	 */
 	public static $reserved_stages = array(
-		'_disqualified_',
-		'_hired_',
+		'_disqualified_' => 'Disqualified',
+		'_hired_'        => 'Hired',
 	);
 
 	/**
@@ -68,7 +68,7 @@ class Stage {
 		$stages = array_filter(
 			$stages,
 			function( $stage ) {
-				return ! in_array( $stage['stage_name'], self::$reserved_stages, true );
+				return ! in_array( $stage['stage_name'], array_keys( self::$reserved_stages ), true );
 			}
 		);
 
@@ -105,7 +105,7 @@ class Stage {
 		}
 
 		// Create or update the reserved stages now
-		foreach ( self::$reserved_stages as $stage_name ) {
+		foreach ( array_keys( self::$reserved_stages ) as $stage_name ) {
 			$exist_id = $wpdb->get_var(
 				$wpdb->prepare(
 					'SELECT stage_id FROM ' . DB::stages() . ' WHERE job_id=%d AND stage_name=%s LIMIT 1',
@@ -425,5 +425,23 @@ class Stage {
 				$job_id
 			)
 		);
+	}
+
+	/**
+	 * Get the current stage ID of an application. 0 means no stage, and it is utilized across the app.
+	 *
+	 * @param int $application_id
+	 * @return int
+	 */
+	public static function getCurrentStageIdByApplicationId( $application_id ) {
+		global $wpdb;
+		$stage_id = $wpdb->get_var(
+			$wpdb->prepare(
+				"SELECT stage_id FROM " . DB::pipeline() . " WHERE application_id=%d ORDER BY action_date DESC LIMIT 1",
+				$application_id
+			)
+		);
+
+		return empty( $stage_id ) ? 0 : $stage_id;
 	}
 }
