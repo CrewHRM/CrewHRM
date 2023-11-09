@@ -101,15 +101,7 @@ export const settings_fields = applyFilters(
 									label: __('Email Notifications'),
 									hint: __('CrewHRM sends updates by email to admins and applicants. Turn them on as needed.'),
 									type: 'checkbox',
-									options: applyFilters(
-										'outgoing_email_event_list', 
-										[
-											{
-												id: 'application-confirmation',
-												label: __('Application received confirmation email to applicants.')
-											}
-										]
-									),
+									options: 'email_events',
 								}
 							]
 						}

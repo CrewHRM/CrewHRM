@@ -2,6 +2,7 @@
 
 namespace CrewHRM\Models;
 
+use CrewHRM\Helpers\_Array;
 use CrewHRM\Helpers\_String;
 use CrewHRM\Helpers\File;
 use CrewHRM\Main;
@@ -135,6 +136,35 @@ class Mailer {
 	}
 
 	/**
+	 * Get available email templates registered at run time.
+	 *
+	 * @return array
+	 */
+	public static function getMailTemplates( $add_path = false ) {
+		$templates = File::getFilesInDirectory( Main::$configs->dir . 'templates/email/event-templates/' );
+
+		$templates = apply_filters( 'crewhrm_email_templates', $templates );
+		
+		$mail_templates = array();
+		foreach ( $templates as $filename => $path ) {
+			
+			$meta = _Array::getManifestArray( $path, ARRAY_A );			
+			if ( ! empty( $meta['template_label'] ) ) {
+				$mail_templates[ $filename ] = array(
+					'id'    => $filename,
+					'label' => $meta['template_label']
+				);
+
+				if ( $add_path ) {
+					$mail_templates['path'] = $path;
+				}
+			}
+		}
+
+		return $mail_templates;
+	}
+
+	/**
 	 * Wrap email body with header footer and common layout
 	 *
 	 * @param string $event The event name to use template based on
@@ -143,8 +173,7 @@ class Mailer {
 	 */
 	private function wrapWithLayout( string $template, array $dynamics ) {
 
-		$mail_templates = File::getFilesInDirectory( Main::$configs->dir . 'templates/email/event-templates/' );
-		$mail_templates = apply_filters( 'crewhrm_email_templates', $mail_templates );
+		$mail_templates = self::getMailTemplates( true );
 		
 		if ( empty( $mail_templates[ $template ] ) ) {
 			trigger_error( 'Email template not found:' . $template, E_USER_WARNING );
@@ -165,18 +194,18 @@ class Mailer {
 		
 		// Replace parameters in the template
 		ob_start();
-		include $mail_templates[ $template ];
+		include $mail_templates[ $template ]['path'];
 
 		$contents = ob_get_clean();
-		$contents = apply_filters( 'crewhrm_email_content_before_dynamics', $contents );
+		$contents = apply_filters( 'crewhrm_email_content_before_dynamics', $contents, $template, $dynamics );
 
 		$contents = str_replace( $finds, $replaces, $contents );
-		$contents = apply_filters( 'crewhrm_email_content_after_dynamics', $contents );
+		$contents = apply_filters( 'crewhrm_email_content_after_dynamics', $contents, $template, $dynamics );
 		
 		// Note: This $contents variable is used in the file included below.
 
 		ob_start();
 		require Main::$configs->dir . 'templates/email/layout.php';
-		return apply_filters( 'crewhrm_email_content_final', ob_get_clean() );
+		return apply_filters( 'crewhrm_email_content_final', ob_get_clean(), $template, $dynamics );
 	}
 }

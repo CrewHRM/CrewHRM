@@ -11,6 +11,7 @@ use CrewHRM\Helpers\Utilities;
 use CrewHRM\Main;
 use CrewHRM\Models\Application;
 use CrewHRM\Models\Department;
+use CrewHRM\Models\Mailer;
 use CrewHRM\Models\Settings;
 use CrewHRM\Models\User;
 
@@ -135,8 +136,24 @@ class Admin {
 	 * @return void
 	 */
 	public function settingPage() {
+
+		$mail_templates = Mailer::getMailTemplates();
+
+		// Add promotional email lists
+		if ( ! Main::$configs->has_pro ) {
+			$json_path = Main::$configs->dir . 'dist/libraries/pro/mail-templates.json';
+			$pro_mails = json_decode( file_get_contents( $json_path, true ) );
+
+			foreach ( $pro_mails as $mail ) {
+				$mail->locked                = true;
+				$mail->tooltip               = __( 'Need to upgrade to Pro', 'crewhrm' );
+				$mail_templates[ $mail->id ] = (array) $mail;
+			}
+		}
+
 		$resources = array(
-			'pages' => Utilities::getPageList(),
+			'pages'        => Utilities::getPageList(),
+			'email_events' => array_values( $mail_templates ),
 		);
 
 		echo '<div 

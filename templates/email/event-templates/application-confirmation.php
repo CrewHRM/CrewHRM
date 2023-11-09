@@ -1,3 +1,8 @@
+<?php
+	/**
+	 * Template Label: Application received confirmation email to applicants
+	 */
+?>
 <div>
 	Hi <strong>{first_name}</strong>!
 

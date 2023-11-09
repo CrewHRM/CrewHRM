@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 
 import { __ } from 'crewhrm-materials/helpers.jsx';

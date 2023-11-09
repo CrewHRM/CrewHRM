@@ -1,10 +1,11 @@
 const fs = require('fs');
 const path = require('path');
-const { getAddonsBuildStructure } = require('../../../CrewHRM-Pro/components/builders/addons');
+const { getAddonsBuildStructure, getMailTemplates } = require('../../../CrewHRM-Pro/components/builders/addons');
 
+/* --------- Get pro addons --------- */
 const pro_addons = getAddonsBuildStructure();
 
-function extractPluginInfo(phpContent) {
+function extractFileMeta(phpContent) {
 	const pluginInfo = {};
 	const lines = phpContent.split('\n');
 	let inCommentBlock = false;
@@ -42,7 +43,7 @@ for ( var i=0; i<pro_addons.length; i++ ) {
 	const index_file = path.resolve('../CrewHRM-Pro/'+index_path);
 	const file_contents = fs.readFileSync(index_file).toString();
 
-	const manifest = extractPluginInfo( file_contents );
+	const manifest = extractFileMeta( file_contents );
 
 	// Put the JSON data 
 	_addons.push(manifest);
@@ -56,3 +57,17 @@ for ( var i=0; i<pro_addons.length; i++ ) {
 }
 
 fs.writeFileSync( path.resolve(pro_dir+'addons.json'), JSON.stringify(_addons, null, '\t') );
+
+
+
+/* --------- Get pro email templates --------- */
+const mails     = getMailTemplates();
+const templates = mails.map(filePath=>{
+	const meta = extractFileMeta( fs.readFileSync( filePath ).toString() );
+	return {
+		id    : path.basename(filePath, path.extname(filePath)),
+		label : meta.template_label
+	}
+});
+
+fs.writeFileSync( path.resolve(pro_dir+'mail-templates.json'), JSON.stringify(templates, null, '\t') );

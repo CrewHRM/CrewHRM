@@ -24,7 +24,7 @@ export function Applications() {
         job_list: [],
         job: {},
         candidates: 0,
-        has_applications: true,
+        has_applications: null,
         mounted: false
     });
 

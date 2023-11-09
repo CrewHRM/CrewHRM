@@ -134,7 +134,7 @@ class File {
 			foreach ( $iterator as $fileInfo ) {
 				if ( $fileInfo->isFile() ) {
 					$filename = pathinfo( $fileInfo->getFilename(), PATHINFO_FILENAME );
-					$files[$filename] = $fileInfo->getPathname();
+					$files[ $filename ] = $fileInfo->getPathname();
 				}
 			}
 		}

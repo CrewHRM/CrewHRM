@@ -11,8 +11,8 @@ import { applyFilters } from 'crewhrm-materials/hooks.jsx';
 import { RenderExternal } from 'crewhrm-materials/render-external.jsx';
 
 import { Promote } from '../../../../../../promote/promote.jsx';
-
 import style from './head.module.scss';
+import { ToolTip } from 'crewhrm-materials/tooltip.jsx';
 
 const application_actions = [
     {
@@ -133,31 +133,32 @@ export function HeadActions({ application }) {
                 data-crew="action"
                 className={'d-flex align-items-center box-shadow-thin padding-vertical-15 padding-horizontal-30'.classNames()}
             >
-                <div className={'flex-1 d-flex align-items-center'.classNames()}>
+                <div className={'flex-1 d-flex align-items-center column-gap-24'.classNames()}>
                     {segments.map((segment, i) => {
                         let { icon, title } = segment;
 
-                        let classes = 'font-size-20 cursor-pointer margin-right-24 ';
+                        let classes = 'font-size-20 cursor-pointer ';
                         classes += state.active_segment === i ? 'color-text' : 'color-text-lighter';
 
-                        return (
-                            <i
+                        return <ToolTip tooltip={title} position='bottom center'>
+							<i
                                 key={i}
-                                title={title}
                                 className={icon.classNames() + classes.classNames()}
                                 onClick={() => toggleSegment(i)}
                             ></i>
-                        );
+						</ToolTip>
                     })}
 
                     {application.disqualified ? (
                         <i>{__('Disqualified')}</i>
                     ) : (
-                        <i
-                            title={__('Disqualify')}
-                            className={'ch-icon ch-icon-slash color-error font-size-20 cursor-pointer'.classNames()}
-                            onClick={() => onActionClick('disqualify')}
-                        ></i>
+                        <ToolTip tooltip={__('Disqualify Candidate')} position='bottom center'>
+							<i
+								title={__('Disqualify')}
+								className={'ch-icon ch-icon-slash color-error font-size-20 cursor-pointer'.classNames()}
+								onClick={() => onActionClick('disqualify')}
+							></i>
+						</ToolTip>
                     )}
                 </div>
                 <div className={'d-flex align-items-center column-gap-10'.classNames()}>

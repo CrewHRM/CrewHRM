@@ -124,12 +124,8 @@ export function Profile({ has_applications }) {
 	const _current_tab = _overview.length ? state.active_tab : (state.active_tab=='overview' ? 'documents' : state.active_tab);
 	const _tabs = _overview.length ? tabs : tabs.filter(t=>t.id!='overview');
 
-    if ((!state.mounted && state.fetching) || state.error_message) {
-        return <InitState 
-				fetching={state.fetching} 
-				error_message={state.error_message} />
 
-    } else if ( ! has_applications ) {
+	if ( has_applications === false ) {
         return (
             <div className={'bg-color-white border-radius-5 padding-vertical-50'.classNames()}>
 				<div className={'padding-vertical-30'.classNames()}>
@@ -144,6 +140,13 @@ export function Profile({ has_applications }) {
         );
     }
 
+    if ( ( ! state.mounted && state.fetching ) || state.error_message ) {
+        return <InitState 
+				fetching={state.fetching} 
+				error_message={state.error_message} />
+
+    }
+	
     return ( !application_id ? null :
         <>
             <HeadActions application={application} />

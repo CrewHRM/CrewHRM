@@ -181,7 +181,7 @@ function OptionFields({fields=[], vertical, separator, is_group=false}) {
 								type={type}
 								name={name}
 								value={values[name]}
-								options={options}
+								options={typeof options === 'string' ? resources[options] : options}
 								onChange={(value) => onChange(name, value)}
 								spanClassName={'font-size-15 font-weight-400 line-height-24 letter-spacing--15 color-text'.classNames()}
 							/>
