@@ -14,14 +14,14 @@ class Mailer {
 	 *
 	 * @var array
 	 */
-	private $args;
+	public $args;
 
 	/**
 	 * The event template/event is working on
 	 *
 	 * @var string
 	 */
-	private $event;
+	public $event;
 
 	/**
 	 * Undocumented function
@@ -46,18 +46,25 @@ class Mailer {
 	}
 
 	/**
-	 * Undocumented function
+	 * Check if the event is enabled, and then execute handler.
 	 *
-	 * @param string $event
+	 * @param string|array $event_s Event or array of events for the templates with same variables. 
 	 * @param callable $callback
 	 * @return self
 	 */
-	public static function init( string $event, callable $callback ) {
-		$events  = Settings::getSetting( 'outgoing_email_events' );
-		$enabled = is_array( $events ) ? in_array( $event, $events ) : false;
+	public static function init( $event_s, callable $callback ) {
+		if ( ! is_array( $event_s ) ) {
+			$event_s = array( $event_s );
+		}
 
-		if ( $enabled ) {
-			$callback( ( new self( array() ) )->setEvent( $event ) );
+		$enabled_events  = Settings::getSetting( 'outgoing_email_events' );
+
+		foreach ( $event_s as $event ) {
+			$is_enabled = is_array( $enabled_events ) ? in_array( $event, $enabled_events ) : false;
+
+			if ( $is_enabled ) {
+				$callback( ( new self( array() ) )->setEvent( $event ) );
+			}
 		}
 	}
 
@@ -192,7 +199,7 @@ class Mailer {
 	 */
 	private function applyDynamics( string $contents, array $dynamics, string $event ) {
 
-		$dynamics = apply_filters( 'crewhrm_email_dynamic_variables', $dynamics, $event );
+		$dynamics = apply_filters( 'crewhrm_email_dynamics', $dynamics, $event );
 		$finds    = array_keys( $dynamics );
 		$finds    = array_map(
 			function( $find ) {

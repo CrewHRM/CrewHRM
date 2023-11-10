@@ -78,6 +78,9 @@ class Job {
 				array( 'job_id' => $job_id )
 			);
 
+			// Execute update hook no matter the status
+			do_action( 'crewhrm_job_updated', $job_id, $_job, $job );
+
 		} else {
 			// Insert new if the id empty
 
@@ -90,6 +93,9 @@ class Job {
 
 			// Set the newly created ID
 			$job_id = $wpdb->insert_id;
+
+			// Execute created hook no matter the status
+			do_action( 'crewhrm_job_created', $job_id, $_job, $job );
 		}
 
 		if ( empty( $job_id ) ) {
@@ -422,6 +428,16 @@ class Job {
 		}
 
 		return $careers_permalink . $job_id . '/';
+	}
+
+	/**
+	 * Get pemalink to edit job screen
+	 *
+	 * @param int $job_id
+	 * @return string
+	 */
+	public static function getJobEditPermalink( $job_id ) {
+		return Utilities::getDashboardPermalink( "#/dashboard/jobs/editor/{$job_id}/" );
 	}
 
 	/**

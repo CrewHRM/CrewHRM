@@ -6,7 +6,7 @@ import { request } from 'crewhrm-materials/request.jsx';
 import { ContextToast } from 'crewhrm-materials/toast/toast.jsx';
 import { Conditional } from 'crewhrm-materials/conditional.jsx';
 import { LoadingIcon } from 'crewhrm-materials/loading-icon/loading-icon.jsx';
-import { patterns } from 'crewhrm-materials/data.jsx';
+import { countries_object, patterns } from 'crewhrm-materials/data.jsx';
 import {
     __,
     getAddress,
@@ -74,7 +74,8 @@ export function Apply({ job = {}, settings={} }) {
             ...state,
             values: {
                 ...state.values,
-                [name]: v
+                [name]: v,
+				country_name: name==='country_code' ? countries_object[v] : state.values.country_name
             }
         });
     };

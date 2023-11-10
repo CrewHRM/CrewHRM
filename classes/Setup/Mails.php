@@ -31,7 +31,7 @@ class Mails {
 
 				// The dynamic data to apply into static contents
 				$dynamics = array(
-					'candidate_name' => "{$application['first_name']} {$application['last_name']}",
+					'candidate_name' => $application['first_name'],
 					'company_name'   => Settings::getSetting( 'company_name', '' ),
 					'primary_email'  => Settings::getRecruiterEmail()
 				);

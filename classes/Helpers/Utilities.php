@@ -50,6 +50,17 @@ class Utilities {
 	}
 
 	/**
+	 * Get link to HRM main dashboard
+	 *
+	 * @param string $append Additional segments
+	 * 
+	 * @return string
+	 */
+	public static function getDashboardPermalink( $append = '' ) {
+		return admin_url( "admin.php?page=" . Main::$configs->app_name ) . $append;
+	}
+
+	/**
 	 * Return page list especially for settings page
 	 *
 	 * @return array
