@@ -46,17 +46,6 @@ class Mailer {
 	}
 
 	/**
-	 * Check if a specific event enabled or not
-	 *
-	 * @param string $event The event name
-	 * @return boolean
-	 */
-	public static function isEventEnabled( string $event ) {
-		$events = Settings::getSetting( 'outgoing_email_events' );
-		return is_array( $events ) ? in_array( $event, $events ) : false;
-	}
-
-	/**
 	 * Undocumented function
 	 *
 	 * @param string $event
@@ -64,7 +53,10 @@ class Mailer {
 	 * @return self
 	 */
 	public static function init( string $event, callable $callback ) {
-		if ( self::isEventEnabled( $event ) ) {
+		$events  = Settings::getSetting( 'outgoing_email_events' );
+		$enabled = is_array( $events ) ? in_array( $event, $events ) : false;
+
+		if ( $enabled ) {
 			$callback( ( new self( array() ) )->setEvent( $event ) );
 		}
 	}

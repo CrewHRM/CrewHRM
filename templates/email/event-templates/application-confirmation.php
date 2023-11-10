@@ -4,7 +4,7 @@
 	 */
 ?>
 <div>
-	Hi <strong>{first_name}</strong>!
+	Hi <strong>{candidate_name}</strong>!
 
 	<p>
 		Thank you for being so interested in joining {company_name}!

@@ -22,7 +22,7 @@ class Mails {
 
 		Mailer::init(
 			'application-confirmation',
-			function( Mailer $instance ) use( $application ) {
+			function( Mailer $mailer ) use( $application ) {
 
 				$args = array(
 					'to'           => $application['email'],
@@ -31,12 +31,12 @@ class Mails {
 
 				// The dynamic data to apply into static contents
 				$dynamics = array(
-					'first_name'    => $application['first_name'],
-					'company_name'  => Settings::getSetting( 'company_name', '' ),
-					'primary_email' => Settings::getRecruiterEmail()
+					'candidate_name' => "{$application['first_name']} {$application['last_name']}",
+					'company_name'   => Settings::getSetting( 'company_name', '' ),
+					'primary_email'  => Settings::getRecruiterEmail()
 				);
 
-				$instance->setArgs( $args )->send( $dynamics );
+				$mailer->setArgs( $args )->send( $dynamics );
 			}
 		);
 	}
