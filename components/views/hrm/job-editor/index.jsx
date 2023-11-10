@@ -247,7 +247,8 @@ export function JobEditor() {
                     hiring_flow,
                     job_id: job_id || state.values.job_id,
                     address_id: address_id || state.values.address_id,
-                    edit_session: null
+                    edit_session: null,
+					job_status: !auto ? 'publish' : state.values.job_status,
                 };
 
                 // Replace url state with job ID if it was new previously. So reload will be supported.
@@ -431,12 +432,10 @@ export function JobEditor() {
 
                         <button
                             className={'button button-primary'.classNames()}
-                            disabled={
-                                is_next_disabled || state.saving_mode != null || !state.edit_session
-                            }
+                            disabled={is_next_disabled || state.saving_mode != null}
                             onClick={onSaveClick}
                         >
-                            {is_last_step ? __('Publish') : __('Save & Continue')}
+                            {is_last_step ? (state.values.job_status != 'publish' ? __('Publish') : __('Update')) : __('Save & Continue')}
                         </button>
                     </div>
                 ]}

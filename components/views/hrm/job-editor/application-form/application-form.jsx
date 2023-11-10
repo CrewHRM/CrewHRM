@@ -354,7 +354,7 @@ export function ApplicationForm() {
                     onBack={() => navigateTab(-1)}
                     onNext={onSaveClick}
                     disabledNext={is_next_disabled || saving_mode}
-                    nextText={__('Publish Now')}
+                    nextText={values.job_status != 'publish' ?__('Publish Now') : __('Update Now')}
                 />
             </div>
         </>
