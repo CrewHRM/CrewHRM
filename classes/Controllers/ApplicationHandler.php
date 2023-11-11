@@ -8,7 +8,7 @@
 namespace CrewHRM\Controllers;
 
 use CrewHRM\Helpers\_Array;
-use CrewHRM\Helpers\Number;
+use CrewHRM\Helpers\Utilities;
 use CrewHRM\Models\Application;
 use CrewHRM\Models\Field;
 use CrewHRM\Models\Job;
@@ -103,7 +103,7 @@ class ApplicationHandler {
 	 * @return void
 	 */
 	public static function uploadApplicationFile( array $data, array $file ) {
-		$application_id = Number::getInt( $data['application_id'] ?? 0 );
+		$application_id = Utilities::getInt( $data['application_id'] ?? 0 );
 		$field_name     = $data['field_name'] ?? null;
 		$finalize       = $data['finalize'] ?? false;
 		

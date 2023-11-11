@@ -101,4 +101,74 @@ class Utilities {
 			'app_logo_extended' => apply_filters( 'crewhrm_app_logo_extended', null )
 		);
 	}
+
+	public static function getTimezoneOffset() {
+		$time_zone_string = get_option('timezone_string');
+
+		// If the time zone string is not set, use the default UTC offset
+		if ( empty( $time_zone_string ) ) {
+			$time_zone_offset = get_option('gmt_offset');
+		} else {
+			// Create a DateTime object with the specified time zone
+			$time_zone = new \DateTimeZone( $time_zone_string );
+
+			// Get the current time in the specified time zone
+			$current_time = new \DateTime( 'now', $time_zone );
+
+			// Get the time zone offset in seconds
+			$time_zone_offset = $time_zone->getOffset( $current_time ) / 3600; // Convert seconds to hours
+		}
+
+		return $time_zone_offset;
+	}
+
+	/**
+	 * Convert unix to specific timezone offset and return time string.
+	 *
+	 * @param int $timestamp        Unix timestamp seconds
+	 * @param int $timeZoneOffset   Timezone offset
+	 * @param string $formatPattern Date time format
+	 * @return string
+	 */
+	public static function formatUnixTimestamp( $timestamp, $timeZoneOffset, $formatPattern = 'Y-m-d H:i' ) {
+		// Create a DateTime object with the specified time zone offset
+		$date_time = new \DateTime( "@$timestamp" );
+		$date_time->setTimezone( new \DateTimeZone( $timeZoneOffset ) );
+
+		// Format the DateTime object with the custom pattern
+		return $date_time->format( $formatPattern );
+	}
+
+	/**
+	 * Prepare number within safe range.
+	 *
+	 * @param mixed    $value The value
+	 * @param integer  $min   Minimum
+	 * @param int|null $max   Maximum
+	 * @return int
+	 */
+	public static function getInt( $value, $min = 0, $max = null ) {
+		$number = is_numeric( $value ) ? (int) $value : 0;
+
+		if ( $number < $min ) {
+			$number = $min;
+		}
+
+		if ( null !== $max && $number > $max ) {
+			$number = $max;
+		}
+
+		return $number;
+	}
+
+	/**
+	 * Get site link without http protocol and query string
+	 *
+	 * @return string
+	 */
+	public static function getSiteLink() {
+		$parsed    = parse_url( get_home_url() );
+		$site_link = $parsed['host'] . ( ! empty( $parsed['port'] ) ? ':' . $parsed['port'] : '' );
+		return $site_link;
+	}
 }

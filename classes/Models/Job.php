@@ -8,7 +8,6 @@
 namespace CrewHRM\Models;
 
 use CrewHRM\Helpers\_Array;
-use CrewHRM\Helpers\Number;
 use CrewHRM\Helpers\Utilities;
 
 /**
@@ -335,8 +334,8 @@ class Job {
 	 */
 	public static function getCareersListing( array $args ) {
 		$selects           = 'job.job_id, job.job_title, job.employment_type, address.*';
-		$limit             = Number::getInt( $args['limit'] ?? Settings::getSetting( 'job_post_per_page', 20 ), 1, 20 );
-		$offset            = ( Number::getInt( $args['page'] ?? 1, 1 ) - 1 ) * $limit;
+		$limit             = Utilities::getInt( $args['limit'] ?? Settings::getSetting( 'job_post_per_page', 20 ), 1, 20 );
+		$offset            = ( Utilities::getInt( $args['page'] ?? 1, 1 ) - 1 ) * $limit;
 		$limit_clause      = " LIMIT {$limit} OFFSET {$offset}";
 		$where_clause      = "job.job_status='publish'";
 		$department_clause = '';
@@ -411,6 +410,17 @@ class Job {
 		$jobs = self::getJobs( array( 'job_id' => $job_id ), $meta );
 		$jobs = array_values( $jobs );
 		return $jobs[0] ?? null;
+	}
+
+	/**
+	 * Retrieve job by application id
+	 *
+	 * @param int $application_id
+	 * @return array
+	 */
+	public static function getJobByApplicationId( $application_id ) {
+		$job_id = Field::applications()->getField( array( 'application_id' => $application_id ), 'job_id' );
+		return self::getJobById( $job_id );
 	}
 
 	/**

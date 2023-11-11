@@ -115,7 +115,6 @@ class Scripts {
 				'wp_max_size'       => Settings::getWpMaxUploadSize(),
 				'date_format'       => get_option( 'date_format' ),
 				'time_format'       => get_option( 'time_format' ),
-				'timezone_string'   => get_option( 'timezone_string' ),
 				'admin_url'         => add_query_arg( array( 'page' => '' ), admin_url( 'admin.php' ) ),
 				'company_address'   => array(
 					'street_address' => Settings::getSetting( 'street_address', '' ),

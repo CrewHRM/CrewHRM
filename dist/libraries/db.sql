@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Oct 14, 2023 at 06:15 PM
+-- Generation Time: Nov 11, 2023 at 06:21 AM
 -- Server version: 8.0.16
 -- PHP Version: 7.4.1
 
@@ -127,6 +127,7 @@ CREATE TABLE IF NOT EXISTS `wp_crewhrm_events` (
   `event_dest` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci COMMENT 'zoom or meet id, address id etc.',
   `password` varchar(20) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
   `application_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `host_id` bigint(20) UNSIGNED NOT NULL,
   `creator_id` bigint(20) UNSIGNED NOT NULL COMMENT 'The user ID who creates event',
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`event_id`)
@@ -143,7 +144,6 @@ CREATE TABLE IF NOT EXISTS `wp_crewhrm_event_attendees` (
   `event_id` bigint(20) UNSIGNED NOT NULL,
   `user_id` bigint(20) UNSIGNED DEFAULT NULL,
   `email` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT 'If the attendee is not registered user, just invited through email. ',
-  `attendee_role` varchar(20) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
   PRIMARY KEY (`attendee_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
@@ -185,7 +185,7 @@ CREATE TABLE IF NOT EXISTS `wp_crewhrm_jobs` (
   `attendance_type` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
   `experience_level` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT 'beginner, intermediate, expert etc.',
   `experience_years` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
-  `application_deadline` date DEFAULT NULL,
+  `application_deadline` timestamp NULL DEFAULT NULL,
   `application_form` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `updated_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
