@@ -10,7 +10,7 @@ import style from './overview.module.scss';
 export function OverView({ overview=[] }) {
     
     return (
-        <div data-crew="overview" className={'overview'.classNames(style) + 'list-fix'.classNames()}>
+        <div data-crew="overview" className={'overview'.classNames(style)}>
             {overview.map((q, i) => {
                 const { id, label, text, text_options = [] } = q;
 

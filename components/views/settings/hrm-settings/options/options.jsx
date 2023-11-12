@@ -297,30 +297,33 @@ function OptionFields({fields=[], vertical, separator, is_group=false}) {
 
 export function Options() {
     const { segment, sub_segment } = useParams();
-    const { sections={}, component, overflow=true } = settings_fields[segment].segments[sub_segment];
+    const { sections={}, component, overflow=true, width='582px', useWrapper=true } = settings_fields[segment].segments[sub_segment];
 
 	const wrapper_attrs = {
 		className: `position-relative ${overflow ? '' : 'overflow-hidden'} padding-30 bg-color-white box-shadow-thin`.classNames(),
 		style: {borderRadius: '5px'}
 	}
 
+	function Wrapper({children}) {
+		return !useWrapper ? children : <div className={'section'.classNames(style)} style={{width}}>
+			<div {...wrapper_attrs}>
+				{children}
+			</div>
+		</div>
+	}
+
 	return <div style={{marginTop: '79px', marginBottom: '79px'}}>
 		{
-			component ? 
-				<div className={'section'.classNames(style)}>
-					<div {...wrapper_attrs}>
-						<RenderExternal component={component}/>
-					</div>
-				</div>
+			component ? <Wrapper>
+					<RenderExternal component={component}/>
+				</Wrapper>
 				:
 				Object.keys(sections).map(section_name=>{
 					const {fields=[], vertical, separator} = sections[section_name];
 
-					return <div key={section_name} className={'section'.classNames(style)}>
-						<div {...wrapper_attrs}>
-							<OptionFields {...{fields, vertical, separator}}/>
-						</div>
-					</div> 
+					return <Wrapper key={section_name}>
+						<OptionFields {...{fields, vertical, separator}}/>
+					</Wrapper>
 				})
 		}
 	</div>
