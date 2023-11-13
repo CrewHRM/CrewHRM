@@ -160,6 +160,7 @@ export function Sidebar({ hasApplications }) {
                                     width={48}
                                     circle={true}
                                     name={first_name + ' ' + last_name}
+									color_key={app_id + '_' + first_name + '_' + last_name}
                                 />
                                 <div className={'flex-1 margin-left-10'.classNames()}>
                                     <span

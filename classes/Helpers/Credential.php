@@ -30,6 +30,16 @@ class Credential {
 	}
 
 	/**
+	 * Instance for zoom
+	 *
+	 * @param integer $department_id
+	 * @return self
+	 */
+	public static function zoom( $department_id = 0 ) {
+		return new self( 'crewhrm-zoom-credentials', $department_id );
+	}
+
+	/**
 	 * Set index to get specific credential
 	 *
 	 * @param int $index
@@ -38,16 +48,6 @@ class Credential {
 	public function setIndex( $index ) {
 		$this->cred_index = $index;
 		return $this;
-	}
-
-	/**
-	 * Instance for zoom
-	 *
-	 * @param integer $department_id
-	 * @return self
-	 */
-	public static function zoom( $department_id = 0 ) {
-		return new self( 'crewhrm-zoom-credentials', $department_id );
 	}
 
 	/**
@@ -105,9 +105,12 @@ class Credential {
 	 */
 	public function deleteCredential() {
 		$credentials = $this->getCredentials();
-		$credentials[] = array();
+		$last_index  = count( $credentials ) - 1;
 
-		$this->saveCredentials( $credentials );
+		if ( ! empty( $credentials[ $last_index ] ?? null ) ) {
+			$credentials[] = array();
+			$this->saveCredentials( $credentials );
+		}
 	}
 
 	/**

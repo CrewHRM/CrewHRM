@@ -158,6 +158,7 @@ export function Profile({ has_applications }) {
                         width={109}
                         height={124}
                         name={application.first_name + ' ' + application.last_name}
+						color_key={application.application_id + '_' + application.first_name + '_' + application.last_name}
                         className={'border-radius-3'.classNames()}
                     />
                     <div className={'flex-1 margin-left-13'.classNames()}>

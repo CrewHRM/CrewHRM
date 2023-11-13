@@ -12,6 +12,7 @@ use CrewHRM\Helpers\Utilities;
 use CrewHRM\Main;
 use CrewHRM\Models\Settings;
 use CrewHRM\Models\Stage;
+use CrewHRM\Models\User;
 
 /**
  * Script handler class
@@ -116,6 +117,7 @@ class Scripts {
 				'date_format'       => get_option( 'date_format' ),
 				'time_format'       => get_option( 'time_format' ),
 				'admin_url'         => add_query_arg( array( 'page' => '' ), admin_url( 'admin.php' ) ),
+				'current_user'      => User::getUserInfo( get_current_user_id() ),
 				'company_address'   => array(
 					'street_address' => Settings::getSetting( 'street_address', '' ),
 					'city'           => Settings::getSetting( 'city', '' ),

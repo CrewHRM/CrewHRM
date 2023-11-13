@@ -106,4 +106,21 @@ class User {
 		$user = get_userdata( $user_id );
 		return $user->display_name;
 	}
+
+	/**
+	 * Get user info
+	 *
+	 * @param int $user_id
+	 * @return array
+	 */
+	public static function getUserInfo( $user_id ) {
+		
+		$user = get_userdata( $user_id );
+
+		return array(
+			'display_name' => $user ? $user->display_name : null,
+			'user_id'      => $user_id,
+			'email'        => $user ? $user->user_email : null,
+		);
+	}
 }
