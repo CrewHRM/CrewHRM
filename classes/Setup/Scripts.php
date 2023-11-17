@@ -87,9 +87,9 @@ class Scripts {
 		$dynamic_colors = Colors::getColors();
 		$_colors        = '';
 		foreach ( $dynamic_colors as $name => $code ) {
-			$_colors .= '--crewhrm-color-' . esc_attr( $name ) . ':' . esc_attr( $code ) . ';';
+			$_colors .= '--crewmat-color-' . esc_attr( $name ) . ':' . esc_attr( $code ) . ';';
 		}
-		echo '<style>:root{' . $_colors . '}</style>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		echo '<style>[id^="crewhrm_"],[id^="crewhrm-"]{' . $_colors . '}</style>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 
 		// Prepare nonce
 		$nonce_action = '_crewhrm_' . str_replace( '-', '_', date( 'Y-m-d' ) );
@@ -109,7 +109,6 @@ class Scripts {
 				'ajaxurl'           => admin_url( 'admin-ajax.php' ),
 				'colors'            => $dynamic_colors,
 				'reserved_stages'   => array_keys( Stage::$reserved_stages ),
-				'timeouts'          => (object) array(),
 				'nonce_action'      => $nonce_action,
 				'nonce'             => $nonce,
 				'has_pro'           => Main::$configs->has_pro,
@@ -128,7 +127,15 @@ class Scripts {
 			)
 		);
 
-		echo '<script>window.CrewHRM=' . wp_json_encode( $data ) . '</script>';
+		// Determine data pointer
+		$pattern = '/\/([^\/]+)\/wp-content\/(plugins|themes)\/([^\/]+)\/.*/';
+		preg_match( $pattern, Main::$configs->url, $matches );
+		$parsedString = strtolower( "CrewMat_{$matches[1]}_{$matches[3]}" );
+		$parsedString = preg_replace( '/[^a-zA-Z0-9_]/', '', $parsedString );
+		echo '<script>
+				window.' . $parsedString . '=' . wp_json_encode( $data ) . ';
+				window.' . $parsedString . 'pro=window.' . $parsedString . ';
+			</script>';
 	}
 
 	/**

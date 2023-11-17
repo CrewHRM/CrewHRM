@@ -2,7 +2,7 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 
 import { StickyBar } from 'crewhrm-materials/sticky-bar.jsx';
-import { __, filterObject, getRandomString, isEmpty } from 'crewhrm-materials/helpers.jsx';
+import { __, data_pointer, filterObject, getRandomString, isEmpty } from 'crewhrm-materials/helpers.jsx';
 import { Tabs } from 'crewhrm-materials/tabs/tabs.jsx';
 import { request } from 'crewhrm-materials/request.jsx';
 import { ContextToast } from 'crewhrm-materials/toast/toast.jsx';
@@ -284,9 +284,9 @@ export function JobEditor() {
                     job_id: 0,
                     hiring_flow,
                     application_form: getFieldsToSave(sections_fields),
-					street_address: window.CrewHRM.company_address.street_address,
-					zip_code: window.CrewHRM.company_address.zip_code,
-					country_code: window.CrewHRM.company_address.country_code,
+					street_address: window[data_pointer].company_address.street_address,
+					zip_code: window[data_pointer].company_address.zip_code,
+					country_code: window[data_pointer].company_address.country_code,
                 }
             });
             return;
@@ -402,8 +402,8 @@ export function JobEditor() {
                     <div key="log" className={'text-align-center'.classNames()}>
                         <div className={'d-inline-block'.classNames()}>
                             {
-								window.CrewHRM.white_label.app_logo_extended
-									? <img src={window.CrewHRM.white_label.app_logo_extended} style={{width: 'autp', height: '30px'}}/> 
+								window[data_pointer].white_label.app_logo_extended
+									? <img src={window[data_pointer].white_label.app_logo_extended} style={{width: 'autp', height: '30px'}}/> 
 									: <LogoExtended height={16} />
 							}
                         </div>

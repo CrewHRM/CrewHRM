@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
-import { __ } from 'crewhrm-materials/helpers.jsx';
+import { __, data_pointer } from 'crewhrm-materials/helpers.jsx';
 import { DropDown, Options } from 'crewhrm-materials/dropdown/dropdown.jsx';
 import { ContextApplicationSession } from '../../applicants.jsx';
 import { ContextWarning } from 'crewhrm-materials/warning/warning.jsx';
@@ -33,7 +33,7 @@ export function HeadActions({ application }) {
     const { application_id, job_id, stage_id=0 } = useParams();
     const { ajaxToast } = useContext(ContextToast);
     const navigate = useNavigate();
-	const {has_pro} = window.CrewHRM;
+	const {has_pro} = window[data_pointer];
 
     const segments = applyFilters( 'applicant_profile_communication_channels', has_pro ? [] : [
 		{

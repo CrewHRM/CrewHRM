@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { __, getRandomString } from 'crewhrm-materials/helpers.jsx';
+import { __, data_pointer, getRandomString } from 'crewhrm-materials/helpers.jsx';
 
 import style from './hiring.module.scss';
 import { FormActionButtons } from 'crewhrm-materials/form-action.jsx';
@@ -31,7 +31,7 @@ export function HiringFlow() {
     const list_manager_stages = hiring_flow
         .filter((f) => {
             // Exclude reserved stages from managable list
-            return window.CrewHRM.reserved_stages.indexOf(f.stage_name) === -1;
+            return window[data_pointer].reserved_stages.indexOf(f.stage_name) === -1;
         })
         .map((f) => {
             // Convert keys to adjust with react list manager

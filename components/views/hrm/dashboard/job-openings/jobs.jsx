@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
-import { __, formatDate, getAddress, sprintf } from 'crewhrm-materials/helpers.jsx';
+import { __, data_pointer, formatDate, getAddress, sprintf } from 'crewhrm-materials/helpers.jsx';
 import { StatusDot } from 'crewhrm-materials/status-dot/status-dots.jsx';
 import { Options } from 'crewhrm-materials/dropdown/dropdown.jsx';
 import { ShareModal } from 'crewhrm-materials/share-modal.jsx';
@@ -237,7 +237,7 @@ export function JobOpenings(props) {
                             } = job;
 
 							// Get deadlien in local timezone
-							let _deadline = application_deadline ? formatDate(application_deadline, window.CrewHRM.date_format + ' ' + window.CrewHRM.time_format) : null;
+							let _deadline = application_deadline ? formatDate(application_deadline, window[data_pointer].date_format + ' ' + window[data_pointer].time_format) : null;
 							if ( _deadline ) {
 								_deadline = sprintf(__('Deadline: %s'), _deadline);
 							}

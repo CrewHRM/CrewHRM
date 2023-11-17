@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import {createRoot} from 'react-dom/client';
 
 import { MountPoint } from "crewhrm-materials/mountpoint.jsx";
-import { __, getElementDataSet } from "crewhrm-materials/helpers.jsx";
+import { __, getElementDataSet, data_pointer } from "crewhrm-materials/helpers.jsx";
 import { ResponsiveLayout } from "crewhrm-materials/responsive-layout.jsx";
 import { request } from "crewhrm-materials/request.jsx";
 import { WpDashboardFullPage } from "crewhrm-materials/backend-dashboard-container/full-page-container.jsx";
@@ -71,7 +71,7 @@ function AddonsPage({addons={}, addonStates={}}) {
 			<div className={'d-flex align-items-center column-gap-30'.classNames()}>
 				<div className={'d-inline-block'.classNames()}>
 					<a
-						href={`${window.CrewHRM.admin_url}=${window.CrewHRM.app_name}#/dashboard/jobs/editor/new/`}
+						href={`${window[data_pointer].admin_url}=${window[data_pointer].app_name}#/dashboard/jobs/editor/new/`}
 						className={'button button-primary'.classNames()}
 					>
 						{__('Create A New Job')}

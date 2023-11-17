@@ -7,7 +7,7 @@
         margin-bottom: 30px;
 
         .list-container {
-            border: 1.5px solid var(--crewhrm-color-tertiary);
+            border: 1.5px solid var(--crewmat-color-tertiary);
             border-radius: 10px;
             overflow: hidden;
 
@@ -30,8 +30,8 @@
                 }
 
                 .required {
-                    color: var(--crewhrm-color-secondary);
-                    background-color: var(--crewhrm-color-secondary-15);
+                    color: var(--crewmat-color-secondary);
+                    background-color: var(--crewmat-color-secondary-15);
                 }
             }
         }
