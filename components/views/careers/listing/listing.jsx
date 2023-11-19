@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 import { __, filterObject, filterUniqueColumn, parseParams } from 'crewhrm-materials/helpers.jsx';
@@ -16,6 +16,9 @@ export function Listing({ base_permalink, settings = {} }) {
     const [searchParam, setSearchParam] = useSearchParams();
     const queryParams = parseParams(searchParam);
     const current_page = parseInt( queryParams.page || 1 );
+
+	const reff_wrapper = useRef();
+	const [is_mobile, setMobile] = useState(false);
 
     const [state, setState] = useState({
         jobs: [],
@@ -71,6 +74,18 @@ export function Listing({ base_permalink, settings = {} }) {
         getJobs();
     }, [searchParam]);
 
+	const setLayout=()=>{
+		if ( reff_wrapper?.current ) {
+			setMobile(reff_wrapper.current.offsetWidth<560);
+		}
+	}
+
+	useEffect(()=>{
+		setLayout();
+		window.addEventListener('resize', setLayout);
+		return ()=>window.removeEventListener('resize', setLayout);
+	}, []);
+
     return (
         <>
             {settings.header ? (
@@ -91,8 +106,8 @@ export function Listing({ base_permalink, settings = {} }) {
 
             <div
                 data-crew="job-listing"
-                className={'listing'.classNames(style)}
-                style={{ marginTop: '59px' }}
+                className={`listing ${is_mobile ? 'mobile' : ''}`.classNames(style)}
+				ref={reff_wrapper}
             >
                 <Conditional show={settings.sidebar}>
                     <CareersSidebar
@@ -100,6 +115,7 @@ export function Listing({ base_permalink, settings = {} }) {
                         setFilter={setFilter}
                         jobs_country_codes={settings.country_codes}
                         departments={state.departments}
+						is_mobile={is_mobile}
                     />
                 </Conditional>
 
@@ -130,6 +146,7 @@ export function Listing({ base_permalink, settings = {} }) {
 							{__('Jobs')}
 						</div>
 					</Conditional>
+					
                     <CareersLoop jobs={state.jobs} base_permalink={base_permalink} />
 
                     <Conditional show={!state.no_more}>

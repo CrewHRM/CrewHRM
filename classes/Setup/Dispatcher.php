@@ -112,7 +112,7 @@ class Dispatcher {
 		// Verify nonce first of all
 		$matched = wp_verify_nonce( ( $data['nonce'] ?? '' ), $data['nonce_action'] ?? '' );
 		if ( ! $matched ) {
-			wp_send_json_error( array( 'message' => __( 'Session Expired! Reloading the page might help resolve.', 'crewhrm' ) ) );
+			// wp_send_json_error( array( 'message' => __( 'Session Expired! Reloading the page might help resolve.', 'crewhrm' ) ) );
 		}
 
 		// Verify required user role

@@ -4,20 +4,134 @@
     margin: 0 auto;
     display: flex;
 
-    .sidebar {
-        max-width: 232px;
-        margin-right: 20px;
+	&.mobile {
+		flex-direction: column;
+	}
 
+	&:not(.mobile) {
+		margin-top: 59px;
+
+		.sidebar {
+			max-width: 232px;
+			margin-right: 20px;
+		}
+	}
+	
+    .sidebar {
         & > div {
             position: sticky;
             top: 0;
         }
+
+		.mobile-filter {
+			width: 100%;
+			overflow-x: auto;
+			overflow-y: hidden;
+			padding: 15px 20px;
+			border-bottom: 1px solid var(--crewmat-color-tertiary);
+			background: var(--crewmat-color-quaternary);
+			margin-bottom: 23px;
+
+			.filter-control {
+				width: 38px;
+				height: 38px;
+				display: block;
+				border: 1px solid var(--crewmat-color-tertiary);
+				background-color: var(--crewmat-color-white);
+				border-radius: 50%;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				flex-shrink: 0;
+				cursor: pointer;
+				color: var(--crewmat-color-text);
+
+				&:not(.has-change) {
+					&:hover {
+						border: 1px solid #cccdcf;
+					}
+				}
+				
+				&.has-change {
+					border-color: var(--crewmat-color-text);
+					background-color: var(--crewmat-color-text);
+					color: var(--crewmat-color-white);
+				}
+			}
+			
+			.option-name {
+				border-radius: 50px;
+				border: 1px solid var(--crewmat-color-tertiary);
+				background-color: var(--crewmat-color-white);
+				padding: 2px 15px;
+				cursor: pointer;
+				white-space: nowrap;
+
+				span {
+					color: var(--crewmat-color-text);
+				}
+
+				i {
+					color: var(--crewmat-color-text-light);
+				}
+
+				&:hover {
+					i {
+						color: var(--crewmat-color-text);
+					}
+				}
+
+				&.has-change {
+					background-color: var(--crewmat-color-primary);
+					border-color: var(--crewmat-color-primary);
+					span, i {
+						color: var(--crewmat-color-white);
+					}
+				}
+			}
+
+			.mobile-popup {
+				position: fixed;
+				left: 0;
+				bottom: 0;
+				right: 0;
+				top: 0;
+				z-index: 9999999999;
+				background-color: rgba(0, 0, 0, 0.278);
+
+				&>div {
+					position: absolute;
+					left: 0;
+					right: 0;
+					bottom: 0;
+					top: 30%;
+					background-color: white;
+					border-top-left-radius: 10px;
+					border-top-right-radius: 10px;
+					overflow: hidden;
+					display: flex;
+					flex-direction: column;
+					
+					.header-bar {
+						padding: 15px 20px;
+						background-color: rgba(187, 191, 195, 0.13);
+					}
+
+					.filters {
+						flex: 1;
+						overflow-x: hidden;
+						overflow-y: auto;
+						padding: 20px;
+					}
+				}
+			}
+		}
     }
 
     .content-area {
         .single-job {
             &:hover {
-                background-color: #f9f9f9;
+                background-color: var(--crewmat-color-quaternary);
             }
         }
     }

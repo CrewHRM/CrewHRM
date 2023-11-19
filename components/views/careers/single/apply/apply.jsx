@@ -362,6 +362,8 @@ export function Apply({ job = {}, settings={} }) {
                         <FormActionButtons
                             onBack={() => navigateTab(-1)}
                             onNext={goNext}
+							disabledNext={state.submitting}
+							loading={state.submitting}
                             nextText={
                                 is_last_tab ? __('Submit Application') : __('Save & Continue')
                             }

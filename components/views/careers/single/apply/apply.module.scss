@@ -1,6 +1,6 @@
 .apply {
     .header {
-        background-color: #f9f9f9;
+        background-color: var(--crewmat-color-quaternary);
 
         .container {
             max-width: 786px;
