@@ -8,7 +8,7 @@
     }
 
     .details {
-		max-width: 95%;
+		max-width: calc(100% - 20px);
 		margin: auto;
 		
         .container {

@@ -6,7 +6,7 @@ import { DangerouslySet } from 'crewhrm-materials/dangerously-set.jsx';
 import { request } from 'crewhrm-materials/request.jsx';
 import { LoadingIcon } from 'crewhrm-materials/loading-icon/loading-icon.jsx';
 import { Conditional } from 'crewhrm-materials/conditional.jsx';
-import { statuses, employment_types } from 'crewhrm-materials/data.jsx';
+import { statuses, employment_types, salary_types } from 'crewhrm-materials/data.jsx';
 import { applyFilters } from 'crewhrm-materials/hooks.jsx';
 
 import { sections_fields } from '../../hrm/job-editor/application-form/form-structure.jsx';
@@ -78,7 +78,7 @@ function applyFormFields(fields) {
 	);
 }
 
-function RenderMeta({ icon, hint, content, contentClass='' }) {
+function RenderMeta({ icon, hint, content, afterContent='', contentClass='' }) {
     return content ? (
         <div>
             <i className={`${icon} font-size-16 color-text-light`.classNames()}></i>
@@ -88,7 +88,7 @@ function RenderMeta({ icon, hint, content, contentClass='' }) {
                 {hint}
             </span>
             <span className={'font-size-17 font-weight-500 line-height-25 color-text'.classNames() + contentClass}>
-                {content}
+                {content} {afterContent}
             </span>
         </div>
     ) : null;
@@ -142,7 +142,9 @@ export function Single({ base_permalink, settings={} }) {
         job_description,
         employment_type,
         salary_a,
-        salary_b
+        salary_b,
+		salary_basis,
+		currency=''
     } = state.job || {};
 
     if (state.fetching) {
@@ -199,6 +201,8 @@ export function Single({ base_permalink, settings={} }) {
                             icon={'ch-icon ch-icon-empty-wallet'}
                             hint={__('Salary')}
                             content={(salary_a || '') + (salary_b ? '-' + salary_b : '')}
+							beforeContent={currency}
+							afterContent={currency + ' ' + (salary_types[salary_basis] ? ' / ' + salary_types[salary_basis] : '')}
 							contentClass={'white-space-nowrap'.classNames()}
                         />
                         <div className={'align-self-center'.classNames()}>
