@@ -1,6 +1,6 @@
 {
   "name": "crewhrm",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "HR Management System",
   "main": "index.js",
   "scripts": {
@@ -10,7 +10,7 @@
     "build": "npm run pro-addons && npm run compile && gulp build",
     "watch": "npm run pro-addons && concurrently \"npm run sync-materials\" \"webpack --watch --mode=development\"",
     "lint": "eslint ./components/**/*.jsx",
-    "lint:fix": "eslint --fix ./components/**/*.jsx && prettier --write './components/**/*.{jsx,scss}' --config ./.prettierrc",
+    "lint:fix": "eslint --fix ./components/**/*.jsx",
     "cypress:open": "cypress open --config-file tests/cypress/config.config.js",
     "cypress:run": "cypress run --config-file tests/cypress/config.config.js",
     "env:start": "wp-env start",
@@ -95,13 +95,10 @@
     "@10up/cypress-wp-utils": "github:10up/cypress-wp-utils#build",
     "eslint": "^8.48.0",
     "eslint-config-airbnb": "^19.0.4",
-    "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-import": "^2.28.1",
     "eslint-plugin-jsx-a11y": "^6.7.1",
-    "eslint-plugin-prettier": "^5.0.0",
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
-    "gulp-notify": "^4.0.0",
-    "prettier": "^3.0.2"
+    "gulp-notify": "^4.0.0"
   }
 }

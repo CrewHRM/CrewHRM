@@ -177,13 +177,13 @@ export const settings_fields = applyFilters(
 										name: 'phone_number',
 										label: __('Phone'),
 										type: 'text',
-										placeholder: __('123 456 789')
+										placeholder: '123456789'
 									},
 									{
 										name: 'mobile_number',
 										label: __('Mobile'),
 										type: 'text',
-										placeholder: __('123 456 789')
+										placeholder: '123456789'
 									}
 								],
 								[
@@ -193,13 +193,13 @@ export const settings_fields = applyFilters(
 										description: __('This email address will be used to communicate with the candidates and employees.'),
 										type: 'email',
 										required: true,
-										placeholder: __('hr@company.com')
+										placeholder: 'hr@company.com'
 									},
 									{
 										name: 'other_email',
 										label: __('Other Email'),
 										type: 'email',
-										placeholder: __('@company.com')
+										placeholder: '@company.com'
 									}
 								],
 								{

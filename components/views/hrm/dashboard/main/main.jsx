@@ -23,7 +23,7 @@ function CreateJobIntro({orientation="vertical"}) {
 		<span
 			className={'d-block color-text font-size-28 font-weight-600 line-height-32 margin-bottom-15'.classNames()}
 		>
-			{__('Find the person you want to hire ')}
+			{__('Find the person you want to hire')}
 		</span>
 		<small
 			className={'color-text-light font-size-15 font-weight-400 margin-bottom-30 d-block'.classNames()}

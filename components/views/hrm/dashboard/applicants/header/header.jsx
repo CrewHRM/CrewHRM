@@ -32,7 +32,7 @@ export function Header({
                         <span
                             className={'d-inline-block font-size-15 font-weight-600 color-text margin-right-3'.classNames()}
                         >
-                            {s.candidates}
+                            {__(s.candidates)}
                         </span>
                         <span
                             className={'d-inline-block font-size-14 font-weight-400 color-text'.classNames()}

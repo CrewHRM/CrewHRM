@@ -23,8 +23,13 @@ class Scripts {
 	 * Script handler constructor
 	 */
 	public function __construct() {
+		// Register scripts
 		add_action( 'admin_enqueue_scripts', array( $this, 'adminScripts' ), 11 );
 		add_action( 'wp_enqueue_scripts', array( $this, 'frontendScripts' ), 11 );
+
+		// Register script translations
+		add_action('admin_enqueue_scripts', array($this, 'scriptTranslation'), 100);
+		add_action('wp_enqueue_scripts', array($this, 'scriptTranslation'), 100);
 
 		// Color pallete
 		add_action( 'wp_head', array( $this, 'loadVariables' ), 1000 );
@@ -48,7 +53,7 @@ class Scripts {
 			wp_enqueue_script( 'crewhrm-hrm', Main::$configs->dist_url . 'hrm.js', array( 'jquery', 'wp-i18n' ), Main::$configs->version, true );
 		}
 
-		// Load scripts for setting and company profile
+		// Load scripts for setting
 		if ( Utilities::isCrewDashboard( array( Admin::SLUG_SETTINGS ) ) ) {
 			if ( current_user_can( 'upload_files' ) ) {
 				wp_enqueue_media();
@@ -56,6 +61,7 @@ class Scripts {
 			wp_enqueue_script( 'crewhrm-settings', Main::$configs->dist_url . 'settings.js', array( 'jquery', 'wp-i18n' ), Main::$configs->version, true );
 		}
 
+		// Load script for only addons page. For enable/disabling.
 		if ( Utilities::isCrewDashboard( Addon::PAGE_SLUG ) ) {
 			wp_enqueue_script( 'crewhrm-addons-script', Main::$configs->dist_url . 'addons-page.js', array( 'jquery', 'wp-i18n' ), Main::$configs->version, true );
 		}
@@ -70,6 +76,18 @@ class Scripts {
 		if ( Utilities::isCareersPage() ) {
 			wp_enqueue_script( 'crewhrm-careers', Main::$configs->dist_url . 'careers.js', array( 'jquery', 'wp-i18n' ), Main::$configs->version, true );
 		}
+	}
+
+	/**
+	 * load text domain script after all enqueue_scripts
+	 */
+	public function scriptTranslation() {
+		$domain = Main::$configs->text_domain;
+		$dir    = Main::$configs->dir . 'languages/';
+		wp_set_script_translations( 'crewhrm-hrm', $domain, $dir );
+		wp_set_script_translations( 'crewhrm-settings', $domain, $dir );
+		wp_set_script_translations( 'crewhrm-addons-script', $domain, $dir );
+		wp_set_script_translations( 'crewhrm-careers', $domain, $dir );
 	}
 
 	/**
@@ -117,6 +135,7 @@ class Scripts {
 				'time_format'       => get_option( 'time_format' ),
 				'admin_url'         => add_query_arg( array( 'page' => '' ), admin_url( 'admin.php' ) ),
 				'current_user'      => User::getUserInfo( get_current_user_id() ),
+				'text_domain'       => Main::$configs->text_domain,
 				'company_address'   => array(
 					'street_address' => Settings::getSetting( 'street_address', '' ),
 					'city'           => Settings::getSetting( 'city', '' ),

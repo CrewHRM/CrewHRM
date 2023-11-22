@@ -260,7 +260,7 @@ export function JobOpenings(props) {
                                 {
                                     key: '_any_',
                                     label: __('Candidates'),
-                                    content: candidates
+                                    content: __(candidates)
                                 }
                             ];
 
@@ -277,8 +277,8 @@ export function JobOpenings(props) {
                                     label: special_stages[stage_name] || stage_name,
                                     content:
                                         stage_name === '_hired_'
-                                            ? candidates + (vacancy ? '/' + vacancy : '')
-                                            : candidates
+                                            ? __(candidates) + (__(vacancy) ? '/' + __(vacancy) : '')
+                                            : __(candidates)
                                 });
                             });
 

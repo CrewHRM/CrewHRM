@@ -3,12 +3,13 @@ import { useParams } from 'react-router-dom';
 
 import { CoverImage } from 'crewhrm-materials/image/image.jsx';
 import { Line } from 'crewhrm-materials/line/line.jsx';
-import { ContextApplicationSession } from '../../applicants.jsx';
 import { request } from 'crewhrm-materials/request.jsx';
+import { __, sprintf } from 'crewhrm-materials/helpers.jsx';
 import { applyFilters } from 'crewhrm-materials/hooks.jsx';
 import { timeAgoOrAfter } from 'crewhrm-materials/helpers.jsx';
 import { RenderExternal } from 'crewhrm-materials/render-external.jsx';
 
+import { ContextApplicationSession } from '../../applicants.jsx';
 import style from './activity.module.scss';
 
 function LayoutDisqualify(props) {
@@ -18,7 +19,7 @@ function LayoutDisqualify(props) {
             <span
                 className={'font-size-17 font-weight-400 line-height-24 letter-spacing--17 color-text'.classNames()}
             >
-                Disqualified by
+                {__('Disqualified by')}
             </span>{' '}
             <span
                 className={'font-size-17 font-weight-600 line-height-24 letter-spacing--17 color-text'.classNames()}
@@ -37,7 +38,7 @@ function LayoutMove(props) {
             <span
                 className={'font-size-17 font-weight-400 line-height-24 letter-spacing--17 color-text'.classNames()}
             >
-                Moved to {to} by
+                {sprintf(__('Moved to %s by'), to)}
             </span>{' '}
             <span
                 className={'font-size-17 font-weight-600 line-height-24 letter-spacing--17 color-text'.classNames()}
@@ -61,7 +62,7 @@ function LayoutApply(props) {
             <span
                 className={'font-size-17 font-weight-400 line-height-24 letter-spacing--17'.classNames()}
             >
-                applied
+                {__('applied')}
             </span>{' '}
 			{timeAgoOrAfter(timestamp)}
         </>

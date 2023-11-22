@@ -23,22 +23,22 @@ export function StatCards({ className = '' }) {
     const card_stats = [
         {
             label: __('Total Job Posts'),
-            count: total_jobs,
+            count: __(total_jobs),
             icon: icon_learning
         },
         {
             label: __('Total Applications'),
-            count: total_applications,
+            count: __(total_applications),
             icon: icon_users
         },
         {
             label: __('Total Hired'),
-            count: total_hired,
+            count: __( total_hired ),
             icon: icon_essential
         },
         {
             label: __('Total Pending'),
-            count: total_pending_applications,
+            count: __( total_pending_applications ),
             icon: icon_time
         }
     ];

@@ -21,19 +21,23 @@ var onError = function (err) {
 };
 
 var added_texts = [];
-const regex = /__\('([^']*)'\)/g;
-const js_files = ['hrm', 'careers', 'settings'].map((f) => 'dist/' + f + '.js:1').join(', ');
-function i18n_makepot(callback, target_dir) {
+const regex = /__\(\s*'([^']*)'\s*\)/g;
+const js_files = ['hrm', 'careers', 'settings', 'addons-page'].map((f) => 'dist/' + f + '.js:1').join(', ');
+function i18n_makepot(target_dir) {
     const parent_dir = target_dir || __dirname;
     var translation_texts = '';
 
     // Loop through JS files inside js directory
     fs.readdirSync(parent_dir).forEach(function (file_name) {
         var full_path = parent_dir + '/' + file_name;
-        var stat = fs.lstatSync(full_path);
 
+		if ( full_path.indexOf('node_modules')>-1 || full_path.indexOf('vendor')>-1 ) {
+			return;
+		}
+
+        var stat = fs.lstatSync(full_path);
         if (stat.isDirectory()) {
-            i18n_makepot(null, full_path);
+            i18n_makepot(full_path);
             return;
         }
 
@@ -63,13 +67,21 @@ function i18n_makepot(callback, target_dir) {
         __dirname + '/languages/' + text_domain.toLowerCase() + '.pot',
         translation_texts
     );
+}
 
-    callback ? callback() : 0;
+function i18n_makepot_init(callback) {
+	i18n_makepot(path.resolve(__dirname) );
+	i18n_makepot(path.resolve(__dirname + '/../CrewHRM-Pro') );
+	i18n_makepot(path.resolve(__dirname + '/../Materials') );
+
+	if ( typeof callback === 'function' ) {
+		callback();
+	}
 }
 
 gulp.task('makepot', function () {
     return gulp
-        .src('**/*.php')
+        .src(['**/*.php', '../CrewHRM-Pro/**/*.php'])
         .pipe(
             plumber({
                 errorHandler: onError
@@ -131,12 +143,12 @@ gulp.task('copy', function () {
             '!./*.json',
             '!./*.xml'
         ])
-        .pipe(gulp.dest('build/crewhrm/'));
+        .pipe(gulp.dest('build/hr-management/'));
 });
 
 gulp.task('make-zip', function () {
 	// Replace the mode in build folder
-	const index_path = path.resolve( __dirname+'/build/crewhrm/index.php' );
+	const index_path = path.resolve( __dirname+'/build/hr-management/index.php' );
 	const codes      = fs.readFileSync(index_path).toString().replace( "=> 'development',", "=> 'production'," );
 	fs.writeFileSync(index_path, codes);
 	
@@ -147,7 +159,8 @@ exports.build = gulp.series(
     'clean-zip',
     'clean-build',
     'makepot',
-    i18n_makepot,
+    i18n_makepot_init,
     'copy',
-    'make-zip'
+    'make-zip',
+    'clean-build',
 );

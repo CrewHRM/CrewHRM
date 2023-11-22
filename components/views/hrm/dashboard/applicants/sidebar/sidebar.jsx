@@ -96,7 +96,7 @@ export function Sidebar({ hasApplications }) {
             id: 'qualified',
             label: (
                 <span className={'font-size-13 font-weight-500 line-height-24'.classNames()}>
-                    {sprintf(__('Qualified (%s)'), state.qualified_count)}
+                    {sprintf(__('Qualified (%s)'), __(state.qualified_count))}
                 </span>
             )
         },
@@ -104,7 +104,7 @@ export function Sidebar({ hasApplications }) {
             id: 'disqualified',
             label: (
                 <span className={'font-size-13 font-weight-500 line-height-24'.classNames()}>
-                    {sprintf(__('Disqualified (%s)'), state.disqualified_count)}
+                    {sprintf(__('Disqualified (%s)'), __(state.disqualified_count))}
                 </span>
             )
         }

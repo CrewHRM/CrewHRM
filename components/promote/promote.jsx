@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 import {__} from 'crewhrm-materials/helpers.jsx';
 
@@ -21,7 +21,7 @@ const screenshots = {
 	calendar,
 	zoom_settings,
 	meet_settings
-}
+};
 
 export function Promote({content, className='', style: cssStyle={}, children}) {
 	return ! screenshots[content] ? <i>Promote Screen not found</i> : <div 
