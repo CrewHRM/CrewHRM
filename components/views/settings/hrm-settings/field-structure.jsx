@@ -99,7 +99,7 @@ export const settings_fields = applyFilters(
 								{
 									name: 'outgoing_email_events',
 									label: __('Email Notifications'),
-									hint: __('CrewHRM sends updates by email to admins and applicants. Turn them on as needed.'),
+									hint: __('Crew HRM sends updates by email to admins and applicants. Turn them on as needed.'),
 									type: 'checkbox',
 									options: 'email_events',
 								}

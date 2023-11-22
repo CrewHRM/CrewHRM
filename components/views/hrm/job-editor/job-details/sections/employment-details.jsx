@@ -60,7 +60,7 @@ export function EmploymentDetails(props) {
 								{__('Submission Deadline')}
 							</span>
                             <DateField
-                                value={values.application_deadline ? formatDate( values.application_deadline, 'Y-m-d' ) : ''}
+                                value={values.application_deadline ? formatDate( values.application_deadline, 'Y-m-d', false ) : ''}
                                 onChange={(v) => onChange('application_deadline', getUnixTimestamp( getLastOfDay( new Date( v ) ) ) )}
                             />
                         </div>

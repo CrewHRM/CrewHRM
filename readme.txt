@@ -1,4 +1,4 @@
-=== CrewHRM - Best Online Recruitment System ===
+=== Crew HRM - Best Online Recruitment System ===
 Contributors: jayedul, badsha_eee 
 Donate Link: https://getcrewhrm.com/pricing/
 Tags:  HR, HRM, Recruitment, Job Listings, Employee management, Leave management, Attendance, Reimbursement, Human Resource Management
@@ -9,11 +9,11 @@ Stable tag: 1.0.4
 License: GPLv3
 License URI: https://opensource.org/licenses/GPL-3.0
 
-The best HRM plugin for online recruitment management. CrewHRM offers a complete solution from creating job posts, sharing them online, managing submissions, screening, asses, and hiring!
+The best HRM plugin for online recruitment management. Crew HRM offers a complete solution from creating job posts, sharing them online, managing submissions, screening, asses, and hiring!
 
 == Description ==
 
-CrewHRM plugin is a comprehensive solution for managing your entire hiring process. It includes all the features you need to attract, screen, and hire the best talent, including:
+Crew HRM plugin is a comprehensive solution for managing your entire hiring process. It includes all the features you need to attract, screen, and hire the best talent, including:
 
 * **Dashboard:** A centralized dashboard where you can manage all aspects of your hiring process.
 * **Post jobs:** Easily post jobs to your WordPress website and other job boards.
@@ -71,7 +71,7 @@ Please note that this plugin is developed using React.js. If you want to access 
 Yes, we offer a whitelable setting on the Pro version of the plugin to easily change the name and images. If you prefer to use the free version only, you can change the name using translation plugins like Loco Translate or the Say What plugin.
 
 = Can I customize the plugin? =
-Yes, as CrewHRM is offered under the GPL license, you can modify it any way you like. There is no restriction at all. But please remember that we do not offer support on customized plugins.
+Yes, as Crew HRM is offered under the GPL license, you can modify it any way you like. There is no restriction at all. But please remember that we do not offer support on customized plugins.
 
 = Can you develop a custom feature for me? =
 We are unable to offer customizations at this moment. You may hire a developer from a marketplace, and we will gladly assist your developer.
@@ -83,7 +83,7 @@ No. We are not supporting multisite installations at this moment.
 Yes, you can translate the plugin into any language you want. You can use the Loco Translate plugin or any other plugin you like. Please check our [documentation](https://getcrewhrm.com/docs/getting-started/translation/) for detailed instructions.
 
 = Do you have video tutorials? =
-We have posted walkthrough videos on the [CrewHRM YouTube Channel](https://www.youtube.com/@crewhrm). If you have requests for video tutorials and discuss different ideas, please feel free to comment on any video or use the contact form on our website.
+We have posted walkthrough videos on the [Crew HRM YouTube Channel](https://www.youtube.com/@crewhrm). If you have requests for video tutorials and discuss different ideas, please feel free to comment on any video or use the contact form on our website.
 
 = How can I suggest new features? =
 You can email us using the contact form on our website to share feature ideas with helpful screenshots, sketches, etc.

@@ -236,18 +236,10 @@ export function JobOpenings(props) {
                                 stats: { candidates = 0, stages: application_stages = {} }
                             } = job;
 
-							// Get deadlien in local timezone
-							let _deadline = application_deadline ? formatDate(application_deadline, window[data_pointer].date_format + ' ' + window[data_pointer].time_format) : null;
-							if ( _deadline ) {
-								_deadline = sprintf(__('Deadline: %s'), _deadline);
-							}
-
 							// Combine meta data andfilter before rendering
                             const meta_data = [
                                 department_name,
-								// getAddress({street_address, country_code}),
                                 employment_types[employment_type],
-                                // _deadline
                             ].filter(d=>d);
 
 							// Determine dot color per job status

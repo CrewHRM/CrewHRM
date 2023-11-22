@@ -106,7 +106,7 @@ function AddonsPage({addons={}, addonStates={}}) {
 								<img src={thumbnail_url} className={'width-p-100 height-auto d-block margin-auto margin-bottom-15'.classNames()} style={{maxWidth: '160px'}}/>
 								
 								<strong className={'d-block margin-bottom-15 font-size-20 font-weight-600 color-text'.classNames()}>
-									{addon_name.replace('CrewHRM - ', '')}
+									{addon_name.replace('Crew HRM - ', '')}
 								</strong>
 								<div className={'margin-bottom-15 font-size-14 font-weight-400 color-text-light'.classNames()}>
 									{description}
