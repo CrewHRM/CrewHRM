@@ -53,7 +53,7 @@ class _String {
 		'title'  => array(),
 		'width'  => array(),
 		'height' => array(),
-		'size'   => array()
+		'size'   => array(),
 	);
 
 	/**

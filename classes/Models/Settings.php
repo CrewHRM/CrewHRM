@@ -22,7 +22,7 @@ class Settings {
 	 * @return array
 	 */
 	private static function get() {
-		
+
 		$defaults = array(
 			'careers_search'          => true,
 			'careers_sidebar'         => true,
@@ -31,16 +31,16 @@ class Settings {
 			'outgoing_email_events'   => apply_filters(
 				'crewhrm_email_events_default',
 				array(
-					'application-confirmation'
+					'application-confirmation',
 				)
-			) 
+			),
 		);
-		
+
 		$_data = get_option( self::KEY_SETTINGS );
 		$_data = _Array::getArray( $_data );
 		$_data = array_merge( $defaults, $_data );
 		$_data = File::applyDynamics( $_data );
-		
+
 		return $_data;
 	}
 
@@ -55,7 +55,7 @@ class Settings {
 
 		// Pass through fitlers for pro default options ideally
 		$settings = apply_filters( 'crewhrm_settings', self::get() );
-		
+
 		return null !== $name ? ( $settings[ $name ] ?? $default ) : $settings;
 	}
 
@@ -82,13 +82,14 @@ class Settings {
 	/**
 	 * Save company profile data coming from ideally settings page
 	 *
-	 * @param array  $data Settings to save
+	 * @param array $data Settings to save
+	 * @param bool  $merge Whether to merge with existing or not
 	 * @return void
 	 */
 	public static function saveSettings( array $data, $merge = false ) {
-		
+
 		// In case you need to update only on option inside the array
-		if ( $merge === true ) {
+		if ( true === $merge ) {
 			$data = array_merge( self::get(), $data );
 		}
 

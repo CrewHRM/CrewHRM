@@ -42,7 +42,7 @@ class Admin {
 	 * @return void
 	 */
 	public function registerCalendar() {
-		
+
 		// Do not register if pro plugin is active
 		if ( Main::$configs->has_pro ) {
 			return;
@@ -84,11 +84,11 @@ class Admin {
 		if ( ! empty( $white_label['app_logo'] ) ) {
 			add_action(
 				'admin_head',
-				function() use($white_label){
+				function() use ( $white_label ) {
 					?>
 					<style>
 						.toplevel_page_crewhrm .wp-menu-image.svg {
-							background-image: url(<?php echo $white_label['app_logo']; ?>) !important;
+							background-image: url(<?php echo $white_label['app_logo']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>) !important;
 						}
 					</style>
 					<?php
@@ -98,8 +98,8 @@ class Admin {
 
 		// Main page
 		add_menu_page(
-			__( $white_label['app_label'], 'crewhrm' ),
-			__( $white_label['app_label'], 'crewhrm' ),
+			$white_label['app_label'],
+			$white_label['app_label'],
 			User::getAdminMenuRole( get_current_user_id() ),
 			Main::$configs->app_name,
 			array( $this, 'mainPage' ),
@@ -175,7 +175,8 @@ class Admin {
 	/**
 	 * Add plugin action links in plugins page
 	 *
-	 * @return void
+	 * @param array $actions Plugin action links
+	 * @return array
 	 */
 	public function pluginActionLinks( array $actions ) {
 
@@ -185,11 +186,11 @@ class Admin {
 										<span style="color: #ff7742; font-weight: bold;">' .
 											__( 'Get Pro', 'crewhrm' ) .
 										'</span>
-									</a>'
+									</a>',
 		);
 
 		$_actions = apply_filters( 'crewhrm_plugin_action_menus', $_actions );
-		
+
 		return array_merge( $actions, $_actions );
 	}
 
@@ -203,11 +204,16 @@ class Admin {
 		if ( $page_id > 0 ) {
 			return;
 		}
-		
+
 		$link = admin_url( 'admin.php?page=' . self::SLUG_SETTINGS . '&highlight=careers_page_id#/settings/recruitment/careers/' );
 		?>
 		<div class="notice notice-warning">
-			<p><?php echo sprintf( __( 'Please <a href="%s">set up</a> a page to display the job posts.', 'crewhrm-pro' ), $link ); ?></p>
+			<p>
+				<?php
+					// translators: Careers page setup warning
+					echo sprintf( __( 'Please <a href="%s">set up</a> a page to display the job posts.', 'crewhrm-pro' ), $link ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped 
+				?>
+			</p>
 		</div>
 		<?php
 	}

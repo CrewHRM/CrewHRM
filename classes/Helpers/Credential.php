@@ -1,28 +1,52 @@
 <?php
+/**
+ * Third party integrations credential management
+ *
+ * @package crewhrm
+ */
 
 namespace CrewHRM\Helpers;
 
+/**
+ * Credential manager class
+ */
 class Credential {
-
+	/**
+	 * Option name to store credential
+	 *
+	 * @var string
+	 */
 	private $cred_name;
+
+	/**
+	 * The department ID to do operations for
+	 *
+	 * @var int
+	 */
 	private $department_id;
+
+	/**
+	 * Credential index
+	 *
+	 * @var int
+	 */
 	private $cred_index = null;
-	
+
 	/**
 	 * Credential manager constructor
 	 *
-	 * @param string $cred_name
-	 * @param integer $department The department ID to store credentials for. 0 means global. For now no department specific features BTW. So always 0.
+	 * @param string  $cred_name The unique name to CRUD values by
+	 * @param integer $department_id The department ID to store credentials for. 0 means global. For now no department specific features BTW. So always 0.
 	 */
 	public function __construct( $cred_name, $department_id ) {
-		$this->cred_name = $cred_name;
+		$this->cred_name     = $cred_name;
 		$this->department_id = $department_id;
 	}
 
 	/**
 	 * Instance for meet
 	 *
-	 * @param integer $department_id
+	 * @param integer $department_id The department ID to store credential for
 	 * @return self
 	 */
 	public static function meet( $department_id = 0 ) {
@@ -32,7 +56,7 @@ class Credential {
 	/**
 	 * Instance for zoom
 	 *
-	 * @param integer $department_id
+	 * @param integer $department_id The department ID to store zoom credentials to
 	 * @return self
 	 */
 	public static function zoom( $department_id = 0 ) {
@@ -42,7 +66,7 @@ class Credential {
 	/**
 	 * Set index to get specific credential
 	 *
-	 * @param int $index
+	 * @param int $index The credential index to do operations on
 	 * @return self
 	 */
 	public function setIndex( $index ) {
@@ -64,7 +88,7 @@ class Credential {
 		// Set empty fallback that means not set
 		if ( empty( $credentials ) || ! is_array( $credentials ) ) {
 			$credentials = array(
-				$this->department_id => $fallback
+				$this->department_id => $fallback,
 			);
 		}
 
@@ -74,13 +98,13 @@ class Credential {
 	/**
 	 * Modify credential/token in the last one and update whole
 	 *
-	 * @param string $name
-	 * @param string|array $value
+	 * @param string       $name The credential name
+	 * @param string|array $value And credential value
 	 * @return void
 	 */
 	public function addValue( $name, $value ) {
-		$credentials = $this->getCredentials();
-		$last_index  = count( $credentials ) - 1;
+		$credentials                         = $this->getCredentials();
+		$last_index                          = count( $credentials ) - 1;
 		$credentials[ $last_index ][ $name ] = $value;
 
 		$this->saveCredentials( $credentials );
@@ -89,11 +113,11 @@ class Credential {
 	/**
 	 * Update credentials for a single department in the whole array and save
 	 *
-	 * @param array $credentials
+	 * @param array $credentials The credential
 	 * @return void
 	 */
 	private function saveCredentials( $credentials ) {
-		$credentials_entire = $this->getCredentials( true );
+		$credentials_entire                         = $this->getCredentials( true );
 		$credentials_entire[ $this->department_id ] = $credentials;
 		update_option( $this->cred_name, $credentials_entire );
 	}
@@ -116,13 +140,12 @@ class Credential {
 	/**
 	 * Get latest or specific credential to interact with API
 	 *
-	 * @param string $key
-	 * @param int $index
+	 * @param string $key Credential key to get by
 	 * @return array
 	 */
 	public function getCredential( $key = null ) {
 		$credentials = $this->getCredentials();
-		$pointer     = $this->cred_index === null ? count( $credentials ) - 1 : $this->cred_index;
+		$pointer     = null === $this->cred_index ? count( $credentials ) - 1 : $this->cred_index;
 		$latest      = $credentials[ $pointer ] ?? array();
 
 		return $key ? ( $latest[ $key ] ?? null ) : $latest;

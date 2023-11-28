@@ -1,9 +1,17 @@
 <?php
+/**
+ * Addon states management
+ *
+ * @package crewhrm
+ */
 
 namespace CrewHRM\Controllers;
 
 use CrewHRM\Models\AddonManager;
 
+/**
+ * Controller methods
+ */
 class AddonController {
 	const PREREQUISITES = array(
 		'toggleAddonState' => array(
@@ -21,9 +29,9 @@ class AddonController {
 	 */
 	public static function toggleAddonState( array $data ) {
 		$new_state = $data['new_state'] ?? null;
-		$addon_id = $data['addon_id'] ?? null;
+		$addon_id  = $data['addon_id'] ?? null;
 
-		if ( ! empty( $addon_id ) &&  is_bool( $new_state ) ) {
+		if ( ! empty( $addon_id ) && is_bool( $new_state ) ) {
 			AddonManager::toggleState( $addon_id, $new_state );
 			wp_send_json_success();
 

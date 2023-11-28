@@ -219,7 +219,7 @@ class _Array {
 	/**
 	 * Parse comments from php file as array
 	 *
-	 * @param string $path
+	 * @param string         $path The file path to get manifest from
 	 * @param ARRAY_A|OBJECT $ret_type Either object or array to return
 	 * @return array|object
 	 */
@@ -227,21 +227,21 @@ class _Array {
 		$result = [];
 
 		// Use regular expressions to match the first PHP comment block
-		preg_match('/\/\*\*(.*?)\*\//s', file_get_contents( $path ), $matches);
+		preg_match( '/\/\*\*(.*?)\*\//s', file_get_contents( $path ), $matches ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
 
-		if (isset($matches[1])) {
+		if ( isset( $matches[1] ) ) {
 			$comment = $matches[1];
 
 			// Remove leading asterisks and split lines
-			$lines = preg_split('/\r\n|\r|\n/', trim(preg_replace('/^\s*\*\s*/m', '', $comment)));
+			$lines = preg_split( '/\r\n|\r|\n/', trim( preg_replace( '/^\s*\*\s*/m', '', $comment ) ) );
 
-			foreach ($lines as $line) {
+			foreach ( $lines as $line ) {
 				// Check if the line contains a colon
-				if (strpos($line, ':') !== false) {
-					list($key, $value) = array_map('trim', explode(':', $line, 2));
+				if ( strpos( $line, ':' ) !== false ) {
+					list($key, $value) = array_map( 'trim', explode( ':', $line, 2 ) );
 
-					$key = strtolower( str_replace( ' ', '_', $key ) );
-					$result[$key] = $value;
+					$key            = strtolower( str_replace( ' ', '_', $key ) );
+					$result[ $key ] = $value;
 				}
 			}
 		}
@@ -251,8 +251,8 @@ class _Array {
 		$result['url']      = plugin_dir_url( $path );
 		$result['dist_url'] = $result['url'] . 'dist/';
 
-		$result = _Array::castRecursive( $result );
+		$result = self::castRecursive( $result );
 
-		return $ret_type === ARRAY_A ? $result : (object)$result;
+		return ARRAY_A === $ret_type ? $result : (object) $result;
 	}
 }

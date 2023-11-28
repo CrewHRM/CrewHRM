@@ -78,8 +78,8 @@ class Field {
 	/**
 	 * Get specifc column by where clause
 	 *
-	 * @param array $where
-	 * @param string $col_name
+	 * @param array  $where    Where condition array to get data based on
+	 * @param string $col_name The column name to get
 	 * @return array
 	 */
 	public function getCol( array $where, string $col_name ) {
@@ -102,8 +102,8 @@ class Field {
 	/**
 	 * Update fields
 	 *
-	 * @param array $update
-	 * @param array $where
+	 * @param array $update The value to be updated
+	 * @param array $where Where condition to update based on
 	 * @return void
 	 */
 	public function updateField( array $update, array $where ) {

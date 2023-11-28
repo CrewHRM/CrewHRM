@@ -26,8 +26,8 @@ class Job {
 	public static function createUpdateJob( array $job ) {
 
 		// Prepare salary field
-		$salary   = $job['salary'] ?? '';
-		$salary   = explode( '-', $salary );
+		$salary = $job['salary'] ?? '';
+		$salary = explode( '-', $salary );
 
 		// Prepare deadline field
 		$deadline = null;
@@ -36,7 +36,7 @@ class Job {
 			$deadline = ! is_numeric( $deadline ) ? strtotime( $deadline ) : (int) $deadline;
 			$deadline = gmdate( 'Y-m-d\TH:i:s', $deadline );
 		}
-		
+
 		$_job = array(
 			'job_title'            => $job['job_title'] ?? '',
 			'job_description'      => $job['job_description'] ?? '',
@@ -415,7 +415,7 @@ class Job {
 	/**
 	 * Retrieve job by application id
 	 *
-	 * @param int $application_id
+	 * @param int $application_id The application ID to get job by
 	 * @return array
 	 */
 	public static function getJobByApplicationId( $application_id ) {
@@ -443,7 +443,7 @@ class Job {
 	/**
 	 * Get pemalink to edit job screen
 	 *
-	 * @param int $job_id
+	 * @param int $job_id The job ID to get permalink for
 	 * @return string
 	 */
 	public static function getJobEditPermalink( $job_id ) {

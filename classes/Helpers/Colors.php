@@ -67,7 +67,7 @@ class Colors {
 	 * @return array
 	 */
 	public static function getColors() {
-		
+
 		$colors = self::$base_colors;
 
 		// Provide some necessary opacity

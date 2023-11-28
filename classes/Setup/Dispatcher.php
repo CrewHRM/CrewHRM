@@ -39,7 +39,6 @@ class Dispatcher {
 	 * Dispatcher registration in constructor
 	 *
 	 * @return void
-	 * @throws Error If there is any duplicate ajax handler across controllers.
 	 */
 	public function __construct() {
 		// Register ajax handlers only if it is ajax call
@@ -53,9 +52,10 @@ class Dispatcher {
 	/**
 	 * Register ajax request handlers
 	 *
+	 * @throws Error If there is any duplicate ajax handler across controllers.
 	 * @return void
 	 */
-	public function registerControllers(){
+	public function registerControllers() {
 
 		$registered_methods = array();
 		$controllers        = apply_filters( 'crewhrm_controllers', self::$controllers );
@@ -66,7 +66,8 @@ class Dispatcher {
 			// Loop through controller methods in the class
 			foreach ( $class::PREREQUISITES as $method => $prerequisites ) {
 				if ( in_array( $method, $registered_methods, true ) ) {
-					throw new Error( __( 'Duplicate endpoint ' . $method . ' not possible' ) );
+					// translators: Show the duplicate registered endpoint
+					throw new Error( sprintf( __( 'Duplicate endpoint %s not possible', 'crewhrm' ), $method ) );
 				}
 
 				// Determine ajax handler types
@@ -104,16 +105,19 @@ class Dispatcher {
 	 */
 	public function dispatch( $class, $method, $prerequisites ) {
 		// Determine post/get data
-		$is_post = isset( $_SERVER['REQUEST_METHOD'] ) ? strtolower( sanitize_text_field( wp_unslash( $_SERVER['REQUEST_METHOD'] ) ) ) === 'post' : null;
+		$is_post = strtolower( sanitize_text_field( wp_unslash( $_SERVER['REQUEST_METHOD'] ?? '' ) ) ) === 'post';
 		$data    = $is_post ? $_POST : $_GET; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		$data    = _Array::stripslashesRecursive( _Array::getArray( $data ) );
-		$files   = is_array( $_FILES ) ? $_FILES : array();
+		$files   = _Array::sanitizeRecursive( is_array( $_FILES ) ? $_FILES : array() );
 
-		// Verify nonce first of all
-		$matched = wp_verify_nonce( ( $data['nonce'] ?? '' ), $data['nonce_action'] ?? '' );
-		if ( ! $matched ) {
-			// wp_send_json_error( array( 'message' => __( 'Session Expired! Reloading the page might help resolve.', 'crewhrm' ) ) );
-		}
+		/*
+			// Comment out for now as nonce verifcation fails frequently
+			// ---------------------------------------------------------
+			$matched = wp_verify_nonce( ( $data['nonce'] ?? '' ), $data['nonce_action'] ?? '' );
+			if ( ! $matched ) {
+				wp_send_json_error( array( 'message' => __( 'Session Expired! Reloading the page might help resolve.', 'crewhrm' ) ) );
+			}
+		*/
 
 		// Verify required user role
 		$_required_roles = $prerequisites['role'] ?? array();

@@ -188,8 +188,6 @@ class Stage {
 		// Get the applications in the deletable stage
 		$overview = self::getApplicationsOverview( $job_id, $stage_id );
 
-		error_log( var_export( $overview, true ) );
-
 		// Move the applications to new target if necessary
 		if ( ! empty( $overview['count'] ) ) {
 
@@ -430,14 +428,14 @@ class Stage {
 	/**
 	 * Get the current stage ID of an application. 0 means no stage, and it is utilized across the app.
 	 *
-	 * @param int $application_id
+	 * @param int $application_id The application ID to get stages of
 	 * @return int
 	 */
 	public static function getCurrentStageIdByApplicationId( $application_id ) {
 		global $wpdb;
 		$stage_id = $wpdb->get_var(
 			$wpdb->prepare(
-				"SELECT stage_id FROM " . DB::pipeline() . " WHERE application_id=%d ORDER BY action_date DESC LIMIT 1",
+				'SELECT stage_id FROM ' . DB::pipeline() . ' WHERE application_id=%d ORDER BY action_date DESC LIMIT 1',
 				$application_id
 			)
 		);

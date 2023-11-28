@@ -73,7 +73,7 @@ class Address {
 	 * @param int $address_id ID to get address by
 	 * @return array|null
 	 */
-	public static function getAddressById( $address_id, $fallback = null ) {
+	public static function getAddressById( $address_id ) {
 		global $wpdb;
 		$address = $wpdb->get_row(
 			$wpdb->prepare(
@@ -83,7 +83,7 @@ class Address {
 			ARRAY_A
 		);
 
-		return empty( $address ) ? $fallback : $address;
+		return ! empty( $address ) ? $address : null;
 	}
 
 	/**

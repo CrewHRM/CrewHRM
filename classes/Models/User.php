@@ -46,7 +46,7 @@ class User {
 	 * Search for users
 	 *
 	 * @param string $keyword The keyword to search user by
-	 * @param array $exclude  Array of user IDs to exclude from the query
+	 * @param array  $exclude  Array of user IDs to exclude from the query
 	 * @return array
 	 */
 	public static function searchUser( string $keyword, array $exclude = array() ) {
@@ -63,7 +63,7 @@ class User {
 		$where_clause .= " OR user_nicename LIKE '%{$keyword}%'";
 
 		if ( ! empty( $exclude ) ) {
-			$ids = implode( ',', $exclude );
+			$ids          = implode( ',', $exclude );
 			$where_clause = "({$where_clause}) AND ID NOT IN ({$ids})";
 		}
 
@@ -80,7 +80,7 @@ class User {
 
 		return $users;
 	}
-	
+
 	/**
 	 * Get the role to register admin menu as it doesn't support array
 	 *
@@ -99,7 +99,7 @@ class User {
 	/**
 	 * Get name of a user
 	 *
-	 * @param int $user_id
+	 * @param int $user_id The user ID to get name of
 	 * @return string
 	 */
 	public static function getName( $user_id ) {
@@ -110,11 +110,11 @@ class User {
 	/**
 	 * Get user info
 	 *
-	 * @param int $user_id
+	 * @param int $user_id The user ID to get info of
 	 * @return array
 	 */
 	public static function getUserInfo( $user_id ) {
-		
+
 		$user = get_userdata( $user_id );
 
 		return array(

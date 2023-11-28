@@ -28,8 +28,8 @@ class Scripts {
 		add_action( 'wp_enqueue_scripts', array( $this, 'frontendScripts' ), 11 );
 
 		// Register script translations
-		add_action('admin_enqueue_scripts', array($this, 'scriptTranslation'), 100);
-		add_action('wp_enqueue_scripts', array($this, 'scriptTranslation'), 100);
+		add_action( 'admin_enqueue_scripts', array( $this, 'scriptTranslation' ), 100 );
+		add_action( 'wp_enqueue_scripts', array( $this, 'scriptTranslation' ), 100 );
 
 		// Color pallete
 		add_action( 'wp_head', array( $this, 'loadVariables' ), 1000 );
@@ -110,51 +110,56 @@ class Scripts {
 		echo '<style>[id^="crewhrm_"],[id^="crewhrm-"]{' . $_colors . '}</style>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 
 		// Prepare nonce
-		$nonce_action = '_crewhrm_' . str_replace( '-', '_', date( 'Y-m-d' ) );
+		$nonce_action = '_crewhrm_' . str_replace( '-', '_', gmdate( 'Y-m-d' ) );
 		$nonce        = wp_create_nonce( $nonce_action );
 
 		// Load JS variables
 		$data = apply_filters(
 			'crewhrm_frontend_data',
 			array(
-				'app_name'          => Main::$configs->app_name,
-				'white_label'       => Utilities::getWhiteLabel(),
-				'action_hooks'      => array(),
-				'filter_hooks'      => array(),
-				'home_url'          => get_home_url(),
-				'dist_url'          => Main::$configs->dist_url,
-				'plugin_url'        => Main::$configs->url,
-				'ajaxurl'           => admin_url( 'admin-ajax.php' ),
-				'colors'            => $dynamic_colors,
-				'reserved_stages'   => array_keys( Stage::$reserved_stages ),
-				'nonce_action'      => $nonce_action,
-				'nonce'             => $nonce,
-				'has_pro'           => Main::$configs->has_pro,
-				'wp_max_size'       => Settings::getWpMaxUploadSize(),
-				'date_format'       => get_option( 'date_format' ),
-				'time_format'       => get_option( 'time_format' ),
-				'admin_url'         => add_query_arg( array( 'page' => '' ), admin_url( 'admin.php' ) ),
-				'current_user'      => User::getUserInfo( get_current_user_id() ),
-				'text_domain'       => Main::$configs->text_domain,
-				'company_address'   => array(
+				'app_name'        => Main::$configs->app_name,
+				'white_label'     => Utilities::getWhiteLabel(),
+				'action_hooks'    => array(),
+				'filter_hooks'    => array(),
+				'home_url'        => get_home_url(),
+				'dist_url'        => Main::$configs->dist_url,
+				'plugin_url'      => Main::$configs->url,
+				'ajaxurl'         => admin_url( 'admin-ajax.php' ),
+				'colors'          => $dynamic_colors,
+				'reserved_stages' => array_keys( Stage::$reserved_stages ),
+				'nonce_action'    => $nonce_action,
+				'nonce'           => $nonce,
+				'has_pro'         => Main::$configs->has_pro,
+				'wp_max_size'     => Settings::getWpMaxUploadSize(),
+				'date_format'     => get_option( 'date_format' ),
+				'time_format'     => get_option( 'time_format' ),
+				'admin_url'       => add_query_arg( array( 'page' => '' ), admin_url( 'admin.php' ) ),
+				'current_user'    => User::getUserInfo( get_current_user_id() ),
+				'text_domain'     => Main::$configs->text_domain,
+				'company_address' => array(
 					'street_address' => Settings::getSetting( 'street_address', '' ),
 					'city'           => Settings::getSetting( 'city', '' ),
 					'province'       => Settings::getSetting( 'province', '' ),
 					'zip_code'       => Settings::getSetting( 'zip_code', '' ),
 					'country_code'   => Settings::getSetting( 'country_code', '' ),
-				)
+				),
 			)
 		);
 
 		// Determine data pointer
 		$pattern = '/\/([^\/]+)\/wp-content\/(plugins|themes)\/([^\/]+)\/.*/';
 		preg_match( $pattern, Main::$configs->url, $matches );
-		$parsedString = strtolower( "CrewMat_{$matches[1]}_{$matches[3]}" );
-		$parsedString = preg_replace( '/[^a-zA-Z0-9_]/', '', $parsedString );
-		echo '<script>
-				window.' . $parsedString . '=' . wp_json_encode( $data ) . ';
-				window.' . $parsedString . 'pro=window.' . $parsedString . ';
-			</script>';
+
+		// Prepare variable name
+		$pointer = strtolower( "CrewMat_{$matches[1]}_{$matches[3]}" );
+		$pointer = preg_replace( '/[^a-zA-Z0-9_]/', '', $pointer );
+
+		$variables = '<script>
+			window.' . $pointer . '=' . wp_json_encode( $data ) . ';
+			window.' . $pointer . 'pro=window.' . $pointer . ';
+		</script>';
+
+		echo $variables; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 
 	/**

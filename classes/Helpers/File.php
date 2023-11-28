@@ -104,14 +104,14 @@ class File {
 	 */
 	public static function getRestrictedFileURL( int $file_id ) {
 		$ajaxurl      = admin_url( 'admin-ajax.php' );
-		$nonce_action = '_crewhrm_' . str_replace( '-', '_', date( 'Y-m-d' ) );
+		$nonce_action = '_crewhrm_' . str_replace( '-', '_', gmdate( 'Y-m-d' ) );
 		$nonce        = wp_create_nonce( $nonce_action );
 
-		$args    = array(
+		$args = array(
 			'action'       => 'crewhrm_loadFile',
 			'file_id'      => $file_id,
 			'nonce'        => $nonce,
-			'nonce_action' => $nonce_action
+			'nonce_action' => $nonce_action,
 		);
 
 		return add_query_arg( $args, $ajaxurl );
@@ -124,17 +124,17 @@ class File {
 	 * @return array
 	 */
 	public static function getFilesInDirectory( string $directory ) {
-		
+
 		$files = array();
 
 		// Check if the directory exists
 		if ( is_dir( $directory ) ) {
 			$iterator = new \DirectoryIterator( $directory );
 
-			foreach ( $iterator as $fileInfo ) {
-				if ( $fileInfo->isFile() ) {
-					$filename = pathinfo( $fileInfo->getFilename(), PATHINFO_FILENAME );
-					$files[ $filename ] = $fileInfo->getPathname();
+			foreach ( $iterator as $file_info ) {
+				if ( $file_info->isFile() ) {
+					$filename           = pathinfo( $file_info->getFilename(), PATHINFO_FILENAME );
+					$files[ $filename ] = $file_info->getPathname();
 				}
 			}
 		}

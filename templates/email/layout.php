@@ -1,4 +1,11 @@
-<!DOCTYPE html>
+<?php
+	/**
+	 * The main email wrapper
+	 *
+	 * @package crewhrm
+	 */
+
+?><!DOCTYPE html>
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html charset=UTF-8" />
@@ -17,7 +24,9 @@
 			box-sizing:border-box;"
 		>
 			<div>
-				<?php echo $contents; ?>
+				<?php
+					echo $contents; //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped,Squiz.Commenting.FileComment.Missing 
+				?>
 			</div>
 		</div>
 	</body>

@@ -27,7 +27,7 @@ class ApplicationHandler {
 		'applyToJob'             => array(
 			'nopriv' => true,
 		),
-		'uploadApplicationFile' => array(
+		'uploadApplicationFile'  => array(
 			'nopriv' => true,
 		),
 		'getApplicationsList'    => array(
@@ -67,7 +67,6 @@ class ApplicationHandler {
 	 * Note: There is no edit feature for job application. Just create on submission and retreieve in the application view.
 	 *
 	 * @param array $data  Request data containing application informations
-	 * @param array $files Request files
 	 * @return void
 	 */
 	public static function applyToJob( array $data ) {
@@ -81,13 +80,13 @@ class ApplicationHandler {
 
 		if ( empty( $application_id ) ) {
 			wp_send_json_error(
-				array( 
-					'notice' => __( 'Application submission failed!', 'crewhrm' ) 
+				array(
+					'notice' => __( 'Application submission failed!', 'crewhrm' ),
 				)
 			);
 		} else {
-			wp_send_json_success( 
-				array( 
+			wp_send_json_success(
+				array(
 					'application_id' => $application_id,
 					'message'        => __( 'Application has been created in draft mode. Watinging for file uploads.' ),
 				)
@@ -106,7 +105,7 @@ class ApplicationHandler {
 		$application_id = Utilities::getInt( $data['application_id'] ?? 0 );
 		$field_name     = $data['field_name'] ?? null;
 		$finalize       = $data['finalize'] ?? false;
-		
+
 		// Check if file is valid
 		if ( ! is_array( $file['file'] ?? null ) || 0 !== ( $file['file']['error'] ?? null ) ) {
 			wp_send_json_error( array( 'message' => __( 'Invalid file', 'crewhrm' ) ) );
@@ -122,7 +121,7 @@ class ApplicationHandler {
 		Application::uploadApplicationFile( $application_id, $field_name, $file['file'] );
 
 		// If file upload complete, mark the application as complete
-		if ( $finalize === true ) {
+		if ( true === $finalize ) {
 			Field::applications()->updateField(
 				array( 'is_complete' => 1 ),
 				array( 'application_id' => $application_id )
@@ -177,8 +176,8 @@ class ApplicationHandler {
 		if ( empty( $application ) ) {
 			wp_send_json_error( array( 'message' => __( 'Application not found', 'crewhrm' ) ) );
 			return;
-		} 
-	
+		}
+
 		$application['recruiter_email'] = Settings::getRecruiterEmail();
 		wp_send_json_success(
 			array(
@@ -250,7 +249,7 @@ class ApplicationHandler {
 	public static function searchUser( array $data ) {
 		$keyword = $data['keyword'] ?? '';
 		$exclude = $data['exclude'] ?? array();
-		$users = User::searchUser( $keyword, is_array( $exclude ) ? $exclude : array() );
+		$users   = User::searchUser( $keyword, is_array( $exclude ) ? $exclude : array() );
 
 		wp_send_json_success( array( 'users' => $users ) );
 	}

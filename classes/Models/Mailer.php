@@ -1,4 +1,9 @@
 <?php
+/**
+ * Mailer functionalities wrapper
+ *
+ * @package crewhrm
+ */
 
 namespace CrewHRM\Models;
 
@@ -7,8 +12,11 @@ use CrewHRM\Helpers\_String;
 use CrewHRM\Helpers\File;
 use CrewHRM\Main;
 
+/**
+ * Mailing class and methods
+ */
 class Mailer {
-	
+
 	/**
 	 * Args to send mail
 	 *
@@ -26,7 +34,7 @@ class Mailer {
 	/**
 	 * Undocumented function
 	 *
-	 * @param array $args
+	 * @param array $args Mailing args, especially to and subject.
 	 * @return self
 	 */
 	public function setArgs( array $args ) {
@@ -37,7 +45,7 @@ class Mailer {
 	/**
 	 * Set the event
 	 *
-	 * @param string $event
+	 * @param string $event Event name to send mail for
 	 * @return self
 	 */
 	public function setEvent( string $event ) {
@@ -48,19 +56,19 @@ class Mailer {
 	/**
 	 * Check if the event is enabled, and then execute handler.
 	 *
-	 * @param string|array $event_s Event or array of events for the templates with same variables. 
-	 * @param callable $callback
-	 * @return self
+	 * @param string|array $event_s Event or array of events for the templates with same variables.
+	 * @param callable     $callback Callback function to be called if the event is enabled
+	 * @return void
 	 */
 	public static function init( $event_s, callable $callback ) {
 		if ( ! is_array( $event_s ) ) {
 			$event_s = array( $event_s );
 		}
 
-		$enabled_events  = Settings::getSetting( 'outgoing_email_events' );
+		$enabled_events = Settings::getSetting( 'outgoing_email_events' );
 
 		foreach ( $event_s as $event ) {
-			$is_enabled = is_array( $enabled_events ) ? in_array( $event, $enabled_events ) : false;
+			$is_enabled = is_array( $enabled_events ) ? in_array( $event, $enabled_events, true ) : false;
 
 			if ( $is_enabled ) {
 				$callback( ( new self( array() ) )->setEvent( $event ) );
@@ -70,15 +78,14 @@ class Mailer {
 
 	/**
 	 * Trigger mail sending.
-	 * Template and event name must be same. 
+	 * Template and event name must be same.
 	 * It means the same name must be used in favor of pointing to each other anywhere.
 	 *
-	 * @param string $template The event name/template file name to use. 
-	 * @param array  $dynamics Dynamic data to apply into static html templates
+	 * @param array $dynamics Dynamic data to apply into static html templates
 	 * @return bool
 	 */
 	public function send( array $dynamics ) {
-		
+
 		$subject     = $this->applyDynamics( $this->args['subject'] ?? '', $dynamics, $this->event );
 		$to          = $this->args['to'] ?? '';
 		$attachments = $this->args['attachments'] ?? array();
@@ -88,7 +95,6 @@ class Mailer {
 		);
 
 		if ( empty( $body ) ) {
-			trigger_error( 'Could not generate CrewHRM email for ' . $this->event, E_USER_WARNING );
 			return false;
 		}
 
@@ -108,6 +114,11 @@ class Mailer {
 		return $sent;
 	}
 
+	/**
+	 * Get email 'from name'
+	 *
+	 * @return string
+	 */
 	public function get_from_name() {
 		return $this->args['from_name'] ?? get_bloginfo( 'name' );
 	}
@@ -115,7 +126,7 @@ class Mailer {
 	/**
 	 * Set content type html
 	 *
-	 * @return void
+	 * @return string
 	 */
 	public function get_content_type() {
 		return 'text/html';
@@ -133,23 +144,24 @@ class Mailer {
 	/**
 	 * Get available email templates registered at run time.
 	 *
+	 * @param bool $add_path Whether to add path or not
 	 * @return array
 	 */
 	public static function getMailTemplates( $add_path = false ) {
 		$templates = File::getFilesInDirectory( Main::$configs->dir . 'templates/email/event-templates/' );
 
 		$templates = apply_filters( 'crewhrm_email_templates', $templates );
-		
+
 		$mail_templates = array();
 		foreach ( $templates as $filename => $path ) {
-			
-			$meta = _Array::getManifestArray( $path, ARRAY_A );	
-			
+
+			$meta = _Array::getManifestArray( $path, ARRAY_A );
+
 			$mail_templates[ $filename ] = array(
 				'id'                    => $filename,
 				'label'                 => $meta['template_label'] ?? 'Untitled',
 				'exclude_from_settings' => $meta['exclude_from_settings'] ?? false,
-				'path'                  => $add_path ? $path : null
+				'path'                  => $add_path ? $path : null,
 			);
 		}
 
@@ -159,19 +171,18 @@ class Mailer {
 	/**
 	 * Wrap email body with header footer and common layout
 	 *
-	 * @param string $event The event name to use template based on
-	 * @param string $body The body to wrap
+	 * @param string $template The template name to use for the event. In fact template and event name are same always.
+	 * @param array  $dynamics Dynamic values to apply to the template
 	 * @return string
 	 */
 	private function wrapWithLayout( string $template, array $dynamics ) {
 
 		$mail_templates = self::getMailTemplates( true );
-		
+
 		if ( empty( $mail_templates[ $template ] ) ) {
-			trigger_error( 'Email template not found:' . $template, E_USER_WARNING );
 			return false;
 		}
-		
+
 		// Replace parameters in the template
 		ob_start();
 		include $mail_templates[ $template ]['path'];
@@ -181,7 +192,7 @@ class Mailer {
 
 		$contents = $this->applyDynamics( $contents, $dynamics, $template );
 		$contents = apply_filters( 'crewhrm_email_content_after_dynamics', $contents, $template, $dynamics );
-		
+
 		// Note: This $contents variable is used in the file included below.
 
 		ob_start();
@@ -192,9 +203,9 @@ class Mailer {
 	/**
 	 * Apply dynamic variables in static string
 	 *
-	 * @param string $contents
-	 * @param array $dynamics
-	 * @param array $event
+	 * @param string $contents HTML contents with variable placeholders
+	 * @param array  $dynamics Key value paired dynamic values array
+	 * @param string $event The event/template name to apply dynamic data to
 	 * @return string
 	 */
 	private function applyDynamics( string $contents, array $dynamics, string $event ) {

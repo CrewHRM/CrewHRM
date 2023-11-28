@@ -1,12 +1,20 @@
 <?php
+/**
+ * Addon states manager
+ *
+ * @package crewhrm
+ */
 
 namespace CrewHRM\Models;
 
 use CrewHRM\Helpers\_Array;
 use CrewHRM\Models\Settings;
 
+/**
+ * Addon manager class and methods
+ */
 class AddonManager {
-	
+
 	/**
 	 * The array key to store addon settings under crewhrm settings
 	 */
@@ -22,7 +30,7 @@ class AddonManager {
 		$defaults = array(
 			'assessment' => true,
 			'attachment' => true,
-			'email'      => true
+			'email'      => true,
 		);
 
 		return array_merge( $defaults, $states );
@@ -31,8 +39,8 @@ class AddonManager {
 	/**
 	 * Toggle individual addon enable state
 	 *
-	 * @param string $addon_id
-	 * @param boolean $new_state
+	 * @param string  $addon_id  Addon ID to change enable state
+	 * @param boolean $new_state New state to apply
 	 * @return void
 	 */
 	public static function toggleState( string $addon_id, bool $new_state ) {

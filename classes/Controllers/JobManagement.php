@@ -172,7 +172,7 @@ class JobManagement {
 		}
 
 		// Set accept pdf for resume
-		$fields = &$job['application_form']['documents']['fields'];
+		$fields       = &$job['application_form']['documents']['fields'];
 		$resume_index = _Array::findIndex( $fields, 'id', 'resume' );
 		if ( isset( $fields[ $resume_index ] ) ) {
 			$fields[ $resume_index ]['accept'] = '.pdf';

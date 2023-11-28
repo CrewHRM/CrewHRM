@@ -40,7 +40,7 @@ class Application {
 			'date_of_birth'    => $application['date_of_birth'] ?? null,
 			'cover_letter'     => $application['cover_letter'] ?? null,
 			'resume_file_id'   => null, // It will be saved in separate request
-			'application_date' => gmdate('Y-m-d H:i:s'),
+			'application_date' => gmdate( 'Y-m-d H:i:s' ),
 		);
 
 		// Insert the main job data
@@ -61,7 +61,7 @@ class Application {
 		 * @param array $application  Raw array that was sent to application creator method.
 		 */
 		do_action( 'crewhrm_job_application_created', $app_id, $_application, $application );
-		
+
 		return $app_id;
 	}
 
@@ -71,7 +71,7 @@ class Application {
 	 * @param int    $application_id The application ID to store files for
 	 * @param string $field_name     The field name to upload for
 	 * @param array  $file           Uploaded file
-	 * @return bool
+	 * @return void
 	 */
 	public static function uploadApplicationFile( $application_id, $field_name, $file ) {
 
@@ -228,9 +228,9 @@ class Application {
 	 * Get application list by args.
 	 * Disqualified stage will never be added to the application table directly.
 	 * Rather it will be in the pipeline table and use SQL to determine.
-	 * 
-	 * Incomplete applications will be excluded from the query. 
-	 * Incomplete means file uploading not completed after clicking submit. 
+	 *
+	 * Incomplete applications will be excluded from the query.
+	 * Incomplete means file uploading not completed after clicking submit.
 	 * Maybe still in progress, or disconnected or closed window/tab.
 	 *
 	 * @param array $args Application args
@@ -424,7 +424,7 @@ class Application {
 	 * @return bool
 	 */
 	public static function changeApplicationStage( $job_id, $application_id, $stage_id ) {
-		
+
 		// Determine whether to disqualify the application
 		$is_disqualify = '_disqualified_' === $stage_id;
 		$old_stage_id  = Stage::getCurrentStageIdByApplicationId( $application_id );
@@ -433,9 +433,9 @@ class Application {
 			// If it is to disqualify, get the numeric ID of the disqualification stage.
 			$stage_id = Stage::getDisqualifyId( $job_id );
 		} else {
-			// If not to disqualify explicitly, then check if the stage ID refers to disqualify either way. 
+			// If not to disqualify explicitly, then check if the stage ID refers to disqualify either way.
 			// And set them that way.
-			$disqname = Field::stages()->getField(
+			$disqname      = Field::stages()->getField(
 				array(
 					'job_id'   => $job_id,
 					'stage_id' => $stage_id,

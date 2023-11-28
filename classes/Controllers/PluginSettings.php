@@ -15,7 +15,7 @@ use CrewHRM\Models\Settings;
  */
 class PluginSettings {
 	const PREREQUISITES = array(
-		'saveSettings' => array(
+		'saveSettings'  => array(
 			'role' => 'administrator',
 		),
 		'addDepartment' => array(
@@ -61,9 +61,9 @@ class PluginSettings {
 		Settings::saveSettings( $data['settings'] );
 
 		wp_send_json_success(
-			array( 
-				'message' => 'Settings updated!',
-				'settings' => Settings::getSettings()
+			array(
+				'message'  => 'Settings updated!',
+				'settings' => Settings::getSettings(),
 			)
 		);
 	}

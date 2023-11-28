@@ -17,7 +17,7 @@ class Utilities {
 	/**
 	 * Check if the page is a Crew Dashboard
 	 *
-	 * @param string $page Optional sub page name to match too
+	 * @param string $sub_page Optional sub page name to match too
 	 * @return boolean
 	 */
 	public static function isCrewDashboard( $sub_page = null ) {
@@ -53,11 +53,11 @@ class Utilities {
 	 * Get link to HRM main dashboard
 	 *
 	 * @param string $append Additional segments
-	 * 
+	 *
 	 * @return string
 	 */
 	public static function getDashboardPermalink( $append = '' ) {
-		return admin_url( "admin.php?page=" . Main::$configs->app_name ) . $append;
+		return admin_url( 'admin.php?page=' . Main::$configs->app_name ) . $append;
 	}
 
 	/**
@@ -98,16 +98,21 @@ class Utilities {
 		return array(
 			'app_label'         => apply_filters( 'crewhrm_app_label', Main::$configs->plugin_name ),
 			'app_logo'          => apply_filters( 'crewhrm_app_logo', null ),
-			'app_logo_extended' => apply_filters( 'crewhrm_app_logo_extended', null )
+			'app_logo_extended' => apply_filters( 'crewhrm_app_logo_extended', null ),
 		);
 	}
 
+	/**
+	 * Get timezone offset basedon settings
+	 *
+	 * @return int
+	 */
 	public static function getTimezoneOffset() {
-		$time_zone_string = get_option('timezone_string');
+		$time_zone_string = get_option( 'timezone_string' );
 
 		// If the time zone string is not set, use the default UTC offset
 		if ( empty( $time_zone_string ) ) {
-			$time_zone_offset = get_option('gmt_offset');
+			$time_zone_offset = get_option( 'gmt_offset' );
 		} else {
 			// Create a DateTime object with the specified time zone
 			$time_zone = new \DateTimeZone( $time_zone_string );
@@ -125,18 +130,18 @@ class Utilities {
 	/**
 	 * Convert unix to specific timezone offset and return time string.
 	 *
-	 * @param int $timestamp        Unix timestamp seconds
-	 * @param int $timeZoneOffset   Timezone offset
-	 * @param string $formatPattern Date time format
+	 * @param int    $timestamp        Unix timestamp seconds
+	 * @param int    $time_zone_offset Timezone offset
+	 * @param string $format_pattern   Date time format
 	 * @return string
 	 */
-	public static function formatUnixTimestamp( $timestamp, $timeZoneOffset, $formatPattern = 'Y-m-d H:i' ) {
+	public static function formatUnixTimestamp( $timestamp, $time_zone_offset, $format_pattern = 'Y-m-d H:i' ) {
 		// Create a DateTime object with the specified time zone offset
 		$date_time = new \DateTime( "@$timestamp" );
-		$date_time->setTimezone( new \DateTimeZone( $timeZoneOffset ) );
+		$date_time->setTimezone( new \DateTimeZone( $time_zone_offset ) );
 
 		// Format the DateTime object with the custom pattern
-		return $date_time->format( $formatPattern );
+		return $date_time->format( $format_pattern );
 	}
 
 	/**
@@ -167,7 +172,7 @@ class Utilities {
 	 * @return string
 	 */
 	public static function getSiteLink() {
-		$parsed    = parse_url( get_home_url() );
+		$parsed    = wp_parse_url( get_home_url() );
 		$site_link = $parsed['host'] . ( ! empty( $parsed['port'] ) ? ':' . $parsed['port'] : '' );
 		return $site_link;
 	}

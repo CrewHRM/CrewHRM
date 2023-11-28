@@ -1,7 +1,10 @@
 <?php
 	/**
 	 * Template Label: Application received confirmation email to applicants
+	 *
+	 * @package crewhrm
 	 */
+
 ?>
 <div>
 	Hi <strong>{candidate_name}</strong>!

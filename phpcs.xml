@@ -10,6 +10,7 @@
 		<exclude name="WordPress.DB.SlowDBQuery.slow_db_query_meta_key" />
 		<exclude name="WordPress.DB.SlowDBQuery.slow_db_query_meta_value" />
 		<exclude name="PEAR.NamingConventions.ValidClassName.StartWithCapital" />
+		<exclude name="Squiz.PHP.CommentedOutCode.Found" />
 	</rule>
 
 	<rule ref="WordPress.Security.ValidatedSanitizedInput">

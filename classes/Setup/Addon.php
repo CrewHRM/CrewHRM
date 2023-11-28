@@ -1,4 +1,9 @@
 <?php
+/**
+ * Addon hooks setup
+ *
+ * @package crewhrm
+ */
 
 namespace CrewHRM\Setup;
 
@@ -7,6 +12,9 @@ use CrewHRM\Main;
 use CrewHRM\Models\AddonManager;
 use CrewHRM\Models\User;
 
+/**
+ * Addon registry class
+ */
 class Addon {
 	/**
 	 * Addons admin dashboard page slug
@@ -20,6 +28,9 @@ class Addon {
 	 */
 	private static $addons = array();
 
+	/**
+	 * Addon registrar contructore
+	 */
 	public function __construct() {
 		// Load internal addons
 		self::loadAddons();
@@ -27,27 +38,27 @@ class Addon {
 		// Register page to show addons list
 		add_action( 'admin_menu', array( $this, 'registerAddonsPage' ), 11 );
 	}
-	
+
 	/**
 	 * Include addons index file, so they can request to load themselves from their own.
 	 * They are not supposed to be initiated directly from here, because some add on might be external some may be disabled.
-	 * We can indentify the disable state only for internal if we load them directly here. 
+	 * We can indentify the disable state only for internal if we load them directly here.
 	 * But external ones as plugins is out of control until they request to load.
 	 * So both external and internal should go in a syncronized flow.
 	 *
 	 * @param string|null $addons_dir The addons directory to load addons from. Default will be from free version.
-	 * 
+	 *
 	 * @return void
 	 */
 	public static function loadAddons( $addons_dir = null ) {
 		$addons_dir = $addons_dir ? $addons_dir : Main::$configs->dir . 'addons' . DIRECTORY_SEPARATOR;
 		$addons     = array_filter( glob( $addons_dir . '*' ), 'is_dir' );
-		
+
 		// Loop through add
 		foreach ( $addons as $value ) {
 			$addon_dir_name = str_replace( dirname( $value ) . DIRECTORY_SEPARATOR, '', $value );
 			$file_name      = $addons_dir . $addon_dir_name . DIRECTORY_SEPARATOR . 'index.php';
-			
+
 			if ( file_exists( $file_name ) ) {
 				// To Do: Create addons page, and load only those are enabled
 				include_once $file_name;
@@ -58,8 +69,9 @@ class Addon {
 	/**
 	 * Load individual addons upon request
 	 *
-	 * @param string $index_path The index file path of the addon
-	 * 
+	 * @param string   $index_path The index file path of the addon
+	 * @param callable $callback   The initiator callback to call if addon is enabled
+	 *
 	 * @return void
 	 */
 	public static function initAddon( string $index_path, callable $callback ) {
@@ -86,7 +98,7 @@ class Addon {
 	 * @return void
 	 */
 	public function registerAddonsPage() {
-		
+
 		// Setting page
 		add_submenu_page(
 			Main::$configs->app_name,
@@ -98,10 +110,15 @@ class Addon {
 		);
 	}
 
+	/**
+	 * Get pro addons list to promote when pro is not active
+	 *
+	 * @return array
+	 */
 	private function getProAddons() {
 		$json_path = Main::$configs->dir . 'dist/libraries/pro/addons.json';
 		$thumb_url = Main::$configs->url . 'dist/libraries/pro/thumbnails/';
-		$addons    = file_exists( $json_path ) ? json_decode( file_get_contents( $json_path ), true ) : array();
+		$addons    = file_exists( $json_path ) ? json_decode( file_get_contents( $json_path ), true ) : array(); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
 		$addons    = _Array::appendColumn( $addons, 'locked', true );
 		$addons    = _Array::indexify( $addons, 'crewhrm_id' );
 
@@ -132,6 +149,6 @@ class Addon {
 		echo '<div 
 				id="crewhrm_addons_page"
 				data-addon-states="' . esc_attr( wp_json_encode( $enable_states ) ) . '"
-				data-addons="' . esc_attr( wp_json_encode( $addons  ) ) . '"></div>';
+				data-addons="' . esc_attr( wp_json_encode( $addons ) ) . '"></div>';
 	}
 }
