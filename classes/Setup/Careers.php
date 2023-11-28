@@ -37,6 +37,9 @@ class Careers {
 		// Delete incomplete applications twice per day
 		add_action( 'crewhrm_clear_incomplete_applications', array( $this, 'clearApplications' ) );
 		add_action( 'init', array( $this, 'scheduleDeletion' ) );
+
+		// Create a careers page automatically
+		add_action( 'crewhrm_activated', array( $this, 'createCareersPage' ) );
 	}
 
 	/**
@@ -133,6 +136,32 @@ class Careers {
 	public function scheduleDeletion() {
 		if ( ! wp_next_scheduled( 'crewhrm_clear_incomplete_applications' ) ) {
 			wp_schedule_event( time(), 'twicedaily', 'crewhrm_clear_incomplete_applications' );
+		}
+	}
+
+	/**
+	 * Careers page automatically during activation
+	 *
+	 * @return void
+	 */
+	public function createCareersPage() {
+
+		$careers_page_id = Utilities::getCareersPageId();
+		if ( ! empty( $careers_page_id ) ) {
+			return;
+		}
+
+		$page_id = wp_insert_post(
+			array(
+				'post_title'   => 'Careers',
+				'post_content' => '',
+				'post_status'  => 'publish',
+				'post_type'    => 'page',
+			)
+		);
+
+		if ( ! is_wp_error( $page_id ) ) {
+			Settings::saveSettings( array( 'careers_page_id' => $page_id ), true );
 		}
 	}
 }
