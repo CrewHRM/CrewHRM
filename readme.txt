@@ -106,6 +106,16 @@ You can email us using the contact form on our website to share feature ideas wi
 
 == Changelog ==
 
+= v1.0.4 -> Nov 23, 2023 =
+--------------------------
+* Translations fixed
+* Automatic careers page creation
+* Currency and salary basis added in single job
+* Careers page mobile view
+* Applicants avatar dynamic color enhancement
+* Email events added
+* Overall bug fixes and optimizations
+
 = v1.0 -> Sep 23, 2023 =
 --------------------------
 * 🥁 First Release! 🎉
