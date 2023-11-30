@@ -1,7 +1,7 @@
-=== Crew HRM - Best Online Recruitment System ===
-Contributors: jayedul, badsha_eee 
+=== Crew HRM - Best Online Job Board and Recruitment Solution ===
+Contributors: jayedul, badsha_eee, risatrajin
 Donate Link: https://getcrewhrm.com/pricing/
-Tags:  HR, HRM, Recruitment, Job Listings, Employee management, Leave management, Attendance, Reimbursement, Human Resource Management
+Tags: Recruitment, job manager, job listing, job board, job management, job lists, job list, job, jobs, company, hiring, employment, employer, employees, candidate, freelance, internship, job listings, positions, board, application, hiring, listing, recruiting
 Requires at least: 5.3
 Tested up to: 6.4.1
 Requires PHP: 7.4
@@ -9,11 +9,13 @@ Stable tag: 1.0.4
 License: GPLv3
 License URI: https://opensource.org/licenses/GPL-3.0
 
-The best HRM plugin for online recruitment management. Crew HRM offers a complete solution from creating job posts, sharing them online, managing submissions, screening, asses, and hiring!
+Best plugin for online recruitment and job board management. Hiring great talent is a breeze with Crew HRM.
 
 == Description ==
 
-Crew HRM plugin is a comprehensive solution for managing your entire hiring process. It includes all the features you need to attract, screen, and hire the best talent, including:
+Crew HRM plugin is a complete solution to manage your entire hiring process. It includes beautifully designed templates and application forms. You do not need to write any custom CSS code!
+
+Crew HRM has all the features you need to attract, screen, and hire the best talent, including:
 
 * **Dashboard:** A centralized dashboard where you can manage all aspects of your hiring process.
 * **Post jobs:** Easily post jobs to your WordPress website and other job boards.
@@ -28,16 +30,30 @@ Crew HRM plugin is a comprehensive solution for managing your entire hiring proc
 * **Hiring Stage Management:** Manage hiring stages like Applied, Shortlisted, Interviewed, Offer Made, and Hired.
 * **Dedicated job post and catalog templates:** Use dedicated job post and catalog templates to create professional-looking job postings and candidate catalogs.
 
-The pro version of the plugin will include additional features, such as:
+🚀 [View Demo](https://demo.getcrewhrm.com/)
+💬 [Chat with us](https://getcrewhrm.com/contact/)
+
+The pro version of the plugin includes additional features, such as:
 
 * **Google Meet integration:** Schedule and conduct Google Meet interviews directly from within the plugin.
 * **Appointments:** Schedule and manage appointments with candidates.
 * **Zoom integration:** Schedule and conduct Zoom interviews directly from within the plugin.
+* **Custom Fields:** Add different fields to ask questions that would help you screen the candidates better.
+* **Email Communications:** Communicate with the applicants right from the review screen and get notifications about different events in the system.
+* **Custom Attachment Support:** Allow different file formats to be uploaded when designers and creative professionals apply to your job post.
 
-The WordPress HRM plugin is the perfect solution for any business that wants to streamline its hiring process and attract the best talent.
+This WordPress HRM plugin is the perfect solution for any business that wants to streamline its hiring process and attract the best talent.
 
 == Installation ==
+From WordPress Dashboard
+1. Log in to your WordPress Admin Dashboard.
+2. Go to Plugins > Add New
+3. The search box should be in the top right corner. Write Crew HRM.
+4. Click on Install and then Activate.
 
+The following screens will guide you through the plugin configuration process.
+
+Manual Installation
 1. Upload the plugin folder to the `/wp-content/plugins/` directory.
 2. Activate the plugin from the WordPress admin dashboard.
 
@@ -49,7 +65,7 @@ You can manage all aspects of your hiring process from the dashboard, including 
 
 For more detailed instructions on how to use the plugin, please take a look at the documentation.
 
-= Documentatino and Support =
+= Documentation and Support =
 
 You can visit [CrewHRM Documentation](https://getcrewhrm.com/docs/) to learn about installation, configuration, and using it most productively.
 
@@ -61,14 +77,14 @@ Please note that this plugin is developed using React.js. If you want to access 
 
 1. Get a birds-eye view of the entire recruitment process from the dashboard
 2. Beautiful-looking job detail and listing page templates
-3. Intuitive calendar to view all your schedules.
+3. Use the Intuitive calendar to view all your schedules.
 4. Communicate with the candidate right from the dashboard.
 5. Dynamic candidate profile.
 
 == Frequently Asked Questions ==
 
 = Do you offer a whitelabeling feature? =
-Yes, we offer a whitelable setting on the Pro version of the plugin to easily change the name and images. If you prefer to use the free version only, you can change the name using translation plugins like Loco Translate or the Say What plugin.
+Yes, we offer a whitelable setting on the Pro version of the plugin to change the name and images easily. If you prefer to use the free version only, you can change the name using translation plugins like Loco Translate or the Say What plugin.
 
 = Can I customize the plugin? =
 Yes, as Crew HRM is offered under the GPL license, you can modify it any way you like. There is no restriction at all. But please remember that we do not offer support on customized plugins.
