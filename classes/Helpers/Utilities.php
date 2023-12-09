@@ -124,6 +124,12 @@ class Utilities {
 			$time_zone_offset = $time_zone->getOffset( $current_time ) / 3600; // Convert seconds to hours
 		}
 
+		// Set explicit posetive sign
+		$time_zone_offset = (string) $time_zone_offset;
+		if ( '-' !== substr( $time_zone_offset, 0, 1 ) ) {
+			$time_zone_offset = '+' . $time_zone_offset;
+		}
+
 		return $time_zone_offset;
 	}
 
