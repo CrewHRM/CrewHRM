@@ -189,7 +189,7 @@ export const settings_fields = applyFilters(
 								[
 									{
 										name: 'recruiter_email',
-										label: __('HR Email'),
+										label: __('Primary Email'),
 										description: __('This email address will be used to communicate with the candidates and employees.'),
 										type: 'email',
 										required: true,
@@ -197,7 +197,7 @@ export const settings_fields = applyFilters(
 									},
 									{
 										name: 'other_email',
-										label: __('Other Email'),
+										label: __('Secondary Email'),
 										type: 'email',
 										placeholder: '@company.com'
 									}
