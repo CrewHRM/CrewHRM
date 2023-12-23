@@ -51,6 +51,7 @@ class Addon {
 	 * @return void
 	 */
 	public static function loadAddons( $addons_dir = null ) {
+		// Null means it is requested to load addons bundled in free itself
 		$addons_dir = $addons_dir ? $addons_dir : Main::$configs->dir . 'addons' . DIRECTORY_SEPARATOR;
 		$addons     = array_filter( glob( $addons_dir . '*' ), 'is_dir' );
 

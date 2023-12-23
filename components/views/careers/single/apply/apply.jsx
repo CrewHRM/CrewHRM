@@ -7,6 +7,7 @@ import { ContextToast } from 'crewhrm-materials/toast/toast.jsx';
 import { Conditional } from 'crewhrm-materials/conditional.jsx';
 import { LoadingIcon } from 'crewhrm-materials/loading-icon/loading-icon.jsx';
 import { countries_object, patterns } from 'crewhrm-materials/data.jsx';
+import {Slot} from 'crewhrm-materials/mountpoint.jsx';
 import {
     __,
     getAddress,
@@ -357,29 +358,31 @@ export function Apply({ job = {}, settings={} }) {
 					</div>
 				))}
 
-                {is_segment ? (
-                    <div>
-                        <FormActionButtons
-                            onBack={() => navigateTab(-1)}
-                            onNext={goNext}
-							disabledNext={state.submitting}
-							loading={state.submitting}
-                            nextText={
-                                is_last_tab ? __('Submit Application') : __('Save & Continue')
-                            }
-                        />
-                    </div>
-                ) : (
-                    <div>
-                        <button
-                            disabled={state.submitting}
-                            className={'button button-primary button-full-width'.classNames()}
-                            onClick={goNext}
-                        >
-                            {__('Submit Application')} <LoadingIcon show={state.submitting}/>
-                        </button>
-                    </div>
-                )}
+				<Slot name="applicaion_submit_button">
+					{is_segment ? (
+						<div>
+							<FormActionButtons
+								onBack={() => navigateTab(-1)}
+								onNext={goNext}
+								disabledNext={state.submitting}
+								loading={state.submitting}
+								nextText={
+									is_last_tab ? __('Submit Application') : __('Save & Continue')
+								}
+							/>
+						</div>
+					) : (
+						<div>
+							<button
+								disabled={state.submitting}
+								className={'button button-primary button-full-width'.classNames()}
+								onClick={goNext}
+							>
+								{__('Submit Application')} <LoadingIcon show={state.submitting}/>
+							</button>
+						</div>
+					)}
+				</Slot>
             </div>
         </div>
     );

@@ -5,7 +5,7 @@ Tags: Recruitment, job manager, job listing, job board, job management, job list
 Requires at least: 5.3
 Tested up to: 6.4.2
 Requires PHP: 7.4
-Stable tag: 1.0.5
+Stable tag: 1.0.6
 License: GPLv3
 License URI: https://opensource.org/licenses/GPL-3.0
 
@@ -105,6 +105,11 @@ We have posted walkthrough videos on the [Crew HRM YouTube Channel](https://www.
 You can email us using the contact form on our website to share feature ideas with helpful screenshots, sketches, etc.
 
 == Changelog ==
+
+= v1.0.6 -> Dec 25, 2023 =
+--------------------------
+* Recaptcha addon in free version
+* Bug fixes and optimizations
 
 = v1.0.5 -> Dec 08, 2023 =
 --------------------------

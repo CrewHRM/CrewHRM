@@ -1,6 +1,6 @@
 {
     "name": "crew/crewhrm",
-    "license": "gpl-v2",
+    "license": "gpl-v3",
     "autoload": {
         "psr-4": {}
     },

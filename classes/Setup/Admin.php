@@ -211,7 +211,7 @@ class Admin {
 			<p>
 				<?php
 					// translators: Careers page setup warning
-					echo sprintf( __( 'Please <a href="%s">set up</a> a page to display the job posts.', 'crewhrm-pro' ), $link ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped 
+					echo sprintf( __( 'Please <a href="%s">set up</a> a page to display the job posts.', 'crewhrm' ), $link ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped 
 				?>
 			</p>
 		</div>

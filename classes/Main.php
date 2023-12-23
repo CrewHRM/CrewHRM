@@ -99,20 +99,34 @@ class Main {
 			return;
 		}
 
-		$class_name = preg_replace(
+		$class_path = preg_replace(
 			array( '/([a-z])([A-Z])/', '/\\\/' ),
 			array( '$1$2', '/' ),
 			$class_name
 		);
 
-		if ( strpos( $class_name, 'CrewHRM/' ) === 0 ) {
-			$class_name = str_replace( 'CrewHRM/', 'classes/', $class_name );
-			$file_path  = self::$configs->dir . $class_name . '.php';
-			$file_path  = str_replace( '/', DIRECTORY_SEPARATOR, preg_replace( '#[\\\\/]+#', '/', $file_path ) );
+		if ( strpos( $class_path, 'CrewHRM/Addon/' ) === 0 ) {
 
-			if ( file_exists( $file_path ) ) {
-				require_once $file_path;
-			}
+			// Pro addon
+			$addon_name = explode( '/', $class_path )[2];
+			$class_path = str_replace( 'CrewHRM/Addon/' . $addon_name . '/', '', $class_path );
+			$rel_path   = 'addons/' . $addon_name . '/classes/' . $class_path . '.php';
+
+		} else if ( strpos( $class_path, 'CrewHRM/' ) === 0 ) {
+			// Pro core
+			$rel_path = str_replace( 'CrewHRM/', 'classes/', $class_path ) . '.php';
+		
+		} else {
+			// No CrewHRM class
+			return;
+		}
+
+
+		$file_path = self::$configs->dir . $rel_path;
+		$file_path = str_replace( '/', DIRECTORY_SEPARATOR, preg_replace( '#[\\\\/]+#', '/', $file_path ) );
+
+		if ( file_exists( $file_path ) ) {
+			require_once $file_path;
 		}
 	}
 
