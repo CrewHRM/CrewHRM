@@ -226,8 +226,15 @@ export function Apply({ job = {}, settings={} }) {
                         message: notice || __('Submission failed. Something went wrong!'),
                         status: 'error'
                     });
+
+					// Enable submit button as action failed with toast message
+					setState({
+						...state,
+						submitting: false
+					});
+
                 } else {
-                    // Final notice that can't be fixed
+                    // Final notice that will hide the form and show the notice only.
                     setState({
                         ...state,
                         submitted: true,
@@ -358,13 +365,20 @@ export function Apply({ job = {}, settings={} }) {
 					</div>
 				))}
 
-				<Slot name="applicaion_submit_button">
+				<Slot 
+					name="applicaion_submit_button" 
+					payload={{
+						onChange,
+						is_final_stage: ! is_segment || is_last_tab
+					}}
+				>
 					{is_segment ? (
 						<div>
 							<FormActionButtons
 								onBack={() => navigateTab(-1)}
 								onNext={goNext}
 								disabledNext={state.submitting}
+								disabledPrevious={state.submitting}
 								loading={state.submitting}
 								nextText={
 									is_last_tab ? __('Submit Application') : __('Save & Continue')

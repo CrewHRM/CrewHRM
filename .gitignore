@@ -3,6 +3,7 @@ node_modules/
 dist/*
 !dist/libraries/
 dist/libraries/pro/*
+addons/*/dist/*
 vendor/
 build/
 *.zip

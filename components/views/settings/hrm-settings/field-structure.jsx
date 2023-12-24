@@ -1,5 +1,5 @@
 import React from 'react';
-import { __ } from 'crewhrm-materials/helpers.jsx';
+import { __, data_pointer } from 'crewhrm-materials/helpers.jsx';
 import { applyFilters } from 'crewhrm-materials/hooks.jsx';
 
 import { business_types } from 'crewhrm-materials/data.jsx';
@@ -111,7 +111,7 @@ export const settings_fields = applyFilters(
 					label: __('Files & Attachments'),
 					icon: 'ch-icon ch-icon-paperclip-2',
 					overflow: false,
-					component: ()=><Promote content="attachment_settings"/>
+					component: ()=>window[data_pointer].has_pro ? <i>{__('Please enable Attachment addon first')}</i> : <Promote content="attachment_settings"/>
 				}
 			}
 		},
@@ -248,13 +248,13 @@ export const settings_fields = applyFilters(
 					label: __('Google Meet'),
 					icon: meet_svg,
 					overflow: false,
-					component: ()=><div style={{minHeight: '600px'}}><Promote content='meet_settings'/></div>
+					component: ()=>window[data_pointer].has_pro ? <i>{__('You need to enable Google Meet addon first')}</i> : <div style={{minHeight: '600px'}}><Promote content='meet_settings'/></div>
 				},
 				zoom: {
 					label: __('Zoom'),
 					icon: zoom_svg,
 					overflow: false,
-					component: ()=><div style={{minHeight: '600px'}}><Promote content='zoom_settings'/></div>
+					component: ()=>window[data_pointer].has_pro ? <i>{__('You need to enable Zoom addon first')}</i> : <div style={{minHeight: '600px'}}><Promote content='zoom_settings'/></div>
 				}
 			}
 		}

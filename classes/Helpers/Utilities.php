@@ -171,15 +171,4 @@ class Utilities {
 
 		return $number;
 	}
-
-	/**
-	 * Get site link without http protocol and query string
-	 *
-	 * @return string
-	 */
-	public static function getSiteLink() {
-		$parsed    = wp_parse_url( get_home_url() );
-		$site_link = $parsed['host'] . ( ! empty( $parsed['port'] ) ? ':' . $parsed['port'] : '' );
-		return $site_link;
-	}
 }

@@ -94,9 +94,14 @@ class Careers {
 			'form_layout'    => Settings::getSetting( 'application_form_layout' ),
 		);
 
+		$parsed    = wp_parse_url( get_home_url() );
+		$protocol  = 'http' . ( is_ssl() ? 's' : '' ) . '://';
+		$root_site = $protocol . $parsed['host'] . ( ! empty( $parsed['port'] ) ? ':' . $parsed['port'] : '' );
+		$base_path = trim( str_replace( $root_site, '', get_permalink( get_the_ID() ) ), '/' );
+		
 		return '<div 
 				id="' . esc_attr( self::MOUNTPOINT ) . '" 
-				data-base_permalink="' . trim( str_replace( get_home_url(), '', get_permalink( get_the_ID() ) ), '/' ) . '"
+				data-base_permalink="' . $base_path . '"
 				data-settings="' . esc_attr( wp_json_encode( $settings ) ) . '"></div>';
 	}
 

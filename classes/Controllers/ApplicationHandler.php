@@ -72,8 +72,10 @@ class ApplicationHandler {
 	public static function applyToJob( array $data ) {
 		// Check data
 		if ( ! is_array( $data['application'] ?? null ) ) {
-			wp_send_json_error( array( 'message' => __( 'Invalid request data', 'crewhrm' ) ) );
+			wp_send_json_error( array( 'notice' => __( 'Invalid request data', 'crewhrm' ) ) );
 		}
+
+		do_action( 'crewhrm_submit_application_before', $data );
 
 		$application    = _Array::sanitizeRecursive( $data['application'], array( 'cover_letter' ) );
 		$application_id = Application::createApplication( $application );

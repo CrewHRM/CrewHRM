@@ -64,6 +64,16 @@ class Credential {
 	}
 
 	/**
+	 * Instance for recaptcha credential
+	 *
+	 * @param integer $department_id The department ID to store zoom credentials to
+	 * @return self
+	 */
+	public static function recaptcha( $department_id = 0 ) {
+		return new self( 'crewhrm-recaptcha-credentials', $department_id );
+	}
+
+	/**
 	 * Set index to get specific credential
 	 *
 	 * @param int $index The credential index to do operations on
