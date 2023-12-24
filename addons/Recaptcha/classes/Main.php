@@ -7,7 +7,9 @@
 
 namespace CrewHRM\Addon\Recaptcha;
 
+use CrewHRM\Addon\Recaptcha\Setup\Dispatcher;
 use CrewHRM\Addon\Recaptcha\Setup\Scripts;
+use CrewHRM\Addon\Recaptcha\Setup\Verify;
 use CrewHRM\Setup\Addon;
 
 /**
@@ -31,6 +33,8 @@ class Main {
 						
 				// Load recapcha addon objects
 				new Scripts();
+				new Dispatcher();
+				new Verify();
 			}
 		);
 	}

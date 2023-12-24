@@ -9,6 +9,7 @@ namespace CrewHRM\Addon\Recaptcha\Setup;
 
 use CrewHRM\Helpers\Utilities;
 use CrewHRM\Addon\Recaptcha\Main;
+use CrewHRM\Setup\Admin;
 
 /**
  * Script handler class
@@ -21,6 +22,7 @@ class Scripts {
 	public function __construct() {
 		// Register scripts
 		add_action( 'wp_enqueue_scripts', array( $this, 'frontendScripts' ), 10 );
+		add_action( 'admin_enqueue_scripts', array( $this, 'adminScripts' ), 10 );
 	}
 
 	/**
@@ -31,6 +33,17 @@ class Scripts {
 	public function frontendScripts() {
 		if ( Utilities::isCareersPage() ) {
 			wp_enqueue_script( 'crewhrm-recapcha-careers', Main::$configs->dist_url . 'application-page.js', array( 'jquery', 'wp-i18n' ), Main::$configs->version, true );
+		}
+	}
+
+	/**
+	 * Admin dashboard scripts
+	 *
+	 * @return void
+	 */
+	public function adminScripts() {
+		if ( Utilities::isCrewDashboard( Admin::SLUG_SETTINGS ) ) {
+			wp_enqueue_script( 'crewhrm-recaptcha-settings', Main::$configs->dist_url . 'settings-page.js', array( 'jquery', 'wp-i18n' ), Main::$configs->version, true );
 		}
 	}
 }
