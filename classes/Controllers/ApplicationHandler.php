@@ -86,14 +86,20 @@ class ApplicationHandler {
 					'notice' => __( 'Application submission failed!', 'crewhrm' ),
 				)
 			);
-		} else {
-			wp_send_json_success(
-				array(
-					'application_id' => $application_id,
-					'message'        => __( 'Application has been created in draft mode. Watinging for file uploads.' ),
-				)
-			);
+			exit;
 		}
+		
+		// When there's no file to submit, it needs to be finalized right from here as file uploader will not be called.
+		if ( ( $data['finalize'] ?? false ) == true ) {
+			Application::finalizeApplication( $application_id );
+		}
+
+		wp_send_json_success(
+			array(
+				'application_id' => $application_id,
+				'message'        => __( 'Application has been created.' ),
+			)
+		);
 	}
 
 	/**
@@ -124,10 +130,7 @@ class ApplicationHandler {
 
 		// If file upload complete, mark the application as complete
 		if ( true === $finalize ) {
-			Field::applications()->updateField(
-				array( 'is_complete' => 1 ),
-				array( 'application_id' => $application_id )
-			);
+			Application::finalizeApplication( $application_id );
 		}
 
 		wp_send_json_success();

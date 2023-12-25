@@ -66,6 +66,19 @@ class Application {
 	}
 
 	/**
+	 * Mark an application as completed
+	 *
+	 * @param int $application_id
+	 * @return void
+	 */
+	public static function finalizeApplication( $application_id ) {
+		Field::applications()->updateField(
+			array( 'is_complete' => 1 ),
+			array( 'application_id' => $application_id )
+		);
+	}
+
+	/**
 	 * Save job application files
 	 *
 	 * @param int    $application_id The application ID to store files for

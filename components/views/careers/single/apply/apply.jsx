@@ -211,7 +211,7 @@ export function Apply({ job = {}, settings={} }) {
 			submitting: true
 		});
 
-        request('applyToJob', payload, (resp) => {
+        request('applyToJob', {...payload, finalize: !files.length}, (resp) => {
             const {
                 success,
                 data: { notice, message, application_id }

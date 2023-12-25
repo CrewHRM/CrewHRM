@@ -118,7 +118,6 @@ export const sections_fields = applyFilters('job_application_fields', {
             {
                 id: 'resume',
                 label: __('Resume'),
-                readonly: true,
                 form: [
                     {
                         name: 'resume',
@@ -127,7 +126,6 @@ export const sections_fields = applyFilters('job_application_fields', {
 						maxsize: 2,
                         accept: 'application/pdf',
                         placeholder: __('Browse resume'),
-                        required: true
                     }
                 ]
             },
