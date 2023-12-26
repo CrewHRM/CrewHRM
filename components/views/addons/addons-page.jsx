@@ -11,6 +11,7 @@ import { Conditional } from "crewhrm-materials/conditional.jsx";
 import { LoadingIcon } from "crewhrm-materials/loading-icon/loading-icon.jsx";
 import { StickyBar } from "crewhrm-materials/sticky-bar.jsx";
 import { applyFilters } from "crewhrm-materials/hooks.jsx";
+import { ToggleSwitch } from "crewhrm-materials/toggle-switch/ToggleSwitch.jsx";
 
 function UpgraderBar() {
 	return <div className={'d-flex align-items-center column-gap-6 border-radius-5 border-1 b-color-primary padding-8'.classNames()}>
@@ -94,21 +95,36 @@ function AddonsPage({addons={}, addonStates={}}) {
 				
 				<ResponsiveLayout columnWidth={236}>
 					{Object.keys(state.addons).map(id=>{
-						let {plugin_name: addon_name='', description, crewhrm_id, locked, thumbnail_url} = state.addons[id];
-						let enabled = state.addonStates[crewhrm_id] ? true : false;
+						const {
+							plugin_name: addon_name='', 
+							description, 
+							crewhrm_id, 
+							crewhrm_free_addon = false,
+							locked, 
+							thumbnail_url
+						} = state.addons[id];
+						
+						const enabled = state.addonStates[crewhrm_id] ? true : false;
+						const loading = loadingState[id] ? true : false;
 
 						return <div key={id} className={'d-flex flex-direction-column justify-content-space-between position-relative height-p-100 b-color-tertiary border-radius-5 padding-vertical-30 padding-horizontal-20 bg-color-white'.classNames()}>
 							<Conditional show={locked}>
 								<i className={'ch-icon ch-icon-lock position-absolute right-15 top-15 color-text-light font-size-18'.classNames()}></i>
 							</Conditional>
 
-							<div className={''.classNames()}>
+							<Conditional show={crewhrm_free_addon}>
+								<span className={'position-absolute right-15 top-15 font-size-12 font-weight-400 color-white bg-color-secondary'.classNames()} style={{borderRadius: '50px', padding: '0 8px'}}>
+									{__('FREE')}
+								</span>
+							</Conditional>
+
+							<div className={'margin-bottom-15'.classNames()}>
 								<img src={thumbnail_url} className={'width-p-100 height-auto d-block margin-auto margin-bottom-15'.classNames()} style={{maxWidth: '160px'}}/>
 								
 								<strong className={'d-block margin-bottom-15 font-size-20 font-weight-600 color-text'.classNames()}>
 									{addon_name.replace('Crew HRM - ', '')}
 								</strong>
-								<div className={'margin-bottom-15 font-size-14 font-weight-400 color-text-light'.classNames()}>
+								<div className={'font-size-14 font-weight-400 color-text-light'.classNames()}>
 									{description}
 								</div>
 							</div>
@@ -121,12 +137,21 @@ function AddonsPage({addons={}, addonStates={}}) {
 								</Conditional>
 
 								<Conditional show={!locked}>
-									<button 
-										disabled={loadingState[id]}
-										className={`button button-primary button-outlined ${enabled ? '' : 'button-outlined-light'} width-p-100 d-block`.classNames()} onClick={()=>toggleState(id, !enabled)}
-									>
-										{enabled ? __('Deactivate') : __('Activate')} <LoadingIcon show={loadingState[id] ? true : false}/>
-									</button>
+									<div className={'d-flex align-items-center border-top-1 b-color-tertiary'.classNames()} style={{paddingTop: '15px'}}>
+										<div className={'flex-1 d-flex align-items-center'.classNames()}>
+											<span className={'font-size-14 font-weight-400 letter-spacing--3 color-text-light'.classNames()}>
+												{enabled ? __('Activated') : __('Deactivated')}
+											</span>
+											&nbsp;&nbsp;
+											<LoadingIcon show={loading}/>
+										</div>
+										<div>
+											<ToggleSwitch 
+												checked={enabled} 
+												onChange={checked=>toggleState(id, checked)}
+												disabled={loading}/>
+										</div>
+									</div>
 								</Conditional>
 							</div>
 						</div>

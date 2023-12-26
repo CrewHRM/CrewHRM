@@ -12,6 +12,7 @@
  * CrewHRM ID: recaptcha-integration
  * CrewHRM External: false
  * CrewHRM Controlled: true
+ * CrewHRM Free Addon: true
  */
 
 // Load addon

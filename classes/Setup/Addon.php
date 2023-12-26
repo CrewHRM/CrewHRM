@@ -135,7 +135,7 @@ class Addon {
 	 * Contents for the addons page
 	 */
 	public function addOnPage() {
-		// Filter sensitive data out
+		// Remove sensitive data like file paths from the array
 		$addons = self::$addons;
 		foreach ( $addons as $index => $addon ) {
 			unset( $addon->dir );
