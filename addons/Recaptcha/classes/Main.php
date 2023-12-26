@@ -1,6 +1,6 @@
 <?php
 /**
- * Google reCAPTCHA addon
+ * reCaptcha integration addon
  * 
  * @package crewhrm
  */

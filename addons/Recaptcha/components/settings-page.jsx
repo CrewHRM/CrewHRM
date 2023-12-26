@@ -97,19 +97,17 @@ export function CaptchaSettings() {
 	return <div className={'section'.classNames(style)}>
 		{
 			state.fetching ? 
-			<LoadingIcon center={true}/> : 
+			<><LoadingIcon center={true}/><br/></> : 
 			<div className={className + 'd-flex column-gap-60 padding-40'.classNames()}>
 				<div style={{width: '235px'}}>
-					<img src={recaptcha_icon} style={{maxWidth: '71px'}} className={'d-block margin-bottom-16 height-auto'.classNames()}/>
 					<img src={banner_img} style={{maxWidth: '175px'}} className={'d-block margin-bottom-16 height-auto'.classNames()}/>
 					
 					<strong className={'d-block font-size-24 margin-bottom-10 font-weight-600 color-text line-height-30'.classNames()}>
-						{__('Setup your reCAPTCHA Integration')}
+						{__('reCAPTCHA Setup')}
 					</strong>
 					
 					<span className={'font-size-14 font-weight-400 line-height-23 color-text'.classNames()}>
-						{__('Visit your google reCAPTCHA dashboard and get the Site Key and Secret Key to integrate captcha verification with your website. ')}
-						{__('Go to')} <a
+						{__('Get credentials from ')} <a
 							href="http://www.google.com/recaptcha/admin" 
 							target="_blank" 
 							className={'font-size-14 font-weight-600 color-text hover-underline'.classNames()}
@@ -147,8 +145,8 @@ export function CaptchaSettings() {
 
 		<div className={className + 'padding-20'.classNames()}>
 			<ExpandableInstruction
-				title={__('Setup your Google reCAPTCHA Integration')}
-				description={__('Credentials to connect Google reCAPTCHA with your website')}
+				title={__('Setup your reCaptcha Integration')}
+				description={__('Credentials to connect reCaptcha with your website')}
 			>
 				<ul style={{paddingLeft: '12px'}}>
 					<li>
@@ -171,7 +169,7 @@ addFilter(
 	'crewhrm_setting_fields',
 	function( settings={} ) {
 		settings.integrations.segments['google-recaptcha'] = {
-			label: __('Google reCAPTCHA'),
+			label: __('reCaptcha integration'),
 			icon: recaptcha_icon,
 			useWrapper: false,
 			component: function(el, data){

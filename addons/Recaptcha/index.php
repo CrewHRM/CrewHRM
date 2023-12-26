@@ -1,15 +1,15 @@
 <?php
 /**
- * Plugin Name: Crew HRM - Google reCAPTCHA
+ * Plugin Name: Crew HRM - reCaptcha integration
  * Plugin URI: https://getcrewhrm.com/pricing/
- * Description: Google reCAPTCHA addon for job application spam protection
+ * Description: reCaptcha integration addon for job application spam protection
  * Author: Crew HRM
  * Version: 1.0.0
  * Author URI: https://getcrewhrm.com
  * Requires at least: 5.3
  * Tested up to: 6.3
  * Text Domain: crewhrm
- * CrewHRM ID: google-recaptcha
+ * CrewHRM ID: recaptcha-integration
  * CrewHRM External: false
  * CrewHRM Controlled: true
  */
