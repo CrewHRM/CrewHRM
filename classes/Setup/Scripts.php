@@ -46,7 +46,7 @@ class Scripts {
 	 */
 	public function adminScripts() {
 		// Load script for the main hrm dashboard
-		if ( Utilities::isCrewDashboard( Main::$configs->app_name ) ) {
+		if ( Utilities::isCrewDashboard( array( Main::$configs->app_name, 'crewhrm-event-calendar' ) ) ) {
 			if ( current_user_can( 'upload_files' ) ) {
 				wp_enqueue_media();
 			}

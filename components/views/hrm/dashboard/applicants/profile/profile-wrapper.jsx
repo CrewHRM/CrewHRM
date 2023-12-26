@@ -9,6 +9,7 @@ import { request } from 'crewhrm-materials/request.jsx';
 import { InitState } from 'crewhrm-materials/init-state.jsx';
 import { ErrorBoundary } from 'crewhrm-materials/error-boundary.jsx';
 import { genders } from 'crewhrm-materials/data.jsx';
+import { LoadingIcon } from 'crewhrm-materials/loading-icon/loading-icon.jsx';
 
 import { HeadActions } from './head-actions/head-actions.jsx';
 import { OverView } from './overview/overview.jsx';
@@ -150,6 +151,12 @@ export function Profile({ has_applications }) {
     return ( !application_id ? null :
         <>
             <HeadActions application={application} />
+			{
+				!state.fetching ? null :
+				<div className={'margin-bottom-15'.classNames()}>
+					<LoadingIcon center={true}/>
+				</div>
+			}
             <div className={'bg-color-white border-radius-5 padding-horizontal-30 padding-bottom-30'.classNames()}>
                 {/* Basic Personal Info Heading */}
                 <div className={'d-flex align-items-center padding-20'.classNames()}>

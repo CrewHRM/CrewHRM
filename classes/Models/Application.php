@@ -255,40 +255,29 @@ class Application {
 
 		// Prepare arguments
 		$job_id        = $args['job_id'];
-		$stage_id      = $args['stage_id'] ?? null;
-		$disq_stage_id = Stage::getDisqualifyId( $job_id );
-		$get_qualified = 'disqualified' !== ( $args['qualification'] ?? 'qualified' );
+		$stage_id      = $args['stage_id'] ?? null; // To get applications from specific stage like Assessment, Interview etc.
+		$disq_stage_id = Stage::getDisqualifyId( $job_id ); // Get the ID of disqualified stage, it is dynamically assigned per job.
+		$get_qualified = 'disqualified' !== ( $args['qualification'] ?? 'qualified' ); // Whether to get disqualified or qualified applications
 
-		// Prepare limitters
+		// Where conditions. Get only completed applications to show the list. Incomplete means file upload is in progress.
 		$where_clause = "app.job_id={$job_id} AND app.is_complete=1";
 
-		// Assign search query
+		// Assign applicant name search query
 		if ( ! empty( $args['search'] ) ) {
 			$keyowrd       = esc_sql( $args['search'] );
 			$where_clause .= " AND (app.first_name LIKE '%{$keyowrd}%' OR app.last_name LIKE '%{$keyowrd}%')";
 		}
 
-		// Apply specific stage filter
+		// Apply specific stage filter if need
 		if ( ! empty( $stage_id ) ) {
 			$where_clause .= " AND app.stage_id={$stage_id}";
 		}
 
-		$disq_ids = $wpdb->get_col(
-			'WITH RankedData AS (
-				SELECT
-					application_id,
-					stage_id,
-					action_date,
-					ROW_NUMBER() OVER (PARTITION BY application_id ORDER BY action_date DESC) AS rn
-				FROM ' . DB::pipeline() . "
-			)
-			SELECT application_id
-			FROM RankedData
-			WHERE stage_id={$disq_stage_id} AND rn = 1;"
-		);
+		$disq_ids = self::getDisqualifiedAppIDs( $disq_stage_id );
 		array_unshift( $disq_ids, 0 );
 		$ids_implode = implode( ',', $disq_ids );
 
+		// Prepare where clause whether to get qualified or disqualified applications
 		$operator      = $get_qualified ? 'NOT IN' : 'IN';
 		$where_clause .= " AND app.application_id {$operator} ({$ids_implode})";
 
@@ -300,6 +289,7 @@ class Application {
 			WHERE {$where_clause} ORDER BY application_date DESC"
 		);
 
+		// If it needs only count, no need to include other data, return count onyl
 		if ( $count_only ) {
 			return count( $application_ids );
 		}
@@ -332,6 +322,51 @@ class Application {
 		);
 
 		return _Array::castRecursive( $results );
+	}
+
+	/**
+	 * Get the disqualified application IDs for a specific stage of a job.
+	 *
+	 * @param int $disq_stage_id The ID of disqualified stage which is supposed to be assigned for a job dynamically during first creation.
+	 * @return array
+	 */
+	private static function getDisqualifiedAppIDs( $disq_stage_id ) {
+		global $wpdb;
+
+		// Order by action_date DESC to get the latest disq state first. 
+		$results = $wpdb->get_results(
+			$wpdb->prepare(
+				"SELECT application_id, stage_id FROM " . DB::pipeline() . " WHERE stage_id=%d ORDER BY action_date DESC",
+				$disq_stage_id
+			),
+			ARRAY_A
+		);
+
+		$results = _Array::castRecursive( $results );
+		$aggregated = array();
+
+		// Loop through results and get the first occurance of an application to determine it's latest disqualified status. 
+		// Because same application status can be toggled multiple times. 
+		foreach ( $results as $row ) {
+
+			$app_id = $row['application_id'];
+			$stage_id = $row['stage_id'];
+			if ( isset( $aggregated[ $app_id ] ) ) {
+				continue;
+			}
+
+			$aggregated[ $app_id ] = $stage_id === $disq_stage_id;
+		}
+
+		// Finally collect only the disqualified IDs
+		$disq_ids = array();
+		foreach ( $aggregated as $app_id => $is_disqualified ) {
+			if ( $is_disqualified ) {
+				$disq_ids[] = $app_id;
+			}
+		}
+
+		return $disq_ids;
 	}
 
 	/**

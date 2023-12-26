@@ -13,6 +13,7 @@ import { RenderExternal } from 'crewhrm-materials/render-external.jsx';
 import { Promote } from '../../../../../../promote/promote.jsx';
 import style from './head.module.scss';
 import { ToolTip } from 'crewhrm-materials/tooltip.jsx';
+import { useEffect } from 'react';
 
 const application_actions = [
     {
@@ -68,6 +69,11 @@ export function HeadActions({ application }) {
             active_segment: state.active_segment === index ? null : index
         });
     };
+
+	// Close comment, schedule form, email form on profile change
+	useEffect(()=>{
+		toggleSegment(null);
+	}, [application_id]);
 
     const changeStage = (stage_id, message = __('Sure to move?')) => {
         showWarning({
@@ -192,7 +198,7 @@ export function HeadActions({ application }) {
                 </div>
             </div>
 
-			{segments.map((segment, i)=>{
+			{state.active_segment===null ? null : segments.map((segment, i)=>{
 
 				const {
 					renderer,
@@ -223,7 +229,12 @@ export function HeadActions({ application }) {
 					</div>
 					<RenderExternal 
 						component={renderer} 
-						payload={{application, sessionRefresh, onClose:()=>toggleSegment(null)}}/>
+						payload={{
+							application, 
+							sessionRefresh, 
+							onClose:()=>toggleSegment(null)
+						}}
+					/>
 				</div>
 			})}
         </div>

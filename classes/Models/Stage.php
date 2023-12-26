@@ -417,12 +417,14 @@ class Stage {
 	 */
 	public static function getDisqualifyId( $job_id ) {
 		global $wpdb;
-		return $wpdb->get_var(
+		$disq_id = $wpdb->get_var(
 			$wpdb->prepare(
 				'SELECT stage_id FROM ' . DB::stages() . " WHERE job_id=%d AND stage_name='_disqualified_'",
 				$job_id
 			)
 		);
+
+		return $disq_id ? (int) $disq_id : 0;
 	}
 
 	/**

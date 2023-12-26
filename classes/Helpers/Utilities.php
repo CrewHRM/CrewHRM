@@ -17,7 +17,7 @@ class Utilities {
 	/**
 	 * Check if the page is a Crew Dashboard
 	 *
-	 * @param string $sub_page Optional sub page name to match too
+	 * @param string|array $sub_page Optional sub page name to match too
 	 * @return boolean
 	 */
 	public static function isCrewDashboard( $sub_page = null ) {
