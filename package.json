@@ -9,6 +9,7 @@
     "compile": "npm run pro-addons && webpack --env=build --mode=production",
     "build": "npm run pro-addons && npm run compile && gulp build",
     "watch": "npm run pro-addons && concurrently \"npm run sync-materials\" \"webpack --watch --mode=development\"",
+    "watch-core": "npm run pro-addons && webpack --watch --mode=development",
     "lint": "eslint ./components/**/*.jsx",
     "lint:fix": "eslint --fix ./components/**/*.jsx",
     "cypress:open": "cypress open --config-file tests/cypress/config.config.js",
