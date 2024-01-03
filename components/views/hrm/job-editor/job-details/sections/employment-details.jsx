@@ -61,16 +61,14 @@ export function EmploymentDetails(props) {
 							</span>
                             <DateField
                                 value={values.application_deadline ? formatDate( values.application_deadline, 'Y-m-d', false ) : ''}
-                                onChange={(v) => onChange('application_deadline', getUnixTimestamp( getLastOfDay( new Date( v ) ) ) )}
+                                onChange={(v) => onChange('application_deadline', getUnixTimestamp( getLastOfDay( new Date( v + ' 00:00:00' ) ) ) )}
                             />
                         </div>
                     </div>
                 </div>
                 <div className={'right-col'.classNames(style)}>
                     <span className={'font-size-13 font-weight-400 color-text-light'.classNames()}>
-                        {__(
-                            "Include as many details as possible to boost the job's performance on some job boards"
-                        )}
+                        {__('Include as many details as possible to boost the job\'s performance on some job boards')}
                     </span>
                 </div>
             </div>
