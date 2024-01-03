@@ -49,15 +49,10 @@ class Google {
 	public static function verifyRecaptcha( string $captcha_response ) {
 
 		$request_args = array(
-			'body'    => wp_json_encode(
-				array(
-					'secret'   => self::getKeys( 'secret_key' ),
-					'response' => $captcha_response,
-				)
-			),
-			'headers' => array(
-				'Content-Type' => 'application/json',
-			),
+			'body' => array(
+				'secret'   => self::getKeys( 'secret_key' ),
+				'response' => $captcha_response,
+			)
 		);
 
 		$response = wp_remote_post( self::API_ENDPOINT, $request_args );
