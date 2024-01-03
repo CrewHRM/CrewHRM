@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useParams, useSearchParams } from 'react-router-dom';
 
-import { __, getAddress, parseParams } from 'crewhrm-materials/helpers.jsx';
+import { __, formatDate, getAddress, getLocalFromUnix, parseParams } from 'crewhrm-materials/helpers.jsx';
 import { DangerouslySet } from 'crewhrm-materials/dangerously-set.jsx';
 import { request } from 'crewhrm-materials/request.jsx';
 import { LoadingIcon } from 'crewhrm-materials/loading-icon/loading-icon.jsx';
@@ -240,6 +240,12 @@ export function Single({ base_permalink, settings={} }) {
                             </DangerouslySet>
                         </div>
                     ) : null}
+
+					<Conditional show={state.job.application_deadline}>
+						<div className={'margin-bottom-32'.classNames()}>
+							<i>{__('Application Deadline:')} {formatDate(getLocalFromUnix(state.job.application_deadline))}</i>
+						</div>
+					</Conditional>
 
                     <div>
                         <Link
