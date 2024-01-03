@@ -1,8 +1,10 @@
 <?php
 /**
  * Recaptcha credential settings
+ *
  * @package creahrm
  */
+
 namespace CrewHRM\Addon\Recaptcha\Controllers;
 
 use CrewHRM\Addon\Recaptcha\Models\Google;
@@ -22,9 +24,9 @@ class Credential {
 				'administrator',
 			),
 		),
-		'getRecaptchaKeys' => array(
-			'nopriv' => true
-		)
+		'getRecaptchaKeys'  => array(
+			'nopriv' => true,
+		),
 	);
 
 	/**
@@ -46,9 +48,9 @@ class Credential {
 	}
 
 	/**
-	 * Get recaptcha site key for 
+	 * Get recaptcha site key for
 	 *
-	 * @param array $data
+	 * @param array $data Request data
 	 * @return void
 	 */
 	public static function getRecaptchaKeys( array $data ) {

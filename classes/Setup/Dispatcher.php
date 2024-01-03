@@ -67,7 +67,7 @@ class Dispatcher {
 			foreach ( $class::PREREQUISITES as $method => $prerequisites ) {
 				if ( in_array( $method, $registered_methods, true ) ) {
 					// translators: Show the duplicate registered endpoint
-					throw new Error( sprintf( __( 'Duplicate endpoint %s not possible', 'crewhrm' ), $method ) );
+					throw new Error( sprintf( esc_html__( 'Duplicate endpoint %s not possible', 'crewhrm' ), esc_html( $method ) ) );
 				}
 
 				// Determine ajax handler types

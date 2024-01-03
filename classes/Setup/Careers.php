@@ -98,7 +98,7 @@ class Careers {
 		$protocol  = 'http' . ( is_ssl() ? 's' : '' ) . '://';
 		$root_site = $protocol . $parsed['host'] . ( ! empty( $parsed['port'] ) ? ':' . $parsed['port'] : '' );
 		$base_path = trim( str_replace( $root_site, '', get_permalink( get_the_ID() ) ), '/' );
-		
+
 		return '<div 
 				id="' . esc_attr( self::MOUNTPOINT ) . '" 
 				data-base_permalink="' . $base_path . '"

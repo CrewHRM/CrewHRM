@@ -112,15 +112,14 @@ class Main {
 			$class_path = str_replace( 'CrewHRM/Addon/' . $addon_name . '/', '', $class_path );
 			$rel_path   = 'addons/' . $addon_name . '/classes/' . $class_path . '.php';
 
-		} else if ( strpos( $class_path, 'CrewHRM/' ) === 0 ) {
+		} elseif ( strpos( $class_path, 'CrewHRM/' ) === 0 ) {
 			// Pro core
 			$rel_path = str_replace( 'CrewHRM/', 'classes/', $class_path ) . '.php';
-		
+
 		} else {
 			// No CrewHRM class
 			return;
 		}
-
 
 		$file_path = self::$configs->dir . $rel_path;
 		$file_path = str_replace( '/', DIRECTORY_SEPARATOR, preg_replace( '#[\\\\/]+#', '/', $file_path ) );

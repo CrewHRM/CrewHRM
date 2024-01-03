@@ -13,8 +13,10 @@
  * CrewHRM External: false
  * CrewHRM Controlled: true
  * CrewHRM Free Addon: true
+ *
+ * @package crewhrm
  */
 
 // Load addon
 require_once __DIR__ . '/classes/Main.php';
-(new \CrewHRM\Addon\Recaptcha\Main)->init( __FILE__ );
+( new \CrewHRM\Addon\Recaptcha\Main() )->init( __FILE__ );

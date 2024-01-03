@@ -1,7 +1,7 @@
 <?php
 /**
  * reCaptcha integration addon
- * 
+ *
  * @package crewhrm
  */
 
@@ -17,20 +17,42 @@ use CrewHRM\Setup\Addon;
  */
 class Main {
 
+	/**
+	 * Addon configuration
+	 *
+	 * @var array
+	 */
 	public static $configs;
+
+	/**
+	 * The addon main index file
+	 *
+	 * @var string
+	 */
 	private $index_file;
 
+	/**
+	 * Initialize recpatcha addon
+	 *
+	 * @param string $file The main file
+	 * @return void
+	 */
 	public function init( string $file ) {
 		$this->index_file = $file;
 		add_action( 'crewhrm_loaded', array( $this, 'loadSelf' ) );
 	}
 
+	/**
+	 * Load addon using helper wrapper
+	 *
+	 * @return void
+	 */
 	public function loadSelf() {
 		Addon::initAddon(
 			$this->index_file,
 			function( object $configs ) {
 				self::$configs = $configs;
-						
+
 				// Load recapcha addon objects
 				new Scripts();
 				new Dispatcher();

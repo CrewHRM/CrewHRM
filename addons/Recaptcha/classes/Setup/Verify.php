@@ -1,9 +1,10 @@
 <?php
 /**
  * Captcha verifier
- * 
+ *
  * @package crewhrm
  */
+
 namespace CrewHRM\Addon\Recaptcha\Setup;
 
 use CrewHRM\Addon\Recaptcha\Models\Google;
@@ -12,6 +13,11 @@ use CrewHRM\Addon\Recaptcha\Models\Google;
  * Captcha verifier class
  */
 class Verify {
+	/**
+	 * Register verify functionalities
+	 *
+	 * @return void
+	 */
 	public function __construct() {
 		add_action( 'crewhrm_submit_application_before', array( $this, 'verifyToken' ) );
 	}
@@ -31,8 +37,10 @@ class Verify {
 			exit;
 		}
 
-		if ( ! Google::verifyRecaptcha( $token ) ) {
-			wp_send_json_error( array( 'notice' => __( 'Captcha validation failed', 'crewhrm' ) ) );
+		$verify = Google::verifyRecaptcha( $token );
+		if ( true !== $verify ) {
+			$message = ( ! empty( $verify ) && is_string( $verify ) ) ? $verify : __( 'Captcha validation failed', 'crewhrm' );
+			wp_send_json_error( array( 'notice' => $message ) );
 			exit;
 		}
 	}

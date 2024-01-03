@@ -68,7 +68,7 @@ class Application {
 	/**
 	 * Mark an application as completed
 	 *
-	 * @param int $application_id
+	 * @param int $application_id The application ID to mark as finalized
 	 * @return void
 	 */
 	public static function finalizeApplication( $application_id ) {
@@ -333,23 +333,23 @@ class Application {
 	private static function getDisqualifiedAppIDs( $disq_stage_id ) {
 		global $wpdb;
 
-		// Order by action_date DESC to get the latest disq state first. 
+		// Order by action_date DESC to get the latest disq state first.
 		$results = $wpdb->get_results(
 			$wpdb->prepare(
-				"SELECT application_id, stage_id FROM " . DB::pipeline() . " WHERE stage_id=%d ORDER BY action_date DESC",
+				'SELECT application_id, stage_id FROM ' . DB::pipeline() . ' WHERE stage_id=%d ORDER BY action_date DESC',
 				$disq_stage_id
 			),
 			ARRAY_A
 		);
 
-		$results = _Array::castRecursive( $results );
+		$results    = _Array::castRecursive( $results );
 		$aggregated = array();
 
-		// Loop through results and get the first occurance of an application to determine it's latest disqualified status. 
-		// Because same application status can be toggled multiple times. 
+		// Loop through results and get the first occurance of an application to determine it's latest disqualified status.
+		// Because same application status can be toggled multiple times.
 		foreach ( $results as $row ) {
 
-			$app_id = $row['application_id'];
+			$app_id   = $row['application_id'];
 			$stage_id = $row['stage_id'];
 			if ( isset( $aggregated[ $app_id ] ) ) {
 				continue;

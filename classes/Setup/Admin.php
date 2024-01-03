@@ -148,6 +148,11 @@ class Admin {
 				data-application-stats="' . esc_attr( wp_json_encode( $application_overview ) ) . '"></div>';
 	}
 
+	/**
+	 * Provide HTML content for all jobs page
+	 *
+	 * @return void
+	 */
 	public function allJobsPage() {
 		echo '<div id="crewhrm_dashboard_all_jobs"></div>';
 	}

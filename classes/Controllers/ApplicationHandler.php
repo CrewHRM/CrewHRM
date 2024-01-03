@@ -88,9 +88,9 @@ class ApplicationHandler {
 			);
 			exit;
 		}
-		
+
 		// When there's no file to submit, it needs to be finalized right from here as file uploader will not be called.
-		if ( ( $data['finalize'] ?? false ) == true ) {
+		if ( ( true === $data['finalize'] ?? false ) ) {
 			Application::finalizeApplication( $application_id );
 		}
 

@@ -1,9 +1,10 @@
 <?php
 /**
  * Google captcha verifier
- * 
+ *
  * @package crewhrm
  */
+
 namespace CrewHRM\Addon\Recaptcha\Models;
 
 use CrewHRM\Helpers\Credential;
@@ -20,6 +21,7 @@ class Google {
 	/**
 	 * Get google site key and secret key
 	 *
+	 * @param string|null $key The key to get value of
 	 * @return array
 	 */
 	public static function getKeys( $key = null ) {
@@ -29,8 +31,8 @@ class Google {
 	/**
 	 * Save credential
 	 *
-	 * @param string $site_key
-	 * @param string $secret_key
+	 * @param string $site_key The site key
+	 * @param string $secret_key The secret key
 	 * @return void
 	 */
 	public static function saveKeys( string $site_key, string $secret_key ) {
@@ -38,28 +40,37 @@ class Google {
 		Credential::recaptcha()->addValue( 'secret_key', $secret_key );
 	}
 
-	public static function verifyRecaptcha( string $captchaResponse ) {
-		
-		// Data to be sent in the POST request
-		$data = array(
-			'secret'   => self::getKeys( 'secret_key' ),
-			'response' => $captchaResponse,
+	/**
+	 * Verify if the captcha is valid
+	 *
+	 * @param string $captcha_response The geenrated captcha response from frontend
+	 * @return bool
+	 */
+	public static function verifyRecaptcha( string $captcha_response ) {
+
+		$request_args = array(
+			'body'    => wp_json_encode(
+				array(
+					'secret'   => self::getKeys( 'secret_key' ),
+					'response' => $captcha_response,
+				)
+			),
+			'headers' => array(
+				'Content-Type' => 'application/json',
+			),
 		);
 
-		// Use cURL to send a POST request
-		$ch = curl_init( self::API_ENDPOINT );
-		curl_setopt( $ch, CURLOPT_POST, 1 );
-		curl_setopt( $ch, CURLOPT_POSTFIELDS, http_build_query( $data ) );
-		curl_setopt( $ch, CURLOPT_RETURNTRANSFER, true );
+		$response = wp_remote_post( self::API_ENDPOINT, $request_args );
+		if ( is_wp_error( $response ) ) {
+			return $response->get_error_message();
+		}
 
-		// Execute the request and decode the JSON response
-		$response     = curl_exec( $ch );
-		$responseData = json_decode( $response, true );
+		// Get the response body
+		$body = wp_remote_retrieve_body( $response );
 
-		// Close cURL session
-		curl_close( $ch );
+		// Decode the JSON response
+		$data = json_decode( $body, true );
 
-		// Check if reCAPTCHA verification was successful
-		return $responseData['success'] ?? false;
+		return $data['success'] ?? false;
 	}
 }
