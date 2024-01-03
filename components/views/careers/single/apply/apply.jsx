@@ -1,4 +1,5 @@
 import React, { useContext, useRef, useState } from 'react';
+import { Helmet } from 'react-helmet';
 
 import { Tabs } from 'crewhrm-materials/tabs/tabs.jsx';
 import { FormActionButtons } from 'crewhrm-materials/form-action.jsx';
@@ -294,110 +295,116 @@ export function Apply({ job = {}, settings={} }) {
     };
 
     if (state.submitted) {
-        return <Applied error_message={state.error_message} />;
+        return <>
+			<Helmet>
+				<title>{state.error_message ? __('Submission failed!') : __('Application submitted!')}</title>
+			</Helmet>
+			<Applied error_message={state.error_message} />
+		</> 
     }
 
-    return (
-        <div data-crew="job-application" className={'apply'.classNames(style)} ref={wrapper}>
-            <div className={'header'.classNames(style) + 'bg-color-tertiary'.classNames()}>
-                <div className={'container'.classNames(style) + 'padding-30'.classNames()}>
-                    <span
-                        className={'d-block font-size-24 font-weight-600 line-height-32 letter-spacing--24 color-text'.classNames()}
-                    >
-                        {job_title}
-                    </span>
-                    <span
-                        className={'d-block font-size-17 font-weight-500 line-height-25 color-text margin-bottom-10'.classNames()}
-                    >
-                        {getAddress(job)}
-                    </span>
-                </div>
-            </div>
-
-            <Conditional show={is_segment}>
-                <div
-                    className={
-                        'sequence'.classNames(style) +
-                        'padding-vertical-20 box-shadow-thin margin-bottom-50'.classNames()
-                    }
-                >
-                    <div>
-                        <Tabs 
-							active={state.active_tab} 
-							tabs={steps} 
-							theme="sequence" 
-							scrollIntoViewOnChange={true}/>
-                    </div>
-                </div>
-            </Conditional>
-
-            <div data-crew="job-application-form" className={'form'.classNames(style)}>
-                <Conditional show={is_segment}>
-                    <span
-                        className={'d-block font-size-20 font-weight-600 color-text margin-bottom-30'.classNames()}
-                    >
-                        {step.label}
-                    </span>
-                </Conditional>
-
-                <Conditional show={!is_segment}>
-                    <div className={'margin-top-48'.classNames()}>
-                        <span
-                            className={'d-block font-size-20 font-weight-600 color-text margin-bottom-8'.classNames()}
-                        >
-                            {__('Apply for this job')}
-                        </span>
-                        <span
-                            className={'d-block font-size-15 font-weight-400 line-height-24 color-text-light margin-bottom-30'.classNames()}
-                        >
-                            {__('Fields marked with * are required.')}
-                        </span>
-                    </div>
-                </Conditional>
-
-				{fields_to_render.map((f, i) => (
-					<div key={i} className={'margin-bottom-30'.classNames()}>
-						<RenderField 
-							field={f} 
-							values={state.values} 
-							onChange={onChange}
-							showErrorsAlways={state.showErrorsAlways}/>
-					</div>
-				))}
-
-				<Slot 
-					name="applicaion_submit_button" 
-					payload={{
-						onChange,
-						is_final_stage: ! is_segment || is_last_tab
-					}}
+    return <div data-crew="job-application" className={'apply'.classNames(style)} ref={wrapper}>
+		<Helmet>
+			<title>{job_title} - {__('Apply')}</title>
+		</Helmet>
+		<div className={'header'.classNames(style) + 'bg-color-tertiary'.classNames()}>
+			<div className={'container'.classNames(style) + 'padding-30'.classNames()}>
+				<span
+					className={'d-block font-size-24 font-weight-600 line-height-32 letter-spacing--24 color-text'.classNames()}
 				>
-					{is_segment ? (
-						<div>
-							<FormActionButtons
-								onBack={() => navigateTab(-1)}
-								onNext={goNext}
-								disabledNext={state.submitting}
-								disabledPrevious={state.submitting}
-								loading={state.submitting}
-								nextText={
-									is_last_tab ? __('Submit Application') : __('Save & Continue')
-								}
-							/>
-						</div>
-					) : (
-						<div>
-							<button
-								disabled={state.submitting}
-								className={'button button-primary button-full-width'.classNames()}
-								onClick={goNext}
-							>
-								{__('Submit Application')} <LoadingIcon show={state.submitting}/>
-							</button>
-						</div>
-					)}
-				</Slot>
-            </div>
-        </div>
-    );
+					{job_title}
+				</span>
+				<span
+					className={'d-block font-size-17 font-weight-500 line-height-25 color-text margin-bottom-10'.classNames()}
+				>
+					{getAddress(job)}
+				</span>
+			</div>
+		</div>
+
+		<Conditional show={is_segment}>
+			<div
+				className={
+					'sequence'.classNames(style) +
+					'padding-vertical-20 box-shadow-thin margin-bottom-50'.classNames()
+				}
+			>
+				<div>
+					<Tabs 
+						active={state.active_tab} 
+						tabs={steps} 
+						theme="sequence" 
+						scrollIntoViewOnChange={true}/>
+				</div>
+			</div>
+		</Conditional>
+
+		<div data-crew="job-application-form" className={'form'.classNames(style)}>
+			<Conditional show={is_segment}>
+				<span
+					className={'d-block font-size-20 font-weight-600 color-text margin-bottom-30'.classNames()}
+				>
+					{step.label}
+				</span>
+			</Conditional>
+
+			<Conditional show={!is_segment}>
+				<div className={'margin-top-48'.classNames()}>
+					<span
+						className={'d-block font-size-20 font-weight-600 color-text margin-bottom-8'.classNames()}
+					>
+						{__('Apply for this job')}
+					</span>
+					<span
+						className={'d-block font-size-15 font-weight-400 line-height-24 color-text-light margin-bottom-30'.classNames()}
+					>
+						{__('Fields marked with * are required.')}
+					</span>
+				</div>
+			</Conditional>
+
+			{fields_to_render.map((f, i) => (
+				<div key={i} className={'margin-bottom-30'.classNames()}>
+					<RenderField 
+						field={f} 
+						values={state.values} 
+						onChange={onChange}
+						showErrorsAlways={state.showErrorsAlways}/>
+				</div>
+			))}
+
+			<Slot 
+				name="applicaion_submit_button" 
+				payload={{
+					onChange,
+					is_final_stage: ! is_segment || is_last_tab
+				}}
+			>
+				{is_segment ? (
+					<div>
+						<FormActionButtons
+							onBack={() => navigateTab(-1)}
+							onNext={goNext}
+							disabledNext={state.submitting}
+							disabledPrevious={state.submitting}
+							loading={state.submitting}
+							nextText={
+								is_last_tab ? __('Submit Application') : __('Save & Continue')
+							}
+						/>
+					</div>
+				) : (
+					<div>
+						<button
+							disabled={state.submitting}
+							className={'button button-primary button-full-width'.classNames()}
+							onClick={goNext}
+						>
+							{__('Submit Application')} <LoadingIcon show={state.submitting}/>
+						</button>
+					</div>
+				)}
+			</Slot>
+		</div>
+	</div>
 }

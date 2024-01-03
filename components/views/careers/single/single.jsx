@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Helmet } from 'react-helmet';
 import { Link, useParams, useSearchParams } from 'react-router-dom';
 
 import { __, formatDate, getAddress, getLocalFromUnix, parseParams } from 'crewhrm-materials/helpers.jsx';
@@ -163,6 +164,9 @@ export function Single({ base_permalink, settings={} }) {
         <Apply job={state.job} settings={settings}/>
     ) : (
         <div className={'single'.classNames(style)}>
+			<Helmet>
+				<title>{job_title}</title>
+			</Helmet>
             <div className={'header'.classNames(style) + 'bg-color-tertiary'.classNames()}>
                 <div className={'container'.classNames(style)}>
                     <span
