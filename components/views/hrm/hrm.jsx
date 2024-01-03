@@ -36,65 +36,10 @@ export function DashboardBar({title=__('Dashboard'), canBack}) {
     );
 }
 
-export function HRM({ departments = [], applicationStats }) {
+export function HRM({ departments = [], applicationStats, is_all_job_page }) {
     const [state, setState] = useState({
         departments,
-        notices: [
-            /* {
-                id: getRandomString(),
-                type: 'success',
-                content: (
-                    <div className={'d-flex align-items-center column-gap-30'.classNames()}>
-                        <span
-                            className={'font-size-15 font-weight-500 line-height-18 color-white'.classNames()}
-                        >
-                            Your file is over the 5MB limit of the free plan
-                        </span>
-                        <button
-                            className={'button button-primary button-medium-2 button-outlined button-foreground'.classNames()}
-                        >
-                            Create A New Job
-                        </button>
-                    </div>
-                )
-            },
-            {
-                id: getRandomString(),
-                type: 'warning',
-                content: (
-                    <div className={'d-flex align-items-center column-gap-30'.classNames()}>
-                        <span
-                            className={'font-size-15 font-weight-500 line-height-18 color-white'.classNames()}
-                        >
-                            Your file is over the 5MB limit of the free plan
-                        </span>
-                        <button
-                            className={'button button-primary button-medium-2 button-outlined button-foreground'.classNames()}
-                        >
-                            Create A New Job
-                        </button>
-                    </div>
-                )
-            },
-            {
-                id: getRandomString(),
-                type: 'error',
-                content: (
-                    <div className={'d-flex align-items-center column-gap-30'.classNames()}>
-                        <span
-                            className={'font-size-15 font-weight-500 line-height-18 color-white'.classNames()}
-                        >
-                            Your file is over the 5MB limit of the free plan
-                        </span>
-                        <button
-                            className={'button button-primary button-medium-2 button-outlined button-foreground'.classNames()}
-                        >
-                            Create A New Job
-                        </button>
-                    </div>
-                )
-            } */
-        ]
+        notices: []
     });
 
     const showNotice = () => {};
@@ -148,9 +93,9 @@ export function HRM({ departments = [], applicationStats }) {
             }}
         >
             <WpDashboardFullPage>
-                {state.add_department_callback ? (
-                    <AddDepartmentModal onAdd={onAddDepartment} closeModal={closeDepartmentModal} />
-                ) : null}
+                {
+					!state.add_department_callback ? null : <AddDepartmentModal onAdd={onAddDepartment} closeModal={closeDepartmentModal} />
+				}
 
                 <HashRouter>
                     <Routes>
@@ -168,7 +113,7 @@ export function HRM({ departments = [], applicationStats }) {
                             path="/dashboard/jobs/"
                             element={
                                 <>
-                                    <DashboardBar title={__('Job List')} canBack={true}/>
+                                    <DashboardBar title={__('Job List')} canBack={!is_all_job_page}/>
                                     <JobOpeningsFullView />
                                 </>
                             }
@@ -186,7 +131,7 @@ export function HRM({ departments = [], applicationStats }) {
 
                         <Route path="/dashboard/jobs/editor/:job_id?/" element={<JobEditor />} />
 
-                        <Route path={'*'} element={<Navigate to="/dashboard/" replace />} />
+                        <Route path={'*'} element={<Navigate to={!is_all_job_page ? "/dashboard/" : "/dashboard/jobs/"} replace />} />
                     </Routes>
                 </HashRouter>
             </WpDashboardFullPage>

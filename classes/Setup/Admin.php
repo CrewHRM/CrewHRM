@@ -105,6 +105,24 @@ class Admin {
 			array( $this, 'mainPage' ),
 			$logo
 		);
+		add_submenu_page(
+			Main::$configs->app_name,
+			__( 'Dashboard', 'crewhrm' ),
+			__( 'Dashboard', 'crewhrm' ),
+			User::getAdminMenuRole( get_current_user_id() ),
+			Main::$configs->app_name,
+			array( $this, 'mainPage' )
+		);
+
+		// All Jobs
+		add_submenu_page(
+			Main::$configs->app_name,
+			__( 'All Job Posts', 'crewhrm' ),
+			__( 'All Job Posts', 'crewhrm' ),
+			User::getAdminMenuRole( get_current_user_id() ),
+			'all-job-posts',
+			array( $this, 'allJobsPage' )
+		);
 
 		// Setting page
 		add_submenu_page(
@@ -128,6 +146,10 @@ class Admin {
 				id="' . esc_attr( self::MOUNTPOINT_DASHBOARD ) . '" 
 				data-departments="' . esc_attr( wp_json_encode( Department::getDepartments() ) ) . '"
 				data-application-stats="' . esc_attr( wp_json_encode( $application_overview ) ) . '"></div>';
+	}
+
+	public function allJobsPage() {
+		echo '<div id="crewhrm_dashboard_all_jobs"></div>';
 	}
 
 	/**

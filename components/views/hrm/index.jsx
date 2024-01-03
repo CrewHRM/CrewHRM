@@ -7,6 +7,7 @@ import { data_pointer, getElementDataSet } from 'crewhrm-materials/helpers.jsx';
 import { Promote } from '../../promote/promote.jsx';
 import { WpDashboardFullPage } from 'crewhrm-materials/backend-dashboard-container/full-page-container.jsx';
 
+// Dashboard
 const hrm = document.getElementById('crewhrm_dashboard');
 if (hrm) {
     createRoot(hrm).render(
@@ -14,6 +15,16 @@ if (hrm) {
             <HRM {...getElementDataSet(hrm)} />
         </MountPoint>
     );
+}
+
+// All Jobs
+const jobs = document.getElementById('crewhrm_dashboard_all_jobs');
+if(jobs) {
+	createRoot(jobs).render(
+		<MountPoint>
+			<HRM {...getElementDataSet(jobs)} is_all_job_page={true}/>
+		</MountPoint>
+	)
 }
 
 // Register calendar page promotion
