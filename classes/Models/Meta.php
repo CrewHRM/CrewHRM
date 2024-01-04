@@ -48,7 +48,8 @@ class Meta {
 	 * @return Meta
 	 */
 	public static function job( $job_id ) {
-		return new self( DB::jobmeta(), $job_id );
+		global $wpdb;
+		return new self( $wpdb->crewhrm_jobmeta, $job_id );
 	}
 
 	/**
@@ -58,7 +59,8 @@ class Meta {
 	 * @return Meta
 	 */
 	public static function application( $application_id ) {
-		return new self( DB::appmeta(), $application_id );
+		global $wpdb;
+		return new self( $wpdb->crewhrm_appmeta, $application_id );
 	}
 
 	/**

@@ -45,7 +45,7 @@ class Application {
 
 		// Insert the main job data
 		$wpdb->insert(
-			DB::applications(),
+			$wpdb->crewhrm_applications,
 			$_application
 		);
 		$app_id = $wpdb->insert_id;
@@ -94,7 +94,7 @@ class Application {
 			if ( ! empty( $resume_id ) ) {
 				global $wpdb;
 				$wpdb->update(
-					DB::applications(),
+					$wpdb->crewhrm_applications,
 					array( 'resume_file_id' => $resume_id ),
 					array( 'application_id' => $application_id )
 				);
@@ -127,7 +127,7 @@ class Application {
 		$ids          = is_array( $application_id ) ? $application_id : array( $application_id );
 		$ids_in       = implode( ',', $ids );
 		$applications = $wpdb->get_results(
-			'SELECT application_id, resume_file_id, address_id FROM ' . DB::applications() . " 
+			"SELECT application_id, resume_file_id, address_id FROM {$wpdb->crewhrm_applications} 
 			WHERE application_id IN ({$ids_in})",
 			ARRAY_A
 		);
@@ -170,12 +170,12 @@ class Application {
 
 		// Delete pipelines
 		$wpdb->query(
-			'DELETE FROM ' . DB::pipeline() . " WHERE application_id IN({$ids_in})"
+			"DELETE FROM {$wpdb->crewhrm_pipeline} WHERE application_id IN({$ids_in})"
 		);
 
 		// Delete application finally
 		$wpdb->query(
-			'DELETE FROM ' . DB::applications() . " WHERE application_id IN({$ids_in})"
+			"DELETE FROM {$wpdb->crewhrm_applications} WHERE application_id IN({$ids_in})"
 		);
 
 		// Execute hook to delete more pro dependencies
@@ -193,7 +193,7 @@ class Application {
 
 		return $wpdb->get_col(
 			$wpdb->prepare(
-				'SELECT application_id FROM ' . DB::applications() . ' WHERE job_id=%d',
+				"SELECT application_id FROM {$wpdb->crewhrm_applications} WHERE job_id=%d",
 				$job_id
 			)
 		);
@@ -219,7 +219,7 @@ class Application {
 
 		// Get stats
 		$stats      = Stage::getStageStatsByJobId( $job_ids );
-		$candidates = $stats['candidates'] ?? 0;
+		$candidates = $stats['candidates'] ?? array();
 		$stages     = $stats['stages'] ?? array();
 
 		// Loop through total candidate counts per job regardless of stage
@@ -283,9 +283,9 @@ class Application {
 
 		// Run query and get the application IDs
 		$application_ids = $wpdb->get_col(
-			'SELECT app.application_id 
-			FROM ' . DB::applications() . ' app
-				LEFT JOIN ' . DB::stages() . " stage ON app.stage_id=stage.stage_id 
+			"SELECT app.application_id 
+			FROM {$wpdb->crewhrm_applications} app
+				LEFT JOIN {$wpdb->crewhrm_stages} stage ON app.stage_id=stage.stage_id 
 			WHERE {$where_clause} ORDER BY application_date DESC"
 		);
 
@@ -302,7 +302,7 @@ class Application {
 		$application_ids = _Array::castRecursive( $application_ids );
 		$ids_in          = implode( ',', $application_ids );
 		$results         = $wpdb->get_results(
-			'SELECT 
+			"SELECT 
 				application_id,
 				job_id,
 				stage_id,
@@ -317,7 +317,7 @@ class Application {
 				resume_file_id,
 				is_complete, 
 				UNIX_TIMESTAMP(application_date) AS application_date 
-			FROM ' . DB::applications() . " WHERE application_id IN ({$ids_in}) ORDER BY application_date DESC",
+			FROM {$wpdb->crewhrm_applications} WHERE application_id IN ({$ids_in}) ORDER BY application_date DESC",
 			ARRAY_A
 		);
 
@@ -336,7 +336,7 @@ class Application {
 		// Order by action_date DESC to get the latest disq state first.
 		$results = $wpdb->get_results(
 			$wpdb->prepare(
-				'SELECT application_id, stage_id FROM ' . DB::pipeline() . ' WHERE stage_id=%d ORDER BY action_date DESC',
+				"SELECT application_id, stage_id FROM {$wpdb->crewhrm_pipeline} WHERE stage_id=%d ORDER BY action_date DESC",
 				$disq_stage_id
 			),
 			ARRAY_A
@@ -381,7 +381,7 @@ class Application {
 		global $wpdb;
 		$application = $wpdb->get_row(
 			$wpdb->prepare(
-				'SELECT * FROM ' . DB::applications() . ' WHERE job_id=%d AND application_id=%d',
+				"SELECT * FROM {$wpdb->crewhrm_applications} WHERE job_id=%d AND application_id=%d",
 				$job_id,
 				$application_id
 			),
@@ -423,10 +423,10 @@ class Application {
 		global $wpdb;
 		$stage_name = $wpdb->get_var(
 			$wpdb->prepare(
-				'SELECT stage.stage_name FROM ' . DB::pipeline() . ' pipe
-					INNER JOIN ' . DB::applications() . ' app ON pipe.application_id=app.application_id
-					INNER JOIN ' . DB::stages() . ' stage ON pipe.stage_id=stage.stage_id
-				WHERE app.application_id=%d ORDER BY pipe.action_date DESC LIMIT 1',
+				"SELECT stage.stage_name FROM {$wpdb->crewhrm_pipeline} pipe
+					INNER JOIN {$wpdb->crewhrm_applications} app ON pipe.application_id=app.application_id
+					INNER JOIN {$wpdb->crewhrm_stages} stage ON pipe.stage_id=stage.stage_id
+				WHERE app.application_id=%d ORDER BY pipe.action_date DESC LIMIT 1",
 				$application_id
 			)
 		);
@@ -499,7 +499,7 @@ class Application {
 			// Disqualify stage should not be assigned application table directly because of classification of qualified/disqualified per stages.
 			// Rather use only the pipeline to determine disqualified state.
 			$wpdb->update(
-				DB::applications(),
+				$wpdb->crewhrm_applications,
 				array( 'stage_id' => $stage_id ),
 				array(
 					'application_id' => $application_id,
@@ -526,23 +526,23 @@ class Application {
 
 		// Total created job no matter status or anything
 		$total_job = $wpdb->get_var(
-			'SELECT COUNT(job_id) FROM ' . DB::jobs()
+			"SELECT COUNT(job_id) FROM {$wpdb->crewhrm_jobs}"
 		);
 
 		// Total application count no matter the stage
 		$total_application = $wpdb->get_var(
-			'SELECT COUNT(application_id) FROM ' . DB::applications()
+			"SELECT COUNT(application_id) FROM {$wpdb->crewhrm_applications}"
 		);
 
 		$total_hired = $wpdb->get_var(
-			'SELECT COUNT(app.application_id) 
-			FROM ' . DB::applications() . ' app
-				INNER JOIN ' . DB::stages() . " stage ON app.stage_id=stage.stage_id
+			"SELECT COUNT(app.application_id) 
+			FROM {$wpdb->crewhrm_applications} app
+				INNER JOIN {$wpdb->crewhrm_stages} stage ON app.stage_id=stage.stage_id
 			WHERE stage.stage_name='_hired_';"
 		);
 
 		$total_pending = $wpdb->get_var(
-			'SELECT COUNT(application_id) FROM ' . DB::applications() . ' WHERE stage_id IS NULL'
+			"SELECT COUNT(application_id) FROM {$wpdb->crewhrm_applications} WHERE stage_id IS NULL"
 		);
 
 		return _Array::castRecursive(

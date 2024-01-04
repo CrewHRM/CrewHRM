@@ -24,7 +24,7 @@ class Pipeline {
 	public static function create( $application_id, $stage_id, $action_taker_id ) {
 		global $wpdb;
 		$wpdb->insert(
-			DB::pipeline(),
+			$wpdb->crewhrm_pipeline,
 			array(
 				'application_id'  => $application_id,
 				'stage_id'        => $stage_id,
@@ -68,7 +68,7 @@ class Pipeline {
 		// --------------- Add application stage changes ---------------
 		$logs = $wpdb->get_results(
 			$wpdb->prepare(
-				'SELECT 
+				"SELECT 
 					pipe.application_id, 
 					pipe.stage_id, 
 					pipe.action_taker_id, 
@@ -76,8 +76,8 @@ class Pipeline {
 					stage.stage_name, 
 					_user.display_name AS action_taker_name
 				FROM 
-					' . DB::pipeline() . ' pipe
-					LEFT JOIN ' . DB::stages() . " stage ON pipe.stage_id=stage.stage_id
+					{$wpdb->crewhrm_pipeline} pipe
+					LEFT JOIN {$wpdb->crewhrm_stages} stage ON pipe.stage_id=stage.stage_id
 					LEFT JOIN {$wpdb->users} _user ON pipe.action_taker_id=_user.ID
 				WHERE
 					pipe.application_id=%d",

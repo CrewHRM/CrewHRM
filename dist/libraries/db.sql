@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Dec 26, 2023 at 07:05 PM
+-- Generation Time: Jan 04, 2024 at 12:10 AM
 -- Server version: 8.0.16
--- PHP Version: 7.4.1
+-- PHP Version: 8.1.23
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -119,13 +119,13 @@ CREATE TABLE IF NOT EXISTS `wp_crewhrm_departments` (
 
 CREATE TABLE IF NOT EXISTS `wp_crewhrm_events` (
   `event_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `event_title` varchar(255) COLLATE utf8mb4_unicode_520_ci NOT NULL,
-  `description` mediumtext COLLATE utf8mb4_unicode_520_ci,
+  `event_title` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci NOT NULL,
+  `description` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci,
   `starts_at` timestamp NOT NULL,
   `ends_at` timestamp NULL DEFAULT NULL,
-  `channel` varchar(10) COLLATE utf8mb4_unicode_520_ci NOT NULL COMMENT 'zoom, meet, in_person etc.',
+  `channel` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci NOT NULL COMMENT 'zoom, meet, in_person etc.',
   `event_dest` text CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci COMMENT 'zoom or meet id, address id etc.',
-  `password` varchar(20) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
+  `password` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
   `application_id` bigint(20) UNSIGNED DEFAULT NULL,
   `host_id` bigint(20) UNSIGNED NOT NULL,
   `creator_id` bigint(20) UNSIGNED NOT NULL COMMENT 'The user ID who creates event',
@@ -206,21 +206,6 @@ CREATE TABLE IF NOT EXISTS `wp_crewhrm_pipeline` (
   `action_taker_id` bigint(20) UNSIGNED NOT NULL,
   `action_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`pipeline_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `wp_crewhrm_qna`
---
-
-CREATE TABLE IF NOT EXISTS `wp_crewhrm_qna` (
-  `qna_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `question` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci NOT NULL,
-  `answer` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci NOT NULL COMMENT 'Maybe text, number, serialized data etc. And the answer will be prepared based on the question type.',
-  `question_type` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci NOT NULL,
-  `application_id` bigint(20) UNSIGNED NOT NULL,
-  PRIMARY KEY (`qna_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 -- --------------------------------------------------------

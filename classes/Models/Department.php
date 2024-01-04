@@ -48,14 +48,14 @@ class Department {
 			if ( is_numeric( $department['department_id'] ) ) {
 				// Update the name as ID exists
 				$wpdb->update(
-					DB::departments(),
+					$wpdb->crewhrm_departments,
 					$payload,
 					array( 'department_id' => $department['department_id'] )
 				);
 			} else {
 				// The ID was assigned by react when added new for 'key' attribute purpose. Insert it as a new.
 				$wpdb->insert(
-					DB::departments(),
+					$wpdb->crewhrm_departments,
 					$payload
 				);
 			}
@@ -75,7 +75,7 @@ class Department {
 
 		global $wpdb;
 		$ids_implode = implode( ',', $current );
-		$wpdb->query( 'DELETE FROM ' . DB::departments() . " WHERE department_id NOT IN ({$ids_implode})" );
+		$wpdb->query( "DELETE FROM {$wpdb->crewhrm_departments} WHERE department_id NOT IN ({$ids_implode})" );
 	}
 
 	/**
@@ -86,7 +86,7 @@ class Department {
 	public static function getDepartments() {
 		global $wpdb;
 		$departments = $wpdb->get_results(
-			'SELECT * FROM ' . DB::departments() . ' ORDER BY sequence ASC',
+			"SELECT * FROM {$wpdb->crewhrm_departments} ORDER BY sequence ASC",
 			ARRAY_A
 		);
 
@@ -103,12 +103,12 @@ class Department {
 		global $wpdb;
 
 		// Get sequence number
-		$max_value    = $wpdb->get_var( 'SELECT MAX(sequence) FROM ' . DB::departments() );
+		$max_value    = $wpdb->get_var( "SELECT MAX(sequence) FROM {$wpdb->crewhrm_departments}" );
 		$new_sequence = $max_value + 1;
 
 		// Insert finally
 		$wpdb->insert(
-			DB::departments(),
+			$wpdb->crewhrm_departments,
 			array(
 				'department_name' => $department_name,
 				'sequence'        => $new_sequence,

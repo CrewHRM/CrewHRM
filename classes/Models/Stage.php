@@ -35,7 +35,7 @@ class Stage {
 
 		$stages = $wpdb->get_results(
 			$wpdb->prepare(
-				'SELECT stage_name, sequence FROM ' . DB::stages() . ' WHERE job_id=%d',
+				"SELECT stage_name, sequence FROM {$wpdb->crewhrm_stages} WHERE job_id=%d",
 				$job_from_id
 			),
 			ARRAY_A
@@ -44,7 +44,7 @@ class Stage {
 		// Insert the stages for new job
 		foreach ( $stages as $stage ) {
 			$wpdb->insert(
-				DB::stages(),
+				$wpdb->crewhrm_stages,
 				array(
 					'stage_name' => $stage['stage_name'],
 					'sequence'   => $stage['sequence'],
@@ -87,7 +87,7 @@ class Stage {
 			// Update if id is numeric which means not temp ID. React app assigns a non numeric string as ID temporary.
 			if ( ! empty( $stage_id ) && is_numeric( $stage_id ) ) {
 				$wpdb->update(
-					DB::stages(),
+					$wpdb->crewhrm_stages,
 					$payload,
 					array(
 						'stage_id' => $stage_id,
@@ -96,7 +96,7 @@ class Stage {
 				);
 			} else {
 				$wpdb->insert(
-					DB::stages(),
+					$wpdb->crewhrm_stages,
 					$payload
 				);
 
@@ -108,7 +108,7 @@ class Stage {
 		foreach ( array_keys( self::$reserved_stages ) as $stage_name ) {
 			$exist_id = $wpdb->get_var(
 				$wpdb->prepare(
-					'SELECT stage_id FROM ' . DB::stages() . ' WHERE job_id=%d AND stage_name=%s LIMIT 1',
+					"SELECT stage_id FROM {$wpdb->crewhrm_stages} WHERE job_id=%d AND stage_name=%s LIMIT 1",
 					$job_id,
 					$stage_name
 				)
@@ -116,13 +116,13 @@ class Stage {
 
 			if ( ! empty( $exist_id ) ) {
 				$wpdb->update(
-					DB::stages(),
+					$wpdb->crewhrm_stages,
 					array( 'sequence' => ++$sequence ),
 					array( 'stage_id' => $exist_id )
 				);
 			} else {
 				$wpdb->insert(
-					DB::stages(),
+					$wpdb->crewhrm_stages,
 					array(
 						'job_id'     => $job_id,
 						'stage_name' => $stage_name,
@@ -148,7 +148,7 @@ class Stage {
 
 		global $wpdb;
 		$stages = $wpdb->get_results(
-			'SELECT * FROM ' . DB::stages() . " WHERE job_id IN({$ids_in}) ORDER BY sequence",
+			"SELECT * FROM {$wpdb->crewhrm_stages} WHERE job_id IN({$ids_in}) ORDER BY sequence",
 			ARRAY_A
 		);
 		$stages = _Array::castRecursive( $stages );
@@ -200,7 +200,7 @@ class Stage {
 			// Check if the target stage exists
 			$target = $wpdb->get_var(
 				$wpdb->prepare(
-					'SELECT stage_id FROM ' . DB::stages() . ' WHERE job_id=%d AND stage_id=%d LIMIT 1',
+					"SELECT stage_id FROM {$wpdb->crewhrm_stages} WHERE job_id=%d AND stage_id=%d LIMIT 1",
 					$job_id,
 					$move_to
 				)
@@ -211,7 +211,7 @@ class Stage {
 
 			// Move applications to another stage
 			$wpdb->update(
-				DB::applications(),
+				$wpdb->crewhrm_applications,
 				array( 'stage_id' => $move_to ),
 				array(
 					'job_id'   => $job_id,
@@ -221,7 +221,7 @@ class Stage {
 
 			// Move the pipelines too to the new stage
 			$wpdb->update(
-				DB::pipeline(),
+				$wpdb->crewhrm_pipeline,
 				array( 'stage_id' => $move_to ),
 				array( 'stage_id' => $stage_id )
 			);
@@ -229,7 +229,7 @@ class Stage {
 
 		// Delete the stage now
 		$wpdb->delete(
-			DB::stages(),
+			$wpdb->crewhrm_stages,
 			array( 'stage_id' => $stage_id )
 		);
 
@@ -249,7 +249,7 @@ class Stage {
 		// Get the total application count
 		$count = $wpdb->get_var(
 			$wpdb->prepare(
-				'SELECT COUNT(application_id) FROM ' . DB::applications() . ' WHERE job_id=%d AND stage_id=%d',
+				"SELECT COUNT(application_id) FROM {$wpdb->crewhrm_applications} WHERE job_id=%d AND stage_id=%d",
 				$job_id,
 				$stage_id
 			)
@@ -297,7 +297,7 @@ class Stage {
 
 		global $wpdb;
 		$applications = $wpdb->get_results(
-			'SELECT 
+			"SELECT 
 				application_id,
 				job_id,
 				stage_id,
@@ -312,7 +312,7 @@ class Stage {
 				resume_file_id,
 				is_complete, 
 				UNIX_TIMESTAMP(application_date) AS application_date 
-			FROM ' . DB::applications() . " WHERE 1=1 {$where_clause} {$order_clause} {$limit_clause}",
+			FROM {$wpdb->crewhrm_applications} WHERE 1=1 {$where_clause} {$order_clause} {$limit_clause}",
 			ARRAY_A
 		);
 
@@ -337,9 +337,8 @@ class Stage {
 		// Get application counts per stage per job.
 		global $wpdb;
 		$counts = $wpdb->get_results(
-			'SELECT job_id, stage_id, COUNT(application_id) as candidates 
-			FROM ' . DB::applications() . " 
-			WHERE job_id IN ({$ids_in}) GROUP BY job_id, stage_id",
+			"SELECT job_id, stage_id, COUNT(application_id) as candidates 
+			FROM {$wpdb->crewhrm_applications} WHERE job_id IN ({$ids_in}) GROUP BY job_id, stage_id",
 			ARRAY_A
 		);
 		if ( empty( $counts ) ) {
@@ -363,8 +362,8 @@ class Stage {
 		// Get the stages sequence to sort.
 		// Exclude disqualified as it is used in special way and has no usage in frontend view.
 		$sequences = $wpdb->get_results(
-			'SELECT job_id, stage_id, stage_name, sequence 
-			FROM ' . DB::stages() . " 
+			"SELECT job_id, stage_id, stage_name, sequence 
+			FROM {$wpdb->crewhrm_stages} 
 			WHERE job_id IN ({$ids_in}) 
 				AND stage_name!='_disqualified_' 
 			ORDER BY sequence",
@@ -419,7 +418,7 @@ class Stage {
 		global $wpdb;
 		$disq_id = $wpdb->get_var(
 			$wpdb->prepare(
-				'SELECT stage_id FROM ' . DB::stages() . " WHERE job_id=%d AND stage_name='_disqualified_'",
+				"SELECT stage_id FROM {$wpdb->crewhrm_stages} WHERE job_id=%d AND stage_name='_disqualified_'",
 				$job_id
 			)
 		);
@@ -437,7 +436,7 @@ class Stage {
 		global $wpdb;
 		$stage_id = $wpdb->get_var(
 			$wpdb->prepare(
-				'SELECT stage_id FROM ' . DB::pipeline() . ' WHERE application_id=%d ORDER BY action_date DESC LIMIT 1',
+				"SELECT stage_id FROM {$wpdb->crewhrm_pipeline} WHERE application_id=%d ORDER BY action_date DESC LIMIT 1",
 				$application_id
 			)
 		);

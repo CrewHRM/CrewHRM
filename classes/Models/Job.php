@@ -72,7 +72,7 @@ class Job {
 			$_job['updated_at'] = gmdate( 'Y-m-d H:i:s' );
 
 			$wpdb->update(
-				DB::jobs(),
+				$wpdb->crewhrm_jobs,
 				$_job,
 				array( 'job_id' => $job_id )
 			);
@@ -86,7 +86,7 @@ class Job {
 			$_job['created_at'] = gmdate( 'Y-m-d H:i:s' );
 
 			$wpdb->insert(
-				DB::jobs(),
+				$wpdb->crewhrm_jobs,
 				$_job
 			);
 
@@ -127,7 +127,7 @@ class Job {
 		global $wpdb;
 		$job = $wpdb->get_row(
 			$wpdb->prepare(
-				'SELECT * FROM ' . DB::jobs() . ' WHERE job_id=%d',
+				"SELECT * FROM {$wpdb->crewhrm_jobs} WHERE job_id=%d",
 				$job_id
 			),
 			ARRAY_A
@@ -177,7 +177,7 @@ class Job {
 
 		$field_value = $wpdb->get_var(
 			$wpdb->prepare(
-				'SELECT ' . $field . ' FROM ' . DB::jobs() . ' WHERE job_id=%d',
+				"SELECT {$field} FROM {$wpdb->crewhrm_jobs} WHERE job_id=%d",
 				$job_id
 			)
 		);
@@ -257,13 +257,13 @@ class Job {
 		}
 
 		// Build the query
+		global $wpdb;
 		$query = "SELECT {$selects} 
-				  FROM " . DB::jobs() . ' job 
-					LEFT JOIN ' . DB::departments() . ' department ON job.department_id=department.department_id
-					LEFT JOIN ' . DB::addresses() . " address ON job.address_id=address.address_id
+				  FROM {$wpdb->crewhrm_jobs} job 
+					LEFT JOIN {$wpdb->crewhrm_departments} department ON job.department_id=department.department_id
+					LEFT JOIN {$wpdb->crewhrm_addresses} address ON job.address_id=address.address_id
 				  WHERE {$where_clause} " . ( $segmentation ? '' : "{$order_by} {$limit_clause}" );
 
-		global $wpdb;
 		if ( $segmentation ) {
 			$total_count = (int) $wpdb->get_var( $query );
 			$page_count  = ceil( $total_count / $limit );
@@ -317,7 +317,7 @@ class Job {
 	public static function getJobsMinimal() {
 		global $wpdb;
 		$jobs = $wpdb->get_results(
-			'SELECT job_id, job_title FROM ' . DB::jobs() . ' ORDER BY created_at',
+			"SELECT job_id, job_title FROM {$wpdb->crewhrm_jobs} ORDER BY created_at",
 			ARRAY_A
 		);
 
@@ -373,8 +373,8 @@ class Job {
 		// Otherwise prepare other meta data
 		$jobs = $wpdb->get_results(
 			"SELECT DISTINCT {$selects}
-			FROM " . DB::jobs() . ' job
-				LEFT JOIN ' . DB::addresses() . " address ON job.address_id=address.address_id 
+			FROM {$wpdb->crewhrm_jobs} job
+				LEFT JOIN {$wpdb->crewhrm_addresses} address ON job.address_id=address.address_id 
 			WHERE {$where_clause} {$department_clause} {$limit_clause}",
 			ARRAY_A
 		);
@@ -384,10 +384,10 @@ class Job {
 
 		// Get departments
 		$departments = $wpdb->get_results(
-			'SELECT job.department_id, d.department_name, COUNT(job.job_id) AS job_count
-			FROM ' . DB::jobs() . ' job
-				LEFT JOIN ' . DB::addresses() . ' address ON job.address_id=address.address_id 
-				INNER JOIN ' . DB::departments() . " d ON d.department_id=job.department_id
+			"SELECT job.department_id, d.department_name, COUNT(job.job_id) AS job_count
+			FROM {$wpdb->crewhrm_jobs} job
+				LEFT JOIN $wpdb->crewhrm_addresses address ON job.address_id=address.address_id 
+				INNER JOIN {$wpdb->crewhrm_departments} d ON d.department_id=job.department_id
 			WHERE {$where_clause} GROUP BY d.department_id ORDER BY d.sequence",
 			ARRAY_A
 		);
@@ -460,7 +460,7 @@ class Job {
 	public static function toggleArchiveState( $job_id, $archive ) {
 		global $wpdb;
 		$wpdb->update(
-			DB::jobs(),
+			$wpdb->crewhrm_jobs,
 			array( 'job_status' => $archive ? 'archive' : 'draft' ),
 			array( 'job_id' => $job_id )
 		);
@@ -477,7 +477,7 @@ class Job {
 
 		// Delete stages
 		$wpdb->delete(
-			DB::stages(),
+			$wpdb->crewhrm_stages,
 			array( 'job_id' => $job_id )
 		);
 
@@ -495,7 +495,7 @@ class Job {
 
 		// Delete job
 		$wpdb->delete(
-			DB::jobs(),
+			$wpdb->crewhrm_jobs,
 			array( 'job_id' => $job_id )
 		);
 	}
@@ -512,7 +512,7 @@ class Job {
 		// Get source job row
 		$job = $wpdb->get_row(
 			$wpdb->prepare(
-				'SELECT * FROM ' . DB::jobs() . ' WHERE job_id=%d',
+				"SELECT * FROM {$wpdb->crewhrm_jobs} WHERE job_id=%d",
 				$job_id
 			),
 			ARRAY_A
@@ -527,7 +527,7 @@ class Job {
 		if ( ! empty( $job['address_id'] ) ) {
 			$address = $wpdb->get_row(
 				$wpdb->prepare(
-					'SELECT * FROM ' . DB::addresses() . ' WHERE address_id=%d',
+					"SELECT * FROM {$wpdb->crewhrm_addresses} WHERE address_id=%d",
 					$job['address_id']
 				),
 				ARRAY_A
@@ -535,7 +535,7 @@ class Job {
 
 			unset( $address['address_id'] );
 			$wpdb->insert(
-				DB::addresses(),
+				$wpdb->crewhrm_addresses,
 				$address
 			);
 
@@ -552,7 +552,7 @@ class Job {
 
 		// Now insert the job as a new
 		$wpdb->insert(
-			DB::jobs(),
+			$wpdb->crewhrm_jobs,
 			$job
 		);
 		$new_job_id = $wpdb->insert_id;

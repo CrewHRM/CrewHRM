@@ -33,7 +33,7 @@ class Address {
 		if ( ! empty( $address_id ) ) {
 			// Update existing address with the ID
 			$wpdb->update(
-				DB::addresses(),
+				$wpdb->crewhrm_addresses,
 				$_address,
 				array( 'address_id' => $address_id )
 			);
@@ -41,7 +41,7 @@ class Address {
 		} else {
 			// Create new address as ID not defined
 			$wpdb->insert(
-				DB::addresses(),
+				$wpdb->crewhrm_addresses,
 				$_address
 			);
 
@@ -63,7 +63,7 @@ class Address {
 
 		global $wpdb;
 		$wpdb->query(
-			'DELETE FROM ' . DB::addresses() . " WHERE address_id IN({$ids_in})"
+			"DELETE FROM {$wpdb->crewhrm_addresses} WHERE address_id IN({$ids_in})"
 		);
 	}
 
@@ -77,7 +77,7 @@ class Address {
 		global $wpdb;
 		$address = $wpdb->get_row(
 			$wpdb->prepare(
-				'SELECT * FROM ' . DB::addresses() . ' WHERE address_id=%d',
+				"SELECT * FROM {$wpdb->crewhrm_addresses} WHERE address_id=%d",
 				$address_id
 			),
 			ARRAY_A
@@ -94,9 +94,9 @@ class Address {
 	public static function getJobsCountryCodes() {
 		global $wpdb;
 		return $wpdb->get_col(
-			'SELECT DISTINCT address.country_code 
-			FROM ' . DB::addresses() . ' address 
-				INNER JOIN ' . DB::jobs() . " job ON address.address_id=job.address_id
+			"SELECT DISTINCT address.country_code 
+			FROM {$wpdb->crewhrm_addresses} address 
+				INNER JOIN {$wpdb->crewhrm_jobs} job ON address.address_id=job.address_id
 			WHERE job.job_status='publish' AND address.country_code IS NOT NULL AND address.country_code!='' ORDER BY address.country_code ASC"
 		);
 	}

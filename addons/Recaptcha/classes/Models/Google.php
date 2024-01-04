@@ -52,7 +52,7 @@ class Google {
 			'body' => array(
 				'secret'   => self::getKeys( 'secret_key' ),
 				'response' => $captcha_response,
-			)
+			),
 		);
 
 		$response = wp_remote_post( self::API_ENDPOINT, $request_args );
