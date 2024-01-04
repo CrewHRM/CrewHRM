@@ -35,6 +35,11 @@ class Database {
 		DB::import( file_get_contents( $sql_path ) ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
 	}
 
+	/**
+	 * Add prefixed table names to use across the plugin
+	 *
+	 * @return void
+	 */
 	public function preloadTablesNames() {
 		global $wpdb;
 

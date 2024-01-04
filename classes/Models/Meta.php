@@ -70,13 +70,14 @@ class Meta {
 	 * @return mixed
 	 */
 	public function getMeta( $meta_key = null ) {
-		$is_singular  = ! empty( $meta_key );
-		$where_clause = $is_singular ? " AND meta_key='" . esc_sql( $meta_key ) . "' " : '';
-
 		global $wpdb;
+
+		$is_singular  = ! empty( $meta_key );
+		$where_clause = $is_singular ? $wpdb->prepare( ' AND meta_key=%s', $meta_key ) : '';
+
 		$results = $wpdb->get_results(
 			$wpdb->prepare(
-				'SELECT meta_key, meta_value FROM ' . $this->table . ' WHERE object_id=%d ' . $where_clause,
+				"SELECT meta_key, meta_value FROM {$this->table} WHERE object_id=%d {$where_clause}",
 				$this->object_id
 			),
 			ARRAY_A
@@ -110,7 +111,7 @@ class Meta {
 		// Check if the meta exists already
 		$exists = $wpdb->get_var(
 			$wpdb->prepare(
-				'SELECT meta_key FROM ' . $this->table . ' WHERE object_id=%d AND meta_key=%s LIMIT 1',
+				"SELECT meta_key FROM {$this->table} WHERE object_id=%d AND meta_key=%s LIMIT 1",
 				$this->object_id,
 				$meta_key
 			)
@@ -204,11 +205,11 @@ class Meta {
 
 		if ( $meta_key ) {
 			$key           = esc_sql( $meta_key );
-			$where_clause .= " AND meta_key='{$key}'";
+			$where_clause .= $wpdb->prepare( ' AND meta_key=%s', $key );
 		}
 
 		$meta = $wpdb->get_results(
-			'SELECT * FROM ' . $this->table . " WHERE {$where_clause}",
+			"SELECT * FROM {$this->table} WHERE {$where_clause}",
 			ARRAY_A
 		);
 
@@ -233,7 +234,7 @@ class Meta {
 
 		$meta_data = $wpdb->get_results(
 			$wpdb->prepare(
-				'SELECT meta_key, meta_value FROM ' . $this->table . ' WHERE object_id=%d',
+				"SELECT meta_key, meta_value FROM {$this->table} WHERE object_id=%d",
 				$this->object_id
 			),
 			ARRAY_A

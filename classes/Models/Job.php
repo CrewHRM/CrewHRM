@@ -194,37 +194,40 @@ class Job {
 	 * @return array
 	 */
 	public static function getJobs( $args = array(), $meta_data = array( 'application_count', 'stages' ), $segmentation = false ) {
+
+		global $wpdb;
+
 		// Prepare limit, offset, where conditions
 		$page   = (int) ( $args['page'] ?? 1 );
 		$limit  = $args['limit'] ?? Settings::getSetting( 'job_post_per_page', 20 );
 		$offset = ( $page - 1 ) * $limit;
 
 		// SQL parts
-		$where_clause = '1=1';
+		$where_clause = '';
 		$order_by     = 'ORDER BY job.created_at DESC ';
 		$limit_clause = 'LIMIT ' . $limit . ' OFFSET ' . $offset;
 
 		// Apply query filters
 		if ( isset( $args['job_id'] ) ) {
-			$where_clause .= " AND job.job_id={$args['job_id']}";
+			$where_clause .= $wpdb->prepare( ' AND job.job_id=%d', $args['job_id'] );
 		}
 
 		// Apply department filter
 		if ( ! empty( $args['department_id'] ) ) {
 			$dep           = esc_sql( $args['department_id'] );
-			$where_clause .= " AND job.department_id={$dep}";
+			$where_clause .= $wpdb->prepare( ' AND job.department_id=%d', $dep );
 		}
 
 		// Apply job status
 		if ( ! empty( $args['job_status'] ) ) {
 			$status        = esc_sql( $args['job_status'] );
-			$where_clause .= " AND job.job_status='{$status}'";
+			$where_clause .= $wpdb->prepare( ' AND job.job_status=%s', $status );
 		}
 
 		// Apply search
 		if ( ! empty( $args['search'] ) ) {
 			$keyword       = esc_sql( $args['search'] );
-			$where_clause .= " AND job.job_title LIKE '%{$keyword}%'";
+			$where_clause .= $wpdb->prepare( ' AND job.job_title LIKE %s', "%{$wpdb->esc_like( $keyword )}%" );
 		}
 
 		// Determine what to select
@@ -256,17 +259,20 @@ class Job {
 				address.*';
 		}
 
-		// Build the query
-		global $wpdb;
-		$query = "SELECT {$selects} 
-				  FROM {$wpdb->crewhrm_jobs} job 
-					LEFT JOIN {$wpdb->crewhrm_departments} department ON job.department_id=department.department_id
-					LEFT JOIN {$wpdb->crewhrm_addresses} address ON job.address_id=address.address_id
-				  WHERE {$where_clause} " . ( $segmentation ? '' : "{$order_by} {$limit_clause}" );
-
 		if ( $segmentation ) {
-			$total_count = (int) $wpdb->get_var( $query );
-			$page_count  = ceil( $total_count / $limit );
+
+			$total_count = (int) $wpdb->get_var(
+				$wpdb->prepare(
+					"SELECT {$selects} 
+					FROM {$wpdb->crewhrm_jobs} job 
+						LEFT JOIN {$wpdb->crewhrm_departments} department ON job.department_id=department.department_id
+						LEFT JOIN {$wpdb->crewhrm_addresses} address ON job.address_id=address.address_id
+					WHERE 1=%d {$where_clause}",
+					1
+				)
+			);
+
+			$page_count = ceil( $total_count / $limit );
 
 			return array(
 				'total_count' => $total_count,
@@ -276,7 +282,17 @@ class Job {
 			);
 
 		} else {
-			$jobs = $wpdb->get_results( $query, ARRAY_A );
+			$jobs = $wpdb->get_results(
+				$wpdb->prepare(
+					"SELECT {$selects} 
+					FROM {$wpdb->crewhrm_jobs} job 
+						LEFT JOIN {$wpdb->crewhrm_departments} department ON job.department_id=department.department_id
+						LEFT JOIN {$wpdb->crewhrm_addresses} address ON job.address_id=address.address_id
+					WHERE 1=%d {$where_clause} {$order_by} {$limit_clause}",
+					1
+				),
+				ARRAY_A
+			);
 		}
 
 		// No need further data if it's empty

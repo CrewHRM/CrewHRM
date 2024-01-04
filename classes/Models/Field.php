@@ -31,6 +31,24 @@ class Field {
 	}
 
 	/**
+	 * Get instance by table name
+	 *
+	 * @param string $name      The table name to get instance for
+	 * @param string $arguments The arguments to make instance with
+	 * @return self
+	 */
+	public static function __callStatic( $name, $arguments ) {
+		// Run time cache
+		static $instances = array();
+
+		if ( ! isset( $instances[ $name ] ) ) {
+			$instances[ $name ] = new self( DB::$name() );
+		}
+
+		return $instances[ $name ];
+	}
+
+	/**
 	 * Get specific fields by specific where clause
 	 *
 	 * @param array        $where Array of values to use as where clause

@@ -76,7 +76,7 @@ class FileManager {
 
 		// Add direct file download restriction apache server.
 		if ( ! file_exists( $htaccess_path ) ) {
-			file_put_contents( $htaccess_path, 'deny from all' ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_file_put_contents
+			self::putContents( $htaccess_path, 'deny from all' );
 		}
 
 		// To Do: nginx doesn't restrict per directory, rather show instruction in dashboard how to restrict directory.
@@ -138,5 +138,33 @@ class FileManager {
 		remove_filter( 'upload_dir', array( __CLASS__, 'customUploadDirectory' ) );
 
 		return $attachment_id;
+	}
+
+	/**
+	 * Put file contents into file system
+	 *
+	 * @param string $file_path The path to write content to
+	 * @param string $content_to_write The content to write into file system
+	 *
+	 * @return bool
+	 */
+	public static function putContents( $file_path, $content_to_write ) {
+		// Make sure the WP_Filesystem class is loaded
+		if ( ! class_exists( 'WP_Filesystem' ) ) {
+			require_once ABSPATH . 'wp-admin/includes/file.php';
+		}
+
+		// Initialize the WP_Filesystem
+		if ( ! WP_Filesystem() ) {
+			// Unable to initialize the filesystem
+			return false;
+		}
+
+		// Use WP_Filesystem to write content to the file
+		global $wp_filesystem;
+		$result = $wp_filesystem->put_contents( $file_path, $content_to_write, FS_CHMOD_FILE );
+
+		// Check if the content was successfully written
+		return false !== $result;
 	}
 }
