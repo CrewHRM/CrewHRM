@@ -562,7 +562,7 @@ class Job {
 		unset( $job['job_id'] );
 		unset( $job['created_at'] );
 		$job['job_status']           = 'draft';
-		$job['job_title']            = $job['job_title'] . ' - ' . __( 'Draft', 'crewhrm' );
+		$job['job_title']            = $job['job_title'] . ' - ' . __( 'Draft', 'hr-management' );
 		$job['address_id']           = $new_address_id;
 		$job['application_deadline'] = null;
 

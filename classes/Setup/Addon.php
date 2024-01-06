@@ -103,8 +103,8 @@ class Addon {
 		// Setting page
 		add_submenu_page(
 			Main::$configs->app_name,
-			__( 'Addons', 'crewhrm' ),
-			__( 'Addons', 'crewhrm' ),
+			__( 'Addons', 'hr-management' ),
+			__( 'Addons', 'hr-management' ),
 			User::getAdminMenuRole( get_current_user_id() ),
 			self::PAGE_SLUG,
 			array( $this, 'addOnPage' )

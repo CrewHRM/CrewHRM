@@ -33,7 +33,7 @@ class PluginSettings {
 		// Add first
 		$new_id = Department::addDepartment( $data['department_name'] );
 		if ( ! $new_id ) {
-			wp_send_json_error( array( 'message' => __( 'Something went wrong!', 'crewhrm' ) ) );
+			wp_send_json_error( array( 'message' => __( 'Something went wrong!', 'hr-management' ) ) );
 		}
 
 		// Get updated list
@@ -45,7 +45,7 @@ class PluginSettings {
 			array(
 				'id'          => $new_id,
 				'departments' => $departments,
-				'message'     => __( 'New department added successfully', 'crewhrm' ),
+				'message'     => __( 'New department added successfully', 'hr-management' ),
 			)
 		);
 	}

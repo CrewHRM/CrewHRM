@@ -36,7 +36,7 @@ class AddonController {
 			wp_send_json_success();
 
 		} else {
-			wp_send_json_error( array( 'message' => __( 'Invalid Request Data', 'crewhrm' ) ) );
+			wp_send_json_error( array( 'message' => __( 'Invalid Request Data', 'hr-management' ) ) );
 		}
 	}
 }

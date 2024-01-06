@@ -40,10 +40,10 @@ class Credential {
 		$secret_key = sanitize_text_field( $data['secret_key'] ?? '' );
 
 		if ( empty( $site_key ) || empty( $secret_key ) ) {
-			wp_send_json_error( array( 'message' => __( 'Invalid credential', 'crewhrm' ) ) );
+			wp_send_json_error( array( 'message' => __( 'Invalid credential', 'hr-management' ) ) );
 		} else {
 			Google::saveKeys( $site_key, $secret_key );
-			wp_send_json_success( array( 'message' => __( 'Credentials saved successfully', 'crewhrm' ) ) );
+			wp_send_json_success( array( 'message' => __( 'Credentials saved successfully', 'hr-management' ) ) );
 		}
 	}
 

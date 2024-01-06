@@ -33,13 +33,13 @@ class Verify {
 		$token = is_array( $data['application'] ?? null ) ? $data['application']['recaptcha_token'] ?? null : null;
 
 		if ( empty( $token ) || ! is_string( $token ) ) {
-			wp_send_json_error( array( 'notice' => __( 'Please verify captcha first', 'crewhrm' ) ) );
+			wp_send_json_error( array( 'notice' => __( 'Please verify captcha first', 'hr-management' ) ) );
 			exit;
 		}
 
 		$verify = Google::verifyRecaptcha( $token );
 		if ( true !== $verify ) {
-			$message = ( ! empty( $verify ) && is_string( $verify ) ) ? $verify : __( 'Captcha validation failed', 'crewhrm' );
+			$message = ( ! empty( $verify ) && is_string( $verify ) ) ? $verify : __( 'Captcha validation failed', 'hr-management' );
 			wp_send_json_error( array( 'notice' => $message ) );
 			exit;
 		}

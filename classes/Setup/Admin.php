@@ -51,8 +51,8 @@ class Admin {
 		// Setting page
 		add_submenu_page(
 			Main::$configs->app_name,
-			__( 'Event Calendar', 'crewhrm' ),
-			__( 'Event Calendar', 'crewhrm' ),
+			__( 'Event Calendar', 'hr-management' ),
+			__( 'Event Calendar', 'hr-management' ),
 			User::getAdminMenuRole( get_current_user_id() ),
 			self::PAGE_SLUG_CALENDAR, // The slug must be same as the pro one, so the url will remain same.
 			array( $this, 'calendarPage' )
@@ -107,8 +107,8 @@ class Admin {
 		);
 		add_submenu_page(
 			Main::$configs->app_name,
-			__( 'Dashboard', 'crewhrm' ),
-			__( 'Dashboard', 'crewhrm' ),
+			__( 'Dashboard', 'hr-management' ),
+			__( 'Dashboard', 'hr-management' ),
 			User::getAdminMenuRole( get_current_user_id() ),
 			Main::$configs->app_name,
 			array( $this, 'mainPage' )
@@ -117,8 +117,8 @@ class Admin {
 		// All Jobs
 		add_submenu_page(
 			Main::$configs->app_name,
-			__( 'All Job Posts', 'crewhrm' ),
-			__( 'All Job Posts', 'crewhrm' ),
+			__( 'All Job Posts', 'hr-management' ),
+			__( 'All Job Posts', 'hr-management' ),
 			User::getAdminMenuRole( get_current_user_id() ),
 			'all-job-posts',
 			array( $this, 'allJobsPage' )
@@ -127,8 +127,8 @@ class Admin {
 		// Setting page
 		add_submenu_page(
 			Main::$configs->app_name,
-			__( 'Settings', 'crewhrm' ),
-			__( 'Settings', 'crewhrm' ),
+			__( 'Settings', 'hr-management' ),
+			__( 'Settings', 'hr-management' ),
 			User::getAdminMenuRole( get_current_user_id() ),
 			self::SLUG_SETTINGS,
 			array( $this, 'settingPage' )
@@ -173,7 +173,7 @@ class Admin {
 
 			foreach ( $pro_mails as $mail ) {
 				$mail->locked                = true;
-				$mail->tooltip               = __( 'Need to upgrade to Pro', 'crewhrm' );
+				$mail->tooltip               = __( 'Need to upgrade to Pro', 'hr-management' );
 				$mail_templates[ $mail->id ] = (array) $mail;
 			}
 		}
@@ -208,10 +208,10 @@ class Admin {
 	public function pluginActionLinks( array $actions ) {
 
 		$_actions = array(
-			'crewhrm_dashboard' => '<a href="admin.php?page=' . Main::$configs->app_name . '">' . __( 'Dashboard', 'crewhrm' ) . '</a>',
+			'crewhrm_dashboard' => '<a href="admin.php?page=' . Main::$configs->app_name . '">' . __( 'Dashboard', 'hr-management' ) . '</a>',
 			'crewhrm_pro_link'  => '<a href="https://getcrewhrm.com/pricing/" target="_blank">
 										<span style="color: #ff7742; font-weight: bold;">' .
-											__( 'Get Pro', 'crewhrm' ) .
+											__( 'Get Pro', 'hr-management' ) .
 										'</span>
 									</a>',
 		);
@@ -238,7 +238,7 @@ class Admin {
 			<p>
 				<?php
 					// translators: Careers page setup warning
-					echo sprintf( __( 'Please <a href="%s">set up</a> a page to display the job posts.', 'crewhrm' ), $link ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped 
+					echo sprintf( __( 'Please <a href="%s">set up</a> a page to display the job posts.', 'hr-management' ), $link ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped 
 				?>
 			</p>
 		</div>

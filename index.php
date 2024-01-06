@@ -9,7 +9,7 @@
  * Requires at least: 5.3
  * Tested up to: 6.4.2
  * Requires PHP: 7.4
- * Text Domain: crewhrm
+ * Text Domain: hr-management
  *
  * @package crewhrm
  */

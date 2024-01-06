@@ -104,8 +104,8 @@ class File {
 	 */
 	public static function getRestrictedFileURL( int $file_id ) {
 		$ajaxurl      = admin_url( 'admin-ajax.php' );
-		$nonce_action = ''; // '_crewhrm_' . str_replace( '-', '_', gmdate( 'Y-m-d' ) );
-		$nonce        = ''; // wp_create_nonce( $nonce_action );
+		$nonce_action = '_crewhrm_' . str_replace( '-', '_', gmdate( 'Y-m-d' ) );
+		$nonce        = wp_create_nonce( $nonce_action );
 
 		$args = array(
 			'action'       => 'crewhrm_loadFile',

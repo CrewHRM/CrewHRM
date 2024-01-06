@@ -89,11 +89,11 @@ gulp.task('makepot', function () {
         )
         .pipe(
             wpPot({
-                domain: 'crewhrm',
+                domain: 'hr-management',
                 package: 'CrewHRM'
             })
         )
-        .pipe(gulp.dest('languages/crewhrm.pot'));
+        .pipe(gulp.dest('languages/hr-management.pot'));
 });
 
 /**
