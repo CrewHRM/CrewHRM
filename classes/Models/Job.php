@@ -398,6 +398,11 @@ class Job {
 		$jobs = _Array::indexify( $jobs, 'job_id' );
 		$jobs = Meta::job( null )->assignBulkMeta( $jobs );
 
+		// Assign job permalink
+		foreach ( $jobs as $index => $job ) {
+			$jobs[ $index ]['job_permalink'] = self::getJobPermalink( $job['job_id'] );
+		}
+
 		// Get departments
 		$departments = $wpdb->get_results(
 			"SELECT job.department_id, d.department_name, COUNT(job.job_id) AS job_count

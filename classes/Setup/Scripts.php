@@ -76,6 +76,8 @@ class Scripts {
 		if ( Utilities::isCareersPage() ) {
 			wp_enqueue_script( 'crewhrm-careers', Main::$configs->dist_url . 'careers.js', array( 'jquery', 'wp-i18n' ), Main::$configs->version, true );
 		}
+
+		wp_enqueue_script( 'crewhrm-blocks-viewer', Main::$configs->dist_url . 'blocks-viewer.js', array( 'jquery', 'wp-i18n' ), Main::$configs->version, true );
 	}
 
 	/**
@@ -97,7 +99,7 @@ class Scripts {
 	 */
 	public function loadVariables() {
 		// Check if it's our page and needs resources to load
-		if ( ! Utilities::isCrewDashboard() && ! Utilities::isCareersPage() ) {
+		if ( is_admin() && ! Utilities::isCrewDashboard() ) {
 			return;
 		}
 
@@ -107,7 +109,7 @@ class Scripts {
 		foreach ( $dynamic_colors as $name => $code ) {
 			$_colors .= '--crewmat-color-' . esc_attr( $name ) . ':' . esc_attr( $code ) . ';';
 		}
-		echo '<style>[id^="crewhrm_"],[id^="crewhrm-"]{' . $_colors . '}</style>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		echo '<style>[id^="crewhrm_"],[id^="crewhrm-"],[data-crew="root"]{' . $_colors . '}</style>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 
 		// Prepare nonce
 		$nonce_action = '_crewhrm_' . str_replace( '-', '_', gmdate( 'Y-m-d' ) );
@@ -134,6 +136,8 @@ class Scripts {
 				'date_format'     => get_option( 'date_format' ),
 				'time_format'     => get_option( 'time_format' ),
 				'admin_url'       => add_query_arg( array( 'page' => '' ), admin_url( 'admin.php' ) ),
+				'is_admin'        => is_admin(),
+				'is_frontend'     => ! is_admin(),
 				'current_user'    => User::getUserInfo( get_current_user_id() ),
 				'text_domain'     => Main::$configs->text_domain,
 				'company_address' => array(

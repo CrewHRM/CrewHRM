@@ -10,6 +10,7 @@ namespace CrewHRM;
 use CrewHRM\Helpers\_Array;
 use CrewHRM\Setup\Addon;
 use CrewHRM\Setup\Admin;
+use CrewHRM\Setup\Blocks;
 use CrewHRM\Setup\Careers;
 use CrewHRM\Setup\CLI;
 use CrewHRM\Setup\Database;
@@ -76,6 +77,7 @@ class Main {
 		new Careers();
 		new Mails();
 		new MailPreview();
+		new Blocks();
 
 		// Set pro flag
 		add_action(
@@ -84,8 +86,6 @@ class Main {
 				self::$configs->has_pro = true;
 			}
 		);
-
-		do_action( 'crewhrm_loaded' );
 	}
 
 	/**

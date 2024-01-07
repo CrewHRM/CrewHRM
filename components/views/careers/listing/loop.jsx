@@ -6,13 +6,22 @@ import { employment_types } from 'crewhrm-materials/data.jsx';
 
 import style from './listing.module.scss';
 
-export function CareersLoop({ jobs, base_permalink }) {
+export function CareersLoop({ jobs=[], open_in_new }) {
     const [state, setState] = useState({
         hovered_job: null
     });
 
-    return jobs?.map((job) => {
-        const { job_id, job_title, employment_type, city, province, street_address, country_code } = job;
+    return jobs.map((job) => {
+        const { 
+			job_id, 
+			job_title, 
+			job_permalink,
+			employment_type, 
+			city, 
+			province, 
+			street_address, 
+			country_code 
+		} = job;
 
         const meta = [
             getAddress({
@@ -61,12 +70,13 @@ export function CareersLoop({ jobs, base_permalink }) {
                 </div>
                 <div>
                     <Link
-                        to={`/${base_permalink}/${job_id}/`}
+                        to={job_permalink}
+						target={open_in_new ? '_blank' : ''}
                         className={`button button-primary ${
                             state.hovered_job !== job_id ? 'button-outlined' : ''
                         } button-medium-2`.classNames()}
                     >
-                        {__('Apply')}
+                        {__('Details')}
                     </Link>
                 </div>
             </div>

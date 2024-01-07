@@ -83,17 +83,9 @@ class Careers {
 		}
 
 		// Prepare careers page settings
-		$settings = Settings::getSettings();
-		$settings = array(
-			'header'         => ( $settings['careers_header'] ?? false ) === true,
-			'tagline'        => $settings['careers_tagline'] ?? '',
-			'sidebar'        => $settings['careers_sidebar'] ?? false,
-			'search'         => $settings['careers_search'] ?? false,
-			'hero_image_url' => is_array( $settings['careers_hero_image'] ?? null ) ? ( $settings['careers_hero_image']['file_url'] ) : '',
-			'country_codes'  => Address::getJobsCountryCodes(),
-			'form_layout'    => Settings::getSetting( 'application_form_layout' ),
-		);
+		$settings  = Settings::getCareersListSettings();
 
+		// Prepare the base permalink for react router root
 		$parsed    = wp_parse_url( get_home_url() );
 		$protocol  = 'http' . ( is_ssl() ? 's' : '' ) . '://';
 		$root_site = $protocol . $parsed['host'] . ( ! empty( $parsed['port'] ) ? ':' . $parsed['port'] : '' );

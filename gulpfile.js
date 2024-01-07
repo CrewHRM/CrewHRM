@@ -62,9 +62,8 @@ function i18n_makepot(target_dir) {
     });
 
     // Finally append the texts to the pot file
-    var text_domain = path.basename(__dirname);
     fs.appendFileSync(
-        __dirname + '/languages/' + text_domain.toLowerCase() + '.pot',
+        __dirname + '/languages/hr-management.pot',
         translation_texts
     );
 }

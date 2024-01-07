@@ -12,7 +12,7 @@ import { Conditional } from 'crewhrm-materials/conditional.jsx';
 
 import style from './listing.module.scss';
 
-export function Listing({ base_permalink, settings = {} }) {
+export function Listing({ base_permalink, open_in_new, settings = {} }) {
     const [searchParam, setSearchParam] = useSearchParams();
     const queryParams = parseParams(searchParam);
     const current_page = parseInt( queryParams.page || 1 );
@@ -23,7 +23,7 @@ export function Listing({ base_permalink, settings = {} }) {
     const [state, setState] = useState({
         jobs: [],
         departments: [],
-        loading: true,
+        loading: false,
         no_more: false
     });
 
@@ -88,21 +88,21 @@ export function Listing({ base_permalink, settings = {} }) {
 
     return (
         <>
-            {settings.header ? (
-                <div data-crew="careers-header">
+            {
+				!settings.header ? null : <div data-crew="careers-header">
                     <CoverImage
                         src={settings.hero_image_url}
-                        style={{ minHeight: '355px' }}
+                        style={settings.hero_image_url ? { minHeight: '355px' } : {}}
                         className={'padding-15 text-align-center'.classNames()}
                     >
                         <span
-                            className={'d-block font-size-38 font-weight-500 line-height-40 letter-spacing--38 color-white padding-vertical-50 margin-top-25 margin-bottom-25'.classNames()}
+                            className={`d-block font-size-38 font-weight-500 line-height-40 letter-spacing--38 ${settings.hero_image_url ? 'padding-vertical-50 color-white margin-top-25 margin-bottom-25' : ''}`.classNames()}
                         >
                             {settings.tagline}
                         </span>
                     </CoverImage>
                 </div>
-            ) : null}
+			}
 
             <div
                 data-crew="job-listing"
@@ -147,7 +147,7 @@ export function Listing({ base_permalink, settings = {} }) {
 						</div>
 					</Conditional>
 					
-                    <CareersLoop jobs={state.jobs} base_permalink={base_permalink} />
+                    <CareersLoop jobs={state.jobs} open_in_new={open_in_new} />
 
                     <Conditional show={!state.no_more}>
                         <div

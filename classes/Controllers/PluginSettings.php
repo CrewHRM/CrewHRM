@@ -21,6 +21,9 @@ class PluginSettings {
 		'addDepartment' => array(
 			'role' => array( 'administrator' ),
 		),
+		'getCareersSettings' => array(
+			'nopriv' => true
+		)
 	);
 
 	/**
@@ -64,6 +67,19 @@ class PluginSettings {
 			array(
 				'message'  => 'Settings updated!',
 				'settings' => Settings::getSettings(),
+			)
+		);
+	}
+
+	/**
+	 * Get careers page settings especially for rendering through block
+	 *
+	 * @return void
+	 */
+	public static function getCareersSettings() {
+		wp_send_json_success(
+			array(
+				'settings' => Settings::getCareersListSettings()
 			)
 		);
 	}

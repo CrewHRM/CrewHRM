@@ -39,7 +39,7 @@ class Main {
 	 */
 	public function init( string $file ) {
 		$this->index_file = $file;
-		add_action( 'crewhrm_loaded', array( $this, 'loadSelf' ) );
+		add_action( 'plugins_loaded', array( $this, 'loadSelf' ) );
 	}
 
 	/**

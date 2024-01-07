@@ -78,7 +78,9 @@ module.exports = (env, options) => {
 				'addons-page': './components/views/addons/addons-page.jsx',
                 hrm: './components/views/hrm/index.jsx',
                 careers: './components/views/careers/index.jsx',
-                settings: './components/views/settings/index.jsx'
+                settings: './components/views/settings/index.jsx',
+                'blocks-editor': './components/blocks/editor.jsx',
+                'blocks-viewer': './components/blocks/viewer.jsx'
             }
         },
 		...getAddonsBuildStructure(path.resolve(__dirname, './addons'))
