@@ -302,7 +302,6 @@ class Stage {
 
 		$where_clause = '';
 		$order_clause = " ORDER BY {$order_by} {$order}";
-		$limit_clause = " LIMIT {$limit} OFFSET {$offset}";
 
 		if ( ! empty( $args['job_id'] ) ) {
 			$where_clause .= $wpdb->prepare( ' AND job_id=%d', $args['job_id'] );
@@ -313,24 +312,28 @@ class Stage {
 		}
 
 		$applications = $wpdb->get_results(
-			"SELECT 
-				application_id,
-				job_id,
-				stage_id,
-				address_id,
-				first_name,
-				last_name,
-				email,
-				phone,
-				date_of_birth,
-				gender,
-				cover_letter,
-				resume_file_id,
-				is_complete, 
-				UNIX_TIMESTAMP(application_date) AS application_date 
-			FROM 
-				{$wpdb->crewhrm_applications} 
-			WHERE 1=1 {$where_clause} {$order_clause} {$limit_clause}",
+			$wpdb->prepare(
+				"SELECT 
+					application_id,
+					job_id,
+					stage_id,
+					address_id,
+					first_name,
+					last_name,
+					email,
+					phone,
+					date_of_birth,
+					gender,
+					cover_letter,
+					resume_file_id,
+					is_complete, 
+					UNIX_TIMESTAMP(application_date) AS application_date 
+				FROM 
+					{$wpdb->crewhrm_applications} 
+				WHERE 1=1 {$where_clause} {$order_clause} LIMIT %d OFFSET %d",
+				$limit,
+				$offset
+			),
 			ARRAY_A
 		);
 

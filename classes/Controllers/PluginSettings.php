@@ -60,7 +60,7 @@ class PluginSettings {
 	 * @return void
 	 */
 	public static function saveSettings( array $settings ) {
-		
+
 		// Update the settings now
 		Settings::saveSettings( $settings );
 

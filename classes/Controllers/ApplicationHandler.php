@@ -67,11 +67,11 @@ class ApplicationHandler {
 	 * Note: There is no edit feature for job application. Just create on submission and retreieve in the application view.
 	 *
 	 * @param array $application Application data array
-	 * @param bool $finalize Whether to mark application as completed, which means no file to upload
+	 * @param bool  $finalize Whether to mark application as completed, which means no file to upload
 	 * @return void
 	 */
 	public static function applyToJob( array $application, bool $finalize ) {
-		
+
 		do_action( 'crewhrm_submit_application_before', $application );
 
 		$application    = _Array::sanitizeRecursive( $application, array( 'cover_letter' ) );
@@ -103,9 +103,9 @@ class ApplicationHandler {
 	 * Upload application attachment
 	 *
 	 * @param integer $application_id The application ID to upload file for
-	 * @param string $field_name The file field name like resume or something else
+	 * @param string  $field_name The file field name like resume or something else
 	 * @param boolean $finalize Whether to mark the application is complete when no more file to upload
-	 * @param array $file The file array
+	 * @param array   $file The file array
 	 * @return void
 	 */
 	public static function uploadApplicationFile( int $application_id, string $field_name, bool $finalize, array $file ) {
@@ -201,7 +201,7 @@ class ApplicationHandler {
 		Application::changeApplicationStage( $job_id, $application_id, $stage_id );
 		wp_send_json_success(
 			array(
-				'message' => esc_html__( 'Application stage changed successfully!' )
+				'message' => esc_html__( 'Application stage changed successfully!' ),
 			)
 		);
 	}
@@ -250,7 +250,7 @@ class ApplicationHandler {
 		Application::deleteApplication( $application_id );
 		wp_send_json_success(
 			array(
-				'message' => esc_html__( 'Application deleted', 'hr-management' )
+				'message' => esc_html__( 'Application deleted', 'hr-management' ),
 			)
 		);
 	}
@@ -259,7 +259,7 @@ class ApplicationHandler {
 	 * Search for usre
 	 *
 	 * @param string $keyword The keyword to search with
-	 * @param array $exclude Exclude user id from search when already added in list suggestion
+	 * @param array  $exclude Exclude user id from search when already added in list suggestion
 	 * @return void
 	 */
 	public static function searchUser( string $keyword, array $exclude ) {

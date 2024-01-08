@@ -129,7 +129,6 @@ class Dispatcher {
 		$is_post = strtolower( sanitize_text_field( wp_unslash( $_SERVER['REQUEST_METHOD'] ?? '' ) ) ) === 'post';
 		$params  = _Array::getMethodParams( $class, $method );
 
-
 		// Pick only the used arguments in the mathod from request data
 		$args = array();
 		foreach ( $params as $param => $configs ) {

@@ -37,12 +37,12 @@ class Credential {
 	 * @return void
 	 */
 	public static function saveRecaptchaKeys( string $site_key, string $secret_key ) {
-		
+
 		Google::saveKeys( $site_key, $secret_key );
 
 		wp_send_json_success(
 			array(
-				'message' => esc_html__( 'Credentials saved successfully', 'hr-management' )
+				'message' => esc_html__( 'Credentials saved successfully', 'hr-management' ),
 			)
 		);
 	}

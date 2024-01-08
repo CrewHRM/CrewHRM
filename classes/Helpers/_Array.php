@@ -233,12 +233,12 @@ class _Array {
 	/**
 	 * Get method parameter names
 	 *
-	 * @param class $class
+	 * @param class  $class
 	 * @param string $method
 	 * @return array
 	 */
 	public static function getMethodParams( $class, $method ) {
-		
+
 		$reflectionMethod = new \ReflectionMethod( $class, $method );
 		$parameters       = $reflectionMethod->getParameters();
 		$_params          = array();
@@ -251,15 +251,15 @@ class _Array {
 
 		// Loop through method parameter definition and get configurations
 		foreach ( $parameters as $parameter ) {
-			
+
 			$type = (string) $parameter->getType();
 
 			$_params[ $parameter->getName() ] = array(
 				'type'    => $type_map[ $type ] ?? $type,
-				'default' => $parameter->isDefaultValueAvailable() ? $parameter->getDefaultValue() : null
+				'default' => $parameter->isDefaultValueAvailable() ? $parameter->getDefaultValue() : null,
 			);
 		}
-		
+
 		return $_params;
 	}
 }

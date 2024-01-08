@@ -25,7 +25,7 @@ class AddonController {
 	/**
 	 * Enable or disable individual addon, ideally from addons page in backend dashboard.
 	 *
-	 * @param string $addon_id The addon ID string, it is not numeric
+	 * @param string  $addon_id The addon ID string, it is not numeric
 	 * @param boolean $new_state Boolean status of enabled or disabled
 	 * @return void
 	 */

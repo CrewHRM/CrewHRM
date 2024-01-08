@@ -108,7 +108,7 @@ class JobManagement {
 	 * Single job actions like duplicate, delete etc.
 	 *
 	 * @param integer $job_id Job ID to apply action
-	 * @param string $job_action The action
+	 * @param string  $job_action The action
 	 * @return void
 	 */
 	public static function singleJobAction( int $job_id, string $job_action ) {
@@ -150,7 +150,7 @@ class JobManagement {
 	 */
 	public static function getSingleJobView( int $job_id, int $preview = 0 ) {
 
-		$job    = Job::getJobById( $job_id );
+		$job = Job::getJobById( $job_id );
 
 		// Determine if the current user can visit the job
 		$can_visit  = ! empty( $job );
@@ -201,7 +201,7 @@ class JobManagement {
 	 */
 	public static function getSingleJobEdit( int $job_id ) {
 
-		$job    = Job::getEditableJob( $job_id );
+		$job = Job::getEditableJob( $job_id );
 
 		if ( empty( $job ) ) {
 			wp_send_json_error( array( 'message' => esc_html__( 'Job not found to edit', 'hr-management' ) ) );
@@ -249,7 +249,7 @@ class JobManagement {
 	/**
 	 * Return job data for single view
 	 *
-	 * @param integer $job_id The job ID 
+	 * @param integer $job_id The job ID
 	 * @return void
 	 */
 	public static function getJobViewDashboard( int $job_id ) {

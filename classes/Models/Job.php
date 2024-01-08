@@ -358,18 +358,18 @@ class Job {
 
 		// Add search filter
 		if ( ! empty( $args['search'] ) ) {
-			$where_clause .= $wpdb->prepare( " AND job.job_title LIKE %s", "%{$wpdb->esc_like( $args['search'] )}%");
+			$where_clause .= $wpdb->prepare( ' AND job.job_title LIKE %s', "%{$wpdb->esc_like( $args['search'] )}%" );
 		}
 
 		// Add country filter
 		if ( ! empty( $args['country_code'] ) ) {
-			$where_clause .= $wpdb->prepare( " AND address.country_code=%s", $args['country_code'] );
+			$where_clause .= $wpdb->prepare( ' AND address.country_code=%s', $args['country_code'] );
 		}
 
 		// Add employment_type filter
 		if ( ! empty( $args['employment_type'] ) ) {
 			// Like operator because multiple types get stored as serialized array.
-			$where_clause .= $wpdb->prepare( " AND job.employment_type LIKE %s", "%{$wpdb->esc_like( $args['employment_type'] )}%" );
+			$where_clause .= $wpdb->prepare( ' AND job.employment_type LIKE %s', "%{$wpdb->esc_like( $args['employment_type'] )}%" );
 		}
 
 		// Otherwise prepare other meta data
