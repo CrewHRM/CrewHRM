@@ -194,7 +194,7 @@ class ApplicationHandler {
 	 *
 	 * @param integer $job_id The job ID
 	 * @param integer $application_id Application ID to move
-	 * @param integer $stage_id Stage ID to move to
+	 * @param integer $stage_id Stage ID to move to. Zero means to disqualify.
 	 * @return void
 	 */
 	public static function moveApplicationStage( int $job_id, int $application_id, int $stage_id ) {

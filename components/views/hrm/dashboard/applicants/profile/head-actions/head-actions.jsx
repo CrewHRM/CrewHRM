@@ -99,7 +99,7 @@ export function HeadActions({ application }) {
     const onActionClick = (action) => {
         switch (action) {
             case 'disqualify':
-                changeStage('_disqualified_', __('Sure to disqualify?'));
+                changeStage(0, __('Sure to disqualify?'));
                 break;
 
             case 'delete':

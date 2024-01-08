@@ -8,6 +8,7 @@ import { __, sprintf } from 'crewhrm-materials/helpers.jsx';
 import { applyFilters } from 'crewhrm-materials/hooks.jsx';
 import { timeAgoOrAfter } from 'crewhrm-materials/helpers.jsx';
 import { RenderExternal } from 'crewhrm-materials/render-external.jsx';
+import { LoadingIcon } from 'crewhrm-materials/loading-icon/loading-icon.jsx';
 
 import { ContextApplicationSession } from '../../applicants.jsx';
 import style from './activity.module.scss';
@@ -116,6 +117,7 @@ export function Activity() {
 
     return (
         <div data-crew="activity" className={'activities'.classNames(style)}>
+			<LoadingIcon show={state.loading} center={true}/>
             {state.pipeline.map((activity, i) => {
                 let { avatar_url, type } = activity;
                 let { renderer: Comp, icon } = activity_handlers[type] || {};

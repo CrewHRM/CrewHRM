@@ -182,8 +182,10 @@ class Application {
 
 		// Delete application finally
 		$wpdb->query(
-			"DELETE FROM {$wpdb->crewhrm_applications} WHERE application_id IN (%s)",
-			$ids_in
+			$wpdb->prepare(
+				"DELETE FROM {$wpdb->crewhrm_applications} WHERE application_id IN (%s)",
+				$ids_in
+			)
 		);
 
 		// Execute hook to delete more pro dependencies
@@ -492,7 +494,7 @@ class Application {
 	public static function changeApplicationStage( $job_id, $application_id, $stage_id ) {
 
 		// Determine whether to disqualify the application
-		$is_disqualify = '_disqualified_' === $stage_id;
+		$is_disqualify = 0 === $stage_id;
 		$old_stage_id  = Stage::getCurrentStageIdByApplicationId( $application_id );
 
 		if ( $is_disqualify ) {
@@ -501,7 +503,7 @@ class Application {
 		} else {
 			// If not to disqualify explicitly, then check if the stage ID refers to disqualify either way.
 			// And set them that way.
-			$disqname      = Field::stages()->getField(
+			$disqname = Field::stages()->getField(
 				array(
 					'job_id'   => $job_id,
 					'stage_id' => $stage_id,

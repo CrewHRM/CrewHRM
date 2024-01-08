@@ -25,12 +25,13 @@ class Verify {
 	/**
 	 * Verify captcha before proceeding application submission request
 	 *
-	 * @param array $data Request data
+	 * @param array $application The application data array
 	 * @return void
 	 */
-	public function verifyToken( array $data ) {
+	public function verifyToken( array $application ) {
+		
 		// Get the captcha response
-		$token = is_array( $data['application'] ?? null ) ? $data['application']['recaptcha_token'] ?? null : null;
+		$token = $application['recaptcha_token'] ?? null;
 
 		if ( empty( $token ) || ! is_string( $token ) ) {
 			wp_send_json_error( array( 'notice' => esc_html__( 'Please verify captcha first', 'hr-management' ) ) );
