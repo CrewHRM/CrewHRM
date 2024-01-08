@@ -25,19 +25,12 @@ class AddonController {
 	/**
 	 * Enable or disable individual addon, ideally from addons page in backend dashboard.
 	 *
-	 * @param array $data Request data
+	 * @param string $addon_id The addon ID string, it is not numeric
+	 * @param boolean $new_state Boolean status of enabled or disabled
 	 * @return void
 	 */
-	public static function toggleAddonState( array $data ) {
-		$new_state = _String::castValue( wp_unslash( $data['new_state'] ?? '' ) );
-		$addon_id  = _String::castValue( wp_unslash( $data['addon_id'] ?? '' ) );
-
-		if ( ! empty( $addon_id ) && is_bool( $new_state ) ) {
-			AddonManager::toggleState( $addon_id, $new_state );
-			wp_send_json_success();
-
-		} else {
-			wp_send_json_error( array( 'message' => esc_html__( 'Invalid Request Data', 'hr-management' ) ) );
-		}
+	public static function toggleAddonState( string $addon_id, bool $new_state ) {
+		AddonManager::toggleState( $addon_id, $new_state );
+		wp_send_json_success();
 	}
 }

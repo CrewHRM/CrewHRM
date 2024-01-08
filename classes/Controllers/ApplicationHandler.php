@@ -66,20 +66,15 @@ class ApplicationHandler {
 	 * Create application to job.
 	 * Note: There is no edit feature for job application. Just create on submission and retreieve in the application view.
 	 *
-	 * @param array $data  Request data containing application informations
+	 * @param array $application Application data array
+	 * @param bool $finalize Whether to mark application as completed, which means no file to upload
 	 * @return void
 	 */
-	public static function applyToJob( array $data ) {
-		// Check data
-		if ( ! is_array( $data['application'] ?? null ) ) {
-			wp_send_json_error( array( 'notice' => esc_html__( 'Invalid request data', 'hr-management' ) ) );
-		}
+	public static function applyToJob( array $application, bool $finalize ) {
+		
+		do_action( 'crewhrm_submit_application_before', $application );
 
-		$data['application'] = _Array::castRecursive( _Array::sanitizeRecursive() )
-
-		do_action( 'crewhrm_submit_application_before', $data );
-
-		$application    = _Array::sanitizeRecursive( $data['application'], array( 'cover_letter' ) );
+		$application    = _Array::sanitizeRecursive( $application, array( 'cover_letter' ) );
 		$application_id = Application::createApplication( $application );
 
 		if ( empty( $application_id ) ) {
@@ -92,7 +87,7 @@ class ApplicationHandler {
 		}
 
 		// When there's no file to submit, it needs to be finalized right from here as file uploader will not be called.
-		if ( ( true === $data['finalize'] ?? false ) ) {
+		if ( true === $finalize ) {
 			Application::finalizeApplication( $application_id );
 		}
 
@@ -107,17 +102,16 @@ class ApplicationHandler {
 	/**
 	 * Upload application attachment
 	 *
-	 * @param array $data Request Data
-	 * @param array $file Request files
+	 * @param integer $application_id The application ID to upload file for
+	 * @param string $field_name The file field name like resume or something else
+	 * @param boolean $finalize Whether to mark the application is complete when no more file to upload
+	 * @param array $file The file array
 	 * @return void
 	 */
-	public static function uploadApplicationFile( array $data, array $file ) {
-		$application_id = Utilities::getInt( $data['application_id'] ?? 0 );
-		$field_name     = $data['field_name'] ?? null;
-		$finalize       = $data['finalize'] ?? false;
+	public static function uploadApplicationFile( int $application_id, string $field_name, bool $finalize, array $file ) {
 
 		// Check if file is valid
-		if ( ! is_array( $file['file'] ?? null ) || 0 !== ( $file['file']['error'] ?? null ) ) {
+		if ( 0 !== ( $file['error'] ?? null ) ) {
 			wp_send_json_error( array( 'message' => esc_html__( 'Invalid file', 'hr-management' ) ) );
 		}
 
@@ -128,7 +122,7 @@ class ApplicationHandler {
 		}
 
 		// Process upload now
-		Application::uploadApplicationFile( $application_id, $field_name, $file['file'] );
+		Application::uploadApplicationFile( $application_id, $field_name, $file );
 
 		// If file upload complete, mark the application as complete
 		if ( true === $finalize ) {
@@ -141,11 +135,11 @@ class ApplicationHandler {
 	/**
 	 * Get application list, ideally for the application view page sidebar.
 	 *
-	 * @param array $data Request data
+	 * @param array $filter Filter args
 	 * @return void
 	 */
-	public static function getApplicationsList( array $data ) {
-		$filter             = $data['filter'];
+	public static function getApplicationsList( array $filter ) {
+
 		$is_qualified       = 'disqualified' !== ( $filter['qualification'] ?? 'qualified' );
 		$applications       = Application::getApplications( $filter );
 		$qualified_count    = 0;
@@ -174,11 +168,13 @@ class ApplicationHandler {
 	/**
 	 * Get single application profile
 	 *
-	 * @param array $data Request data
+	 * @param integer $job_id The job ID to get applications for
+	 * @param integer $application_id The application ID to get
 	 * @return void
 	 */
-	public static function getApplicationSingle( array $data ) {
-		$application = Application::getSingleApplication( $data['job_id'], $data['application_id'] );
+	public static function getApplicationSingle( int $job_id, int $application_id ) {
+
+		$application = Application::getSingleApplication( $job_id, $application_id );
 
 		if ( empty( $application ) ) {
 			wp_send_json_error( array( 'message' => esc_html__( 'Application not found', 'hr-management' ) ) );
@@ -196,22 +192,28 @@ class ApplicationHandler {
 	/**
 	 * Move singular application stage
 	 *
-	 * @param array $data Request data containing applications stage info
+	 * @param integer $job_id The job ID
+	 * @param integer $application_id Application ID to move
+	 * @param integer $stage_id Stage ID to move to
 	 * @return void
 	 */
-	public static function moveApplicationStage( array $data ) {
-		Application::changeApplicationStage( $data['job_id'], $data['application_id'], $data['stage_id'] );
-		wp_send_json_success( array( 'message' => esc_html__( 'Application stage changed successfully!' ) ) );
+	public static function moveApplicationStage( int $job_id, int $application_id, int $stage_id ) {
+		Application::changeApplicationStage( $job_id, $application_id, $stage_id );
+		wp_send_json_success(
+			array(
+				'message' => esc_html__( 'Application stage changed successfully!' )
+			)
+		);
 	}
 
 	/**
 	 * Provide application activity/pipeline
 	 *
-	 * @param array $data Request data
+	 * @param int $application_id The application ID to get pipeline of
 	 * @return void
 	 */
-	public static function getApplicationPipeline( array $data ) {
-		$pipeline = Pipeline::getPipeLine( $data['application_id'] );
+	public static function getApplicationPipeline( int $application_id ) {
+		$pipeline = Pipeline::getPipeLine( $application_id );
 
 		if ( ! empty( $pipeline ) ) {
 			wp_send_json_success( array( 'pipeline' => $pipeline ) );
@@ -223,12 +225,12 @@ class ApplicationHandler {
 	/**
 	 * Provide listing for careers page
 	 *
-	 * @param array $data Request data containing careers filter arguments
+	 * @param array $filters Filters array
 	 * @return void
 	 */
-	public static function getCareersListing( array $data ) {
+	public static function getCareersListing( array $filters ) {
 
-		$jobs = Job::getCareersListing( _Array::prepareRequestData( $data['filters'] ) );
+		$jobs = Job::getCareersListing( $filters );
 
 		wp_send_json_success(
 			array(
@@ -241,24 +243,28 @@ class ApplicationHandler {
 	/**
 	 * Delete single application from single applicant view or maybe from application list.
 	 *
-	 * @param array $data Request data
+	 * @param int $application_id The application ID to delete
 	 * @return void
 	 */
-	public static function deleteApplication( array $data ) {
-		Application::deleteApplication( $data['application_id'] );
-		wp_send_json_success( array( 'message' => esc_html__( 'Application deleted', 'hr-management' ) ) );
+	public static function deleteApplication( int $application_id ) {
+		Application::deleteApplication( $application_id );
+		wp_send_json_success(
+			array(
+				'message' => esc_html__( 'Application deleted', 'hr-management' )
+			)
+		);
 	}
 
 	/**
-	 * Search for usrs
+	 * Search for usre
 	 *
-	 * @param array $data Request data
+	 * @param string $keyword The keyword to search with
+	 * @param array $exclude Exclude user id from search when already added in list suggestion
 	 * @return void
 	 */
-	public static function searchUser( array $data ) {
-		$keyword = $data['keyword'] ?? '';
-		$exclude = $data['exclude'] ?? array();
-		$users   = User::searchUser( $keyword, is_array( $exclude ) ? $exclude : array() );
+	public static function searchUser( string $keyword, array $exclude ) {
+		$exclude = array_filter( $exclude, 'is_numeric' );
+		$users   = User::searchUser( $keyword, $exclude );
 
 		wp_send_json_success( array( 'users' => $users ) );
 	}

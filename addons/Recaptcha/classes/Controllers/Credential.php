@@ -32,28 +32,27 @@ class Credential {
 	/**
 	 * Credential save method
 	 *
-	 * @param array $data Request Data
+	 * @param string $site_key Site Key
+	 * @param string $secret_key Secret Key
 	 * @return void
 	 */
-	public static function saveRecaptchaKeys( array $data ) {
-		$site_key   = sanitize_text_field( wp_unslash( $data['site_key'] ?? '' ) );
-		$secret_key = sanitize_text_field( wp_unslash( $data['secret_key'] ?? '' ) );
+	public static function saveRecaptchaKeys( string $site_key, string $secret_key ) {
+		
+		Google::saveKeys( $site_key, $secret_key );
 
-		if ( empty( $site_key ) || empty( $secret_key ) ) {
-			wp_send_json_error( array( 'message' => esc_html__( 'Invalid credential', 'hr-management' ) ) );
-		} else {
-			Google::saveKeys( $site_key, $secret_key );
-			wp_send_json_success( array( 'message' => esc_html__( 'Credentials saved successfully', 'hr-management' ) ) );
-		}
+		wp_send_json_success(
+			array(
+				'message' => esc_html__( 'Credentials saved successfully', 'hr-management' )
+			)
+		);
 	}
 
 	/**
 	 * Get recaptcha site key for
 	 *
-	 * @param array $data Request data
 	 * @return void
 	 */
-	public static function getRecaptchaKeys( array $data ) {
+	public static function getRecaptchaKeys() {
 		$keys = HelpersCredential::recaptcha()->getCredential();
 		$keys = is_array( $keys ) ? $keys : array();
 

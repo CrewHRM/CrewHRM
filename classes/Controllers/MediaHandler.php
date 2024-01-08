@@ -20,12 +20,12 @@ class MediaHandler {
 	/**
 	 * Load file
 	 *
-	 * @param array $data Request data
+	 * @param int $file_id The fiel ID to load
 	 * @return void
 	 */
-	public static function loadFile( array $data ) {
-		$file_id = $data['file_id'] ?? 0;
-		$path    = get_attached_file( $file_id );
+	public static function loadFile( int $file_id ) {
+
+		$path = get_attached_file( $file_id );
 
 		if ( empty( $path ) || ! is_readable( $path ) ) {
 			http_response_code( 404 );

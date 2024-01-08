@@ -24,12 +24,12 @@ class MailPreview {
 	/**
 	 * Load mail contents in browser
 	 *
-	 * @param array $data Request Data
+	 * @param string $template The mail template to preview
 	 * @return void
 	 */
-	public static function previewDevMail( array $data ) {
+	public static function previewDevMail( string $template ) {
 
-		$template = preg_replace( '/[^a-zA-Z0-9-]/', '', sanitize_text_field( wp_unslash( $data['template'] ?? '' ) ) );
+		$template = preg_replace( '/[^a-zA-Z0-9-]/', '', $template );
 		$path     = Main::$configs->dir . 'templates/email/event-templates/' . $template . '.php';
 
 		if ( ! file_exists( $path ) ) {

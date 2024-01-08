@@ -109,23 +109,43 @@ class Dispatcher {
 		// Nonce verification
 		$matched = wp_verify_nonce( ( $_POST['nonce'] ?? '' ), $_POST['nonce_action'] ?? '' ) || wp_verify_nonce( ( $_GET['nonce'] ?? '' ), $_GET['nonce_action'] ?? '' );
 		if ( ! $matched ) {
-			wp_send_json_error( array( 'message' => esc_html__( 'Session Expired! Reloading the page might help resolve.', 'hr-management' ) ) );
+			wp_send_json_error( array( 'message' => esc_html__( 'Nonce verification failed!', 'hr-management' ) ) );
 		}
 
-		// Dispatch request
-		$is_post         = strtolower( sanitize_text_field( wp_unslash( $_SERVER['REQUEST_METHOD'] ?? '' ) ) ) === 'post';
-		$_required_roles = $prerequisites['role'] ?? array();
-		$_required_roles = is_array( $_required_roles ) ? $_required_roles : array( $_required_roles );
-		$_required_roles = apply_filters( 'crewhrm_hr_roles', $_required_roles );
-		if ( ! User::validateRole( get_current_user_id(), $_required_roles ) ) {
+		// Validate access privilege
+		$required_roles = $prerequisites['role'] ?? array();
+		$required_roles = is_array( $required_roles ) ? $required_roles : array( $required_roles );
+		$required_roles = apply_filters( 'crewhrm_hr_roles', $required_roles );
+		if ( ! User::validateRole( get_current_user_id(), $required_roles ) ) {
 			wp_send_json_error( array( 'message' => esc_html__( 'Access Denied!', 'hr-management' ) ) );
 		}
 
 		// Now pass to the action handler function
-		if ( class_exists( $class ) && method_exists( $class, $method ) ) {
-			$class::$method( $is_post ? $_POST : $_GET, is_array( $_FILES ) ? $_FILES : array() );
-		} else {
+		if ( ! class_exists( $class ) || ! method_exists( $class, $method ) ) {
 			wp_send_json_error( array( 'message' => esc_html__( 'Invalid Endpoint!', 'hr-management' ) ) );
 		}
+
+		// Prepare request data
+		$is_post = strtolower( sanitize_text_field( wp_unslash( $_SERVER['REQUEST_METHOD'] ?? '' ) ) ) === 'post';
+		$params  = _Array::getMethodParams( $class, $method );
+
+		// Pick only the used arguments in the mathod from request data
+		$args = array();
+		foreach ( $params as $param => $configs ) {
+			$args[ $param ] = ( $is_post ? ( $_POST[ $param ] ?? null ) : ( $_GET[ $param ] ?? null ) ) ?? $_FILES[ $param ] ?? $configs['default'] ?? null;
+		}
+
+		// And then prepare them
+		$args = _Array::prepareRequestData( $args );
+
+		// Now verify the data types after casting
+		foreach ( $args as $name => $value ) {
+			if ( gettype( $value ) != $params[ $name ]['type'] ) {
+				wp_send_json_error( array( 'message' => esc_html__( 'Invalid request data!', 'hr-management' ) ) );
+			}
+		}
+
+		// Then pass to method with spread as the parameter count is variable.
+		$class::$method( ...$args );
 	}
 }

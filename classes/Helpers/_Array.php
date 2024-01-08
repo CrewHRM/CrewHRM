@@ -243,4 +243,30 @@ class _Array {
 
 		return ARRAY_A === $ret_type ? $result : (object) $result;
 	}
+
+	/**
+	 * Get method parameter names
+	 *
+	 * @param class $class
+	 * @param string $method
+	 * @return array
+	 */
+	public static function getMethodParams( $class, $method ) {
+		
+		// Create a ReflectionMethod instance
+		$reflectionMethod = new \ReflectionMethod( $class, $method );
+
+		// Get the method parameters
+		$parameters = $reflectionMethod->getParameters();
+
+		$params = array();
+		foreach ( $parameters as $parameter ) {
+			$params[ $parameter->getName() ] = array(
+				'type'    => $parameter->getType(),
+				'default' => $parameter->isDefaultValueAvailable() ? $parameter->getDefaultValue() : null
+			);
+		}
+		
+		return $params;
+	}
 }

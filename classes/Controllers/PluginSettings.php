@@ -29,12 +29,12 @@ class PluginSettings {
 	/**
 	 * Add single department, ideally from job editor
 	 *
-	 * @param array $data Request data
+	 * @param string $department_name The department name to add
 	 * @return void
 	 */
-	public static function addDepartment( array $data ) {
+	public static function addDepartment( string $department_name ) {
 		// Add first
-		$new_id = Department::addDepartment( $data['department_name'] );
+		$new_id = Department::addDepartment( $department_name );
 		if ( ! $new_id ) {
 			wp_send_json_error( array( 'message' => esc_html__( 'Something went wrong!', 'hr-management' ) ) );
 		}
@@ -56,16 +56,17 @@ class PluginSettings {
 	/**
 	 * Save admin settings
 	 *
-	 * @param array $data Request data
+	 * @param array $settings The settings array
 	 * @return void
 	 */
-	public static function saveSettings( $data ) {
+	public static function saveSettings( array $settings ) {
+		
 		// Update the settings now
-		Settings::saveSettings( $data['settings'] );
+		Settings::saveSettings( $settings );
 
 		wp_send_json_success(
 			array(
-				'message'  => 'Settings updated!',
+				'message'  => esc_html__( 'Settings updated!', 'hr-management' ),
 				'settings' => Settings::getSettings(),
 			)
 		);

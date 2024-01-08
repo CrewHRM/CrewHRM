@@ -41,12 +41,12 @@ class JobManagement {
 	/**
 	 * Create or update a job
 	 *
-	 * @param array $data Request data
+	 * @param array $job Job data array
 	 * @return void
 	 */
-	public static function updateJob( array $data ) {
+	public static function updateJob( array $job ) {
 		// Can access job directly as it is checked by dispatcher already using prerequisities array
-		$data       = _Array::sanitizeRecursive( _Array::getArray( $data['job'] ), array( 'job_description' ) );
+		$data       = _Array::sanitizeRecursive( _Array::getArray( $job ), array( 'job_description' ) );
 		$new_status = $data['job_status'];
 		$is_publish = 'publish' === $new_status;
 
@@ -88,13 +88,13 @@ class JobManagement {
 	/**
 	 * Get job list to render in dashboard
 	 *
-	 * @param array $data Request data
+	 * @param array $filters Job filter args
 	 * @return void
 	 */
-	public static function getJobsDashboard( array $data ) {
+	public static function getJobsDashboard( array $filters ) {
 		// Get Initial job list
-		$jobs         = Job::getJobs( $data['filters'] );
-		$segmentation = Job::getJobs( $data['filters'], array(), true );
+		$jobs         = Job::getJobs( $filters );
+		$segmentation = Job::getJobs( $filters, array(), true );
 
 		wp_send_json_success(
 			array(
@@ -107,17 +107,16 @@ class JobManagement {
 	/**
 	 * Single job actions like duplicate, delete etc.
 	 *
-	 * @param array $data Request data
+	 * @param integer $job_id Job ID to apply action
+	 * @param string $job_action The action
 	 * @return void
 	 */
-	public static function singleJobAction( $data ) {
-		$job_id = $data['job_id'];
-		$action = $data['job_action'];
+	public static function singleJobAction( int $job_id, string $job_action ) {
 
-		switch ( $action ) {
+		switch ( $job_action ) {
 			case 'archive':
 			case 'unarchive':
-				$do_archive = 'archive' === $action;
+				$do_archive = 'archive' === $job_action;
 				Job::toggleArchiveState( $job_id, $do_archive );
 				wp_send_json_success(
 					array(
@@ -145,11 +144,12 @@ class JobManagement {
 	/**
 	 * Get the job for single view and application process
 	 *
-	 * @param array $data Request data
+	 * @param integer $job_id The job ID to get data
+	 * @param integer $preview Whether it is preview mode
 	 * @return void
 	 */
-	public static function getSingleJobView( array $data ) {
-		$job_id = $data['job_id'];
+	public static function getSingleJobView( int $job_id, int $preview = 0 ) {
+
 		$job    = Job::getJobById( $job_id );
 
 		// Determine if the current user can visit the job
@@ -164,7 +164,7 @@ class JobManagement {
 
 		// Provide preview content for admin and editor
 		// Only the privileged users can see preview content which is not in the main job yet.
-		if ( $can_visit && (int) ( $data['preview'] ?? 0 ) === 1 && $privileged ) {
+		if ( $can_visit && 1 === $preview && $privileged ) {
 			$autosaved = Meta::job( $job_id )->getMeta( 'autosaved_job' );
 			if ( ! empty( $autosaved ) ) {
 				$job = $autosaved;
@@ -196,11 +196,11 @@ class JobManagement {
 	/**
 	 * Get job for edit purpose
 	 *
-	 * @param array $data Request data
+	 * @param integer $job_id The job ID to get edit data
 	 * @return void
 	 */
-	public static function getSingleJobEdit( array $data ) {
-		$job_id = $data['job_id'];
+	public static function getSingleJobEdit( int $job_id ) {
+
 		$job    = Job::getEditableJob( $job_id );
 
 		if ( empty( $job ) ) {
@@ -218,16 +218,18 @@ class JobManagement {
 	/**
 	 * Delete hiring stage from individual job
 	 *
-	 * @param array $data Request data
+	 * @param integer $job_id The job ID to delete stage from
+	 * @param integer $stage_id The stage ID to delete
+	 * @param integer $move_to The stage ID to move existing applications
 	 * @return void
 	 */
-	public static function deleteHiringStage( array $data ) {
+	public static function deleteHiringStage( int $job_id, int $stage_id, int $move_to = null ) {
 
 		// Run delete
 		$deletion = Stage::deleteStage(
-			$data['job_id'],
-			$data['stage_id'],
-			$data['move_to'] ?? null
+			$job_id,
+			$stage_id,
+			$move_to
 		);
 
 		if ( true === $deletion ) {
@@ -247,18 +249,18 @@ class JobManagement {
 	/**
 	 * Return job data for single view
 	 *
-	 * @param array $data Request data
+	 * @param int $job_id The job ID 
 	 * @return void
 	 */
-	public static function getJobViewDashboard( array $data ) {
-		$stats = Stage::getStageStatsByJobId( $data['job_id'] );
+	public static function getJobViewDashboard( int $job_id ) {
+		$stats = Stage::getStageStatsByJobId( $job_id );
 
 		wp_send_json_success(
 			array(
 				'job_list'   => Job::getJobsMinimal(),
 				'stages'     => $stats['stages'] ?? array(),
 				'candidates' => $stats['candidates'] ?? 0,
-				'job'        => Job::getJobById( $data['job_id'] ),
+				'job'        => Job::getJobById( $job_id ),
 			)
 		);
 	}
