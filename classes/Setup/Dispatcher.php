@@ -143,6 +143,7 @@ class Dispatcher {
 		// Now verify the data types after casting
 		foreach ( $args as $name => $value ) {
 			if ( gettype( $value ) != $params[ $name ]['type'] ) {
+				error_log( sprintf( 'Invalid %s for the endpoint %s', $name, $method ) );
 				wp_send_json_error( array( 'message' => esc_html__( 'Invalid request data!', 'hr-management' ) ) );
 			}
 		}
