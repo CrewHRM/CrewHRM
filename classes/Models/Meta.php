@@ -218,9 +218,7 @@ class Meta {
 		}
 
 		$meta = $wpdb->get_results(
-			$wpdb->prepare(
-				"SELECT * FROM {$this->table} WHERE {$where_clause}"
-			),
+			"SELECT * FROM {$this->table} WHERE {$where_clause}",
 			ARRAY_A
 		);
 

@@ -12,7 +12,7 @@ import { Conditional } from 'crewhrm-materials/conditional.jsx';
 
 import style from './listing.module.scss';
 
-export function Listing({ base_permalink, open_in_new, settings = {} }) {
+export function Listing({ open_in_new, settings = {} }) {
     const [searchParam, setSearchParam] = useSearchParams();
     const queryParams = parseParams(searchParam);
     const current_page = parseInt( queryParams.page || 1 );
@@ -129,7 +129,6 @@ export function Listing({ base_permalink, open_in_new, settings = {} }) {
                             iconClass={'ch-icon ch-icon-search-normal-1'.classNames()}
                             value={queryParams.search || ''}
                             onChange={(v) => setFilter( 'search', v )}
-							inputDelay={300}
                         />
                     </Conditional>
 

@@ -291,14 +291,12 @@ class Application {
 
 		// Run query and get the application IDs
 		$application_ids = $wpdb->get_col(
-			$wpdb->prepare(
-				"SELECT 
-					app.application_id 
-				FROM {$wpdb->crewhrm_applications} app
-					LEFT JOIN {$wpdb->crewhrm_stages} stage ON app.stage_id=stage.stage_id 
-				WHERE 
-					{$where_clause} ORDER BY application_date DESC"
-			)
+			"SELECT 
+				app.application_id 
+			FROM {$wpdb->crewhrm_applications} app
+				LEFT JOIN {$wpdb->crewhrm_stages} stage ON app.stage_id=stage.stage_id 
+			WHERE 
+				{$where_clause} ORDER BY application_date DESC"
 		);
 
 		// If it needs only count, no need to include other data, return count onyl
@@ -546,33 +544,25 @@ class Application {
 
 		// Total created job no matter status or anything
 		$total_job = $wpdb->get_var(
-			$wpdb->prepare(
-				"SELECT COUNT(job_id) FROM {$wpdb->crewhrm_jobs}"
-			)
+			"SELECT COUNT(job_id) FROM {$wpdb->crewhrm_jobs}"
 		);
 
 		// Total application count no matter the stage
 		$total_application = $wpdb->get_var(
-			$wpdb->prepare(
-				"SELECT COUNT(application_id) FROM {$wpdb->crewhrm_applications}"
-			)
+			"SELECT COUNT(application_id) FROM {$wpdb->crewhrm_applications}"
 		);
 
 		$total_hired = $wpdb->get_var(
-			$wpdb->prepare(
-				"SELECT 
-					COUNT(app.application_id) 
-				FROM {$wpdb->crewhrm_applications} app
-					INNER JOIN {$wpdb->crewhrm_stages} stage ON app.stage_id=stage.stage_id
-				WHERE 
-					stage.stage_name='_hired_';"
-			)
+			"SELECT 
+				COUNT(app.application_id) 
+			FROM {$wpdb->crewhrm_applications} app
+				INNER JOIN {$wpdb->crewhrm_stages} stage ON app.stage_id=stage.stage_id
+			WHERE 
+				stage.stage_name='_hired_';"
 		);
 
 		$total_pending = $wpdb->get_var(
-			$wpdb->prepare(
-				"SELECT COUNT(application_id) FROM {$wpdb->crewhrm_applications} WHERE stage_id IS NULL"
-			)
+			"SELECT COUNT(application_id) FROM {$wpdb->crewhrm_applications} WHERE stage_id IS NULL"
 		);
 
 		return _Array::castRecursive(

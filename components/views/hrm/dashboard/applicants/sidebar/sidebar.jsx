@@ -129,7 +129,6 @@ export function Sidebar({ hasApplications }) {
 					style={{height: '40px'}}
                     placeholder={__('Search by name')}
                     onChange={setKeyword}
-                    inputDelay={300}
                 />
             </div>
 

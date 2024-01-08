@@ -67,9 +67,7 @@ class Field {
 
 		global $wpdb;
 		$row = $wpdb->get_row(
-			$wpdb->prepare(
-				"SELECT {$columns} FROM {$this->table} WHERE {$where_clause} LIMIT 1"
-			)
+			"SELECT {$columns} FROM {$this->table} WHERE {$where_clause} LIMIT 1"
 		);
 		$row = ! empty( $row ) ? (array) $row : array();
 		$row = _Array::castRecursive( $row );
@@ -95,9 +93,7 @@ class Field {
 
 		global $wpdb;
 		$col = $wpdb->get_col(
-			$wpdb->prepare(
-				"SELECT {$col_name} FROM {$this->table} WHERE {$where_clause}"
-			)
+			"SELECT {$col_name} FROM {$this->table} WHERE {$where_clause}"
 		);
 
 		return _Array::getArray( $col );

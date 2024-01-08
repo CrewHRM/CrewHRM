@@ -261,14 +261,11 @@ class Job {
 		if ( $segmentation ) {
 
 			$total_count = (int) $wpdb->get_var(
-				$wpdb->prepare(
-					"SELECT {$selects} 
-					FROM {$wpdb->crewhrm_jobs} job 
-						LEFT JOIN {$wpdb->crewhrm_departments} department ON job.department_id=department.department_id
-						LEFT JOIN {$wpdb->crewhrm_addresses} address ON job.address_id=address.address_id
-					WHERE 1=%d {$where_clause}",
-					1
-				)
+				"SELECT {$selects} 
+				FROM {$wpdb->crewhrm_jobs} job 
+					LEFT JOIN {$wpdb->crewhrm_departments} department ON job.department_id=department.department_id
+					LEFT JOIN {$wpdb->crewhrm_addresses} address ON job.address_id=address.address_id
+				WHERE 1=1 {$where_clause}"
 			);
 
 			$page_count = ceil( $total_count / $limit );
@@ -282,14 +279,12 @@ class Job {
 
 		} else {
 			$jobs = $wpdb->get_results(
-				$wpdb->prepare(
-					"SELECT {$selects} 
-					FROM {$wpdb->crewhrm_jobs} job 
-						LEFT JOIN {$wpdb->crewhrm_departments} department ON job.department_id=department.department_id
-						LEFT JOIN {$wpdb->crewhrm_addresses} address ON job.address_id=address.address_id
-					WHERE 1=%d {$where_clause} {$order_by} {$limit_clause}",
-					1
-				),
+				"SELECT 
+					{$selects} 
+				FROM {$wpdb->crewhrm_jobs} job 
+					LEFT JOIN {$wpdb->crewhrm_departments} department ON job.department_id=department.department_id
+					LEFT JOIN {$wpdb->crewhrm_addresses} address ON job.address_id=address.address_id
+				WHERE 1=1 {$where_clause} {$order_by} {$limit_clause}",
 				ARRAY_A
 			);
 		}
@@ -332,9 +327,7 @@ class Job {
 	public static function getJobsMinimal() {
 		global $wpdb;
 		$jobs = $wpdb->get_results(
-			$wpdb->prepare(
-				"SELECT job_id, job_title FROM {$wpdb->crewhrm_jobs} ORDER BY created_at"
-			),
+			"SELECT job_id, job_title FROM {$wpdb->crewhrm_jobs} ORDER BY created_at",
 			ARRAY_A
 		);
 
@@ -381,14 +374,12 @@ class Job {
 
 		// Otherwise prepare other meta data
 		$jobs = $wpdb->get_results(
-			$wpdb->prepare(
-				"SELECT 
-					DISTINCT {$selects}
-				FROM {$wpdb->crewhrm_jobs} job
-					LEFT JOIN {$wpdb->crewhrm_addresses} address ON job.address_id=address.address_id 
-				WHERE 
-					{$where_clause} {$department_clause} {$limit_clause}"
-			),
+			"SELECT 
+				DISTINCT {$selects}
+			FROM {$wpdb->crewhrm_jobs} job
+				LEFT JOIN {$wpdb->crewhrm_addresses} address ON job.address_id=address.address_id 
+			WHERE 
+				{$where_clause} {$department_clause} {$limit_clause}",
 			ARRAY_A
 		);
 		$jobs = _Array::getArray( $jobs );
@@ -402,18 +393,16 @@ class Job {
 
 		// Get departments
 		$departments = $wpdb->get_results(
-			$wpdb->prepare(
-				"SELECT 
-					job.department_id, 
-					d.department_name, 
-					COUNT(job.job_id) AS job_count
-				FROM {$wpdb->crewhrm_jobs} job
-					LEFT JOIN $wpdb->crewhrm_addresses address ON job.address_id=address.address_id 
-					INNER JOIN {$wpdb->crewhrm_departments} d ON d.department_id=job.department_id
-				WHERE {$where_clause} 
-				GROUP BY d.department_id 
-				ORDER BY d.sequence"
-			),
+			"SELECT 
+				job.department_id, 
+				d.department_name, 
+				COUNT(job.job_id) AS job_count
+			FROM {$wpdb->crewhrm_jobs} job
+				LEFT JOIN $wpdb->crewhrm_addresses address ON job.address_id=address.address_id 
+				INNER JOIN {$wpdb->crewhrm_departments} d ON d.department_id=job.department_id
+			WHERE {$where_clause} 
+			GROUP BY d.department_id 
+			ORDER BY d.sequence",
 			ARRAY_A
 		);
 		$departments = _Array::getArray( $departments );

@@ -249,7 +249,7 @@ class JobManagement {
 	/**
 	 * Return job data for single view
 	 *
-	 * @param int $job_id The job ID 
+	 * @param integer $job_id The job ID 
 	 * @return void
 	 */
 	public static function getJobViewDashboard( int $job_id ) {

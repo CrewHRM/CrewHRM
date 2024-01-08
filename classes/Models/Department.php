@@ -98,9 +98,7 @@ class Department {
 	public static function getDepartments() {
 		global $wpdb;
 		$departments = $wpdb->get_results(
-			$wpdb->prepare(
-				"SELECT * FROM {$wpdb->crewhrm_departments} ORDER BY sequence ASC"
-			),
+			"SELECT * FROM {$wpdb->crewhrm_departments} ORDER BY sequence ASC",
 			ARRAY_A
 		);
 
@@ -118,9 +116,7 @@ class Department {
 
 		// Get sequence number
 		$max_value = $wpdb->get_var(
-			$wpdb->prepare(
-				"SELECT MAX(sequence) FROM {$wpdb->crewhrm_departments}"
-			)
+			"SELECT MAX(sequence) FROM {$wpdb->crewhrm_departments}"
 		);
 
 		$new_sequence = $max_value + 1;

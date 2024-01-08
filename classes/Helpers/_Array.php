@@ -173,20 +173,6 @@ class _Array {
 	}
 
 	/**
-	 * Unslash, sanitize and type cast
-	 *
-	 * @param array $array
-	 * @return array
-	 */
-	public static function prepareRequestData( $array ) {
-		$array = self::stripslashesRecursive( $array );
-		$array = self::sanitizeRecursive( $array );
-		$array = self::castRecursive( $array );
-
-		return $array;
-	}
-
-	/**
 	 * Convert multidimensional array into one
 	 *
 	 * @param array $array The array to flatten
@@ -253,20 +239,27 @@ class _Array {
 	 */
 	public static function getMethodParams( $class, $method ) {
 		
-		// Create a ReflectionMethod instance
 		$reflectionMethod = new \ReflectionMethod( $class, $method );
+		$parameters       = $reflectionMethod->getParameters();
+		$_params          = array();
 
-		// Get the method parameters
-		$parameters = $reflectionMethod->getParameters();
+		$type_map = array(
+			'int'   => 'integer',
+			'float' => 'double',
+			'bool'  => 'boolean',
+		);
 
-		$params = array();
+		// Loop through method parameter definition and get configurations
 		foreach ( $parameters as $parameter ) {
-			$params[ $parameter->getName() ] = array(
-				'type'    => $parameter->getType(),
+			
+			$type = (string) $parameter->getType();
+
+			$_params[ $parameter->getName() ] = array(
+				'type'    => $type_map[ $type ] ?? $type,
 				'default' => $parameter->isDefaultValueAvailable() ? $parameter->getDefaultValue() : null
 			);
 		}
 		
-		return $params;
+		return $_params;
 	}
 }
