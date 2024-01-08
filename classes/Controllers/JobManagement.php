@@ -54,7 +54,7 @@ class JobManagement {
 		// Editor will show prompt in next opening that there's a cached autosaved version.
 		if ( ! empty( $data['job_id'] ) ) {
 
-			$_status = Job::getFiled( $data['job_id'], 'job_status' );
+			$_status = Job::getJobField( $data['job_id'], 'job_status' );
 
 			// Auto save
 			if ( 'publish' === $_status && ! $is_publish ) {
@@ -68,7 +68,7 @@ class JobManagement {
 		$job = Job::createUpdateJob( $data );
 
 		if ( empty( $job ) ) {
-			wp_send_json_error( array( 'message' => __( 'Failed to save job', 'hr-management' ) ) );
+			wp_send_json_error( array( 'message' => esc_html__( 'Failed to save job', 'hr-management' ) ) );
 		} else {
 			// Delete meta cache as the job saved in job table directly, no matter the job status.
 			Meta::job( $job['job_id'] )->deleteMeta( 'autosaved_job' );
@@ -76,7 +76,7 @@ class JobManagement {
 
 		wp_send_json_success(
 			array(
-				'message'       => $is_publish ? __( 'Job published', 'hr-management' ) : __( 'Job saved', 'hr-management' ),
+				'message'       => $is_publish ? esc_html__( 'Job published', 'hr-management' ) : esc_html__( 'Job saved', 'hr-management' ),
 				'job_permalink' => Job::getJobPermalink( $job['job_id'] ),
 				'address_id'    => $job['address_id'],
 				'stage_ids'     => $job['stage_ids'],
@@ -121,20 +121,20 @@ class JobManagement {
 				Job::toggleArchiveState( $job_id, $do_archive );
 				wp_send_json_success(
 					array(
-						'message' => $do_archive ? __( 'Job archived', 'hr-management' ) : __( 'Job removed from archived' ),
+						'message' => $do_archive ? esc_html__( 'Job archived', 'hr-management' ) : esc_html__( 'Job removed from archived' ),
 					)
 				);
 				break;
 
 			case 'delete':
 				Job::deleteJob( $job_id );
-				wp_send_json_success( array( 'message' => __( 'Job deleted', 'hr-management' ) ) );
+				wp_send_json_success( array( 'message' => esc_html__( 'Job deleted', 'hr-management' ) ) );
 				break;
 
 			case 'duplicate':
 				$new_job_id = Job::duplicateJob( $job_id );
 				if ( ! empty( $new_job_id ) ) {
-					wp_send_json_success( array( 'message' => __( 'Job duplicated', 'hr-management' ) ) );
+					wp_send_json_success( array( 'message' => esc_html__( 'Job duplicated', 'hr-management' ) ) );
 				} else {
 					wp_send_json_error( array( 'message' => 'Failed to duplicate' ) );
 				}
@@ -182,7 +182,7 @@ class JobManagement {
 		$job = apply_filters( 'crewhrm_single_job_view', $job );
 
 		if ( ! $can_visit ) {
-			wp_send_json_error( array( 'message' => __( 'Job not found' ) ) );
+			wp_send_json_error( array( 'message' => esc_html__( 'Job not found' ) ) );
 		} else {
 			wp_send_json_success(
 				array(
@@ -204,7 +204,7 @@ class JobManagement {
 		$job    = Job::getEditableJob( $job_id );
 
 		if ( empty( $job ) ) {
-			wp_send_json_error( array( 'message' => __( 'Job not found to edit', 'hr-management' ) ) );
+			wp_send_json_error( array( 'message' => esc_html__( 'Job not found to edit', 'hr-management' ) ) );
 		}
 
 		wp_send_json_success(
@@ -239,7 +239,7 @@ class JobManagement {
 			wp_send_json_error( array( 'overview' => $deletion ) );
 
 		} else {
-			$message = false === $deletion ? __( 'Stage not found to move to', 'hr-management' ) : __( 'Something went wrong!', 'hr-management' );
+			$message = false === $deletion ? esc_html__( 'Stage not found to move to', 'hr-management' ) : esc_html__( 'Something went wrong!', 'hr-management' );
 			wp_send_json_error( array( 'message' => $message ) );
 		}
 	}

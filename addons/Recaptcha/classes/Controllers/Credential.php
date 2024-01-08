@@ -36,14 +36,14 @@ class Credential {
 	 * @return void
 	 */
 	public static function saveRecaptchaKeys( array $data ) {
-		$site_key   = sanitize_text_field( $data['site_key'] ?? '' );
-		$secret_key = sanitize_text_field( $data['secret_key'] ?? '' );
+		$site_key   = sanitize_text_field( wp_unslash( $data['site_key'] ?? '' ) );
+		$secret_key = sanitize_text_field( wp_unslash( $data['secret_key'] ?? '' ) );
 
 		if ( empty( $site_key ) || empty( $secret_key ) ) {
-			wp_send_json_error( array( 'message' => __( 'Invalid credential', 'hr-management' ) ) );
+			wp_send_json_error( array( 'message' => esc_html__( 'Invalid credential', 'hr-management' ) ) );
 		} else {
 			Google::saveKeys( $site_key, $secret_key );
-			wp_send_json_success( array( 'message' => __( 'Credentials saved successfully', 'hr-management' ) ) );
+			wp_send_json_success( array( 'message' => esc_html__( 'Credentials saved successfully', 'hr-management' ) ) );
 		}
 	}
 

@@ -107,9 +107,15 @@ class Scripts {
 		$dynamic_colors = Colors::getColors();
 		$_colors        = '';
 		foreach ( $dynamic_colors as $name => $code ) {
-			$_colors .= '--crewmat-color-' . esc_attr( $name ) . ':' . esc_attr( $code ) . ';';
+			$_colors .= "--crewmat-color-{$name}:{$code};";
 		}
-		echo '<style>[id^="crewhrm_"],[id^="crewhrm-"],[data-crew="root"]{' . $_colors . '}</style>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		?>
+		<style>
+			[id^="crewhrm_"],[id^="crewhrm-"],[data-crew="root"]{
+				<?php echo esc_html( $_colors ); ?>
+			}
+		</style>
+		<?php
 
 		// Prepare nonce
 		$nonce_action = '_crewhrm_' . str_replace( '-', '_', gmdate( 'Y-m-d' ) );
@@ -158,12 +164,12 @@ class Scripts {
 		$pointer = strtolower( "CrewMat_{$matches[1]}_{$matches[3]}" );
 		$pointer = preg_replace( '/[^a-zA-Z0-9_]/', '', $pointer );
 
-		$variables = '<script>
-			window.' . $pointer . '=' . wp_json_encode( $data ) . ';
-			window.' . $pointer . 'pro=window.' . $pointer . ';
-		</script>';
-
-		echo $variables; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		?>
+		<script>
+			window.<?php echo esc_html( $pointer ); ?> = JSON.parse("<?php echo esc_attr( wp_json_encode( $data ) ); ?>".replace(/&quot;/g, '"'));
+			window.<?php echo esc_html( $pointer ); ?>pro = window.<?php echo esc_html( $pointer ); ?>;
+		</script>
+		<?php
 	}
 
 	/**

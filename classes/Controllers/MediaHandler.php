@@ -13,7 +13,7 @@ namespace CrewHRM\Controllers;
 class MediaHandler {
 	const PREREQUISITES = array(
 		'loadFile' => array(
-			'role' => array( 'administrator' ),
+			'role' => array( 'administrator' ), // For now only administrator as only they need to review applications. Need to update later as per situation.
 		),
 	);
 
@@ -41,7 +41,7 @@ class MediaHandler {
 		header( 'Content-Length: ' . $file_size );
 		header( 'Pragma: no-cache' );
 		header( 'Expires: 0' );
-		readfile( $path ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_read_readfile
+		readfile( $path );
 		exit;
 	}
 }

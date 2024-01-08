@@ -83,7 +83,7 @@ class Careers {
 		}
 
 		// Prepare careers page settings
-		$settings  = Settings::getCareersListSettings();
+		$settings = Settings::getCareersListSettings();
 
 		// Prepare the base permalink for react router root
 		$parsed    = wp_parse_url( get_home_url() );

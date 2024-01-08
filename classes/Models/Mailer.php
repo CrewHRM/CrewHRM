@@ -197,7 +197,8 @@ class Mailer {
 
 		ob_start();
 		require Main::$configs->dir . 'templates/email/layout.php';
-		return apply_filters( 'crewhrm_email_content_final', ob_get_clean(), $template, $dynamics );
+		$final_body = str_replace( '{contents}', $contents, ob_get_clean() );
+		return apply_filters( 'crewhrm_email_content_final', $final_body, $template, $dynamics );
 	}
 
 	/**

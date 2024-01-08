@@ -20,7 +20,7 @@ class Main {
 	/**
 	 * Addon configuration
 	 *
-	 * @var array
+	 * @var object
 	 */
 	public static $configs;
 

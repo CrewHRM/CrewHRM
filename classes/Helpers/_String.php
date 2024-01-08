@@ -77,9 +77,10 @@ class _String {
 	 * Apply kses filter on string
 	 *
 	 * @param string $string The string to apply kses filter
+	 * @param bool   $echo Whether to echo rather than return or not
 	 * @return string
 	 */
-	public static function applyKses( string $string ) {
+	public static function applyKses( string $string, $echo = false ) {
 		static $allowed = null;
 
 		// Prepare allowed array only once by defining as static
@@ -95,7 +96,11 @@ class _String {
 			}
 		}
 
-		return wp_kses( $string, $allowed );
+		if ( $echo ) {
+			echo wp_kses( $string, $allowed );
+		} else {
+			return wp_kses( $string, $allowed );
+		}
 	}
 
 	/**
@@ -106,5 +111,44 @@ class _String {
 	 */
 	public static function isFloat( $numeric_string ) {
 		return is_numeric( $numeric_string ) && strpos( $numeric_string, '.' ) !== false;
+	}
+
+	/**
+	 * Cast a string value to nearest data type
+	 *
+	 * @param string $value
+	 * @return mixed
+	 */
+	public static function castValue( $value ) {
+
+		if ( is_string( $value ) ) {
+
+			if ( is_numeric( $value ) ) {
+				// Cast number
+				$value = self::isFloat( $value ) ? (float) $value : (int) $value;
+
+			} elseif ( 'true' === $value ) {
+				// Cast boolean true
+				$value = true;
+
+			} elseif ( 'false' === $value ) {
+				// Cast boolean false
+				$value = false;
+
+			} elseif ( 'null' === $value ) {
+				// Cast null
+				$value = null;
+
+			} elseif ( '[]' === $value ) {
+				// Cast empty array
+				$value = array();
+
+			} else {
+				// Maybe unserialize
+				$value = maybe_unserialize( $value );
+			}
+		}
+
+		return $value;
 	}
 }

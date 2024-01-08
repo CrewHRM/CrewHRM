@@ -46,30 +46,39 @@ class User {
 	 * Search for users
 	 *
 	 * @param string $keyword The keyword to search user by
-	 * @param array  $exclude  Array of user IDs to exclude from the query
+	 * @param array  $skip_ids Array of user IDs to exclude from the query
 	 * @return array
 	 */
-	public static function searchUser( string $keyword, array $exclude = array() ) {
+	public static function searchUser( string $keyword, array $skip_ids = array() ) {
 		if ( empty( $keyword ) ) {
 			return array();
 		}
 
-		$keyword = esc_sql( $keyword );
-
-		$where_clause  = " ID='{$keyword}'";
-		$where_clause .= " OR user_login='{$keyword}'";
-		$where_clause .= " OR user_email='{$keyword}'";
-		$where_clause .= " OR display_name LIKE '%{$keyword}%'";
-		$where_clause .= " OR user_nicename LIKE '%{$keyword}%'";
-
-		if ( ! empty( $exclude ) ) {
-			$ids          = implode( ',', $exclude );
-			$where_clause = "({$where_clause}) AND ID NOT IN ({$ids})";
-		}
-
 		global $wpdb;
+
+		$keyword    = esc_sql( $keyword );
+		$skip_ids   = array_filter( $skip_ids, 'is_numeric' );
+		$ids_not_in = ! empty( $skip_ids ) ? $skip_ids : array( 0 );
+		$ids_not_in = implode( "','", $ids_not_in );
+
 		$users = $wpdb->get_results(
-			"SELECT ID AS user_id, display_name, user_email AS email FROM {$wpdb->users} WHERE {$where_clause} LIMIT 50",
+			$wpdb->prepare(
+				"SELECT 
+					ID AS user_id, 
+					display_name, 
+					user_email AS email 
+				FROM 
+					{$wpdb->users} 
+				WHERE 
+					(ID=%s OR user_login=%s OR user_email=%s OR display_name LIKE %s OR user_nicename LIKE %s) AND ID NOT IN (%s)
+				LIMIT 50",
+				$keyword,
+				$keyword,
+				$keyword,
+				"%{$wpdb->esc_like( $keyword )}%",
+				"%{$wpdb->esc_like( $keyword )}%",
+				$ids_not_in
+			),
 			ARRAY_A
 		);
 

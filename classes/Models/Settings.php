@@ -123,9 +123,9 @@ class Settings {
 	 * @return array
 	 */
 	public static function getCareersListSettings() {
-		
+
 		$settings = self::getSettings();
-		
+
 		return array(
 			'header'         => ( $settings['careers_header'] ?? false ) === true,
 			'tagline'        => $settings['careers_tagline'] ?? '',
@@ -133,7 +133,7 @@ class Settings {
 			'search'         => $settings['careers_search'] ?? false,
 			'hero_image_url' => is_array( $settings['careers_hero_image'] ?? null ) ? ( $settings['careers_hero_image']['file_url'] ) : '',
 			'country_codes'  => Address::getJobsCountryCodes(),
-			'form_layout'    => Settings::getSetting( 'application_form_layout' ),
+			'form_layout'    => self::getSetting( 'application_form_layout' ),
 		);
 	}
 }

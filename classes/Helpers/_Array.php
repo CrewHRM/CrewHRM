@@ -60,33 +60,7 @@ class _Array {
 				continue;
 			}
 
-			if ( is_string( $value ) ) {
-
-				if ( is_numeric( $value ) ) {
-					// Cast number
-					$array[ $index ] = _String::isFloat( $value ) ? (float) $value : (int) $value;
-
-				} elseif ( 'true' === $value ) {
-					// Cast boolean true
-					$array[ $index ] = true;
-
-				} elseif ( 'false' === $value ) {
-					// Cast boolean false
-					$array[ $index ] = false;
-
-				} elseif ( 'null' === $value ) {
-					// Cast null
-					$array[ $index ] = null;
-
-				} elseif ( '[]' === $value ) {
-					// Cast empty array
-					$array[ $index ] = array();
-
-				} else {
-					// Maybe unserialize
-					$array[ $index ] = maybe_unserialize( $value );
-				}
-			}
+			$array[ $index ] = _String::castValue( $value );
 		}
 
 		return $array;
@@ -199,6 +173,20 @@ class _Array {
 	}
 
 	/**
+	 * Unslash, sanitize and type cast
+	 *
+	 * @param array $array
+	 * @return array
+	 */
+	public static function prepareRequestData( $array ) {
+		$array = self::stripslashesRecursive( $array );
+		$array = self::sanitizeRecursive( $array );
+		$array = self::castRecursive( $array );
+
+		return $array;
+	}
+
+	/**
 	 * Convert multidimensional array into one
 	 *
 	 * @param array $array The array to flatten
@@ -227,7 +215,7 @@ class _Array {
 		$result = [];
 
 		// Use regular expressions to match the first PHP comment block
-		preg_match( '/\/\*\*(.*?)\*\//s', file_get_contents( $path ), $matches ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
+		preg_match( '/\/\*\*(.*?)\*\//s', file_get_contents( $path ), $matches );
 
 		if ( isset( $matches[1] ) ) {
 			$comment = $matches[1];

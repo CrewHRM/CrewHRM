@@ -7,6 +7,7 @@
 
 namespace CrewHRM\Controllers;
 
+use CrewHRM\Helpers\_String;
 use CrewHRM\Models\AddonManager;
 
 /**
@@ -28,15 +29,15 @@ class AddonController {
 	 * @return void
 	 */
 	public static function toggleAddonState( array $data ) {
-		$new_state = $data['new_state'] ?? null;
-		$addon_id  = $data['addon_id'] ?? null;
+		$new_state = _String::castValue( wp_unslash( $data['new_state'] ?? '' ) );
+		$addon_id  = _String::castValue( wp_unslash( $data['addon_id'] ?? '' ) );
 
 		if ( ! empty( $addon_id ) && is_bool( $new_state ) ) {
 			AddonManager::toggleState( $addon_id, $new_state );
 			wp_send_json_success();
 
 		} else {
-			wp_send_json_error( array( 'message' => __( 'Invalid Request Data', 'hr-management' ) ) );
+			wp_send_json_error( array( 'message' => esc_html__( 'Invalid Request Data', 'hr-management' ) ) );
 		}
 	}
 }

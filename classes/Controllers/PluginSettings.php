@@ -15,15 +15,15 @@ use CrewHRM\Models\Settings;
  */
 class PluginSettings {
 	const PREREQUISITES = array(
-		'saveSettings'  => array(
+		'saveSettings'       => array(
 			'role' => 'administrator',
 		),
-		'addDepartment' => array(
+		'addDepartment'      => array(
 			'role' => array( 'administrator' ),
 		),
 		'getCareersSettings' => array(
-			'nopriv' => true
-		)
+			'nopriv' => true,
+		),
 	);
 
 	/**
@@ -36,7 +36,7 @@ class PluginSettings {
 		// Add first
 		$new_id = Department::addDepartment( $data['department_name'] );
 		if ( ! $new_id ) {
-			wp_send_json_error( array( 'message' => __( 'Something went wrong!', 'hr-management' ) ) );
+			wp_send_json_error( array( 'message' => esc_html__( 'Something went wrong!', 'hr-management' ) ) );
 		}
 
 		// Get updated list
@@ -48,7 +48,7 @@ class PluginSettings {
 			array(
 				'id'          => $new_id,
 				'departments' => $departments,
-				'message'     => __( 'New department added successfully', 'hr-management' ),
+				'message'     => esc_html__( 'New department added successfully', 'hr-management' ),
 			)
 		);
 	}
@@ -79,7 +79,7 @@ class PluginSettings {
 	public static function getCareersSettings() {
 		wp_send_json_success(
 			array(
-				'settings' => Settings::getCareersListSettings()
+				'settings' => Settings::getCareersListSettings(),
 			)
 		);
 	}

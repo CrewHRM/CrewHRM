@@ -103,8 +103,8 @@ class Addon {
 		// Setting page
 		add_submenu_page(
 			Main::$configs->app_name,
-			__( 'Addons', 'hr-management' ),
-			__( 'Addons', 'hr-management' ),
+			esc_html__( 'Addons', 'hr-management' ),
+			esc_html__( 'Addons', 'hr-management' ),
 			User::getAdminMenuRole( get_current_user_id() ),
 			self::PAGE_SLUG,
 			array( $this, 'addOnPage' )
@@ -119,7 +119,7 @@ class Addon {
 	private function getProAddons() {
 		$json_path = Main::$configs->dir . 'dist/libraries/pro/addons.json';
 		$thumb_url = Main::$configs->url . 'dist/libraries/pro/thumbnails/';
-		$addons    = file_exists( $json_path ) ? json_decode( file_get_contents( $json_path ), true ) : array(); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
+		$addons    = file_exists( $json_path ) ? json_decode( file_get_contents( $json_path ), true ) : array();
 		$addons    = _Array::appendColumn( $addons, 'locked', true );
 		$addons    = _Array::indexify( $addons, 'crewhrm_id' );
 

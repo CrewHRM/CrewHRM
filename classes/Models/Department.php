@@ -69,13 +69,25 @@ class Department {
 	 * @return void
 	 */
 	public static function deleteOutStandings( array $current ) {
+
+		$current = array_filter( $current, 'is_numeric' );
 		if ( empty( $current ) ) {
 			return;
 		}
 
+		// Prepare IDs to delete stages by
+		$ids_implode = implode( "','", $current );
+
 		global $wpdb;
-		$ids_implode = implode( ',', $current );
-		$wpdb->query( "DELETE FROM {$wpdb->crewhrm_departments} WHERE department_id NOT IN ({$ids_implode})" );
+		$wpdb->query(
+			$wpdb->prepare(
+				"DELETE FROM 
+					{$wpdb->crewhrm_departments} 
+				WHERE 
+					department_id NOT IN (%s)",
+				$ids_implode
+			)
+		);
 	}
 
 	/**
@@ -86,7 +98,9 @@ class Department {
 	public static function getDepartments() {
 		global $wpdb;
 		$departments = $wpdb->get_results(
-			"SELECT * FROM {$wpdb->crewhrm_departments} ORDER BY sequence ASC",
+			$wpdb->prepare(
+				"SELECT * FROM {$wpdb->crewhrm_departments} ORDER BY sequence ASC"
+			),
 			ARRAY_A
 		);
 
@@ -103,7 +117,12 @@ class Department {
 		global $wpdb;
 
 		// Get sequence number
-		$max_value    = $wpdb->get_var( "SELECT MAX(sequence) FROM {$wpdb->crewhrm_departments}" );
+		$max_value = $wpdb->get_var(
+			$wpdb->prepare(
+				"SELECT MAX(sequence) FROM {$wpdb->crewhrm_departments}"
+			)
+		);
+
 		$new_sequence = $max_value + 1;
 
 		// Insert finally

@@ -5,6 +5,8 @@
 	 * @package crewhrm
 	 */
 
+if ( ! defined( 'ABSPATH' ) ) { exit;
+}
 ?>
 <div>
 	Hi <strong>{candidate_name}</strong>!

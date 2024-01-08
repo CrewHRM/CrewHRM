@@ -72,8 +72,10 @@ class ApplicationHandler {
 	public static function applyToJob( array $data ) {
 		// Check data
 		if ( ! is_array( $data['application'] ?? null ) ) {
-			wp_send_json_error( array( 'notice' => __( 'Invalid request data', 'hr-management' ) ) );
+			wp_send_json_error( array( 'notice' => esc_html__( 'Invalid request data', 'hr-management' ) ) );
 		}
+
+		$data['application'] = _Array::castRecursive( _Array::sanitizeRecursive() )
 
 		do_action( 'crewhrm_submit_application_before', $data );
 
@@ -83,7 +85,7 @@ class ApplicationHandler {
 		if ( empty( $application_id ) ) {
 			wp_send_json_error(
 				array(
-					'notice' => __( 'Application submission failed!', 'hr-management' ),
+					'notice' => esc_html__( 'Application submission failed!', 'hr-management' ),
 				)
 			);
 			exit;
@@ -97,7 +99,7 @@ class ApplicationHandler {
 		wp_send_json_success(
 			array(
 				'application_id' => $application_id,
-				'message'        => __( 'Application has been created.' ),
+				'message'        => esc_html__( 'Application has been created.' ),
 			)
 		);
 	}
@@ -116,13 +118,13 @@ class ApplicationHandler {
 
 		// Check if file is valid
 		if ( ! is_array( $file['file'] ?? null ) || 0 !== ( $file['file']['error'] ?? null ) ) {
-			wp_send_json_error( array( 'message' => __( 'Invalid file', 'hr-management' ) ) );
+			wp_send_json_error( array( 'message' => esc_html__( 'Invalid file', 'hr-management' ) ) );
 		}
 
 		// Check if application exists and the status is incomplete
 		$is_complete = Field::applications()->getField( array( 'application_id' => $application_id ), 'is_complete' );
 		if ( null === $is_complete || 0 !== $is_complete ) {
-			wp_send_json_error( array( 'message' => __( 'Invalid request', 'hr-management' ) ) );
+			wp_send_json_error( array( 'message' => esc_html__( 'Invalid request', 'hr-management' ) ) );
 		}
 
 		// Process upload now
@@ -179,7 +181,7 @@ class ApplicationHandler {
 		$application = Application::getSingleApplication( $data['job_id'], $data['application_id'] );
 
 		if ( empty( $application ) ) {
-			wp_send_json_error( array( 'message' => __( 'Application not found', 'hr-management' ) ) );
+			wp_send_json_error( array( 'message' => esc_html__( 'Application not found', 'hr-management' ) ) );
 			return;
 		}
 
@@ -199,7 +201,7 @@ class ApplicationHandler {
 	 */
 	public static function moveApplicationStage( array $data ) {
 		Application::changeApplicationStage( $data['job_id'], $data['application_id'], $data['stage_id'] );
-		wp_send_json_success( array( 'message' => __( 'Application stage changed successfully!' ) ) );
+		wp_send_json_success( array( 'message' => esc_html__( 'Application stage changed successfully!' ) ) );
 	}
 
 	/**
@@ -214,7 +216,7 @@ class ApplicationHandler {
 		if ( ! empty( $pipeline ) ) {
 			wp_send_json_success( array( 'pipeline' => $pipeline ) );
 		} else {
-			wp_send_json_error( array( 'message' => __( 'No activity', 'hr-management' ) ) );
+			wp_send_json_error( array( 'message' => esc_html__( 'No activity', 'hr-management' ) ) );
 		}
 	}
 
@@ -225,7 +227,9 @@ class ApplicationHandler {
 	 * @return void
 	 */
 	public static function getCareersListing( array $data ) {
-		$jobs = Job::getCareersListing( $data['filters'] );
+
+		$jobs = Job::getCareersListing( _Array::prepareRequestData( $data['filters'] ) );
+
 		wp_send_json_success(
 			array(
 				'jobs'        => array_values( $jobs['jobs'] ),
@@ -242,7 +246,7 @@ class ApplicationHandler {
 	 */
 	public static function deleteApplication( array $data ) {
 		Application::deleteApplication( $data['application_id'] );
-		wp_send_json_success( array( 'message' => __( 'Application deleted', 'hr-management' ) ) );
+		wp_send_json_success( array( 'message' => esc_html__( 'Application deleted', 'hr-management' ) ) );
 	}
 
 	/**

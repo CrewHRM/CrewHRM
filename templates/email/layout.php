@@ -5,6 +5,9 @@
 	 * @package crewhrm
 	 */
 
+if ( ! defined( 'ABSPATH' ) ) { exit;
+}
+
 ?><!DOCTYPE html>
 <html>
 	<head>
@@ -23,11 +26,7 @@
 			padding: 40px;
 			box-sizing:border-box;"
 		>
-			<div>
-				<?php
-					echo $contents; //phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped,Squiz.Commenting.FileComment.Missing 
-				?>
-			</div>
+			<div>{contents}</div>
 		</div>
 	</body>
 </html>

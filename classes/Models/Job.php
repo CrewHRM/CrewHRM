@@ -172,7 +172,7 @@ class Job {
 	 * @param string $field  Field name/column
 	 * @return mixed
 	 */
-	public static function getFiled( $job_id, $field ) {
+	public static function getJobField( $job_id, $field ) {
 		global $wpdb;
 
 		$field_value = $wpdb->get_var(
@@ -226,8 +226,7 @@ class Job {
 
 		// Apply search
 		if ( ! empty( $args['search'] ) ) {
-			$keyword       = esc_sql( $args['search'] );
-			$where_clause .= $wpdb->prepare( ' AND job.job_title LIKE %s', "%{$wpdb->esc_like( $keyword )}%" );
+			$where_clause .= $wpdb->prepare( ' AND job.job_title LIKE %s', "%{$wpdb->esc_like( $args['search'] )}%" );
 		}
 
 		// Determine what to select
@@ -333,13 +332,13 @@ class Job {
 	public static function getJobsMinimal() {
 		global $wpdb;
 		$jobs = $wpdb->get_results(
-			"SELECT job_id, job_title FROM {$wpdb->crewhrm_jobs} ORDER BY created_at",
+			$wpdb->prepare(
+				"SELECT job_id, job_title FROM {$wpdb->crewhrm_jobs} ORDER BY created_at"
+			),
 			ARRAY_A
 		);
 
-		$jobs = _Array::castRecursive( $jobs );
-
-		return $jobs;
+		return _Array::castRecursive( $jobs );
 	}
 
 	/**
@@ -356,42 +355,40 @@ class Job {
 		$where_clause      = "job.job_status='publish'";
 		$department_clause = '';
 
+		global $wpdb;
+
 		// Add department filter
 		if ( ! empty( $args['department_id'] ) ) {
 			// Keep it in different clause in favour of group by query later.
-			$dep                = esc_sql( $args['department_id'] );
-			$department_clause .= " AND job.department_id={$dep}";
+			$department_clause .= $wpdb->prepare( ' AND job.department_id=%d', $args['department_id'] );
 		}
 
 		// Add search filter
 		if ( ! empty( $args['search'] ) ) {
-			$keyword       = esc_sql( $args['search'] );
-			$where_clause .= " AND job.job_title LIKE '%{$keyword}%'";
+			$where_clause .= $wpdb->prepare( " AND job.job_title LIKE %s", "%{$wpdb->esc_like( $args['search'] )}%");
 		}
 
 		// Add country filter
 		if ( ! empty( $args['country_code'] ) ) {
-			$country_code  = esc_sql( $args['country_code'] );
-			$where_clause .= " AND address.country_code='{$country_code}'";
+			$where_clause .= $wpdb->prepare( " AND address.country_code=%s", $args['country_code'] );
 		}
 
 		// Add employment_type filter
 		if ( ! empty( $args['employment_type'] ) ) {
-			// Escape
-			$employment_type = esc_sql( $args['employment_type'] );
-
 			// Like operator because multiple types get stored as serialized array.
-			$where_clause .= " AND job.employment_type LIKE '%{$employment_type}%'";
+			$where_clause .= $wpdb->prepare( " AND job.employment_type LIKE %s", "%{$wpdb->esc_like( $args['employment_type'] )}%" );
 		}
-
-		global $wpdb;
 
 		// Otherwise prepare other meta data
 		$jobs = $wpdb->get_results(
-			"SELECT DISTINCT {$selects}
-			FROM {$wpdb->crewhrm_jobs} job
-				LEFT JOIN {$wpdb->crewhrm_addresses} address ON job.address_id=address.address_id 
-			WHERE {$where_clause} {$department_clause} {$limit_clause}",
+			$wpdb->prepare(
+				"SELECT 
+					DISTINCT {$selects}
+				FROM {$wpdb->crewhrm_jobs} job
+					LEFT JOIN {$wpdb->crewhrm_addresses} address ON job.address_id=address.address_id 
+				WHERE 
+					{$where_clause} {$department_clause} {$limit_clause}"
+			),
 			ARRAY_A
 		);
 		$jobs = _Array::getArray( $jobs );
@@ -405,11 +402,18 @@ class Job {
 
 		// Get departments
 		$departments = $wpdb->get_results(
-			"SELECT job.department_id, d.department_name, COUNT(job.job_id) AS job_count
-			FROM {$wpdb->crewhrm_jobs} job
-				LEFT JOIN $wpdb->crewhrm_addresses address ON job.address_id=address.address_id 
-				INNER JOIN {$wpdb->crewhrm_departments} d ON d.department_id=job.department_id
-			WHERE {$where_clause} GROUP BY d.department_id ORDER BY d.sequence",
+			$wpdb->prepare(
+				"SELECT 
+					job.department_id, 
+					d.department_name, 
+					COUNT(job.job_id) AS job_count
+				FROM {$wpdb->crewhrm_jobs} job
+					LEFT JOIN $wpdb->crewhrm_addresses address ON job.address_id=address.address_id 
+					INNER JOIN {$wpdb->crewhrm_departments} d ON d.department_id=job.department_id
+				WHERE {$where_clause} 
+				GROUP BY d.department_id 
+				ORDER BY d.sequence"
+			),
 			ARRAY_A
 		);
 		$departments = _Array::getArray( $departments );
@@ -506,7 +510,7 @@ class Job {
 		Meta::job( $job_id )->deleteMeta();
 
 		// Delete associated address
-		$address_id = self::getFiled( $job_id, 'address_id' );
+		$address_id = self::getJobField( $job_id, 'address_id' );
 		if ( ! empty( $address_id ) ) {
 			Address::deleteAddress( $address_id );
 		}
@@ -567,7 +571,7 @@ class Job {
 		unset( $job['job_id'] );
 		unset( $job['created_at'] );
 		$job['job_status']           = 'draft';
-		$job['job_title']            = $job['job_title'] . ' - ' . __( 'Draft', 'hr-management' );
+		$job['job_title']            = $job['job_title'] . ' - ' . esc_html__( 'Draft', 'hr-management' );
 		$job['address_id']           = $new_address_id;
 		$job['application_deadline'] = null;
 

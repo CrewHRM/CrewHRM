@@ -15,7 +15,6 @@ use CrewHRM\Setup\Careers;
 use CrewHRM\Setup\CLI;
 use CrewHRM\Setup\Database;
 use CrewHRM\Setup\Dispatcher;
-use CrewHRM\Setup\MailPreview;
 use CrewHRM\Setup\Mails;
 use CrewHRM\Setup\Media;
 use CrewHRM\Setup\Scripts;
@@ -76,7 +75,6 @@ class Main {
 		new Admin();
 		new Careers();
 		new Mails();
-		new MailPreview();
 		new Blocks();
 
 		// Set pro flag

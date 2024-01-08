@@ -1,7 +1,7 @@
 <?php
 /**
  * Gutenberg blocks
- * 
+ *
  * @package crewhrm
  */
 

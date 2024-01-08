@@ -21,11 +21,13 @@ class Utilities {
 	 * @return boolean
 	 */
 	public static function isCrewDashboard( $sub_page = null ) {
+		
 		$is_dashboard = is_admin() && get_admin_page_parent() === Main::$configs->app_name;
 
 		if ( $is_dashboard && null !== $sub_page ) {
 			$pages        = ! is_array( $sub_page ) ? array( $sub_page ) : $sub_page;
-			$is_dashboard = in_array( $_GET['page'] ?? null, $pages, true ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			$current_page = sanitize_text_field( $_GET['page'] ?? '' );
+			$is_dashboard = in_array( $current_page, $pages, true );
 		}
 
 		return $is_dashboard;
@@ -63,14 +65,16 @@ class Utilities {
 	/**
 	 * Return page list especially for settings page
 	 *
+	 * @param init $limit How many pages t oget
+	 *
 	 * @return array
 	 */
-	public static function getPageList() {
+	public static function getPageList( $limit ) {
 		// Define arguments for get_posts to retrieve pages
 		$args = array(
 			'post_type'   => 'page',
 			'post_status' => 'publish',
-			'numberposts' => -1, // phpcs:ignore WordPress.WP.PostsPerPageNoUnlimited.posts_per_page_numberposts
+			'numberposts' => $limit,
 		);
 
 		// Get the list of pages

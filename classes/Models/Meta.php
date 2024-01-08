@@ -179,12 +179,21 @@ class Meta {
 			return;
 		}
 
-		$ids_in     = implode( ',', $object_ids );
-		$meta_key   = $meta_key ? esc_sql( $meta_key ) : null;
-		$key_clause = $meta_key ? " AND meta_key='{$meta_key}'" : '';
-
 		global $wpdb;
-		$wpdb->query( "DELETE FROM {$this->table} WHERE object_id IN ({$ids_in}) {$key_clause}" );
+
+		$ids_in     = implode( "','", $object_ids );
+		$meta_key   = $meta_key ? esc_sql( $meta_key ) : null;
+		$key_clause = $meta_key ? $wpdb->prepare( ' AND meta_key=%s', $meta_key ) : '';
+
+		$wpdb->query(
+			$wpdb->prepare(
+				"DELETE FROM 
+					{$this->table} 
+				WHERE 
+					object_id IN (%s) {$key_clause}",
+				$ids_in
+			)
+		);
 	}
 
 	/**
@@ -199,9 +208,9 @@ class Meta {
 
 		$objects = _Array::appendColumn( $objects, 'meta', (object) array() );
 		$obj_ids = array_keys( $objects );
-		$ids_in  = implode( ',', $obj_ids );
+		$ids_in  = implode( "','", $obj_ids );
 
-		$where_clause = "object_id IN({$ids_in})";
+		$where_clause = $wpdb->prepare( 'object_id IN(%s)', $ids_in );
 
 		if ( $meta_key ) {
 			$key           = esc_sql( $meta_key );
@@ -209,7 +218,9 @@ class Meta {
 		}
 
 		$meta = $wpdb->get_results(
-			"SELECT * FROM {$this->table} WHERE {$where_clause}",
+			$wpdb->prepare(
+				"SELECT * FROM {$this->table} WHERE {$where_clause}"
+			),
 			ARRAY_A
 		);
 
@@ -217,7 +228,7 @@ class Meta {
 			$_key   = $m['meta_key'];
 			$_value = maybe_unserialize( $m['meta_value'] );
 
-			$objects[ (int) $m['object_id'] ]['meta']->$_key = $_value; // phpcs:ignore Squiz.PHP.DisallowMultipleAssignments.Found
+			$objects[ (int) $m['object_id'] ]['meta']->$_key = $_value;
 		}
 
 		return $objects;

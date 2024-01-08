@@ -13,6 +13,7 @@ use CrewHRM\Main;
 use CrewHRM\Models\User;
 
 use CrewHRM\Controllers\JobManagement;
+use CrewHRM\Controllers\MailPreview;
 use CrewHRM\Controllers\MediaHandler;
 use CrewHRM\Controllers\PluginSettings;
 use CrewHRM\Helpers\_Array;
@@ -33,6 +34,7 @@ class Dispatcher {
 		JobManagement::class,
 		ApplicationHandler::class,
 		MediaHandler::class,
+		MailPreview::class,
 	);
 
 	/**
@@ -104,33 +106,26 @@ class Dispatcher {
 	 * @return void
 	 */
 	public function dispatch( $class, $method, $prerequisites ) {
-	
-		// Comment out for now as nonce verifcation fails frequently
-		// ---------------------------------------------------------
+		// Nonce verification
 		$matched = wp_verify_nonce( ( $_POST['nonce'] ?? '' ), $_POST['nonce_action'] ?? '' ) || wp_verify_nonce( ( $_GET['nonce'] ?? '' ), $_GET['nonce_action'] ?? '' );
 		if ( ! $matched ) {
-			wp_send_json_error( array( 'message' => __( 'Session Expired! Reloading the page might help resolve.', 'hr-management' ) ) );
+			wp_send_json_error( array( 'message' => esc_html__( 'Session Expired! Reloading the page might help resolve.', 'hr-management' ) ) );
 		}
-	
-		// Determine post/get data
-		$is_post = strtolower( sanitize_text_field( wp_unslash( $_SERVER['REQUEST_METHOD'] ?? '' ) ) ) === 'post';
-		$data    = $is_post ? $_POST : $_GET; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
-		$data    = _Array::stripslashesRecursive( _Array::getArray( $data ) );
-		$files   = _Array::sanitizeRecursive( is_array( $_FILES ) ? $_FILES : array() );
 
-		// Verify required user role
+		// Dispatch request
+		$is_post         = strtolower( sanitize_text_field( wp_unslash( $_SERVER['REQUEST_METHOD'] ?? '' ) ) ) === 'post';
 		$_required_roles = $prerequisites['role'] ?? array();
 		$_required_roles = is_array( $_required_roles ) ? $_required_roles : array( $_required_roles );
 		$_required_roles = apply_filters( 'crewhrm_hr_roles', $_required_roles );
 		if ( ! User::validateRole( get_current_user_id(), $_required_roles ) ) {
-			wp_send_json_error( array( 'message' => __( 'Access Denied!', 'hr-management' ) ) );
+			wp_send_json_error( array( 'message' => esc_html__( 'Access Denied!', 'hr-management' ) ) );
 		}
 
 		// Now pass to the action handler function
 		if ( class_exists( $class ) && method_exists( $class, $method ) ) {
-			$class::$method( $data, $files );
+			$class::$method( $is_post ? $_POST : $_GET, is_array( $_FILES ) ? $_FILES : array() );
 		} else {
-			wp_send_json_error( array( 'message' => __( 'Invalid Endpoint!', 'hr-management' ) ) );
+			wp_send_json_error( array( 'message' => esc_html__( 'Invalid Endpoint!', 'hr-management' ) ) );
 		}
 	}
 }

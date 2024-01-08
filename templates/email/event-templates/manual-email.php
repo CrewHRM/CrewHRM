@@ -5,5 +5,7 @@
 	 * @package crewhrm
 	 */
 
+if ( ! defined( 'ABSPATH' ) ) { exit;
+}
 ?>
 {contents}

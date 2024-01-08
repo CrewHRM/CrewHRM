@@ -37,7 +37,7 @@ class Mails {
 
 				$args = array(
 					'to'      => $application['email'],
-					'subject' => __( 'Application received', 'hr-management' ),
+					'subject' => esc_html__( 'Application received', 'hr-management' ),
 				);
 
 				// The dynamic data to apply into static contents

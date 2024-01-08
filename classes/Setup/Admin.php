@@ -51,8 +51,8 @@ class Admin {
 		// Setting page
 		add_submenu_page(
 			Main::$configs->app_name,
-			__( 'Event Calendar', 'hr-management' ),
-			__( 'Event Calendar', 'hr-management' ),
+			esc_html__( 'Event Calendar', 'hr-management' ),
+			esc_html__( 'Event Calendar', 'hr-management' ),
 			User::getAdminMenuRole( get_current_user_id() ),
 			self::PAGE_SLUG_CALENDAR, // The slug must be same as the pro one, so the url will remain same.
 			array( $this, 'calendarPage' )
@@ -82,7 +82,7 @@ class Admin {
 					?>
 					<style>
 						.toplevel_page_crewhrm .wp-menu-image.svg {
-							background-image: url(<?php echo $white_label['app_logo']; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>) !important;
+							background-image: url(<?php echo esc_url( $white_label['app_logo'] ); ?>) !important;
 						}
 					</style>
 					<?php
@@ -101,8 +101,8 @@ class Admin {
 		);
 		add_submenu_page(
 			Main::$configs->app_name,
-			__( 'Dashboard', 'hr-management' ),
-			__( 'Dashboard', 'hr-management' ),
+			esc_html__( 'Dashboard', 'hr-management' ),
+			esc_html__( 'Dashboard', 'hr-management' ),
 			User::getAdminMenuRole( get_current_user_id() ),
 			Main::$configs->app_name,
 			array( $this, 'mainPage' )
@@ -111,8 +111,8 @@ class Admin {
 		// All Jobs
 		add_submenu_page(
 			Main::$configs->app_name,
-			__( 'All Job Posts', 'hr-management' ),
-			__( 'All Job Posts', 'hr-management' ),
+			esc_html__( 'All Job Posts', 'hr-management' ),
+			esc_html__( 'All Job Posts', 'hr-management' ),
 			User::getAdminMenuRole( get_current_user_id() ),
 			'all-job-posts',
 			array( $this, 'allJobsPage' )
@@ -121,8 +121,8 @@ class Admin {
 		// Setting page
 		add_submenu_page(
 			Main::$configs->app_name,
-			__( 'Settings', 'hr-management' ),
-			__( 'Settings', 'hr-management' ),
+			esc_html__( 'Settings', 'hr-management' ),
+			esc_html__( 'Settings', 'hr-management' ),
 			User::getAdminMenuRole( get_current_user_id() ),
 			self::SLUG_SETTINGS,
 			array( $this, 'settingPage' )
@@ -167,7 +167,7 @@ class Admin {
 
 			foreach ( $pro_mails as $mail ) {
 				$mail->locked                = true;
-				$mail->tooltip               = __( 'Need to upgrade to Pro', 'hr-management' );
+				$mail->tooltip               = esc_html__( 'Need to upgrade to Pro', 'hr-management' );
 				$mail_templates[ $mail->id ] = (array) $mail;
 			}
 		}
@@ -183,7 +183,7 @@ class Admin {
 
 		// Build final resource
 		$resources = array(
-			'pages'        => Utilities::getPageList(),
+			'pages'        => Utilities::getPageList( -1 ),
 			'email_events' => $mail_templates,
 		);
 
@@ -202,10 +202,10 @@ class Admin {
 	public function pluginActionLinks( array $actions ) {
 
 		$_actions = array(
-			'crewhrm_dashboard' => '<a href="admin.php?page=' . Main::$configs->app_name . '">' . __( 'Dashboard', 'hr-management' ) . '</a>',
+			'crewhrm_dashboard' => '<a href="admin.php?page=' . Main::$configs->app_name . '">' . esc_html__( 'Dashboard', 'hr-management' ) . '</a>',
 			'crewhrm_pro_link'  => '<a href="https://getcrewhrm.com/pricing/" target="_blank">
 										<span style="color: #ff7742; font-weight: bold;">' .
-											__( 'Get Pro', 'hr-management' ) .
+											esc_html__( 'Get Pro', 'hr-management' ) .
 										'</span>
 									</a>',
 		);
@@ -222,7 +222,7 @@ class Admin {
 	 */
 	public function showCareersPageError() {
 		$page_id = (int) Settings::getSetting( 'careers_page_id' );
-		if ( $page_id > 0 ) {
+		if ( ! empty( $page_id ) ) {
 			return;
 		}
 
@@ -232,7 +232,7 @@ class Admin {
 			<p>
 				<?php
 					// translators: Careers page setup warning
-					echo sprintf( __( 'Please <a href="%s">set up</a> a page to display the job posts.', 'hr-management' ), $link ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped 
+					echo sprintf( esc_html__( 'Please %1$sset up%2$s a page to display the job posts.', 'hr-management' ), '<a href="' . esc_url( $link ) . '">', '</a>' );
 				?>
 			</p>
 		</div>
