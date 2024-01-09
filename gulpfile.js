@@ -64,7 +64,7 @@ function i18n_makepot(target_dir) {
     // Finally append the texts to the pot file
     fs.appendFileSync(
         __dirname + '/languages/hr-management.pot',
-        translation_texts
+        translation_texts.replaceAll('../CrewHRM-Pro/', '../hr-management-pro/')
     );
 }
 
@@ -147,7 +147,7 @@ gulp.task('copy', function () {
 
 gulp.task('make-zip', function () {
 	// Replace the mode in build folder
-	const index_path = path.resolve( __dirname+'/build/hr-management/index.php' );
+	const index_path = path.resolve( __dirname+'/build/hr-management/hr-management.php' );
 	const codes      = fs.readFileSync(index_path).toString().replace( "=> 'development',", "=> 'production'," );
 	fs.writeFileSync(index_path, codes);
 	

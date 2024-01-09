@@ -29,7 +29,7 @@ class Verify {
 	 * @return void
 	 */
 	public function verifyToken( array $application ) {
-		
+
 		// Get the captcha response
 		$token = $application['recaptcha_token'] ?? null;
 

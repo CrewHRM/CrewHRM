@@ -189,11 +189,10 @@ class Job {
 	 * Get jobs based on args
 	 *
 	 * @param array $args         Jobs args
-	 * @param array $meta_data    Meta data to include int the return array
 	 * @param bool  $segmentation Whether to need segmentation/pagination data
 	 * @return array
 	 */
-	public static function getJobs( $args = array(), $meta_data = array( 'application_count', 'stages' ), $segmentation = false ) {
+	public static function getJobs( $args = array(), $segmentation = false ) {
 
 		global $wpdb;
 
@@ -302,9 +301,7 @@ class Job {
 		$jobs = Meta::job( null )->assignBulkMeta( $jobs );
 
 		// Assign application count
-		if ( ! empty( $meta_data ) && in_array( 'application_count', $meta_data, true ) ) {
-			$jobs = Application::appendApplicationCounts( $jobs );
-		}
+		$jobs = Application::appendApplicationCounts( $jobs );
 
 		// Assign job permalink
 		foreach ( $jobs as $index => $job ) {
@@ -416,12 +413,12 @@ class Job {
 	/**
 	 * Get single job by job Id
 	 *
-	 * @param int   $job_id Job ID
-	 * @param array $meta   Meta data to include in the job
+	 * @param int $job_id Job ID
+	 * 
 	 * @return array
 	 */
-	public static function getJobById( $job_id, $meta = null ) {
-		$jobs = self::getJobs( array( 'job_id' => $job_id ), $meta );
+	public static function getJobById( $job_id ) {
+		$jobs = self::getJobs( array( 'job_id' => $job_id ) );
 		$jobs = array_values( $jobs );
 		return $jobs[0] ?? null;
 	}

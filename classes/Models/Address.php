@@ -59,14 +59,11 @@ class Address {
 	 */
 	public static function deleteAddress( $address_id ) {
 		$ids    = is_array( $address_id ) ? $address_id : array( $address_id );
-		$ids_in = implode( "','", $ids );
+		$ids_in = implode( ',', array_filter( $ids, 'is_numeric' ) );
 
 		global $wpdb;
 		$wpdb->query(
-			$wpdb->prepare(
-				"DELETE FROM {$wpdb->crewhrm_addresses} WHERE address_id IN (%s)",
-				$ids_in
-			)
+			"DELETE FROM {$wpdb->crewhrm_addresses} WHERE address_id IN ({$ids_in})"
 		);
 	}
 

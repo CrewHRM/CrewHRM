@@ -125,14 +125,16 @@ class Application {
 		global $wpdb;
 
 		$ids    = is_array( $application_id ) ? $application_id : array( $application_id );
-		$ids_in = implode( "','", $ids );
+		$ids_in = implode( ',', array_filter( $ids, 'is_numeric' ) );
 
 		$applications = $wpdb->get_results(
-			$wpdb->prepare(
-				"SELECT application_id, resume_file_id, address_id FROM {$wpdb->crewhrm_applications} 
-				WHERE application_id IN (%s)",
-				$ids_in
-			),
+			"SELECT 
+				application_id, 
+				resume_file_id, 
+				address_id 
+			FROM {$wpdb->crewhrm_applications} 
+			WHERE 
+				application_id IN ({$ids_in})",
 			ARRAY_A
 		);
 		$applications = _Array::indexify( _Array::castRecursive( $applications ), 'application_id' );
@@ -174,18 +176,12 @@ class Application {
 
 		// Delete pipelines
 		$wpdb->query(
-			$wpdb->prepare(
-				"DELETE FROM {$wpdb->crewhrm_pipeline} WHERE application_id IN (%s)",
-				$ids_in
-			)
+			"DELETE FROM {$wpdb->crewhrm_pipeline} WHERE application_id IN ({$ids_in})"
 		);
 
 		// Delete application finally
 		$wpdb->query(
-			$wpdb->prepare(
-				"DELETE FROM {$wpdb->crewhrm_applications} WHERE application_id IN (%s)",
-				$ids_in
-			)
+			"DELETE FROM {$wpdb->crewhrm_applications} WHERE application_id IN ({$ids_in})"
 		);
 
 		// Execute hook to delete more pro dependencies
@@ -216,8 +212,10 @@ class Application {
 	 * @return array
 	 */
 	public static function appendApplicationCounts( $jobs ) {
+		error_log( 'App count' );
+
 		// Prepare the jobs array
-		$jobs    = _Array::appendColumn(
+		$jobs = _Array::appendColumn(
 			$jobs,
 			'stats',
 			array(
@@ -225,12 +223,16 @@ class Application {
 				'stages'     => array(),
 			)
 		);
+
 		$job_ids = array_column( $jobs, 'job_id' );
 
 		// Get stats
 		$stats      = Stage::getStageStatsByJobId( $job_ids );
 		$candidates = $stats['candidates'] ?? array();
 		$stages     = $stats['stages'] ?? array();
+
+		error_log( var_export( $job_ids, true ) );
+		error_log( var_export( $stats, true ) );
 
 		// Loop through total candidate counts per job regardless of stage
 		foreach ( $candidates as $job_id => $total ) {
@@ -270,26 +272,32 @@ class Application {
 		$get_qualified = 'disqualified' !== ( $args['qualification'] ?? 'qualified' ); // Whether to get disqualified or qualified applications
 
 		// Where conditions. Get only completed applications to show the list. Incomplete means file upload is in progress.
-		$where_clause = "app.job_id={$job_id} AND app.is_complete=1";
+		$where_clause = $wpdb->prepare( 'app.job_id=%d AND app.is_complete=1', $job_id );
 
 		// Assign applicant name search query
 		if ( ! empty( $args['search'] ) ) {
-			$keyowrd       = esc_sql( $args['search'] );
-			$where_clause .= " AND (app.first_name LIKE '%{$keyowrd}%' OR app.last_name LIKE '%{$keyowrd}%')";
+			$where_clause .= $wpdb->prepare(
+				' AND (app.first_name LIKE %s OR app.last_name LIKE %s)',
+				"%{$wpdb->esc_like( $args['search'] )}%",
+				"%{$wpdb->esc_like( $args['search'] )}%"
+			);
 		}
 
 		// Apply specific stage filter if need
 		if ( ! empty( $stage_id ) ) {
-			$where_clause .= " AND app.stage_id={$stage_id}";
+			$where_clause .= $wpdb->prepare( ' AND app.stage_id=%d', $stage_id );
 		}
 
 		$disq_ids = self::getDisqualifiedAppIDs( $disq_stage_id );
 		array_unshift( $disq_ids, 0 );
-		$ids_implode = implode( ',', $disq_ids );
+		$ids_implode = implode( ',', array_filter( $disq_ids, 'is_numeric' ) );
 
 		// Prepare where clause whether to get qualified or disqualified applications
-		$operator      = $get_qualified ? 'NOT IN' : 'IN';
-		$where_clause .= " AND app.application_id {$operator} ({$ids_implode})";
+		if ( $get_qualified ) {
+			$where_clause .= " AND app.application_id NOT IN ({$ids_implode})";
+		} else {
+			$where_clause .=  " AND app.application_id IN ({$ids_implode})";
+		}
 
 		// Run query and get the application IDs
 		$application_ids = $wpdb->get_col(
@@ -300,6 +308,11 @@ class Application {
 			WHERE 
 				{$where_clause} ORDER BY application_date DESC"
 		);
+
+		error_log( '---------' );
+		error_log( var_export( $get_qualified, true ) );
+		error_log( var_export( $disq_ids, true ) );
+		error_log( var_export( $application_ids, true ) );
 
 		// If it needs only count, no need to include other data, return count onyl
 		if ( $count_only ) {
@@ -312,32 +325,29 @@ class Application {
 
 		// Get data now by the IDs as it's complicated to get all together
 		$application_ids = _Array::castRecursive( $application_ids );
-		$ids_in          = implode( "','", $application_ids );
+		$ids_in          = implode( ',', array_filter( $application_ids, 'is_numeric' ) );
 
 		// Get the resutls
 		$results = $wpdb->get_results(
-			$wpdb->prepare(
-				"SELECT 
-					application_id,
-					job_id,
-					stage_id,
-					address_id,
-					first_name,
-					last_name,
-					email,
-					phone,
-					date_of_birth,
-					gender,
-					cover_letter,
-					resume_file_id,
-					is_complete, 
-					UNIX_TIMESTAMP(application_date) AS application_date 
-				FROM 
-					{$wpdb->crewhrm_applications} 
-				WHERE application_id IN (%s) 
-				ORDER BY application_date DESC",
-				$ids_in
-			),
+			"SELECT 
+				application_id,
+				job_id,
+				stage_id,
+				address_id,
+				first_name,
+				last_name,
+				email,
+				phone,
+				date_of_birth,
+				gender,
+				cover_letter,
+				resume_file_id,
+				is_complete, 
+				UNIX_TIMESTAMP(application_date) AS application_date 
+			FROM 
+				{$wpdb->crewhrm_applications} 
+			WHERE application_id IN ({$ids_in}) 
+			ORDER BY application_date DESC",
 			ARRAY_A
 		);
 
@@ -356,7 +366,14 @@ class Application {
 		// Order by action_date DESC to get the latest disq state first.
 		$results = $wpdb->get_results(
 			$wpdb->prepare(
-				"SELECT application_id, stage_id FROM {$wpdb->crewhrm_pipeline} WHERE stage_id=%d ORDER BY action_date DESC",
+				"SELECT 
+					application_id, 
+					stage_id 
+				FROM 
+					{$wpdb->crewhrm_pipeline} 
+				WHERE 
+					stage_id=%d 
+				ORDER BY action_date DESC",
 				$disq_stage_id
 			),
 			ARRAY_A
@@ -503,7 +520,7 @@ class Application {
 		} else {
 			// If not to disqualify explicitly, then check if the stage ID refers to disqualify either way.
 			// And set them that way.
-			$disqname = Field::stages()->getField(
+			$disqname      = Field::stages()->getField(
 				array(
 					'job_id'   => $job_id,
 					'stage_id' => $stage_id,

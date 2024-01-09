@@ -144,14 +144,11 @@ class Stage {
 	public static function getStagesByJobId( $job_id ) {
 		$is_singular = ! is_array( $job_id );
 		$job_ids     = $is_singular ? array( $job_id ) : $job_id;
-		$ids_in      = implode( "','", $job_ids );
+		$ids_in      = implode( ',', array_filter( $job_ids, 'is_numeric' ) );
 
 		global $wpdb;
 		$stages = $wpdb->get_results(
-			$wpdb->prepare(
-				"SELECT * FROM {$wpdb->crewhrm_stages} WHERE job_id IN (%s) ORDER BY sequence",
-				$ids_in
-			),
+			"SELECT * FROM {$wpdb->crewhrm_stages} WHERE job_id IN ({$ids_in}) ORDER BY sequence",
 			ARRAY_A
 		);
 		$stages = _Array::castRecursive( $stages );
@@ -330,7 +327,9 @@ class Stage {
 					UNIX_TIMESTAMP(application_date) AS application_date 
 				FROM 
 					{$wpdb->crewhrm_applications} 
-				WHERE 1=1 {$where_clause} {$order_clause} LIMIT %d OFFSET %d",
+				WHERE 
+					1=1 {$where_clause} {$order_clause} 
+				LIMIT %d OFFSET %d",
 				$limit,
 				$offset
 			),
@@ -350,7 +349,7 @@ class Stage {
 		// Prepare arguments
 		$is_singular = ! is_array( $job_id );
 		$job_ids     = _Array::castRecursive( ! $is_singular ? $job_id : array( $job_id ) );
-		$ids_in      = implode( "','", $job_ids );
+		$ids_in      = implode( ',', array_filter( $job_ids, 'is_numeric' ) );
 		if ( empty( $job_ids ) ) {
 			return array();
 		}
@@ -366,12 +365,12 @@ class Stage {
 				FROM 
 					{$wpdb->crewhrm_applications} 
 				WHERE 
-					job_id IN (%s) 
+					job_id IN ({$ids_in}) 
 				GROUP BY job_id, stage_id",
-				$ids_in
 			),
 			ARRAY_A
 		);
+
 		if ( empty( $counts ) ) {
 			return array();
 		}
@@ -393,19 +392,16 @@ class Stage {
 		// Get the stages sequence to sort.
 		// Exclude disqualified as it is used in special way and has no usage in frontend view.
 		$sequences = $wpdb->get_results(
-			$wpdb->prepare(
-				"SELECT 
-					job_id, 
-					stage_id, 
-					stage_name, 
-					sequence 
-				FROM 
-					{$wpdb->crewhrm_stages} 
-				WHERE job_id IN (%s) 
-					AND stage_name!='_disqualified_' 
-				ORDER BY sequence",
-				$ids_in
-			),
+			"SELECT 
+				job_id, 
+				stage_id, 
+				stage_name, 
+				sequence 
+			FROM 
+				{$wpdb->crewhrm_stages} 
+			WHERE job_id IN ({$ids_in}) 
+				AND stage_name!='_disqualified_' 
+			ORDER BY sequence",
 			ARRAY_A
 		);
 		$sequences = _Array::castRecursive( $sequences );

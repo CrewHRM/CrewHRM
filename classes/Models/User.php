@@ -59,7 +59,7 @@ class User {
 		$keyword    = esc_sql( $keyword );
 		$skip_ids   = array_filter( $skip_ids, 'is_numeric' );
 		$ids_not_in = ! empty( $skip_ids ) ? $skip_ids : array( 0 );
-		$ids_not_in = implode( "','", $ids_not_in );
+		$ids_not_in = implode( ',', array_filter( $ids_not_in, 'is_numeric' ) );
 
 		$users = $wpdb->get_results(
 			$wpdb->prepare(
@@ -70,14 +70,20 @@ class User {
 				FROM 
 					{$wpdb->users} 
 				WHERE 
-					(ID=%s OR user_login=%s OR user_email=%s OR display_name LIKE %s OR user_nicename LIKE %s) AND ID NOT IN (%s)
+					(
+						ID=%s 
+						OR user_login=%s 
+						OR user_email=%s 
+						OR display_name LIKE %s 
+						OR user_nicename LIKE %s
+					) 
+					AND ID NOT IN ({$ids_not_in})
 				LIMIT 50",
 				$keyword,
 				$keyword,
 				$keyword,
 				"%{$wpdb->esc_like( $keyword )}%",
-				"%{$wpdb->esc_like( $keyword )}%",
-				$ids_not_in
+				"%{$wpdb->esc_like( $keyword )}%"
 			),
 			ARRAY_A
 		);

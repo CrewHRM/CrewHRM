@@ -76,17 +76,14 @@ class Department {
 		}
 
 		// Prepare IDs to delete stages by
-		$ids_implode = implode( "','", $current );
+		$ids_implode = implode( ',', array_filter( $current, 'is_numeric' ) );
 
 		global $wpdb;
 		$wpdb->query(
-			$wpdb->prepare(
-				"DELETE FROM 
-					{$wpdb->crewhrm_departments} 
-				WHERE 
-					department_id NOT IN (%s)",
-				$ids_implode
-			)
+			"DELETE FROM 
+				{$wpdb->crewhrm_departments} 
+			WHERE 
+				department_id NOT IN ({$ids_implode})"
 		);
 	}
 

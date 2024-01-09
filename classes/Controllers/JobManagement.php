@@ -94,7 +94,7 @@ class JobManagement {
 	public static function getJobsDashboard( array $filters ) {
 		// Get Initial job list
 		$jobs         = Job::getJobs( $filters );
-		$segmentation = Job::getJobs( $filters, array(), true );
+		$segmentation = Job::getJobs( $filters, true );
 
 		wp_send_json_success(
 			array(
