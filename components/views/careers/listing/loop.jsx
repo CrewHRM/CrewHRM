@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+
 import { __, getAddress } from 'crewhrm-materials/helpers.jsx';
 import { Conditional } from 'crewhrm-materials/conditional.jsx';
 import { employment_types } from 'crewhrm-materials/data.jsx';
@@ -34,14 +35,16 @@ export function CareersLoop({ jobs=[], open_in_new }) {
         ].filter((m) => m);
 
         return (
-            <div
+            <Link
                 key={job_id}
-                className={
-                    'single-job'.classNames(style) +
-                    'd-flex align-items-center column-gap-10 padding-vertical-12 padding-horizontal-15 margin-bottom-20 border-radius-5'.classNames()
-                }
+				to={job_permalink}
+				target={open_in_new ? '_blank' : ''}
                 onMouseOver={() => setState({ ...state, hovered_job: job_id })}
                 onMouseOut={() => setState({ ...state, hovered_job: null })}
+                className={
+                    'single-job'.classNames(style) +
+                    'd-flex align-items-center column-gap-10 padding-vertical-12 padding-horizontal-15 margin-bottom-20 border-radius-5 cursor-pointer'.classNames()
+                }
             >
                 <div className={'flex-1'.classNames()}>
                     <span
@@ -69,17 +72,13 @@ export function CareersLoop({ jobs=[], open_in_new }) {
                     </span>
                 </div>
                 <div>
-                    <Link
-                        to={job_permalink}
-						target={open_in_new ? '_blank' : ''}
-                        className={`button button-primary ${
-                            state.hovered_job !== job_id ? 'button-outlined' : ''
-                        } button-medium-2`.classNames()}
+                    <button
+                        className={`button button-primary button-medium-2 ${state.hovered_job !== job_id ? 'button-outlined' : ''}`.classNames()}
                     >
                         {__('Details')}
-                    </Link>
+                    </button>
                 </div>
-            </div>
+            </Link>
         );
     });
 }
