@@ -7,10 +7,9 @@ import { DahboardMain } from './dashboard/main/main.jsx';
 import { JobOpeningsFullView } from './dashboard/job-openings/jobs.jsx';
 import { Applications } from './dashboard/applicants/applicants.jsx';
 import { StickyBar } from 'crewhrm-materials/sticky-bar.jsx';
-import { __, getRandomString } from 'crewhrm-materials/helpers.jsx';
+import { __ } from 'crewhrm-materials/helpers.jsx';
 // import { NotificationsEmail, NotificationsOnSite } from "./notifications/notifications.jsx";
 import { NoticeBar } from './notifications/notice/notice-bar.jsx';
-import { AddDepartmentModal } from '../settings/company-profile/departments/add-department.jsx';
 
 export const ContextBackendDashboard = createContext();
 
@@ -44,32 +43,6 @@ export function HRM({ departments = [], applicationStats, is_all_job_page }) {
 
     const showNotice = () => {};
 
-    const addDepartment = (add_department_callback = () => {}) => {
-        setState({
-            ...state,
-            add_department_callback
-        });
-    };
-
-    const onAddDepartment = ({ id, departments }) => {
-        // Send the new id to the parent caller
-        state.add_department_callback(id);
-
-        // Update state with the new list, and close modal
-        setState({
-            ...state,
-            add_department_callback: null,
-            departments
-        });
-    };
-
-    const closeDepartmentModal = () => {
-        setState({
-            ...state,
-            add_department_callback: null
-        });
-    };
-
     const deleteNotice = (id) => {
         const { notices } = state;
         const index = notices.findIndex((n) => n.id === id);
@@ -88,15 +61,10 @@ export function HRM({ departments = [], applicationStats, is_all_job_page }) {
                 showNotice,
                 deleteNotice,
                 departments: state.departments,
-                applicationStats,
-                addDepartment
+                applicationStats
             }}
         >
             <WpDashboardFullPage>
-                {
-					!state.add_department_callback ? null : <AddDepartmentModal onAdd={onAddDepartment} closeModal={closeDepartmentModal} />
-				}
-
                 <HashRouter>
                     <Routes>
                         <Route

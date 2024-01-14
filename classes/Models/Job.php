@@ -414,7 +414,7 @@ class Job {
 	 * Get single job by job Id
 	 *
 	 * @param int $job_id Job ID
-	 * 
+	 *
 	 * @return array
 	 */
 	public static function getJobById( $job_id ) {

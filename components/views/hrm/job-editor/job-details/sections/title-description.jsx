@@ -1,9 +1,14 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
+
 import { DropDown } from 'crewhrm-materials/dropdown/dropdown.jsx';
-import { __ } from 'crewhrm-materials/helpers.jsx';
+import { __, sprintf } from 'crewhrm-materials/helpers.jsx';
 import { TextField } from 'crewhrm-materials/text-field/text-field.jsx';
 import { CircularProgress } from 'crewhrm-materials/circular.jsx';
 import { TextEditor } from 'crewhrm-materials/text-editor/text-editor.jsx';
+import { Modal } from 'crewhrm-materials/modal.jsx';
+import { request } from 'crewhrm-materials/request.jsx';
+import { ContextToast } from 'crewhrm-materials/toast/toast.jsx';
+import { LoadingIcon } from 'crewhrm-materials/loading-icon/loading-icon.jsx';
 
 import { field_label_class, section_title_class } from '../job-details.jsx';
 import { ContextBackendDashboard } from '../../../hrm.jsx';
@@ -11,15 +16,136 @@ import { ContextJobEditor } from '../../index.jsx';
 
 import style from '../details.module.scss';
 
+export function AddItemModal({ endpoint, closeModal, onAdd, item_label }) {
+	
+    const { ajaxToast } = useContext(ContextToast);
+    const [state, setState] = useState({
+        item_name: null,
+		saving: false
+    });
+
+    const addNow = () => {
+        const { item_name } = state;
+
+		setState({
+			...state,
+			saving: true
+		})
+
+        request(endpoint, { item_name }, (resp) => {
+
+			const {
+				success, 
+				data:{
+					id, 
+					items=[]
+				}
+			} = resp;
+
+            if (success) {
+                onAdd({ id, items });
+				return;
+            }
+			
+            ajaxToast(resp);
+			setState({
+				...state,
+				saving: false,
+			});
+        });
+    };
+
+    return (
+        <Modal>
+            <span
+                className={'d-block font-size-24 font-weight-600 color-text margin-bottom-20'.classNames()}
+            >
+                {sprintf(__('Add %s'), item_label)}
+            </span>
+
+            <div className={'padding-vertical-15'.classNames()}>
+                <span
+                    className={'d-block font-size-15 font-weight-500 color-text margin-bottom-10'.classNames()}
+                >
+                    {item_label}
+                </span>
+
+                <input
+                    type="text"
+                    className={'width-p-100 padding-15 border-1-5 b-color-tertiary b-color-active-primary border-radius-10 height-48 font-size-15 font-weight-400 line-height-25 color-text'.classNames()}
+                    onChange={(e) =>{
+						setState({
+							...state, 
+							item_name: e.currentTarget.value 
+						})
+					}}
+                />
+            </div>
+
+            <div
+                className={'d-flex align-items-center justify-content-end column-gap-21'.classNames()}
+            >
+                <span
+                    className={'font-size-15 font-weight-500 letter-spacing--3 color-text-light cursor-pointer'.classNames()}
+                    onClick={() => closeModal()}
+                >
+                    {__('Cancel')}
+                </span>
+                <button
+                    className={'button button-primary'.classNames()}
+                    onClick={() => addNow()}
+                    disabled={!state.item_name}
+                >
+                    {__('Submit')} <LoadingIcon show={state.saving}/>
+                </button>
+            </div>
+        </Modal>
+    );
+}
+
 export function TitleAndDescription() {
     const { values, onChange, session } = useContext(ContextJobEditor);
-    const { departments=[], addDepartment } = useContext(ContextBackendDashboard);
+    const { departments=[] } = useContext(ContextBackendDashboard);
 
     const title_allowed_length = 200;
     const job_title_length = values.job_title?.length || 0;
 
+	const [state, setState] = useState({
+		add_department: false,
+		departments: departments
+	})
+
+	
+    const toggleDepartmentModal = (show) => {
+        setState({
+            ...state,
+            add_department: show
+        });
+    };
+
+    const onAddDepartment = ({ id, items: departments }) => {
+        // Send the new id to the parent caller
+		onChange('department_id', id);
+
+        // Update state with the new list, and close modal
+        setState({
+            ...state,
+            add_department: false,
+            departments
+        });
+    };
+
     return (
         <>
+			{
+				!state.add_department ? null : 
+				<AddItemModal 
+					endpoint='addDepartment'
+					item_label={__('Department')}
+					onAdd={onAddDepartment} 
+					closeModal={()=>toggleDepartmentModal(false)} />
+			}
+
             {/* Form intro */}
             <div className={'d-flex margin-bottom-30'.classNames()}>
                 <div className={'flex-1'.classNames()}>
@@ -98,10 +224,8 @@ export function TitleAndDescription() {
                                 tabindex={2}
                                 addText={__('Add Depertment')}
                                 textClassName={'font-size-17 font-weight-500 line-height-25 color-text-light'.classNames()}
-                                onAddClick={() =>
-                                    addDepartment((id) => onChange('department_id', id))
-                                }
-                                options={departments.map(d=>{
+                                onAddClick={()=>toggleDepartmentModal(true)}
+                                options={state.departments.map(d=>{
 									return {
 										id: d.department_id, 
 										label: d.department_name

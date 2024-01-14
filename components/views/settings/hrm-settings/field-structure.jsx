@@ -2,7 +2,7 @@ import React from 'react';
 import { __, data_pointer } from 'crewhrm-materials/helpers.jsx';
 import { applyFilters } from 'crewhrm-materials/hooks.jsx';
 
-import { business_types } from 'crewhrm-materials/data.jsx';
+import { patterns } from 'crewhrm-materials/data.jsx';
 import { Promote } from '../../../promote/promote';
 
 import zoom_svg from 'crewhrm-materials/static/images/brands/zoom.svg';
@@ -147,12 +147,8 @@ export const settings_fields = applyFilters(
 									label: __('Business Type'),
 									type: 'dropdown',
 									required: true,
-									options: Object.keys(business_types).map((type) => {
-										return { 
-											id: type, 
-											label: business_types[type] 
-										};
-									})
+									options: 'business_type',
+									can_add: true
 								},
 								{
 									name: 'about_company',
@@ -193,7 +189,8 @@ export const settings_fields = applyFilters(
 										description: __('This email address will be used to communicate with the candidates and employees.'),
 										type: 'email',
 										required: true,
-										placeholder: 'hr@company.com'
+										placeholder: 'hr@company.com',
+										regex: patterns.email
 									},
 									{
 										name: 'other_email',

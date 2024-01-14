@@ -183,8 +183,9 @@ class Admin {
 
 		// Build final resource
 		$resources = array(
-			'pages'        => Utilities::getPageList( -1 ),
-			'email_events' => $mail_templates,
+			'pages'         => Utilities::getPageList( -1 ),
+			'email_events'  => $mail_templates,
+			'business_type' => Settings::getBusinessTypesDropdown()
 		);
 
 		echo '<div 

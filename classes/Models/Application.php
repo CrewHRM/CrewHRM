@@ -296,7 +296,7 @@ class Application {
 		if ( $get_qualified ) {
 			$where_clause .= " AND app.application_id NOT IN ({$ids_implode})";
 		} else {
-			$where_clause .=  " AND app.application_id IN ({$ids_implode})";
+			$where_clause .= " AND app.application_id IN ({$ids_implode})";
 		}
 
 		// Run query and get the application IDs

@@ -59,18 +59,22 @@ class _String {
 	/**
 	 * Generate random string
 	 *
-	 * @param int $length The length to generate random stirng
+	 * @param stirng $prefix Prefix
+	 * @param stirng $postfix Postfix
+	 * 
 	 * @return string
 	 */
-	public static function getRandomString( $length = 10 ) {
-		$characters    = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-		$random_string = '';
+	public static function getRandomString( $prefix = 'r', $postfix = 'r' ) {
+		$characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+		$ms         = (string) microtime(true);
+		$ms         = str_replace( '.', '', $ms );
+		$string     = $prefix . $ms;
 
-		for ( $i = 0; $i < $length; $i++ ) {
-			$random_string .= $characters[ wp_rand( 0, strlen( $characters ) - 1 ) ];
+		for ( $i = 0; $i < 5; $i++ ) {
+			$string .= $characters[ wp_rand( 0, strlen( $characters ) - 1 ) ];
 		}
 
-		return $random_string;
+		return $string . $postfix;
 	}
 
 	/**

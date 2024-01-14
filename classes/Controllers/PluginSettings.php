@@ -24,17 +24,20 @@ class PluginSettings {
 		'getCareersSettings' => array(
 			'nopriv' => true,
 		),
+		'addSettingItem_business_type' => array(
+			'role' => array( 'administrator' )
+		)
 	);
 
 	/**
 	 * Add single department, ideally from job editor
 	 *
-	 * @param string $department_name The department name to add
+	 * @param string $item_name The department name to add
 	 * @return void
 	 */
-	public static function addDepartment( string $department_name ) {
+	public static function addDepartment( string $item_name ) {
 		// Add first
-		$new_id = Department::addDepartment( $department_name );
+		$new_id = Department::addDepartment( $item_name );
 		if ( ! $new_id ) {
 			wp_send_json_error( array( 'message' => esc_html__( 'Something went wrong!', 'hr-management' ) ) );
 		}
@@ -46,9 +49,9 @@ class PluginSettings {
 
 		wp_send_json_success(
 			array(
-				'id'          => $new_id,
-				'departments' => $departments,
-				'message'     => esc_html__( 'New department added successfully', 'hr-management' ),
+				'id'      => $new_id,
+				'items'   => $departments,
+				'message' => esc_html__( 'New department added successfully', 'hr-management' ),
 			)
 		);
 	}
@@ -81,6 +84,24 @@ class PluginSettings {
 		wp_send_json_success(
 			array(
 				'settings' => Settings::getCareersListSettings(),
+			)
+		);
+	}
+
+	/**
+	 * Add custom business type
+	 *
+	 * @param string $item_name
+	 * @return void
+	 */
+	public static function addSettingItem_business_type( string $item_name ) {
+		$id    = Settings::addBusinessType( $item_name );
+		$items = Settings::getBusinessTypesDropdown();
+
+		wp_send_json_success(
+			array(
+				'id'    => $id,
+				'items' => $items
 			)
 		);
 	}

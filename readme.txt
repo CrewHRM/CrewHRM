@@ -106,9 +106,9 @@ You can email us using the contact form on our website to share feature ideas wi
 
 == Changelog ==
 
-= v1.0.6 -> Dec 25, 2023 =
+= v1.0.6 -> Jan 25, 2024 =
 --------------------------
-* reCAPTCHA addon in free version
+* reCAPTCHA addon
 * Bug fixes and optimizations
 
 = v1.0.5 -> Dec 08, 2023 =

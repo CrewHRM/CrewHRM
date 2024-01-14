@@ -142,7 +142,7 @@ export function Apply({ job = {}, settings={} }) {
 		// Check if is next enabled or not first
 		if ( ! isNextEnabled(flattenArray(fields_to_render)) ) {
 
-			// Show all the error
+			// Highlight all the fields as error if submit button clicked.
 			setState({
 				...state,
 				showErrorsAlways: true

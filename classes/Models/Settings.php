@@ -8,13 +8,23 @@
 namespace CrewHRM\Models;
 
 use CrewHRM\Helpers\_Array;
+use CrewHRM\Helpers\_String;
 use CrewHRM\Helpers\File;
 
 /**
  * Settings manager class
  */
 class Settings {
+
+	/**
+	 * Plugin settings option name
+	 */
 	const KEY_SETTINGS = 'crewhrm_plugins_settings';
+
+	/**
+	 * Business type option name
+	 */
+	const BUSINESS_TYPE_NAME = 'crewhrm-business-types';
 
 	/**
 	 * Commn method to get settings for both
@@ -135,5 +145,103 @@ class Settings {
 			'country_codes'  => Address::getJobsCountryCodes(),
 			'form_layout'    => self::getSetting( 'application_form_layout' ),
 		);
+	}
+
+	/**
+	 * Import default business type if not already
+	 *
+	 * @return void
+	 */
+	public static function importBusinessTypes() {
+
+		// Get existing types from options
+		$types = self::getSavedBusinessTypes();
+
+		// If empty, import new
+		if ( empty( $types ) ) {
+			update_option(
+				self::BUSINESS_TYPE_NAME,
+				array(
+					'agriculture_naturalresources' => __( 'Agriculture & Natural Resources', 'crewhrm' ),
+					'extraction_mining'            => __( 'Extraction & Mining', 'crewhrm' ),
+					'energy_utilities'             => __( 'Energy & Utilities', 'crewhrm' ),
+					'construction_infrastructure'  => __( 'Construction & Infrastructure', 'crewhrm' ),
+					'manufacturing_production'     => __( 'Manufacturing & Production', 'crewhrm' ),
+					'wholesale_distribution'       => __( 'Wholesale & Distribution', 'crewhrm' ),
+					'retail_consumergoods'         => __( 'Retail & Consumer Goods', 'crewhrm' ),
+					'transportation_logistics'     => __( 'Transportation & Logistics', 'crewhrm' ),
+					'technology_communication'     => __( 'Technology & Communication', 'crewhrm' ),
+					'finance_insurance'            => __( 'Finance & Insurance', 'crewhrm' ),
+					'realestate_property'          => __( 'Real Estate & Property', 'crewhrm' ),
+					'professionalservices'         => __( 'Professional Services', 'crewhrm' ),
+					'healthcare_wellness'          => __( 'Healthcare & Wellness', 'crewhrm' ),
+					'entertainment_media'          => __( 'Entertainment & Media', 'crewhrm' ),
+					'hospitality_tourism'          => __( 'Hospitality & Tourism', 'crewhrm' ),
+					'education_training'           => __( 'Education & Training', 'crewhrm' ),
+					'nonprofit_socialservices'     => __( 'Non-Profit & Social Services', 'crewhrm' ),
+					'government_publicservices'    => __( 'Government & Public Services', 'crewhrm' ),
+				)
+			);
+		}
+	}
+
+	/**
+	 * Get business types from options
+	 *
+	 * @return void
+	 */
+	private static function getSavedBusinessTypes() {
+		$types = get_option( self::BUSINESS_TYPE_NAME );
+		return ! is_array( $types ) ? array() : $types;
+	}
+
+	/**
+	 * Get saved business types array to show in drop down and in other places
+	 *
+	 * @return array
+	 */
+	public static function getBusinessTypes() {
+		return apply_filters( 'crewhrm_business_types', self::getSavedBusinessTypes() );
+	}
+
+	/**
+	 * Prepare the types array for dropdown
+	 *
+	 * @return array
+	 */
+	public static function getBusinessTypesDropdown() {
+		$types     = self::getBusinessTypes();
+		$new_array = array();
+		
+		foreach ( $types as $key => $label ) {
+			$new_array[] = array(
+				'id'    => $key,
+				'label' => $label,
+			);
+		}
+
+		return $new_array;
+	}
+
+	/**
+	 * Add new business type in option
+	 *
+	 * @param string $type_name The name of the business type
+	 * @return string
+	 */
+	public static function addBusinessType( string $type_name ) {
+
+		$type_name = trim( preg_replace( '/\s+/', ' ', $type_name ) );
+		if ( empty( $type_name ) ) {
+			return false;
+		}
+
+		$types        = self::getSavedBusinessTypes();
+		$id           = _String::getRandomString();
+		$types[ $id ] = $type_name;
+
+		update_option( self::BUSINESS_TYPE_NAME, $types );
+
+		return $id;
 	}
 }

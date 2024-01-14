@@ -9,6 +9,7 @@ namespace CrewHRM\Setup;
 
 use CrewHRM\Main;
 use CrewHRM\Models\DB;
+use CrewHRM\Models\Settings;
 
 /**
  * The database manager class
@@ -31,8 +32,12 @@ class Database {
 	 * @return void
 	 */
 	public function importDB() {
+		// Import Database SQL file
 		$sql_path = Main::$configs->dir . 'dist' . DIRECTORY_SEPARATOR . 'libraries' . DIRECTORY_SEPARATOR . 'db.sql';
 		DB::import( file_get_contents( $sql_path ) );
+
+		// Import default business types
+		Settings::importBusinessTypes();
 	}
 
 	/**
