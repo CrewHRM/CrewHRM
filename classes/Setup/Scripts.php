@@ -99,7 +99,7 @@ class Scripts {
 	 */
 	public function loadVariables() {
 		// Check if it's our page and needs resources to load
-		if ( is_admin() && ! Utilities::isCrewDashboard() ) {
+		if ( is_admin() && ! Utilities::isCrewDashboard() && ! Utilities::isGutenbergEditor() ) {
 			return;
 		}
 

@@ -175,4 +175,13 @@ class Utilities {
 
 		return $number;
 	}
+
+	/**
+	 * Check if current page is gutenberg editor
+	 *
+	 * @return boolean
+	 */
+	public static function isGutenbergEditor() {
+		return class_exists( 'WP_Block_Editor_Context' ) || ( function_exists( 'has_blocks' ) && has_blocks() );
+	}
 }

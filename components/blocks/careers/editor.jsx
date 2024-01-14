@@ -1,16 +1,14 @@
 import React from 'react';
 
-import { __ } from 'crewhrm-materials/helpers.jsx';
+import { __, data_pointer } from 'crewhrm-materials/helpers.jsx';
 import style from './careers.module.scss';
+import { countries_array, employment_types } from 'crewhrm-materials/data.jsx';
 
 const {registerBlockType} = window.wp.blocks;
 const { Fragment } = window.wp.element;
 
 const {
-	BlockControls,
 	InspectorControls,
-	MediaPlaceholder,
-	MediaReplaceFlow,
 	MediaUpload
 } = wp.blockEditor;
 
@@ -18,13 +16,13 @@ const {
 	FormToggle,
 	PanelBody,
 	PanelRow,
-	Button,
 	SelectControl,
 	TextControl,
-	RadioControl,
 } = wp.components;
 
 export function CareersEdit({className, setAttributes, isSelected, attributes}) {
+
+	const {departments=[]} = window[data_pointer];
 	
 	return <Fragment>
 		<InspectorControls>
@@ -104,6 +102,68 @@ export function CareersEdit({className, setAttributes, isSelected, attributes}) 
 						onChange={()=>setAttributes({sidebar: !attributes.sidebar})}
 					/>
 				</PanelRow>
+				<PanelRow>
+					<SelectControl
+						label={ __( 'Country Filter' ) }
+						value={ attributes.country_code }
+						onChange={country_code => setAttributes( { country_code } ) }
+						options={[
+							{
+								value: '',
+								label: __('All')
+							},
+							...countries_array.map(c=>{return {
+								...c, 
+								value: c.id
+							}})
+						]}
+					/>
+				</PanelRow>
+				<PanelRow>
+					<SelectControl
+						label={ __( 'Employment Type' ) }
+						value={ attributes.employment_type }
+						onChange={employment_type => setAttributes( { employment_type } ) }
+						options={[
+							{
+								value: '',
+								label: __('All')
+							},
+							...Object.keys(employment_types).map(key=>{
+								return {
+									value: key, 
+									label: employment_types[key]
+								}
+							})
+						]}
+					/>
+				</PanelRow>
+				<PanelRow>
+					<SelectControl
+						label={ __( 'Department' ) }
+						value={ attributes.department_id }
+						onChange={department_id => setAttributes( { department_id } ) }
+						options={[
+							{
+								value: '',
+								label: __('All')
+							},
+							...departments.map(d=>{
+								return {
+									value: d.department_id,
+									label: d.department_name
+								}
+							})
+						]}
+					/>
+				</PanelRow>
+				<PanelRow>
+					<TextControl
+						label={ __( 'Keyword' ) }
+						value={ attributes.keyword }
+						onChange={ keyword => setAttributes( { keyword } ) }
+					/>
+				</PanelRow>
 			</PanelBody>
 		</InspectorControls>
 
@@ -145,6 +205,22 @@ registerBlockType(
 			sidebar: {
 				type: 'boolean',
 				default: true
+			},
+			country_code: {
+				type: 'string',
+				default: ''
+			},
+			employment_type: {
+				type: 'string',
+				default: ''
+			},
+			keyword: {
+				type: 'string',
+				default: ''
+			},
+			department_id: {
+				type: 'string',
+				default: ''
 			},
 		},
 		edit: CareersEdit,

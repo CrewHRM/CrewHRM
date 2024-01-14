@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
-import { __, filterObject, filterUniqueColumn, parseParams } from 'crewhrm-materials/helpers.jsx';
+import { __, filterObject, filterUniqueColumn, isEmpty, parseParams } from 'crewhrm-materials/helpers.jsx';
 import { LoadingIcon } from 'crewhrm-materials/loading-icon/loading-icon.jsx';
 import { TextField } from 'crewhrm-materials/text-field/text-field.jsx';
 import { CoverImage } from 'crewhrm-materials/image/image.jsx';
@@ -12,7 +12,7 @@ import { Conditional } from 'crewhrm-materials/conditional.jsx';
 
 import style from './listing.module.scss';
 
-export function Listing({ open_in_new, settings = {} }) {
+export function Listing({ open_in_new, settings = {}, filters={} }) {
     const [searchParam, setSearchParam] = useSearchParams();
     const queryParams = parseParams(searchParam);
     const current_page = parseInt( queryParams.page || 1 );
@@ -69,22 +69,29 @@ export function Listing({ open_in_new, settings = {} }) {
         });
     };
 
-    // When URL state changes, put the filters in state
-    useEffect(() => {
-        getJobs();
-    }, [searchParam]);
-
 	const setLayout=()=>{
 		if ( reff_wrapper?.current ) {
 			setMobile(reff_wrapper.current.offsetWidth<560);
 		}
 	}
 
+    // When URL state changes, put the filters in state
+    useEffect(() => {
+        getJobs();
+    }, [searchParam]);
+
 	useEffect(()=>{
+		// Set initial filter, in favour of shortcode and blocks actually
+		if ( ! isEmpty( filters ) ) {
+			setFilter(filters);
+		}
+
+		// Set responsive layout and register event
 		setLayout();
 		window.addEventListener('resize', setLayout);
 		return ()=>window.removeEventListener('resize', setLayout);
 	}, []);
+	
 
     return (
         <>

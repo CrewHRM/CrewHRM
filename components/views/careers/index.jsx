@@ -7,9 +7,16 @@ import { __, getElementDataSet } from 'crewhrm-materials/helpers.jsx';
 import { Listing } from './listing/listing.jsx';
 import { Single } from './single/single.jsx';
 
-export function CareersRouter({ base_permalink, open_in_new, hash_router = false, settings = {} }) {
+export function CareersRouter(props) {
 
-	base_permalink = base_permalink.replace(new RegExp(`^[\/]+|[\/]+$`, 'g'), '');
+	const {
+		base_permalink: bp, 
+		open_in_new, 
+		settings = {}, 
+		filters={}
+	} = props;
+
+	const base_permalink = bp.replace(new RegExp(`^[\/]+|[\/]+$`, 'g'), '');
 	
     return <BrowserRouter>
 		<Routes>
@@ -18,6 +25,7 @@ export function CareersRouter({ base_permalink, open_in_new, hash_router = false
 				element={<Listing 
 					open_in_new={open_in_new} 
 					settings={settings}
+					filters={filters}
 				/>}
 			/>
 			<Route

@@ -18,6 +18,7 @@ use CrewHRM\Setup\Dispatcher;
 use CrewHRM\Setup\Mails;
 use CrewHRM\Setup\Media;
 use CrewHRM\Setup\Scripts;
+use CrewHRM\Setup\Shortcode;
 
 /**
  * The main class to initiate app
@@ -76,6 +77,7 @@ class Main {
 		new Careers();
 		new Mails();
 		new Blocks();
+		new Shortcode();
 
 		// Set pro flag
 		add_action(
