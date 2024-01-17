@@ -135,7 +135,6 @@ class Dispatcher {
 		$args = array();
 		foreach ( $params as $param => $configs ) {
 			$args[ $param ] = wp_unslash( ( $is_post ? ( $_POST[ $param ] ?? null ) : ( $_GET[ $param ] ?? null ) ) ?? $_FILES[ $param ] ?? $configs['default'] ?? null );
-			
 		}
 
 		// Sanitize and type cast

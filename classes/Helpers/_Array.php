@@ -157,13 +157,12 @@ class _Array {
 	public static function sanitizeRecursive( $value, $key = null ) {
 		if ( is_array( $value ) ) {
 			foreach ( $value as $_key => $_value ) {
-				// If it is kses, then remove the key prefix as it is not necessary.
+				// If it is kses, then remove the key prefix from array key as it is not necessary in core applications.
 				$index           = strpos( $_key, 'kses_' ) === 0 ? substr( $_key, 5 ) : $_key;
 				$value[ $index ] = self::sanitizeRecursive( $_value, $_key );
 			}
 		} elseif ( is_string( $value ) ) {
-			// If the prefix is kses_, it means to get it through kses filter.
-			// Otherise normal sanitize
+			// If the prefix is kses_, it means rich text editor content and get it through kses filter. Otherise normal sanitize.
 			$value = strpos( $key, 'kses_' ) === 0 ? _String::applyKses( $value ) : sanitize_text_field( $value );
 		}
 

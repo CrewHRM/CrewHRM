@@ -223,7 +223,7 @@ class JobManagement {
 	 * @param integer $move_to The stage ID to move existing applications
 	 * @return void
 	 */
-	public static function deleteHiringStage( int $job_id, int $stage_id, int $move_to = null ) {
+	public static function deleteHiringStage( int $job_id, int $stage_id, int $move_to = 0 ) {
 
 		// Run delete
 		$deletion = Stage::deleteStage(
