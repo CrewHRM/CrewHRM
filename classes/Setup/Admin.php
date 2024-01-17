@@ -32,7 +32,7 @@ class Admin {
 	public function __construct() {
 		add_action( 'admin_menu', array( $this, 'registerMenu' ), 10 );
 		add_action( 'admin_menu', array( $this, 'registerCalendar' ), 10 );
-		add_filter( 'plugin_action_links_' . plugin_basename( Main::$configs->file ), array( $this, 'pluginActionLinks' ) );
+		add_filter( 'plugin_action_links_' . Main::$configs->basename, array( $this, 'pluginActionLinks' ) );
 		add_action( 'admin_notices', array( $this, 'showCareersPageError' ) );
 	}
 

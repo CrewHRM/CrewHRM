@@ -171,28 +171,6 @@ class _Array {
 	}
 
 	/**
-	 * Strip slasshes from string in array resursivley. Ideally used in post data.
-	 *
-	 * @param array $array Array of strings or whatever. Only strings will be processed.
-	 * @return array
-	 */
-	public static function unslashRecursive( array $array ) {
-		// Loop through array elements
-		foreach ( $array as $index => $element ) {
-			if ( is_array( $element ) ) {
-				$array[ $index ] = self::unslashRecursive( $element );
-				continue;
-			}
-
-			if ( is_string( $element ) ) {
-				$array[ $index ] = wp_unslash( $element );
-			}
-		}
-
-		return $array;
-	}
-
-	/**
 	 * Convert multidimensional array into one
 	 *
 	 * @param array $array The array to flatten

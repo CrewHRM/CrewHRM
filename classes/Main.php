@@ -49,9 +49,10 @@ class Main {
 	public function init( object $configs ) {
 
 		// Store configs in runtime static property
-		self::$configs          = $configs;
-		self::$configs->dir     = dirname( $configs->file ) . '/';
-		self::$configs->has_pro = false;
+		self::$configs           = $configs;
+		self::$configs->dir      = dirname( $configs->file ) . '/';
+		self::$configs->basename = plugin_basename( $configs->file );
+		self::$configs->has_pro  = false;
 
 		// Loading Autoloader
 		spl_autoload_register( array( $this, 'loader' ) );
