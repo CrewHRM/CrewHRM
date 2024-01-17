@@ -8,6 +8,7 @@
 namespace CrewHRM\Models;
 
 use CrewHRM\Helpers\_Array;
+use CrewHRM\Helpers\_String;
 
 /**
  * Meta table CRUD functionalities.
@@ -181,15 +182,18 @@ class Meta {
 
 		global $wpdb;
 
-		$ids_in     = implode( ',', array_filter( $object_ids, 'is_numeric' ) );
+		$ids_places = _String::getPlaceHolders( $object_ids );
 		$meta_key   = $meta_key ? esc_sql( $meta_key ) : null;
 		$key_clause = $meta_key ? $wpdb->prepare( ' AND meta_key=%s', $meta_key ) : '';
 
 		$wpdb->query(
-			"DELETE FROM 
-				{$this->table} 
-			WHERE 
-				object_id IN ({$ids_in}) {$key_clause}"
+			$wpdb->prepare(
+				"DELETE FROM 
+					{$this->table} 
+				WHERE 
+					object_id IN ({$ids_places}) {$key_clause}",
+				...$object_ids
+			)
 		);
 	}
 
@@ -203,19 +207,21 @@ class Meta {
 	public function assignBulkMeta( array $objects, $meta_key = null ) {
 		global $wpdb;
 
-		$objects = _Array::appendColumn( $objects, 'meta', (object) array() );
-		$obj_ids = array_keys( $objects );
-		$ids_in  = implode( ',', array_filter( $obj_ids, 'is_numeric' ) );
+		$objects    = _Array::appendColumn( $objects, 'meta', (object) array() );
+		$obj_ids    = _Array::getArray( array_keys( $objects ), false, 0 );
+		$ids_places = _String::getPlaceHolders( $obj_ids );
 
-		$where_clause = " object_id IN ({$ids_in})";
-
+		$where_clause = '';
 		if ( $meta_key ) {
 			$key           = esc_sql( $meta_key );
 			$where_clause .= $wpdb->prepare( ' AND meta_key=%s', $key );
 		}
 
 		$meta = $wpdb->get_results(
-			"SELECT * FROM {$this->table} WHERE {$where_clause}",
+			$wpdb->prepare(
+				"SELECT * FROM {$this->table} WHERE object_id IN ({$ids_places}) {$where_clause}",
+				...$obj_ids
+			),
 			ARRAY_A
 		);
 
@@ -223,7 +229,8 @@ class Meta {
 			$_key   = $m['meta_key'];
 			$_value = maybe_unserialize( $m['meta_value'] );
 
-			$objects[ (int) $m['object_id'] ]['meta']->$_key = $_value;
+			$obj_id                            = (int) $m['object_id'];
+			$objects[ $obj_id ]['meta']->$_key = $_value;
 		}
 
 		return $objects;

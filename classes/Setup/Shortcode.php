@@ -1,7 +1,7 @@
 <?php
 /**
- * 	Careers and other short code registrar
- * 
+ *  Careers and other short code registrar
+ *
  * @package crewhrm
  */
 
@@ -16,7 +16,7 @@ class Shortcode {
 
 	/**
 	 * Shortcode registrar hooks
-	 * 
+	 *
 	 * @return void
 	 */
 	public function __construct() {
@@ -26,13 +26,14 @@ class Shortcode {
 	/**
 	 * Careers page render
 	 *
-	 * @param array $attrs
+	 * @param array $attrs Attributes assigned during exection
+	 *
 	 * @return string
 	 */
 	public function careersShortcode( $attrs ) {
 
 		$attrs = _Array::getArray( $attrs );
-		
+
 		$args = array(
 			'search'          => $attrs['search'] ?? true,
 			'header'          => $attrs['header'] ?? true,
@@ -47,6 +48,6 @@ class Shortcode {
 
 		return '<div 
 			class="crewhrm-careers-block" 
-			data-attributes="'. esc_attr( wp_json_encode( $args ) ) . '"></div>';
+			data-attributes="' . esc_attr( wp_json_encode( $args ) ) . '"></div>';
 	}
 }

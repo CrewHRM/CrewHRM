@@ -106,8 +106,10 @@ class Dispatcher {
 	 * @return void
 	 */
 	public function dispatch( $class, $method, $prerequisites ) {
+
 		// Nonce verification
-		$matched = wp_verify_nonce( ( $_POST['nonce'] ?? '' ), $_POST['nonce_action'] ?? '' ) || wp_verify_nonce( ( $_GET['nonce'] ?? '' ), $_GET['nonce_action'] ?? '' );
+		$matched = wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['nonce'] ?? '' ) ), sanitize_text_field( wp_unslash( $_POST['nonce_action'] ?? '' ) ) );
+		$matched = $matched || wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['nonce'] ?? '' ) ), sanitize_text_field( wp_unslash( $_GET['nonce_action'] ?? '' ) ) );
 		if ( ! $matched ) {
 			wp_send_json_error( array( 'message' => esc_html__( 'Nonce verification failed!', 'hr-management' ) ) );
 		}
@@ -132,17 +134,16 @@ class Dispatcher {
 		// Pick only the used arguments in the mathod from request data
 		$args = array();
 		foreach ( $params as $param => $configs ) {
-			$args[ $param ] = ( $is_post ? ( $_POST[ $param ] ?? null ) : ( $_GET[ $param ] ?? null ) ) ?? $_FILES[ $param ] ?? $configs['default'] ?? null;
+			$args[ $param ] = wp_unslash( ( $is_post ? ( $_POST[ $param ] ?? null ) : ( $_GET[ $param ] ?? null ) ) ?? $_FILES[ $param ] ?? $configs['default'] ?? null );
+			
 		}
 
-		// And then prepare them
-		$args = _Array::stripslashesRecursive( $args );
-		$args = _Array::castRecursive( $args );
+		// Sanitize and type cast
+		$args = _Array::castRecursive( _Array::sanitizeRecursive( $args ) );
 
-		// Now verify the data types after casting
+		// Now verify all the arguments expected data types after casting
 		foreach ( $args as $name => $value ) {
 			if ( gettype( $value ) != $params[ $name ]['type'] ) {
-				error_log( sprintf( 'Invalid %s for the endpoint %s', $name, $method ) );
 				wp_send_json_error( array( 'message' => esc_html__( 'Invalid request data!', 'hr-management' ) ) );
 			}
 		}

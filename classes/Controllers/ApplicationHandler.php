@@ -74,7 +74,6 @@ class ApplicationHandler {
 
 		do_action( 'crewhrm_submit_application_before', $application );
 
-		$application    = _Array::sanitizeRecursive( $application, array( 'cover_letter' ) );
 		$application_id = Application::createApplication( $application );
 
 		if ( empty( $application_id ) ) {

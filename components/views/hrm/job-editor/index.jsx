@@ -2,7 +2,7 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 
 import { StickyBar } from 'crewhrm-materials/sticky-bar.jsx';
-import { __, data_pointer, filterObject, getRandomString, isEmpty } from 'crewhrm-materials/helpers.jsx';
+import { __, addKsesPrefix, data_pointer, filterObject, getRandomString, isEmpty } from 'crewhrm-materials/helpers.jsx';
 import { Tabs } from 'crewhrm-materials/tabs/tabs.jsx';
 import { request } from 'crewhrm-materials/request.jsx';
 import { ContextToast } from 'crewhrm-materials/toast/toast.jsx';
@@ -143,6 +143,8 @@ function justifyFields( section_fields, application_form ) {
 	return _application_form;
 }
 
+let timer;
+
 export function JobEditor() {
     const { showWarning, closeWarning } = useContext(ContextWarning);
     let { job_id } = useParams();
@@ -208,7 +210,7 @@ export function JobEditor() {
             }
         };
 
-        request('updateJob', payload, (resp) => {
+        request('updateJob', addKsesPrefix( payload, 'job_description' ), (resp) => {
             const {
                 success,
                 data: { 
@@ -331,7 +333,8 @@ export function JobEditor() {
             return;
         }
 
-        const timer = window.setTimeout(() => {
+		window.clearTimeout(timer);
+        timer = window.setTimeout(() => {
             saveJob(true);
         }, 3000);
 

@@ -257,9 +257,7 @@ export function TitleAndDescription() {
                         session={session}
                         onChange={(v) => onChange('job_description', v)}
                         value={values.job_description || ''}
-                        placeholder={__(
-                            'Enter your job description here; include key areas responsibility and specific qualification needed to perform the role. '
-                        )}
+                        placeholder={__('Enter your job description here; include key areas responsibility and specific qualification needed to perform the role.')}
                     />
                 </div>
                 <div className={'right-col'.classNames(style)}>

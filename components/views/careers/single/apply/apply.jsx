@@ -14,7 +14,8 @@ import {
     getAddress,
     isEmpty,
 	filterObject,
-	flattenArray
+	flattenArray,
+	addKsesPrefix
 } from 'crewhrm-materials/helpers.jsx';
 
 import { RenderField } from './apply-form.jsx';
@@ -170,7 +171,7 @@ export function Apply({ job = {}, settings={} }) {
 	}
 
     const submitApplication = () => {
-        const payload = { application: state.values };
+        let payload = { application: state.values };
 		const files = [];
 
 		// Put files in different variable to upload separately one by one to obey max upload size limit.
@@ -211,6 +212,9 @@ export function Apply({ job = {}, settings={} }) {
 			...state,
 			submitting: true
 		});
+
+		// Change the key for cover letter to kses_cover_letter in favour of sanitization
+		payload = addKsesPrefix(payload, 'cover_letter');
 
         request('applyToJob', {...payload, finalize: !files.length}, (resp) => {
             const {

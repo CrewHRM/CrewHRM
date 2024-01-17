@@ -8,6 +8,7 @@
 namespace CrewHRM\Models;
 
 use CrewHRM\Helpers\_Array;
+use CrewHRM\Helpers\_String;
 
 /**
  * Hiring Flow/Application stage manager class
@@ -143,16 +144,19 @@ class Stage {
 	 */
 	public static function getStagesByJobId( $job_id ) {
 		$is_singular = ! is_array( $job_id );
-		$job_ids     = $is_singular ? array( $job_id ) : $job_id;
-		$ids_in      = implode( ',', array_filter( $job_ids, 'is_numeric' ) );
+		$ids_in      = _Array::getArray( $job_id, true, 0 );
+		$ids_places  = _String::getPlaceHolders( $ids_in );
 
 		global $wpdb;
 		$stages = $wpdb->get_results(
-			"SELECT * FROM {$wpdb->crewhrm_stages} WHERE job_id IN ({$ids_in}) ORDER BY sequence",
+			$wpdb->prepare(
+				"SELECT * FROM {$wpdb->crewhrm_stages} WHERE job_id IN ({$ids_places}) ORDER BY sequence",
+				...$ids_in
+			),
 			ARRAY_A
 		);
-		$stages = _Array::castRecursive( $stages );
 
+		$stages    = _Array::castRecursive( $stages );
 		$new_array = array();
 
 		// Assign the stages in jobs array
@@ -298,7 +302,6 @@ class Stage {
 		$offset   = ( ( $args['page'] ?? 1 ) - 1 ) * $limit;
 
 		$where_clause = '';
-		$order_clause = " ORDER BY {$order_by} {$order}";
 
 		if ( ! empty( $args['job_id'] ) ) {
 			$where_clause .= $wpdb->prepare( ' AND job_id=%d', $args['job_id'] );
@@ -328,8 +331,8 @@ class Stage {
 				FROM 
 					{$wpdb->crewhrm_applications} 
 				WHERE 
-					1=1 {$where_clause} {$order_clause} 
-				LIMIT %d OFFSET %d",
+					1=1 {$where_clause} 
+				ORDER BY {$order_by} {$order} LIMIT %d OFFSET %d",
 				$limit,
 				$offset
 			),
@@ -346,13 +349,15 @@ class Stage {
 	 * @return array
 	 */
 	public static function getStageStatsByJobId( $job_id ) {
+
 		// Prepare arguments
 		$is_singular = ! is_array( $job_id );
-		$job_ids     = _Array::castRecursive( ! $is_singular ? $job_id : array( $job_id ) );
-		$ids_in      = implode( ',', array_filter( $job_ids, 'is_numeric' ) );
+		$job_ids     = _Array::getArray( $job_id, true );
 		if ( empty( $job_ids ) ) {
 			return array();
 		}
+
+		$ids_places = _String::getPlaceHolders( $job_ids );
 
 		// Get application counts per stage per job.
 		global $wpdb;
@@ -365,8 +370,9 @@ class Stage {
 				FROM 
 					{$wpdb->crewhrm_applications} 
 				WHERE 
-					job_id IN ({$ids_in}) 
+					job_id IN ({$ids_places}) 
 				GROUP BY job_id, stage_id",
+				...$job_ids
 			),
 			ARRAY_A
 		);
@@ -392,16 +398,19 @@ class Stage {
 		// Get the stages sequence to sort.
 		// Exclude disqualified as it is used in special way and has no usage in frontend view.
 		$sequences = $wpdb->get_results(
-			"SELECT 
-				job_id, 
-				stage_id, 
-				stage_name, 
-				sequence 
-			FROM 
-				{$wpdb->crewhrm_stages} 
-			WHERE job_id IN ({$ids_in}) 
-				AND stage_name!='_disqualified_' 
-			ORDER BY sequence",
+			$wpdb->prepare(
+				"SELECT 
+					job_id, 
+					stage_id, 
+					stage_name, 
+					sequence 
+				FROM 
+					{$wpdb->crewhrm_stages} 
+				WHERE job_id IN ({$ids_places}) 
+					AND stage_name!='_disqualified_' 
+				ORDER BY sequence",
+				...$job_ids
+			),
 			ARRAY_A
 		);
 		$sequences = _Array::castRecursive( $sequences );

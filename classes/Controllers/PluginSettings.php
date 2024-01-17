@@ -15,18 +15,18 @@ use CrewHRM\Models\Settings;
  */
 class PluginSettings {
 	const PREREQUISITES = array(
-		'saveSettings'       => array(
+		'saveSettings'                 => array(
 			'role' => 'administrator',
 		),
-		'addDepartment'      => array(
+		'addDepartment'                => array(
 			'role' => array( 'administrator' ),
 		),
-		'getCareersSettings' => array(
+		'getCareersSettings'           => array(
 			'nopriv' => true,
 		),
 		'addSettingItem_business_type' => array(
-			'role' => array( 'administrator' )
-		)
+			'role' => array( 'administrator' ),
+		),
 	);
 
 	/**
@@ -91,7 +91,8 @@ class PluginSettings {
 	/**
 	 * Add custom business type
 	 *
-	 * @param string $item_name
+	 * @param string $item_name The new name to add as business type
+	 *
 	 * @return void
 	 */
 	public static function addSettingItem_business_type( string $item_name ) {
@@ -101,7 +102,7 @@ class PluginSettings {
 		wp_send_json_success(
 			array(
 				'id'    => $id,
-				'items' => $items
+				'items' => $items,
 			)
 		);
 	}

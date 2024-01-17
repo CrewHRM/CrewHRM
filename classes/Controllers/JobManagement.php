@@ -46,7 +46,7 @@ class JobManagement {
 	 */
 	public static function updateJob( array $job ) {
 		// Can access job directly as it is checked by dispatcher already using prerequisities array
-		$data       = _Array::sanitizeRecursive( _Array::getArray( $job ), array( 'job_description' ) );
+		$data       = $job;
 		$new_status = $data['job_status'];
 		$is_publish = 'publish' === $new_status;
 

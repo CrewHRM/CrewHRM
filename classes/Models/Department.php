@@ -8,6 +8,7 @@
 namespace CrewHRM\Models;
 
 use CrewHRM\Helpers\_Array;
+use CrewHRM\Helpers\_String;
 
 /**
  * The handler class
@@ -65,25 +66,28 @@ class Department {
 	/**
 	 * Delete departments that are not in the current array
 	 *
-	 * @param array $current Current array of department IDs
+	 * @param array $current_ids Current array of department IDs
 	 * @return void
 	 */
-	public static function deleteOutStandings( array $current ) {
+	public static function deleteOutStandings( array $current_ids ) {
 
-		$current = array_filter( $current, 'is_numeric' );
-		if ( empty( $current ) ) {
+		if ( empty( $current_ids ) ) {
 			return;
 		}
 
 		// Prepare IDs to delete stages by
-		$ids_implode = implode( ',', array_filter( $current, 'is_numeric' ) );
+		$current_ids = _Array::getArray( $current_ids, false, 0 );
+		$ids_places  = _String::getPlaceHolders( $current_ids );
 
 		global $wpdb;
 		$wpdb->query(
-			"DELETE FROM 
-				{$wpdb->crewhrm_departments} 
-			WHERE 
-				department_id NOT IN ({$ids_implode})"
+			$wpdb->prepare(
+				"DELETE FROM 
+					{$wpdb->crewhrm_departments} 
+				WHERE 
+					department_id NOT IN ({$ids_places})",
+				...$current_ids
+			)
 		);
 	}
 

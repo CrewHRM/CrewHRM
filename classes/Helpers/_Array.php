@@ -35,13 +35,30 @@ class _Array {
 	}
 
 	/**
-	 * Return array no matter what. And cast values to appropriate data type.
+	 * Multipurpose array preparation
 	 *
-	 * @param mixed $value The value to get array of and cast before. If not retruns empty array.
+	 * @param mixed $array Expected array, however anything else could be passed to convert to array element
+	 * @param bool  $mutate Whether to make the non array element to array element
+	 * @param mixed $non_empty_fallback The fallback array element when the array is empty
+	 *
 	 * @return array
 	 */
-	public static function getArray( $value ) {
-		return self::castRecursive( is_array( $value ) ? $value : array() );
+	public static function getArray( $array, $mutate = false, $non_empty_fallback = null ) {
+
+		// Set the array as empty or convert the non array to array
+		if ( ! is_array( $array ) ) {
+			$array = $mutate ? array( $array ) : array();
+		}
+
+		// Avoid non empty array by adding fallback element for IN query epecially
+		if ( empty( $array ) && null !== $non_empty_fallback ) {
+			$array = array( $non_empty_fallback );
+		}
+
+		// Convert data types to near ones
+		$array = self::castRecursive( $array );
+
+		return $array;
 	}
 
 	/**
@@ -132,19 +149,22 @@ class _Array {
 	/**
 	 * Sanitize contents recursively
 	 *
-	 * @param array      $value    The array to run kses through
-	 * @param array      $kses_for Define field name to use wp_kses for instead of sanitize_text_field.
-	 * @param string|int $key      Do not use outside of this function. It's for internal use.
-	 * @return array
+	 * @param mixed      $value The value to sanitize
+	 * @param string|int $key Current key in recursion. Do not pass it from outside of this function. It's for internal use only.
+	 *
+	 * @return mixed
 	 */
-	public static function sanitizeRecursive( $value, $kses_for = array(), $key = null ) {
+	public static function sanitizeRecursive( $value, $key = null ) {
 		if ( is_array( $value ) ) {
 			foreach ( $value as $_key => $_value ) {
-				$value[ $_key ] = self::sanitizeRecursive( $_value, $kses_for, $_key );
+				// If it is kses, then remove the key prefix as it is not necessary.
+				$index           = strpos( $_key, 'kses_' ) === 0 ? substr( $_key, 5 ) : $_key;
+				$value[ $index ] = self::sanitizeRecursive( $_value, $_key );
 			}
 		} elseif ( is_string( $value ) ) {
-			$value = in_array( $key, $kses_for, true ) ? _String::applyKses( $value ) : sanitize_text_field( $value );
-			$value = trim( $value );
+			// If the prefix is kses_, it means to get it through kses filter.
+			// Otherise normal sanitize
+			$value = strpos( $key, 'kses_' ) === 0 ? _String::applyKses( $value ) : sanitize_text_field( $value );
 		}
 
 		return $value;
@@ -156,16 +176,16 @@ class _Array {
 	 * @param array $array Array of strings or whatever. Only strings will be processed.
 	 * @return array
 	 */
-	public static function stripslashesRecursive( array $array ) {
+	public static function unslashRecursive( array $array ) {
 		// Loop through array elements
 		foreach ( $array as $index => $element ) {
 			if ( is_array( $element ) ) {
-				$array[ $index ] = self::stripslashesRecursive( $element );
+				$array[ $index ] = self::unslashRecursive( $element );
 				continue;
 			}
 
 			if ( is_string( $element ) ) {
-				$array[ $index ] = stripslashes( $element );
+				$array[ $index ] = wp_unslash( $element );
 			}
 		}
 
@@ -233,15 +253,16 @@ class _Array {
 	/**
 	 * Get method parameter names
 	 *
-	 * @param class  $class
-	 * @param string $method
+	 * @param class  $class The class to get method info from
+	 * @param string $method The method to get parameters definition
+	 *
 	 * @return array
 	 */
 	public static function getMethodParams( $class, $method ) {
 
-		$reflectionMethod = new \ReflectionMethod( $class, $method );
-		$parameters       = $reflectionMethod->getParameters();
-		$_params          = array();
+		$reflection_method = new \ReflectionMethod( $class, $method );
+		$parameters        = $reflection_method->getParameters();
+		$_params           = array();
 
 		$type_map = array(
 			'int'   => 'integer',

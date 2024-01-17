@@ -61,12 +61,12 @@ class _String {
 	 *
 	 * @param stirng $prefix Prefix
 	 * @param stirng $postfix Postfix
-	 * 
+	 *
 	 * @return string
 	 */
 	public static function getRandomString( $prefix = 'r', $postfix = 'r' ) {
 		$characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-		$ms         = (string) microtime(true);
+		$ms         = (string) microtime( true );
 		$ms         = str_replace( '.', '', $ms );
 		$string     = $prefix . $ms;
 
@@ -120,7 +120,8 @@ class _String {
 	/**
 	 * Cast a string value to nearest data type
 	 *
-	 * @param string $value
+	 * @param string $value The value to convert to nearest data type
+	 *
 	 * @return mixed
 	 */
 	public static function castValue( $value ) {
@@ -154,5 +155,17 @@ class _String {
 		}
 
 		return $value;
+	}
+
+	/**
+	 * Helper method to generate placeholders for in query
+	 *
+	 * @param int|array $count The amount of placeholders or the data array to get count of.
+	 * @param string    $placeholder The placeholder. Default %d for numeric values as it is mostly used.
+	 * @return string
+	 */
+	public static function getPlaceHolders( $count, string $placeholder = '%d' ) {
+		$count = is_array( $count ) ? count( $count ) : $count;
+		return implode( ', ', array_fill( 0, $count, $placeholder ) );
 	}
 }

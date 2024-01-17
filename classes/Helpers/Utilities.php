@@ -25,9 +25,11 @@ class Utilities {
 		$is_dashboard = is_admin() && get_admin_page_parent() === Main::$configs->app_name;
 
 		if ( $is_dashboard && null !== $sub_page ) {
+			// Accessing $_GET['page'] directly will most likely show nonce error in wpcs check.
+			// However checking nonce is pointless since visitor can visit dashboard pages from bookmark or direct link.
+			$current_page = isset( $_GET['page'] ) ? sanitize_text_field( wp_unslash( $_GET['page'] ) ) : null; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			$pages        = ! is_array( $sub_page ) ? array( $sub_page ) : $sub_page;
-			$current_page = sanitize_text_field( $_GET['page'] ?? '' );
-			$is_dashboard = in_array( $current_page, $pages, true );
+			$is_dashboard = ! empty( $current_page ) && in_array( $current_page, $pages, true );
 		}
 
 		return $is_dashboard;

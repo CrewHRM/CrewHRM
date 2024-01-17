@@ -48,9 +48,10 @@ class Blocks {
 	}
 
 	/**
-	 * Add departments array to variable as it is necessary for careers block settings
+	 * Add departments array to JS variable as it is necessary for careers block in gutenberg editor
 	 *
-	 * @param array $data
+	 * @param array $data Existing JS variables
+	 *
 	 * @return array
 	 */
 	public function addDepartmentsToVariables( array $data ) {

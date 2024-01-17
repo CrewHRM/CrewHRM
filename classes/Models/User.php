@@ -7,6 +7,9 @@
 
 namespace CrewHRM\Models;
 
+use CrewHRM\Helpers\_Array;
+use CrewHRM\Helpers\_String;
+
 /**
  * User functions
  */
@@ -57,9 +60,8 @@ class User {
 		global $wpdb;
 
 		$keyword    = esc_sql( $keyword );
-		$skip_ids   = array_filter( $skip_ids, 'is_numeric' );
-		$ids_not_in = ! empty( $skip_ids ) ? $skip_ids : array( 0 );
-		$ids_not_in = implode( ',', array_filter( $ids_not_in, 'is_numeric' ) );
+		$skip_ids   = _Array::getArray( $skip_ids, false, 0 );
+		$ids_places = _String::getPlaceHolders( $skip_ids );
 
 		$users = $wpdb->get_results(
 			$wpdb->prepare(
@@ -77,13 +79,14 @@ class User {
 						OR display_name LIKE %s 
 						OR user_nicename LIKE %s
 					) 
-					AND ID NOT IN ({$ids_not_in})
+					AND ID NOT IN ({$ids_places})
 				LIMIT 50",
 				$keyword,
 				$keyword,
 				$keyword,
 				"%{$wpdb->esc_like( $keyword )}%",
-				"%{$wpdb->esc_like( $keyword )}%"
+				"%{$wpdb->esc_like( $keyword )}%",
+				...$skip_ids
 			),
 			ARRAY_A
 		);

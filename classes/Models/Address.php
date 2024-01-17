@@ -7,6 +7,9 @@
 
 namespace CrewHRM\Models;
 
+use CrewHRM\Helpers\_Array;
+use CrewHRM\Helpers\_String;
+
 /**
  * Address class
  */
@@ -54,16 +57,20 @@ class Address {
 	/**
 	 * Delete address by address ID
 	 *
-	 * @param int $address_id ID to delete by
+	 * @param int|array $address_id Address ID or array of IDs to delete by
+	 *
 	 * @return void
 	 */
 	public static function deleteAddress( $address_id ) {
-		$ids    = is_array( $address_id ) ? $address_id : array( $address_id );
-		$ids_in = implode( ',', array_filter( $ids, 'is_numeric' ) );
+		$ids        = _Array::getArray( $address_id, true, 0 );
+		$ids_places = _String::getPlaceHolders( $ids );
 
 		global $wpdb;
 		$wpdb->query(
-			"DELETE FROM {$wpdb->crewhrm_addresses} WHERE address_id IN ({$ids_in})"
+			$wpdb->prepare(
+				"DELETE FROM {$wpdb->crewhrm_addresses} WHERE address_id IN ({$ids_places})",
+				...$ids
+			)
 		);
 	}
 

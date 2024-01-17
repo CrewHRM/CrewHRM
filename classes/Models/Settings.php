@@ -162,24 +162,24 @@ class Settings {
 			update_option(
 				self::BUSINESS_TYPE_NAME,
 				array(
-					'agriculture_naturalresources' => __( 'Agriculture & Natural Resources', 'crewhrm' ),
-					'extraction_mining'            => __( 'Extraction & Mining', 'crewhrm' ),
-					'energy_utilities'             => __( 'Energy & Utilities', 'crewhrm' ),
-					'construction_infrastructure'  => __( 'Construction & Infrastructure', 'crewhrm' ),
-					'manufacturing_production'     => __( 'Manufacturing & Production', 'crewhrm' ),
-					'wholesale_distribution'       => __( 'Wholesale & Distribution', 'crewhrm' ),
-					'retail_consumergoods'         => __( 'Retail & Consumer Goods', 'crewhrm' ),
-					'transportation_logistics'     => __( 'Transportation & Logistics', 'crewhrm' ),
-					'technology_communication'     => __( 'Technology & Communication', 'crewhrm' ),
-					'finance_insurance'            => __( 'Finance & Insurance', 'crewhrm' ),
-					'realestate_property'          => __( 'Real Estate & Property', 'crewhrm' ),
-					'professionalservices'         => __( 'Professional Services', 'crewhrm' ),
-					'healthcare_wellness'          => __( 'Healthcare & Wellness', 'crewhrm' ),
-					'entertainment_media'          => __( 'Entertainment & Media', 'crewhrm' ),
-					'hospitality_tourism'          => __( 'Hospitality & Tourism', 'crewhrm' ),
-					'education_training'           => __( 'Education & Training', 'crewhrm' ),
-					'nonprofit_socialservices'     => __( 'Non-Profit & Social Services', 'crewhrm' ),
-					'government_publicservices'    => __( 'Government & Public Services', 'crewhrm' ),
+					'agriculture_naturalresources' => esc_html__( 'Agriculture & Natural Resources', 'hr-management' ),
+					'extraction_mining'            => esc_html__( 'Extraction & Mining', 'hr-management' ),
+					'energy_utilities'             => esc_html__( 'Energy & Utilities', 'hr-management' ),
+					'construction_infrastructure'  => esc_html__( 'Construction & Infrastructure', 'hr-management' ),
+					'manufacturing_production'     => esc_html__( 'Manufacturing & Production', 'hr-management' ),
+					'wholesale_distribution'       => esc_html__( 'Wholesale & Distribution', 'hr-management' ),
+					'retail_consumergoods'         => esc_html__( 'Retail & Consumer Goods', 'hr-management' ),
+					'transportation_logistics'     => esc_html__( 'Transportation & Logistics', 'hr-management' ),
+					'technology_communication'     => esc_html__( 'Technology & Communication', 'hr-management' ),
+					'finance_insurance'            => esc_html__( 'Finance & Insurance', 'hr-management' ),
+					'realestate_property'          => esc_html__( 'Real Estate & Property', 'hr-management' ),
+					'professionalservices'         => esc_html__( 'Professional Services', 'hr-management' ),
+					'healthcare_wellness'          => esc_html__( 'Healthcare & Wellness', 'hr-management' ),
+					'entertainment_media'          => esc_html__( 'Entertainment & Media', 'hr-management' ),
+					'hospitality_tourism'          => esc_html__( 'Hospitality & Tourism', 'hr-management' ),
+					'education_training'           => esc_html__( 'Education & Training', 'hr-management' ),
+					'nonprofit_socialservices'     => esc_html__( 'Non-Profit & Social Services', 'hr-management' ),
+					'government_publicservices'    => esc_html__( 'Government & Public Services', 'hr-management' ),
 				)
 			);
 		}
@@ -188,7 +188,7 @@ class Settings {
 	/**
 	 * Get business types from options
 	 *
-	 * @return void
+	 * @return array
 	 */
 	private static function getSavedBusinessTypes() {
 		$types = get_option( self::BUSINESS_TYPE_NAME );
@@ -212,7 +212,7 @@ class Settings {
 	public static function getBusinessTypesDropdown() {
 		$types     = self::getBusinessTypes();
 		$new_array = array();
-		
+
 		foreach ( $types as $key => $label ) {
 			$new_array[] = array(
 				'id'    => $key,

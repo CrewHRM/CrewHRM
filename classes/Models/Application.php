@@ -122,19 +122,23 @@ class Application {
 	 * @return void
 	 */
 	public static function deleteApplication( $application_id ) {
+
+		$ids        = _Array::getArray( $application_id, true, 0 );
+		$ids_places = _String::getPlaceHolders( $ids );
+
 		global $wpdb;
-
-		$ids    = is_array( $application_id ) ? $application_id : array( $application_id );
-		$ids_in = implode( ',', array_filter( $ids, 'is_numeric' ) );
-
 		$applications = $wpdb->get_results(
-			"SELECT 
-				application_id, 
-				resume_file_id, 
-				address_id 
-			FROM {$wpdb->crewhrm_applications} 
-			WHERE 
-				application_id IN ({$ids_in})",
+			$wpdb->prepare(
+				"SELECT 
+					application_id, 
+					resume_file_id, 
+					address_id 
+				FROM 
+					{$wpdb->crewhrm_applications} 
+				WHERE 
+					application_id IN ({$ids_places})",
+				...$ids
+			),
 			ARRAY_A
 		);
 		$applications = _Array::indexify( _Array::castRecursive( $applications ), 'application_id' );
@@ -176,12 +180,18 @@ class Application {
 
 		// Delete pipelines
 		$wpdb->query(
-			"DELETE FROM {$wpdb->crewhrm_pipeline} WHERE application_id IN ({$ids_in})"
+			$wpdb->prepare(
+				"DELETE FROM {$wpdb->crewhrm_pipeline} WHERE application_id IN ({$ids_places})",
+				...$ids
+			)
 		);
 
 		// Delete application finally
 		$wpdb->query(
-			"DELETE FROM {$wpdb->crewhrm_applications} WHERE application_id IN ({$ids_in})"
+			$wpdb->prepare(
+				"DELETE FROM {$wpdb->crewhrm_applications} WHERE application_id IN ({$ids_places})",
+				...$ids
+			)
 		);
 
 		// Execute hook to delete more pro dependencies
@@ -212,7 +222,6 @@ class Application {
 	 * @return array
 	 */
 	public static function appendApplicationCounts( $jobs ) {
-		error_log( 'App count' );
 
 		// Prepare the jobs array
 		$jobs = _Array::appendColumn(
@@ -230,9 +239,6 @@ class Application {
 		$stats      = Stage::getStageStatsByJobId( $job_ids );
 		$candidates = $stats['candidates'] ?? array();
 		$stages     = $stats['stages'] ?? array();
-
-		error_log( var_export( $job_ids, true ) );
-		error_log( var_export( $stats, true ) );
 
 		// Loop through total candidate counts per job regardless of stage
 		foreach ( $candidates as $job_id => $total ) {
@@ -288,31 +294,26 @@ class Application {
 			$where_clause .= $wpdb->prepare( ' AND app.stage_id=%d', $stage_id );
 		}
 
-		$disq_ids = self::getDisqualifiedAppIDs( $disq_stage_id );
-		array_unshift( $disq_ids, 0 );
-		$ids_implode = implode( ',', array_filter( $disq_ids, 'is_numeric' ) );
-
-		// Prepare where clause whether to get qualified or disqualified applications
-		if ( $get_qualified ) {
-			$where_clause .= " AND app.application_id NOT IN ({$ids_implode})";
-		} else {
-			$where_clause .= " AND app.application_id IN ({$ids_implode})";
-		}
+		// Prepare disqualified IDs to get or not get applicant by
+		$negate_in       = $get_qualified ? ' NOT ' : '';
+		$disq_ids        = self::getDisqualifiedAppIDs( $job_id, $disq_stage_id );
+		$disq_ids        = _Array::getArray( $disq_ids, false, 0 );
+		$disq_ids_places = _String::getPlaceHolders( $disq_ids );
 
 		// Run query and get the application IDs
 		$application_ids = $wpdb->get_col(
-			"SELECT 
-				app.application_id 
-			FROM {$wpdb->crewhrm_applications} app
-				LEFT JOIN {$wpdb->crewhrm_stages} stage ON app.stage_id=stage.stage_id 
-			WHERE 
-				{$where_clause} ORDER BY application_date DESC"
+			$wpdb->prepare(
+				"SELECT 
+					app.application_id 
+				FROM {$wpdb->crewhrm_applications} app
+					LEFT JOIN {$wpdb->crewhrm_stages} stage ON app.stage_id=stage.stage_id 
+				WHERE 
+					{$where_clause} 
+					AND app.application_id {$negate_in} IN ({$disq_ids_places})
+				ORDER BY application_date DESC",
+				...$disq_ids
+			)
 		);
-
-		error_log( '---------' );
-		error_log( var_export( $get_qualified, true ) );
-		error_log( var_export( $disq_ids, true ) );
-		error_log( var_export( $application_ids, true ) );
 
 		// If it needs only count, no need to include other data, return count onyl
 		if ( $count_only ) {
@@ -324,30 +325,33 @@ class Application {
 		}
 
 		// Get data now by the IDs as it's complicated to get all together
-		$application_ids = _Array::castRecursive( $application_ids );
-		$ids_in          = implode( ',', array_filter( $application_ids, 'is_numeric' ) );
+		$application_ids = _Array::getArray( $application_ids, false, 0 );
+		$ids_places      = _String::getPlaceHolders( $application_ids );
 
 		// Get the resutls
 		$results = $wpdb->get_results(
-			"SELECT 
-				application_id,
-				job_id,
-				stage_id,
-				address_id,
-				first_name,
-				last_name,
-				email,
-				phone,
-				date_of_birth,
-				gender,
-				cover_letter,
-				resume_file_id,
-				is_complete, 
-				UNIX_TIMESTAMP(application_date) AS application_date 
-			FROM 
-				{$wpdb->crewhrm_applications} 
-			WHERE application_id IN ({$ids_in}) 
-			ORDER BY application_date DESC",
+			$wpdb->prepare(
+				"SELECT 
+					application_id,
+					job_id,
+					stage_id,
+					address_id,
+					first_name,
+					last_name,
+					email,
+					phone,
+					date_of_birth,
+					gender,
+					cover_letter,
+					resume_file_id,
+					is_complete, 
+					UNIX_TIMESTAMP(application_date) AS application_date 
+				FROM 
+					{$wpdb->crewhrm_applications} 
+				WHERE application_id IN ({$ids_places}) 
+				ORDER BY application_date DESC",
+				...$application_ids
+			),
 			ARRAY_A
 		);
 
@@ -357,28 +361,29 @@ class Application {
 	/**
 	 * Get the disqualified application IDs for a specific stage of a job.
 	 *
-	 * @param int $disq_stage_id The ID of disqualified stage which is supposed to be assigned for a job dynamically during first creation.
+	 * @param int $job_id The JOB ID t oget disqualified applications from
+	 * @param int $disq_stage_id The ID of disqualified stage which is supposed to be assigned for a job dynamically during creation.
 	 * @return array
 	 */
-	private static function getDisqualifiedAppIDs( $disq_stage_id ) {
+	private static function getDisqualifiedAppIDs( $job_id, $disq_stage_id ) {
 		global $wpdb;
 
-		// Order by action_date DESC to get the latest disq state first.
+		// Get all the applications back and forth activities for the job
 		$results = $wpdb->get_results(
 			$wpdb->prepare(
 				"SELECT 
-					application_id, 
-					stage_id 
+					pipe.application_id, 
+					pipe.stage_id 
 				FROM 
-					{$wpdb->crewhrm_pipeline} 
+					{$wpdb->crewhrm_pipeline} pipe INNER JOIN {$wpdb->crewhrm_applications} app ON pipe.application_id=app.application_id
 				WHERE 
-					stage_id=%d 
+					app.job_id=%d 
 				ORDER BY action_date DESC",
-				$disq_stage_id
+				$job_id
 			),
 			ARRAY_A
 		);
-
+		
 		$results    = _Array::castRecursive( $results );
 		$aggregated = array();
 

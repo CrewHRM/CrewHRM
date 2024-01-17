@@ -17,6 +17,9 @@
  * @package crewhrm
  */
 
+if ( ! defined( 'ABSPATH' ) ) { exit;
+}
+
 // Load addon
 require_once __DIR__ . '/classes/Main.php';
 ( new \CrewHRM\Addon\Recaptcha\Main() )->init( __FILE__ );
