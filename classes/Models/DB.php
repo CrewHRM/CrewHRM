@@ -67,6 +67,42 @@ class DB {
 	}
 
 	/**
+	 * Inspect all the things in queries
+	 *
+	 * @return array
+	 */
+	private static function getInspected( array $queries ) {
+		foreach ( $queries as $index => $query ) {
+
+			// Pick table name
+			preg_match( '/CREATE TABLE IF NOT EXISTS `(.*)`/', $query, $matches );
+			$table_name = $matches[1];
+
+			// Pick column definitions
+			$lines   = explode( PHP_EOL, $query );
+			$columns = array();
+			foreach ( $lines as $line ) {
+
+				$line = trim( $line );
+				if ( empty( $line ) || ! ( strpos( $line, '`' ) === 0 ) ) {
+					continue;
+				}
+
+				$column_name             = substr( $line, 1, strpos( $line, '`', 2 ) - 1 );
+				$columns[ $column_name ] = trim( $line, ',' );
+			}
+
+			$queries[ $index ] = array(
+				'query'   => $query,
+				'table'   => $table_name,
+				'columns' => $columns,
+			);
+		}
+
+		return $queries;
+	}
+
+	/**
 	 * Import the DB from SQL file.
 	 * ---------------------------
 	 * Must have in the SQL
@@ -87,11 +123,33 @@ class DB {
 	public static function import( $sql ) {
 		$queries = self::purgeSQL( $sql );
 		$queries = self::applyDynamics( $queries );
+		$queries = self::getInspected( $queries );
 
+		// Load helper methods if not loaded already
 		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
 
+		global $wpdb;
+
 		foreach ( $queries as $query ) {
-			dbDelta( $query );
+			dbDelta( $query['query'] );
+
+			// Add missing columns to the table
+			// Because the previous dbDelta just creates new table if not exists already
+			// So missing columns doesn't get created automatically.
+			$current_columns = $wpdb->get_col(
+				$wpdb->prepare(
+					'SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = %s',
+					$query['table']
+				)
+			);
+
+			// Loop through the columns in latest SQL file
+			foreach ( $query['columns'] as $column => $column_definition ) {
+				// Add the columns if not in the database
+				if ( ! in_array( $column, $current_columns ) ) {
+					$wpdb->query( "ALTER TABLE {$query['table']} ADD {$column_definition}" );
+				}
+			}
 		}
 	}
 }

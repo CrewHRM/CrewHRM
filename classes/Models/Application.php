@@ -383,7 +383,7 @@ class Application {
 			),
 			ARRAY_A
 		);
-		
+
 		$results    = _Array::castRecursive( $results );
 		$aggregated = array();
 

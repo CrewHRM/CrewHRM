@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 04, 2024 at 12:10 AM
+-- Generation Time: Jan 20, 2024 at 01:47 AM
 -- Server version: 8.0.16
 -- PHP Version: 8.1.23
 
@@ -173,6 +173,7 @@ CREATE TABLE IF NOT EXISTS `wp_crewhrm_jobs` (
   `job_code` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
   `job_title` mediumtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci NOT NULL,
   `job_description` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci NOT NULL,
+  `job_slug` varchar(355) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
   `job_status` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci NOT NULL COMMENT 'draft, publish or archive. Once published, draft copies will be saved in meta instead to show prompt in editor. ',
   `department_id` bigint(20) UNSIGNED DEFAULT NULL,
   `vacancy` mediumint(8) UNSIGNED DEFAULT NULL,
