@@ -30,6 +30,11 @@ class Verify {
 	 */
 	public function verifyToken( array $application ) {
 
+		// No need to  verify if the recaptcha cofniguration keys not set yet
+		if ( ! Google::isConfigured() ) {
+			return;
+		}
+
 		// Get the captcha response
 		$token = $application['recaptcha_token'] ?? null;
 

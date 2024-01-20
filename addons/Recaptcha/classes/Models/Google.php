@@ -29,6 +29,16 @@ class Google {
 	}
 
 	/**
+	 * Check if the recaptcha configured or not
+	 *
+	 * @return boolean
+	 */
+	public static function isConfigured() {
+		$keys = self::getKeys();
+		return is_array( $keys ) && ! empty( $keys['site_key'] ) && ! empty( $keys['secret_key'] );
+	}
+
+	/**
 	 * Save credential
 	 *
 	 * @param string $site_key The site key
