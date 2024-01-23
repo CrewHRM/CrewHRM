@@ -228,11 +228,32 @@ class Job {
 			$where_clause .= $wpdb->prepare( ' AND job.job_title LIKE %s', "%{$wpdb->esc_like( $args['search'] )}%" );
 		}
 
-		// Determine what to select
+		// If it is for pagination, return only the counts
 		if ( $segmentation ) {
-			$selects = 'COUNT(job.job_id)';
-		} else {
-			$selects = '
+
+			$total_count = (int) $wpdb->get_var(
+				"SELECT
+					COUNT(job.job_id)
+				FROM {$wpdb->crewhrm_jobs} job 
+					LEFT JOIN {$wpdb->crewhrm_departments} department ON job.department_id=department.department_id
+					LEFT JOIN {$wpdb->crewhrm_addresses} address ON job.address_id=address.address_id
+				WHERE 1=1 {$where_clause}"
+			);
+
+			$page_count = ceil( $total_count / $limit );
+
+			return array(
+				'total_count' => $total_count,
+				'page_count'  => $page_count,
+				'page'        => $page,
+				'limit'       => $limit,
+			);
+
+		}
+		
+		// So it is not pagination, rather prepare whole job data
+		$jobs = $wpdb->get_results(
+			"SELECT 
 				job.job_id,
 				job.job_code,
 				job.job_title,
@@ -254,40 +275,14 @@ class Job {
 				UNIX_TIMESTAMP(job.created_at) AS created_at,
 				UNIX_TIMESTAMP(job.updated_at) AS updated_at,
 				department.department_name, 
-				address.*';
-		}
-
-		if ( $segmentation ) {
-
-			$total_count = (int) $wpdb->get_var(
-				"SELECT {$selects} 
-				FROM {$wpdb->crewhrm_jobs} job 
-					LEFT JOIN {$wpdb->crewhrm_departments} department ON job.department_id=department.department_id
-					LEFT JOIN {$wpdb->crewhrm_addresses} address ON job.address_id=address.address_id
-				WHERE 1=1 {$where_clause}"
-			);
-
-			$page_count = ceil( $total_count / $limit );
-
-			return array(
-				'total_count' => $total_count,
-				'page_count'  => $page_count,
-				'page'        => $page,
-				'limit'       => $limit,
-			);
-
-		} else {
-			$jobs = $wpdb->get_results(
-				"SELECT 
-					{$selects} 
-				FROM {$wpdb->crewhrm_jobs} job 
-					LEFT JOIN {$wpdb->crewhrm_departments} department ON job.department_id=department.department_id
-					LEFT JOIN {$wpdb->crewhrm_addresses} address ON job.address_id=address.address_id
-				WHERE 1=1 {$where_clause} {$order_by} {$limit_clause}",
-				ARRAY_A
-			);
-		}
-
+				address.*
+			FROM {$wpdb->crewhrm_jobs} job 
+				LEFT JOIN {$wpdb->crewhrm_departments} department ON job.department_id=department.department_id
+				LEFT JOIN {$wpdb->crewhrm_addresses} address ON job.address_id=address.address_id
+			WHERE 1=1 {$where_clause} {$order_by} {$limit_clause}",
+			ARRAY_A
+		);
+		
 		// No need further data if it's empty
 		if ( empty( $jobs ) ) {
 			return array();

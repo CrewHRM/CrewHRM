@@ -5,15 +5,19 @@
 	 * @package crewhrm
 	 */
 
+use CrewHRM\Models\Settings;
+
 if ( ! defined( 'ABSPATH' ) ) { exit;
 }
+
+$social_links = Settings::getSocialLinks();
 
 ?><!DOCTYPE html>
 <html>
 	<head>
 		<meta http-equiv="Content-Type" content="text/html charset=UTF-8" />
 	</head>
-	<body style="background-color: #F3F4F5;
+	<body style="background: #F3F4F5;
 		padding: 50px 20px; 
 		font-family: 'Plus Jakarta Sans', Arial, sans-serif;
 		box-sizing:border-box;"
@@ -27,6 +31,10 @@ if ( ! defined( 'ABSPATH' ) ) { exit;
 			box-sizing:border-box;"
 		>
 			<div>{contents}</div>
+
+			<?php if ( ! empty( $social_links ) ): ?>
+			
+			<?php endif; ?>
 		</div>
 	</body>
 </html>

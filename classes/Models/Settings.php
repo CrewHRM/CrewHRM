@@ -244,4 +244,32 @@ class Settings {
 
 		return $id;
 	}
+
+	/**
+	 * Get social links from settings
+	 *
+	 * @return array
+	 */
+	public static function getSocialLinks() {
+
+		$links        = array();
+		$link_options = self::getSettings();
+		$link_names   = array(
+			'website_url'  => 'ch-icon ch-icon-world',
+			'linkedin_url' => 'ch-icon ch-icon-linkedin2',
+			'twitter_url'  => 'ch-icon ch-icon-x',
+			'facebook_url' => 'ch-icon ch-icon-facebook',
+		);
+
+		foreach ( $link_names as $key => $icon ) {
+			if ( ! empty( $link_options[ $key ] ) ) {
+				$links[] = array(
+					'url'  => $link_options[ $key ],
+					'icon' => $icon
+				);
+			}
+		}
+
+		return apply_filters( 'crewhrm_social_links', $links );
+	}
 }

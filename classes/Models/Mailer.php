@@ -169,6 +169,27 @@ class Mailer {
 	}
 
 	/**
+	 * Generate preview URL for templates
+	 *
+	 * @param string $template
+	 * @param string $nonce
+	 * @param string $nonce_action
+	 * 
+	 * @return string
+	 */
+	public static function getPreviewURL( string $nonce, string $nonce_action, $template = '' ) {
+		return add_query_arg(
+			array(
+				'nonce'        => $nonce,
+				'nonce_action' => $nonce_action,
+				'action'       => Main::$configs->app_name . '_previewDevMail',
+				'template'     => $template
+			),
+			admin_url( 'admin-ajax.php' )
+		);
+	}
+
+	/**
 	 * Wrap email body with header footer and common layout
 	 *
 	 * @param string $template The template name to use for the event. In fact template and event name are same always.
@@ -193,8 +214,7 @@ class Mailer {
 		$contents = $this->applyDynamics( $contents, $dynamics, $template );
 		$contents = apply_filters( 'crewhrm_email_content_after_dynamics', $contents, $template, $dynamics );
 
-		// Note: This $contents variable is used in the file included below.
-
+		// Wrap the content with comman layout template
 		ob_start();
 		require Main::$configs->dir . 'templates/email/layout.php';
 		$final_body = str_replace( '{contents}', $contents, ob_get_clean() );

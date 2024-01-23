@@ -188,6 +188,7 @@ class JobManagement {
 				array(
 					'job'           => $job,
 					'about_company' => Settings::getSettings( 'about_company' ),
+					'social_links'  => Settings::getSocialLinks()
 				)
 			);
 		}

@@ -103,6 +103,7 @@ export function Single({ base_permalink, settings={} }) {
     const [state, setState] = useState({
         job: null,
         about_company: null,
+		social_links: [],
         fetching: true,
         error_message: null
     });
@@ -116,7 +117,12 @@ export function Single({ base_permalink, settings={} }) {
         request('getSingleJobView', { job_id, preview: queryParams.preview }, (resp) => {
             const {
                 success,
-                data: { job = {}, about_company, message = __('Something Went Wrong!') }
+                data: { 
+					job = {}, 
+					about_company={}, 
+					social_links=[],
+					message = __('Something Went Wrong!') 
+				}
             } = resp;
 
             setState({
@@ -126,6 +132,7 @@ export function Single({ base_permalink, settings={} }) {
                     application_form: success ? applyFormFields(job.application_form || {}) : null
                 },
                 about_company,
+				social_links,
                 fetching: false,
                 error_message: !success || !job ? message : null
             });
@@ -160,107 +167,108 @@ export function Single({ base_permalink, settings={} }) {
         );
     }
 
-    return job_action === 'apply' ? (
-        <Apply job={state.job} settings={settings}/>
-    ) : (
-        <div className={'single'.classNames(style)}>
-			<Helmet>
-				<title>{job_title}</title>
-			</Helmet>
-            <div className={'header'.classNames(style) + 'bg-color-tertiary'.classNames()}>
-                <div className={'container'.classNames(style)}>
-                    <span
-                        className={'d-block font-size-15 font-weight-700 line-height-25 letter-spacing-3 color-text margin-bottom-10'.classNames()}
-                    >
-                        {department_name}
-                    </span>
-                    <span
-                        className={'d-block font-size-38 font-weight-600 line-height-40 letter-spacing--38 color-text'.classNames()}
-                    >
-                        {job_title}
-                        <Conditional show={job_status !== 'publish'}>
-                            &nbsp; <i>( {statuses[job_status]?.label ?? job_status} )</i>
-                        </Conditional>
-                    </span>
-                </div>
-            </div>
-            <div className={'details'.classNames(style)}>
-                <div className={'container'.classNames(style)}>
-                    <div
-                        className={'d-flex align-items-center justify-content-space-between flex-wrap-wrap column-gap-20 row-gap-20 padding-vertical-20 padding-horizontal-30 bg-color-white border-radius-10 box-shadow-thick'.classNames()}
-                        style={{ marginTop: '-51px', marginBottom: '79px' }}
-                    >
-                        <RenderMeta
-                            icon={'ch-icon ch-icon-location'}
-                            hint={__('Location')}
-                            content={getAddress(state.job || {})}
-                        />
-                        <RenderMeta
-                            icon={'ch-icon ch-icon-briefcase'}
-                            hint={__('Job Type')}
-							contentClass={'white-space-nowrap'.classNames()}
-                            content={employment_types[employment_type]}
-                        />
-                        <RenderMeta
-                            icon={'ch-icon ch-icon-empty-wallet'}
-                            hint={__('Salary')}
-                            content={(salary_a || '') + (salary_b ? '-' + salary_b : '')}
-							beforeContent={currency}
-							afterContent={currency + ' ' + (salary_types[salary_basis] ? ' / ' + salary_types[salary_basis] : '')}
-							contentClass={'white-space-nowrap'.classNames()}
-                        />
-                        <div className={'align-self-center'.classNames()}>
-                            <Link
-                                to={`/${base_permalink}/${job_id}/apply/`}
-                                className={'button button-primary'.classNames()}
-                            >
-                                {__('Apply Now')}
-                            </Link>
-                        </div>
-                    </div>
-
-                    {state.about_company ? (
-                        <div className={'margin-bottom-32'.classNames()}>
-                            <span
-                                className={'d-block font-size-17 font-weight-600 line-height-24 color-black margin-bottom-12'.classNames()}
-                            >
-                                {__('About Company')}
-                            </span>
-                            <DangerouslySet className={'font-weight-400 color-black'.classNames()}>
-                                {state.about_company}
-                            </DangerouslySet>
-                        </div>
-                    ) : null}
-
-                    {job_description ? (
-                        <div className={'margin-bottom-32'.classNames()}>
-                            <span
-                                className={'d-block font-size-17 font-weight-600 line-height-24 color-black margin-bottom-12'.classNames()}
-                            >
-                                {__('Job Description')}
-                            </span>
-                            <DangerouslySet className={'font-weight-400 color-black'.classNames()}>
-                                {job_description}
-                            </DangerouslySet>
-                        </div>
-                    ) : null}
-
-					<Conditional show={state.job.application_deadline}>
-						<div className={'margin-bottom-32'.classNames()}>
-							<i>{__('Application Deadline:')} {formatDate(getLocalFromUnix(state.job.application_deadline))}</i>
-						</div>
+    return job_action === 'apply' ? <Apply 
+		job={state.job} 
+		settings={settings} 
+		social_links={state.social_links}/> 
+	:
+	<div className={'single'.classNames(style)}>
+		<Helmet>
+			<title>{job_title}</title>
+		</Helmet>
+		<div className={'header'.classNames(style) + 'bg-color-tertiary'.classNames()}>
+			<div className={'container'.classNames(style)}>
+				<span
+					className={'d-block font-size-15 font-weight-700 line-height-25 letter-spacing-3 color-text margin-bottom-10'.classNames()}
+				>
+					{department_name}
+				</span>
+				<span
+					className={'d-block font-size-38 font-weight-600 line-height-40 letter-spacing--38 color-text'.classNames()}
+				>
+					{job_title}
+					<Conditional show={job_status !== 'publish'}>
+						&nbsp; <i>( {statuses[job_status]?.label ?? job_status} )</i>
 					</Conditional>
+				</span>
+			</div>
+		</div>
+		<div className={'details'.classNames(style)}>
+			<div className={'container'.classNames(style)}>
+				<div
+					className={'d-flex align-items-center justify-content-space-between flex-wrap-wrap column-gap-20 row-gap-20 padding-vertical-20 padding-horizontal-30 bg-color-white border-radius-10 box-shadow-thick'.classNames()}
+					style={{ marginTop: '-51px', marginBottom: '79px' }}
+				>
+					<RenderMeta
+						icon={'ch-icon ch-icon-location'}
+						hint={__('Location')}
+						content={getAddress(state.job || {})}
+					/>
+					<RenderMeta
+						icon={'ch-icon ch-icon-briefcase'}
+						hint={__('Job Type')}
+						contentClass={'white-space-nowrap'.classNames()}
+						content={employment_types[employment_type]}
+					/>
+					<RenderMeta
+						icon={'ch-icon ch-icon-empty-wallet'}
+						hint={__('Salary')}
+						content={(salary_a || '') + (salary_b ? '-' + salary_b : '')}
+						beforeContent={currency}
+						afterContent={currency + ' ' + (salary_types[salary_basis] ? ' / ' + salary_types[salary_basis] : '')}
+						contentClass={'white-space-nowrap'.classNames()}
+					/>
+					<div className={'align-self-center'.classNames()}>
+						<Link
+							to={`/${base_permalink}/${job_id}/apply/`}
+							className={'button button-primary'.classNames()}
+						>
+							{__('Apply Now')}
+						</Link>
+					</div>
+				</div>
 
-                    <div>
-                        <Link
-                            to={`/${base_permalink}/${job_id}/apply/`}
-                            className={'button button-primary button-full-width'.classNames()}
-                        >
-                            {__('Apply Now')}
-                        </Link>
-                    </div>
-                </div>
-            </div>
-        </div>
-    );
+				{state.about_company ? (
+					<div className={'margin-bottom-32'.classNames()}>
+						<span
+							className={'d-block font-size-17 font-weight-600 line-height-24 color-black margin-bottom-12'.classNames()}
+						>
+							{__('About Company')}
+						</span>
+						<DangerouslySet className={'font-weight-400 color-black'.classNames()}>
+							{state.about_company}
+						</DangerouslySet>
+					</div>
+				) : null}
+
+				{job_description ? (
+					<div className={'margin-bottom-32'.classNames()}>
+						<span
+							className={'d-block font-size-17 font-weight-600 line-height-24 color-black margin-bottom-12'.classNames()}
+						>
+							{__('Job Description')}
+						</span>
+						<DangerouslySet className={'font-weight-400 color-black'.classNames()}>
+							{job_description}
+						</DangerouslySet>
+					</div>
+				) : null}
+
+				<Conditional show={state.job.application_deadline}>
+					<div className={'margin-bottom-32'.classNames()}>
+						<i>{__('Application Deadline:')} {formatDate(getLocalFromUnix(state.job.application_deadline))}</i>
+					</div>
+				</Conditional>
+
+				<div>
+					<Link
+						to={`/${base_permalink}/${job_id}/apply/`}
+						className={'button button-primary button-full-width'.classNames()}
+					>
+						{__('Apply Now')}
+					</Link>
+				</div>
+			</div>
+		</div>
+	</div>
 }

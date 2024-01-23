@@ -7,6 +7,7 @@
 
 namespace CrewHRM\Setup;
 
+use CrewHRM\Main;
 use CrewHRM\Models\Mailer;
 use CrewHRM\Models\Settings;
 
@@ -20,6 +21,21 @@ class Mails {
 	public function __construct() {
 		// Send application confirmation. Execute this hook as last as possible.
 		add_action( 'crewhrm_job_application_created', array( $this, 'sendApplicationConfirmation' ), 100, 3 );
+
+		if ( 'development' === Main::$configs->mode ) {
+			add_filter( 'crewhrm_frontend_data', array( $this, 'provideMailPreviewURL' ) );
+		}
+	}
+
+	/**
+	 * Provide dynamic URL to mail preview only in development mode
+	 *
+	 * @param array $data
+	 * @return array
+	 */
+	public function provideMailPreviewURL( array $data ) {
+		$data['mail_preview_url'] = Mailer::getPreviewURL( $data['none'], $data['nonce_action'] );
+		return $data;
 	}
 
 	/**

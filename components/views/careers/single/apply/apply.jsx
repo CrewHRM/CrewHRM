@@ -23,7 +23,7 @@ import { Applied } from '../applied/applied.jsx';
 
 import style from './apply.module.scss';
 
-export function Apply({ job = {}, settings={} }) {
+export function Apply({ job = {}, settings={}, social_links=[] }) {
 
     const { 
 		job_id, 
@@ -303,7 +303,7 @@ export function Apply({ job = {}, settings={} }) {
 			<Helmet>
 				<title>{state.error_message ? __('Submission failed!') : __('Application submitted!')}</title>
 			</Helmet>
-			<Applied error_message={state.error_message} />
+			<Applied error_message={state.error_message} social_links={social_links}/>
 		</> 
     }
 

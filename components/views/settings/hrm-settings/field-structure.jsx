@@ -200,11 +200,29 @@ export const settings_fields = applyFilters(
 									}
 								],
 								{
-									name: 'website_link',
+									name: 'website_url',
 									label: __('Website'),
 									type: 'url',
-									placeholder: __('https://')
-								}
+									placeholder: 'https://your-company.com'
+								},
+								{
+									name: 'linkedin_url',
+									label: __('Linked In'),
+									type: 'url',
+									placeholder: 'https://www.linkedin.com/in/your-company/'
+								},
+								{
+									name: 'facebook_url',
+									label: __('Facebook'),
+									type: 'url',
+									placeholder: 'https://www.facebook.com/your-company/'
+								},
+								{
+									name: 'twitter_url',
+									label: __('X (Former Twitter)'),
+									type: 'url',
+									placeholder: 'https://twitter.com/your-company/'
+								},
 							]
 						},
 					}

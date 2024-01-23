@@ -1,11 +1,11 @@
 import React from 'react';
-import { __ } from 'crewhrm-materials/helpers.jsx';
+import { __, isEmpty } from 'crewhrm-materials/helpers.jsx';
 import { Conditional } from 'crewhrm-materials/conditional.jsx';
 import img from 'crewhrm-materials/static/images/thank-you.png';
 
 import style from './applied.module.scss';
 
-export function Applied({ error_message }) {
+export function Applied({ error_message, social_links=[] }) {
     return (
         <div>
             <Conditional show={error_message}>
@@ -27,6 +27,27 @@ export function Applied({ error_message }) {
 							<span className={'d-block font-size-15 font-weight-400 line-height-20 color-text-light'.classNames()}>
 								{__('You will receive a confirmation email as well. Should you have any inquiries or wish to include further details, please do not hesitate to reply to the email.')}
 							</span>
+
+							{
+								isEmpty(social_links) ? null : 
+								<div className={'margin-top-20 d-flex align-items-center column-gap-20'.classNames()}>
+									{
+										social_links.map(link=>{
+
+											const {url, icon} = link;
+
+											return <a 
+												key={url} 
+												href={url} 
+												target='_blank'
+												className={'font-size-16 cursor-pointer'.classNames()}
+											>
+												<i className={icon.classNames()}></i>
+											</a>
+										})
+									}
+								</div>
+							}
 						</div>
 					</div>
 				</div>
