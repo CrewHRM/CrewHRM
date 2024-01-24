@@ -148,7 +148,7 @@ let timer;
 export function JobEditor() {
     const { showWarning, closeWarning } = useContext(ContextWarning);
     let { job_id } = useParams();
-    const { addToast, ajaxToast } = useContext(ContextToast);
+    const { ajaxToast } = useContext(ContextToast);
     const navigate = useNavigate();
     const is_new = job_id === 'new';
 
@@ -171,10 +171,10 @@ export function JobEditor() {
     const is_next_disabled =
         steps[active_index]?.required?.filter((f) => isEmpty(state.values[f]))?.length > 0;
 
-    const onChange = (name, value) => {
+    const onChange = (name, value, trigger_save=false) => {
         setState({
             ...state,
-            edit_session: getRandomString(),
+            edit_session: trigger_save ? true : getRandomString(),
             values: {
                 ...state.values,
                 [name]: value
@@ -191,7 +191,7 @@ export function JobEditor() {
         saveJob(!is_last_step);
     };
 
-    const saveJob = (auto) => {
+    const saveJob = (auto, job_status) => {
         // Save only if the required fields are filled no matter if it is auto or manual save
 		// And no other request is in progress
         if (is_next_disabled || state.saving_mode) {
@@ -200,13 +200,14 @@ export function JobEditor() {
 
         setState({
             ...state,
+			edit_session: null,
             saving_mode: auto ? 'auto' : 'manual'
         });
 
         const payload = {
             job: {
                 ...state.values,
-                job_status: auto ? 'draft' : 'publish'
+                job_status: job_status || (auto ? 'draft' : 'publish')
             }
         };
 
@@ -216,6 +217,7 @@ export function JobEditor() {
                 data: { 
 					message,
 					job_id, 
+					job_slug,
 					address_id, 
 					stage_ids = {},
 					job_permalink 
@@ -229,6 +231,7 @@ export function JobEditor() {
 			
             const new_state = {
                 ...state,
+				edit_session: null,
                 saving_mode: null,
 				show_congrats: !auto && success,
 				job_permalink
@@ -248,9 +251,9 @@ export function JobEditor() {
                     ...state.values,
                     hiring_flow,
                     job_id: job_id || state.values.job_id,
+					job_slug: job_slug || state.values.job_slug,
                     address_id: address_id || state.values.address_id,
-                    edit_session: null,
-					job_status: !auto ? 'publish' : state.values.job_status,
+					job_status: payload.job.job_status
                 };
 
                 // Replace url state with job ID if it was new previously. So reload will be supported.
@@ -333,10 +336,12 @@ export function JobEditor() {
             return;
         }
 
+		const immediate = state.edit_session===true;
+
 		window.clearTimeout(timer);
         timer = window.setTimeout(() => {
-            saveJob(true);
-        }, 3000);
+            saveJob(true, immediate ? state.values.job_status : undefined);
+        }, immediate ? 0 : 3000);
 
         return () => {
             window.clearTimeout(timer);

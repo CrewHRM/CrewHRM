@@ -168,4 +168,16 @@ class _String {
 		$count = is_array( $count ) ? count( $count ) : $count;
 		return implode( ', ', array_fill( 0, $count, $placeholder ) );
 	}
+
+	/**
+	 * Consolidate string
+	 *
+	 * @param string $input_string
+	 * @param boolean $replace_newlines
+	 * @return string
+	 */
+	public static function consolidate( string $input_string, $replace_newlines = false ) {
+		$pattern = $replace_newlines ? '/[\s\t\r\n]+/' : '/[\s\t]+/';
+		return preg_replace( $pattern, ' ', trim( $input_string ) );
+	}
 }

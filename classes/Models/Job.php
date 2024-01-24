@@ -8,6 +8,7 @@
 namespace CrewHRM\Models;
 
 use CrewHRM\Helpers\_Array;
+use CrewHRM\Helpers\_String;
 use CrewHRM\Helpers\Utilities;
 
 /**
@@ -77,6 +78,9 @@ class Job {
 				array( 'job_id' => $job_id )
 			);
 
+			// Update job slug
+			$_job['job_slug'] = self::setJobSlug( $job_id, empty( $job['job_slug'] ) ? $_job['job_title'] : $job['job_slug'] );
+
 			// Execute update hook no matter the status
 			do_action( 'crewhrm_job_updated', $job_id, $_job, $job );
 
@@ -93,6 +97,9 @@ class Job {
 			// Set the newly created ID
 			$job_id = $wpdb->insert_id;
 
+			// Generate new slug from title and save
+			$_job['job_slug'] = self::setJobSlug( $job_id, $_job['job_title'] );
+			
 			// Execute created hook no matter the status
 			do_action( 'crewhrm_job_created', $job_id, $_job, $job );
 		}
@@ -112,9 +119,64 @@ class Job {
 
 		return array(
 			'job_id'     => $job_id,
+			'job_slug'   => $_job['job_slug'],
 			'address_id' => $address_id,
 			'stage_ids'  => $stage_ids,
 		);
+	}
+
+	/**
+	 * Set job slug
+	 *
+	 * @param int        $job_id The job ID to set slug for
+	 * @param string|int $job_slug The slug to set for the job
+	 * 
+	 * @return string
+	 */
+	public static function setJobSlug( $job_id, $job_slug, $update_row = true ) {
+		$job_slug = _String::consolidate( ( string ) $job_slug, true );
+		$job_slug = strtolower( str_replace( ' ', '-', $job_slug ) );
+		$job_slug = preg_replace( '/[^A-Za-z\-]/u', '', $job_slug );
+		$job_slug = empty( $job_slug ) ? 'job' : $job_slug;
+		$job_slug = preg_replace( '/-+/', '-', $job_slug );
+		
+		$new_slug = $job_slug;
+		$index    = 0;
+		
+		// Get the slug until it's not avaialble in database
+		while ( $job_id != self::getJobIdBySlug( $new_slug, $job_id ) ) {
+			$index++;
+			$new_slug = $job_slug . '-' . $index;
+		}
+
+		if ( $update_row ) {
+			Field::jobs()->updateField(
+				array( 'job_slug' => $new_slug ),
+				array( 'job_id' => $job_id )
+			);
+		}
+		
+		return $new_slug;
+	}
+
+	/**
+	 * Get job ID by slug
+	 *
+	 * @param string $slug
+	 * @return int|null
+	 */
+	public static function getJobIdBySlug( string $slug, $fallback = null ) {
+		return Field::jobs()->getField( array( 'job_slug' => $slug ), 'job_id', $fallback );
+	}
+
+	/**
+	 * Get job slug by ID
+	 *
+	 * @param int $job_id
+	 * @return string
+	 */
+	public static function getJobSlugById( $job_id ) {
+		return Field::jobs()->getField( array( 'job_id' => $job_id ), 'job_slug', (string) $job_id );
 	}
 
 	/**
@@ -436,6 +498,19 @@ class Job {
 	 * @return string
 	 */
 	public static function getJobPermalink( $job_id ) {
+		
+		$careers_permalink = self::getCareersPageUrl();
+		$job_slug = self::getJobSlugById( $job_id );
+
+		return trailingslashit( $careers_permalink . $job_slug );
+	}
+
+	/**
+	 * Get careers page url
+	 *
+	 * @return string
+	 */
+	public static function getCareersPageUrl() {
 		static $careers_permalink = null;
 
 		if ( null === $careers_permalink ) {
@@ -443,7 +518,7 @@ class Job {
 			$careers_permalink = ! empty( $careers_id ) ? get_permalink( $careers_id ) : '';
 		}
 
-		return $careers_permalink . $job_id . '/';
+		return trailingslashit( $careers_permalink );
 	}
 
 	/**

@@ -29,7 +29,7 @@ export function CareersRouter(props) {
 				/>}
 			/>
 			<Route
-				path={`/${base_permalink}/:job_id/:job_action?/`}
+				path={`/${base_permalink}/:job_slug/:job_action?/`}
 				element={<Single base_permalink={base_permalink} settings={settings}/>}
 			/>
 			<Route path={'*'} element={<Navigate to={`/${base_permalink}/`} replace />} />

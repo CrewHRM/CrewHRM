@@ -33,6 +33,7 @@ class MailPreview {
 			return;
 		}
 
+		// Remove unwanted charecters from template name
 		$template  = preg_replace( '/[^a-zA-Z0-9-]/', '', $template );
 		$templates = Mailer::getMailTemplates( true );
 

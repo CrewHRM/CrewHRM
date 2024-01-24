@@ -83,14 +83,36 @@ class FileManager {
 	}
 
 	/**
+	 * Get uniquer file name to store new one especially
+	 *
+	 * @param string $file_path The current path
+	 *
+	 * @return string
+	 */
+	public static function getUniqueFilePath( string $file_path ) {
+		$path_parts    = pathinfo( $file_path );
+		$extension     = $path_parts['extension'];
+		$file_name     = $path_parts['filename'];
+		$dir_path      = $path_parts['dirname'];
+		$new_file_name = $file_name;
+		$i             = 0;
+
+		while ( file_exists( $dir_path . '/' . $new_file_name . '.' . $extension ) ) {
+			$i++;
+			$new_file_name = $file_name . '-' . $i;
+		}
+
+		return $dir_path . '/' . $new_file_name . '.' . $extension;
+	}
+
+	/**
 	 * Process upload of a file using native WP methods
 	 *
-	 * @param int    $content_id The content/application ID to upload file for
-	 * @param array  $file       File array with size, tmp_name etc.
-	 * @param string $file_title Custom file title to use
+	 * @param int   $content_id The content/application ID to upload file for
+	 * @param array $file File array with size, tmp_name etc.
 	 * @return int|null
 	 */
-	public static function uploadFile( $content_id, array $file, string $file_title ) {
+	public static function uploadFile( $content_id, array $file ) {
 
 		// Store to make available in upload_dir hook handler
 		self::$content_id = $content_id;
@@ -106,19 +128,16 @@ class FileManager {
 
 		// Set the upload directory
 		$upload_dir = wp_upload_dir()['path'];
-		$file_title = preg_replace( '/-+/', '-', str_replace( ' ', '', $file_title ) );
-		$file_name  = $file_title . '.' . pathinfo( $file['name'], PATHINFO_EXTENSION );
-		$file_path  = $upload_dir . '/' . $file_name;
+		$file_path  = self::getUniqueFilePath( $upload_dir . '/' . $file['name'] );
 
 		// Alter the name and handle upload
-		$file['name'] = $file_name;
-		$upload       = wp_handle_upload( $file, array( 'test_form' => false ) );
+		$upload = wp_handle_upload( $file, array( 'test_form' => false ) );
 
 		if ( isset( $upload['file'] ) ) {
 			// Create a post for the file
 			$attachment    = array(
 				'post_mime_type' => $upload['type'],
-				'post_title'     => $file_title,
+				'post_title'     => $file['name'],
 				'post_content'   => '',
 				'post_status'    => 'private',
 				'guid'           => $upload['url'],

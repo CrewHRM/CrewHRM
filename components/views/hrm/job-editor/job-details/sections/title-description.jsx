@@ -1,7 +1,7 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 
 import { DropDown } from 'crewhrm-materials/dropdown/dropdown.jsx';
-import { __, sprintf } from 'crewhrm-materials/helpers.jsx';
+import { __, data_pointer, sprintf } from 'crewhrm-materials/helpers.jsx';
 import { TextField } from 'crewhrm-materials/text-field/text-field.jsx';
 import { CircularProgress } from 'crewhrm-materials/circular.jsx';
 import { TextEditor } from 'crewhrm-materials/text-editor/text-editor.jsx';
@@ -112,10 +112,11 @@ export function TitleAndDescription() {
 
 	const [state, setState] = useState({
 		add_department: false,
-		departments: departments
-	})
+		slug_editor: false,
+		departments: departments,
+		job_slug: values.job_slug,
+	});
 
-	
     const toggleDepartmentModal = (show) => {
         setState({
             ...state,
@@ -134,6 +135,13 @@ export function TitleAndDescription() {
             departments
         });
     };
+
+	useEffect(()=>{
+		setState({
+			...state, 
+			job_slug: values.job_slug
+		});
+	}, [values.job_slug]);
 
     return (
         <>
@@ -199,6 +207,46 @@ export function TitleAndDescription() {
                                 refocus();
                             }}
                         />
+
+						{
+							!values.job_slug ? null :
+							<div 
+								className={'d-flex align-items-center flex-wrap-wrap flex-direction-row column-gap-5'.classNames()}
+								style={{margin: '8px 0 0', height: '34px'}}
+							>
+								<a 
+									href={values.job_permalink} 
+									target='_blank'
+								>
+									{window[data_pointer].careers_url}{state.slug_editor ? null : <><strong>{values.job_slug}</strong>/</>}
+								</a>
+
+								{
+									!state.slug_editor ? 
+										<i 
+											className={'ch-icon ch-icon-edit-2 cursor-pointer font-size-18'.classNames()}
+											onClick={()=>setState({...state, slug_editor: true})}></i>
+										:
+										<>
+											<TextField 
+												style={{width: '170px', height: '30px'}}
+												value={state.job_slug}
+												autofocus={true}
+												onChange={job_slug=>setState({...state, job_slug})}
+											/>
+											<button 
+												className={'button button-primary button-outlined button-small'.classNames()}
+												onClick={()=>{
+													onChange('job_slug', state.job_slug, true);
+													setState({...state, slug_editor: false})
+												}}
+											>
+												{__('Save')}
+											</button>
+										</>
+								}
+							</div>
+						}
                     </div>
                 </div>
                 <div className={'right-col'.classNames(style)}>

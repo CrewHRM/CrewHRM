@@ -96,7 +96,7 @@ function RenderMeta({ icon, hint, content, afterContent='', contentClass='' }) {
 }
 
 export function Single({ base_permalink, settings={} }) {
-    const { job_action, job_id } = useParams();
+    const { job_action, job_slug } = useParams();
     const [searchParam, setSearchParam] = useSearchParams();
     const queryParams = parseParams(searchParam);
 
@@ -114,7 +114,7 @@ export function Single({ base_permalink, settings={} }) {
             fetching: true
         });
 
-        request('getSingleJobView', { job_id, preview: queryParams.preview }, (resp) => {
+        request('getSingleJobView', { job_slug, preview: queryParams.preview }, (resp) => {
             const {
                 success,
                 data: { 
@@ -141,7 +141,7 @@ export function Single({ base_permalink, settings={} }) {
 
     useEffect(() => {
         getJob();
-    }, [job_id]);
+    }, [job_slug]);
 
     const {
         department_name,
@@ -220,7 +220,7 @@ export function Single({ base_permalink, settings={} }) {
 					/>
 					<div className={'align-self-center'.classNames()}>
 						<Link
-							to={`/${base_permalink}/${job_id}/apply/`}
+							to={`/${base_permalink}/${job_slug}/apply/`}
 							className={'button button-primary'.classNames()}
 						>
 							{__('Apply Now')}
@@ -262,7 +262,7 @@ export function Single({ base_permalink, settings={} }) {
 
 				<div>
 					<Link
-						to={`/${base_permalink}/${job_id}/apply/`}
+						to={`/${base_permalink}/${job_slug}/apply/`}
 						className={'button button-primary button-full-width'.classNames()}
 					>
 						{__('Apply Now')}

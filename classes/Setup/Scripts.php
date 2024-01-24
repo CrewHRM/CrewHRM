@@ -10,6 +10,7 @@ namespace CrewHRM\Setup;
 use CrewHRM\Helpers\Colors;
 use CrewHRM\Helpers\Utilities;
 use CrewHRM\Main;
+use CrewHRM\Models\Job;
 use CrewHRM\Models\Settings;
 use CrewHRM\Models\Stage;
 use CrewHRM\Models\User;
@@ -133,6 +134,7 @@ class Scripts {
 				'dist_url'        => Main::$configs->dist_url,
 				'plugin_url'      => Main::$configs->url,
 				'ajaxurl'         => admin_url( 'admin-ajax.php' ),
+				'careers_url'     => Job::getCareersPageUrl(),
 				'colors'          => $dynamic_colors,
 				'reserved_stages' => array_keys( Stage::$reserved_stages ),
 				'nonce_action'    => $nonce_action,

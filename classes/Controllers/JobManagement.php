@@ -56,10 +56,15 @@ class JobManagement {
 
 			$_status = Job::getJobField( $data['job_id'], 'job_status' );
 
-			// Auto save
+			// Auto save job that triggers automatically after certain period of inactivity after last change.
 			if ( 'publish' === $_status && ! $is_publish ) {
+				$data['job_slug'] = Job::setJobSlug( $data['job_id'], $data['job_slug'], false );
 				Meta::job( $data['job_id'] )->updateMeta( 'autosaved_job', $data );
-				wp_send_json_success();
+				wp_send_json_success(
+					array(
+						'job_slug' => $data['job_slug']
+					)
+				);
 				return;
 			}
 		}
@@ -81,6 +86,7 @@ class JobManagement {
 				'address_id'    => $job['address_id'],
 				'stage_ids'     => $job['stage_ids'],
 				'job_id'        => $job['job_id'],
+				'job_slug'      => $job['job_slug'],
 			)
 		);
 	}
@@ -144,13 +150,21 @@ class JobManagement {
 	/**
 	 * Get the job for single view and application process
 	 *
-	 * @param integer $job_id The job ID to get data
+	 * @param string  $job_slug The job slug to get data
 	 * @param integer $preview Whether it is preview mode
+	 * 
 	 * @return void
 	 */
-	public static function getSingleJobView( int $job_id, int $preview = 0 ) {
+	public static function getSingleJobView( string $job_slug, int $preview = 0 ) {
 
-		$job = Job::getJobById( $job_id );
+		$job_id = Job::getJobIdBySlug( $job_slug );
+		$job_id = empty( $job_id ) ? ( is_numeric( $job_slug ) ? ( int ) $job_slug : null ) : $job_id;
+		$job    = ! empty( $job_id ) ? Job::getJobById( $job_id ) : null;
+
+		// If job not found, show error message.
+		if ( empty( $job ) ) {
+			wp_send_json_error( array( 'message' => esc_html__( 'Job Not Found', 'crewhrm' ) ) );
+		}
 
 		// Determine if the current user can visit the job
 		$can_visit  = ! empty( $job );

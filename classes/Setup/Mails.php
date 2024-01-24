@@ -34,7 +34,7 @@ class Mails {
 	 * @return array
 	 */
 	public function provideMailPreviewURL( array $data ) {
-		$data['mail_preview_url'] = Mailer::getPreviewURL( $data['none'], $data['nonce_action'] );
+		$data['mail_preview_url'] = Mailer::getPreviewURL( $data['nonce'], $data['nonce_action'] );
 		return $data;
 	}
 
