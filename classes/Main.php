@@ -19,6 +19,7 @@ use CrewHRM\Setup\Mails;
 use CrewHRM\Setup\Media;
 use CrewHRM\Setup\Scripts;
 use CrewHRM\Setup\Shortcode;
+use CrewHRM\Setup\Welcome;
 
 /**
  * The main class to initiate app
@@ -49,10 +50,12 @@ class Main {
 	public function init( object $configs ) {
 
 		// Store configs in runtime static property
-		self::$configs           = $configs;
-		self::$configs->dir      = dirname( $configs->file ) . '/';
-		self::$configs->basename = plugin_basename( $configs->file );
-		self::$configs->has_pro  = false;
+		self::$configs              = $configs;
+		self::$configs->dir         = dirname( $configs->file ) . '/';
+		self::$configs->basename    = plugin_basename( $configs->file );
+		self::$configs->has_pro     = false;
+		self::$configs->current_url = ( is_ssl() ? 'https' : 'http' ) . '://' . sanitize_text_field( wp_unslash( $_SERVER['HTTP_HOST'] ?? '' ) ) . sanitize_text_field( wp_unslash( $_SERVER['REQUEST_URI'] ?? '' ) );
+
 
 		// Loading Autoloader
 		spl_autoload_register( array( $this, 'loader' ) );
@@ -71,6 +74,7 @@ class Main {
 		new Addon();
 
 		// Load apps now
+		new Welcome();
 		new Scripts();
 		new Media();
 		new Dispatcher();

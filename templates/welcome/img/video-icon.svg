@@ -1,0 +1,16 @@
+<svg width="71" height="71" viewBox="0 0 71 71" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Group 26797">
+<g id="Ellipse 687" filter="url(#filter0_b_1_25)">
+<circle cx="35.5" cy="35.5" r="35.5" fill="black" fill-opacity="0.3"/>
+</g>
+<path id="Polygon 3" d="M49.239 32.3733C51.3067 33.5141 51.3067 36.4859 49.239 37.6267L29.4492 48.5452C27.4498 49.6484 25 48.2021 25 45.9185L25 24.0815C25 21.7979 27.4498 20.3516 29.4492 21.4547L49.239 32.3733Z" fill="white"/>
+</g>
+<defs>
+<filter id="filter0_b_1_25" x="-20" y="-20" width="111" height="111" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feGaussianBlur in="BackgroundImageFix" stdDeviation="10"/>
+<feComposite in2="SourceAlpha" operator="in" result="effect1_backgroundBlur_1_25"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_backgroundBlur_1_25" result="shape"/>
+</filter>
+</defs>
+</svg>

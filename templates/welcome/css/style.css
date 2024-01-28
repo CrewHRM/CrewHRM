@@ -1,0 +1,461 @@
+:root {
+    --black: rgba(26, 26, 26, 1);
+    --blue: rgba(35, 107, 254, 1);
+    --color-styles-simiblack: rgba(114, 119, 123, 1);
+    --color-styles-white: rgba(255, 255, 255, 1);
+    --color-styles-dark-gray: rgba(187, 191, 195, 1);
+    --figtree: 'Figtree', sans-serif;
+    --Dark-Gray: #BBBFC3;
+    --SimiBlack: #72777B;
+    --Dark-Gray: #BBBFC3;
+}
+
+* {
+    -webkit-font-smoothing: antialiased;
+    box-sizing: border-box;
+}
+html {
+    scroll-behavior: smooth;
+    overflow-x: hidden;
+}
+html,
+body {
+    background-color: #1A1A1A;
+    height: 100%;
+    margin: 0;
+    padding:0;
+    color: #fff;
+    font-family: var(--figtree);
+    -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* a blue color as a generic focus style */
+button:focus-visible {
+    outline: 2px solid #4a90e2 !important;
+    outline: -webkit-focus-ring-color auto 5px !important;
+}
+
+a {
+    text-decoration: none;
+}
+
+.plain-a, plain-a:hover, .plain-a:active, .plain-a:focus {
+	text-decoration: none !important;
+	box-shadow: none !important;
+	outline: none !important;
+}
+
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+main {
+    flex-grow: 1;
+}
+
+.logo img {
+    margin-top: 1rem;
+    width: 114.92px !important;
+    height: 22px !important;
+}
+
+.upgrade-list {
+    list-style-type: none;
+    padding-left: 0;
+    display: flex;
+    align-items: center;
+    margin-bottom: 0;
+}
+
+.upgrade-list  a {
+    color: #fff ;
+}
+
+.heading-color {
+    color: #fff;
+}
+
+.white-link {
+    color: white;
+}
+
+header {
+    border-bottom: 2px solid #272828;
+    /* 2px solid line with the color #272828 */
+}
+header .navbar-nav li a {
+color: var(--Dark-Gray);
+font-size: 15px;
+font-style: normal;
+font-weight: 500;
+line-height: normal;
+letter-spacing: 0.3px;
+padding:23px 17.5px !important;
+position: relative;
+}
+header .navbar-nav li.active a { color:var(--white);}
+
+@media (max-width:991px) {
+    header .navbar-nav li a {
+        padding:10px !important;
+       
+        }
+        .navbar-brand{
+            margin-left: 0;
+            margin-right: 0;
+        }
+
+        .upgrade-list  a {
+            color: #fff;
+            font-size: 14px;
+            padding: 10px;
+        }
+}
+
+/* heading */
+.main-title {
+    color: var(--White, var(--White, #FFF));
+    font-size: 2.25rem;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -2px;
+    text-transform: uppercase;
+    margin-bottom: 0;
+}
+
+@media (min-width:1366px) {
+    .main-title {
+        font-size: 70px;
+    }
+}
+
+@media (min-width:768px) and (max-width:1365px) {
+    .main-title {
+        font-size: 2.5rem;
+    }
+}
+
+.welcome-secn {
+    margin: 50px 0;
+}
+
+@media (min-width:1200px) {
+    .welcome-secn {
+        margin: 90px 0;
+    }
+}
+@media (max-width:767px) {
+    .welcome-secn {
+        margin: 30px 0;
+    }
+}
+.welcome-secn p {
+    color: var(--Dark-Gray);
+
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 22px;
+    /* 146.667% */
+}
+
+.welcome-secn a {
+    color: var(--White, var(--White, #FFF));
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+    letter-spacing: -0.3px;
+}
+
+.cols-container>div {
+	margin-bottom: 20px;
+}
+
+.card {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    /* Assuming you want to use top and left for positioning */
+    background-color: #272828;
+    border-radius: 2px;
+}
+
+.cards_group .card .card-body {
+    padding: 30px 40px;
+}
+
+.card-title {
+
+    text-transform: uppercase;
+    color: var(--SimiBlack, var(--SimiBlack, #72777B));
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 22px;
+    /* 146.667% */
+}
+
+.card-text {
+    font-weight: 600;
+    color: #ffffff;
+    font-size: 24px;
+    letter-spacing: 0;
+    line-height: 28px;
+}
+
+.subscribe-form {
+    border: 0px solid var(--color-styles-white);
+    /* White border */
+    border-radius: 10px;
+    padding-top: 15px;
+    background-color: transparent;
+    /* Optional: Slight background color */
+}
+
+.subscribe-form .form-group {
+    margin-bottom: 0px;
+}
+
+.subscribe-form .form-group:nth-child(1) input {
+    border: 1px solid #72777B;
+    border-radius: 10px 10px 0px 0px;
+}
+
+.subscribe-form .form-group:nth-child(2) input {
+    border: 1px solid #72777B;
+	border-top: none;
+    border-radius: 0px 0px 10px 10px;
+}
+
+.subscribe-form .form-control {
+    width: 100%;
+    padding: 20px 20px;
+    min-height: 51px;
+    margin: 0px;
+    display: inline-block;
+    box-sizing: border-box;
+    background: transparent;
+    color: #ffffff;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 28px;
+    /* 175% */
+}
+
+.subscribe-form input:focus {
+    background: transparent;
+    box-shadow: none;
+}
+
+.subscribe-form .btn {
+    width: 100%;
+    background-color: var(--blue);
+    color: white;
+    padding: 14px 20px;
+    margin: 15px 0 0 0;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    text-transform: uppercase;
+    justify-content: center;
+    font-weight: bold;
+	font-size: 15px;
+}
+
+.subscribe-form button.btn:hover {
+    background-color: var(--color-styles-white);
+    color: var(--blue);
+}
+
+.subscribe-form label {
+    color: var(--color-styles-white);
+    text-transform: uppercase;
+    opacity: 0;
+}
+
+.subscribe-form input::placeholder {
+    /* Chrome, Firefox, Opera, Safari 10.1+ */
+    color: white;
+    opacity: 1;
+    /* Firefox */
+}
+
+.subscribe-form input:-ms-input-placeholder {
+    /* Internet Explorer 10-11 */
+    color: white;
+}
+
+.subscribe-form input::-ms-input-placeholder {
+    /* Microsoft Edge */
+    color: white;
+}
+
+.video-container {
+    position: relative;
+    width: 100%;
+	height: 207px;
+	background-size: cover;
+	background-position: center center;
+}
+
+.video-container .video-icon {
+    position: absolute;
+    top: 0;
+    left: 50px;
+    transform: translate(-50%, -50%);
+    color: white;
+	cursor: pointer;
+	backdrop-filter: blur(10px);
+	border-radius: 50%;
+	overflow: hidden;
+}
+.video-container .video-icon:hover {
+	backdrop-filter: blur(14px);
+}
+
+/* Existing styles */
+
+.facebook-btn {
+    background-color: white;
+    color: #0b0b0c;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s;
+    font-size: 15px;
+}
+
+.facebook-btn i {
+    margin-right: 10px;
+    font-size: 25px;
+    color: #0765FF;
+    /* Space between icon and text */
+}
+
+.facebook-btn:hover {
+    background-color: #0765FF;
+    color: #fff;
+    /* Light grey background on hover */
+}
+
+.facebook-btn:hover i {
+    color: #fff;
+    /* Light grey background on hover */
+}
+
+
+/* Existing styles */
+
+
+.social-buttons-container {
+    display: flex;
+    flex-wrap: wrap;
+    /* Aligns items in a row */
+}
+
+.social-buttons-container .facebook-col {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+    /* Style your Facebook button here */
+    background-color: #0765ff;
+    /* Facebook blue */
+    color: white;
+    border: none;
+    padding: 10px 10px;
+    border-radius: 0px;
+    cursor: pointer;
+    height: 80px;
+    transition: background-color 0.3s;
+}
+
+.social-buttons-container .facebook-col:hover {
+	background-color: #005df2;
+}
+
+.social-buttons-container i {
+    font-size: 35px;
+}
+
+.social-buttons-container .twitter-col {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+    /* Style your Twitter button here */
+    background-color: #FFF;
+    /* Twitter blue */
+    color: #000;
+    border: none;
+    padding: 10px;
+    height: 80px;
+    border-radius: 0px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.social-buttons-container .twitter-col:hover {
+	background-color: rgb(228, 228, 228);
+}
+
+.social-buttons-container .twitter-col i {
+    color: #1A1A1A;
+}
+
+.social-buttons-container .linkedin-col {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+    /* Style your Facebook button here */
+    background-color: #0F51BB;
+    /* Facebook blue */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 0px;
+    cursor: pointer;
+    height: 80px;
+    transition: background-color 0.3s;
+}
+
+.social-buttons-container .linkedin-col:hover {
+    background-color: #0b4299;
+}
+
+@media (min-width:768px) {
+    .cards_group .row [class*="col-"] {
+        padding: 0 10px
+    }
+}
+
+.cards_group {
+    margin-bottom: 50px;
+}
+
+@media (min-width:1200px) {
+    .cards_group {
+        margin-bottom: 90px;
+    }
+}
+
+@media (max-width:767px) {
+    .cards_group .card .card-body {
+        padding: 20px;
+    }
+    .video-container {
+        margin-top: 20px;
+    }
+    .col-lg-4.col-md-6.aos-init.aos-animate{
+        margin-bottom: 1rem;
+    }
+}

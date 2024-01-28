@@ -14,6 +14,12 @@ use CrewHRM\Models\Settings;
  * The class
  */
 class Utilities {
+	
+	/**
+	 * Pro plugin path constant
+	 */
+	const PRO_PATH = 'hr-management-pro/hr-management-pro.php';
+
 	/**
 	 * Check if the page is a Crew Dashboard
 	 *
@@ -185,5 +191,35 @@ class Utilities {
 	 */
 	public static function isGutenbergEditor() {
 		return class_exists( 'WP_Block_Editor_Context' ) || ( function_exists( 'has_blocks' ) && has_blocks() );
+	}
+
+	/**
+	 * Check if Pro version installed or not
+	 *
+	 * @param boolean $check_active
+	 * @return boolean
+	 */
+	public static function isProInstalled( $check_active = false ) {
+
+		if ( file_exists( trailingslashit( WP_PLUGIN_DIR ) . self::PRO_PATH ) ) {
+			return true && ( ! $check_active || is_plugin_active( self::PRO_PATH ) );
+		}
+		
+		return false;
+	}
+
+	/**
+	 * Generate admin page urls
+	 *
+	 * @param string $page
+	 * @return string
+	 */
+	public static function getBackendPermalink( string $page ) {
+		return add_query_arg(
+			array(
+				'page' => $page
+			),
+			admin_url( 'admin.php' )
+		);
 	}
 }
