@@ -1,4 +1,4 @@
-=== Crew HRM - Best Online Job Board and Recruitment Solution ===
+=== Job Manager and Recruitment Board for Employers and Candidates - Crew HRM ===
 Contributors: jayedul, badsha_eee, risatrajin
 Donate Link: https://getcrewhrm.com/pricing/
 Tags: Recruitment, job manager, job listing, job board, job management, job lists, job list, job, jobs, company, hiring, employment, employer, employees, candidate, freelance, internship, job listings, positions, board, application, hiring, listing, recruiting
@@ -9,11 +9,12 @@ Stable tag: 1.0.6
 License: GPLv3
 License URI: https://opensource.org/licenses/GPL-3.0
 
-Best plugin for online recruitment and job board management. Hiring great talent is a breeze with Crew HRM.
+Online job boards, career pages with job listings, and hiring or recruiting great talent is a breeze with Crew HRM. More features are coming soon!
 
 == Description ==
+Crew HRM is designed for job posting and recruitment management. It features a centralized dashboard for managing hiring processes, easy job posting, resume uploads, and detailed candidate profiles. Collaborative tools for team review, notes, and built-in email communication for efficient candidate evaluation. Advanced features include interview scheduling, activity tracking, and Google reCAPTCHA for secure applications. The pro version offers Google Meet and Zoom integration for virtual interviews, customizable application form fields, and enhanced email communications.
 
-Crew HRM plugin is a complete solution to manage your entire hiring process. It includes beautifully designed templates and application forms. You do not need to write any custom CSS code!
+https://www.youtube.com/watch?v=FrDwzjwodwk
 
 Crew HRM has all the features you need to attract, screen, and hire the best talent, including:
 
@@ -25,21 +26,24 @@ Crew HRM has all the features you need to attract, screen, and hire the best tal
 * **Candidate Shortlisting:** Shortlist candidates for further consideration.
 * **Candidate Assessment:** Conduct candidate assessments using various methods, including quizzes, interviews, and case studies.
 * **Interview Calendar:** Schedule and manage interviews with candidates.
-* **Activity Log:** Track all your hiring process-related activities, including job views, applications, and interviews.
+* **Activity Log:** Track all hiring process-related activities, including job views, applications, and interviews.
 * **Built-in communication system:** Communicate directly with candidates within the plugin.
 * **Hiring Stage Management:** Manage hiring stages like Applied, Shortlisted, Interviewed, Offer Made, and Hired.
 * **Dedicated job post and catalog templates:** Use dedicated job post and catalog templates to create professional-looking job postings and candidate catalogs.
+* **Google reCAPTCHA Integration:** Make your job applications spam and robots proof with Google's reCAPTCHA.
 
-🚀 [View Demo](https://demo.getcrewhrm.com/)
-💬 [Chat with us](https://getcrewhrm.com/contact/)
+==🚀 [Explore Crew HRM with a Live Demo](https://demo.getcrewhrm.com/)==
+Experience Crew HRM firsthand with our live demo. See for yourself how it simplifies and improves the hiring process.
+==💬[Get In Touch with Crew HRM](https://getcrewhrm.com/contact/)==
+Connect with us for any inquiries or support to ensure you make the most out of Crew HRM.
 
-The pro version of the plugin includes additional features, such as:
+===The pro version of the plugin includes additional features, such as:===
 
 * **Google Meet integration:** Schedule and conduct Google Meet interviews directly from within the plugin.
 * **Appointments:** Schedule and manage appointments with candidates.
 * **Zoom integration:** Schedule and conduct Zoom interviews directly from within the plugin.
 * **Custom Fields:** Add different fields to ask questions that would help you screen the candidates better.
-* **Email Communications:** Communicate with the applicants right from the review screen and get notifications about different events in the system.
+* **Email Communications:** Communicate with the applicants from the review screen and get notifications about different events in the system.
 * **Custom Attachment Support:** Allow different file formats to be uploaded when designers and creative professionals apply to your job post.
 
 This WordPress HRM plugin is the perfect solution for any business that wants to streamline its hiring process and attract the best talent.
@@ -71,36 +75,38 @@ You can visit [CrewHRM Documentation](https://getcrewhrm.com/docs/) to learn abo
 
 If you have any questions or problems using this plugin, don't hesitate to get in touch with us from here https://getcrewhrm.com/contact/
 
-Please note that this plugin is developed using React.js. If you want to access the unminified files for this plugin, you can do so from [here](https://github.com/CrewHRM/CrewHRM)
+Please note that this plugin is developed using React.js. If you want to access the non-minified files for this plugin, you can do so from [here](https://github.com/CrewHRM/CrewHRM)
 
 == Screenshots ==
 
-1. Get a birds-eye view of the entire recruitment process from the dashboard
-2. Beautiful-looking job detail and listing page templates
-3. Use the Intuitive calendar to view all your schedules.
-4. Communicate with the candidate right from the dashboard.
-5. Dynamic candidate profile.
+1. Birds-eye view of the entire recruitment process from the dashboard
+2. Robust job creation form.
+3. Customize the hiring stages as you please.
+4. PDF and Doc file uploades for resume and cover letter.
+5. See all the information with PDF and Doc files. No need to download!
+6. Beautiful looking career page.
+7. Automatic confirmation email for applicants.
 
 == Third Party Integrations ==
 
-This plugin provides an addon "reCaptcha integration" that uses Google reCAPTCHA to protect your site from spam job applications. It sends token auto generated by end users interaction to https://www.google.com/recaptcha/api/siteverify for human verification. By using the addon, you agree to Google's terms of use and privacy policy. For more information, please visit https://www.google.com/recaptcha/about/ and https://policies.google.com/privacy. 
+The reCaptcha integration uses Google reCAPTCHA for spam protection in job applications. By using this, you agree with Google's [terms](https://www.google.com/recaptcha/about/) and [privacy policy](https://policies.google.com/privacy).
 
 == Frequently Asked Questions ==
 
 = Do you offer a whitelabeling feature? =
-Yes, we offer a whitelable setting on the Pro version of the plugin to change the name and images easily. If you prefer to use the free version only, you can change the name using translation plugins like Loco Translate or the Say What plugin.
+Yes, we offer a whitelable setting on the Pro add-on to change the name and images easily. If you prefer to use the free version only, you can change the name using translation plugins like Loco Translate or the Say What plugin.
 
-= Can I customize the plugin? =
-Yes, as Crew HRM is offered under the GPL license, you can modify it any way you like. There is no restriction at all. But please remember that we do not offer support on customized plugins.
+= Can I go ahead and customize the plugin? =
+Yes, as Crew HRM is offered under the GPL license, you can modify it any way you like. There is no restriction at all. Just so you know, we do not offer support for customized plugins.
 
 = Can you develop a custom feature for me? =
-We are unable to offer customizations at this moment. You may hire a developer from a marketplace, and we will gladly assist your developer.
+Unfortunately, we are unable to offer customizations right now. You can hire a developer from a marketplace, and we'll gladly help your developer.
 
 = Is this plugin multisite compatible? =
 No. We are not supporting multisite installations at this moment.
 
 = Can I use this plugin in other languages? =
-Yes, you can translate the plugin into any language you want. You can use the Loco Translate plugin or any other plugin you like. Please check our [documentation](https://getcrewhrm.com/docs/getting-started/translation/) for detailed instructions.
+Yes, you can translate the plugin into any language you want. You can use the Loco Translate plugin or any other plugin you like. Please check our [documentation](https://getcrewhrm.com/docs/translating/) for detailed instructions.
 
 = Do you have video tutorials? =
 We have posted walkthrough videos on the [Crew HRM YouTube Channel](https://www.youtube.com/@crewhrm). If you have requests for video tutorials and discuss different ideas, please feel free to comment on any video or use the contact form on our website.
@@ -113,8 +119,8 @@ You can email us using the contact form on our website to share feature ideas wi
 = v1.0.6 -> Jan 25, 2024 =
 --------------------------
 * reCAPTCHA addon to prevent spam job applications
-* Careers page short code
-* Careers page gutenberg block
+* Careers page shortcode
+* Careers page Gutenberg block
 * Bug fixes and optimizations
 
 = v1.0.5 -> Dec 08, 2023 =
