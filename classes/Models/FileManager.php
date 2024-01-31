@@ -83,29 +83,6 @@ class FileManager {
 	}
 
 	/**
-	 * Get uniquer file name to store new one especially
-	 *
-	 * @param string $file_path The current path
-	 *
-	 * @return string
-	 */
-	public static function getUniqueFilePath( string $file_path ) {
-		$path_parts    = pathinfo( $file_path );
-		$extension     = $path_parts['extension'];
-		$file_name     = $path_parts['filename'];
-		$dir_path      = $path_parts['dirname'];
-		$new_file_name = $file_name;
-		$i             = 0;
-
-		while ( file_exists( $dir_path . '/' . $new_file_name . '.' . $extension ) ) {
-			$i++;
-			$new_file_name = $file_name . '-' . $i;
-		}
-
-		return $dir_path . '/' . $new_file_name . '.' . $extension;
-	}
-
-	/**
 	 * Process upload of a file using native WP methods
 	 *
 	 * @param int   $content_id The content/application ID to upload file for
@@ -126,10 +103,6 @@ class FileManager {
 		// Add filters
 		add_filter( 'upload_dir', array( __CLASS__, 'customUploadDirectory' ) );
 
-		// Set the upload directory
-		$upload_dir = wp_upload_dir()['path'];
-		$file_path  = self::getUniqueFilePath( $upload_dir . '/' . $file['name'] );
-
 		// Alter the name and handle upload
 		$upload = wp_handle_upload( $file, array( 'test_form' => false ) );
 
@@ -142,11 +115,11 @@ class FileManager {
 				'post_status'    => 'private',
 				'guid'           => $upload['url'],
 			);
-			$attachment_id = wp_insert_attachment( $attachment, $file_path );
+			$attachment_id = wp_insert_attachment( $attachment, $upload['file'] );
 			require_once ABSPATH . 'wp-admin/includes/image.php';
 
 			// Generate meta data for the file
-			$attachment_data = wp_generate_attachment_metadata( $attachment_id, $file_path );
+			$attachment_data = wp_generate_attachment_metadata( $attachment_id, $upload['file'] );
 			wp_update_attachment_metadata( $attachment_id, $attachment_data );
 			update_post_meta( $attachment_id, self::$crewhrm_meta_key, true );
 		} else {
