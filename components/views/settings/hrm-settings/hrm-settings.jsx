@@ -9,7 +9,7 @@ import { ContextHistoryFields, HistoryFields, UndoRedo } from 'crewhrm-materials
 import { ContextToast } from 'crewhrm-materials/toast/toast.jsx';
 import { LoadingIcon } from 'crewhrm-materials/loading-icon/loading-icon.jsx';
 
-import { ContextBackendDashboard } from '../../hrm/hrm.jsx';
+import { ContextBackendDashboard } from '../../hrm/dashboard/home.jsx';
 import { Options } from './options/options.jsx';
 import { Segments } from './segments/segments.jsx';
 import { settings_fields } from './field-structure.jsx';

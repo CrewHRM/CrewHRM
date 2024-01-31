@@ -2,17 +2,20 @@ import React from 'react';
 import {createRoot} from 'react-dom/client';
 
 import { MountPoint } from 'crewhrm-materials/mountpoint.jsx';
-import { HRM } from './hrm.jsx';
+import { HRM } from './dashboard/home.jsx';
 import { data_pointer, getElementDataSet } from 'crewhrm-materials/helpers.jsx';
 import { Promote } from '../../promote/promote.jsx';
 import { WpDashboardFullPage } from 'crewhrm-materials/backend-dashboard-container/full-page-container.jsx';
+import { Employees } from './employees/employees.jsx';
 
 // Dashboard
 const hrm = document.getElementById('crewhrm_dashboard');
 if (hrm) {
     createRoot(hrm).render(
         <MountPoint element={hrm}>
-            <HRM {...getElementDataSet(hrm)} />
+			<WpDashboardFullPage>
+            	<HRM {...getElementDataSet(hrm)} />
+			</WpDashboardFullPage>
         </MountPoint>
     );
 }
@@ -22,7 +25,21 @@ const jobs = document.getElementById('crewhrm_dashboard_all_jobs');
 if(jobs) {
 	createRoot(jobs).render(
 		<MountPoint>
-			<HRM {...getElementDataSet(jobs)} is_all_job_page={true}/>
+			<WpDashboardFullPage>
+				<HRM {...getElementDataSet(jobs)} is_all_job_page={true}/>
+			</WpDashboardFullPage>
+		</MountPoint>
+	)
+}
+
+// Employee list
+const employees = document.getElementById('crewhrm_employees_dashboard');
+if ( employees ) {
+	createRoot(employees).render(
+		<MountPoint>
+			<WpDashboardFullPage>
+				<Employees {...getElementDataSet(employees)}/>
+			</WpDashboardFullPage>
 		</MountPoint>
 	)
 }

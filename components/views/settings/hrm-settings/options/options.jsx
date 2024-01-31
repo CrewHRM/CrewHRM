@@ -17,7 +17,7 @@ import { RenderExternal } from 'crewhrm-materials/render-external.jsx';
 
 import { settings_fields } from '../field-structure.jsx';
 import { ContextSettings } from '../hrm-settings.jsx';
-import { ContextBackendDashboard } from '../../../hrm/hrm.jsx';
+import { ContextBackendDashboard } from '../../../hrm/dashboard/home.jsx';
 import { AddItemModal } from '../../../hrm/job-editor/job-details/sections/title-description.jsx';
 
 import style from './options.module.scss';

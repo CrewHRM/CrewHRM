@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 
 import { __ } from 'crewhrm-materials/helpers.jsx';
-import { ContextBackendDashboard } from '../../../hrm.jsx';
+import { ContextBackendDashboard } from '../../../dashboard/home.jsx';
 
 import icon_learning from 'crewhrm-materials/static/images/Icon-learning.svg';
 import icon_users from 'crewhrm-materials/static/images/Icon-users.svg';

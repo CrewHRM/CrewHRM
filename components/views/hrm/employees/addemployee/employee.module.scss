@@ -1,0 +1,118 @@
+.employee-invitation-links {
+	> a {
+		display: block;
+	}
+	> a:not(:first-child) {
+		margin-top: 20px;
+	}
+	.single-employee-invitation-link {
+		cursor: pointer;
+		display: flex;
+		max-width: 500px;
+		padding: 20px;
+		align-items: center;
+		justify-content: space-between;
+		gap: 8px;
+		border-radius: 10px;
+		border: 1px solid #e3e5e8;
+		background: #fff;
+		margin: 0 auto;
+		.employee-invitation-link-item-text {
+			padding-top: 7px;
+		}
+	}
+}
+
+.employee-invitation-textarea {
+	width: 100%;
+	padding: 15px;
+	border-radius: 10px;
+	border: 1px solid #e3e5e8;
+	background: #fff;
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: 10px;
+	.invited-email {
+		border-radius: 5px;
+		border: 1px solid #e3e5e8;
+		background: #fff;
+		padding: 2px 4px 2px 9px;
+	}
+	input {
+		min-width: 100px;
+		width: 100%;
+		max-width: 100%;
+		display: inline-block;
+		flex-grow: 1;
+		flex-shrink: 1;
+		flex-basis: 0%;
+		min-height: 20px;
+		height: 24px;
+		border: 0;
+	}
+}
+a {
+	width: 100%;
+}
+
+.employee-invitation-employeelist {
+	.each-employee {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		padding: 12px 15px;
+		&:not(:first-child) {
+			margin-top: 7px;
+		}
+		.each-employee-info {
+			display: flex;
+			gap: 15px;
+			.each-employee-propic {
+			}
+			.each-employee-info-details {
+				.each-employee-info-name {
+					letter-spacing: -0.15px;
+				}
+				.each-employee-info-email {
+					letter-spacing: -0.13px;
+				}
+			}
+		}
+		.each-employee-action-icon {
+			border: 2px solid #000;
+			width: 24px;
+			height: 24px;
+			border-radius: 50%;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			padding: 2px;
+			> span {
+				width: 10px;
+				height: 2px;
+				background-color: #000;
+				display: block;
+				position: absolute;
+				&:last-child {
+					transform: rotate(90deg);
+				}
+			}
+			&.each-employee-action-icon-minus {
+				border: 2px solid #ea4545;
+
+				span {
+					background-color: #ea4545;
+				}
+			}
+		}
+	}
+}
+
+.employee-invitation-employeelist {
+	.each-employee {
+		&:hover {
+			border: 1.5px solid var(--crewmat-color-text);
+		}
+	}
+}

@@ -1,0 +1,118 @@
+.addemployee-manually-wrapper {
+	margin: 90px auto;
+	gap: 72px 40px;
+	.sequence-down-wrapper {
+		flex-basis: 234px;
+	}
+	.employeeinfo-form-wrapper {
+		flex-basis: 684px;
+	}
+	.employeeinfo-form {
+		border-radius: 5px;
+		background: #fff;
+		box-shadow: 0px 1px 2px 0px rgba(16, 39, 68, 0.08);
+		padding: 30px;
+		.profile-img {
+			margin-top: -80px;
+			position: relative;
+			width: max-content;
+			.upload-icon {
+				position: absolute;
+				width: max-content;
+				bottom: -28px;
+				right: -10px;
+			}
+		}
+	}
+}
+
+.addemployee-manually-top {
+	.complete-progressbar {
+		span {
+			display: inline-block;
+		}
+		.complete-progressbar-bar {
+			width: 60px;
+			height: 4px;
+			background-color: #e3e5e8;
+			position: relative;
+			border-radius: 40px;
+			.upgradeable-progressbar-bar {
+				border-radius: 40px;
+				position: absolute;
+				height: 4px;
+				top: 0;
+				left: 0;
+				background-color: #236bfe;
+			}
+		}
+	}
+}
+
+.benefit-dropdown-wrapper {
+	&:not(:first-child) {
+		margin-top: 30px;
+	}
+	.benefit-dropdown-item {
+		.benefit-dropdown-item-wrapper {
+			.benefit-dropdown-item-child {
+				display: flex;
+				// gap: 10px;
+				&:first-child {
+					margin-top: 25px;
+				}
+				&:not(:first-child) {
+					margin-top: 10px;
+					.benefit-line {
+						&:after {
+							background-color: #e3e5e8;
+							width: 2px;
+							height: calc(100% + 10px);
+							top: -10px;
+							left: 50%;
+							transform: translateX(-50%);
+						}
+					}
+				}
+				.benefit-line {
+					flex: 0 0 50px;
+					position: relative;
+					&:after {
+						content: '';
+						position: absolute;
+						background-color: #e3e5e8;
+						width: 2px;
+						height: 100%;
+						left: 50%;
+						transform: translateX(-50%);
+					}
+					&:before {
+						content: '';
+						position: absolute;
+						background-color: #e3e5e8;
+						width: 12px;
+						height: 2px;
+						top: 50%;
+						left: 26px;
+					}
+				}
+				&:last-child {
+					.benefit-line {
+						&:after {
+							content: '';
+							position: absolute;
+							background-color: #e3e5e8;
+							width: 2px;
+							height: calc(100% - 17.5px);
+							left: 50%;
+							transform: translateX(-50%);
+						}
+					}
+				}
+				.benefit-child-content {
+					flex: 0 0 calc(100% - 50px);
+				}
+			}
+		}
+	}
+}

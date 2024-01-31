@@ -11,7 +11,7 @@ import { ContextToast } from 'crewhrm-materials/toast/toast.jsx';
 import { LoadingIcon } from 'crewhrm-materials/loading-icon/loading-icon.jsx';
 
 import { field_label_class, section_title_class } from '../job-details.jsx';
-import { ContextBackendDashboard } from '../../../hrm.jsx';
+import { ContextBackendDashboard } from '../../../dashboard/home.jsx';
 import { ContextJobEditor } from '../../index.jsx';
 
 import style from '../details.module.scss';

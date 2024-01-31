@@ -8,7 +8,7 @@ import { Conditional } from 'crewhrm-materials/conditional.jsx';
 import { LoadingIcon } from 'crewhrm-materials/loading-icon/loading-icon.jsx';
 import { statuses } from 'crewhrm-materials/data.jsx';
 
-import { ContextBackendDashboard } from '../../../hrm.jsx';
+import { ContextBackendDashboard } from '../../../dashboard/home.jsx';
 
 import style from '../jobs.module.scss';
 
