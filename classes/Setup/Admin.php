@@ -23,6 +23,8 @@ class Admin {
 	const MOUNTPOINT_SETTINGS  = 'crewhrm_settings';
 	const MOUNTPOINT_DASHBOARD = 'crewhrm_dashboard';
 	const PAGE_SLUG_CALENDAR   = 'crewhrm-event-calendar';
+	const PAGE_SLUG_ALL_JOBS   = 'crewhrm-all-jobs';
+	const PAGE_SLUG_EMPLOYEE   = 'crewhrm-employees';
 
 	/**
 	 * Setup admin menus
@@ -90,11 +92,13 @@ class Admin {
 			);
 		}
 
+		$admin_role = User::getAdminMenuRole( get_current_user_id() );
+
 		// Main page
 		add_menu_page(
 			$white_label['app_label'],
 			$white_label['app_label'],
-			User::getAdminMenuRole( get_current_user_id() ),
+			$admin_role,
 			Main::$configs->app_name,
 			array( $this, 'mainPage' ),
 			$logo
@@ -103,7 +107,7 @@ class Admin {
 			Main::$configs->app_name,
 			esc_html__( 'Dashboard', 'hr-management' ),
 			esc_html__( 'Dashboard', 'hr-management' ),
-			User::getAdminMenuRole( get_current_user_id() ),
+			$admin_role,
 			Main::$configs->app_name,
 			array( $this, 'mainPage' )
 		);
@@ -113,9 +117,19 @@ class Admin {
 			Main::$configs->app_name,
 			esc_html__( 'All Job Posts', 'hr-management' ),
 			esc_html__( 'All Job Posts', 'hr-management' ),
-			User::getAdminMenuRole( get_current_user_id() ),
-			'all-job-posts',
+			$admin_role,
+			self::PAGE_SLUG_ALL_JOBS,
 			array( $this, 'allJobsPage' )
+		);
+
+		// Employee profiles
+		add_submenu_page(
+			Main::$configs->app_name,
+			esc_html__( 'Employees', 'hr-management' ),
+			esc_html__( 'Employees', 'hr-management' ),
+			$admin_role,
+			self::PAGE_SLUG_EMPLOYEE,
+			array( $this, 'employeePage' )
 		);
 
 		// Setting page
@@ -123,7 +137,7 @@ class Admin {
 			Main::$configs->app_name,
 			esc_html__( 'Settings', 'hr-management' ),
 			esc_html__( 'Settings', 'hr-management' ),
-			User::getAdminMenuRole( get_current_user_id() ),
+			$admin_role,
 			self::SLUG_SETTINGS,
 			array( $this, 'settingPage' )
 		);
@@ -149,6 +163,15 @@ class Admin {
 	 */
 	public function allJobsPage() {
 		echo '<div id="crewhrm_dashboard_all_jobs"></div>';
+	}
+
+	/**
+	 * Provide HTML content for all jobs page
+	 *
+	 * @return void
+	 */
+	public function employeePage() {
+		echo '<div id="crewhrm_employees_dashboard"></div>';
 	}
 
 	/**

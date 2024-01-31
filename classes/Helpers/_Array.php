@@ -163,7 +163,7 @@ class _Array {
 			}
 		} elseif ( is_string( $value ) ) {
 			// If the prefix is kses_, it means rich text editor content and get it through kses filter. Otherise normal sanitize.
-			$value = strpos( $key, 'kses_' ) === 0 ? _String::applyKses( $value ) : sanitize_text_field( $value );
+			$value = strpos( $key, 'kses_' ) === 0 ? _String::applyKses( $value ) : _String::castValue( sanitize_text_field( $value ) );
 		}
 
 		return $value;
