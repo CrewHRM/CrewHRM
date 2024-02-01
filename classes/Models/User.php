@@ -16,6 +16,11 @@ use CrewHRM\Helpers\_String;
 class User {
 
 	/**
+	 * User meta key to store only crewhrm specific data
+	 */
+	const META_KEY = 'crewhrm-user-meta';
+
+	/**
 	 * Validate if a user has required role
 	 *
 	 * @param int          $user_id The user ID to validate rule
@@ -140,5 +145,113 @@ class User {
 			'user_id'      => $user_id,
 			'email'        => $user ? $user->user_email : null,
 		);
+	}
+
+	
+	/**
+	 * Get unique username
+	 *
+	 * @param string $username The current username
+	 *
+	 * @return string
+	 */
+	public static function getUniqueUsername( string $username ) {
+		$_user_name = _String::consolidate( (string) $username, true );
+		$_user_name = strtolower( str_replace( ' ', '-', $_user_name ) );
+		$_user_name = preg_replace( '/[^A-Za-z\-]/u', '', $_user_name );
+		$_user_name = empty( $_user_name ) ? 'employee' : $_user_name;
+		$_user_name = preg_replace( '/-+/', '-', $_user_name );
+
+		$_new_name = $_user_name;
+		$index     = 0;
+
+		// Get the slug until it's not avaialble in database
+		while ( username_exists( $_new_name ) ) {
+			$index++;
+			$_new_name = $_user_name . '-' . $index;
+		}
+
+		return $_new_name;
+	}
+
+
+	/**
+	 * Create or update a user
+	 *
+	 * @param array $data User data array
+	 *
+	 * @return int
+	 */
+	public static function createOrUpdate( $data ) {
+
+		$user_id   = ! empty( $data['user_id'] ) ? $data['user_id'] : null;
+		$full_name = $data['first_name'] . ' ' . $data['last_name'];
+
+		// Create new user if 
+		if ( ! $user_id ) {
+			$user_id = wp_create_user(
+				self::getUniqueUsername( $full_name ),
+				wp_generate_password(),
+				$data['user_email']
+			);
+
+			if ( is_wp_error( $user_id ) || empty( $user_id ) || ! is_numeric( $user_id ) ) {
+				return false;
+			}
+		}
+		
+		wp_update_user(
+			array(
+				'first_name'   => $data['first_name'],
+				'last_name'    => $data['last_name'],
+				'display_name' => $data['display_name'] ?? $full_name
+			)
+		);
+
+		// Update meta data that can't be added in user table or anything native by WP
+		self::updateMeta( $user_id, 'user_phone', $data['user_phone'] ?? null );
+		
+		return $user_id;
+	}
+
+	/**
+	 * Update crew meta for the user
+	 *
+	 * @param int $user_id
+	 * @param string $key
+	 * @param mixed $value
+	 * @return void
+	 */
+	public static function updateMeta( $user_id, $key, $value ) {
+		$meta = self::getMeta( $user_id );
+		$meta[ $key ] = $value;
+		update_user_meta( $user_id, self::META_KEY, $meta );
+	}
+	
+	/**
+	 * Get crew meta data
+	 *
+	 * @param int $user_id
+	 * @param string $key
+	 * @param mixed $fallback
+	 *
+	 * @return mixed
+	 */
+	public static function getMeta( $user_id, $key = null, $fallback = null ) {
+		$meta = get_user_meta( $user_id, self::META_KEY, true );
+		$meta = ! is_array( $meta ) ? array() : $meta;
+		return $key ? ( $meta[ $key ] ?? $fallback ) : $meta;
+	}
+	
+	/**
+	 * Get user ID by email
+	 *
+	 * @param string $email The user email
+	 * 
+	 * @return void
+	 */
+	public static function getUserIdByEmail( $email ) {
+		global $wpdb;
+		return ( new Field( $wpdb->users ) )->getField( array( 'user_email' => $email ), 'ID' );
 	}
 }

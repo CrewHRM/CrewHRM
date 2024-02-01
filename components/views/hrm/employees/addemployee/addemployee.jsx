@@ -9,6 +9,27 @@ import addemployeeUserPlusImg from 'crewhrm-materials/static/images/addemployee-
 import EmployeeIndexCss from '../index.module.scss';
 import employeecss from './employee.module.scss';
 
+const channels = [
+	{
+		route: '/employee/invite/viaemail/',
+		label: __('Invite via email'),
+		description: __('Invite one or more new staff members to create their account'),
+		icon: addemployeeMailImg
+	},
+	{
+		route: '/employee/invite/manually/',
+		label: __('Add manually'),
+		description: __('Add info about the new staff member manually'),
+		icon: addemployeeUserPlusImg
+	},
+	{
+		route: '/employee/invite/hirelist/',
+		label: __('Select from the hire list'),
+		description: __('Add info about the new member manually'),
+		icon: addemployeeBriefcaseImg
+	}
+];
+
 export default function AddEmployee() {
 	return (
 		<>
@@ -47,96 +68,40 @@ export default function AddEmployee() {
 					</div>
 				</div>
 				<div className={'employee-invitation-links'.classNames(employeecss)}>
-					<Link to="/employee/invite/viaemail">
-						<div
-							className={
-								'single-employee-invitation-link'.classNames(employeecss) +
-								'bg-color-white border-radius-5'.classNames()
-							}
-						>
-							<div>
+					{
+						channels.map((channel, index)=>{
+							return <Link key={index} to={channel.route}>
 								<div
 									className={
-										'font-size-17 font-weight-600 color-text'.classNames() +
-										'employee-invitation-link-item-title'
+										'single-employee-invitation-link'.classNames(employeecss) +
+										'bg-color-white border-radius-5'.classNames()
 									}
 								>
-									{__('Invite via email')}
+									<div>
+										<div
+											className={
+												'font-size-17 font-weight-600 color-text'.classNames() +
+												'employee-invitation-link-item-title'
+											}
+										>
+											{channel.label}
+										</div>
+										<div
+											className={
+												'font-size-13 font-weight-400 color-text-light'.classNames() +
+												'employee-invitation-link-item-text'.classNames(employeecss)
+											}
+										>
+											{channel.description}
+										</div>
+									</div>
+									<div>
+										<img src={channel.icon} alt="" />
+									</div>
 								</div>
-								<div
-									className={
-										'font-size-13 font-weight-400 color-text-light'.classNames() +
-										'employee-invitation-link-item-text'.classNames(employeecss)
-									}
-								>
-									{__('Invite one or more new staff members to create their account')}
-								</div>
-							</div>
-							<div>
-								<img src={addemployeeMailImg} alt="" />
-							</div>
-						</div>
-					</Link>
-					<Link to="/employee/invite/manually">
-						<div
-							className={
-								'single-employee-invitation-link'.classNames(employeecss) +
-								'bg-color-white border-radius-5'.classNames()
-							}
-						>
-							<div>
-								<div
-									className={
-										'font-size-17 font-weight-600 color-text'.classNames() +
-										'employee-invitation-link-item-title'
-									}
-								>
-									{__('Add manually')}
-								</div>
-								<div
-									className={
-										'font-size-13 font-weight-400 color-text-light'.classNames() +
-										'employee-invitation-link-item-text'.classNames(employeecss)
-									}
-								>
-									{__('Add info about the new staff member manually')}
-								</div>
-							</div>
-							<div>
-								<img src={addemployeeUserPlusImg} alt="" />
-							</div>
-						</div>
-					</Link>
-					<Link to="/employee/invite/hirelist">
-						<div
-							className={
-								'single-employee-invitation-link'.classNames(employeecss) +
-								'bg-color-white border-radius-5'.classNames()
-							}
-						>
-							<div>
-								<div
-									className={
-										'font-size-17 font-weight-600 color-text'.classNames() +
-										'employee-invitation-link-item-title'
-									}
-								>
-									{__('Select from the hire list')}
-								</div>
-								<div
-									className={
-										'font-size-13 font-weight-400 color-text-light'.classNames() +
-										'employee-invitation-link-item-text'.classNames(employeecss)
-									}
-								>
-									{__('Add info about the new member manually')}
-								</div>
-							</div>
-							<div>
-								<img src={addemployeeBriefcaseImg} alt="" />
-							</div>
-						</div>
-					</Link>
+							</Link>
+						})
+					}
 				</div>
 			</div>
 		</>

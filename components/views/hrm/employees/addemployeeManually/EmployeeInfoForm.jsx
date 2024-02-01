@@ -26,7 +26,7 @@ import AddEmployeeCss from './AddManually.module.scss';
 export default function EmployeeInfoForm() {
 
 	const [setshowAdditionalInfo, setSetshowAdditionalInfo] = useState(false);
-	const { navigateTab, is_next_disabled, saving, onChange, values={} } = useContext(ContextAddEmlpoyeeManually);
+	const { navigateTab, is_next_disabled, saving, onChange, updateEmployee, values={} } = useContext(ContextAddEmlpoyeeManually);
 	const [departments] = useState(['Development', 'Design']);
 	const [selectedDept, setSelectedDept] = useState('');
 	const [textValue, setTextValue] = useState('');
@@ -586,7 +586,7 @@ export default function EmployeeInfoForm() {
 				<div className={'flex-1'.classNames()}>
 					<FormActionButtons
 						nextText={'Save & Continue'}
-						onNext={() => navigateTab(1)}
+						onNext={() => updateEmployee(()=>navigateTab(1))}
 						disabledNext={is_next_disabled || saving}
 						loading={saving}
 					/>

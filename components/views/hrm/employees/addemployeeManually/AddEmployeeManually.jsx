@@ -1,8 +1,10 @@
-import React, { createContext, useState } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 
 import { __, data_pointer } from 'crewhrm-materials/helpers.jsx';
 import { StickyBar } from 'crewhrm-materials/sticky-bar.jsx';
 import { Tabs } from 'crewhrm-materials/tabs/tabs.jsx';
+import { request } from 'crewhrm-materials/request.jsx';
+import {ContextToast} from 'crewhrm-materials/toast/toast.jsx';
 
 import AddEmployeeCss from './AddManually.module.scss';
 import EmployeeStatusForm from './EmployeeStatusForm.jsx';
@@ -14,7 +16,6 @@ import { useNavigate, useParams } from 'react-router-dom';
 // import AddEmployeeCongrats from './AddEmployeeCongrats.jsx';
 
 import EmployeeIndexCss from '../index.module.scss';
-import { request } from 'crewhrm-materials/request.jsx';
 
 export const ContextAddEmlpoyeeManually = createContext();
 
@@ -46,6 +47,7 @@ export default function AddEmployeeManually() {
 
 	const {active_tab = 'employee-info'} = useParams();
 	const navigate = useNavigate();
+	const {ajaxToast} = useContext(ContextToast);
 
 	const [state, setState] = useState({
 		saving: false,
@@ -63,7 +65,7 @@ export default function AddEmployeeManually() {
 		});
 	}
 
-	const updateEmployee=()=>{
+	const updateEmployee=(callback)=>{
 
 		setState({
 			...state,
@@ -71,7 +73,28 @@ export default function AddEmployeeManually() {
 		});
 
 		request('updateEmployee', {employee: state.values}, resp=>{
+			const {
+				success,
+				data: {
+					employee_id = null
+				}
+			} = resp;
 
+			setState({
+				...state,
+				saving: false,
+				values: {
+					...state.values,
+					employee_id: employee_id
+				}
+			});
+
+			if ( !success ) {
+				ajaxToast(resp);
+				return;
+			}
+			
+			callback();
 		});
 	}
 
@@ -95,6 +118,7 @@ export default function AddEmployeeManually() {
 				value={{
 					navigateTab,
 					onChange,
+					updateEmployee,
 					saving: state.saving,
 					values: state.values
 				}}

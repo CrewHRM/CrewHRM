@@ -9,6 +9,7 @@ namespace CrewHRM\Setup;
 
 use CrewHRM\Controllers\AddonController;
 use CrewHRM\Controllers\ApplicationHandler;
+use CrewHRM\Controllers\EmployeeController;
 use CrewHRM\Main;
 use CrewHRM\Models\User;
 
@@ -35,6 +36,7 @@ class Dispatcher {
 		ApplicationHandler::class,
 		MediaHandler::class,
 		MailPreview::class,
+		EmployeeController::class,
 	);
 
 	/**
