@@ -17,7 +17,7 @@ const channels = [
 		icon: addemployeeMailImg
 	},
 	{
-		route: '/employee/invite/manually/',
+		route: '/employees/profile/new/edit/',
 		label: __('Add manually'),
 		description: __('Add info about the new staff member manually'),
 		icon: addemployeeUserPlusImg

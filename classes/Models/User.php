@@ -139,11 +139,18 @@ class User {
 	public static function getUserInfo( $user_id ) {
 
 		$user = get_userdata( $user_id );
+		if ( empty( $user ) ) {
+			return $user;
+		}
 
 		return array(
-			'display_name' => $user ? $user->display_name : null,
 			'user_id'      => $user_id,
-			'email'        => $user ? $user->user_email : null,
+			'employee_id'  => $user_id,
+			'first_name'   => $user->first_name,
+			'last_name'    => $user->last_name,
+			'user_email'   => $user->user_email,
+			'display_name' => $user->display_name,
+			'user_phone'   => self::getMeta( $user_id, 'user_phone' )
 		);
 	}
 
@@ -187,6 +194,8 @@ class User {
 		$user_id   = ! empty( $data['user_id'] ) ? $data['user_id'] : null;
 		$full_name = $data['first_name'] . ' ' . $data['last_name'];
 
+		error_log( var_export( $data, true ) );
+
 		// Create new user if 
 		if ( ! $user_id ) {
 			$user_id = wp_create_user(
@@ -202,6 +211,7 @@ class User {
 		
 		wp_update_user(
 			array(
+				'ID'           => $user_id,
 				'first_name'   => $data['first_name'],
 				'last_name'    => $data['last_name'],
 				'display_name' => $data['display_name'] ?? $full_name

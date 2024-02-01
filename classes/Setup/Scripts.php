@@ -154,7 +154,6 @@ class Scripts {
 				'admin_url'       => add_query_arg( array( 'page' => '' ), admin_url( 'admin.php' ) ),
 				'is_admin'        => is_admin(),
 				'is_frontend'     => ! is_admin(),
-				'current_user'    => User::getUserInfo( get_current_user_id() ),
 				'text_domain'     => Main::$configs->text_domain,
 				'company_address' => array(
 					'street_address' => Settings::getSetting( 'street_address', '' ),

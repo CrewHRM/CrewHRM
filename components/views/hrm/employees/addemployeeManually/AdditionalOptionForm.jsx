@@ -1,12 +1,14 @@
 import React, { useContext, useState } from 'react';
+
 import { __ } from 'crewhrm-materials/helpers.jsx';
 import { FormActionButtons } from 'crewhrm-materials/form-action.jsx';
-import { ContextAddEmlpoyeeManually } from './AddEmployeeManually.jsx';
-import AddEmployeeCss from './AddManually.module.scss';
-import EmployeeIndexCss from '../index.module.scss';
 import { TextField } from 'crewhrm-materials/text-field/text-field.jsx';
 import SearchImg from 'crewhrm-materials/static/images/search-normal-add-8.svg';
-import { Link } from 'react-router-dom';
+
+import { ContextAddEmlpoyeeManually } from './AddEmployeeManually.jsx';
+
+import AddEmployeeCss from './AddManually.module.scss';
+import EmployeeIndexCss from '../index.module.scss';
 
 export default function AdditionalOptionForm() {
 	const { navigateTab } = useContext(ContextAddEmlpoyeeManually);
@@ -150,20 +152,10 @@ export default function AdditionalOptionForm() {
 				<div className={'d-flex column-gap-30 margin-top-40'.classNames()}>
 					<FormActionButtons
 						onBack={() => navigateTab(-1)}
-						// onNext={() => navigateTab(1)}
+						onNext={() => navigateTab(1)}
 						disabledNext={false}
 						nextText={'Save & Continue'}
 					/>
-					<Link to="/employee/invite/manually/congrats">
-						<button
-							disabled={false}
-							href={''}
-							className={'button button-primary text-align-center'.classNames()}
-							style={{ width: '100%', marginBottom: '30px' }}
-						>
-							{__('Save & Continue')}
-						</button>
-					</Link>
 				</div>
 			</div>
 		</>

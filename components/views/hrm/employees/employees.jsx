@@ -37,18 +37,10 @@ export function Employees() {
 					}
 				/>
 				<Route
-					path="/employee/invite/manually/:active_tab?/"
+					path="/employees/profile/:employee_id/edit/:active_tab?/"
 					element={
 						<>
 							<AddEmployeeManually />
-						</>
-					}
-				/>
-				<Route
-					path="/employee/invite/manually/congrats"
-					element={
-						<>
-							<CongratsAddEmployee />
 						</>
 					}
 				/>

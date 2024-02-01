@@ -15,6 +15,9 @@ class EmployeeController {
 	const PREREQUISITES = array(
 		'updateEmployee' => array(
 			'role' => 'administrator'
+		),
+		'fetchEmployee' => array(
+			'role' => 'administrator'
 		)
 	);
 
@@ -56,5 +59,22 @@ class EmployeeController {
 		}
 		
 		wp_send_json_success( array( 'employee_id' => $user_id ) );
+	}
+
+	/**
+	 * Get single employee info
+	 *
+	 * @param integer $employee_id
+	 * @return void
+	 */
+	public static function fetchEmployee( int $employee_id ) {
+		
+		$employee = User::getUserInfo( $employee_id );
+
+		if ( ! empty( $employee ) ) {
+			wp_send_json_success( array( 'employee' => $employee ) );
+		} else {
+			wp_send_json_success( array( 'message' => esc_html__( 'Employee not found', 'crewhrm' ) ) );
+		}
 	}
 }

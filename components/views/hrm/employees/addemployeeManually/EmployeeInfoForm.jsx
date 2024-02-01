@@ -4,7 +4,6 @@ import { __ } from 'crewhrm-materials/helpers.jsx';
 import { DropDown } from 'crewhrm-materials/dropdown/dropdown.jsx';
 import { TextField } from 'crewhrm-materials/text-field/text-field.jsx';
 import { DateField } from 'crewhrm-materials/date-time.jsx';
-import { FormActionButtons } from 'crewhrm-materials/form-action.jsx';
 import ShowMore from 'crewhrm-materials/ShowMore/ShowMore.jsx';
 
 import AddImg from 'crewhrm-materials/static/images/addemployee-add-7.svg';
@@ -26,14 +25,14 @@ import AddEmployeeCss from './AddManually.module.scss';
 export default function EmployeeInfoForm() {
 
 	const [setshowAdditionalInfo, setSetshowAdditionalInfo] = useState(false);
-	const { navigateTab, is_next_disabled, saving, onChange, updateEmployee, values={} } = useContext(ContextAddEmlpoyeeManually);
+	const { onChange, values={} } = useContext(ContextAddEmlpoyeeManually);
 	const [departments] = useState(['Development', 'Design']);
 	const [selectedDept, setSelectedDept] = useState('');
 	const [textValue, setTextValue] = useState('');
 	const [expand, setExpand] = useState(false);
 
 	return (
-		<div className={'employeeinfo-form-wrapper'.classNames(AddEmployeeCss)}>
+		<>
 			<div
 				className={
 					'font-size-24 font-weight-500 color-text'.classNames() +
@@ -581,18 +580,6 @@ export default function EmployeeInfoForm() {
 					</div>
 				</>
 			)}
-
-			<div className={'d-flex margin-top-40 margin-bottom-10'.classNames()}>
-				<div className={'flex-1'.classNames()}>
-					<FormActionButtons
-						nextText={'Save & Continue'}
-						onNext={() => updateEmployee(()=>navigateTab(1))}
-						disabledNext={is_next_disabled || saving}
-						loading={saving}
-					/>
-				</div>
-				<div className={'right-col'.classNames()}></div>
-			</div>
-		</div>
+		</>
 	);
 }

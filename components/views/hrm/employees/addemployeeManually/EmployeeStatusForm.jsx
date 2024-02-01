@@ -20,156 +20,143 @@ export default function EmployeeStatusForm() {
 
 	return (
 		<>
-			<div className={'employeeinfo-form-wrapper'.classNames(AddEmployeeCss)}>
-				<div
-					className={'font-size-24 color-text'.classNames() + 'employeeinfo-form'.classNames(AddEmployeeCss)}
-				>
-					<div className={'font-size-20 font-weight-500 color-text margin-bottom-30'.classNames()}>
-						{__('Employment info')}
-					</div>
-					<div className={'d-flex margin-top-20'.classNames()}>
-						<div className={'flex-3 margin-right-20'.classNames()}>
-							<div
-								className={'color-text font-size-15 line-height-18 margin-bottom-14 font-weight-500'.classNames()}
-							>
-								{__('Employee ID')}
-								<span className={'color-error'.classNames()}>*</span>
-							</div>
-							<TextField placeholder={__('005')} value={textValue} onChange={(v) => setTextValue(v)} />
-						</div>
-						<div className={'flex-1'.classNames()}>
-							<div
-								className={'color-text font-size-15 line-height-18 margin-bottom-14  font-weight-500'.classNames()}
-							>
-								{__('Experience Level')}
-							</div>
-							<DropDown
-								value={selectedDept}
-								placeholder="Select"
-								onChange={(v) => {
-									setSelectedDept(v);
-								}}
-								options={departments.map((email) => {
-									return { id: email, label: email };
-								})}
-							/>
-						</div>
-					</div>
-					<div className={'flex-1'.classNames()}>
-						<div className={''.classNames()}>
-							<div
-								className={'color-text font-size-15 line-height-18 margin-top-20 margin-bottom-14  font-weight-500'.classNames()}
-							>
-								{__('Role/Designation')}
-								<span className={'color-error'.classNames()}>*</span>
-							</div>
-							<TextField
-								placeholder={__('ex. Product Designer')}
-								value={textValue}
-								onChange={(v) => setTextValue(v)}
-							/>
-						</div>
-					</div>
-					<div className={'d-flex'.classNames()}>
-						<div className={'flex-1'.classNames()}>
-							<div
-								className={'color-text font-size-15 line-height-18 margin-top-20 margin-bottom-14  font-weight-500'.classNames()}
-							>
-								{__('Department')}
-								<span className={'color-error'.classNames()}>*</span>
-							</div>
-							<TextField
-								placeholder={__('ex. Product Designer')}
-								value={textValue}
-								onChange={(v) => setTextValue(v)}
-							/>
-						</div>
-					</div>
-					<div className={'d-flex margin-top-20'.classNames()}>
-						<div className={'flex-1'.classNames()}>
-							<div
-								className={'color-text font-size-15 line-height-18 margin-bottom-20  font-weight-500'.classNames()}
-							>
-								{__('Job Location type')}
-							</div>
-							<TagField
-								theme="button-control"
-								behavior="checkbox"
-								value={[activeEmploymentTypes]}
-								onChange={(type) => {
-									setActiveEmploymentTypes(type);
-								}}
-								options={Object.keys(attendance_types).map((a) => {
-									return {
-										id: a,
-										label: attendance_types[a],
-									};
-								})}
-							/>
-						</div>
-					</div>
+			<div
+				className={'font-size-24 color-text'.classNames() + 'employeeinfo-form'.classNames(AddEmployeeCss)}
+			>
+				<div className={'font-size-20 font-weight-500 color-text margin-bottom-30'.classNames()}>
+					{__('Employment info')}
 				</div>
-				<div
-					className={
-						'margin-top-30 -font-size-24 color-text'.classNames() +
-						'employeeinfo-form'.classNames(AddEmployeeCss)
-					}
-				>
-					<div className={'flex-1'.classNames()}>
-						<div className={'d-flex margin-top-10'.classNames()}>
-							<div className={'flex-1 margin-right-20'.classNames()}>
-								<div
-									className={'color-text font-size-20 line-height-24 font-weight-500 margin-bottom-14'.classNames()}
-								>
-									{__('Reporting Person')}
-								</div>
-							</div>
+				<div className={'d-flex margin-top-20'.classNames()}>
+					<div className={'flex-3 margin-right-20'.classNames()}>
+						<div
+							className={'color-text font-size-15 line-height-18 margin-bottom-14 font-weight-500'.classNames()}
+						>
+							{__('Employee ID')}
+							<span className={'color-error'.classNames()}>*</span>
 						</div>
-						<div className={'d-flex margin-top-20'.classNames()}>
-							<div className={'flex-1'.classNames()}>
-								<div
-									className={'color-text font-size-15 line-height-18 font-weight-500 margin-bottom-14'.classNames()}
-								>
-									{__('Reporting person name')}
-								</div>
-								<TextField
-									placeholder={__('ex. John doe')}
-									value={textValue}
-									onChange={(v) => setTextValue(v)}
-									image={SearchImg}
-									icon_position={'right'}
-								/>
-							</div>
-						</div>
-						<div className={'d-flex flex-wrap-wrap column-gap-10 row-gap-10 margin-top-15'.classNames()}>
-							<div
-								className={
-									'd-flex align-items-center column-gap-5 padding-horizontal-10 padding-vertical-5'.classNames() +
-									'person-card width-max-content'.classNames(EmployeeIndexCss)
-								}
-							>
-								<img src={Profileimg} alt="" />
-								<span className={'color-text font-size-15 line-height-18 font-weight-500'.classNames()}>
-									{__('Floyd Miles')}
-								</span>
-								<i
-									className={'ch-icon ch-icon-times font-size-15 color-text-lighter cursor-pointer'.classNames()}
-									onClick={() => null}
-								></i>
-							</div>
-						</div>
+						<TextField placeholder={__('005')} value={textValue} onChange={(v) => setTextValue(v)} />
 					</div>
-				</div>
-				<div className={'d-flex margin-top-40'.classNames()}>
 					<div className={'flex-1'.classNames()}>
-						<FormActionButtons
-							onBack={() => navigateTab(-1)}
-							onNext={() => navigateTab(1)}
-							disabledNext={is_next_disabled}
-							nextText={'Save & Continue'}
+						<div
+							className={'color-text font-size-15 line-height-18 margin-bottom-14  font-weight-500'.classNames()}
+						>
+							{__('Experience Level')}
+						</div>
+						<DropDown
+							value={selectedDept}
+							placeholder="Select"
+							onChange={(v) => {
+								setSelectedDept(v);
+							}}
+							options={departments.map((email) => {
+								return { id: email, label: email };
+							})}
 						/>
 					</div>
-					<div className={'right-col'.classNames()}></div>
+				</div>
+				<div className={'flex-1'.classNames()}>
+					<div className={''.classNames()}>
+						<div
+							className={'color-text font-size-15 line-height-18 margin-top-20 margin-bottom-14  font-weight-500'.classNames()}
+						>
+							{__('Role/Designation')}
+							<span className={'color-error'.classNames()}>*</span>
+						</div>
+						<TextField
+							placeholder={__('ex. Product Designer')}
+							value={textValue}
+							onChange={(v) => setTextValue(v)}
+						/>
+					</div>
+				</div>
+				<div className={'d-flex'.classNames()}>
+					<div className={'flex-1'.classNames()}>
+						<div
+							className={'color-text font-size-15 line-height-18 margin-top-20 margin-bottom-14  font-weight-500'.classNames()}
+						>
+							{__('Department')}
+							<span className={'color-error'.classNames()}>*</span>
+						</div>
+						<TextField
+							placeholder={__('ex. Product Designer')}
+							value={textValue}
+							onChange={(v) => setTextValue(v)}
+						/>
+					</div>
+				</div>
+				<div className={'d-flex margin-top-20'.classNames()}>
+					<div className={'flex-1'.classNames()}>
+						<div
+							className={'color-text font-size-15 line-height-18 margin-bottom-20  font-weight-500'.classNames()}
+						>
+							{__('Job Location type')}
+						</div>
+						<TagField
+							theme="button-control"
+							behavior="checkbox"
+							value={[activeEmploymentTypes]}
+							onChange={(type) => {
+								setActiveEmploymentTypes(type);
+							}}
+							options={Object.keys(attendance_types).map((a) => {
+								return {
+									id: a,
+									label: attendance_types[a],
+								};
+							})}
+						/>
+					</div>
+				</div>
+			</div>
+			<div
+				className={
+					'margin-top-30 -font-size-24 color-text'.classNames() +
+					'employeeinfo-form'.classNames(AddEmployeeCss)
+				}
+			>
+				<div className={'flex-1'.classNames()}>
+					<div className={'d-flex margin-top-10'.classNames()}>
+						<div className={'flex-1 margin-right-20'.classNames()}>
+							<div
+								className={'color-text font-size-20 line-height-24 font-weight-500 margin-bottom-14'.classNames()}
+							>
+								{__('Reporting Person')}
+							</div>
+						</div>
+					</div>
+					<div className={'d-flex margin-top-20'.classNames()}>
+						<div className={'flex-1'.classNames()}>
+							<div
+								className={'color-text font-size-15 line-height-18 font-weight-500 margin-bottom-14'.classNames()}
+							>
+								{__('Reporting person name')}
+							</div>
+							<TextField
+								placeholder={__('ex. John doe')}
+								value={textValue}
+								onChange={(v) => setTextValue(v)}
+								image={SearchImg}
+								icon_position={'right'}
+							/>
+						</div>
+					</div>
+					<div className={'d-flex flex-wrap-wrap column-gap-10 row-gap-10 margin-top-15'.classNames()}>
+						<div
+							className={
+								'd-flex align-items-center column-gap-5 padding-horizontal-10 padding-vertical-5'.classNames() +
+								'person-card width-max-content'.classNames(EmployeeIndexCss)
+							}
+						>
+							<img src={Profileimg} alt="" />
+							<span className={'color-text font-size-15 line-height-18 font-weight-500'.classNames()}>
+								{__('Floyd Miles')}
+							</span>
+							<i
+								className={'ch-icon ch-icon-times font-size-15 color-text-lighter cursor-pointer'.classNames()}
+								onClick={() => null}
+							></i>
+						</div>
+					</div>
 				</div>
 			</div>
 		</>
