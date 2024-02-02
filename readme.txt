@@ -48,6 +48,12 @@ Connect with us for any inquiries or support to ensure you make the most out of 
 
 This WordPress HRM plugin is the perfect solution for any business that wants to streamline its hiring process and attract the best talent.
 
+== Who Can Use Crew HRM? ==
+* **Small to medium scale businesses** can use this plugin to supercharge their hiring process.
+* **Freelancers** can use the plugin for their client projects and take advantage of the whitelabeling feature.
+* **Web Development Agencies** can offer this as an alternative to SaaS solutions to their clients to save costs without compromising features and reliability.
+* **Companies located in the European region** can significantly benefit by using this plugin as it will help them retain ownership of the data and store them within the European region. You can comply with the GDPR directives as you can easily remove applicant data.
+
 == Installation ==
 From WordPress Dashboard
 1. Log in to your WordPress Admin Dashboard.
@@ -92,25 +98,22 @@ Please note that this plugin is developed using React.js. If you want to access 
 The reCaptcha integration uses Google reCAPTCHA for spam protection in job applications. By using this, you agree with Google's [terms](https://www.google.com/recaptcha/about/) and [privacy policy](https://policies.google.com/privacy).
 
 == Frequently Asked Questions ==
-
+= Who should use Crew HRM? =
+Anyone who needs to share jobs on their website and accept applications from their website. This would give a professional impression and help you save time compared to using forms and emails.
+= What are the server requirements? =
+You can use our plugin on any WordPress site. We used React.js to make it, so it works well in your browser. If you have a lot of employees (over 3000) and many using it at once (over 200), a dedicated hosting package works better than shared hosting.
 = Do you offer a whitelabeling feature? =
 Yes, we offer a whitelable setting on the Pro add-on to change the name and images easily. If you prefer to use the free version only, you can change the name using translation plugins like Loco Translate or the Say What plugin.
-
 = Can I go ahead and customize the plugin? =
-Yes, as Crew HRM is offered under the GPL license, you can modify it any way you like. There is no restriction at all. Just so you know, we do not offer support for customized plugins.
-
+Yes, as Crew HRM is offered under the GPL license, you can modify it any way you like. There is no restriction at all. So that you know, we do not offer support for customized plugins.
 = Can you develop a custom feature for me? =
 Unfortunately, we are unable to offer customizations right now. You can hire a developer from a marketplace, and we'll gladly help your developer.
-
 = Is this plugin multisite compatible? =
 No. We are not supporting multisite installations at this moment.
-
 = Can I use this plugin in other languages? =
 Yes, you can translate the plugin into any language you want. You can use the Loco Translate plugin or any other plugin you like. Please check our [documentation](https://getcrewhrm.com/docs/translating/) for detailed instructions.
-
 = Do you have video tutorials? =
 We have posted walkthrough videos on the [Crew HRM YouTube Channel](https://www.youtube.com/@crewhrm). If you have requests for video tutorials and discuss different ideas, please feel free to comment on any video or use the contact form on our website.
-
 = How can I suggest new features? =
 You can email us using the contact form on our website to share feature ideas with helpful screenshots, sketches, etc.
 
