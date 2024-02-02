@@ -32,10 +32,13 @@ Crew HRM has all the features you need to attract, screen, and hire the best tal
 * **Dedicated job post and catalog templates:** Use dedicated job post and catalog templates to create professional-looking job postings and candidate catalogs.
 * **Google reCAPTCHA Integration:** Make your job applications spam and robots proof with Google's reCAPTCHA.
 
-==🚀 [Explore Crew HRM with a Live Demo](https://demo.getcrewhrm.com/)==
-Experience Crew HRM firsthand with our live demo. See for yourself how it simplifies and improves the hiring process.
-==💬[Get In Touch with Crew HRM](https://getcrewhrm.com/contact/)==
-Connect with us for any inquiries or support to ensure you make the most out of Crew HRM.
+==🚀 Explore Crew HRM with a Live Demo==
+Experience Crew HRM firsthand with our live demo. Please take a look at how it simplifies and improves the hiring process.
+[Click Here to Visit the Demo Site](https://demo.getcrewhrm.com/)
+
+==💬Get In Touch with Crew HRM==
+Please reach out to us for any questions or support to make sure you make the most out of Crew HRM.
+[Click Here to Contact Us](https://getcrewhrm.com/contact/)
 
 ===The pro version of the plugin includes additional features, such as:===
 
