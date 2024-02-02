@@ -123,28 +123,37 @@ You can email us using the contact form on our website to share feature ideas wi
 == Changelog ==
 
 = v1.0.6 -> Jan 25, 2024 =
---------------------------
-* reCAPTCHA addon to prevent spam job applications
-* Careers page shortcode
-* Careers page Gutenberg block
-* Bug fixes and optimizations
 
-= v1.0.5 -> Dec 08, 2023 =
---------------------------
-* Schedule create bug fix
+* New: reCAPTCHA addon to prevent spam job applications.
+* New: Careers page shortcode.
+* New: Careers page Gutenberg block.
+* Fix: More optimized code for better speed.
 
-= v1.0.4 -> Nov 23, 2023 =
---------------------------
-* Translations fixed
-* Automatic careers page creation
-* Currency and salary basis added in single job
-* Careers page mobile view
-* Applicants avatar dynamic color enhancement
-* Email events added
-* Overall bug fixes and optimizations
+= v1.0.5 -> Dec 9, 2023
 
-= v1.0 -> Sep 23, 2023 =
---------------------------
+* Fix: Timezone offset issue for new meetings
+
+= v1.0.4 -> Nov 30, 2023
+
+* Fix: Automated security testing tool setup
+* Fix: Translations
+* Update: Applicants avatar dynamic color
+* New: Automatic careers page creation
+
+= v1.0.3 -> Nov 19, 2023
+
+* Fix: UI colors and email events
+* New: Currency and salary filters for mobile devices
+* New: Custom design of Career page for mobile devices
+
+= v1.0.2 -> Nov 15, 2023
+
+* Fix: Dropdown icon size
+* New: Automated mail notification for applicants
+* New: Email addon
+
+= v1.0 -> SEP 23, 2023 =
+
 * 🥁 First Release! 🎉
 
 == Upgrade Notice ==
