@@ -22,6 +22,7 @@ class Address {
 	 */
 	public static function createUpdateAddress( array $address ) {
 		$_address = array(
+			'unit_flat'      => $address['unit_flat'] ?? null,
 			'street_address' => $address['street_address'] ?? '',
 			'city'           => $address['city'] ?? '',
 			'province'       => $address['province'] ?? '',
@@ -78,9 +79,10 @@ class Address {
 	 * Get address by id
 	 *
 	 * @param int $address_id ID to get address by
-	 * @return array|null
+	 * @param mixed $fallback The fallback if address not found
+	 * @return array|mixed
 	 */
-	public static function getAddressById( $address_id ) {
+	public static function getAddressById( $address_id, $fallback = null ) {
 		global $wpdb;
 		$address = $wpdb->get_row(
 			$wpdb->prepare(
@@ -90,7 +92,7 @@ class Address {
 			ARRAY_A
 		);
 
-		return ! empty( $address ) ? $address : null;
+		return ! empty( $address ) ? $address : $fallback;
 	}
 
 	/**

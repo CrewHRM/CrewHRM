@@ -8,6 +8,7 @@
 namespace CrewHRM\Setup;
 
 use CrewHRM\Models\FileManager;
+use CrewHRM\Models\User;
 
 /**
  * Hide application files from WP media picker
@@ -40,6 +41,11 @@ class Media {
 			$meta_query[] = array(
 				'key'     => FileManager::$crewhrm_meta_key,
 				'compare' => 'NOT EXISTS', // Hide release media contents
+			);
+
+			$meta_query[] = array(
+				'key'     => User::META_KEY_AVATAR_CREW_FLAG,
+				'compare' => 'NOT EXISTS', // Hide employee avatars from media window
 			);
 
 			$query->set( 'meta_query', $meta_query );

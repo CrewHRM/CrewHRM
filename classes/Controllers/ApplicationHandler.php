@@ -7,8 +7,6 @@
 
 namespace CrewHRM\Controllers;
 
-use CrewHRM\Helpers\_Array;
-use CrewHRM\Helpers\Utilities;
 use CrewHRM\Models\Application;
 use CrewHRM\Models\Field;
 use CrewHRM\Models\Job;

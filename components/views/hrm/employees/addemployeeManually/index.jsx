@@ -46,7 +46,7 @@ const steps = [
 	},
 ];
 
-export default function AddEmployeeManually() {
+export function AddEmployeeManually() {
 
 	const navigate = useNavigate();
 	const {ajaxToast} = useContext(ContextToast);
@@ -113,8 +113,12 @@ export default function AddEmployeeManually() {
 			...state,
 			saving: true,
 		});
+		
+		const {values={}} = state;
+		const {avatar_image} = values;
+		delete values.avatar_image;
 
-		request('updateEmployee', {employee: {...state.values, employee_id}}, resp=>{
+		request('updateEmployee', {employee: {...values, employee_id}, avatar_image}, resp=>{
 			const {
 				success,
 				data: {

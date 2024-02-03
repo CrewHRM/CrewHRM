@@ -121,7 +121,7 @@ class FileManager {
 			// Generate meta data for the file
 			$attachment_data = wp_generate_attachment_metadata( $attachment_id, $upload['file'] );
 			wp_update_attachment_metadata( $attachment_id, $attachment_data );
-			update_post_meta( $attachment_id, self::$crewhrm_meta_key, true );
+			update_post_meta( $attachment_id, self::$crewhrm_meta_key, $content_id );
 		} else {
 			$attachment_id = null;
 		}
@@ -158,5 +158,26 @@ class FileManager {
 
 		// Check if the content was successfully written
 		return false !== $result;
+	}
+
+	/**
+	 * Delete WP files
+	 *
+	 * @param int|array $file_id File ID or array of files IDs
+	 * @param bool $force_delete Whether to delete permanently
+	 *
+	 * @return void
+	 */
+	public static function deleteFile( $file_id, $force_delete = true ) {
+		if ( ! is_array( $file_id ) ) {
+			$file_id = array( $file_id );
+		}
+
+		// Loop through file IDs and delete
+		foreach ( $file_id as $id ) {
+			if ( ! empty( $id ) && is_numeric( $id ) ) {
+				wp_delete_attachment( $id, $force_delete );
+			}
+		}
 	}
 }

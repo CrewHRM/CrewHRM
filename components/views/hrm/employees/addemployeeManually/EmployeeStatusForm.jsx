@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { __ } from 'crewhrm-materials/helpers.jsx';
 import { FormActionButtons } from 'crewhrm-materials/form-action.jsx';
-import { ContextAddEmlpoyeeManually } from './AddEmployeeManually.jsx';
+import { ContextAddEmlpoyeeManually } from './index.jsx';
 import AddEmployeeCss from './AddManually.module.scss';
 import EmployeeIndexCss from '../index.module.scss';
 import { TextField } from 'crewhrm-materials/text-field/text-field.jsx';
@@ -27,7 +27,7 @@ export default function EmployeeStatusForm() {
 					{__('Employment info')}
 				</div>
 				<div className={'d-flex margin-top-20'.classNames()}>
-					<div className={'flex-3 margin-right-20'.classNames()}>
+					<div className={'margin-right-20'.classNames()}>
 						<div
 							className={'color-text font-size-15 line-height-18 margin-bottom-14 font-weight-500'.classNames()}
 						>

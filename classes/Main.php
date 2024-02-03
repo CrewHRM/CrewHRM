@@ -15,6 +15,7 @@ use CrewHRM\Setup\Careers;
 use CrewHRM\Setup\CLI;
 use CrewHRM\Setup\Database;
 use CrewHRM\Setup\Dispatcher;
+use CrewHRM\Setup\Employee;
 use CrewHRM\Setup\Mails;
 use CrewHRM\Setup\Media;
 use CrewHRM\Setup\Scripts;
@@ -68,12 +69,10 @@ class Main {
 		register_activation_hook( self::$configs->file, array( $this, 'activate' ) );
 		register_deactivation_hook( self::$configs->file, array( $this, 'deactivate' ) );
 
-		// Core
+		// Load apps
 		new Database();
 		new CLI();
 		new Addon();
-
-		// Load apps now
 		new Welcome();
 		new Scripts();
 		new Media();
@@ -83,6 +82,7 @@ class Main {
 		new Mails();
 		new Blocks();
 		new Shortcode();
+		new Employee();
 
 		// Set pro flag
 		add_action(

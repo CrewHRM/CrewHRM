@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jan 23, 2024 at 09:40 PM
+-- Generation Time: Feb 03, 2024 at 01:24 AM
 -- Server version: 8.0.16
 -- PHP Version: 8.1.23
 
@@ -29,6 +29,7 @@ SET time_zone = "+00:00";
 
 CREATE TABLE IF NOT EXISTS `wp_crewhrm_addresses` (
   `address_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `unit_flat` varchar(255) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
   `street_address` varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci NOT NULL,
   `city` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
   `province` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,

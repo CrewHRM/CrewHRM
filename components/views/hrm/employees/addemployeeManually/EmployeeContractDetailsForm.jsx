@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { __ } from 'crewhrm-materials/helpers.jsx';
 import { FormActionButtons } from 'crewhrm-materials/form-action.jsx';
-import { ContextAddEmlpoyeeManually } from './AddEmployeeManually.jsx';
+import { ContextAddEmlpoyeeManually } from './index.jsx';
 import { employment_types } from 'crewhrm-materials/data.jsx';
 import AddEmployeeCss from './AddManually.module.scss';
 import { TextField } from 'crewhrm-materials/text-field/text-field.jsx';

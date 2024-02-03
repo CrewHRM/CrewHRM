@@ -21,6 +21,16 @@ class User {
 	const META_KEY = 'crewhrm-user-meta';
 
 	/**
+	 * The meta key to set avatar image ID for
+	 */
+	const META_KEY_AVATAR = 'avatar_image_id';
+
+	/**
+	 * The meta ket set flag that the image is crew avatar. So it can be hidden from media library based on this.
+	 */
+	const META_KEY_AVATAR_CREW_FLAG = 'crewhrm_avatar_id_for_employee';
+
+	/**
 	 * Validate if a user has required role
 	 *
 	 * @param int          $user_id The user ID to validate rule
@@ -143,6 +153,12 @@ class User {
 			return $user;
 		}
 
+		// Get employee meta
+		$meta = self::getMeta( $user_id );
+
+		// Get address
+		$address = ! empty( $meta['address_id'] ) ? Address::getAddressById( $meta['address_id'], array() ) : array();
+
 		return array(
 			'user_id'      => $user_id,
 			'employee_id'  => $user_id,
@@ -150,7 +166,9 @@ class User {
 			'last_name'    => $user->last_name,
 			'user_email'   => $user->user_email,
 			'display_name' => $user->display_name,
-			'user_phone'   => self::getMeta( $user_id, 'user_phone' )
+			'avatar_url'   => get_avatar_url( $user_id ),
+			...$meta,
+			...$address,
 		);
 	}
 
@@ -194,8 +212,6 @@ class User {
 		$user_id   = ! empty( $data['user_id'] ) ? $data['user_id'] : null;
 		$full_name = $data['first_name'] . ' ' . $data['last_name'];
 
-		error_log( var_export( $data, true ) );
-
 		// Create new user if 
 		if ( ! $user_id ) {
 			$user_id = wp_create_user(
@@ -214,14 +230,66 @@ class User {
 				'ID'           => $user_id,
 				'first_name'   => $data['first_name'],
 				'last_name'    => $data['last_name'],
-				'display_name' => $data['display_name'] ?? $full_name
+				'display_name' => $data['display_name'] ?? $full_name,
+				'description'  => $data['description'] ?? ''
 			)
 		);
 
 		// Update meta data that can't be added in user table or anything native by WP
-		self::updateMeta( $user_id, 'user_phone', $data['user_phone'] ?? null );
+		self::updateMeta(
+			$user_id,
+			array(
+				'user_phone' => $data['user_phone'] ?? null,
+				'birth_date' => $data['birth_date'] ?? null,
+				'address_id' => $data['address_id'] ?? null,
+			)
+		);
 		
 		return $user_id;
+	}
+
+	/**
+	 * Set uploaded file as profile pic
+	 *
+	 * @param int $user_id The user ID to set profile pic for
+	 * @param array $file The uploaded file data array
+	 * @return bool
+	 */
+	public static function setProfilePic( $user_id, $file ) {
+		
+		// Alter the name and handle upload
+		$upload = wp_handle_upload( $file, array( 'test_form' => false ) );
+
+		if ( isset( $upload['file'] ) ) {
+			// Create a post for the file
+			$attachment    = array(
+				'post_mime_type' => $upload['type'],
+				'post_title'     => $file['name'],
+				'post_content'   => '',
+				'post_status'    => 'private',
+				'guid'           => $upload['url'],
+			);
+			$attachment_id = wp_insert_attachment( $attachment, $upload['file'] );
+			require_once ABSPATH . 'wp-admin/includes/image.php';
+
+			// Generate meta data for the file
+			$attachment_data = wp_generate_attachment_metadata( $attachment_id, $upload['file'] );
+			wp_update_attachment_metadata( $attachment_id, $attachment_data );
+			update_post_meta( $attachment_id, self::META_KEY_AVATAR_CREW_FLAG, $user_id );
+
+			// Delete existing one
+			$existing_id = self::getMeta( $user_id, self::META_KEY_AVATAR );
+			if ( ! empty( $existing_id ) ) {
+				FileManager::deleteFile( $existing_id );
+			}
+
+			// Set the media as avatar url
+			self::updateMeta( $user_id, self::META_KEY_AVATAR, $attachment_id );
+
+			return true;
+		}
+
+		return false;
 	}
 
 	/**
@@ -232,9 +300,20 @@ class User {
 	 * @param mixed $value
 	 * @return void
 	 */
-	public static function updateMeta( $user_id, $key, $value ) {
+	public static function updateMeta( $user_id, $key, $value = null ) {
+
+		// Get existing meta
 		$meta = self::getMeta( $user_id );
-		$meta[ $key ] = $value;
+
+		if ( is_array( $key ) ) {
+			// Update bulk meta data array
+			$meta = array_merge( $meta, $key );
+
+		} else {
+			// Update single meta
+			$meta[ $key ] = $value;
+		}
+		
 		update_user_meta( $user_id, self::META_KEY, $meta );
 	}
 	
@@ -248,8 +327,19 @@ class User {
 	 * @return mixed
 	 */
 	public static function getMeta( $user_id, $key = null, $fallback = null ) {
+
+		// Get Crew meta data
 		$meta = get_user_meta( $user_id, self::META_KEY, true );
 		$meta = ! is_array( $meta ) ? array() : $meta;
+
+		// Get WP specific meta data
+		$wp_meta = array(
+			'description'
+		);
+		foreach ( $wp_meta as $_key ) {
+			$meta[ $_key ] = get_user_meta( $user_id, $_key, true );
+		}
+
 		return $key ? ( $meta[ $key ] ?? $fallback ) : $meta;
 	}
 	

@@ -5,7 +5,7 @@ import { FormActionButtons } from 'crewhrm-materials/form-action.jsx';
 import { TextField } from 'crewhrm-materials/text-field/text-field.jsx';
 import SearchImg from 'crewhrm-materials/static/images/search-normal-add-8.svg';
 
-import { ContextAddEmlpoyeeManually } from './AddEmployeeManually.jsx';
+import { ContextAddEmlpoyeeManually } from './index.jsx';
 
 import AddEmployeeCss from './AddManually.module.scss';
 import EmployeeIndexCss from '../index.module.scss';

@@ -5,6 +5,7 @@
 
 namespace CrewHRM\Controllers;
 
+use CrewHRM\Models\Address;
 use CrewHRM\Models\User;
 
 /**
@@ -28,7 +29,7 @@ class EmployeeController {
 	 *
 	 * @return void
 	 */
-	public static function updateEmployee( array $employee ) {
+	public static function updateEmployee( array $employee, array $avatar_image = array() ) {
 
 		// Check if required fields provided
 		if ( empty( $employee['first_name'] ) || empty( $employee['last_name'] ) || empty( $employee['user_email'] ) ) {
@@ -40,6 +41,14 @@ class EmployeeController {
 		if ( ! empty( $mail_user_id ) && $mail_user_id !== ( $employee['employee_id'] ?? null ) ) {
 			wp_send_json_error( array( 'message' => esc_html__( 'The email is associated with another account already', 'crewhrm' ) ) );
 		}
+
+		// Set profile pic
+		if ( ! empty( $avatar_image['tmp_name'] ) ) {
+			User::setProfilePic( $employee['employee_id'], $avatar_image );
+		}
+
+		// Create or update address
+		$address_id = Address::createUpdateAddress( $employee );
 		
 		// Create or update the user now
 		$user_id =  User::createOrUpdate(
@@ -50,6 +59,9 @@ class EmployeeController {
 				'display_name' => $employee['display_name'] ?? null,
 				'user_email'   => $employee['user_email'],
 				'user_phone'   => $employee['user_phone'] ?? null,
+				'birth_date'   => $employee['birth_date'] ?? null,
+				'description'  => $employee['description'] ?? null,
+				'address_id'   => $address_id,
 			)
 		);
 
@@ -74,7 +86,7 @@ class EmployeeController {
 		if ( ! empty( $employee ) ) {
 			wp_send_json_success( array( 'employee' => $employee ) );
 		} else {
-			wp_send_json_success( array( 'message' => esc_html__( 'Employee not found', 'crewhrm' ) ) );
+			wp_send_json_error( array( 'message' => esc_html__( 'Employee not found', 'crewhrm' ) ) );
 		}
 	}
 }
