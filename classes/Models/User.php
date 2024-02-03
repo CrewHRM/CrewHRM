@@ -161,7 +161,7 @@ class User {
 
 		return array(
 			'user_id'      => $user_id,
-			'employee_id'  => $user_id,
+			'user_id'      => $user_id,
 			'first_name'   => $user->first_name,
 			'last_name'    => $user->last_name,
 			'user_email'   => $user->user_email,
@@ -204,10 +204,11 @@ class User {
 	 * Create or update a user
 	 *
 	 * @param array $data User data array
+	 * @param array $avatar_image
 	 *
 	 * @return int
 	 */
-	public static function createOrUpdate( $data ) {
+	public static function createOrUpdate( $data, $avatar_image ) {
 
 		$user_id   = ! empty( $data['user_id'] ) ? $data['user_id'] : null;
 		$full_name = $data['first_name'] . ' ' . $data['last_name'];
@@ -235,13 +236,56 @@ class User {
 			)
 		);
 
+		// Set profile pic
+		if ( ! empty( $avatar_image['tmp_name'] ) ) {
+			self::setProfilePic( $user_id, $avatar_image );
+		}
+
+		// Create or update address
+		$address_id = Address::createUpdateAddress( $data );
+		
+		// Prepare social links
+		$links = array();
+		$emergency = array();
+		foreach ( $data as $key => $value ) {
+			if ( strpos( $key, 'social_link_' ) === 0 ) {
+				$links[ $key ] = $value;
+			}
+
+			if ( strpos( $key, 'emergency_' ) === 0 ) {
+				$emergency[ $key ] = $value;
+			}
+		}
+
+		// Prepare education info 
+		$educational = is_array( $data['educational_info'] ?? null ) ? $data['educational_info'] : array();
+		$filtered_educations = array();
+		foreach( $educational as $id => $data ) {
+			if ( ! empty( $data['program'] ) && is_numeric( $data['passing_year'] ?? null ) ) {
+				$filtered_educations[ $id ] = $data;
+			}
+		}
+		
+		error_log( var_export( $educational, true ) );
+		error_log( var_export( $filtered_educations, true ) );
+
 		// Update meta data that can't be added in user table or anything native by WP
 		self::updateMeta(
 			$user_id,
 			array(
-				'user_phone' => $data['user_phone'] ?? null,
-				'birth_date' => $data['birth_date'] ?? null,
-				'address_id' => $data['address_id'] ?? null,
+				'user_phone'             => $data['user_phone'] ?? null,
+				'birth_date'             => $data['birth_date'] ?? null,
+				'fathers_name'           => $data['fathers_name'] ?? null,
+				'mothers_name'           => $data['mothers_name'] ?? null,
+				'gender'                 => $data['gender'] ?? null,
+				'marital_status'         => $data['marital_status'] ?? null,
+				'driving_license_number' => $data['driving_license_number'] ?? null,
+				'nid_number'             => $data['nid_number'] ?? null,
+				'blood_group'            => $data['blood_group'] ?? null,
+				'address_id'             => $address_id,
+				'educational_info'       => $filtered_educations,
+				...$emergency,
+				...$links,
 			)
 		);
 		

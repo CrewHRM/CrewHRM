@@ -38,50 +38,30 @@ class EmployeeController {
 
 		// Show warning for existing email
 		$mail_user_id = User::getUserIdByEmail( $employee['user_email'] );
-		if ( ! empty( $mail_user_id ) && $mail_user_id !== ( $employee['employee_id'] ?? null ) ) {
+		if ( ! empty( $mail_user_id ) && $mail_user_id !== ( $employee['user_id'] ?? null ) ) {
 			wp_send_json_error( array( 'message' => esc_html__( 'The email is associated with another account already', 'crewhrm' ) ) );
 		}
 
-		// Set profile pic
-		if ( ! empty( $avatar_image['tmp_name'] ) ) {
-			User::setProfilePic( $employee['employee_id'], $avatar_image );
-		}
-
-		// Create or update address
-		$address_id = Address::createUpdateAddress( $employee );
-		
 		// Create or update the user now
-		$user_id =  User::createOrUpdate(
-			array(
-				'user_id'      => $employee['employee_id'] ?? 0,
-				'first_name'   => $employee['first_name'],
-				'last_name'    => $employee['last_name'],
-				'display_name' => $employee['display_name'] ?? null,
-				'user_email'   => $employee['user_email'],
-				'user_phone'   => $employee['user_phone'] ?? null,
-				'birth_date'   => $employee['birth_date'] ?? null,
-				'description'  => $employee['description'] ?? null,
-				'address_id'   => $address_id,
-			)
-		);
+		$user_id =  User::createOrUpdate( $employee, $avatar_image );
 
 		// If fails
 		if ( empty( $user_id ) || ! is_numeric( $user_id ) ) {
 			wp_send_json_error( array( 'message' => esc_html__( 'Something went wrong!', 'crewhrm' ) ) );
 		}
 		
-		wp_send_json_success( array( 'employee_id' => $user_id ) );
+		wp_send_json_success( array( 'user_id' => $user_id ) );
 	}
 
 	/**
 	 * Get single employee info
 	 *
-	 * @param integer $employee_id
+	 * @param integer $user_id
 	 * @return void
 	 */
-	public static function fetchEmployee( int $employee_id ) {
+	public static function fetchEmployee( int $user_id ) {
 		
-		$employee = User::getUserInfo( $employee_id );
+		$employee = User::getUserInfo( $user_id );
 
 		if ( ! empty( $employee ) ) {
 			wp_send_json_success( array( 'employee' => $employee ) );

@@ -53,10 +53,10 @@ export function AddEmployeeManually() {
 
 	const {
 		active_tab = 'employee-info', 
-		employee_id: _employee_id
+		user_id: _user_id
 	} = useParams();
 
-	const employee_id = ( isNaN(_employee_id) || !_employee_id ) ? 0 : _employee_id;
+	const user_id = ( isNaN(_user_id) || !_user_id ) ? 0 : _user_id;
 
 	const [state, setState] = useState({
 		saving: false,
@@ -77,7 +77,7 @@ export function AddEmployeeManually() {
 	}
 
 	const fetchEmployee=()=>{
-		if ( ! employee_id ) {
+		if ( ! user_id ) {
 			return;
 		}
 
@@ -86,7 +86,7 @@ export function AddEmployeeManually() {
 			fetching: true
 		});
 
-		request('fetchEmployee', {employee_id}, resp=>{
+		request('fetchEmployee', {user_id}, resp=>{
 			const {
 				success,
 				data: {
@@ -118,11 +118,11 @@ export function AddEmployeeManually() {
 		const {avatar_image} = values;
 		delete values.avatar_image;
 
-		request('updateEmployee', {employee: {...values, employee_id}, avatar_image}, resp=>{
+		request('updateEmployee', {employee: {...values, user_id}, avatar_image}, resp=>{
 			const {
 				success,
 				data: {
-					employee_id: saved_employee_id = null
+					user_id: saved_user_id = null
 				}
 			} = resp;
 
@@ -136,11 +136,11 @@ export function AddEmployeeManually() {
 				return;
 			}
 			
-			if ( !employee_id && saved_employee_id ) {
-				navigateTab(1, saved_employee_id, active_tab, true);
+			if ( !user_id && saved_user_id ) {
+				navigateTab('employee-info', saved_user_id, active_tab, true);
 			}
 
-			callback();
+			navigateTab(1);
 		});
 	}
 
@@ -152,13 +152,13 @@ export function AddEmployeeManually() {
 		}
 
 		if (_tab || tab) {
-			navigate(`/employees/profile/${e_id || employee_id}/edit/${_tab || tab}/`, {replace});
+			navigate(`/employees/profile/${e_id || user_id}/edit/${_tab || tab}/`, {replace});
 		}
 	};
 
 	useEffect(()=>{
 		fetchEmployee();
-	}, [employee_id]);
+	}, [user_id]);
 	
 	const active_index = steps.findIndex((s) => s.id === active_tab);
 

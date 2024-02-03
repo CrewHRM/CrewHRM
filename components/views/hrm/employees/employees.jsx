@@ -36,7 +36,7 @@ export function Employees() {
 					}
 				/>
 				<Route
-					path="/employees/profile/:employee_id/edit/:active_tab?/"
+					path="/employees/profile/:user_id/edit/:active_tab?/"
 					element={
 						<>
 							<AddEmployeeManually />
