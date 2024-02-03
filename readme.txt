@@ -32,10 +32,13 @@ Crew HRM has all the features you need to attract, screen, and hire the best tal
 * **Dedicated job post and catalog templates:** Use dedicated job post and catalog templates to create professional-looking job postings and candidate catalogs.
 * **Google reCAPTCHA Integration:** Make your job applications spam and robots proof with Google's reCAPTCHA.
 
-==🚀 [Explore Crew HRM with a Live Demo](https://demo.getcrewhrm.com/)==
-Experience Crew HRM firsthand with our live demo. See for yourself how it simplifies and improves the hiring process.
-==💬[Get In Touch with Crew HRM](https://getcrewhrm.com/contact/)==
-Connect with us for any inquiries or support to ensure you make the most out of Crew HRM.
+==🚀 Explore Crew HRM with a Live Demo==
+Experience Crew HRM firsthand with our live demo. Please take a look at how it simplifies and improves the hiring process.
+[Click Here to Visit the Demo Site](https://demo.getcrewhrm.com/)
+
+==💬Get In Touch with Crew HRM==
+Please reach out to us for any questions or support to make sure you make the most out of Crew HRM.
+[Click Here to Contact Us](https://getcrewhrm.com/contact/)
 
 ===The pro version of the plugin includes additional features, such as:===
 
@@ -47,6 +50,12 @@ Connect with us for any inquiries or support to ensure you make the most out of 
 * **Custom Attachment Support:** Allow different file formats to be uploaded when designers and creative professionals apply to your job post.
 
 This WordPress HRM plugin is the perfect solution for any business that wants to streamline its hiring process and attract the best talent.
+
+== Who Can Use Crew HRM? ==
+* **Small to medium scale businesses** can use this plugin to supercharge their hiring process.
+* **Freelancers** can use the plugin for their client projects and take advantage of the whitelabeling feature.
+* **Web Development Agencies** can offer this as an alternative to SaaS solutions to their clients to save costs without compromising features and reliability.
+* **Companies located in the European region** can significantly benefit by using this plugin as it will help them retain ownership of the data and store them within the European region. You can comply with the GDPR directives as you can easily remove applicant data.
 
 == Installation ==
 From WordPress Dashboard
@@ -92,25 +101,22 @@ Please note that this plugin is developed using React.js. If you want to access 
 The reCaptcha integration uses Google reCAPTCHA for spam protection in job applications. By using this, you agree with Google's [terms](https://www.google.com/recaptcha/about/) and [privacy policy](https://policies.google.com/privacy).
 
 == Frequently Asked Questions ==
-
+= Who should use Crew HRM? =
+Anyone who needs to share jobs on their website and accept applications from their website. This would give a professional impression and help you save time compared to using forms and emails.
+= What are the server requirements? =
+You can use our plugin on any WordPress site. We used React.js to make it, so it works well in your browser. If you have a lot of employees (over 3000) and many using it at once (over 200), a dedicated hosting package works better than shared hosting.
 = Do you offer a whitelabeling feature? =
 Yes, we offer a whitelable setting on the Pro add-on to change the name and images easily. If you prefer to use the free version only, you can change the name using translation plugins like Loco Translate or the Say What plugin.
-
 = Can I go ahead and customize the plugin? =
-Yes, as Crew HRM is offered under the GPL license, you can modify it any way you like. There is no restriction at all. Just so you know, we do not offer support for customized plugins.
-
+Yes, as Crew HRM is offered under the GPL license, you can modify it any way you like. There is no restriction at all. So that you know, we do not offer support for customized plugins.
 = Can you develop a custom feature for me? =
 Unfortunately, we are unable to offer customizations right now. You can hire a developer from a marketplace, and we'll gladly help your developer.
-
 = Is this plugin multisite compatible? =
 No. We are not supporting multisite installations at this moment.
-
 = Can I use this plugin in other languages? =
 Yes, you can translate the plugin into any language you want. You can use the Loco Translate plugin or any other plugin you like. Please check our [documentation](https://getcrewhrm.com/docs/translating/) for detailed instructions.
-
 = Do you have video tutorials? =
 We have posted walkthrough videos on the [Crew HRM YouTube Channel](https://www.youtube.com/@crewhrm). If you have requests for video tutorials and discuss different ideas, please feel free to comment on any video or use the contact form on our website.
-
 = How can I suggest new features? =
 You can email us using the contact form on our website to share feature ideas with helpful screenshots, sketches, etc.
 
@@ -121,28 +127,37 @@ You can email us using the contact form on our website to share feature ideas wi
 * Employee Profile
 
 = v1.0.6 -> Jan 25, 2024 =
---------------------------
-* reCAPTCHA addon to prevent spam job applications
-* Careers page shortcode
-* Careers page Gutenberg block
-* Bug fixes and optimizations
 
-= v1.0.5 -> Dec 08, 2023 =
---------------------------
-* Schedule create bug fix
+* New: reCAPTCHA addon to prevent spam job applications.
+* New: Careers page shortcode.
+* New: Careers page Gutenberg block.
+* Fix: More optimized code for better speed.
 
-= v1.0.4 -> Nov 23, 2023 =
---------------------------
-* Translations fixed
-* Automatic careers page creation
-* Currency and salary basis added in single job
-* Careers page mobile view
-* Applicants avatar dynamic color enhancement
-* Email events added
-* Overall bug fixes and optimizations
+= v1.0.5 -> Dec 9, 2023
 
-= v1.0 -> Sep 23, 2023 =
---------------------------
+* Fix: Timezone offset issue for new meetings
+
+= v1.0.4 -> Nov 30, 2023
+
+* Fix: Automated security testing tool setup
+* Fix: Translations
+* Update: Applicants avatar dynamic color
+* New: Automatic careers page creation
+
+= v1.0.3 -> Nov 19, 2023
+
+* Fix: UI colors and email events
+* New: Currency and salary filters for mobile devices
+* New: Custom design of Career page for mobile devices
+
+= v1.0.2 -> Nov 15, 2023
+
+* Fix: Dropdown icon size
+* New: Automated mail notification for applicants
+* New: Email addon
+
+= v1.0 -> SEP 23, 2023 =
+
 * 🥁 First Release! 🎉
 
 == Upgrade Notice ==
