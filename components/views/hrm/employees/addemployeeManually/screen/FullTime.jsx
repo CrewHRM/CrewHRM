@@ -13,8 +13,7 @@ export default function FullTime() {
 
 	const { onChange, values={} } = useContext(ContextAddEmlpoyeeManually);
 	const enable_custom_weekly_hours = values.enable_custom_weekly_hours ? true : false;
-
-	const [isChecked, setIsChecked] = useState(true);
+	const is_provisional = values.is_provisional ? true : false;
 	
 	return (
 		<>
@@ -47,29 +46,39 @@ export default function FullTime() {
 			{
 				!enable_custom_weekly_hours ? null : 
 				<WeeklyScheduleEditor 
-					value={values.weekly_schedule || {}} 
-					onChange={value=>onChange('weekly_schedule', value)}/>
+					value={values.weekly_schedules || {}} 
+					onChange={value=>onChange('weekly_schedules', value)}/>
 			}
 			
 			<div className={'d-flex align-items-center margin-top-30'.classNames()}>
-				<input type="checkbox" checked={isChecked} disabled={false} onChange={() => setIsChecked(!isChecked)} />
-				<span className={'color-text font-size-15 font-weight-500 line-height-24 margin-left-10'.classNames()}>
-					{__('The employee is in a provisional period')}
-				</span>
+				<label>
+					<input 
+						type="checkbox" 
+						checked={is_provisional} 
+						onChange={() => onChange('is_provisional', !is_provisional)}
+					/>
+					<span className={'color-text font-size-15 font-weight-500 line-height-24 margin-left-10'.classNames()}>
+						{__('The employee is in a provisional period')}
+					</span>
+				</label>
 			</div>
 
-			<div className={'d-flex margin-top-30'.classNames()}>
-				<div className={'probation-date'.classNames(EmployeeIndexCss)}>
-					<div
-						className={'color-text font-size-15 font-weight-500 line-height-18 margin-bottom-14'.classNames()}
-					>
-						{__('Probation end date')}
-						<span className={'margin-left-5 color-text-light'.classNames()}>{__('(optional)')}</span>
+			{
+				!is_provisional ? null :
+				<div className={'d-flex margin-top-30'.classNames()}>
+					<div className={'probation-date'.classNames(EmployeeIndexCss)}>
+						<div
+							className={'color-text font-size-15 font-weight-500 line-height-18 margin-bottom-14'.classNames()}
+						>
+							{__('Probation end date')}
+							<span className={'margin-left-5 color-text-light'.classNames()}>{__('(optional)')}</span>
+						</div>
+						<DateField 
+							value={values.probation_end_date} 
+							onChange={date=>onChange('probation_end_date', date)}/>
 					</div>
-					<DateField value={''} />
-					<RadioCheckbox type={'checkbox'} name={'name'} value={'sd'} />
 				</div>
-			</div>
+			}
 		</>
 	);
 }

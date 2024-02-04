@@ -155,13 +155,14 @@ class User {
 		$address = ! empty( $meta['address_id'] ) ? Address::getAddressById( $meta['address_id'], array() ) : array();
 
 		return array(
-			'user_id'      => $user_id,
-			'user_id'      => $user_id,
-			'first_name'   => $user->first_name,
-			'last_name'    => $user->last_name,
-			'user_email'   => $user->user_email,
-			'display_name' => $user->display_name,
-			'avatar_url'   => get_avatar_url( $user_id ),
+			'user_id'          => $user_id,
+			'user_id'          => $user_id,
+			'first_name'       => $user->first_name,
+			'last_name'        => $user->last_name,
+			'user_email'       => $user->user_email,
+			'display_name'     => $user->display_name,
+			'avatar_url'       => get_avatar_url( $user_id ),
+			'weekly_schedules' => WeeklySchedule::getSchedule( $user_id ),
 			...$meta,
 			...$address,
 		);
@@ -236,6 +237,11 @@ class User {
 			self::setProfilePic( $user_id, $avatar_image );
 		}
 
+		// Set schedule
+		if ( ! empty( $data['weekly_schedules'] ) ) {
+			WeeklySchedule::updateSchedule( $user_id, $data['weekly_schedules'] );
+		}
+
 		// Create or update address
 		$address_id = Address::createUpdateAddress( $data );
 		
@@ -265,24 +271,26 @@ class User {
 		self::updateMeta(
 			$user_id,
 			array(
-				'user_phone'             => $data['user_phone'] ?? null,
-				'birth_date'             => $data['birth_date'] ?? null,
-				'gender'                 => $data['gender'] ?? null,
-				'marital_status'         => $data['marital_status'] ?? null,
-				
-				'fathers_name'           => $data['fathers_name'] ?? null,
-				'mothers_name'           => $data['mothers_name'] ?? null,
-				'driving_license_number' => $data['driving_license_number'] ?? null,
-				'nid_number'             => $data['nid_number'] ?? null,
-				'blood_group'            => $data['blood_group'] ?? null,
-				'educational_info'       => $filtered_educations,
-				'address_id'             => $address_id,
-				
-				'experience_level'       => $data['experience_level'] ?? null,
-				'designation'            => $data['designation'] ?? null,
-				'department_id'          => $data['department_id'] ?? null,
-				'attendance_types'       => $data['attendance_types'] ?? array(),
-				
+				'user_phone'                 => $data['user_phone'] ?? null,
+				'birth_date'                 => $data['birth_date'] ?? null,
+				'gender'                     => $data['gender'] ?? null,
+				'marital_status'             => $data['marital_status'] ?? null,
+				'fathers_name'               => $data['fathers_name'] ?? null,
+				'mothers_name'               => $data['mothers_name'] ?? null,
+				'driving_license_number'     => $data['driving_license_number'] ?? null,
+				'nid_number'                 => $data['nid_number'] ?? null,
+				'blood_group'                => $data['blood_group'] ?? null,
+				'educational_info'           => $filtered_educations,
+				'address_id'                 => $address_id,
+				'experience_level'           => $data['experience_level'] ?? null,
+				'designation'                => $data['designation'] ?? null,
+				'department_id'              => $data['department_id'] ?? null,
+				'attendance_types'           => $data['attendance_types'] ?? array(),
+				'salary_currency'            => $data['salary_currency'] ?? null,
+				'annual_gross_salary'        => $data['annual_gross_salary'] ?? 0,
+				'employment_type'            => $data['employment_type'] ?? null,
+				'is_provisional'             => $data['is_provisional'] ?? null,
+				'enable_custom_weekly_hours' => $data['enable_custom_weekly_hours'] ?? null,
 				...$emergency,
 				...$links,
 			)

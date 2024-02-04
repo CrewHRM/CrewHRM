@@ -52,18 +52,19 @@ class Database {
 		$prefix = $wpdb->prefix . Main::$configs->db_prefix;
 
 		// Add the table names to wpdb object
-		$wpdb->crewhrm_addresses       = $prefix . 'addresses';
-		$wpdb->crewhrm_applications    = $prefix . 'applications';
-		$wpdb->crewhrm_appmeta         = $prefix . 'appmeta';
-		$wpdb->crewhrm_comments        = $prefix . 'comments';
-		$wpdb->crewhrm_departments     = $prefix . 'departments';
-		$wpdb->crewhrm_events          = $prefix . 'events';
-		$wpdb->crewhrm_event_attendees = $prefix . 'event_attendees';
-		$wpdb->crewhrm_jobmeta         = $prefix . 'jobmeta';
-		$wpdb->crewhrm_jobs            = $prefix . 'jobs';
-		$wpdb->crewhrm_pipeline        = $prefix . 'pipeline';
-		$wpdb->crewhrm_qna             = $prefix . 'qna';
-		$wpdb->crewhrm_stages          = $prefix . 'stages';
-		$wpdb->crewhrm_employee_meta   = $prefix . 'employee_meta';
+		$wpdb->crewhrm_addresses        = $prefix . 'addresses';
+		$wpdb->crewhrm_applications     = $prefix . 'applications';
+		$wpdb->crewhrm_appmeta          = $prefix . 'appmeta';
+		$wpdb->crewhrm_comments         = $prefix . 'comments';
+		$wpdb->crewhrm_departments      = $prefix . 'departments';
+		$wpdb->crewhrm_events           = $prefix . 'events';
+		$wpdb->crewhrm_event_attendees  = $prefix . 'event_attendees';
+		$wpdb->crewhrm_jobmeta          = $prefix . 'jobmeta';
+		$wpdb->crewhrm_jobs             = $prefix . 'jobs';
+		$wpdb->crewhrm_pipeline         = $prefix . 'pipeline';
+		$wpdb->crewhrm_qna              = $prefix . 'qna';
+		$wpdb->crewhrm_stages           = $prefix . 'stages';
+		$wpdb->crewhrm_employee_meta    = $prefix . 'employee_meta';
+		$wpdb->crewhrm_weekly_schedules = $prefix . 'weekly_schedules';
 	}
 }

@@ -17,7 +17,7 @@
 	}
 	.custom-work-schedule {
 		.custom-work-schedule-day {
-			flex: 0 0 180px;
+			flex: 0 0 150px;
 			margin-top: 7px;
 		}
 		.custom-work-schedule-time-wrapper {
@@ -29,7 +29,7 @@
 				max-height: 42px;
 				label {
 					max-height: 38px;
-					width: 110px;
+					width: 137px;
 				}
 				.line {
 					display: inline-block;
@@ -43,7 +43,6 @@
 			display: flex;
 			align-items: flex-start;
 			justify-content: flex-end;
-			flex: 0 0 105px;
 			img {
 				padding: 8px;
 				border-radius: 100px;

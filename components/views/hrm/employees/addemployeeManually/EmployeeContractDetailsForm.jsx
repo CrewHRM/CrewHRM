@@ -19,9 +19,7 @@ export default function EmployeeContractDetailsForm() {
 
 	const { onChange, values={} } = useContext(ContextAddEmlpoyeeManually);
 	const {salary_currency='USD'} = values;
-
-	const [activeEmploymentTypes, setActiveEmploymentTypes] = useState('full_time');
-
+	
 	return (
 		<>
 			<div className={'employeeinfo-form-wrapper'.classNames(AddEmployeeCss)}>
@@ -69,7 +67,7 @@ export default function EmployeeContractDetailsForm() {
 								<span className={'color-error'.classNames()}>*</span>
 							</div>
 							<TagField
-								value={activeEmploymentTypes}
+								value={values.employment_type}
 								behavior="radio"
 								theme="button"
 								options={Object.keys(employment_types).map((a) => {
@@ -78,17 +76,15 @@ export default function EmployeeContractDetailsForm() {
 										label: employment_types[a],
 									};
 								})}
-								onChange={(type) => {
-									setActiveEmploymentTypes(type);
-								}}
+								onChange={(v) => onChange('employment_type', v)}
 								fullWidth={true}
 								className={'margin-bottom-30'.classNames()}
 							/>
-							{activeEmploymentTypes == 'full_time' && <FullTime />}
-							{activeEmploymentTypes == 'part_time' && <PartTime />}
-							{activeEmploymentTypes == 'contract' && <Contract />}
-							{activeEmploymentTypes == 'temporary' && <Temporary />}
-							{activeEmploymentTypes == 'trainee' && <Trainee />}
+							{values.employment_type == 'full_time' && <FullTime />}
+							{values.employment_type == 'part_time' && <PartTime />}
+							{values.employment_type == 'contract' && <Contract />}
+							{values.employment_type == 'temporary' && <Temporary />}
+							{values.employment_type == 'trainee' && <Trainee />}
 						</div>
 					</div>
 				</div>
