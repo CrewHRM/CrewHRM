@@ -50,7 +50,12 @@ class EmployeeController {
 			wp_send_json_error( array( 'message' => esc_html__( 'Something went wrong!', 'crewhrm' ) ) );
 		}
 		
-		wp_send_json_success( array( 'user_id' => $user_id ) );
+		wp_send_json_success( 
+			array( 
+				'user_id' => $user_id, 
+				'employee' => User::getUserInfo( $user_id ) 
+			) 
+		);
 	}
 
 	/**

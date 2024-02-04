@@ -290,7 +290,11 @@ class User {
 				'annual_gross_salary'        => $data['annual_gross_salary'] ?? 0,
 				'employment_type'            => $data['employment_type'] ?? null,
 				'is_provisional'             => $data['is_provisional'] ?? null,
-				'enable_custom_weekly_hours' => $data['enable_custom_weekly_hours'] ?? null,
+				'weekly_working_hour'        => $data['weekly_working_hour'] ?? null,
+				'use_custom_weekly_schedule' => $data['use_custom_weekly_schedule'] ?? null,
+				'contract_start_date'        => $data['contract_start_date'] ?? null,
+				'contract_end_date'          => $data['contract_end_date'] ?? null,
+				'probation_end_date'         => $data['probation_end_date'] ?? null,
 				...$emergency,
 				...$links,
 			)

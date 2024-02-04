@@ -1,24 +1,24 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import currenctSymbols from 'currency-symbol-map/map';
 
 import { __ } from 'crewhrm-materials/helpers.jsx';
 import { employment_types } from 'crewhrm-materials/data.jsx';
 import { TextField } from 'crewhrm-materials/text-field/text-field.jsx';
 import { DropDown } from 'crewhrm-materials/dropdown/dropdown.jsx';
+import { DateField } from 'crewhrm-materials/date-time.jsx';
 import { TagField } from 'crewhrm-materials/tag-field/tag-field.jsx';
 
-import Contract from './screen/Contract.jsx';
-import PartTime from './screen/PartTime.jsx';
-import Temporary from './screen/Temporary.jsx';
-import Trainee from './screen/Trainee.jsx';
-import FullTime from './screen/FullTime.jsx';
+import { WeeklyScheduleEditor } from '../../weekly-schedule-editor/weekly-schedule-editor.jsx';
 import { ContextAddEmlpoyeeManually } from './index.jsx';
+
 import AddEmployeeCss from './AddManually.module.scss';
 
 export default function EmployeeContractDetailsForm() {
 
 	const { onChange, values={} } = useContext(ContextAddEmlpoyeeManually);
 	const {salary_currency='USD'} = values;
+	const use_custom_weekly_schedule = values.use_custom_weekly_schedule ? true : false;
+	const is_provisional = values.is_provisional ? true : false;
 	
 	return (
 		<>
@@ -80,11 +80,99 @@ export default function EmployeeContractDetailsForm() {
 								fullWidth={true}
 								className={'margin-bottom-30'.classNames()}
 							/>
-							{values.employment_type == 'full_time' && <FullTime />}
-							{values.employment_type == 'part_time' && <PartTime />}
-							{values.employment_type == 'contract' && <Contract />}
-							{values.employment_type == 'temporary' && <Temporary />}
-							{values.employment_type == 'trainee' && <Trainee />}
+
+							{
+								['full_time', 'part_time'].indexOf(values.employment_type)===-1 ? null :
+								<div className={'d-flex margin-top-30'.classNames()}>
+									<div className={'flex-1'.classNames()}>
+										<div
+											className={'color-text font-size-15 line-height-18 font-weight-500 margin-bottom-14'.classNames()}
+										>
+											{__('Working hours per week')}
+											<span className={'color-error'.classNames()}>*</span>
+										</div>
+										<TextField 
+											placeholder={__('ex. 30')} 
+											value={values.weekly_working_hour || ''} 
+											onChange={(v) => onChange('weekly_working_hour', (v || '').replace(/\D/g, ''))} />
+									</div>
+								</div>
+							}
+
+							{
+								['contract', 'temporary', 'trainee'].indexOf(values.employment_type)===-1 ? null :
+								<div className={'d-flex margin-top-30'.classNames()}>
+									<div className={'flex-1 margin-right-10'.classNames()}>
+										<div
+											className={'color-text font-size-15 line-height-18 font-weight-500 margin-bottom-14'.classNames()}
+										>
+											{__('Start date')}
+										</div>
+										<DateField 
+											value={values.contract_start_date} 
+											onChange={v=>onChange('contract_start_date', v)}/>
+									</div>
+									<div className={'flex-1'.classNames()}>
+										<div
+											className={'color-text font-size-15 line-height-18 font-weight-500 margin-bottom-14'.classNames()}
+										>
+											{__('End date')}
+										</div>
+										<DateField 
+											value={values.contract_end_date} 
+											onChange={v=>onChange('contract_end_date', v)}/>
+									</div>
+								</div>
+							}
+
+							<div className={'d-flex align-items-center margin-top-30'.classNames()}>
+								<label className={'d-block'.classNames()}>
+									<input 
+										type="checkbox" 
+										checked={use_custom_weekly_schedule} 
+										onChange={() => onChange('use_custom_weekly_schedule', !use_custom_weekly_schedule)} />
+									<span className={'color-text font-size-15 font-weight-500 line-height-24 margin-left-10'.classNames()}>
+										{__('Add Custom Working Hour')}
+									</span>
+								</label>
+							</div>
+
+							{
+								!use_custom_weekly_schedule ? null : 
+								<WeeklyScheduleEditor 
+									value={values.weekly_schedules || {}} 
+									onChange={value=>onChange('weekly_schedules', value)}/>
+							}
+							
+							<div className={'d-flex align-items-center margin-top-30'.classNames()}>
+								<label>
+									<input 
+										type="checkbox" 
+										checked={is_provisional} 
+										onChange={() => onChange('is_provisional', !is_provisional)}
+									/>
+									<span className={'color-text font-size-15 font-weight-500 line-height-24 margin-left-10'.classNames()}>
+										{__('The employee is in a provisional period')}
+									</span>
+								</label>
+							</div>
+
+							{
+								!is_provisional ? null :
+								<div className={'d-flex margin-top-30'.classNames()}>
+									<div style={{width: '300px'}}>
+										<div
+											className={'color-text font-size-15 font-weight-500 line-height-18 margin-bottom-14'.classNames()}
+										>
+											{__('Probation end date')}
+											<span className={'margin-left-5 color-text-light'.classNames()}>{__('(optional)')}</span>
+										</div>
+										<DateField 
+											value={values.probation_end_date} 
+											onChange={date=>onChange('probation_end_date', date)}/>
+									</div>
+								</div>
+							}
 						</div>
 					</div>
 				</div>

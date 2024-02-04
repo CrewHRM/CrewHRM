@@ -26,8 +26,10 @@ class WeeklySchedule {
 		global $wpdb;
 		foreach ( $schedules as $day => $schedule ) {
 
+			$slots = $schedule['slots'] ?? array();
+
 			// Loop through slots in a single day
-			foreach ( $schedule['slots'] as $schedule_id => $slot ) {
+			foreach ( $slots as $schedule_id => $slot ) {
 				$row = array(
 					'week_day'    => $day,
 					'employee_id' => $user_id,
@@ -68,12 +70,14 @@ class WeeklySchedule {
 		// Delete removed slots
 		$remaining_ids = array();
 		foreach ( $schedules as $day ) {
-			$remaining_ids = array_filter(
-				array_keys( $day['slots'] ), 
+			$slot_ids = array_filter(
+				array_keys( $day['slots'] ?? array() ), 
 				function ( $id ) {
 					return is_numeric( $id ); // Non numeric means newly added, and ids are random string assigned by react.
 				}
 			);
+
+			$remaining_ids = array_merge( $remaining_ids, $slot_ids );
 		}
 
 		// If user ID not passed, it means it is global settings
@@ -107,21 +111,24 @@ class WeeklySchedule {
 			ARRAY_A
 		);
 
+		if ( empty( $slots ) ) {
+			return null;
+		}
+
 		$schedules = array(
-			'monday'    => array( 'enable' => false, 'slots' => array() ),
-			'tuesday'   => array( 'enable' => false, 'slots' => array() ),
-			'wednesday' => array( 'enable' => false, 'slots' => array() ),
-			'thursday'  => array( 'enable' => false, 'slots' => array() ),
-			'friday'    => array( 'enable' => false, 'slots' => array() ),
-			'saturday'  => array( 'enable' => false, 'slots' => array() ),
-			'sunday'    => array( 'enable' => false, 'slots' => array() ),
+			'monday'    => array( 'enable' => false, 'slots' => ( object ) array() ),
+			'tuesday'   => array( 'enable' => false, 'slots' => ( object ) array() ),
+			'wednesday' => array( 'enable' => false, 'slots' => ( object ) array() ),
+			'thursday'  => array( 'enable' => false, 'slots' => ( object ) array() ),
+			'friday'    => array( 'enable' => false, 'slots' => ( object ) array() ),
+			'saturday'  => array( 'enable' => false, 'slots' => ( object ) array() ),
+			'sunday'    => array( 'enable' => false, 'slots' => ( object ) array() ),
 		);
 
-		error_log( var_export( $slots, true ) );
-
 		foreach ( $slots as $slot ) {
+			$schedule_id = $slot['schedule_id'];
 			$schedules[ $slot['week_day'] ]['enable'] = (bool) $slot['enable'];
-			$schedules[ $slot['week_day'] ]['slots'][] = array(
+			$schedules[ $slot['week_day'] ]['slots']->$schedule_id = array(
 				'start' => $slot['time_starts'],
 				'end'   => $slot['time_ends']
 			);
