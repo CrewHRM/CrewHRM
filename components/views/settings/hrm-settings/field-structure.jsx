@@ -1,4 +1,6 @@
 import React from 'react';
+import currencyToSymbolMap from 'currency-symbol-map/map'
+
 import { __, data_pointer } from 'crewhrm-materials/helpers.jsx';
 import { applyFilters } from 'crewhrm-materials/hooks.jsx';
 
@@ -151,9 +153,22 @@ export const settings_fields = applyFilters(
 									can_add: true
 								},
 								{
-									name: 'about_company',
+									name: 'company_currency',
+									label: __('Currency'),
+									type: 'dropdown',
+									required: true,
+									options: Object.keys(currencyToSymbolMap).map((c) => {
+										return { 
+											id: c, 
+											label: `${currencyToSymbolMap[c]} ${c}`
+										};
+									})
+								},
+								{
+									name: 'kses_about_company',
 									label: __('About Company'),
-									type: 'textarea_rich'
+									type: 'textarea_rich',
+									placeholder: __('Write about the company..')
 								},
 							]
 						},

@@ -54,6 +54,17 @@ class Meta {
 	}
 
 	/**
+	 * Provide an instance of employee meta
+	 *
+	 * @param int $user_id Job ID to return meta instance for
+	 * @return Meta
+	 */
+	public static function employee( $user_id ) {
+		global $wpdb;
+		return new self( $wpdb->crewhrm_employee_meta, $user_id );
+	}
+
+	/**
 	 * Provide an instance of application meta
 	 *
 	 * @param int $application_id Application ID to return meta instance for
@@ -142,6 +153,19 @@ class Meta {
 				$this->table,
 				$payload
 			);
+		}
+	}
+
+	/**
+	 * Update bulk meta
+	 *
+	 * @param array $meta_array
+	 * 
+	 * @return void
+	 */
+	public function updateBulkMeta( $meta_array ) {
+		foreach ( $meta_array as $key => $value ) {
+			$this->updateMeta( $key, $value );
 		}
 	}
 

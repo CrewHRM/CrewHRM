@@ -214,8 +214,7 @@ export function Single({ base_permalink, settings={} }) {
 						icon={'ch-icon ch-icon-empty-wallet'}
 						hint={__('Salary')}
 						content={(salary_a || '') + (salary_b ? '-' + salary_b : '')}
-						beforeContent={currency}
-						afterContent={currency + ' ' + (salary_types[salary_basis] ? ' / ' + salary_types[salary_basis] : '')}
+						afterContent={(currency || '') + ' ' + (salary_types[salary_basis] ? ' / ' + salary_types[salary_basis] : '')}
 						contentClass={'white-space-nowrap'.classNames()}
 					/>
 					<div className={'align-self-center'.classNames()}>

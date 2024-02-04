@@ -292,6 +292,7 @@ export function JobEditor() {
 					street_address: window[data_pointer].company_address.street_address,
 					zip_code: window[data_pointer].company_address.zip_code,
 					country_code: window[data_pointer].company_address.country_code,
+					currency: window[data_pointer].currency_code || 'USD'
                 }
             });
             return;
@@ -439,7 +440,7 @@ export function JobEditor() {
                         </Conditional>
 
                         <button
-                            className={'button button-primary'.classNames()}
+                            className={'button button-primary white-space-nowrap'.classNames()}
                             disabled={is_next_disabled || state.saving_mode != null}
                             onClick={onSaveClick}
                         >

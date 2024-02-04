@@ -64,5 +64,6 @@ class Database {
 		$wpdb->crewhrm_pipeline        = $prefix . 'pipeline';
 		$wpdb->crewhrm_qna             = $prefix . 'qna';
 		$wpdb->crewhrm_stages          = $prefix . 'stages';
+		$wpdb->crewhrm_employee_meta   = $prefix . 'employee_meta';
 	}
 }

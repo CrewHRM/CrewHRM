@@ -16,11 +16,6 @@ use CrewHRM\Helpers\_String;
 class User {
 
 	/**
-	 * User meta key to store only crewhrm specific data
-	 */
-	const META_KEY = 'crewhrm-user-meta';
-
-	/**
 	 * The meta key to set avatar image ID for
 	 */
 	const META_KEY_AVATAR = 'avatar_image_id';
@@ -258,32 +253,36 @@ class User {
 		}
 
 		// Prepare education info 
-		$educational = is_array( $data['educational_info'] ?? null ) ? $data['educational_info'] : array();
+		$educational_info = is_array( $data['educational_info'] ?? null ) ? $data['educational_info'] : array();
 		$filtered_educations = array();
-		foreach( $educational as $id => $data ) {
-			if ( ! empty( $data['program'] ) && is_numeric( $data['passing_year'] ?? null ) ) {
-				$filtered_educations[ $id ] = $data;
+		foreach( $educational_info as $id => $_info ) {
+			if ( ! empty( $_info['program'] ) && is_numeric( $_info['passing_year'] ?? null ) ) {
+				$filtered_educations[ $id ] = $_info;
 			}
 		}
 		
-		error_log( var_export( $educational, true ) );
-		error_log( var_export( $filtered_educations, true ) );
-
 		// Update meta data that can't be added in user table or anything native by WP
 		self::updateMeta(
 			$user_id,
 			array(
 				'user_phone'             => $data['user_phone'] ?? null,
 				'birth_date'             => $data['birth_date'] ?? null,
-				'fathers_name'           => $data['fathers_name'] ?? null,
-				'mothers_name'           => $data['mothers_name'] ?? null,
 				'gender'                 => $data['gender'] ?? null,
 				'marital_status'         => $data['marital_status'] ?? null,
+				
+				'fathers_name'           => $data['fathers_name'] ?? null,
+				'mothers_name'           => $data['mothers_name'] ?? null,
 				'driving_license_number' => $data['driving_license_number'] ?? null,
 				'nid_number'             => $data['nid_number'] ?? null,
 				'blood_group'            => $data['blood_group'] ?? null,
-				'address_id'             => $address_id,
 				'educational_info'       => $filtered_educations,
+				'address_id'             => $address_id,
+				
+				'experience_level'       => $data['experience_level'] ?? null,
+				'designation'            => $data['designation'] ?? null,
+				'department_id'          => $data['department_id'] ?? null,
+				'attendance_types'       => $data['attendance_types'] ?? array(),
+				
 				...$emergency,
 				...$links,
 			)
@@ -358,7 +357,7 @@ class User {
 			$meta[ $key ] = $value;
 		}
 		
-		update_user_meta( $user_id, self::META_KEY, $meta );
+		Meta::employee( $user_id )->updateBulkMeta( $meta );
 	}
 	
 	/**
@@ -373,7 +372,7 @@ class User {
 	public static function getMeta( $user_id, $key = null, $fallback = null ) {
 
 		// Get Crew meta data
-		$meta = get_user_meta( $user_id, self::META_KEY, true );
+		$meta = Meta::employee( $user_id )->getMeta();
 		$meta = ! is_array( $meta ) ? array() : $meta;
 
 		// Get WP specific meta data

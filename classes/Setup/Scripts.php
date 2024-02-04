@@ -155,6 +155,7 @@ class Scripts {
 				'is_admin'        => is_admin(),
 				'is_frontend'     => ! is_admin(),
 				'text_domain'     => Main::$configs->text_domain,
+				'currency_code'   => Settings::getSetting( 'company_currency' ),
 				'company_address' => array(
 					'street_address' => Settings::getSetting( 'street_address', '' ),
 					'city'           => Settings::getSetting( 'city', '' ),

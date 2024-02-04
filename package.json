@@ -53,6 +53,7 @@
     "crewhrm-materials": "github:CrewHRM/Materials",
     "css-loader": "^6.8.1",
     "css-minimizer-webpack-plugin": "^5.0.1",
+    "currency-symbol-map": "^5.1.0",
     "cypress": "^11.2.0",
     "cypress-file-upload": "^5.0.8",
     "cypress-mochawesome-reporter": "^3.5.1",

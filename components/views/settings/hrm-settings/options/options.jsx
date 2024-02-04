@@ -14,6 +14,7 @@ import logo_placeholder from 'crewhrm-materials/static/images/logo-placeholder.s
 import { ListManager } from 'crewhrm-materials/list-manager/list-manager.jsx';
 import { AddressFields } from 'crewhrm-materials/address-fields.jsx';
 import { RenderExternal } from 'crewhrm-materials/render-external.jsx';
+import { TextEditor } from 'crewhrm-materials/text-editor/text-editor.jsx';
 
 import { settings_fields } from '../field-structure.jsx';
 import { ContextSettings } from '../hrm-settings.jsx';
@@ -331,6 +332,19 @@ function OptionFields({fields=[], vertical, separator, is_group=false}) {
 									/>
 								</div>
 							</> : null
+						}
+
+						{
+							type !== 'textarea_rich' ? null :
+							<>
+								<div className={'flex-5'.classNames()}>{label_text}</div>
+								<div>
+									<TextEditor 
+										value={values[name]}
+										placeholder={placeholder}
+										onChange={v=>onChange(name, v)}/>
+								</div>
+							</>
 						}
 					</div>
 				);
