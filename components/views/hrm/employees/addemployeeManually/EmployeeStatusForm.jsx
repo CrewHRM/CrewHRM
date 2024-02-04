@@ -1,9 +1,7 @@
-import React, { useContext, useState } from 'react';
+import React, { useState, useContext } from 'react';
+
 import { __ } from 'crewhrm-materials/helpers.jsx';
-import { FormActionButtons } from 'crewhrm-materials/form-action.jsx';
-import { ContextAddEmlpoyeeManually } from './index.jsx';
-import AddEmployeeCss from './AddManually.module.scss';
-import EmployeeIndexCss from '../index.module.scss';
+import { experience_levels } from 'crewhrm-materials/data.jsx';
 import { TextField } from 'crewhrm-materials/text-field/text-field.jsx';
 import { DropDown } from 'crewhrm-materials/dropdown/dropdown.jsx';
 import { TagField } from 'crewhrm-materials/tag-field/tag-field.jsx';
@@ -11,11 +9,13 @@ import { attendance_types } from 'crewhrm-materials/data.jsx';
 import SearchImg from 'crewhrm-materials/static/images/search-normal-add-8.svg';
 import Profileimg from 'crewhrm-materials/static/images/addemployee-user-profile-demo.svg';
 
+import {ContextAddEmlpoyeeManually} from './index.jsx';
+import AddEmployeeCss from './AddManually.module.scss';
+import EmployeeIndexCss from '../index.module.scss';
+
 export default function EmployeeStatusForm() {
-	const { navigateTab, is_next_disabled } = useContext(ContextAddEmlpoyeeManually);
-	const [departments] = useState(['Development', 'Design', 'Business']);
-	const [selectedDept, setSelectedDept] = useState('');
-	const [activeEmploymentTypes, setActiveEmploymentTypes] = useState('on_site');
+	
+	const { onChange, values={}, departments=[] } = useContext(ContextAddEmlpoyeeManually);
 	const [textValue, setTextValue] = useState('');
 
 	return (
@@ -34,7 +34,10 @@ export default function EmployeeStatusForm() {
 							{__('Employee ID')}
 							<span className={'color-error'.classNames()}>*</span>
 						</div>
-						<TextField placeholder={__('005')} value={textValue} onChange={(v) => setTextValue(v)} />
+						<TextField 
+							placeholder={__('005')} 
+							value={values.employee_id || ''} 
+							onChange={(v) => onChange('employee_id', v)} />
 					</div>
 					<div className={'flex-1'.classNames()}>
 						<div
@@ -43,13 +46,14 @@ export default function EmployeeStatusForm() {
 							{__('Experience Level')}
 						</div>
 						<DropDown
-							value={selectedDept}
+							value={values.experience_level}
 							placeholder="Select"
-							onChange={(v) => {
-								setSelectedDept(v);
-							}}
-							options={departments.map((email) => {
-								return { id: email, label: email };
+							onChange={(v) => onChange('experience_level', v)}
+							options={Object.keys(experience_levels).map((level) => {
+								return { 
+									id: level, 
+									label: experience_levels[level] 
+								};
 							})}
 						/>
 					</div>
@@ -64,8 +68,8 @@ export default function EmployeeStatusForm() {
 						</div>
 						<TextField
 							placeholder={__('ex. Product Designer')}
-							value={textValue}
-							onChange={(v) => setTextValue(v)}
+							value={values.designation || ''}
+							onChange={(v) => onChange('designation', v)}
 						/>
 					</div>
 				</div>
@@ -77,10 +81,15 @@ export default function EmployeeStatusForm() {
 							{__('Department')}
 							<span className={'color-error'.classNames()}>*</span>
 						</div>
-						<TextField
-							placeholder={__('ex. Product Designer')}
-							value={textValue}
-							onChange={(v) => setTextValue(v)}
+						<DropDown
+							value={values.department_id}
+							onChange={v=>onChange('department_id', v)}
+							options={departments.map(dep=>{
+								return {
+									id: dep.department_id,
+									label: dep.department_name
+								}
+							})}
 						/>
 					</div>
 				</div>
@@ -94,10 +103,8 @@ export default function EmployeeStatusForm() {
 						<TagField
 							theme="button-control"
 							behavior="checkbox"
-							value={[activeEmploymentTypes]}
-							onChange={(type) => {
-								setActiveEmploymentTypes(type);
-							}}
+							value={values.attendance_types || []}
+							onChange={(types) => onChange('attendance_types', types)}
 							options={Object.keys(attendance_types).map((a) => {
 								return {
 									id: a,

@@ -46,7 +46,7 @@ const steps = [
 	},
 ];
 
-export function AddEmployeeManually() {
+export function AddEmployeeManually({departments={}}) {
 
 	const navigate = useNavigate();
 	const {ajaxToast} = useContext(ContextToast);
@@ -162,7 +162,7 @@ export function AddEmployeeManually() {
 	
 	const active_index = steps.findIndex((s) => s.id === active_tab);
 
-	return state.last_step_passed ? <CongratsAddEmployee/> : <ContextAddEmlpoyeeManually.Provider value={{onChange, values: state.values}}>
+	return state.last_step_passed ? <CongratsAddEmployee/> : <ContextAddEmlpoyeeManually.Provider value={{onChange, values: state.values, departments}}>
 		<StickyBar title={__('People Manually')} canBack={true}>
 			<div className={'d-flex align-items-center column-gap-30'.classNames()}>
 				<div className={'d-inline-block'.classNames()}>

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Feb 03, 2024 at 01:24 AM
+-- Generation Time: Feb 04, 2024 at 06:09 AM
 -- Server version: 8.0.16
 -- PHP Version: 8.1.23
 
@@ -75,7 +75,7 @@ CREATE TABLE IF NOT EXISTS `wp_crewhrm_appmeta` (
   `meta_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
   `object_id` bigint(20) UNSIGNED NOT NULL,
   `meta_key` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci NOT NULL,
-  `meta_value` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci NOT NULL,
+  `meta_value` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci,
   PRIMARY KEY (`meta_id`),
   KEY `object_id` (`object_id`,`meta_key`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
@@ -110,6 +110,20 @@ CREATE TABLE IF NOT EXISTS `wp_crewhrm_departments` (
   `parent_id` bigint(20) UNSIGNED DEFAULT NULL,
   `sequence` smallint(5) UNSIGNED NOT NULL,
   PRIMARY KEY (`department_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `wp_crewhrm_employee_meta`
+--
+
+CREATE TABLE IF NOT EXISTS `wp_crewhrm_employee_meta` (
+  `meta_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `object_id` bigint(20) UNSIGNED NOT NULL,
+  `meta_key` varchar(50) COLLATE utf8mb4_unicode_520_ci NOT NULL,
+  `meta_value` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci,
+  PRIMARY KEY (`meta_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 -- --------------------------------------------------------
@@ -158,7 +172,7 @@ CREATE TABLE IF NOT EXISTS `wp_crewhrm_jobmeta` (
   `meta_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
   `object_id` bigint(20) UNSIGNED NOT NULL,
   `meta_key` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci NOT NULL,
-  `meta_value` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci NOT NULL,
+  `meta_value` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci,
   PRIMARY KEY (`meta_id`),
   KEY `object_id` (`object_id`,`meta_key`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
@@ -224,6 +238,23 @@ CREATE TABLE IF NOT EXISTS `wp_crewhrm_stages` (
   `sequence` tinyint(3) UNSIGNED NOT NULL,
   PRIMARY KEY (`stage_id`),
   KEY `job_id` (`job_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `wp_crewhrm_weekly_schedules`
+--
+
+CREATE TABLE IF NOT EXISTS `wp_crewhrm_weekly_schedules` (
+  `schedule_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `employee_id` bigint(20) UNSIGNED DEFAULT NULL COMMENT 'Null means global setting, otherwise for specific employee',
+  `week_day` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci NOT NULL COMMENT 'monday, tuesday and so on',
+  `time_starts` time NOT NULL,
+  `time_ends` time NOT NULL,
+  `enable` tinyint(1) UNSIGNED NOT NULL,
+  PRIMARY KEY (`schedule_id`),
+  KEY `week_day` (`week_day`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 COMMIT;
 

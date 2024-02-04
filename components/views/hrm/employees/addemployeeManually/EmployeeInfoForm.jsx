@@ -51,7 +51,6 @@ export default function EmployeeInfoForm() {
 
 	const [setshowAdditionalInfo, setSetshowAdditionalInfo] = useState(false);
 	const { onChange, values={} } = useContext(ContextAddEmlpoyeeManually);
-	const [textValue, setTextValue] = useState('');
 	const [expand, setExpand] = useState(false);
 
 	const [avatar_preview, setAvatarPreview] = useState(null);
@@ -150,7 +149,7 @@ export default function EmployeeInfoForm() {
 						</div>
 						<TextField 
 							placeholder={__('ex. John')} 
-							value={values.first_name} 
+							value={values.first_name || ''} 
 							onChange={(v) => onChange('first_name', v)} />
 					</div>
 					<div className={'flex-1 margin-right-10'.classNames()}>
@@ -162,7 +161,7 @@ export default function EmployeeInfoForm() {
 						</div>
 						<TextField 
 							placeholder={__('ex. Doe')} 
-							value={values.last_name} 
+							value={values.last_name || ''} 
 							onChange={(v) => onChange( 'last_name', v)} />
 					</div>
 					<div className={'flex-1'.classNames()}>
@@ -173,7 +172,7 @@ export default function EmployeeInfoForm() {
 						</div>
 						<TextField 
 							placeholder={__('ex. John')} 
-							value={values.display_name} 
+							value={values.display_name || ''} 
 							onChange={(v) => onChange('display_name', v)} />
 					</div>
 				</div>
@@ -185,7 +184,8 @@ export default function EmployeeInfoForm() {
 						</div>
 						<TextField
 							placeholder={__('ex. mail@example.com')}
-							value={values.user_email}
+							type="email"
+							value={values.user_email || ''}
 							onChange={(v) => onChange('user_email', v)}
 						/>
 					</div>
@@ -198,7 +198,8 @@ export default function EmployeeInfoForm() {
 						</div>
 						<TextField
 							placeholder={__('ex 123 456 7890')}
-							value={values.user_phone}
+							value={values.user_phone || ''}
+							type="tel"
 							onChange={(v) => onChange('user_phone', v)}
 						/>
 					</div>
@@ -216,7 +217,7 @@ export default function EmployeeInfoForm() {
 							{__('About')}
 						</div>
 						<TextField 
-							value={values.description} 
+							value={values.description || ''} 
 							type='textarea'
 							placeholder={'Write about..'}
 							onChange={v=>onChange('description', v)}/>
@@ -264,7 +265,7 @@ export default function EmployeeInfoForm() {
 						</div>
 						<TextField 
 							placeholder={__('ex. John Doe')} 
-							value={values.emergency_full_name} 
+							value={values.emergency_full_name || ''} 
 							onChange={(v) => onChange('emergency_full_name', v)}
 						/>
 					</div>
@@ -293,7 +294,8 @@ export default function EmployeeInfoForm() {
 						</div>
 						<TextField
 							placeholder={__('ex 123 456 7890')}
-							value={values.emergency_phone}
+							value={values.emergency_phone || ''}
+							type="tel"
 							onChange={(v) => onChange('emergency_phone', v)}
 						/>
 					</div>
@@ -303,7 +305,8 @@ export default function EmployeeInfoForm() {
 						</div>
 						<TextField
 							placeholder={__('ex. emergency@email.com')}
-							value={values.emergency_email}
+							value={values.emergency_email || ''}
+							type="email"
 							onChange={(v) => onChange('emergency_email', v)}
 						/>
 					</div>
@@ -360,7 +363,7 @@ export default function EmployeeInfoForm() {
 											</div>
 											<TextField
 												placeholder={__('ex. Harvard University')}
-												value={institute_name}
+												value={institute_name || ''}
 												onChange={(v) => updateEducation(id, 'institute_name', v)}
 											/>
 										</div>
@@ -373,7 +376,7 @@ export default function EmployeeInfoForm() {
 											</div>
 											<TextField
 												placeholder={__('ex. Software Engineering')}
-												value={program}
+												value={program || ''}
 												onChange={(v) => updateEducation(id, 'program', v)}
 											/>
 										</div>
@@ -384,7 +387,7 @@ export default function EmployeeInfoForm() {
 											</div>
 											<TextField
 												placeholder={__('YYYY')}
-												value={passing_year}
+												value={passing_year || ''}
 												onChange={(v) => updateEducation(id, 'passing_year', v)}
 											/>
 										</div>
@@ -427,7 +430,7 @@ export default function EmployeeInfoForm() {
 								</div>
 								<TextField
 									placeholder={__('ex. John Doe')}
-									value={values.fathers_name}
+									value={values.fathers_name || ''}
 									onChange={(v) => onChange('fathers_name', v)}
 								/>
 							</div>
@@ -437,7 +440,7 @@ export default function EmployeeInfoForm() {
 								</div>
 								<TextField
 									placeholder={__('ex. ')}
-									value={values.mothers_name}
+									value={values.mothers_name || ''}
 									onChange={(v) => onChange('mothers_name', v)}
 								/>
 							</div>
@@ -533,8 +536,9 @@ export default function EmployeeInfoForm() {
 									<div className={'flex-1'.classNames()}>
 										<TextField
 											placeholder={__('https://')}
-											value={values[`social_link_${social}`]}
+											value={values[`social_link_${social}`] || ''}
 											image={social_fields[social]}
+											type="url"
 											onChange={(v) => onChange(`social_link_${social}`, v)}
 										/>
 									</div>

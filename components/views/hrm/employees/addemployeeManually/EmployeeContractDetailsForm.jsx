@@ -1,9 +1,8 @@
 import React, { useContext, useState } from 'react';
+import currenctSymbols from 'currency-symbol-map/map';
+
 import { __ } from 'crewhrm-materials/helpers.jsx';
-import { FormActionButtons } from 'crewhrm-materials/form-action.jsx';
-import { ContextAddEmlpoyeeManually } from './index.jsx';
 import { employment_types } from 'crewhrm-materials/data.jsx';
-import AddEmployeeCss from './AddManually.module.scss';
 import { TextField } from 'crewhrm-materials/text-field/text-field.jsx';
 import { DropDown } from 'crewhrm-materials/dropdown/dropdown.jsx';
 import { TagField } from 'crewhrm-materials/tag-field/tag-field.jsx';
@@ -13,12 +12,13 @@ import PartTime from './screen/PartTime.jsx';
 import Temporary from './screen/Temporary.jsx';
 import Trainee from './screen/Trainee.jsx';
 import FullTime from './screen/FullTime.jsx';
+import { ContextAddEmlpoyeeManually } from './index.jsx';
+import AddEmployeeCss from './AddManually.module.scss';
 
 export default function EmployeeContractDetailsForm() {
-	const { navigateTab, is_next_disabled } = useContext(ContextAddEmlpoyeeManually);
-	const [departments] = useState(['Canadian Dollar (CAD)', 'Design', 'Business']);
-	const [selectedDept, setSelectedDept] = useState('');
-	const [textValue, setTextValue] = useState('');
+
+	const { onChange, values={} } = useContext(ContextAddEmlpoyeeManually);
+	const {salary_currency='USD'} = values;
 
 	const [activeEmploymentTypes, setActiveEmploymentTypes] = useState('full_time');
 
@@ -37,13 +37,14 @@ export default function EmployeeContractDetailsForm() {
 								{__('Currency')}
 							</div>
 							<DropDown
-								value={selectedDept}
+								value={salary_currency}
 								placeholder="Select"
-								onChange={(v) => {
-									setSelectedDept(v);
-								}}
-								options={departments.map((email) => {
-									return { id: email, label: email };
+								onChange={(v) => onChange('salary_currency', v)}
+								options={Object.keys(currenctSymbols).map((s) => {
+									return {
+										id: s, 
+										label: s
+									};
 								})}
 							/>
 						</div>
@@ -53,7 +54,10 @@ export default function EmployeeContractDetailsForm() {
 							>
 								{__('Annual Gross salary')}
 							</div>
-							<TextField placeholder={__('$ 0.00')} value={textValue} onChange={(v) => setTextValue(v)} />
+							<TextField 
+								placeholder={`${currenctSymbols[salary_currency]} 0.00`} 
+								value={`${currenctSymbols[salary_currency]} ${values.annual_gross_salary || ''}`} 
+								onChange={(v) => onChange('annual_gross_salary', (v || '').replace(/\D/g, ''))} />
 						</div>
 					</div>
 					<div className={'d-flex'.classNames()}>
@@ -64,15 +68,6 @@ export default function EmployeeContractDetailsForm() {
 								{__('Employment Type')}
 								<span className={'color-error'.classNames()}>*</span>
 							</div>
-							<TextField
-								placeholder={__('ex. Product Designer')}
-								value={textValue}
-								onChange={(v) => setTextValue(v)}
-							/>
-						</div>
-					</div>
-					<div className={'d-flex'.classNames()}>
-						<div className={'flex-1 margin-top-20'.classNames()}>
 							<TagField
 								value={activeEmploymentTypes}
 								behavior="radio"
@@ -95,17 +90,6 @@ export default function EmployeeContractDetailsForm() {
 							{activeEmploymentTypes == 'temporary' && <Temporary />}
 							{activeEmploymentTypes == 'trainee' && <Trainee />}
 						</div>
-					</div>
-					<div className={'d-flex margin-top-40'.classNames()}>
-						<div className={'flex-1'.classNames()}>
-							<FormActionButtons
-								onBack={() => navigateTab(-1)}
-								onNext={() => navigateTab(1)}
-								disabledNext={is_next_disabled}
-								nextText={'Save & Continue'}
-							/>
-						</div>
-						<div className={'right-col'.classNames()}></div>
 					</div>
 				</div>
 			</div>

@@ -7,7 +7,7 @@ import AddEmployee from './addemployee/addemployee.jsx';
 import AddEmployeeHirelist from './addemployee/AddEmployeeHirelist.jsx';
 import ScrollToTop from 'crewhrm-materials/scrollToTop/ScrollToTop.jsx';
 
-export function Employees() {
+export function Employees(props) {
 	return <HashRouter>
 			<ScrollToTop />
 			<Routes>
@@ -39,7 +39,7 @@ export function Employees() {
 					path="/employees/profile/:user_id/edit/:active_tab?/"
 					element={
 						<>
-							<AddEmployeeManually />
+							<AddEmployeeManually {...props}/>
 						</>
 					}
 				/>
