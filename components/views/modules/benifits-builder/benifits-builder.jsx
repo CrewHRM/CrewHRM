@@ -122,7 +122,7 @@ export function BenifitsBuilder(props) {
 											style={{ color: '#236BFE' }}
 										></i>
 										<div
-											className={'margin-left-5 font-size-13 font-weight-500 line-height-25 color-tex'.classNames()}
+											className={'margin-left-5 font-size-13 font-weight-500 line-height-25 color-text'.classNames()}
 										>
 											{__('Add Sub-department')}
 										</div>

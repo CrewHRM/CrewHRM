@@ -152,6 +152,19 @@ export function AddEmployeeManually({departments={}}) {
 	const navigateTab = (tab, e_id, _tab, replace) => {
 		const current_index = steps.findIndex((s) => s.id == active_tab);
 
+		if ( tab === 1 && current_index == steps.length -1 ) {
+			setState({
+				...state,
+				last_step_passed: true
+			});
+
+			window.setTimeout(()=>{
+				navigate('/employees/');
+			}, 2500);
+			
+			return;
+		}
+
 		if (tab === 1 || tab === -1) {
 			tab = steps[current_index + tab]?.id;
 		}
@@ -260,17 +273,14 @@ export function AddEmployeeManually({departments={}}) {
 
 							{active_tab == 'additional-option' ? <AdditionalOptionForm /> : null}
 						
-							<div className={'d-flex margin-top-40 margin-bottom-10'.classNames()}>
-								<div className={'flex-1'.classNames()}>
-									<FormActionButtons
-										nextText={'Save & Continue'}
-										onBack={active_index>0 ? () => navigateTab(-1) : null}
-										onNext={updateEmployee}
-										disabledNext={state.saving}
-										loading={state.saving}
-									/>
-								</div>
-								<div className={'right-col'.classNames()}></div>
+							<div className={'margin-top-40 margin-bottom-10'.classNames()}>
+								<FormActionButtons
+									nextText={'Save & Continue'}
+									onBack={active_index>0 ? () => navigateTab(-1) : null}
+									onNext={updateEmployee}
+									disabledNext={state.saving}
+									loading={state.saving}
+								/>
 							</div>
 						</div>
 					</div>

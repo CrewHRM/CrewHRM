@@ -11,7 +11,7 @@ import AddEmployeeCss from './AddManually.module.scss';
 import EmployeeIndexCss from '../index.module.scss';
 
 export default function AdditionalOptionForm() {
-	const { navigateTab } = useContext(ContextAddEmlpoyeeManually);
+	const { onChange, values={} } = useContext(ContextAddEmlpoyeeManually);
 	const [textValue, setTextValue] = useState('');
 
 	return (
@@ -147,15 +147,6 @@ export default function AdditionalOptionForm() {
 							></i>
 						</div>
 					</div>
-				</div>
-
-				<div className={'d-flex column-gap-30 margin-top-40'.classNames()}>
-					<FormActionButtons
-						onBack={() => navigateTab(-1)}
-						onNext={() => navigateTab(1)}
-						disabledNext={false}
-						nextText={'Save & Continue'}
-					/>
 				</div>
 			</div>
 		</>

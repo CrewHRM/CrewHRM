@@ -1,10 +1,11 @@
 import React from 'react';
+
 import { __ } from 'crewhrm-materials/helpers.jsx';
-import EmployeeIndexCss from '../index.module.scss';
-import AddEmployeeCss from './AddManually.module.scss';
 import CrewHrmLogo from 'crewhrm-materials/static/images/crew-hrm-logo.png';
-import Congrats from 'crewhrm-materials/static/images/congrats.png';
-import Loading from 'crewhrm-materials/static/images/loading.png';
+import Congrats from 'crewhrm-materials/static/images/thank-you.png';
+
+import AddEmployeeCss from './AddManually.module.scss';
+import EmployeeIndexCss from '../index.module.scss';
 
 export default function CongratsAddEmployee() {
 	return (
@@ -55,7 +56,7 @@ export default function CongratsAddEmployee() {
 				>
 					{__('You can manage information later.')}
 				</div>
-				<img className={'margin-top-10'.classNames()} src={Loading} alt="" />
+
 				<div
 					className={'font-size-15 line-height-20 font-weight-400 margin-top-20'.classNames()}
 					style={{ color: '#72777B' }}

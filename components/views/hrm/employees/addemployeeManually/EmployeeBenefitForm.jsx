@@ -1,4 +1,5 @@
 import React, { useContext, useState } from 'react';
+import currenctSymbols from 'currency-symbol-map/map';
 
 import { __ } from 'crewhrm-materials/helpers.jsx';
 import { TextField } from 'crewhrm-materials/text-field/text-field.jsx';
@@ -13,8 +14,9 @@ import { LeaveBuilder } from '../../../modules/leave-builder/leave-builder.jsx';
 
 export default function EmployeeBenefitForm() {
 	const { values={}, onChange } = useContext(ContextAddEmlpoyeeManually);
-	const [textValue, setTextValue] = useState('');
 	const [toggle, setToggle] = useState(true);
+	const {salary_currency='USD'} = values;
+	const currency_symbol = currenctSymbols[salary_currency];
 
 	return (
 		<>
@@ -39,18 +41,23 @@ export default function EmployeeBenefitForm() {
 							</div>
 							<div className={'d-flex align-items-center justify-content-end column-gap-5'.classNames()}>
 								<ToggleSwitch 
-									checked={toggle} 
-									onChange={() => setToggle(!toggle)} />
+									checked={values.enable_signing_bonus ? true : false} 
+									onChange={(checked) => onChange('enable_signing_bonus', checked)} />
 							</div>
 						</div>
-						<div className={'margin-top-20'.classNames()}>
-							<div
-								className={'d-flex font-size-17 font-weight-500 color-text margin-bottom-10'.classNames()}
-							>
-								{__('Signing bonus amount')}
+						{
+							!values.enable_signing_bonus ? null :
+							<div className={'margin-top-20'.classNames()}>
+								<div
+									className={'d-flex font-size-17 font-weight-500 color-text margin-bottom-10'.classNames()}
+								>
+									{__('Signing bonus amount')}
+								</div>
+								<TextField 
+									value={`${currency_symbol} ${values.signing_bonus_amount || ''}`} 
+									onChange={(v) => onChange('signing_bonus_amount', (v || '').replace(/\D/g, ''))} />
 							</div>
-							<TextField placeholder={__('$ 0.00')} value={textValue} onChange={(v) => setTextValue(v)} />
-						</div>
+						}
 					</div>
 					<div
 						className={
@@ -70,8 +77,8 @@ export default function EmployeeBenefitForm() {
 							</div>
 							<div className={'d-flex align-items-center justify-content-end column-gap-5'.classNames()}>
 								<ToggleSwitch 
-									checked={toggle} 
-									onChange={() => setToggle(!toggle)} />
+									checked={values.enable_other_bonus ? true : false} 
+									onChange={(checked) => onChange('enable_other_bonus', checked )} />
 							</div>
 						</div>
 					</div>
