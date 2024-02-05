@@ -295,6 +295,7 @@ class User {
 				'contract_start_date'        => $data['contract_start_date'] ?? null,
 				'contract_end_date'          => $data['contract_end_date'] ?? null,
 				'probation_end_date'         => $data['probation_end_date'] ?? null,
+				'employee_benefits'          => $data['employee_benefits'] ?? ( object ) array(),
 				...$emergency,
 				...$links,
 			)
