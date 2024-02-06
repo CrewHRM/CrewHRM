@@ -10,24 +10,24 @@ import EmployeeIndexCss from '../index.module.scss';
 import employeecss from './employee.module.scss';
 
 const channels = [
-	{
+	/* {
 		route: '/employee/invite/viaemail/',
 		label: __('Invite via email'),
 		description: __('Invite one or more new staff members to create their account'),
 		icon: addemployeeMailImg
-	},
+	}, */
 	{
 		route: '/employees/profile/new/edit/',
 		label: __('Add manually'),
 		description: __('Add info about the new staff member manually'),
 		icon: addemployeeUserPlusImg
 	},
-	{
+	/* {
 		route: '/employee/invite/hirelist/',
 		label: __('Select from the hire list'),
 		description: __('Add info about the new member manually'),
 		icon: addemployeeBriefcaseImg
-	}
+	} */
 ];
 
 export default function AddEmployee() {
@@ -36,12 +36,12 @@ export default function AddEmployee() {
 			<StickyBar title={__('People')}>
 				<div className={'d-flex align-items-center column-gap-30'.classNames()}>
 					<div className={'d-inline-block'.classNames()}>
-						<a
-							href={`${window[data_pointer].admin_url}=${window[data_pointer].app_name}#/dashboard/jobs/editor/new/`}
+						<Link
+							to={`/employees/profile/new/edit/`}
 							className={'button button-primary'.classNames()}
 						>
-							{__('Create A New Job')}
-						</a>
+							{__('Add New Employee')}
+						</Link>
 					</div>
 				</div>
 			</StickyBar>

@@ -19,6 +19,9 @@ class EmployeeController {
 		),
 		'fetchEmployee' => array(
 			'role' => 'administrator'
+		),
+		'getEmployeeList' => array(
+			'role' => 'administrator'
 		)
 	);
 
@@ -43,7 +46,8 @@ class EmployeeController {
 		}
 
 		// Create or update the user now
-		$user_id =  User::createOrUpdate( $employee, $avatar_image );
+		$employee['role'] = User::ROLE_EMPLOYEE;
+		$user_id          =  User::createOrUpdate( $employee, $avatar_image );
 
 		// If fails
 		if ( empty( $user_id ) || ! is_numeric( $user_id ) ) {
@@ -73,5 +77,23 @@ class EmployeeController {
 		} else {
 			wp_send_json_error( array( 'message' => esc_html__( 'Employee not found', 'crewhrm' ) ) );
 		}
+	}
+
+	/**
+	 * Get employee list ideall for dashboard
+	 *
+	 * @param array $filters
+	 * @return void
+	 */
+	public static function getEmployeeList( array $filters = array() ) {
+		
+		$users = User::getUsers( array( ...$filters, 'role' => User::ROLE_EMPLOYEE ) );
+		
+		wp_send_json_success(
+			array(
+				'employees' => $users['users'],
+				'segmentation' => $users['segmentation']
+			)
+		);
 	}
 }

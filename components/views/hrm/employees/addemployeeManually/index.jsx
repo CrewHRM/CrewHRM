@@ -122,7 +122,7 @@ export function AddEmployeeManually({departments={}}) {
 			const {
 				success,
 				data: {
-					user_id = saved_user_id = null,
+					user_id : saved_user_id = null,
 					employee = {}
 				}
 			} = resp;

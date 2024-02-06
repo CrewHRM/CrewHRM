@@ -107,6 +107,17 @@ class Department {
 	}
 
 	/**
+	 * Get single department name by ID
+	 *
+	 * @param int $department_id The department ID to get name of
+	 *
+	 * @return string|null
+	 */
+	public static function getDepartmentNameById( $department_id ) {
+		return Field::departments()->getField( array( 'department_id' => $department_id ), 'department_name' );
+	}
+
+	/**
 	 * Add a single department
 	 *
 	 * @param string $department_name New name to add as department

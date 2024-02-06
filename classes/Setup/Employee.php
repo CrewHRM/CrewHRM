@@ -20,7 +20,23 @@ class Employee {
 	 * @return void
 	 */
 	public function __construct() {
+		add_action( 'init', array( $this, 'addEmployeeRole' ) );
 		add_filter( 'get_avatar_url', array( $this, 'avatarUrl' ), 10, 3 );
+	}
+
+	/**
+	 * Add custom role for crewhrm employees
+	 *
+	 * @return void
+	 */
+	public function addEmployeeRole() {
+		add_role(
+			User::ROLE_EMPLOYEE, 
+			esc_html__( 'Employee', 'hr-management' ), 
+			array(
+				'read' => true,
+			)
+		);
 	}
 
 	/**

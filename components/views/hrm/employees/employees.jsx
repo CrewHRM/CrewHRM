@@ -6,16 +6,31 @@ import {AddEmployeeManually} from './addemployeeManually/index.jsx';
 import AddEmployee from './addemployee/addemployee.jsx';
 import AddEmployeeHirelist from './addemployee/AddEmployeeHirelist.jsx';
 import ScrollToTop from 'crewhrm-materials/scrollToTop/ScrollToTop.jsx';
+import { EmployeeDashboard } from './employee-list/EmployeeDashboard.jsx';
 
 export function Employees(props) {
 	return <HashRouter>
 			<ScrollToTop />
 			<Routes>
 				<Route
-					path="/employee/invite"
+					path="/employees/"
+					element={
+						<EmployeeDashboard/>
+					}
+				/>
+				<Route
+					path="/employees/invite/"
 					element={
 						<>
 							<AddEmployee />
+						</>
+					}
+				/>
+				<Route
+					path="/employees/profile/:user_id/edit/:active_tab?/"
+					element={
+						<>
+							<AddEmployeeManually {...props}/>
 						</>
 					}
 				/>
@@ -35,15 +50,7 @@ export function Employees(props) {
 						</>
 					}
 				/>
-				<Route
-					path="/employees/profile/:user_id/edit/:active_tab?/"
-					element={
-						<>
-							<AddEmployeeManually {...props}/>
-						</>
-					}
-				/>
-				<Route path={'*'} element={<Navigate to="/employee/invite/" replace />} />
+				<Route path={'*'} element={<Navigate to="/employees/" replace />} />
 			</Routes>
 		</HashRouter>
 }

@@ -9,6 +9,7 @@ namespace CrewHRM\Models;
 
 use CrewHRM\Helpers\_Array;
 use CrewHRM\Helpers\_String;
+use CrewHRM\Helpers\Utilities;
 
 /**
  * User functions
@@ -24,6 +25,11 @@ class User {
 	 * The meta ket set flag that the image is crew avatar. So it can be hidden from media library based on this.
 	 */
 	const META_KEY_AVATAR_CREW_FLAG = 'crewhrm_avatar_id_for_employee';
+
+	/**
+	 * Role id for employee
+	 */
+	const ROLE_EMPLOYEE = 'crewhrm-employee';
 
 	/**
 	 * Validate if a user has required role
@@ -195,6 +201,58 @@ class User {
 		return $_new_name;
 	}
 
+	/**
+	 * Get employee list
+	 *
+	 * @param array $args
+	 * @return array
+	 */
+	public static function getUsers( array $args ) {
+
+		$limit  = 30;
+		$page   = Utilities::getInt( $args['page'] ?? 1, 1 ); 
+		$offset = ( $page - 1 ) * $limit;
+
+		$filters = array(
+			'role'   => $args['role'],
+			'number' => $limit,
+			'offset' => $offset,
+			'search' => ! empty( $args['search'] ) ? $args['search'] : null,
+			'echo'   => false,
+		);
+
+		$users       = get_users( $filters );
+		$total_count = ( new \WP_User_Query( array_merge( $filters, array( 'count_total' => true, 'number' => null ) ) ) )->get_total();
+		$page_count  = ceil( $total_count / $limit );
+
+		// Loop through users and assign meta data
+		$users_array = array();
+		foreach ( $users as $user ) {
+
+			$meta = self::getMeta( $user->ID );
+
+			$users_array[] = array(
+				'user_id'         => $user->ID,
+				'avatar_url'      => get_avatar_url( $user->ID ),
+				'display_name'    => $user->display_name,
+				'designation'     => $meta['designation'] ?? null,
+				'department'      => ! empty( $meta['department_id'] ) ? Department::getDepartmentNameById( $meta['department_id'] ) : null,
+				'employment_type' => $meta['employment_type'] ?? null,
+				'hire_date'       => $meta['hire_date'] ?? null,
+				'address'         => ! empty( $meta['address_id'] ) ? Address::getAddressById( $meta['address_id'] ) : null
+			);
+		}
+
+		return array(
+			'users'        => $users_array,
+			'segmentation' => array(
+				'total_count' => $total_count,
+				'page_count'  => $page_count,
+				'page'        => $page,
+				'limit'       => $limit,
+			)
+		);
+	}
 
 	/**
 	 * Create or update a user
@@ -219,6 +277,11 @@ class User {
 
 			if ( is_wp_error( $user_id ) || empty( $user_id ) || ! is_numeric( $user_id ) ) {
 				return false;
+			}
+
+			// Set the role for newly created user
+			if ( ! empty( $data['role'] ) ) {
+				( new \WP_User( $user_id) )->set_role( $data['role'] );
 			}
 		}
 		
