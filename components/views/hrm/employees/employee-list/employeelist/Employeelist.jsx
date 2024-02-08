@@ -1,96 +1,170 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 
-import { __ } from 'crewhrm-materials/helpers.jsx';
+import { __, getAddress, isEmpty } from 'crewhrm-materials/helpers.jsx';
 import { request } from 'crewhrm-materials/request.jsx';
 import { DropDown, Options } from 'crewhrm-materials/dropdown/dropdown';
 import { TextField } from 'crewhrm-materials/text-field/text-field.jsx';
 import { Pagination } from 'crewhrm-materials/pagination/pagination.jsx';
 import { ToggleSwitch } from 'crewhrm-materials/toggle-switch/ToggleSwitch.jsx';
+import { LoadingIcon } from 'crewhrm-materials/loading-icon/loading-icon.jsx';
+import { ContextToast } from 'crewhrm-materials/toast/toast.jsx';
 
 import EmployeelistCss from './employeelist.module.scss';
-import Human from '../img/search-normal-add-8.svg';
 import SearchImg from '../img/search-normal-add-8.svg';
+import { employment_types } from 'crewhrm-materials/data';
 
 const options = [
 	{
 		name: 'edit',
 		label: __('Edit'),
 		icon: 'ch-icon ch-icon-edit-2',
-		for: ['publish', 'draft', 'expired'],
 	},
 	{
-		name: 'share',
-		label: __('Share Job'),
-		icon: 'ch-icon ch-icon-share',
-		for: ['publish'],
-	},
-	{
-		name: 'delete',
-		label: __('Delete'),
-		icon: 'ch-icon ch-icon-trash',
-		for: 'all',
-		warning: __('Are you sure to delete permanently?'),
+		name: 'details',
+		label: __('Details'),
+		icon: 'ch-icon ch-icon-circle-info',
 	},
 ];
 
-export default function Employeelist() {
-	const [textValue, setTextValue] = useState('');
-	const [toggle, setToggle] = useState(true);
-	const [isActivePopup, setIsActivePopup] = useState(false);
-	const tableRow = new Array(10).fill(0);
 
+const columns = {
+	email: {
+		label: __('Email'),
+		description: __('The unique email')
+	},
+	role: {
+		label: __('Role'),
+		description: __('The designation assigned to the employee')
+	},
+	department: {
+		label: __('Department'),
+		description: __('The department hired to. Such as development, marketing and so on.')
+	},
+	type: {
+		label: __('Type'),
+		description: __('Employment type such as Full Time, Contract and so on.')
+	},
+	location: {
+		label: __('Location'),
+		description: __('Location\/address of the employee')
+	},
+	/* hire_date: __('Hire Date'),
+	employment_status: __('Employment Status') */
+};
+
+export default function Employeelist() {
+	const {ajaxToast} = useContext(ContextToast);
+	const navigate = useNavigate();
+
+	// Get the column configurations from local storage
+	let col_configs = window.localStorage.getItem('crewhrm_employees_column_configs');
+	col_configs = col_configs ? JSON.parse(col_configs) : {};
+	
 	const [state, setState] = useState({
+		fetching: false,
+		isActivePopup: false,
+		column_configs: col_configs,
+		column_configs_input: col_configs,
+		employees: [],
+		segmentation: {},
 		filters: {
 			search: '',
 			page: 1
 		}
 	});
 
-	const setFilter=(name, value)=>{
-		const {filters={}} = state;
+	const updateColumnConfigs=(name, status)=>{
+		const {column_configs_input={}} = state;
+		const configs = {
+			...column_configs_input,
+			[name]: status
+		};
+
 		setState({
 			...state,
-			filters: {
-				...filters,
-				[name]: value,
-				page: name!=='page' ? 1 : state.filters.page // Reset page to the first to as it is new filter.
-			}
+			column_configs_input: configs
 		});
 	}
 
-	const fetchEmployees=()=>{
+	const setIsActivePopup=isActivePopup=>{
+		setState({
+			...state, 
+			isActivePopup
+		});
+	}
 
-		request('getEmployeeList', {filters: state.filters}, resp=>{
+	const setFilter=(name, value)=>{
+		
+		const {filters={}} = state;
+		
+		fetchEmployees({
+			...filters,
+			[name]: value,
+			page: name=='page' ? value : 1
+		});
+	}
+
+	const employeeAction = (action, employee)=>{
+
+		switch(action) {
+
+			case 'edit' :
+				navigate(`/employees/profile/${employee.user_id}/edit/`);
+				break;
+
+			case 'details' :
+				navigate(`/employees/profile/${employee.user_id}/`);
+				break;
+		}
+	}
+
+	const saveColumnConfigs=()=>{
+		setState({
+			...state,
+			column_configs: state.column_configs_input,
+			isActivePopup: false
+		});
+		window.localStorage.setItem('crewhrm_employees_column_configs', JSON.stringify(state.column_configs_input));
+	}
+
+	const fetchEmployees=(filters={})=>{
+
+		setState({
+			...state,
+			fetching: true,
+			filters
+		});
+
+		request('getEmployeeList', {filters}, resp=>{
 			
 			const {
 				success= false,
 				data: {
-					employees: []
+					employees=[],
+					segmentation={}
 				}
 			} = resp;
 
-			
+			setState({
+				...state,
+				fetching: false,
+				filters,
+				employees,
+				segmentation
+			});
+
+			if( ! success ) {
+				ajaxToast(resp);
+			}
 		} );
 	}
 
 	useEffect(()=>{
 		fetchEmployees();
-	}, [state.filters]);
+	}, []);
 
-	const actions = options.map((o) => {
-		return {
-			id: o.name,
-			label: (
-				<span className={'d-inline-flex align-items-center column-gap-10'.classNames()}>
-					<i className={o.icon.classNames() + 'font-size-24 color-text'.classNames()}></i>
-
-					<span className={'font-size-15 font-weight-500 line-height-25 color-text'.classNames()}>
-						{o.label}
-					</span>
-				</span>
-			),
-		};
-	});
+	const column_keys = Object.keys(columns).filter(c_id=>state.column_configs[c_id] ?? true);
 
 	return (
 		<>
@@ -137,7 +211,7 @@ export default function Employeelist() {
 							/>
 						</div> */}
 						<div
-							onClick={() => setIsActivePopup(!isActivePopup)}
+							onClick={() => setIsActivePopup(true)}
 							className={
 								'settings'.classNames(EmployeelistCss) + 'flex-center cursor-pointer'.classNames()
 							}
@@ -159,96 +233,145 @@ export default function Employeelist() {
 													checked={false}
 													onChange={() => 0}
 												/>
-												<span>ID</span>
-												<span>Name</span>
+												<span>{__('ID')}</span>
+												<span>{__('Name')}</span>
 											</div>
 										</th>
-										<th>Role</th>
-										<th>Department</th>
-										<th>Type</th>
-										<th>Location</th>
-										<th>Hire Date</th>
+										{
+											column_keys.map(c_id=>{
+												return <th key={c_id}>
+													{columns[c_id].label}
+												</th>
+											})
+										}
 										<th></th>
 									</tr>
 								</thead>
 								<tbody>
-									{[...tableRow].map((row, index) => (
-										<tr key={index + row}>
-											<th>
-												<div className={'table-shadow'.classNames(EmployeelistCss)}></div>
-												<div
-													className={'table-stikcy-glasseffect'.classNames(EmployeelistCss)}
-												></div>
-												<div className={'first-column'.classNames(EmployeelistCss)}>
-													<input
-														type="checkbox"
-														checked={false}
-														onChange={() => 0}
-													/>
-													<div className={'color-text-light'.classNames()}>001</div>
+									{
+										state.employees.map((employee) => {
+
+											const {
+												user_id, 
+												avatar_url, 
+												display_name,
+												email,
+												designation,
+												department_name,
+												employment_type,
+												address,
+											} = employee;
+
+											return <tr key={user_id}>
+												<th>
+													<div className={'table-shadow'.classNames(EmployeelistCss)}></div>
 													<div
-														className={'d-flex align-items-center column-gap-10'.classNames()}
-													>
-														<img src={Human} alt="" />
-														<span>Jane Cooper</span>
-														<span
-															className={
-																'color-text-light margin-left-5'.classNames() +
-																'table-badge'.classNames(EmployeelistCss)
-															}
+														className={'table-stikcy-glasseffect'.classNames(EmployeelistCss)}
+													></div>
+													<div className={'first-column'.classNames(EmployeelistCss)}>
+														<input
+															type="checkbox"
+															checked={false}
+															onChange={() => 0}
+														/>
+														<div className={'color-text-light'.classNames()}>001</div>
+														<div
+															className={'d-flex align-items-center column-gap-10'.classNames()}
 														>
-															Invited
-														</span>
+															<img 
+																src={avatar_url} 
+																style={{width: '32px', height: '32px', borderRadius: '50%'}}
+															/>
+															<Link to={`/employees/profile/${user_id}/`} className={'color-text'.classNames()}>
+																<span>{display_name}</span>
+															</Link>
+															{/* <span
+																className={
+																	'color-text-light margin-left-5'.classNames() +
+																	'table-badge'.classNames(EmployeelistCss)
+																}
+															>
+																Invited
+															</span> */}
+														</div>
 													</div>
-												</div>
-											</th>
-											<td>Marketing Executive</td>
-											<td>Marketing</td>
-											<td>Full Time</td>
-											<td>USA</td>
-											<td>22 Oct, 20</td>
-											<td>
-												<Options options={actions}>
-													<i
-														className={'ch-icon ch-icon-more color-text-light font-size-20 cursor-pointer d-inline-block margin-left-15'.classNames()}
-													></i>
-												</Options>
-											</td>
-										</tr>
-									))}
+												</th>
+												{
+													column_keys.map(c_id=>{
+														return <td key={c_id}>
+															{c_id !== 'email' ? null : email}
+															{c_id !== 'role' ? null : designation}
+															{c_id !== 'department' ? null : department_name}
+															{c_id !== 'type' ? null : (employment_types[employment_type] || null)}
+															{c_id !== 'address' ? null : getAddress((!isEmpty(address) && typeof address==='object') ? address : {})}
+														</td>
+													})
+												}
+												<td>
+													<Options
+														onClick={action=>employeeAction(action, employee)}
+														options={options.map((o) => {
+															return {
+																id: o.name,
+																label: (
+																	<span className={'d-inline-flex align-items-center column-gap-10'.classNames()}>
+																		<i className={o.icon.classNames() + 'font-size-24 color-text'.classNames()}></i>
+
+																		<span className={'font-size-15 font-weight-500 line-height-25 color-text'.classNames()}>
+																			{o.label}
+																		</span>
+																	</span>
+																),
+															};
+														})}
+													>
+														<i
+															className={'ch-icon ch-icon-more color-text-light font-size-20 cursor-pointer d-inline-block margin-left-15'.classNames()}
+														></i>
+													</Options>
+												</td>
+											</tr>
+										})
+									}
 								</tbody>
 							</table>
+
+							<LoadingIcon show={state.fetching} center={true}/>
 						</div>
 					</div>
-					<div
-						className={
-							'd-flex align-items-center justify-content-center margin-top-40'.classNames() +
-							'data-table-pagination'.classNames(EmployeelistCss)
-						}
-					>
-						<Pagination
-							theme="data-table-pagination"
-							previousLabel="Previous"
-							nextLabel="Next"
-							onChange={() => 0}
-							pageNumber={1}
-							pageCount={10}
-						/>
-					</div>
+					{
+						(state.segmentation?.page_count || 0 ) < 2 ? null :
+						<div
+							className={
+								'd-flex align-items-center justify-content-center margin-top-40'.classNames() +
+								'data-table-pagination'.classNames(EmployeelistCss)
+							}
+						>
+							<Pagination
+								theme="data-table-pagination"
+								previousLabel={__('Previous')}
+								nextLabel={__('Next')}
+								onChange={page => setFilter('page', page)}
+								pageNumber={state.segmentation.page}
+								pageCount={state.segmentation.page_count}
+							/>
+						</div>
+					}
+					
 				</div>
 			</div>
 
 			<div
 				className={
 					'padding-15'.classNames() +
-					`settings-modal-wrapper ${isActivePopup ? 'active' : ''}`.classNames(EmployeelistCss)
+					`settings-modal-wrapper ${state.isActivePopup ? 'active' : ''}`.classNames(EmployeelistCss)
 				}
 			>
-				<div onClick={() => setIsActivePopup(!isActivePopup)} className={'cursor-pointer'.classNames()}></div>
+				<div onClick={() => setIsActivePopup(!state.isActivePopup)} className={'cursor-pointer'.classNames()}></div>
 				<div
 					className={
 						'padding-40 d-flex flex-direction-column justify-content-space-between row-gap-20'.classNames() +
-						`settings-modal ${isActivePopup ? 'active' : ''}`.classNames(EmployeelistCss)
+						`settings-modal ${state.isActivePopup ? 'active' : ''}`.classNames(EmployeelistCss)
 					}
 				>
 					<div className={'d-flex flex-direction-column row-gap-20'.classNames()}>
@@ -262,101 +385,53 @@ export default function Employeelist() {
 								{__('Edit Columns')}
 							</span>
 							<i
-								onClick={() => setIsActivePopup(!isActivePopup)}
+								onClick={() => setIsActivePopup(false)}
 								className={'ch-icon ch-icon-times cursor-pointer font-size-24 color-text '.classNames()}
 								style={{ color: 'rgb(0 0 0 / 40%)', fontSize: '28px', fontWeight: '600' }}
 							></i>
 						</div>
 
-						<div
-							className={
-								'crew-hrm-border d-flex align-items-center justify-content-space-between padding-15'.classNames() +
-								''.classNames(EmployeelistCss)
-							}
-						>
-							<div className={'d-flex column-gap-10'.classNames()}>
-								<i className={'ch-icon ch-icon-drag font-size-24 color-text'.classNames()}></i>
-								<span className={'font-size-17 font-weight-500 line-height-25 color-text'.classNames()}>
-									{' '}
-									ID
-								</span>
-							</div>
-							<div className={'d-flex column-gap-10'.classNames()}>
-								<i
-									className={'ch-icon ch-icon-circle-info font-size-24 color-text-light'.classNames()}
-								></i>
-								<ToggleSwitch checked={toggle} onChange={() => setToggle(!toggle)} />
-							</div>
-						</div>
-						<div
-							className={
-								'crew-hrm-border d-flex align-items-center justify-content-space-between padding-15'.classNames() +
-								''.classNames(EmployeelistCss)
-							}
-						>
-							<div className={'d-flex column-gap-10'.classNames()}>
-								<i className={'ch-icon ch-icon-drag font-size-24 color-text'.classNames()}></i>
-								<span className={'font-size-17 font-weight-500 line-height-25 color-text'.classNames()}>
-									{' '}
-									ID
-								</span>
-							</div>
-							<div className={'d-flex column-gap-10'.classNames()}>
-								<i
-									className={'ch-icon ch-icon-circle-info font-size-24 color-text-light'.classNames()}
-								></i>
-								<ToggleSwitch checked={toggle} onChange={() => setToggle(!toggle)} />
-							</div>
-						</div>
-						<div
-							className={
-								'crew-hrm-border d-flex align-items-center justify-content-space-between padding-15'.classNames() +
-								''.classNames(EmployeelistCss)
-							}
-						>
-							<div className={'d-flex column-gap-10'.classNames()}>
-								<i className={'ch-icon ch-icon-drag font-size-24 color-text'.classNames()}></i>
-								<span className={'font-size-17 font-weight-500 line-height-25 color-text'.classNames()}>
-									{' '}
-									ID
-								</span>
-							</div>
-							<div className={'d-flex column-gap-10'.classNames()}>
-								<i
-									className={'ch-icon ch-icon-circle-info font-size-24 color-text-light'.classNames()}
-								></i>
-								<ToggleSwitch checked={toggle} onChange={() => setToggle(!toggle)} />
-							</div>
-						</div>
-						<div
-							className={
-								'crew-hrm-border d-flex align-items-center justify-content-space-between padding-15'.classNames() +
-								''.classNames(EmployeelistCss)
-							}
-						>
-							<div className={'d-flex column-gap-10'.classNames()}>
-								<i className={'ch-icon ch-icon-drag font-size-24 color-text'.classNames()}></i>
-								<span className={'font-size-17 font-weight-500 line-height-25 color-text'.classNames()}>
-									{' '}
-									ID
-								</span>
-							</div>
-							<div className={'d-flex column-gap-10'.classNames()}>
-								<i
-									className={'ch-icon ch-icon-circle-info font-size-24 color-text-light'.classNames()}
-								></i>
-								<ToggleSwitch checked={toggle} onChange={() => setToggle(!toggle)} />
-							</div>
-						</div>
+						{
+							Object.keys(columns).map(c_id=>{
+
+								const enabled = state.column_configs_input[c_id] ?? true;
+
+								return <div
+									key={c_id}
+									className={
+										'crew-hrm-border d-flex align-items-center justify-content-space-between padding-15'.classNames()
+									}
+								>
+									<div className={'d-flex align-items-center column-gap-10'.classNames()}>
+										{/* <i className={'ch-icon ch-icon-drag font-size-24 color-text'.classNames()}></i> */}
+										<span className={'font-size-17 font-weight-500 line-height-25 color-text'.classNames()}>
+											{columns[c_id].label}
+										</span>
+									</div>
+									<div className={'d-flex column-gap-10'.classNames()}>
+										{/* <i
+											className={'ch-icon ch-icon-circle-info font-size-24 color-text-light'.classNames()}
+										></i> */}
+										<ToggleSwitch 
+											checked={enabled} 
+											onChange={(_enabled) => updateColumnConfigs(c_id, _enabled)} />
+									</div>
+								</div>
+							})
+						}
 					</div>
 					<div className={'d-flex column-gap-20'.classNames() + ''.classNames(EmployeelistCss)}>
 						<button
 							className={'flex-1 button button-primary button-large button-outlined button-outlined-light'.classNames()}
 							style={{ maxWidth: '138px' }}
+							onClick={()=>setIsActivePopup(false)}
 						>
 							{__('Cancel')}
 						</button>
-						<button className={'flex-1 button button-primary button-large '.classNames()}>
+						<button 
+							className={'flex-1 button button-primary button-large '.classNames()}
+							onClick={saveColumnConfigs}
+						>
 							{__('Update')}
 						</button>
 					</div>

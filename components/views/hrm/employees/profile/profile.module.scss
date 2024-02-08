@@ -1,0 +1,39 @@
+.employee-profile {
+	display: grid;
+	grid-template-columns: 0.7fr 3fr 1fr;
+	gap: 50px;
+	margin: 40px auto 200px auto;
+	.employee-profile-img {
+	}
+	.employee-main-info {
+	}
+	.employee-nameplate {
+		.basic-info {
+			display: flex;
+			flex-wrap: wrap;
+			align-items: center;
+			column-gap: 35px;
+			> span {
+				position: relative;
+				&:not(:last-child):after {
+					content: '';
+					position: absolute;
+					width: 6px;
+					height: 6px;
+					right: -20px;
+					background: #bbbfc3;
+					top: 50%;
+					transform: translateY(-50%);
+					border-radius: 50%;
+				}
+			}
+		}
+	}
+	.employee-status {
+	}
+
+	@media (max-width: 1199px) {
+		display: flex;
+		flex-wrap: wrap;
+	}
+}

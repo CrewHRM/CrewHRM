@@ -32,6 +32,11 @@ class User {
 	const ROLE_EMPLOYEE = 'crewhrm-employee';
 
 	/**
+	 * User meta key to set crew flag
+	 */
+	const META_KEY_CREW_FLAG = 'crewhrm_user_role';
+
+	/**
 	 * Validate if a user has required role
 	 *
 	 * @param int          $user_id The user ID to validate rule
@@ -209,34 +214,73 @@ class User {
 	 */
 	public static function getUsers( array $args ) {
 
-		$limit  = 30;
+		$limit  = 1;
 		$page   = Utilities::getInt( $args['page'] ?? 1, 1 ); 
 		$offset = ( $page - 1 ) * $limit;
 
-		$filters = array(
-			'role'   => $args['role'],
-			'number' => $limit,
-			'offset' => $offset,
-			'search' => ! empty( $args['search'] ) ? $args['search'] : null,
-			'echo'   => false,
+		global $wpdb;
+
+		$where_clause = '';
+		if ( ! empty( $args['search'] ) ) {
+			$where_clause .= $wpdb->prepare( " AND _user.display_name LIKE %s", "%{$wpdb->esc_like( $args['search'] )}%" );
+		}
+
+		$users = $wpdb->get_results(
+			$wpdb->prepare(
+				"SELECT 
+					_user.ID AS user_id,
+					_user.display_name,
+					_user.user_email
+				FROM 
+					{$wpdb->users} _user 
+					INNER JOIN {$wpdb->usermeta} _meta ON _user.ID=_meta.user_id AND _meta.meta_key=%s AND _meta.meta_value=%s
+				WHERE 
+					1=1 
+					{$where_clause}
+				ORDER BY 
+					_user.user_registered DESC
+				LIMIT 
+					%d 
+				OFFSET 
+					%d",
+				self::META_KEY_CREW_FLAG,
+				$args['role'],
+				$limit,
+				$offset
+			),
+			ARRAY_A
 		);
 
-		$users       = get_users( $filters );
-		$total_count = ( new \WP_User_Query( array_merge( $filters, array( 'count_total' => true, 'number' => null ) ) ) )->get_total();
-		$page_count  = ceil( $total_count / $limit );
+		$total_count = ( int ) $wpdb->get_var(
+			$wpdb->prepare(
+				"SELECT 
+					COUNT(_user.ID)
+				FROM 
+					{$wpdb->users} _user 
+					INNER JOIN {$wpdb->usermeta} _meta ON _user.ID=_meta.user_id AND _meta.meta_key=%s AND _meta.meta_value=%s
+				WHERE 
+					1=1 
+					{$where_clause}",
+				self::META_KEY_CREW_FLAG,
+				$args['role']
+			)
+		);
+
+		$page_count = ceil( $total_count / $limit );
 
 		// Loop through users and assign meta data
 		$users_array = array();
 		foreach ( $users as $user ) {
 
-			$meta = self::getMeta( $user->ID );
+			$meta = self::getMeta( $user['user_id'] );
 
 			$users_array[] = array(
-				'user_id'         => $user->ID,
-				'avatar_url'      => get_avatar_url( $user->ID ),
-				'display_name'    => $user->display_name,
+				'user_id'         => $user['user_id'],
+				'avatar_url'      => get_avatar_url( $user['user_id'] ),
+				'email'           => $user['user_email'],
+				'display_name'    => $user['display_name'],
 				'designation'     => $meta['designation'] ?? null,
-				'department'      => ! empty( $meta['department_id'] ) ? Department::getDepartmentNameById( $meta['department_id'] ) : null,
+				'department_name' => ! empty( $meta['department_id'] ) ? Department::getDepartmentNameById( $meta['department_id'] ) : null,
 				'employment_type' => $meta['employment_type'] ?? null,
 				'hire_date'       => $meta['hire_date'] ?? null,
 				'address'         => ! empty( $meta['address_id'] ) ? Address::getAddressById( $meta['address_id'] ) : null
@@ -282,6 +326,7 @@ class User {
 			// Set the role for newly created user
 			if ( ! empty( $data['role'] ) ) {
 				( new \WP_User( $user_id) )->set_role( $data['role'] );
+				update_user_meta( $user_id, self::META_KEY_CREW_FLAG, $data['role'] );
 			}
 		}
 		
