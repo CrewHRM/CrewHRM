@@ -164,6 +164,7 @@ class Dispatcher {
 		}
 
 		// Then pass to method with spread as the parameter count is variable.
+		$args = array_values( $args );
 		$class::$method( ...$args );
 	}
 }

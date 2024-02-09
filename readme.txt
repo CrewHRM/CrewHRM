@@ -3,9 +3,9 @@ Contributors: jayedul, badsha_eee, risatrajin
 Donate Link: https://getcrewhrm.com/pricing/
 Tags: Recruitment, job manager, job listing, job board, job management, job lists, job list, job, jobs, company, hiring, employment, employer, employees, candidate, freelance, internship, job listings, positions, board, application, hiring, listing, recruiting
 Requires at least: 5.3
-Tested up to: 6.4.2
+Tested up to: 6.4.3
 Requires PHP: 7.4
-Stable tag: 1.0.6
+Stable tag: 1.0.7
 License: GPLv3
 License URI: https://opensource.org/licenses/GPL-3.0
 
@@ -121,6 +121,11 @@ We have posted walkthrough videos on the [Crew HRM YouTube Channel](https://www.
 You can email us using the contact form on our website to share feature ideas with helpful screenshots, sketches, etc.
 
 == Changelog ==
+
+= v1.0.7 -> Feb 09, 2024 =
+
+* Fix: Invalid escaping
+* Fix: Failed ajax requests
 
 = v1.0.6 -> Jan 25, 2024 =
 
