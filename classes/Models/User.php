@@ -174,6 +174,7 @@ class User {
 			'display_name'     => $user->display_name,
 			'avatar_url'       => get_avatar_url( $user_id ),
 			'weekly_schedules' => WeeklySchedule::getSchedule( $user_id ),
+			'department_name'  => ! empty( $meta['department_id'] ) ? Department::getDepartmentNameById( $meta['department_id'] ) : null,
 			...$meta,
 			...$address,
 		);
@@ -391,11 +392,13 @@ class User {
 				'educational_info'           => $filtered_educations,
 				'address_id'                 => $address_id,
 				'experience_level'           => $data['experience_level'] ?? null,
+
 				'designation'                => $data['designation'] ?? null,
 				'department_id'              => $data['department_id'] ?? null,
+				'annual_gross_salary'        => $data['annual_gross_salary'] ?? 0,
+
 				'attendance_type'            => $data['attendance_type'] ?? null,
 				'salary_currency'            => $data['salary_currency'] ?? null,
-				'annual_gross_salary'        => $data['annual_gross_salary'] ?? 0,
 				'employment_type'            => $data['employment_type'] ?? null,
 				'is_provisional'             => $data['is_provisional'] ?? null,
 				'weekly_working_hour'        => $data['weekly_working_hour'] ?? null,
