@@ -9,6 +9,7 @@ namespace CrewHRM\Models;
 
 use CrewHRM\Helpers\_Array;
 use CrewHRM\Helpers\_String;
+use CrewHRM\Helpers\Utilities;
 
 /**
  * Address class
@@ -91,6 +92,11 @@ class Address {
 			),
 			ARRAY_A
 		);
+
+		// Assign time info
+		if ( ! empty( $address ) && ! empty( $address['timezone'] ) ) {
+			$address = array_merge( $address, Utilities::getTimezoneInfo( $address['timezone'] ) );
+		}
 
 		return ! empty( $address ) ? $address : $fallback;
 	}

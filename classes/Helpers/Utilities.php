@@ -222,4 +222,29 @@ class Utilities {
 			admin_url( 'admin.php' )
 		);
 	}
+
+	/**
+	 * Get timezone based timing data
+	 *
+	 * @param string $zone
+	 * @param int    $timestamp
+	 * @return void
+	 */
+	public static function getTimezoneInfo( $zone ) {
+
+		$timezone          = new \DateTimeZone( $zone );
+		$offset_in_seconds = $timezone->getOffset( new \DateTime() );
+
+		// Convert the offset to hours and minutes
+		$offset_hours    = sprintf("%02d",floor(abs($offset_in_seconds) / 3600));
+		$offset_minutes  = sprintf("%02d",floor((abs($offset_in_seconds) % 3600) / 60));
+		$offset_sign     = ($offset_in_seconds < 0 ? '-' : '+');
+
+		$date_time = new \DateTime( time() + $offset_in_seconds, $timezone );
+
+		return array(
+			'timezone_offset' => "{$offset_sign}{$offset_hours}:{$offset_minutes}",
+			'formatted_time'  => $date_time->format('h:i a')
+		);
+	}
 }

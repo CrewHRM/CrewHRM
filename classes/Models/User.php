@@ -178,7 +178,6 @@ class User {
 			...$address,
 		);
 	}
-
 	
 	/**
 	 * Get unique username
@@ -299,14 +298,14 @@ class User {
 	}
 
 	/**
-	 * Create or update a user
+	 * Create or update an employee profile
 	 *
 	 * @param array $data User data array
 	 * @param array $avatar_image
 	 *
 	 * @return int
 	 */
-	public static function createOrUpdate( $data, $avatar_image ) {
+	public static function createOrUpdateEmployee( $data, $avatar_image ) {
 
 		$user_id   = ! empty( $data['user_id'] ) ? $data['user_id'] : null;
 		$full_name = $data['first_name'] . ' ' . $data['last_name'];
@@ -379,6 +378,7 @@ class User {
 		self::updateMeta(
 			$user_id,
 			array(
+				'employee_id'                => $data['employee_id'], // Mandatory. Duplicate checking is supposed to be done in the earlier callstack.
 				'user_phone'                 => $data['user_phone'] ?? null,
 				'birth_date'                 => $data['birth_date'] ?? null,
 				'gender'                     => $data['gender'] ?? null,
@@ -393,7 +393,7 @@ class User {
 				'experience_level'           => $data['experience_level'] ?? null,
 				'designation'                => $data['designation'] ?? null,
 				'department_id'              => $data['department_id'] ?? null,
-				'attendance_types'           => $data['attendance_types'] ?? array(),
+				'attendance_type'            => $data['attendance_type'] ?? null,
 				'salary_currency'            => $data['salary_currency'] ?? null,
 				'annual_gross_salary'        => $data['annual_gross_salary'] ?? 0,
 				'employment_type'            => $data['employment_type'] ?? null,
@@ -411,6 +411,44 @@ class User {
 		);
 		
 		return $user_id;
+	}
+
+	/**
+	 * Get unique ID to set as employee ID
+	 *
+	 * @return string
+	 */
+	public static function getUniqueEmployeeId() {
+		
+		global $wpdb;
+		$count = ( int ) $wpdb->get_var(
+			"SELECT COUNT(meta_id) FROM {$wpdb->employee_meta} WHERE meta_key='employee_id'"
+		);
+
+		$id     = $count + 1;
+		$new_id = self::padStringEmployeeId( $id );
+
+		// Get the slug until it's not avaialble in database
+		while ( ! empty( self::getUserIdByEmployeeId( $new_id ) ) ) {
+			$id++;
+			$new_id = self::padStringEmployeeId( $id );
+		}
+
+		return $new_id;
+	}
+
+	/**
+	 * Get user ID by employee ID
+	 *
+	 * @param string $employee_id
+	 * @return int|null
+	 */
+	public static function getUserIdByEmployeeId( $employee_id ) {
+		$args = array( 
+			'meta_key' => 'employee_id', 
+			'meta_value' => $employee_id 
+		);
+		return Field::employee_meta()->getField( $args, 'object_id' );
 	}
 
 	/**
@@ -505,7 +543,21 @@ class User {
 			$meta[ $_key ] = get_user_meta( $user_id, $_key, true );
 		}
 
+		if ( ! empty( $meta['employee_id'] ) ) {
+			$meta['employee_id'] = self::padStringEmployeeId( $meta['employee_id'] );
+		}
+
 		return $key ? ( $meta[ $key ] ?? $fallback ) : $meta;
+	}
+
+	/**
+	 * Prepare employee ID
+	 *
+	 * @param string|int $id
+	 * @return string
+	 */
+	public static function padStringEmployeeId( $id ) {
+		return is_numeric( $id ) ? str_pad( $id, 3, "0", STR_PAD_LEFT ) : $id;
 	}
 	
 	/**

@@ -1,9 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 
 import { DropDown } from 'crewhrm-materials/dropdown/dropdown';
-import { __, data_pointer } from 'crewhrm-materials/helpers.jsx';
+import { __, data_pointer, formatDate, getFlag, isEmpty } from 'crewhrm-materials/helpers.jsx';
 import { StickyBar } from 'crewhrm-materials/sticky-bar.jsx';
+import { request } from 'crewhrm-materials/request.jsx';
+import { InitState } from 'crewhrm-materials/init-state.jsx';
 
 import ProfileCss from './profile.module.scss';
 
@@ -12,40 +14,89 @@ export function EmployeeProfileSingle() {
 	const [status, setStatus] = useState(['Active', 'Inactive']);
 	const [selectedStatus] = useState('Active');
 
-	return (
-		<>
-			<StickyBar title={__('People')} canBack={true}>
-				<div className={'d-flex align-items-center column-gap-30'.classNames()}>
-					<div className={'d-inline-block'.classNames()}>
-						<a
-							href={`${window[data_pointer].admin_url}=crewhrm-employee#/employee/invite/`}
-							className={'button button-primary'.classNames()}
-						>
-							{__('Add New Employee')}
-						</a>
-					</div>
+	const [state, setState] = useState({
+		fetching: false,
+		employee: {},
+		error_message: null
+	});
+
+	const getUser=()=>{
+		setState({
+			...state,
+			fetching: true
+		});
+
+		request('fetchEmployee', {user_id}, resp=>{
+			const {
+				success,
+				data: {
+					employee={},
+					message = __('Something went wrong!')
+				}
+			} = resp;
+
+			setState({
+				...state,
+				employee,
+				fetching: false,
+				error_message: success ? null : message
+			})
+		});
+	}
+
+	useEffect(()=>{
+		getUser();
+	}, [user_id]);
+
+	const {employee={}} = state;
+	const meta = [
+		(employee.designation ? <span key="a">{employee.designation}</span> : null),
+		(employee.department_name ? <span key="b">{employee.department_name}</span> : null),
+		(employee.unix_timestamp ? <span key="c">{__('Time:')} {formatDate(employee.unix_timestamp, window[data_pointer].time_format)} / UTC {employee.timezone_offset}</span> : null )
+	].filter(m=>m);
+
+	return <>
+		<StickyBar title={__('People')} canBack={true}>
+			<div className={'d-flex align-items-center column-gap-30'.classNames()}>
+				<div className={'d-inline-block'.classNames()}>
+					<a
+						href={`${window[data_pointer].admin_url}=crewhrm-employee#/employee/invite/`}
+						className={'button button-primary'.classNames()}
+					>
+						{__('Add New Employee')}
+					</a>
 				</div>
-			</StickyBar>
+			</div>
+		</StickyBar>
+
+		{
+			(state.fetching || state.error_message) ? 
+			<InitState 
+				error_message={state.error_message} 
+				fetching={state.fetching}
+			/> 
+			: 
 			<div className={'container'.classNames()}>
 				<div className={'employee-profile'.classNames(ProfileCss)}>
 					<div className={'employee-profile-img'.classNames(ProfileCss)}>
-						<img src="https://picsum.photos/125/150" alt="" />
+						<img src={employee.avatar_url} style={{width: '100%', height: 'auto'}}/>
 					</div>
 					<div className={'employee-main-info'.classNames()}>
 						<div className={'margin-bottom-30'.classNames() + 'employee-nameplate'.classNames(ProfileCss)}>
 							<div className={'color-text font-size-28 font-weight-600 margin-bottom-10'.classNames()}>
-								Kathryn Murphy <span> 🇺🇸</span>
+								{employee.display_name} {employee.country_code ? <span>{getFlag(employee.country_code)}</span> : null}
 							</div>
-							<div
-								className={
-									'd-flex column-gap-15 color-text-light font-size-13 line-height-24 margin-bottom-10'.classNames() +
-									'basic-info'.classNames(ProfileCss)
-								}
-							>
-								<span>Lead Product Designer</span>
-								<span>Design</span>
-								<span>Time:11:34 AM/ UTC-11:00</span>
-							</div>
+							{
+								isEmpty(meta) ? null :
+								<div
+									className={
+										'd-flex column-gap-15 color-text-light font-size-13 line-height-24 margin-bottom-10'.classNames() +
+										'basic-info'.classNames(ProfileCss)
+									}
+								>
+									{meta}
+								</div>
+							}
 						</div>
 						<div className={'crew-hrm-border padding-30'.classNames() + 'personal-info'.classNames()}>
 							<div
@@ -163,7 +214,7 @@ export function EmployeeProfileSingle() {
 					</div>
 					<div
 						className={
-							'd-flex flex-direction-column row-gap-20'.classNames() + 'employee-status'.classNames()
+							'd-flex flex-direction-column row-gap-20'.classNames()
 						}
 					>
 						<div className={''.classNames()}>
@@ -204,6 +255,6 @@ export function EmployeeProfileSingle() {
 					</div>
 				</div>
 			</div>
-		</>
-	);
+		}
+	</>
 }

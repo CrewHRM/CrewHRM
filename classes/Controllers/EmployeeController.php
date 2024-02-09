@@ -45,19 +45,36 @@ class EmployeeController {
 			wp_send_json_error( array( 'message' => esc_html__( 'The email is associated with another account already', 'crewhrm' ) ) );
 		}
 
+		// Show warning for duplicate employee ID
+		if ( ! empty( $employee['employee_id'] ) ) {
+			
+			// Make the employee consisten using leading zero
+			if ( is_numeric( $employee['employee_id'] ) ) {
+				$employee['employee_id'] = User::padStringEmployeeId( $employee['employee_id'] );
+			}
+
+			$employee_user_id = User::getUserIdByEmployeeId( $employee['employee_id'] );
+			if ( ! empty( $employee_user_id ) && $employee_user_id != ( $employee['user_id'] ?? null ) ) {
+				wp_send_json_error( array( 'message' => __( 'The employee ID exists', 'crewhrm' ) ) );
+			}
+			
+		} else {
+			$employee['employee_id'] = User::getUniqueEmployeeId();
+		}
+		
 		// Create or update the user now
 		$employee['role'] = User::ROLE_EMPLOYEE;
-		$user_id          =  User::createOrUpdate( $employee, $avatar_image );
+		$user_id          = User::createOrUpdateEmployee( $employee, $avatar_image );
 
 		// If fails
 		if ( empty( $user_id ) || ! is_numeric( $user_id ) ) {
 			wp_send_json_error( array( 'message' => esc_html__( 'Something went wrong!', 'crewhrm' ) ) );
 		}
 		
-		wp_send_json_success( 
+		wp_send_json_success(
 			array( 
-				'user_id' => $user_id, 
-				'employee' => User::getUserInfo( $user_id ) 
+				'user_id'  => $user_id, 
+				'employee' => User::getUserInfo( $user_id ),
 			) 
 		);
 	}

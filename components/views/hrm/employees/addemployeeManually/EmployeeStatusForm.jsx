@@ -35,7 +35,7 @@ export default function EmployeeStatusForm() {
 							<span className={'color-error'.classNames()}>*</span>
 						</div>
 						<TextField 
-							placeholder={__('005')} 
+							placeholder={__('001')} 
 							value={values.employee_id || ''} 
 							onChange={(v) => onChange('employee_id', v)} />
 					</div>
@@ -102,9 +102,9 @@ export default function EmployeeStatusForm() {
 						</div>
 						<TagField
 							theme="button-control"
-							behavior="checkbox"
-							value={values.attendance_types || []}
-							onChange={(types) => onChange('attendance_types', types)}
+							behavior="radio"
+							value={values.attendance_type}
+							onChange={(types) => onChange('attendance_type', types)}
 							options={Object.keys(attendance_types).map((a) => {
 								return {
 									id: a,

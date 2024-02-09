@@ -176,8 +176,8 @@ class Scripts {
 
 		?>
 		<script>
-			window.<?php echo esc_html( $pointer ); ?> = JSON.parse("<?php echo esc_attr( wp_json_encode( $data ) ); ?>".replace(/&quot;/g, '"').replace(/&amp;/g, '&'));
-			window.<?php echo esc_html( $pointer ); ?>pro = window.<?php echo esc_html( $pointer ); ?>;
+			window.<?php echo $pointer; ?> = <?php echo wp_json_encode( $data ); ?>;
+			window.<?php echo $pointer; ?>pro = window.<?php echo $pointer; ?>;
 		</script>
 		<?php
 	}
