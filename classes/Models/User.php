@@ -162,6 +162,9 @@ class User {
 		// Get employee meta
 		$meta = self::getMeta( $user_id );
 
+		// Get employment data
+		$employment = Employment::getLatestEmployment( $user_id );
+
 		// Get address
 		$address = ! empty( $meta['address_id'] ) ? Address::getAddressById( $meta['address_id'], array() ) : array();
 
@@ -173,11 +176,32 @@ class User {
 			'user_email'       => $user->user_email,
 			'display_name'     => $user->display_name,
 			'avatar_url'       => get_avatar_url( $user_id ),
-			'weekly_schedules' => WeeklySchedule::getSchedule( $user_id ),
-			'department_name'  => ! empty( $meta['department_id'] ) ? Department::getDepartmentNameById( $meta['department_id'] ) : null,
+			'weekly_schedules' => $employment ? WeeklySchedule::getSchedule( $employment['employment_id'] ) : null,
+			'department_name'  => $employment ? Department::getDepartmentNameById( $employment['department_id'] ) : null,
+			'reporting_person' => ! $employment ? null : array(
+				'avatar_url'    => get_avatar_url( $employment['reporting_person_user_id'] ?? 0 ),
+				'distplay_name' => self::getDisplayName( $employment['reporting_person_user_id'] ?? 0 ),
+			),
+			'employments' => Employment::getEmployments( $user_id ),
 			...$meta,
+			...($employment ?? array()),
 			...$address,
 		);
+	}
+
+	/**
+	 * Get display name of a user
+	 *
+	 * @param int $user_id
+	 * @return string
+	 */
+	public static function getDisplayName( $user_id ) {
+		$args = array( 
+			'ID' => $user_id
+		);
+
+		global $wpdb;
+		return ( new Field( $wpdb->users ) )->getField( $args, 'display_name' );
 	}
 	
 	/**
@@ -345,9 +369,12 @@ class User {
 			self::setProfilePic( $user_id, $avatar_image );
 		}
 
+		// Update employment data
+		$employment_id = Employment::createUpdate( $user_id, $data, true );
+		
 		// Set schedule
 		if ( ! empty( $data['weekly_schedules'] ) ) {
-			WeeklySchedule::updateSchedule( $user_id, $data['weekly_schedules'] );
+			WeeklySchedule::updateSchedule( $employment_id, $data['weekly_schedules'] );
 		}
 
 		// Create or update address
@@ -374,7 +401,7 @@ class User {
 				$filtered_educations[ $id ] = $_info;
 			}
 		}
-		
+
 		// Update meta data that can't be added in user table or anything native by WP
 		self::updateMeta(
 			$user_id,
@@ -392,20 +419,6 @@ class User {
 				'educational_info'           => $filtered_educations,
 				'address_id'                 => $address_id,
 				'experience_level'           => $data['experience_level'] ?? null,
-
-				'designation'                => $data['designation'] ?? null,
-				'department_id'              => $data['department_id'] ?? null,
-				'annual_gross_salary'        => $data['annual_gross_salary'] ?? 0,
-
-				'attendance_type'            => $data['attendance_type'] ?? null,
-				'salary_currency'            => $data['salary_currency'] ?? null,
-				'employment_type'            => $data['employment_type'] ?? null,
-				'is_provisional'             => $data['is_provisional'] ?? null,
-				'weekly_working_hour'        => $data['weekly_working_hour'] ?? null,
-				'use_custom_weekly_schedule' => $data['use_custom_weekly_schedule'] ?? null,
-				'contract_start_date'        => $data['contract_start_date'] ?? null,
-				'contract_end_date'          => $data['contract_end_date'] ?? null,
-				'probation_end_date'         => $data['probation_end_date'] ?? null,
 				'employee_benefits'          => $data['employee_benefits'] ?? ( object ) array(),
 				'employee_leaves'            => $data['employee_leaves'] ?? ( object ) array(),
 				...$emergency,
@@ -413,6 +426,10 @@ class User {
 			)
 		);
 		
+		/**
+		 * If not custom weekly schedule, delete the schedule from table, later it will use from settings
+		 */
+
 		return $user_id;
 	}
 

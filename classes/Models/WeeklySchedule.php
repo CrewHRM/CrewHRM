@@ -14,13 +14,14 @@ class WeeklySchedule {
 	/**
 	 * Update schedule for a user or for global settings
 	 *
-	 * @param int $user_id
+	 * @param int $employment_id
 	 * @param array $schedules
 	 * @return void
 	 */
-	public static function updateSchedule( $user_id, $schedules ) {
+	public static function updateSchedule( $employment_id, $schedules ) {
+
 		// Delete removed slots first
-		self::deleteRemovedSlots( $user_id, $schedules );
+		self::deleteRemovedSlots( $employment_id, $schedules );
 
 		// Loop through per day
 		global $wpdb;
@@ -31,11 +32,11 @@ class WeeklySchedule {
 			// Loop through slots in a single day
 			foreach ( $slots as $schedule_id => $slot ) {
 				$row = array(
-					'week_day'    => $day,
-					'employee_id' => $user_id,
-					'time_starts' => $slot['start'],
-					'time_ends'   => $slot['end'],
-					'enable'      => $schedule['enable']
+					'week_day'      => $day,
+					'employment_id' => $employment_id,
+					'time_starts'   => $slot['start'],
+					'time_ends'     => $slot['end'],
+					'enable'        => $schedule['enable']
 				);
 
 				// Update existing one by the schedule ID
@@ -59,11 +60,11 @@ class WeeklySchedule {
 	/**
 	 * Delete removed slots
 	 *
-	 * @param int $user_id
+	 * @param int $employment_id
 	 * @param array $schedules
 	 * @return void
 	 */
-	private static function deleteRemovedSlots( $user_id, $schedules ) {
+	private static function deleteRemovedSlots( $employment_id, $schedules ) {
 		
 		global $wpdb;
 		
@@ -81,7 +82,7 @@ class WeeklySchedule {
 		}
 
 		// If user ID not passed, it means it is global settings
-		$where_clause = $user_id === null ? " employee_id IS NULL" : $wpdb->prepare( " employee_id=%d", $user_id );
+		$where_clause = $employment_id === null ? " employment_id IS NULL" : $wpdb->prepare( " employment_id=%d", $employment_id );
 
 		// Delete all slots except remaings
 		if ( ! empty( $remaining_ids ) ) {
@@ -97,14 +98,14 @@ class WeeklySchedule {
 	/**
 	 * Get weekly schedule
 	 *
-	 * @param int $user_id
+	 * @param int $employment_id
 	 * @return array
 	 */
-	public static function getSchedule( $user_id ) {
+	public static function getSchedule( $employment_id ) {
 		
 		global $wpdb;
 
-		$where_clause = $user_id === null ? " employee_id IS NULL" : $wpdb->prepare( " employee_id=%d", $user_id );
+		$where_clause = $employment_id === null ? " employment_id IS NULL" : $wpdb->prepare( " employment_id=%d", $employment_id );
 
 		$slots = $wpdb->get_results(
 			"SELECT * FROM {$wpdb->crewhrm_weekly_schedules} WHERE {$where_clause}",

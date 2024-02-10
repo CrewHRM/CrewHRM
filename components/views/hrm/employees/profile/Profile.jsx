@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 
 import { DropDown } from 'crewhrm-materials/dropdown/dropdown';
@@ -6,18 +6,22 @@ import { __, data_pointer, formatDate, getAddress, getFlag, isEmpty } from 'crew
 import { StickyBar } from 'crewhrm-materials/sticky-bar.jsx';
 import { request } from 'crewhrm-materials/request.jsx';
 import { InitState } from 'crewhrm-materials/init-state.jsx';
+import { attendance_types, employment_statuses } from 'crewhrm-materials/data';
+import { ContextToast } from 'crewhrm-materials/toast/toast.jsx';
+import { LoadingIcon } from 'crewhrm-materials/loading-icon/loading-icon.jsx';
 
 import ProfileCss from './profile.module.scss';
 
 export function EmployeeProfileSingle() {
+	
 	const {user_id} = useParams();
-	const [status, setStatus] = useState(['Active', 'Inactive']);
-	const [selectedStatus] = useState('Active');
+	const {ajaxToast} = useContext(ContextToast);
 
 	const [state, setState] = useState({
 		fetching: false,
 		employee: {},
-		error_message: null
+		error_message: null,
+		changing_status: false,
 	});
 
 	const getUser=()=>{
@@ -41,6 +45,34 @@ export function EmployeeProfileSingle() {
 				fetching: false,
 				error_message: success ? null : message
 			})
+		});
+	}
+
+	const changeEmploymentStatus=(status)=>{
+
+		if ( ! window.confirm(__('Sure to change status?')) ) {
+			return;
+		}
+
+		setState({
+			...state,
+			changing_status: true
+		});
+
+		request('changeEmploymentStatus', {status, user_id}, resp=>{
+
+			ajaxToast(resp);
+
+			const {employee={}} = state;
+
+			setState({
+				...state,
+				changing_status: false,
+				employee: {
+					...employee,
+					employment_status: resp.success ? status : employee.employment_status
+				}
+			});
 		});
 	}
 
@@ -81,7 +113,7 @@ export function EmployeeProfileSingle() {
 					<div className={'employee-profile-img'.classNames(ProfileCss)}>
 						<img src={employee.avatar_url} style={{width: '100%', height: 'auto'}}/>
 					</div>
-					<div className={'employee-main-info'.classNames()}>
+					<div>
 						<div className={'margin-bottom-30'.classNames() + 'employee-nameplate'.classNames(ProfileCss)}>
 							<div className={'color-text font-size-28 font-weight-600 margin-bottom-10'.classNames()}>
 								{employee.display_name} {employee.country_code ? <span>{getFlag(employee.country_code)}</span> : null}
@@ -207,7 +239,7 @@ export function EmployeeProfileSingle() {
 								
 								<>
 									<span className={'color-text-light font-size-15'.classNames()}>
-										Address
+										{__('Address')}
 									</span>
 									<span
 										className={'color-text font-size-15 line-height-23'.classNames()}
@@ -308,89 +340,85 @@ export function EmployeeProfileSingle() {
 									<i className={'ch-icon ch-icon-edit color-text-light font-size-20'.classNames()} />
 								</div>
 							</div>
-							<div className={'table-like-div'.classNames(ProfileCss)}>
-								<>
-									<span className={'color-text-light font-size-15'.classNames()}>
-										{__('Job Title')}
-									</span>
-									<span
-										className={'color-text font-size-15 line-height-23'.classNames()}
-									>
-										Esther
-									</span>
-								</>
-								
-								<span className={'color-text-light font-size-15'.classNames()}>
-									Last name
-								</span>
-								<span
-									className={'color-text font-size-15 line-height-23'.classNames()}
-								>
-									Howard
-								</span>
-								<span className={'color-text-light font-size-15'.classNames()}>
-									Preferred name
-								</span>
-								<span
-									className={'color-text font-size-15 line-height-23'.classNames()}
-								>
-									Howard
-								</span>
-								<span className={'color-text-light font-size-15'.classNames()}>
-									Email address
-								</span>
-								<span
-									className={'color-text font-size-15 line-height-23'.classNames()}
-								>
-									jessica.hanson@example.com
-								</span>
-							</div>
-							<div className={'padding-vertical-20'.classNames()}>
-								<hr />
-							</div>
-							<div className={'table-like-div'.classNames(ProfileCss)}>
-								<span className={'color-text-light font-size-15'.classNames()}>
-									Phone number
-								</span>
-								<span
-									className={'color-text font-size-15 line-height-23'.classNames()}
-								>
-									(205) 555-0100
-								</span>
-								<span className={'color-text-light font-size-15'.classNames()}>
-									Date of birth
-								</span>
-								<span
-									className={'color-text font-size-15 line-height-23'.classNames()}
-								>
-									11/7/1980
-								</span>
-								<span className={'color-text-light font-size-15'.classNames()}>
-									Bio
-								</span>
-								<span
-									className={'color-text font-size-15 line-height-23'.classNames()}
-								>
-									Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit
-									laboriosam, nisi ut al
-								</span>
-								<span className={'color-text-light font-size-15'.classNames()}>
-									Address
-								</span>
-								<span
-									className={'color-text font-size-15 line-height-23'.classNames()}
-								>
-									4140 Parker Rd. Allentown, New Mexico 31134
-								</span>
-								<span className={'color-text-light font-size-15'.classNames()}>
-									Time Zone
-								</span>
-								<span
-									className={'color-text font-size-15 line-height-23'.classNames()}
-								>
-									UTC-11:00 (11:34 AM)
-								</span>
-							</div>
+							{
+								(employee?.employments || []).map((employment, index)=>{
+
+									return <div key={employment.employment_id}>
+										<div className={'table-like-div'.classNames(ProfileCss)}>
+											<>
+												<span className={'color-text-light font-size-15'.classNames()}>
+													{__('Job Title')}
+												</span>
+												<span
+													className={'color-text font-size-15 line-height-23'.classNames()}
+												>
+													{employment.designation}
+												</span>
+											</>
+
+											<>
+												<span className={'color-text-light font-size-15'.classNames()}>
+													{__('Hire Date')}
+												</span>
+												<span
+													className={'color-text font-size-15 line-height-23'.classNames()}
+												>
+													{employment.hire_date}
+												</span>
+											</>
+											
+											<>
+												<span className={'color-text-light font-size-15'.classNames()}>
+													{__('Department')}
+												</span>
+												<span
+													className={'color-text font-size-15 line-height-23'.classNames()}
+												>
+													{employment.department_name}
+												</span>
+											</>
+											
+											{
+												! employment.reporting_person ? null :
+												<>
+													<span className={'color-text-light font-size-15'.classNames()}>
+														{__('Reporting to')}
+													</span>
+													<span
+														className={'d-flex align-items-center column-gap-5'.classNames()}
+													>
+														<img 
+															src={employment.reporting_person.avatar_url} 
+															style={{width: '24px', height: '24px', borderRadius: '50%'}}
+														/>
+
+														<span className={'color-text font-size-15 line-height-23'.classNames()}>
+															{employment.reporting_person.display_name}
+														</span>
+													</span>
+												</>
+											}
+											
+											<>
+												<span className={'color-text-light font-size-15'.classNames()}>
+													{__('Location')}
+												</span>
+												<span
+													className={'color-text font-size-15 line-height-23'.classNames()}
+												>
+													{attendance_types[employment.attendance_type]}
+												</span>
+											</>
+										</div>
+										{
+											index >= employee.employments.length -1 ? null :
+											 <div className={'padding-vertical-20'.classNames()}>
+												<hr />
+											</div>
+										}
+									</div>
+								})
+							}
 						</div>
 						<div
 							className={
@@ -476,24 +504,26 @@ export function EmployeeProfileSingle() {
 							'employee-status'.classNames(ProfileCss)
 						}
 					>
-						<div className={''.classNames()}>
+						<div>
 							<div
 								className={'color-text-light font-size-13 line-height-24 margin-bottom-10'.classNames()}
 							>
-								Employment Status
+								{__('Employment Status')} <LoadingIcon show={state.changing_status}/>
 							</div>
 							<DropDown
-								value={selectedStatus}
-								placeholder="Select"
-								onChange={(v) => {
-									setStatus(v);
-								}}
-								options={status.map((email) => {
-									return { id: email, label: email };
+								value={(employee.employments || [])[0]?.employment_status}
+								clearable={false}
+								onChange={changeEmploymentStatus}
+								disabled={state.changing_status}
+								options={Object.keys(employment_statuses).map((status) => {
+									return { 
+										id: status, 
+										label: employment_statuses[status] 
+									};
 								})}
 							/>
 						</div>
-						<div className={''.classNames()}>
+						<div>
 							<div className={'color-text-light font-size-13 line-height-24'.classNames()}>
 								Reporting person
 							</div>
@@ -503,7 +533,7 @@ export function EmployeeProfileSingle() {
 								<div className={'color-text-light font-size-13'.classNames()}>Head of design</div>
 							</div>
 						</div>
-						<div className={''.classNames()}>
+						<div>
 							<div className={'color-text-light font-size-13 line-height-24'.classNames()}>Contact</div>
 							<div
 								className={

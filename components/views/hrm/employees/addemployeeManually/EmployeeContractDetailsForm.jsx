@@ -109,8 +109,8 @@ export default function EmployeeContractDetailsForm() {
 											{__('Start date')}
 										</div>
 										<DateField 
-											value={values.contract_start_date} 
-											onChange={v=>onChange('contract_start_date', v)}/>
+											value={values.start_date} 
+											onChange={v=>onChange('start_date', v)}/>
 									</div>
 									<div className={'flex-1'.classNames()}>
 										<div
@@ -119,8 +119,8 @@ export default function EmployeeContractDetailsForm() {
 											{__('End date')}
 										</div>
 										<DateField 
-											value={values.contract_end_date} 
-											onChange={v=>onChange('contract_end_date', v)}/>
+											value={values.end_date} 
+											onChange={v=>onChange('end_date', v)}/>
 									</div>
 								</div>
 							}

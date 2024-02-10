@@ -240,11 +240,11 @@ class Utilities {
 		$offset_minutes  = sprintf("%02d",floor((abs($offset_in_seconds) % 3600) / 60));
 		$offset_sign     = ($offset_in_seconds < 0 ? '-' : '+');
 
-		$date_time = new \DateTime( time() + $offset_in_seconds, $timezone );
+		// $date_time = new \DateTime( time() + $offset_in_seconds, $timezone );
 
 		return array(
 			'timezone_offset' => "{$offset_sign}{$offset_hours}:{$offset_minutes}",
-			'formatted_time'  => $date_time->format('h:i a')
+			'formatted_time'  => '12:23(static)', // $date_time->format('h:i a')
 		);
 	}
 }

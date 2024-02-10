@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Feb 04, 2024 at 06:09 AM
+-- Generation Time: Feb 10, 2024 at 09:23 PM
 -- Server version: 8.0.16
 -- PHP Version: 8.1.23
 
@@ -129,6 +129,31 @@ CREATE TABLE IF NOT EXISTS `wp_crewhrm_employee_meta` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `wp_crewhrm_employments`
+--
+
+CREATE TABLE IF NOT EXISTS `wp_crewhrm_employments` (
+  `employment_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `employee_user_id` bigint(20) UNSIGNED NOT NULL,
+  `designation` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
+  `department_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `employment_type` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT 'full_time, part_time, contract, temporary or trainee',
+  `annual_gross_salary` bigint(20) UNSIGNED DEFAULT NULL,
+  `salary_currency` varchar(5) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
+  `reporting_person_user_id` bigint(20) UNSIGNED DEFAULT NULL COMMENT 'The user ID of reporting person. Ideally the reporting person is also an employee.',
+  `start_date` date DEFAULT NULL,
+  `end_date` date DEFAULT NULL,
+  `attendance_type` varchar(10) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT 'on_site, remote or hybrid',
+  `is_provisional` tinyint(1) UNSIGNED NOT NULL DEFAULT '0',
+  `probation_end_date` date DEFAULT NULL,
+  `weekly_working_hour` tinyint(3) UNSIGNED DEFAULT NULL,
+  `hire_date` date DEFAULT NULL,
+  PRIMARY KEY (`employment_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `wp_crewhrm_events`
 --
 
@@ -248,7 +273,7 @@ CREATE TABLE IF NOT EXISTS `wp_crewhrm_stages` (
 
 CREATE TABLE IF NOT EXISTS `wp_crewhrm_weekly_schedules` (
   `schedule_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
-  `employee_id` bigint(20) UNSIGNED DEFAULT NULL COMMENT 'Null means global setting, otherwise for specific employee',
+  `employment_id` bigint(20) UNSIGNED DEFAULT NULL COMMENT 'Null means global settings, otherwise for specific employment',
   `week_day` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci NOT NULL COMMENT 'monday, tuesday and so on',
   `time_starts` time NOT NULL,
   `time_ends` time NOT NULL,
