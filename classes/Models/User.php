@@ -73,7 +73,7 @@ class User {
 	 * @param array  $skip_ids Array of user IDs to exclude from the query
 	 * @return array
 	 */
-	public static function searchUser( string $keyword, array $skip_ids = array() ) {
+	public static function searchUser( string $keyword, string $role = '', array $skip_ids = array() ) {
 		if ( empty( $keyword ) ) {
 			return array();
 		}
@@ -84,24 +84,29 @@ class User {
 		$skip_ids   = _Array::getArray( $skip_ids, false, 0 );
 		$ids_places = _String::getPlaceHolders( $skip_ids );
 
+		$role_clause = ! empty( $role ) ? $wpdb->prepare( " AND _meta.meta_value=%s", $role ) : '';
+
 		$users = $wpdb->get_results(
 			$wpdb->prepare(
 				"SELECT 
-					ID AS user_id, 
-					display_name, 
-					user_email AS email 
+					_user.ID AS user_id, 
+					_user.display_name, 
+					_user.user_email AS email 
 				FROM 
-					{$wpdb->users} 
+					{$wpdb->users} _user
+					LEFT JOIN {$wpdb->usermeta} _meta ON _user.ID=_meta.user_id AND _meta.meta_key=%s
 				WHERE 
 					(
-						ID=%s 
-						OR user_login=%s 
-						OR user_email=%s 
-						OR display_name LIKE %s 
-						OR user_nicename LIKE %s
+						_user.ID=%s 
+						OR _user.user_login=%s 
+						OR _user.user_email=%s 
+						OR _user.display_name LIKE %s 
+						OR _user.user_nicename LIKE %s
 					) 
-					AND ID NOT IN ({$ids_places})
+					AND _user.ID NOT IN ({$ids_places})
+					{$role_clause}
 				LIMIT 50",
+				self::META_KEY_CREW_FLAG,
 				$keyword,
 				$keyword,
 				$keyword,

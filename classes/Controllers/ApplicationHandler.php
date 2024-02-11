@@ -259,9 +259,9 @@ class ApplicationHandler {
 	 * @param array  $exclude Exclude user id from search when already added in list suggestion
 	 * @return void
 	 */
-	public static function searchUser( string $keyword, array $exclude ) {
+	public static function searchUser( string $keyword, array $exclude = array(), string $role = '' ) {
 		$exclude = array_filter( $exclude, 'is_numeric' );
-		$users   = User::searchUser( $keyword, $exclude );
+		$users   = User::searchUser( $keyword, $role, $exclude );
 
 		wp_send_json_success( array( 'users' => $users ) );
 	}

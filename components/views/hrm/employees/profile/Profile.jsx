@@ -309,7 +309,7 @@ export function EmployeeProfileSingle() {
 									<div className={'d-flex align-items-center column-gap-10'.classNames()}>
 										<i className={'ch-icon ch-icon-users-2 font-size-20'.classNames()} />
 										<span className={'color-text font-size-17'.classNames()}>
-											{__('Direct reporters')}
+											{__('Subordinates')}
 										</span>
 									</div>
 								</div>

@@ -15,7 +15,6 @@ import EmployeeContractDetailsForm from './EmployeeContractDetailsForm.jsx';
 import AdditionalOptionForm from './AdditionalOptionForm.jsx';
 import EmployeeBenefitForm from './EmployeeBenefitForm.jsx';
 import { useNavigate, useParams } from 'react-router-dom';
-// import AddEmployeeCongrats from './AddEmployeeCongrats.jsx';
 
 import EmployeeIndexCss from '../index.module.scss';
 import CongratsAddEmployee from './CongratsAddEmployee.jsx';
@@ -67,12 +66,12 @@ export function AddEmployeeManually({departments={}}) {
 	});
 
 	const onChange=(name, value)=>{
+		
+		const {values={}} = state;
+
 		setState({
 			...state,
-			values: {
-				...state.values,
-				[name]: value
-			}
+			values: typeof name === 'object' ? {...values, ...name} : {...values, [name]: value}
 		});
 	}
 

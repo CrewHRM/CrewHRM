@@ -1,4 +1,5 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext } from 'react'
+import { useParams } from 'react-router-dom';
 
 import { __ } from 'crewhrm-materials/helpers.jsx';
 import { experience_levels } from 'crewhrm-materials/data.jsx';
@@ -6,8 +7,7 @@ import { TextField } from 'crewhrm-materials/text-field/text-field.jsx';
 import { DropDown } from 'crewhrm-materials/dropdown/dropdown.jsx';
 import { TagField } from 'crewhrm-materials/tag-field/tag-field.jsx';
 import { attendance_types } from 'crewhrm-materials/data.jsx';
-import SearchImg from 'crewhrm-materials/static/images/search-normal-add-8.svg';
-import Profileimg from 'crewhrm-materials/static/images/addemployee-user-profile-demo.svg';
+import { UserSearch } from 'crewhrm-materials/user-search.jsx';
 
 import {ContextAddEmlpoyeeManually} from './index.jsx';
 import AddEmployeeCss from './AddManually.module.scss';
@@ -15,9 +15,21 @@ import EmployeeIndexCss from '../index.module.scss';
 
 export default function EmployeeStatusForm() {
 	
-	const { onChange, values={}, departments=[] } = useContext(ContextAddEmlpoyeeManually);
-	const [textValue, setTextValue] = useState('');
+	const { 
+		onChange, 
+		values={}, 
+		departments=[] 
+	} = useContext(ContextAddEmlpoyeeManually);
 
+	const {user_id} = useParams();
+	
+	const addReportingPerson=(user)=>{
+		onChange({
+			reporting_person: user ? {avatar_url: user.avatar_url, display_name: user.display_name} : null,
+			reporting_person_user_id: user ? user.user_id : null
+		});
+	}
+	
 	return (
 		<>
 			<div
@@ -117,7 +129,7 @@ export default function EmployeeStatusForm() {
 			</div>
 			<div
 				className={
-					'margin-top-30 -font-size-24 color-text'.classNames() +
+					'margin-top-30 font-size-24 color-text'.classNames() +
 					'employeeinfo-form'.classNames(AddEmployeeCss)
 				}
 			>
@@ -138,32 +150,36 @@ export default function EmployeeStatusForm() {
 							>
 								{__('Reporting person name')}
 							</div>
-							<TextField
-								placeholder={__('ex. John doe')}
-								value={textValue}
-								onChange={(v) => setTextValue(v)}
-								image={SearchImg}
-								icon_position={'right'}
-							/>
+							<UserSearch 
+								onAdd={addReportingPerson}
+								role='crewhrm-employee'
+								exclude={[{user_id}]}
+								placeholder={__('ex. John doe')}/>
 						</div>
 					</div>
-					<div className={'d-flex flex-wrap-wrap column-gap-10 row-gap-10 margin-top-15'.classNames()}>
-						<div
-							className={
-								'd-flex align-items-center column-gap-5 padding-horizontal-10 padding-vertical-5'.classNames() +
-								'person-card width-max-content'.classNames(EmployeeIndexCss)
-							}
-						>
-							<img src={Profileimg} alt="" />
-							<span className={'color-text font-size-15 line-height-18 font-weight-500'.classNames()}>
-								{__('Floyd Miles')}
-							</span>
-							<i
-								className={'ch-icon ch-icon-times font-size-15 color-text-lighter cursor-pointer'.classNames()}
-								onClick={() => null}
-							></i>
+					{
+						!values.reporting_person ? null :
+						<div className={'d-flex flex-wrap-wrap column-gap-10 row-gap-10 margin-top-15'.classNames()}>
+							<div
+								className={
+									'd-flex align-items-center column-gap-5 padding-horizontal-10 padding-vertical-5'.classNames() +
+									'person-card width-max-content'.classNames(EmployeeIndexCss)
+								}
+							>
+								<img 
+									src={values.reporting_person.avatar_url} 
+									style={{width: '24px', height: '24px', borderRadius: '50%'}}
+								/>
+								<span className={'color-text font-size-15 line-height-18 font-weight-500'.classNames()}>
+									{values.reporting_person.display_name}
+								</span>
+								<i
+									className={'ch-icon ch-icon-times font-size-15 color-text-lighter cursor-pointer'.classNames()}
+									onClick={() => addReportingPerson(null)}
+								></i>
+							</div>
 						</div>
-					</div>
+					}
 				</div>
 			</div>
 		</>
