@@ -35,7 +35,7 @@ const emergency_relationships = {
 	other: __('Other')
 }
 
-const social_fields = {
+export const social_fields = {
 	linkedin: LinkedInIcon,
 	twitter: TwitterIcon,
 	facebook: FacebookIcon,

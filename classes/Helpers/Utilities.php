@@ -230,21 +230,30 @@ class Utilities {
 	 * @param int    $timestamp
 	 * @return void
 	 */
-	public static function getTimezoneInfo( $zone ) {
+	public static function getTimezoneInfo( $timezoneName ) {
 
-		$timezone          = new \DateTimeZone( $zone );
-		$offset_in_seconds = $timezone->getOffset( new \DateTime() );
-
-		// Convert the offset to hours and minutes
-		$offset_hours    = sprintf("%02d",floor(abs($offset_in_seconds) / 3600));
-		$offset_minutes  = sprintf("%02d",floor((abs($offset_in_seconds) % 3600) / 60));
-		$offset_sign     = ($offset_in_seconds < 0 ? '-' : '+');
-
-		// $date_time = new \DateTime( time() + $offset_in_seconds, $timezone );
-
-		return array(
-			'timezone_offset' => "{$offset_sign}{$offset_hours}:{$offset_minutes}",
-			'formatted_time'  => '12:23(static)', // $date_time->format('h:i a')
+		$data = array(
+			'timezone_offset' => null,
+			'time_now'        => null
 		);
+
+		try {
+			$timezone = new \DateTimeZone($timezoneName);
+			$now = new \DateTime('now', $timezone);
+
+			// Get offset in hours (positive for east of UTC, negative for west)
+			$offset = $timezone->getOffset($now) / 3600;
+
+			// Format time in 12-hour system with AM/PM
+			$timeString = $now->format('g:i A');
+
+			$data['timezone_offset'] = $offset;
+			$data['time_now']        = $timeString;
+			
+		} catch (\Exception $e) {
+			
+		}
+
+		return $data;
 	}
 }

@@ -9,8 +9,27 @@ import { InitState } from 'crewhrm-materials/init-state.jsx';
 import { attendance_types, employment_statuses } from 'crewhrm-materials/data';
 import { ContextToast } from 'crewhrm-materials/toast/toast.jsx';
 import { LoadingIcon } from 'crewhrm-materials/loading-icon/loading-icon.jsx';
+import { social_fields } from '../addemployeeManually/EmployeeInfoForm.jsx';
 
 import ProfileCss from './profile.module.scss';
+
+function convertOffsetToTimezone(offset) {
+    // Convert the offset to minutes
+    var totalMinutes = Math.abs(offset) * 60;
+    
+    // Calculate hours and minutes
+    var hours = Math.floor(totalMinutes / 60);
+    var minutes = totalMinutes % 60;
+    
+    // Determine the sign of the offset
+    var sign = offset >= 0 ? '+' : '-';
+    
+    // Format the result as "hh:mm"
+    var formattedHours = hours < 10 ? '0' + hours : hours;
+    var formattedMinutes = minutes < 10 ? '0' + minutes : minutes;
+    
+    return sign + formattedHours + ':' + formattedMinutes;
+}
 
 export function EmployeeProfileSingle() {
 	
@@ -84,8 +103,17 @@ export function EmployeeProfileSingle() {
 	const meta = [
 		(employee.designation ? <span key="a">{employee.designation}</span> : null),
 		(employee.department_name ? <span key="b">{employee.department_name}</span> : null),
-		(employee.unix_timestamp ? <span key="c">{__('Time:')} {formatDate(employee.unix_timestamp, window[data_pointer].time_format)} / UTC {employee.timezone_offset}</span> : null )
+		(<span key="c">{__('Time:')} {employee.time_now} / UTC{convertOffsetToTimezone(employee.timezone_offset)}</span>)
 	].filter(m=>m);
+
+	const socials = Object.keys(social_fields).map(k=>{
+		const key = `social_link_${k}`;
+		return isEmpty( employee[key] ) ? null : {
+			icon: social_fields[k],
+			url: employee[key],
+			key
+		}
+	}).filter(s=>s);
 
 	return <>
 		<StickyBar title={__('People')} canBack={true}>
@@ -111,7 +139,10 @@ export function EmployeeProfileSingle() {
 			<div className={'container'.classNames()}>
 				<div className={'employee-profile'.classNames(ProfileCss)}>
 					<div className={'employee-profile-img'.classNames(ProfileCss)}>
-						<img src={employee.avatar_url} style={{width: '100%', height: 'auto'}}/>
+						<img 
+							src={employee.avatar_url} 
+							style={{width: '100%', height: 'auto'}}
+						/>
 					</div>
 					<div>
 						<div className={'margin-bottom-30'.classNames() + 'employee-nameplate'.classNames(ProfileCss)}>
@@ -132,7 +163,7 @@ export function EmployeeProfileSingle() {
 						</div>
 						<div
 							className={
-								'crew-hrm-border padding-30'.classNames() + 'personal-info-area'.classNames(ProfileCss)
+								'crew-hrm-border padding-30'.classNames() + 'personal-info-area profile-segment'.classNames(ProfileCss)
 							}
 						>
 							<div
@@ -147,7 +178,7 @@ export function EmployeeProfileSingle() {
 								<div>
 									<Link 
 										to={`/employees/profile/${employee.user_id}/edit/`} 
-										className={'ch-icon ch-icon-edit color-text-light font-size-20'.classNames()}/>
+										className={'ch-icon ch-icon-edit color-text-light font-size-20'.classNames() + 'profile-segment-edit-icon'.classNames(ProfileCss)}/>
 								</div>
 							</div>
 							<div className={'table-like-div'.classNames(ProfileCss)}>
@@ -264,67 +295,50 @@ export function EmployeeProfileSingle() {
 							</div>
 						</div>
 
-						<div
-							className={
-								'crew-hrm-border padding-30 margin-top-30'.classNames() +
-								'report-area'.classNames(ProfileCss)
-							}
-						>
-							<div
-								className={'d-flex align-items-center column-gap-10 justify-content-space-between margin-bottom-30'.classNames()}
-							>
-								<div className={'d-flex align-items-center column-gap-10'.classNames()}>
-									<i className={'ch-icon ch-icon-users-2 font-size-20'.classNames()} />
-									<span className={'color-text font-size-17'.classNames()}>Direct report to you</span>
-								</div>
-								<div>
-									<i className={'ch-icon ch-icon-edit color-text-light font-size-20'.classNames()} />
-								</div>
-							</div>
+						{
+							isEmpty(employee.subordinates) ? null :
 							<div
 								className={
-									'd-flex align-items-center column-gap-10 justify-content-space-between'.classNames() +
-									'reported-persons-wrapper'.classNames(ProfileCss)
+									'crew-hrm-border padding-30 margin-top-30'.classNames() +
+									'report-area profile-segment'.classNames(ProfileCss)
 								}
 							>
-								<div className={'text-align-center'.classNames()}>
-									<img src="https://picsum.photos/108/150" alt="" />
-									<div>Jane Cooper</div>
+								<div
+									className={'d-flex align-items-center column-gap-10 justify-content-space-between margin-bottom-30'.classNames()}
+								>
+									<div className={'d-flex align-items-center column-gap-10'.classNames()}>
+										<i className={'ch-icon ch-icon-users-2 font-size-20'.classNames()} />
+										<span className={'color-text font-size-17'.classNames()}>
+											{__('Direct reporters')}
+										</span>
+									</div>
 								</div>
-								<div className={'text-align-center'.classNames()}>
-									<img src="https://picsum.photos/108/150" alt="" />
-									<div>Jane Cooper</div>
-								</div>
-								<div className={'text-align-center'.classNames()}>
-									<img src="https://picsum.photos/108/150" alt="" />
-									<div>Jane Cooper</div>
-								</div>
-								<div className={'text-align-center'.classNames()}>
-									<img src="https://picsum.photos/108/150" alt="" />
-									<div>Jane Cooper</div>
-								</div>
-								<div className={'text-align-center'.classNames()}>
-									<img src="https://picsum.photos/108/150" alt="" />
-									<div>Jane Cooper</div>
-								</div>
-								<div className={'text-align-center'.classNames()}>
-									<img src="https://picsum.photos/108/150" alt="" />
-									<div>Jane Cooper</div>
-								</div>
-								<div className={'text-align-center'.classNames()}>
-									<img src="https://picsum.photos/108/150" alt="" />
-									<div>Jane Cooper</div>
-								</div>
-								<div className={'text-align-center'.classNames()}>
-									<img src="https://picsum.photos/108/150" alt="" />
-									<div>Jane Cooper</div>
+								<div
+									className={
+										'd-flex align-items-flex-start column-gap-10 justify-content-space-between'.classNames() +
+										'reported-persons-wrapper'.classNames(ProfileCss)
+									}
+								>
+									{
+										employee.subordinates.map(user=>{
+											return <Link 
+												key={user.employee_user_id} 
+												to={`/employees/profile/${user.employee_user_id}/`} 
+												className={'text-align-center'.classNames()}
+											>
+												<img src={user.avatar_url}/>
+												<div>{user.display_name}</div>
+											</Link>
+										})
+									}
 								</div>
 							</div>
-						</div>
+						}
+						
 
 						<div
 							className={
-								'crew-hrm-border padding-30 margin-top-30'.classNames() + ''.classNames(ProfileCss)
+								'crew-hrm-border padding-30 margin-top-30'.classNames() + ' profile-segment'.classNames(ProfileCss)
 							}
 						>
 							<div
@@ -337,7 +351,7 @@ export function EmployeeProfileSingle() {
 									</span>
 								</div>
 								<div>
-									<i className={'ch-icon ch-icon-edit color-text-light font-size-20'.classNames()} />
+									<i className={'ch-icon ch-icon-edit color-text-light font-size-20'.classNames() + 'profile-segment-edit-icon'.classNames(ProfileCss)} />
 								</div>
 							</div>
 							{
@@ -422,7 +436,7 @@ export function EmployeeProfileSingle() {
 						</div>
 						<div
 							className={
-								'crew-hrm-border padding-30 margin-top-30'.classNames() + ''.classNames(ProfileCss)
+								'crew-hrm-border padding-30 margin-top-30'.classNames() + 'profile-segment'.classNames(ProfileCss)
 							}
 						>
 							<div
@@ -437,7 +451,7 @@ export function EmployeeProfileSingle() {
 								<div>
 									<Link 
 										to={`/employees/profile/${employee.user_id}/edit/`} 
-										className={'ch-icon ch-icon-edit color-text-light font-size-20'.classNames()} />
+										className={'ch-icon ch-icon-edit color-text-light font-size-20'.classNames() + 'profile-segment-edit-icon'.classNames(ProfileCss)} />
 								</div>
 							</div>
 							<div className={'table-like-div'.classNames(ProfileCss)}>
@@ -511,7 +525,7 @@ export function EmployeeProfileSingle() {
 								{__('Employment Status')} <LoadingIcon show={state.changing_status}/>
 							</div>
 							<DropDown
-								value={(employee.employments || [])[0]?.employment_status}
+								value={employee.employment_status}
 								clearable={false}
 								onChange={changeEmploymentStatus}
 								disabled={state.changing_status}
@@ -523,29 +537,47 @@ export function EmployeeProfileSingle() {
 								})}
 							/>
 						</div>
-						<div>
-							<div className={'color-text-light font-size-13 line-height-24'.classNames()}>
-								Reporting person
+						{
+							!employee.reporting_person ? null :
+							<div>
+								<div className={'color-text-light font-size-13 line-height-24'.classNames()}>
+									{__('Reporting person')}
+								</div>
+								<div className={'crew-hrm-border padding-20 margin-top-10 '.classNames()}>
+									<img 
+										src={employee.reporting_person.avatar_url} 
+										style={{width: '32px', height: '32px', borderRadius: '50%'}} 
+									/>
+									<div className={'color-text font-size-17 margin-top-10'.classNames()}>
+										{employee.reporting_person.display_name}
+									</div>
+									<div className={'color-text-light font-size-13'.classNames()}>
+										{employee.reporting_person.designation}
+									</div>
+								</div>
 							</div>
-							<div className={'crew-hrm-border padding-20 margin-top-10 '.classNames()}>
-								<img src="https://picsum.photos/32/32" alt="" />
-								<div className={'color-text font-size-17 margin-top-10'.classNames()}>Floyd Miles</div>
-								<div className={'color-text-light font-size-13'.classNames()}>Head of design</div>
+						}
+						
+						{
+							!socials.length ? null :
+							<div>
+								<div className={'color-text-light font-size-13 line-height-24'.classNames()}>Contact</div>
+								<div
+									className={
+										'd-flex align-items-center flex-wrap-wrap flex-direction-row row-gap-15 column-gap-15 margin-top-20'.classNames() +
+										'employee-social-profile'.classNames(ProfileCss)
+									}
+								>
+									{
+										socials.map(s=>{
+											return <a key={s.key} href={s.url} target='_blank'>
+												<img src={s.icon}/>
+											</a>
+										})
+									}
+								</div>
 							</div>
-						</div>
-						<div>
-							<div className={'color-text-light font-size-13 line-height-24'.classNames()}>Contact</div>
-							<div
-								className={
-									'd-flex align-items-center column-gap-15 margin-top-20'.classNames() +
-									'employee-social-profile'.classNames(ProfileCss)
-								}
-							>
-								<i className={'ch-icon ch-icon-linkedin2 color-text-light font-size-15'.classNames()} />
-								<i className={'ch-icon ch-icon-x color-text-light font-size-15'.classNames()} />
-								<i className={'ch-icon ch-icon-linkedin2 color-text-light font-size-15'.classNames()} />
-							</div>
-						</div>
+						}
 					</div>
 				</div>
 			</div>

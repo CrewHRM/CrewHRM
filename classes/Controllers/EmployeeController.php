@@ -6,6 +6,7 @@
 namespace CrewHRM\Controllers;
 
 use CrewHRM\Models\Address;
+use CrewHRM\Models\Employment;
 use CrewHRM\Models\User;
 
 /**
@@ -21,6 +22,9 @@ class EmployeeController {
 			'role' => 'administrator'
 		),
 		'getEmployeeList' => array(
+			'role' => 'administrator'
+		),
+		'changeEmploymentStatus' => array(
 			'role' => 'administrator'
 		)
 	);
@@ -112,5 +116,25 @@ class EmployeeController {
 				'segmentation' => $users['segmentation']
 			)
 		);
+	}
+
+	/**
+	 * Change employment status for single user
+	 *
+	 * @param integer $user_id The employee user ID to change status for
+	 * @param string $status The new status
+	 *
+	 * @return void
+	 */
+	public static function changeEmploymentStatus( int $user_id, string $status ) {
+
+		$success = Employment::changeStatus( $user_id, $status );
+
+		if ( $success ) {
+			wp_send_json_success( array( 'message' => __( 'Employment status has been changed successfully!' ) ) );
+			return;
+		}
+
+		wp_send_json_error( array( 'message' => __('Employment not found to change status') ) );
 	}
 }

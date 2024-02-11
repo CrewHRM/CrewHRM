@@ -43,6 +43,14 @@
 			}
 		}
 	}
+
+	.profile-segment {
+		&:not(:hover) {
+			.profile-segment-edit-icon {
+				visibility: hidden;
+			}
+		}
+	}
 	
 	.employee-nameplate {
 		.basic-info {
@@ -74,19 +82,26 @@
 
 	.employee-status {
 		max-width: 300px;
-		img {
-			border-radius: 50%;
-		}
+		
 		.employee-social-profile {
-			i {
+			a {
 				cursor: pointer;
-				padding: 15px;
+				display: inline-block;
+				width: 42px;
+				height: 42px;
+				display: inline-flex;
+				align-items: center;
+				justify-content: center;
 				border-radius: 50%;
-				background-color: #fff;
-				border: 1px solid var(--crewmat-color-text-light);
-				&:hover {
-					color: var(--color-text);
-					border: 1px solid var(--crewmat-color-text);
+				border: 1px solid var(--crewmat-color-text);
+
+				&:not(:hover) {
+					opacity: .6;
+				}
+
+				img {
+					width: 16px;
+					height: auto;
 				}
 			}
 		}
@@ -97,10 +112,26 @@
 			display: grid;
 			grid-template-columns: repeat(auto-fill, minmax(90px, 108px));
 			gap: 28px 15px;
-			> div {
+			> a {
+				display: block;
+				cursor: pointer;
+
+				&:not(:hover) {
+					img {
+						opacity: .94;
+					}
+				}
+
+				&, &:active, &:focus, &:hover {
+					text-decoration: none;
+					box-shadow: none;
+					outline: none;
+					color: var(--crewmat-color-text-light);
+				}
+
 				img {
 					max-width: 40px;
-					width: 100%;
+					width: 40px;
 					border-radius: 50%;
 				}
 			}

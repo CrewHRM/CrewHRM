@@ -32,10 +32,11 @@ class Employment {
 			'start_date'               => $data['start_date'] ?? null,
 			'end_date'                 => $data['end_date'] ?? null,
 			'attendance_type'          => $data['attendance_type'] ?? null,
-			'is_provisional'           => $data['is_provisional'] ?? null,
+			'is_provisional'           => $data['is_provisional'] ?? 0,
 			'probation_end_date'       => $data['probation_end_date'] ?? null,
 			'weekly_working_hour'      => $data['weekly_working_hour'] ?? null,
 			'hire_date'                => $data['hire_date'] ?? null,
+			'employment_status'        => $data['employment_status'] ?? 'active'
 		);
 
 		global $wpdb;
@@ -99,17 +100,98 @@ class Employment {
 
 		// Get employment specific related data
 		foreach ( $rows as $index => $row ) {
-			
-			$reporting_person_id = $row['reporting_person_user_id'] ?? 0;
-
-			$rows[ $index ]['reporting_person'] = ! $reporting_person_id ? null : array(
-				'avatar_url'   => get_avatar_url( $reporting_person_id ),
-				'display_name' => User::getDisplayName( $reporting_person_id ),
-			);
-
+			$rows[ $index ]['reporting_person'] = self::getReportingPersonInfo( $row['reporting_person_user_id'] ?? 0 );
 			$rows[ $index ]['department_name'] = ! empty( $row['department_id'] ) ? Department::getDepartmentNameById( $row['department_id'] ) : null;
 		}
 
 		return _Array::castRecursive( $rows );
+	}
+
+	/**
+	 * Get reporting person info
+	 *
+	 * @param int $user_id
+	 * @return array|null
+	 */
+	public static function getReportingPersonInfo( $user_id ) {
+
+		if ( empty( $user_id ) ) {
+			return null;
+		}
+
+		// Get the latest employment of the reporting person
+		global $wpdb;
+		$latest_employment = $wpdb->get_row(
+			$wpdb->prepare(
+				"SELECT employment_id, designation FROM {$wpdb->crewhrm_employments} WHERE employee_user_id=%d ORDER BY employment_id DESC LIMIT 1",
+				$user_id
+			),
+			ARRAY_A
+		);
+		
+		return empty( $latest_employment ) ? null : array(
+			'avatar_url'   => get_avatar_url( $user_id ),
+			'display_name' => User::getDisplayName( $user_id ),
+			'designation'  => $latest_employment['designation']
+		);
+	}
+
+	/**
+	 * Change the status of the latest employment
+	 *
+	 * @param int $user_id
+	 * @param string $status
+	 * @return bool
+	 */
+	public static function changeStatus( $user_id, $status ) {
+
+		$employment = self::getLatestEmployment( $user_id );
+
+		if ( ! empty( $employment ) ) {
+			Field::employments()->updateField(
+				array( 'employment_status' => $status ),
+				array( 'employment_id' => $employment['employment_id'] )
+			);
+
+			return true;
+		}
+
+		return false;
+	}
+
+	/**
+	 * Get subordinates of a user
+	 *
+	 * @param int $user_id
+	 * @return array
+	 */
+	public static function getSubordinates( $user_id ) {
+
+		global $wpdb;
+		$users = $wpdb->get_results(
+			$wpdb->prepare(
+				"SELECT 
+					_employee.employee_user_id, 
+					_user.display_name
+				FROM 
+					{$wpdb->crewhrm_employments} _employee
+					INNER JOIN {$wpdb->users} _user ON _employee.employee_user_id=_user.ID
+				WHERE
+					_employee.reporting_person_user_id=%d
+				ORDER BY
+					_employee.employment_id DESC
+				",
+				$user_id
+			),
+			ARRAY_A
+		);
+
+		$users = _Array::castRecursive( $users );
+
+		foreach ( $users as $index => $user ) {
+			$users[ $index ]['avatar_url'] = get_avatar_url( $user['employee_user_id'] );
+		}
+
+		return $users;
 	}
 }

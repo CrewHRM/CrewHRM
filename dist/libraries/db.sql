@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Feb 10, 2024 at 09:23 PM
+-- Generation Time: Feb 10, 2024 at 11:43 PM
 -- Server version: 8.0.16
 -- PHP Version: 8.1.23
 
@@ -138,6 +138,7 @@ CREATE TABLE IF NOT EXISTS `wp_crewhrm_employments` (
   `designation` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
   `department_id` bigint(20) UNSIGNED DEFAULT NULL,
   `employment_type` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT 'full_time, part_time, contract, temporary or trainee',
+  `employment_status` varchar(10) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT 'active, inactive, resigned, on_leave, laid_off or terminated',
   `annual_gross_salary` bigint(20) UNSIGNED DEFAULT NULL,
   `salary_currency` varchar(5) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
   `reporting_person_user_id` bigint(20) UNSIGNED DEFAULT NULL COMMENT 'The user ID of reporting person. Ideally the reporting person is also an employee.',
