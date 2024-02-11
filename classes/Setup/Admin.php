@@ -174,7 +174,7 @@ class Admin {
 		$departments = Department::getDepartments();
 		echo '<div 
 				id="crewhrm_employees_dashboard" 
-				data-departments="' . esc_attr( wp_json_encode( $departments ) ) .'"></div>';
+				data-departments="' . esc_attr( wp_json_encode( $departments ) ) . '"></div>';
 	}
 
 	/**

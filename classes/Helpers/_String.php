@@ -172,7 +172,7 @@ class _String {
 	/**
 	 * Consolidate string
 	 *
-	 * @param string $input_string
+	 * @param string  $input_string
 	 * @param boolean $replace_newlines
 	 * @return string
 	 */

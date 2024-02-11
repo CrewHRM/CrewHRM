@@ -32,7 +32,7 @@ $social_links = Settings::getSocialLinks();
 		>
 			<div>{contents}</div>
 
-			<?php if ( ! empty( $social_links ) ): ?>
+			<?php if ( ! empty( $social_links ) ) : ?>
 			
 			<?php endif; ?>
 		</div>

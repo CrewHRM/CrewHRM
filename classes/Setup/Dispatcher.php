@@ -144,7 +144,7 @@ class Dispatcher {
 
 		// Now verify all the arguments expected data types after casting
 		foreach ( $args as $name => $value ) {
-			
+
 			// The request data value
 			$arg_type = gettype( $value );
 
@@ -158,7 +158,7 @@ class Dispatcher {
 				// Because so far there's a senario where single job view page can pass both job ID or slug collected from URL.
 				// And in fact there's no issue to treat a numeric value as string in this plugin so far.
 				if ( 'string' === $param_type && 'integer' === $arg_type ) {
-					$args[ $name ] = ( string ) $value;
+					$args[ $name ] = (string) $value;
 				} else {
 					wp_send_json_error( array( 'message' => esc_html__( 'Invalid request data!', 'hr-management' ) ) );
 				}

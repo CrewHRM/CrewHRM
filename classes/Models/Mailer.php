@@ -174,7 +174,7 @@ class Mailer {
 	 * @param string $template
 	 * @param string $nonce
 	 * @param string $nonce_action
-	 * 
+	 *
 	 * @return string
 	 */
 	public static function getPreviewURL( string $nonce, string $nonce_action, $template = '' ) {
@@ -183,7 +183,7 @@ class Mailer {
 				'nonce'        => $nonce,
 				'nonce_action' => $nonce_action,
 				'action'       => Main::$configs->app_name . '_previewDevMail',
-				'template'     => $template
+				'template'     => $template,
 			),
 			admin_url( 'admin-ajax.php' )
 		);

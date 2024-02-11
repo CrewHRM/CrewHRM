@@ -15,18 +15,18 @@ use CrewHRM\Models\User;
 class EmployeeController {
 
 	const PREREQUISITES = array(
-		'updateEmployee' => array(
-			'role' => 'administrator'
+		'updateEmployee'         => array(
+			'role' => 'administrator',
 		),
-		'fetchEmployee' => array(
-			'role' => 'administrator'
+		'fetchEmployee'          => array(
+			'role' => 'administrator',
 		),
-		'getEmployeeList' => array(
-			'role' => 'administrator'
+		'getEmployeeList'        => array(
+			'role' => 'administrator',
 		),
 		'changeEmploymentStatus' => array(
-			'role' => 'administrator'
-		)
+			'role' => 'administrator',
+		),
 	);
 
 	/**
@@ -51,7 +51,7 @@ class EmployeeController {
 
 		// Show warning for duplicate employee ID
 		if ( ! empty( $employee['employee_id'] ) ) {
-			
+
 			// Make the employee consisten using leading zero
 			if ( is_numeric( $employee['employee_id'] ) ) {
 				$employee['employee_id'] = User::padStringEmployeeId( $employee['employee_id'] );
@@ -61,11 +61,10 @@ class EmployeeController {
 			if ( ! empty( $employee_user_id ) && $employee_user_id != ( $employee['user_id'] ?? null ) ) {
 				wp_send_json_error( array( 'message' => __( 'The employee ID exists', 'crewhrm' ) ) );
 			}
-			
 		} else {
 			$employee['employee_id'] = User::getUniqueEmployeeId();
 		}
-		
+
 		// Create or update the user now
 		$employee['role'] = User::ROLE_EMPLOYEE;
 		$user_id          = User::createOrUpdateEmployee( $employee, $avatar_image );
@@ -74,12 +73,12 @@ class EmployeeController {
 		if ( empty( $user_id ) || ! is_numeric( $user_id ) ) {
 			wp_send_json_error( array( 'message' => esc_html__( 'Something went wrong!', 'crewhrm' ) ) );
 		}
-		
+
 		wp_send_json_success(
-			array( 
-				'user_id'  => $user_id, 
+			array(
+				'user_id'  => $user_id,
 				'employee' => User::getUserInfo( $user_id ),
-			) 
+			)
 		);
 	}
 
@@ -90,7 +89,7 @@ class EmployeeController {
 	 * @return void
 	 */
 	public static function fetchEmployee( int $user_id ) {
-		
+
 		$employee = User::getUserInfo( $user_id );
 
 		if ( ! empty( $employee ) ) {
@@ -107,13 +106,18 @@ class EmployeeController {
 	 * @return void
 	 */
 	public static function getEmployeeList( array $filters = array() ) {
-		
-		$users = User::getUsers( array( ...$filters, 'role' => User::ROLE_EMPLOYEE ) );
-		
+
+		$users = User::getUsers(
+			array(
+				...$filters,
+				'role' => User::ROLE_EMPLOYEE,
+			)
+		);
+
 		wp_send_json_success(
 			array(
-				'employees' => $users['users'],
-				'segmentation' => $users['segmentation']
+				'employees'    => $users['users'],
+				'segmentation' => $users['segmentation'],
 			)
 		);
 	}
@@ -122,7 +126,7 @@ class EmployeeController {
 	 * Change employment status for single user
 	 *
 	 * @param integer $user_id The employee user ID to change status for
-	 * @param string $status The new status
+	 * @param string  $status The new status
 	 *
 	 * @return void
 	 */
@@ -135,6 +139,6 @@ class EmployeeController {
 			return;
 		}
 
-		wp_send_json_error( array( 'message' => __('Employment not found to change status') ) );
+		wp_send_json_error( array( 'message' => __( 'Employment not found to change status' ) ) );
 	}
 }

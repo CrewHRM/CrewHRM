@@ -182,7 +182,7 @@ class User {
 			'subordinates'     => Employment::getSubordinates( $user_id ),
 			'employments'      => Employment::getEmployments( $user_id ),
 			...$meta,
-			...($employment ?? array()),
+			...( $employment ?? array() ),
 			...$address,
 		);
 	}
@@ -194,14 +194,14 @@ class User {
 	 * @return string
 	 */
 	public static function getDisplayName( $user_id ) {
-		$args = array( 
-			'ID' => $user_id
+		$args = array(
+			'ID' => $user_id,
 		);
 
 		global $wpdb;
 		return ( new Field( $wpdb->users ) )->getField( $args, 'display_name' );
 	}
-	
+
 	/**
 	 * Get unique username
 	 *
@@ -237,14 +237,14 @@ class User {
 	public static function getUsers( array $args ) {
 
 		$limit  = 1;
-		$page   = Utilities::getInt( $args['page'] ?? 1, 1 ); 
+		$page   = Utilities::getInt( $args['page'] ?? 1, 1 );
 		$offset = ( $page - 1 ) * $limit;
 
 		global $wpdb;
 
 		$where_clause = '';
 		if ( ! empty( $args['search'] ) ) {
-			$where_clause .= $wpdb->prepare( " AND _user.display_name LIKE %s", "%{$wpdb->esc_like( $args['search'] )}%" );
+			$where_clause .= $wpdb->prepare( ' AND _user.display_name LIKE %s', "%{$wpdb->esc_like( $args['search'] )}%" );
 		}
 
 		$users = $wpdb->get_results(
@@ -273,7 +273,7 @@ class User {
 			ARRAY_A
 		);
 
-		$total_count = ( int ) $wpdb->get_var(
+		$total_count = (int) $wpdb->get_var(
 			$wpdb->prepare(
 				"SELECT 
 					COUNT(_user.ID)
@@ -305,7 +305,7 @@ class User {
 				'department_name' => ! empty( $meta['department_id'] ) ? Department::getDepartmentNameById( $meta['department_id'] ) : null,
 				'employment_type' => $meta['employment_type'] ?? null,
 				'hire_date'       => $meta['hire_date'] ?? null,
-				'address'         => ! empty( $meta['address_id'] ) ? Address::getAddressById( $meta['address_id'] ) : null
+				'address'         => ! empty( $meta['address_id'] ) ? Address::getAddressById( $meta['address_id'] ) : null,
 			);
 		}
 
@@ -316,7 +316,7 @@ class User {
 				'page_count'  => $page_count,
 				'page'        => $page,
 				'limit'       => $limit,
-			)
+			),
 		);
 	}
 
@@ -333,7 +333,7 @@ class User {
 		$user_id   = ! empty( $data['user_id'] ) ? $data['user_id'] : null;
 		$full_name = $data['first_name'] . ' ' . $data['last_name'];
 
-		// Create new user if 
+		// Create new user if
 		if ( ! $user_id ) {
 			$user_id = wp_create_user(
 				self::getUniqueUsername( $full_name ),
@@ -347,18 +347,18 @@ class User {
 
 			// Set the role for newly created user
 			if ( ! empty( $data['role'] ) ) {
-				( new \WP_User( $user_id) )->set_role( $data['role'] );
+				( new \WP_User( $user_id ) )->set_role( $data['role'] );
 				update_user_meta( $user_id, self::META_KEY_CREW_FLAG, $data['role'] );
 			}
 		}
-		
+
 		wp_update_user(
 			array(
 				'ID'           => $user_id,
 				'first_name'   => $data['first_name'],
 				'last_name'    => $data['last_name'],
 				'display_name' => $data['display_name'] ?? $full_name,
-				'description'  => $data['description'] ?? ''
+				'description'  => $data['description'] ?? '',
 			)
 		);
 
@@ -369,7 +369,7 @@ class User {
 
 		// Update employment data
 		$employment_id = Employment::createUpdate( $user_id, $data, true );
-		
+
 		// Set schedule
 		if ( ! empty( $data['weekly_schedules'] ) ) {
 			WeeklySchedule::updateSchedule( $employment_id, $data['weekly_schedules'] );
@@ -377,9 +377,9 @@ class User {
 
 		// Create or update address
 		$address_id = Address::createUpdateAddress( $data );
-		
+
 		// Prepare social links
-		$links = array();
+		$links     = array();
 		$emergency = array();
 		foreach ( $data as $key => $value ) {
 			if ( strpos( $key, 'social_link_' ) === 0 ) {
@@ -391,10 +391,10 @@ class User {
 			}
 		}
 
-		// Prepare education info 
-		$educational_info = is_array( $data['educational_info'] ?? null ) ? $data['educational_info'] : array();
+		// Prepare education info
+		$educational_info    = is_array( $data['educational_info'] ?? null ) ? $data['educational_info'] : array();
 		$filtered_educations = array();
-		foreach( $educational_info as $id => $_info ) {
+		foreach ( $educational_info as $id => $_info ) {
 			if ( ! empty( $_info['program'] ) && is_numeric( $_info['passing_year'] ?? null ) ) {
 				$filtered_educations[ $id ] = $_info;
 			}
@@ -404,26 +404,26 @@ class User {
 		self::updateMeta(
 			$user_id,
 			array(
-				'employee_id'                => $data['employee_id'], // Mandatory. Duplicate checking is supposed to be done in the earlier callstack.
-				'user_phone'                 => $data['user_phone'] ?? null,
-				'birth_date'                 => $data['birth_date'] ?? null,
-				'gender'                     => $data['gender'] ?? null,
-				'marital_status'             => $data['marital_status'] ?? null,
-				'fathers_name'               => $data['fathers_name'] ?? null,
-				'mothers_name'               => $data['mothers_name'] ?? null,
-				'driving_license_number'     => $data['driving_license_number'] ?? null,
-				'nid_number'                 => $data['nid_number'] ?? null,
-				'blood_group'                => $data['blood_group'] ?? null,
-				'educational_info'           => $filtered_educations,
-				'address_id'                 => $address_id,
-				'experience_level'           => $data['experience_level'] ?? null,
-				'employee_benefits'          => $data['employee_benefits'] ?? ( object ) array(),
-				'employee_leaves'            => $data['employee_leaves'] ?? ( object ) array(),
+				'employee_id'            => $data['employee_id'], // Mandatory. Duplicate checking is supposed to be done in the earlier callstack.
+				'user_phone'             => $data['user_phone'] ?? null,
+				'birth_date'             => $data['birth_date'] ?? null,
+				'gender'                 => $data['gender'] ?? null,
+				'marital_status'         => $data['marital_status'] ?? null,
+				'fathers_name'           => $data['fathers_name'] ?? null,
+				'mothers_name'           => $data['mothers_name'] ?? null,
+				'driving_license_number' => $data['driving_license_number'] ?? null,
+				'nid_number'             => $data['nid_number'] ?? null,
+				'blood_group'            => $data['blood_group'] ?? null,
+				'educational_info'       => $filtered_educations,
+				'address_id'             => $address_id,
+				'experience_level'       => $data['experience_level'] ?? null,
+				'employee_benefits'      => $data['employee_benefits'] ?? (object) array(),
+				'employee_leaves'        => $data['employee_leaves'] ?? (object) array(),
 				...$emergency,
 				...$links,
 			)
 		);
-		
+
 		/**
 		 * If not custom weekly schedule, delete the schedule from table, later it will use from settings
 		 */
@@ -437,9 +437,9 @@ class User {
 	 * @return string
 	 */
 	public static function getUniqueEmployeeId() {
-		
+
 		global $wpdb;
-		$count = ( int ) $wpdb->get_var(
+		$count = (int) $wpdb->get_var(
 			"SELECT COUNT(meta_id) FROM {$wpdb->employee_meta} WHERE meta_key='employee_id'"
 		);
 
@@ -462,9 +462,9 @@ class User {
 	 * @return int|null
 	 */
 	public static function getUserIdByEmployeeId( $employee_id ) {
-		$args = array( 
-			'meta_key' => 'employee_id', 
-			'meta_value' => $employee_id 
+		$args = array(
+			'meta_key'   => 'employee_id',
+			'meta_value' => $employee_id,
 		);
 		return Field::employee_meta()->getField( $args, 'object_id' );
 	}
@@ -472,12 +472,12 @@ class User {
 	/**
 	 * Set uploaded file as profile pic
 	 *
-	 * @param int $user_id The user ID to set profile pic for
+	 * @param int   $user_id The user ID to set profile pic for
 	 * @param array $file The uploaded file data array
 	 * @return bool
 	 */
 	public static function setProfilePic( $user_id, $file ) {
-		
+
 		// Alter the name and handle upload
 		$upload = wp_handle_upload( $file, array( 'test_form' => false ) );
 
@@ -516,9 +516,9 @@ class User {
 	/**
 	 * Update crew meta for the user
 	 *
-	 * @param int $user_id
+	 * @param int    $user_id
 	 * @param string $key
-	 * @param mixed $value
+	 * @param mixed  $value
 	 * @return void
 	 */
 	public static function updateMeta( $user_id, $key, $value = null ) {
@@ -534,16 +534,16 @@ class User {
 			// Update single meta
 			$meta[ $key ] = $value;
 		}
-		
+
 		Meta::employee( $user_id )->updateBulkMeta( $meta );
 	}
-	
+
 	/**
 	 * Get crew meta data
 	 *
-	 * @param int $user_id
+	 * @param int    $user_id
 	 * @param string $key
-	 * @param mixed $fallback
+	 * @param mixed  $fallback
 	 *
 	 * @return mixed
 	 */
@@ -555,7 +555,7 @@ class User {
 
 		// Get WP specific meta data
 		$wp_meta = array(
-			'description'
+			'description',
 		);
 		foreach ( $wp_meta as $_key ) {
 			$meta[ $_key ] = get_user_meta( $user_id, $_key, true );
@@ -575,14 +575,14 @@ class User {
 	 * @return string
 	 */
 	public static function padStringEmployeeId( $id ) {
-		return is_numeric( $id ) ? str_pad( $id, 3, "0", STR_PAD_LEFT ) : $id;
+		return is_numeric( $id ) ? str_pad( $id, 3, '0', STR_PAD_LEFT ) : $id;
 	}
-	
+
 	/**
 	 * Get user ID by email
 	 *
 	 * @param string $email The user email
-	 * 
+	 *
 	 * @return void
 	 */
 	public static function getUserIdByEmail( $email ) {

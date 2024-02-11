@@ -14,7 +14,7 @@ class WeeklySchedule {
 	/**
 	 * Update schedule for a user or for global settings
 	 *
-	 * @param int $employment_id
+	 * @param int   $employment_id
 	 * @param array $schedules
 	 * @return void
 	 */
@@ -36,7 +36,7 @@ class WeeklySchedule {
 					'employment_id' => $employment_id,
 					'time_starts'   => $slot['start'],
 					'time_ends'     => $slot['end'],
-					'enable'        => $schedule['enable']
+					'enable'        => $schedule['enable'],
 				);
 
 				// Update existing one by the schedule ID
@@ -60,19 +60,19 @@ class WeeklySchedule {
 	/**
 	 * Delete removed slots
 	 *
-	 * @param int $employment_id
+	 * @param int   $employment_id
 	 * @param array $schedules
 	 * @return void
 	 */
 	private static function deleteRemovedSlots( $employment_id, $schedules ) {
-		
+
 		global $wpdb;
-		
+
 		// Delete removed slots
 		$remaining_ids = array();
 		foreach ( $schedules as $day ) {
 			$slot_ids = array_filter(
-				array_keys( $day['slots'] ?? array() ), 
+				array_keys( $day['slots'] ?? array() ),
 				function ( $id ) {
 					return is_numeric( $id ); // Non numeric means newly added, and ids are random string assigned by react.
 				}
@@ -82,14 +82,14 @@ class WeeklySchedule {
 		}
 
 		// If user ID not passed, it means it is global settings
-		$where_clause = $employment_id === null ? " employment_id IS NULL" : $wpdb->prepare( " employment_id=%d", $employment_id );
+		$where_clause = $employment_id === null ? ' employment_id IS NULL' : $wpdb->prepare( ' employment_id=%d', $employment_id );
 
 		// Delete all slots except remaings
 		if ( ! empty( $remaining_ids ) ) {
-			$ids_places = _String::getPlaceHolders( $remaining_ids );
+			$ids_places    = _String::getPlaceHolders( $remaining_ids );
 			$where_clause .= $wpdb->prepare( " AND schedule_id NOT IN ({$ids_places})", ...$remaining_ids );
 		}
-		
+
 		$wpdb->query(
 			"DELETE FROM {$wpdb->crewhrm_weekly_schedules} WHERE {$where_clause}"
 		);
@@ -102,10 +102,10 @@ class WeeklySchedule {
 	 * @return array
 	 */
 	public static function getSchedule( $employment_id ) {
-		
+
 		global $wpdb;
 
-		$where_clause = $employment_id === null ? " employment_id IS NULL" : $wpdb->prepare( " employment_id=%d", $employment_id );
+		$where_clause = $employment_id === null ? ' employment_id IS NULL' : $wpdb->prepare( ' employment_id=%d', $employment_id );
 
 		$slots = $wpdb->get_results(
 			"SELECT * FROM {$wpdb->crewhrm_weekly_schedules} WHERE {$where_clause}",
@@ -117,21 +117,42 @@ class WeeklySchedule {
 		}
 
 		$schedules = array(
-			'monday'    => array( 'enable' => false, 'slots' => ( object ) array() ),
-			'tuesday'   => array( 'enable' => false, 'slots' => ( object ) array() ),
-			'wednesday' => array( 'enable' => false, 'slots' => ( object ) array() ),
-			'thursday'  => array( 'enable' => false, 'slots' => ( object ) array() ),
-			'friday'    => array( 'enable' => false, 'slots' => ( object ) array() ),
-			'saturday'  => array( 'enable' => false, 'slots' => ( object ) array() ),
-			'sunday'    => array( 'enable' => false, 'slots' => ( object ) array() ),
+			'monday'    => array(
+				'enable' => false,
+				'slots'  => (object) array(),
+			),
+			'tuesday'   => array(
+				'enable' => false,
+				'slots'  => (object) array(),
+			),
+			'wednesday' => array(
+				'enable' => false,
+				'slots'  => (object) array(),
+			),
+			'thursday'  => array(
+				'enable' => false,
+				'slots'  => (object) array(),
+			),
+			'friday'    => array(
+				'enable' => false,
+				'slots'  => (object) array(),
+			),
+			'saturday'  => array(
+				'enable' => false,
+				'slots'  => (object) array(),
+			),
+			'sunday'    => array(
+				'enable' => false,
+				'slots'  => (object) array(),
+			),
 		);
 
 		foreach ( $slots as $slot ) {
-			$schedule_id = $slot['schedule_id'];
+			$schedule_id                              = $slot['schedule_id'];
 			$schedules[ $slot['week_day'] ]['enable'] = (bool) $slot['enable'];
 			$schedules[ $slot['week_day'] ]['slots']->$schedule_id = array(
 				'start' => $slot['time_starts'],
-				'end'   => $slot['time_ends']
+				'end'   => $slot['time_ends'],
 			);
 		}
 

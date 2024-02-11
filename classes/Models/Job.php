@@ -99,7 +99,7 @@ class Job {
 
 			// Generate new slug from title and save
 			$_job['job_slug'] = self::setJobSlug( $job_id, $_job['job_title'] );
-			
+
 			// Execute created hook no matter the status
 			do_action( 'crewhrm_job_created', $job_id, $_job, $job );
 		}
@@ -130,19 +130,19 @@ class Job {
 	 *
 	 * @param int        $job_id The job ID to set slug for
 	 * @param string|int $job_slug The slug to set for the job
-	 * 
+	 *
 	 * @return string
 	 */
 	public static function setJobSlug( $job_id, $job_slug, $update_row = true ) {
-		$job_slug = _String::consolidate( ( string ) $job_slug, true );
+		$job_slug = _String::consolidate( (string) $job_slug, true );
 		$job_slug = strtolower( str_replace( ' ', '-', $job_slug ) );
 		$job_slug = preg_replace( '/[^A-Za-z\-]/u', '', $job_slug );
 		$job_slug = empty( $job_slug ) ? 'job' : $job_slug;
 		$job_slug = preg_replace( '/-+/', '-', $job_slug );
-		
+
 		$new_slug = $job_slug;
 		$index    = 0;
-		
+
 		// Get the slug until it's not avaialble in database
 		while ( $job_id != self::getJobIdBySlug( $new_slug, $job_id ) ) {
 			$index++;
@@ -155,7 +155,7 @@ class Job {
 				array( 'job_id' => $job_id )
 			);
 		}
-		
+
 		return $new_slug;
 	}
 
@@ -312,7 +312,7 @@ class Job {
 			);
 
 		}
-		
+
 		// So it is not pagination, rather prepare whole job data
 		$jobs = $wpdb->get_results(
 			"SELECT 
@@ -344,7 +344,7 @@ class Job {
 			WHERE 1=1 {$where_clause} {$order_by} {$limit_clause}",
 			ARRAY_A
 		);
-		
+
 		// No need further data if it's empty
 		if ( empty( $jobs ) ) {
 			return array();
@@ -498,9 +498,9 @@ class Job {
 	 * @return string
 	 */
 	public static function getJobPermalink( $job_id ) {
-		
+
 		$careers_permalink = self::getCareersPageUrl();
-		$job_slug = self::getJobSlugById( $job_id );
+		$job_slug          = self::getJobSlugById( $job_id );
 
 		return trailingslashit( $careers_permalink . $job_slug );
 	}

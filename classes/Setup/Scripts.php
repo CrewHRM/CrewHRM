@@ -47,13 +47,13 @@ class Scripts {
 	 */
 	public function adminScripts() {
 
-		$hrm_js_for = array( 
-			Main::$configs->app_name, 
-			Admin::PAGE_SLUG_CALENDAR, 
-			Admin::PAGE_SLUG_ALL_JOBS, 
+		$hrm_js_for = array(
+			Main::$configs->app_name,
+			Admin::PAGE_SLUG_CALENDAR,
+			Admin::PAGE_SLUG_ALL_JOBS,
 			Admin::PAGE_SLUG_EMPLOYEE,
 		);
-		
+
 		// Load script for the main hrm dashboard
 		if ( Utilities::isCrewDashboard( $hrm_js_for ) ) {
 			if ( current_user_can( 'upload_files' ) ) {

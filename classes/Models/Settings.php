@@ -265,7 +265,7 @@ class Settings {
 			if ( ! empty( $link_options[ $key ] ) ) {
 				$links[] = array(
 					'url'  => $link_options[ $key ],
-					'icon' => $icon
+					'icon' => $icon,
 				);
 			}
 		}

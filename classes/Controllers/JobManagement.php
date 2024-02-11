@@ -62,7 +62,7 @@ class JobManagement {
 				Meta::job( $data['job_id'] )->updateMeta( 'autosaved_job', $data );
 				wp_send_json_success(
 					array(
-						'job_slug' => $data['job_slug']
+						'job_slug' => $data['job_slug'],
 					)
 				);
 				return;
@@ -152,13 +152,13 @@ class JobManagement {
 	 *
 	 * @param string  $job_slug The job slug to get data
 	 * @param integer $preview Whether it is preview mode
-	 * 
+	 *
 	 * @return void
 	 */
 	public static function getSingleJobView( string $job_slug, int $preview = 0 ) {
 
 		$job_id = Job::getJobIdBySlug( $job_slug );
-		$job_id = empty( $job_id ) ? ( is_numeric( $job_slug ) ? ( int ) $job_slug : null ) : $job_id;
+		$job_id = empty( $job_id ) ? ( is_numeric( $job_slug ) ? (int) $job_slug : null ) : $job_id;
 		$job    = ! empty( $job_id ) ? Job::getJobById( $job_id ) : null;
 
 		// If job not found, show error message.
@@ -202,7 +202,7 @@ class JobManagement {
 				array(
 					'job'           => $job,
 					'about_company' => Settings::getSettings( 'about_company' ),
-					'social_links'  => Settings::getSocialLinks()
+					'social_links'  => Settings::getSocialLinks(),
 				)
 			);
 		}

@@ -79,7 +79,7 @@ class Address {
 	/**
 	 * Get address by id
 	 *
-	 * @param int $address_id ID to get address by
+	 * @param int   $address_id ID to get address by
 	 * @param mixed $fallback The fallback if address not found
 	 * @return array|mixed
 	 */

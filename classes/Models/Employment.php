@@ -36,7 +36,7 @@ class Employment {
 			'probation_end_date'       => $data['probation_end_date'] ?? null,
 			'weekly_working_hour'      => $data['weekly_working_hour'] ?? null,
 			'hire_date'                => $data['hire_date'] ?? null,
-			'employment_status'        => $data['employment_status'] ?? 'active'
+			'employment_status'        => $data['employment_status'] ?? 'active',
 		);
 
 		global $wpdb;
@@ -88,7 +88,7 @@ class Employment {
 
 		global $wpdb;
 
-		$limit = ! empty( $limit ) ? $wpdb->prepare( " LIMIT %d", $limit ) : '';
+		$limit = ! empty( $limit ) ? $wpdb->prepare( ' LIMIT %d', $limit ) : '';
 
 		$rows = $wpdb->get_results(
 			$wpdb->prepare(
@@ -101,7 +101,7 @@ class Employment {
 		// Get employment specific related data
 		foreach ( $rows as $index => $row ) {
 			$rows[ $index ]['reporting_person'] = self::getReportingPersonInfo( $row['reporting_person_user_id'] ?? 0 );
-			$rows[ $index ]['department_name'] = ! empty( $row['department_id'] ) ? Department::getDepartmentNameById( $row['department_id'] ) : null;
+			$rows[ $index ]['department_name']  = ! empty( $row['department_id'] ) ? Department::getDepartmentNameById( $row['department_id'] ) : null;
 		}
 
 		return _Array::castRecursive( $rows );
@@ -128,18 +128,18 @@ class Employment {
 			),
 			ARRAY_A
 		);
-		
+
 		return empty( $latest_employment ) ? null : array(
 			'avatar_url'   => get_avatar_url( $user_id ),
 			'display_name' => User::getDisplayName( $user_id ),
-			'designation'  => $latest_employment['designation']
+			'designation'  => $latest_employment['designation'],
 		);
 	}
 
 	/**
 	 * Change the status of the latest employment
 	 *
-	 * @param int $user_id
+	 * @param int    $user_id
 	 * @param string $status
 	 * @return bool
 	 */

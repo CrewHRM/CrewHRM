@@ -160,7 +160,7 @@ class Meta {
 	 * Update bulk meta
 	 *
 	 * @param array $meta_array
-	 * 
+	 *
 	 * @return void
 	 */
 	public function updateBulkMeta( $meta_array ) {

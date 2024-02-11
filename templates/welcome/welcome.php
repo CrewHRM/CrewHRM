@@ -3,8 +3,8 @@
 	use CrewHRM\Helpers\Utilities;
 	use CrewHRM\Main;
 
-	if ( ! defined( 'ABSPATH' ) ) { exit;
-	}
+if ( ! defined( 'ABSPATH' ) ) { exit;
+}
 
 ?><!DOCTYPE html>
 <html lang="en">
@@ -43,7 +43,7 @@
 								<?php esc_html_e( 'Upgrade to Pro', 'crewhrm' ); ?>
 							</a>
 						</div>
-						<a class="navbar-brand" href="<?php echo esc_sql( Utilities::getBackendPermalink( 'crewhrm' ) ) ?>">
+						<a class="navbar-brand" href="<?php echo esc_sql( Utilities::getBackendPermalink( 'crewhrm' ) ); ?>">
 							<img src="<?php echo esc_url( Main::$configs->url ); ?>templates/welcome/img/logo.svg" width="115" alt="Logo">
 						</a>
 						<div class="collapse navbar-collapse" id="navbarToggler">
@@ -54,7 +54,7 @@
 									</a>
 								</li>
 								<li class="nav-item">
-									<a class="nav-link" target="_blank" href="<?php echo esc_url( Utilities::getBackendPermalink( 'crewhrm-settings#/settings/recruitment/careers/' )) ?>">
+									<a class="nav-link" target="_blank" href="<?php echo esc_url( Utilities::getBackendPermalink( 'crewhrm-settings#/settings/recruitment/careers/' ) ); ?>">
 										<?php esc_html_e( 'Settings', 'crewhrm' ); ?>
 									</a>
 								</li>
@@ -93,7 +93,7 @@
 								Astra is fast, fully customizable &amp; beautiful WordPress theme
 								suitable for blog, personal portfolio, business website and WooCommerce storefront.
 							</p>
-							<a href="<?php echo esc_sql( Utilities::getBackendPermalink( 'crewhrm' ) ) ?>" class="white-link">
+							<a href="<?php echo esc_sql( Utilities::getBackendPermalink( 'crewhrm' ) ); ?>" class="white-link">
 								<?php esc_html_e( 'Go To Dashboard', 'crewhrm' ); ?>
 							</a>
 						</div>

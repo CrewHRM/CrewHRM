@@ -14,7 +14,7 @@ use CrewHRM\Models\Settings;
  * The class
  */
 class Utilities {
-	
+
 	/**
 	 * Pro plugin path constant
 	 */
@@ -204,7 +204,7 @@ class Utilities {
 		if ( file_exists( trailingslashit( WP_PLUGIN_DIR ) . self::PRO_PATH ) ) {
 			return true && ( ! $check_active || is_plugin_active( self::PRO_PATH ) );
 		}
-		
+
 		return false;
 	}
 
@@ -217,7 +217,7 @@ class Utilities {
 	public static function getBackendPermalink( string $page ) {
 		return add_query_arg(
 			array(
-				'page' => $page
+				'page' => $page,
 			),
 			admin_url( 'admin.php' )
 		);
@@ -234,24 +234,24 @@ class Utilities {
 
 		$data = array(
 			'timezone_offset' => null,
-			'time_now'        => null
+			'time_now'        => null,
 		);
 
 		try {
-			$timezone = new \DateTimeZone($timezoneName);
-			$now = new \DateTime('now', $timezone);
+			$timezone = new \DateTimeZone( $timezoneName );
+			$now      = new \DateTime( 'now', $timezone );
 
 			// Get offset in hours (positive for east of UTC, negative for west)
-			$offset = $timezone->getOffset($now) / 3600;
+			$offset = $timezone->getOffset( $now ) / 3600;
 
 			// Format time in 12-hour system with AM/PM
-			$timeString = $now->format('g:i A');
+			$timeString = $now->format( 'g:i A' );
 
 			$data['timezone_offset'] = $offset;
 			$data['time_now']        = $timeString;
-			
-		} catch (\Exception $e) {
-			
+
+		} catch ( \Exception $e ) {
+
 		}
 
 		return $data;

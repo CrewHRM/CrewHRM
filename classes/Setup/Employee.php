@@ -31,8 +31,8 @@ class Employee {
 	 */
 	public function addEmployeeRole() {
 		add_role(
-			User::ROLE_EMPLOYEE, 
-			esc_html__( 'Employee', 'hr-management' ), 
+			User::ROLE_EMPLOYEE,
+			esc_html__( 'Employee', 'hr-management' ),
 			array(
 				'read' => true,
 			)
@@ -42,21 +42,21 @@ class Employee {
 	/**
 	 * Custom URL avatar url
 	 *
-	 * @param string $url
+	 * @param string     $url
 	 * @param int|string $user_id
-	 * @param array $args
+	 * @param array      $args
 	 *
 	 * @return string
 	 */
 	public function avatarUrl( $url, $user_id, $args ) {
-		
+
 		if ( is_numeric( $user_id ) ) {
 			$avatar_id = User::getMeta( $user_id, User::META_KEY_AVATAR );
 			if ( ! empty( $avatar_id ) ) {
 				$url = wp_get_attachment_url( $avatar_id );
 			}
 		}
-		
+
 		return $url;
 	}
 }

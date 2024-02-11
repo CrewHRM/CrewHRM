@@ -49,7 +49,7 @@ class MailPreview {
 			}
 			exit;
 		}
-		
+
 		if ( empty( $templates[ $template ] ) ) {
 			exit( esc_html__( 'The email template was not found to preview', 'crewhrm' ) );
 		}

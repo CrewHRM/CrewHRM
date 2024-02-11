@@ -164,7 +164,7 @@ class FileManager {
 	 * Delete WP files
 	 *
 	 * @param int|array $file_id File ID or array of files IDs
-	 * @param bool $force_delete Whether to delete permanently
+	 * @param bool      $force_delete Whether to delete permanently
 	 *
 	 * @return void
 	 */
