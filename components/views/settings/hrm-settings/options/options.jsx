@@ -192,7 +192,6 @@ function OptionFields({fields=[], vertical, separator, is_group=false}) {
 								<div className={'flex-1'.classNames()}>
 									{!values[name] ? (
 										<FileUpload
-											accept="image/*"
 											WpMedia={WpMedia}
 											onChange={(file) => onChange(name, file, field)}
 										/>
@@ -292,14 +291,17 @@ function OptionFields({fields=[], vertical, separator, is_group=false}) {
 									</span>
 
 									<FileUpload
-										WpMedia={{ width: 200, height: 200 }}
-										accept="image/*"
 										onChange={(company_logo) => onChange('company_logo', company_logo, field )}
-										layoutComp={({ onCLick }) => {
+										WpMedia={{ 
+											width: 200, 
+											height: 200, 
+											mime_type: 'image/*' 
+										}}
+										layoutComp={({ onClick }) => {
 											return (
 												<button
 													className={'button button-primary button-outlined button-small margin-bottom-5'.classNames()}
-													onClick={onCLick}
+													onClick={onClick}
 												>
 													{__('Upload Logo')}
 												</button>

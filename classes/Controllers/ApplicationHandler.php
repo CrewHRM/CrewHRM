@@ -54,7 +54,7 @@ class ApplicationHandler {
 				'administrator',
 			),
 		),
-		'instantSearch' => array(
+		'instantSearch'          => array(
 			'role' => array(
 				'administrator',
 			),
@@ -267,7 +267,7 @@ class ApplicationHandler {
 		if ( 'users' === $args['source'] ) {
 			wp_send_json_success(
 				array(
-					'results' => User::searchUser( ( $args['keyword'] ?? '' ), ( $args['role'] ?? '' ), $exclude )
+					'results' => User::searchUser( ( $args['keyword'] ?? '' ), ( $args['role'] ?? '' ), $exclude ),
 				)
 			);
 		}
@@ -275,11 +275,11 @@ class ApplicationHandler {
 		if ( 'media' === $args['source'] ) {
 			wp_send_json_success(
 				array(
-					'results' => FileManager::searchMedia( ( $args['keyword'] ?? '' ), ( $args['mime_type'] ?? '' ), $exclude )
+					'results' => FileManager::searchMedia( ( $args['keyword'] ?? '' ), ( $args['mime_type'] ?? '' ), $exclude ),
 				)
 			);
 		}
-		
+
 		wp_send_json_error( array( 'message' => __( 'Invalid access', 'crewhrm' ) ) );
 	}
 }

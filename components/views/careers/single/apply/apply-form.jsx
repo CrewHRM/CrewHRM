@@ -27,7 +27,7 @@ export function RenderField({ field={}, onChange=()=>{}, values = {}, showErrors
 		label,
 		type,
 		placeholder,
-		maxlenth,
+		maxlength,
 		maxsize,
 		options,
 		disclaimer,
@@ -120,7 +120,7 @@ export function RenderField({ field={}, onChange=()=>{}, values = {}, showErrors
 						value={values[name]}
 						textPrimary={placeholder}
 						minlength={required ? 1 : 0}
-						maxlenth={maxlenth}
+						maxlength={maxlength}
 						maxsize={maxsize}
 						accept={accept}
 						onChange={(files) => onChange(name, files)}

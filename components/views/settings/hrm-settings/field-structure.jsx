@@ -51,7 +51,11 @@ export const settings_fields = applyFilters(
 									name: 'careers_hero_image',
 									label: __('Banner Image'),
 									type: 'image',
-									WpMedia: { width: 1200, height: 300 },
+									WpMedia: { 
+										width: 1200, 
+										height: 300,
+										mime_type: 'image/*'
+									},
 									when: ['careers_header', true]
 								},
 								{

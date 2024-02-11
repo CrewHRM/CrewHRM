@@ -188,7 +188,7 @@ class FileManager {
 	 *
 	 * @param stirng $keyword
 	 * @param string $mime
-	 * @param array $exclude
+	 * @param array  $exclude
 	 *
 	 * @return array
 	 */
@@ -196,19 +196,19 @@ class FileManager {
 
 		global $wpdb;
 
-		$where_clause = "";
+		$where_clause = '';
 
 		// Keyword filter
-		$where_clause .= $wpdb->prepare( " AND post_title LIKE %s", "%{$wpdb->esc_like( $keyword )}%" );
+		$where_clause .= $wpdb->prepare( ' AND post_title LIKE %s', "%{$wpdb->esc_like( $keyword )}%" );
 
 		// Mime type filter
 		if ( ! empty( $mime ) ) {
-			$where_clause .= $wpdb->prepare( " AND post_mime_type=%d", $mime );
+			$where_clause .= $wpdb->prepare( ' AND post_mime_type=%d', $mime );
 		}
 
 		// Exclude certain IDs from result
 		if ( ! empty( $exclude ) ) {
-			$ids_places = _String::getPlaceHolders( $exclude );
+			$ids_places    = _String::getPlaceHolders( $exclude );
 			$where_clause .= " AND ID NOT IN ({$ids_places})";
 		}
 
@@ -224,19 +224,18 @@ class FileManager {
 			ARRAY_A
 		);
 
-
 		$media_array = array();
 
 		foreach ( $results as $result ) {
 			$media_array[] = array(
-				'id'            => ( int ) $result['ID'],
+				'id'            => (int) $result['ID'],
 				'label'         => $result['post_title'],
 				'unique_name'   => $result['post_name'],
 				'thumbnail_url' => get_the_post_thumbnail_url( $result['ID'] ),
-				'permalink'     => get_post_permalink( $result['ID'] )
+				'permalink'     => get_post_permalink( $result['ID'] ),
 			);
 		}
-		
+
 		return $media_array;
 	}
 }

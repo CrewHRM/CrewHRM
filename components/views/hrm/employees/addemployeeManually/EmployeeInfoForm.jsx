@@ -115,8 +115,8 @@ export default function EmployeeInfoForm() {
 						onChange('avatar_image', avatar_image);
 						setImagePreview(avatar_image);
 					}}
-					layoutComp={({onCLick})=>{
-						return <div onClick={onCLick} className={'profile-img'.classNames(AddEmployeeCss) + 'margin-bottom-20 cursor-pointer'.classNames()}>
+					layoutComp={({onClick})=>{
+						return <div onClick={onClick} className={'profile-img'.classNames(AddEmployeeCss) + 'margin-bottom-20 cursor-pointer'.classNames()}>
 							<div 
 								className={`image ${avatar_url ? 'has-image' : ''}`.classNames(AddEmployeeCss)} 
 								style={{backgroundImage: `url(${avatar_url})`}}

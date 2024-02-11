@@ -84,7 +84,7 @@ class User {
 		$skip_ids   = _Array::getArray( $skip_ids, false, 0 );
 		$ids_places = _String::getPlaceHolders( $skip_ids );
 
-		$role_clause = ! empty( $role ) ? $wpdb->prepare( " AND _meta.meta_value=%s", $role ) : '';
+		$role_clause = ! empty( $role ) ? $wpdb->prepare( ' AND _meta.meta_value=%s', $role ) : '';
 
 		$users = $wpdb->get_results(
 			$wpdb->prepare(
@@ -129,7 +129,7 @@ class User {
 				'thumbnail_url' => get_avatar_url( $user['user_id'] ),
 				'label'         => $user['display_name'],
 				'unique_name'   => $user['email'],
-				'hint'          => $emp_info['designation'] ?? null
+				'hint'          => $emp_info['designation'] ?? null,
 			);
 		}
 
@@ -420,31 +420,33 @@ class User {
 		self::updateMeta(
 			$user_id,
 			array(
-				'employee_id'            => $data['employee_id'], // Mandatory. Duplicate checking is supposed to be done in the earlier callstack.
-				'user_phone'             => $data['user_phone'] ?? null,
-				'birth_date'             => $data['birth_date'] ?? null,
-				'gender'                 => $data['gender'] ?? null,
-				'marital_status'         => $data['marital_status'] ?? null,
-				'fathers_name'           => $data['fathers_name'] ?? null,
-				'mothers_name'           => $data['mothers_name'] ?? null,
-				'driving_license_number' => $data['driving_license_number'] ?? null,
-				'nid_number'             => $data['nid_number'] ?? null,
-				'blood_group'            => $data['blood_group'] ?? null,
-				'educational_info'       => $filtered_educations,
-				'address_id'             => $address_id,
-				'experience_level'       => $data['experience_level'] ?? null,
-				'employee_benefits'      => $data['employee_benefits'] ?? (object) array(),
-				'employee_leaves'        => $data['employee_leaves'] ?? (object) array(),
-				
-				'enable_signing_bonus'   => $data['enable_signing_bonus'] ?? false,
-				'signing_bonus_amount'   => $data['signing_bonus_amount'] ?? '',
-				
-				'enable_other_bonus'     => $data['enable_other_bonus'] ?? false,
-				'other_bonus_amount'     => $data['other_bonus_amount'] ?? '',
-				
+				'employee_id'                => $data['employee_id'], // Mandatory. Duplicate checking is supposed to be done in the earlier callstack.
+				'user_phone'                 => $data['user_phone'] ?? null,
+				'birth_date'                 => $data['birth_date'] ?? null,
+				'gender'                     => $data['gender'] ?? null,
+				'marital_status'             => $data['marital_status'] ?? null,
+				'fathers_name'               => $data['fathers_name'] ?? null,
+				'mothers_name'               => $data['mothers_name'] ?? null,
+				'driving_license_number'     => $data['driving_license_number'] ?? null,
+				'nid_number'                 => $data['nid_number'] ?? null,
+				'blood_group'                => $data['blood_group'] ?? null,
+				'educational_info'           => $filtered_educations,
+				'address_id'                 => $address_id,
+				'experience_level'           => $data['experience_level'] ?? null,
+				'employee_benefits'          => $data['employee_benefits'] ?? (object) array(),
+				'employee_leaves'            => $data['employee_leaves'] ?? (object) array(),
+				'employee_documents'         => $data['employee_documents'] ?? null,
+				'employee_trainings'         => $data['employee_trainings'] ?? null,
+
+				'enable_signing_bonus'       => $data['enable_signing_bonus'] ?? false,
+				'signing_bonus_amount'       => $data['signing_bonus_amount'] ?? '',
+
+				'enable_other_bonus'         => $data['enable_other_bonus'] ?? false,
+				'other_bonus_amount'         => $data['other_bonus_amount'] ?? '',
+
 				'offer_equity_compensation'  => $data['offer_equity_compensation'] ?? false,
 				'equity_compensation_amount' => $data['equity_compensation_amount'] ?? '',
-				
+
 				...$emergency,
 				...$links,
 			)
