@@ -72,7 +72,7 @@ export default function EmployeeBenefitForm() {
 								<div
 									className={'color-text-light font-size-13 line-height-15 font-weight-500'.classNames()}
 								>
-									{__('Do you want to include one-time signing bonus?')}
+									{__('Do you want to include other bonus?')}
 								</div>
 							</div>
 							<div className={'d-flex align-items-center justify-content-end column-gap-5'.classNames()}>
@@ -81,6 +81,19 @@ export default function EmployeeBenefitForm() {
 									onChange={(checked) => onChange('enable_other_bonus', checked )} />
 							</div>
 						</div>
+						{
+							!values.enable_other_bonus ? null :
+							<div className={'margin-top-20'.classNames()}>
+								<div
+									className={'d-flex font-size-17 font-weight-500 color-text margin-bottom-10'.classNames()}
+								>
+									{__('Other bonus amount')}
+								</div>
+								<TextField 
+									value={`${currency_symbol} ${values.other_bonus_amount || ''}`} 
+									onChange={(v) => onChange('other_bonus_amount', (v || '').replace(/\D/g, ''))} />
+							</div>
+						}
 					</div>
 					<div
 						className={
@@ -95,13 +108,28 @@ export default function EmployeeBenefitForm() {
 								<div
 									className={'color-text-light font-size-13 line-height-15 font-weight-500'.classNames()}
 								>
-									{__('Do you want to include one-time signing bonus?')}
+									{__('Do you want to offer equity compensation?')}
 								</div>
 							</div>
 							<div className={'d-flex align-items-center justify-content-end column-gap-5'.classNames()}>
-								<ToggleSwitch checked={toggle} onChange={() => setToggle(!toggle)} />
+								<ToggleSwitch 
+									checked={values.offer_equity_compensation ? true : false} 
+									onChange={(c) => onChange('offer_equity_compensation', c)} />
 							</div>
 						</div>
+						{
+							!values.offer_equity_compensation ? null :
+							<div className={'margin-top-20'.classNames()}>
+								<div
+									className={'d-flex font-size-17 font-weight-500 color-text margin-bottom-10'.classNames()}
+								>
+									{__('Equity compensation amount')}
+								</div>
+								<TextField 
+									value={`${currency_symbol} ${values.equity_compensation_amount || ''}`} 
+									onChange={(v) => onChange('equity_compensation_amount', (v || '').replace(/\D/g, ''))} />
+							</div>
+						}
 					</div>
 				</div>
 

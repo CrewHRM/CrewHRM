@@ -9,6 +9,7 @@ namespace CrewHRM\Controllers;
 
 use CrewHRM\Models\Application;
 use CrewHRM\Models\Field;
+use CrewHRM\Models\FileManager;
 use CrewHRM\Models\Job;
 use CrewHRM\Models\Pipeline;
 use CrewHRM\Models\Settings;
@@ -53,7 +54,7 @@ class ApplicationHandler {
 				'administrator',
 			),
 		),
-		'searchUser'             => array(
+		'instantSearch' => array(
 			'role' => array(
 				'administrator',
 			),
@@ -255,14 +256,30 @@ class ApplicationHandler {
 	/**
 	 * Search for usre
 	 *
-	 * @param string $keyword The keyword to search with
-	 * @param array  $exclude Exclude user id from search when already added in list suggestion
+	 * @param array $args Data filter arguments
+	 *
 	 * @return void
 	 */
-	public static function searchUser( string $keyword, array $exclude = array(), string $role = '' ) {
-		$exclude = array_filter( $exclude, 'is_numeric' );
-		$users   = User::searchUser( $keyword, $role, $exclude );
+	public static function instantSearch( array $args ) {
 
-		wp_send_json_success( array( 'users' => $users ) );
+		$exclude = array_filter( ( $args['exclude'] ?? array() ), 'is_numeric' );
+
+		if ( 'users' === $args['source'] ) {
+			wp_send_json_success(
+				array(
+					'results' => User::searchUser( ( $args['keyword'] ?? '' ), ( $args['role'] ?? '' ), $exclude )
+				)
+			);
+		}
+
+		if ( 'media' === $args['source'] ) {
+			wp_send_json_success(
+				array(
+					'results' => FileManager::searchMedia( ( $args['keyword'] ?? '' ), ( $args['mime_type'] ?? '' ), $exclude )
+				)
+			);
+		}
+		
+		wp_send_json_error( array( 'message' => __( 'Invalid access', 'crewhrm' ) ) );
 	}
 }

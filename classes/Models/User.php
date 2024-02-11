@@ -117,12 +117,23 @@ class User {
 			ARRAY_A
 		);
 
-		// Apply avatar url
+		$users_array = array();
+
+		// Convert to generic data structure in favour of instant search component
 		foreach ( $users as $index => $user ) {
-			$users[ $index ]['avatar_url'] = get_avatar_url( $user['user_id'] );
+
+			$emp_info = Employment::getMinimalInfo( $user['user_id'], array() );
+
+			$users_array[] = array(
+				'id'            => $user['user_id'],
+				'thumbnail_url' => get_avatar_url( $user['user_id'] ),
+				'label'         => $user['display_name'],
+				'unique_name'   => $user['email'],
+				'hint'          => $emp_info['designation'] ?? null
+			);
 		}
 
-		return $users;
+		return $users_array;
 	}
 
 	/**
@@ -183,7 +194,7 @@ class User {
 			'avatar_url'       => get_avatar_url( $user_id ),
 			'weekly_schedules' => $employment ? WeeklySchedule::getSchedule( $employment['employment_id'] ) : null,
 			'department_name'  => $employment ? Department::getDepartmentNameById( $employment['department_id'] ) : null,
-			'reporting_person' => $employment ? Employment::getReportingPersonInfo( $employment['reporting_person_user_id'] ?? 0 ) : null,
+			'reporting_person' => $employment ? Employment::getMinimalInfo( $employment['reporting_person_user_id'] ?? 0 ) : null,
 			'subordinates'     => Employment::getSubordinates( $user_id ),
 			'employments'      => Employment::getEmployments( $user_id ),
 			...$meta,
@@ -241,7 +252,7 @@ class User {
 	 */
 	public static function getUsers( array $args ) {
 
-		$limit  = 1;
+		$limit  = 20;
 		$page   = Utilities::getInt( $args['page'] ?? 1, 1 );
 		$offset = ( $page - 1 ) * $limit;
 
@@ -424,6 +435,16 @@ class User {
 				'experience_level'       => $data['experience_level'] ?? null,
 				'employee_benefits'      => $data['employee_benefits'] ?? (object) array(),
 				'employee_leaves'        => $data['employee_leaves'] ?? (object) array(),
+				
+				'enable_signing_bonus'   => $data['enable_signing_bonus'] ?? false,
+				'signing_bonus_amount'   => $data['signing_bonus_amount'] ?? '',
+				
+				'enable_other_bonus'     => $data['enable_other_bonus'] ?? false,
+				'other_bonus_amount'     => $data['other_bonus_amount'] ?? '',
+				
+				'offer_equity_compensation'  => $data['offer_equity_compensation'] ?? false,
+				'equity_compensation_amount' => $data['equity_compensation_amount'] ?? '',
+				
 				...$emergency,
 				...$links,
 			)

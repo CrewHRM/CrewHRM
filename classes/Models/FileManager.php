@@ -7,6 +7,8 @@
 
 namespace CrewHRM\Models;
 
+use CrewHRM\Helpers\_String;
+
 /**
  * File and directory handler class
  */
@@ -179,5 +181,62 @@ class FileManager {
 				wp_delete_attachment( $id, $force_delete );
 			}
 		}
+	}
+
+	/**
+	 * Search for media
+	 *
+	 * @param stirng $keyword
+	 * @param string $mime
+	 * @param array $exclude
+	 *
+	 * @return array
+	 */
+	public static function searchMedia( string $keyword, string $mime, array $exclude ) {
+
+		global $wpdb;
+
+		$where_clause = "";
+
+		// Keyword filter
+		$where_clause .= $wpdb->prepare( " AND post_title LIKE %s", "%{$wpdb->esc_like( $keyword )}%" );
+
+		// Mime type filter
+		if ( ! empty( $mime ) ) {
+			$where_clause .= $wpdb->prepare( " AND post_mime_type=%d", $mime );
+		}
+
+		// Exclude certain IDs from result
+		if ( ! empty( $exclude ) ) {
+			$ids_places = _String::getPlaceHolders( $exclude );
+			$where_clause .= " AND ID NOT IN ({$ids_places})";
+		}
+
+		$results = $wpdb->get_results(
+			"SELECT 
+				* 
+			FROM 
+				{$wpdb->posts} 
+			WHERE 
+				post_type = 'attachment'
+				{$where_clause}
+			LIMIT 50",
+			ARRAY_A
+		);
+
+
+		$media_array = array();
+
+		foreach ( $results as $result ) {
+			$media_array[] = array(
+				'id'            => ( int ) $result['ID'],
+				'label'         => $result['post_title'],
+				'unique_name'   => $result['post_name'],
+				'thumbnail_url' => get_the_post_thumbnail_url( $result['ID'] ),
+				'permalink'     => get_post_permalink( $result['ID'] )
+			);
+		}
+		
+		return $media_array;
 	}
 }

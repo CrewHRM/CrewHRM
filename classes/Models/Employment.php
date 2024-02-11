@@ -100,7 +100,7 @@ class Employment {
 
 		// Get employment specific related data
 		foreach ( $rows as $index => $row ) {
-			$rows[ $index ]['reporting_person'] = self::getReportingPersonInfo( $row['reporting_person_user_id'] ?? 0 );
+			$rows[ $index ]['reporting_person'] = self::getMinimalInfo( $row['reporting_person_user_id'] ?? 0 );
 			$rows[ $index ]['department_name']  = ! empty( $row['department_id'] ) ? Department::getDepartmentNameById( $row['department_id'] ) : null;
 		}
 
@@ -113,10 +113,10 @@ class Employment {
 	 * @param int $user_id
 	 * @return array|null
 	 */
-	public static function getReportingPersonInfo( $user_id ) {
+	public static function getMinimalInfo( $user_id, $fallback = null ) {
 
 		if ( empty( $user_id ) ) {
-			return null;
+			return $fallback;
 		}
 
 		// Get the latest employment of the reporting person

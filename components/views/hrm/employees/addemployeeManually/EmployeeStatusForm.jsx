@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useContext } from 'react'
 import { useParams } from 'react-router-dom';
 
 import { __ } from 'crewhrm-materials/helpers.jsx';
@@ -7,7 +7,7 @@ import { TextField } from 'crewhrm-materials/text-field/text-field.jsx';
 import { DropDown } from 'crewhrm-materials/dropdown/dropdown.jsx';
 import { TagField } from 'crewhrm-materials/tag-field/tag-field.jsx';
 import { attendance_types } from 'crewhrm-materials/data.jsx';
-import { UserSearch } from 'crewhrm-materials/user-search.jsx';
+import { InstantSearch } from 'crewhrm-materials/instant-search.jsx';
 
 import {ContextAddEmlpoyeeManually} from './index.jsx';
 import AddEmployeeCss from './AddManually.module.scss';
@@ -25,8 +25,8 @@ export default function EmployeeStatusForm() {
 	
 	const addReportingPerson=(user)=>{
 		onChange({
-			reporting_person: user ? {avatar_url: user.avatar_url, display_name: user.display_name} : null,
-			reporting_person_user_id: user ? user.user_id : null
+			reporting_person: user ? {avatar_url: user.thumbnail_url, display_name: user.label} : null,
+			reporting_person_user_id: user ? user.id : null
 		});
 	}
 	
@@ -150,11 +150,15 @@ export default function EmployeeStatusForm() {
 							>
 								{__('Reporting person name')}
 							</div>
-							<UserSearch 
+							<InstantSearch 
 								onAdd={addReportingPerson}
-								role='crewhrm-employee'
-								exclude={[{user_id}]}
-								placeholder={__('ex. John doe')}/>
+								placeholder={__('ex. John doe')}
+								args={{
+									source: 'users', 
+									role: 'crewhrm-employee', 
+									exclude: [user_id]
+								}}
+							/>
 						</div>
 					</div>
 					{
