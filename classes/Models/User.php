@@ -268,10 +268,16 @@ class User {
 				"SELECT 
 					_user.ID AS user_id,
 					_user.display_name,
-					_user.user_email
+					_user.user_email,
+					_employment.designation,
+					_employment.employment_status,
+					_employment.department_id,
+					_employment.employment_type,
+					_employment.hire_date
 				FROM 
 					{$wpdb->users} _user 
 					INNER JOIN {$wpdb->usermeta} _meta ON _user.ID=_meta.user_id AND _meta.meta_key=%s AND _meta.meta_value=%s
+					LEFT JOIN {$wpdb->crewhrm_employments} _employment ON _employment.employee_user_id=_user.ID
 				WHERE 
 					1=1 
 					{$where_clause}
@@ -313,15 +319,16 @@ class User {
 			$meta = self::getMeta( $user['user_id'] );
 
 			$users_array[] = array(
-				'user_id'         => $user['user_id'],
-				'avatar_url'      => get_avatar_url( $user['user_id'] ),
-				'email'           => $user['user_email'],
-				'display_name'    => $user['display_name'],
-				'designation'     => $meta['designation'] ?? null,
-				'department_name' => ! empty( $meta['department_id'] ) ? Department::getDepartmentNameById( $meta['department_id'] ) : null,
-				'employment_type' => $meta['employment_type'] ?? null,
-				'hire_date'       => $meta['hire_date'] ?? null,
-				'address'         => ! empty( $meta['address_id'] ) ? Address::getAddressById( $meta['address_id'] ) : null,
+				'user_id'           => $user['user_id'],
+				'avatar_url'        => get_avatar_url( $user['user_id'] ),
+				'email'             => $user['user_email'],
+				'display_name'      => $user['display_name'],
+				'employment_status' => $user['employment_status'] ?? null,
+				'designation'       => $user['designation'] ?? null,
+				'department_name'   => ! empty( $user['department_id'] ) ? Department::getDepartmentNameById( $user['department_id'] ) : null,
+				'employment_type'   => $user['employment_type'] ?? null,
+				'hire_date'         => $user['hire_date'] ?? null,
+				'address'           => ! empty( $meta['address_id'] ) ? Address::getAddressById( $meta['address_id'] ) : null,
 			);
 		}
 

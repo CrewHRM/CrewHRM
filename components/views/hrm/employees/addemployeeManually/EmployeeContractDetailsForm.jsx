@@ -54,7 +54,7 @@ export default function EmployeeContractDetailsForm() {
 							</div>
 							<TextField 
 								placeholder={`${currenctSymbols[salary_currency]} 0.00`} 
-								value={`${currenctSymbols[salary_currency]} ${values.annual_gross_salary || ''}`} 
+								value={`${currenctSymbols[salary_currency] || ''} ${values.annual_gross_salary || ''}`} 
 								onChange={(v) => onChange('annual_gross_salary', (v || '').replace(/\D/g, ''))} />
 						</div>
 					</div>

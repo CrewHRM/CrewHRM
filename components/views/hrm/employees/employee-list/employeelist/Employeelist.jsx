@@ -12,7 +12,7 @@ import { ContextToast } from 'crewhrm-materials/toast/toast.jsx';
 
 import EmployeelistCss from './employeelist.module.scss';
 import SearchImg from '../img/search-normal-add-8.svg';
-import { employment_types } from 'crewhrm-materials/data';
+import { countries_object, employment_statuses, employment_types } from 'crewhrm-materials/data';
 
 const options = [
 	{
@@ -49,8 +49,14 @@ const columns = {
 		label: __('Location'),
 		description: __('Location\/address of the employee')
 	},
-	/* hire_date: __('Hire Date'),
-	employment_status: __('Employment Status') */
+	hire_date: {
+		label: __('Hire Date'),
+		description: __('The hire date')
+	},
+	employment_status: {
+		label: __('Employment Status'),
+		description: __('Employment status')
+	}
 };
 
 export default function Employeelist() {
@@ -222,120 +228,130 @@ export default function Employeelist() {
 						</div>
 					</div>
 					<div className={'margin-top-20'.classNames() + 'data-table'.classNames(EmployeelistCss)}>
-						<div className={''.classNames() + 'main-table'.classNames(EmployeelistCss)}>
-							<table>
-								<thead>
-									<tr>
-										<th>
-											<div className={'first-column'.classNames(EmployeelistCss)}>
-												<input
-													type="checkbox"
-													checked={false}
-													onChange={() => 0}
-												/>
-												<span>{__('ID')}</span>
-												<span>{__('Name')}</span>
-											</div>
-										</th>
+						<div className={'main-table'.classNames(EmployeelistCss)}>
+							{
+								(!state.fetching && !state.employees.length) ? 
+								<div>
+									{__('No Employee found')}
+								</div> :
+								<table>
+									<thead>
+										<tr>
+											<th>
+												<div className={'first-column'.classNames(EmployeelistCss)}>
+													<input
+														type="checkbox"
+														checked={false}
+														onChange={() => 0}
+													/>
+													<span>{__('ID')}</span>
+													<span>{__('Name')}</span>
+												</div>
+											</th>
+											{
+												column_keys.map(c_id=>{
+													return <th key={c_id}>
+														{columns[c_id].label}
+													</th>
+												})
+											}
+											<th></th>
+										</tr>
+									</thead>
+									<tbody>
 										{
-											column_keys.map(c_id=>{
-												return <th key={c_id}>
-													{columns[c_id].label}
-												</th>
+											state.employees.map((employee) => {
+
+												const {
+													user_id, 
+													avatar_url, 
+													display_name,
+													email,
+													designation,
+													department_name,
+													employment_type,
+													employment_status,
+													address={},
+													hire_date,
+												} = employee;
+
+												return <tr key={user_id}>
+													<th>
+														<div className={'table-shadow'.classNames(EmployeelistCss)}></div>
+														<div
+															className={'table-stikcy-glasseffect'.classNames(EmployeelistCss)}
+														></div>
+														<div className={'first-column'.classNames(EmployeelistCss)}>
+															<input
+																type="checkbox"
+																checked={false}
+																onChange={() => 0}
+															/>
+															<div className={'color-text-light'.classNames()}>001</div>
+															<div
+																className={'d-flex align-items-center column-gap-10'.classNames()}
+															>
+																<img 
+																	src={avatar_url} 
+																	style={{width: '32px', height: '32px', borderRadius: '50%'}}
+																/>
+																<Link to={`/employees/profile/${user_id}/`} className={'color-text'.classNames()}>
+																	<span>{display_name}</span>
+																</Link>
+																{/* <span
+																	className={
+																		'color-text-light margin-left-5'.classNames() +
+																		'table-badge'.classNames(EmployeelistCss)
+																	}
+																>
+																	Invited
+																</span> */}
+															</div>
+														</div>
+													</th>
+													{
+														column_keys.map(c_id=>{
+															return <td key={c_id}>
+																{c_id !== 'email' ? null : email}
+																{c_id !== 'role' ? null : designation}
+																{c_id !== 'department' ? null : department_name}
+																{c_id !== 'type' ? null : (employment_types[employment_type] || null)}
+																{c_id !== 'location' ? null : countries_object[address?.country_code]}
+																{c_id !== 'hire_date' ? null : hire_date}
+																{c_id !== 'employment_status' ? null : employment_statuses[employment_status]}
+															</td>
+														})
+													}
+													<td>
+														<Options
+															onClick={action=>employeeAction(action, employee)}
+															options={options.map((o) => {
+																return {
+																	id: o.name,
+																	label: (
+																		<span className={'d-inline-flex align-items-center column-gap-10'.classNames()}>
+																			<i className={o.icon.classNames() + 'font-size-24 color-text'.classNames()}></i>
+
+																			<span className={'font-size-15 font-weight-500 line-height-25 color-text'.classNames()}>
+																				{o.label}
+																			</span>
+																		</span>
+																	),
+																};
+															})}
+														>
+															<i
+																className={'ch-icon ch-icon-more color-text-light font-size-20 cursor-pointer d-inline-block margin-left-15'.classNames()}
+															></i>
+														</Options>
+													</td>
+												</tr>
 											})
 										}
-										<th></th>
-									</tr>
-								</thead>
-								<tbody>
-									{
-										state.employees.map((employee) => {
-
-											const {
-												user_id, 
-												avatar_url, 
-												display_name,
-												email,
-												designation,
-												department_name,
-												employment_type,
-												address,
-											} = employee;
-
-											return <tr key={user_id}>
-												<th>
-													<div className={'table-shadow'.classNames(EmployeelistCss)}></div>
-													<div
-														className={'table-stikcy-glasseffect'.classNames(EmployeelistCss)}
-													></div>
-													<div className={'first-column'.classNames(EmployeelistCss)}>
-														<input
-															type="checkbox"
-															checked={false}
-															onChange={() => 0}
-														/>
-														<div className={'color-text-light'.classNames()}>001</div>
-														<div
-															className={'d-flex align-items-center column-gap-10'.classNames()}
-														>
-															<img 
-																src={avatar_url} 
-																style={{width: '32px', height: '32px', borderRadius: '50%'}}
-															/>
-															<Link to={`/employees/profile/${user_id}/`} className={'color-text'.classNames()}>
-																<span>{display_name}</span>
-															</Link>
-															{/* <span
-																className={
-																	'color-text-light margin-left-5'.classNames() +
-																	'table-badge'.classNames(EmployeelistCss)
-																}
-															>
-																Invited
-															</span> */}
-														</div>
-													</div>
-												</th>
-												{
-													column_keys.map(c_id=>{
-														return <td key={c_id}>
-															{c_id !== 'email' ? null : email}
-															{c_id !== 'role' ? null : designation}
-															{c_id !== 'department' ? null : department_name}
-															{c_id !== 'type' ? null : (employment_types[employment_type] || null)}
-															{c_id !== 'address' ? null : getAddress((!isEmpty(address) && typeof address==='object') ? address : {})}
-														</td>
-													})
-												}
-												<td>
-													<Options
-														onClick={action=>employeeAction(action, employee)}
-														options={options.map((o) => {
-															return {
-																id: o.name,
-																label: (
-																	<span className={'d-inline-flex align-items-center column-gap-10'.classNames()}>
-																		<i className={o.icon.classNames() + 'font-size-24 color-text'.classNames()}></i>
-
-																		<span className={'font-size-15 font-weight-500 line-height-25 color-text'.classNames()}>
-																			{o.label}
-																		</span>
-																	</span>
-																),
-															};
-														})}
-													>
-														<i
-															className={'ch-icon ch-icon-more color-text-light font-size-20 cursor-pointer d-inline-block margin-left-15'.classNames()}
-														></i>
-													</Options>
-												</td>
-											</tr>
-										})
-									}
-								</tbody>
-							</table>
-
+									</tbody>
+								</table>
+							}
+							
 							<LoadingIcon show={state.fetching} center={true}/>
 						</div>
 					</div>

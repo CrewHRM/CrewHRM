@@ -230,7 +230,7 @@ class FileManager {
 			$media_array[] = array(
 				'id'            => (int) $result['ID'],
 				'label'         => $result['post_title'],
-				'unique_name'   => $result['post_name'],
+				// 'unique_name'   => $result['post_name'],
 				'thumbnail_url' => get_the_post_thumbnail_url( $result['ID'] ),
 				'permalink'     => get_post_permalink( $result['ID'] ),
 			);

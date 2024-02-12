@@ -27,7 +27,7 @@ export function Location() {
             {/* Attendance type technically */}
             <div className={'d-flex margin-bottom-30'.classNames()}>
                 <div className={'flex-1'.classNames()}>
-                    <span className={field_label_class}>{__('Job Location type')}</span>
+                    <span className={field_label_class}>{__('Workplace')}</span>
                     <TagField
                         theme="button-control"
                         behavior="checkbox"

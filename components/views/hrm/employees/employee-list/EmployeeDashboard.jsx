@@ -51,20 +51,19 @@ export function EmployeeDashboard() {
 					</div>
 				</div>
 			</StickyBar>
+			
 			<div className={'container'.classNames()} style={{ paddingTop: '40px' }}>
-				<div className={'employeelist-tab'.classNames()}>
-					{/* <Tabs
-						active={activeTab}
-						onNavigate={(active_tab) => {
-							setActiveTab(active_tab);
-						}}
-						tabs={steps}
-						theme="transparent"
-						scrollIntoViewOnChange={true}
-					/> */}
-					
-					{activeTab == 'employee_list' ? <Employeelist /> : null}
-				</div>
+				{/* <Tabs
+					active={activeTab}
+					onNavigate={(active_tab) => {
+						setActiveTab(active_tab);
+					}}
+					tabs={steps}
+					theme="transparent"
+					scrollIntoViewOnChange={true}
+				/> */}
+				
+				{activeTab == 'employee_list' ? <Employeelist /> : null}
 			</div>
 		</>
 	);

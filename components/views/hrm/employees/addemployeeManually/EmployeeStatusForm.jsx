@@ -12,13 +12,16 @@ import { InstantSearch } from 'crewhrm-materials/instant-search.jsx';
 import {ContextAddEmlpoyeeManually} from './index.jsx';
 import AddEmployeeCss from './AddManually.module.scss';
 import EmployeeIndexCss from '../index.module.scss';
+import { DateField } from 'crewhrm-materials/date-time.jsx';
 
 export default function EmployeeStatusForm() {
 	
 	const { 
 		onChange, 
 		values={}, 
-		departments=[] 
+		departments=[],
+		regex={},
+		showErrorsAlways
 	} = useContext(ContextAddEmlpoyeeManually);
 
 	const {user_id} = useParams();
@@ -39,6 +42,18 @@ export default function EmployeeStatusForm() {
 					{__('Employment info')}
 				</div>
 				<div className={'d-flex margin-top-20'.classNames()}>
+					<div style={{width: '302px'}}>
+						<div
+							className={'color-text font-size-15 line-height-18 margin-bottom-14 font-weight-500'.classNames()}
+						>
+							{__('Hire Date')}
+						</div>
+						<DateField 
+							value={values.hire_date} 
+							onChange={(v) => onChange('hire_date', v)} />
+					</div>
+				</div>
+				<div className={'d-flex margin-top-20'.classNames()}>
 					<div className={'margin-right-20'.classNames()}>
 						<div
 							className={'color-text font-size-15 line-height-18 margin-bottom-14 font-weight-500'.classNames()}
@@ -49,7 +64,10 @@ export default function EmployeeStatusForm() {
 						<TextField 
 							placeholder={__('001')} 
 							value={values.employee_id || ''} 
-							onChange={(v) => onChange('employee_id', v)} />
+							onChange={(v) => onChange('employee_id', v)}
+							regex={regex.employee_id}
+							showErrorsAlways={showErrorsAlways}
+						/>
 					</div>
 					<div className={'flex-1'.classNames()}>
 						<div
@@ -82,6 +100,8 @@ export default function EmployeeStatusForm() {
 							placeholder={__('ex. Product Designer')}
 							value={values.designation || ''}
 							onChange={(v) => onChange('designation', v)}
+							regex={regex.designation}
+							showErrorsAlways={showErrorsAlways}
 						/>
 					</div>
 				</div>
@@ -96,6 +116,8 @@ export default function EmployeeStatusForm() {
 						<DropDown
 							value={values.department_id}
 							onChange={v=>onChange('department_id', v)}
+							required={true}
+							showErrorsAlways={showErrorsAlways}
 							options={departments.map(dep=>{
 								return {
 									id: dep.department_id,
@@ -110,7 +132,7 @@ export default function EmployeeStatusForm() {
 						<div
 							className={'color-text font-size-15 line-height-18 margin-bottom-20  font-weight-500'.classNames()}
 						>
-							{__('Job Location type')}
+							{__('Workplace')}
 						</div>
 						<TagField
 							theme="button-control"

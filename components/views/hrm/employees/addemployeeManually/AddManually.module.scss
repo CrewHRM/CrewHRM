@@ -46,16 +46,21 @@
 }
 
 .addemployee-manually-top {
+
+	margin-top: 35px;
+
 	.complete-progressbar {
 		span {
 			display: inline-block;
 		}
+
 		.complete-progressbar-bar {
 			width: 60px;
 			height: 4px;
 			background-color: #e3e5e8;
 			position: relative;
 			border-radius: 40px;
+			
 			.upgradeable-progressbar-bar {
 				border-radius: 40px;
 				position: absolute;

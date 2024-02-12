@@ -50,7 +50,7 @@ export const social_fields = {
 export default function EmployeeInfoForm() {
 
 	const [setshowAdditionalInfo, setSetshowAdditionalInfo] = useState(false);
-	const { onChange, values={} } = useContext(ContextAddEmlpoyeeManually);
+	const { onChange, values={}, regex={}, showErrorsAlways } = useContext(ContextAddEmlpoyeeManually);
 	const [expand, setExpand] = useState(false);
 
 	const [avatar_preview, setAvatarPreview] = useState(null);
@@ -149,7 +149,9 @@ export default function EmployeeInfoForm() {
 						</div>
 						<TextField 
 							placeholder={__('ex. John')} 
-							value={values.first_name || ''} 
+							value={values.first_name || ''}
+							regex={regex.first_name} 
+							showErrorsAlways={showErrorsAlways}
 							onChange={(v) => onChange('first_name', v)} />
 					</div>
 					<div className={'flex-1 margin-right-10'.classNames()}>
@@ -162,6 +164,8 @@ export default function EmployeeInfoForm() {
 						<TextField 
 							placeholder={__('ex. Doe')} 
 							value={values.last_name || ''} 
+							regex={regex.last_name}
+							showErrorsAlways={showErrorsAlways}
 							onChange={(v) => onChange( 'last_name', v)} />
 					</div>
 					<div className={'flex-1'.classNames()}>
@@ -186,6 +190,8 @@ export default function EmployeeInfoForm() {
 							placeholder={__('ex. mail@example.com')}
 							type="email"
 							value={values.user_email || ''}
+							regex={regex.user_email}
+							showErrorsAlways={showErrorsAlways}
 							onChange={(v) => onChange('user_email', v)}
 						/>
 					</div>
@@ -194,7 +200,7 @@ export default function EmployeeInfoForm() {
 					<div className={'flex-1 margin-right-10'.classNames()}>
 						<div className={'color-text font-size-15 line-height-18 margin-bottom-14'.classNames()}>
 							{__('Phone number')}
-							<span className={'color-error'.classNames()}>*</span>
+							<span className={'color-error'.classNames()}></span>
 						</div>
 						<TextField
 							placeholder={__('ex 123 456 7890')}
@@ -206,9 +212,10 @@ export default function EmployeeInfoForm() {
 					<div className={'flex-1'.classNames()}>
 						<div className={'color-text font-size-15 line-height-18 margin-bottom-14'.classNames()}>
 							{__('Date of birth')}
-							<span className={'color-error'.classNames()}>*</span>
 						</div>
-						<DateField value={values.birth_date} onChange={date=>onChange('birth_date', date)}/>
+						<DateField 
+							value={values.birth_date} 
+							onChange={date=>onChange('birth_date', date)}/>
 					</div>
 				</div>
 				<div className={'d-flex margin-top-20'.classNames()}>
@@ -233,13 +240,14 @@ export default function EmployeeInfoForm() {
 						<AddressFields
 							unit_field={true}
 							values={values}
-							onChange={(name, value)=>onChange(name, value)}/>
+							onChange={(name, value)=>onChange(name, value)}
+							required={true}
+							showErrorsAlways={showErrorsAlways}/>
 					</div>
 				</div>
 
 				<div className={'color-text font-size-15 line-height-18 margin-top-20 margin-bottom-14'.classNames()}>
 					{__('Time Zone')}
-					<span className={'color-error'.classNames()}>*</span>
 				</div>
 				<div className={'d-flex margin-top-20'.classNames()}>
 					<div className={'flex-1'.classNames()}>
@@ -316,7 +324,6 @@ export default function EmployeeInfoForm() {
 					<div>
 						<div className={'color-text font-size-15 line-height-18 margin-bottom-14'.classNames()}>
 							{__('Address')}
-							<span className={'color-error'.classNames()}>*</span>
 						</div>
 					</div>
 				</div>
@@ -372,7 +379,6 @@ export default function EmployeeInfoForm() {
 										<div className={'flex-1'.classNames()}>
 											<div className={'color-text font-size-15 line-height-18 margin-bottom-14'.classNames()}>
 												{__('Program')}
-												<span className={'color-error'.classNames()}>*</span>
 											</div>
 											<TextField
 												placeholder={__('ex. Software Engineering')}
@@ -383,12 +389,11 @@ export default function EmployeeInfoForm() {
 										<div className={'flex-1'.classNames()}>
 											<div className={'color-text font-size-15 line-height-18 margin-bottom-14'.classNames()}>
 												{__('Passing Year')}
-												<span className={'color-error'.classNames()}>*</span>
 											</div>
 											<TextField
 												placeholder={__('YYYY')}
 												value={passing_year || ''}
-												onChange={(v) => updateEducation(id, 'passing_year', v)}
+												onChange={(v) => updateEducation(id, 'passing_year', (v || '').replace(/\D/g, ''))}
 											/>
 										</div>
 									</div>

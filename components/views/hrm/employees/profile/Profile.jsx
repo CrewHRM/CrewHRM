@@ -415,7 +415,7 @@ export function EmployeeProfileSingle() {
 											
 											<>
 												<span className={'color-text-light font-size-15'.classNames()}>
-													{__('Location')}
+													{__('Workplace')}
 												</span>
 												<span
 													className={'color-text font-size-15 line-height-23'.classNames()}

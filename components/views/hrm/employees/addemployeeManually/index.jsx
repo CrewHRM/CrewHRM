@@ -1,12 +1,13 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useRef, useState } from 'react';
 
-import { __, data_pointer } from 'crewhrm-materials/helpers.jsx';
+import { __ } from 'crewhrm-materials/helpers.jsx';
 import { FormActionButtons } from 'crewhrm-materials/form-action.jsx';
 import { StickyBar } from 'crewhrm-materials/sticky-bar.jsx';
 import { Tabs } from 'crewhrm-materials/tabs/tabs.jsx';
 import { request } from 'crewhrm-materials/request.jsx';
 import {ContextToast} from 'crewhrm-materials/toast/toast.jsx';
 import {InitState} from 'crewhrm-materials/init-state.jsx';
+import { LoadingIcon } from 'crewhrm-materials/loading-icon/loading-icon.jsx';
 
 import AddEmployeeCss from './AddManually.module.scss';
 import EmployeeStatusForm from './EmployeeStatusForm.jsx';
@@ -18,6 +19,8 @@ import { useNavigate, useParams } from 'react-router-dom';
 
 import EmployeeIndexCss from '../index.module.scss';
 import CongratsAddEmployee from './CongratsAddEmployee.jsx';
+import { patterns } from 'crewhrm-materials/data.jsx';
+import { isAddressValid } from 'crewhrm-materials/address-fields.jsx';
 
 export const ContextAddEmlpoyeeManually = createContext();
 
@@ -25,11 +28,20 @@ const steps = [
 	{
 		id: 'employee-info',
 		label: __('Employee Info'),
-		required: ['job_title', 'department_id', 'job_description'],
+		regex: {
+			first_name: patterns.first_name,
+			last_name: patterns.last_name,
+			user_email: patterns.email,
+		}
 	},
 	{
 		id: 'employment-status',
 		label: __('Employment Status'),
+		regex: {
+			employee_id: /\S+/,
+			designation: /\S+/,
+			department_id: /\d/
+		}
 	},
 	{
 		id: 'contract-details',
@@ -57,11 +69,14 @@ export function AddEmployeeManually({departments={}}) {
 
 	const user_id = ( isNaN(_user_id) || !_user_id ) ? 0 : _user_id;
 
+	const form_ref = useRef();
+
 	const [state, setState] = useState({
 		saving: false,
 		fetching: false,
 		last_step_passed: false,
 		error_message: null,
+		showErrorsAlways: false,
 		values: {}
 	});
 
@@ -106,7 +121,43 @@ export function AddEmployeeManually({departments={}}) {
 		});
 	}
 
-	const updateEmployee=(callback)=>{
+	const validateInputs=()=>{
+		const {regex={}} = steps.find(s=>s.id===active_tab);
+
+		let show_errors = false;
+
+		for ( let name in regex ) {
+			const value = state.values[name];
+
+			if ( regex[name] instanceof RegExp && !regex[name].test(value) ) {
+				show_errors = true;
+				break;
+			}
+		}
+
+		// Check for address exceptionally
+		if ( ! isAddressValid( state.values ) ) {
+			show_errors = true;
+		}
+
+		setState({
+			...state,
+			showErrorsAlways: show_errors
+		});
+
+		return !show_errors;
+	}
+
+	const updateEmployee=(go_next=true)=>{
+
+		if ( ! validateInputs() ) {
+			form_ref.current.scrollIntoView({
+				block: "start", 
+				inline: "nearest",
+				behavior: 'smooth'
+			});
+			return;
+		}
 
 		setState({
 			...state,
@@ -140,11 +191,13 @@ export function AddEmployeeManually({departments={}}) {
 				return;
 			}
 			
-			if ( !user_id && saved_user_id ) {
+			if ( ! user_id && saved_user_id ) {
 				navigateTab('employee-info', saved_user_id, active_tab, true);
 			}
 
-			navigateTab(1);
+			if (go_next) {
+				navigateTab(1, saved_user_id);
+			}
 		});
 	}
 
@@ -179,16 +232,27 @@ export function AddEmployeeManually({departments={}}) {
 	
 	const active_index = steps.findIndex((s) => s.id === active_tab);
 
-	return state.last_step_passed ? <CongratsAddEmployee/> : <ContextAddEmlpoyeeManually.Provider value={{onChange, values: state.values, departments}}>
+	return state.last_step_passed ? 
+	<CongratsAddEmployee/> : 
+	<ContextAddEmlpoyeeManually.Provider 
+		value={{
+			onChange, 
+			values: state.values, 
+			departments,
+			regex: steps.find(s=>s.id===active_tab)?.regex || {},
+			showErrorsAlways: state.showErrorsAlways
+		}}
+	>
 		<StickyBar title={__('People Manually')} canBack={true}>
 			<div className={'d-flex align-items-center column-gap-30'.classNames()}>
 				<div className={'d-inline-block'.classNames()}>
-					<a
-						href={`${window[data_pointer].admin_url}=${window[data_pointer].app_name}#/dashboard/jobs/editor/new/`}
+					<button
+						onClick={()=>updateEmployee(false)}
 						className={'button button-primary'.classNames()}
+						disabled={state.saving}
 					>
-						{__('Update')}
-					</a>
+						{__('Update')} <LoadingIcon show={state.saving}/>
+					</button>
 				</div>
 			</div>
 		</StickyBar>
@@ -205,7 +269,7 @@ export function AddEmployeeManually({departments={}}) {
 						className={
 							'addemployee-manually-top'.classNames(AddEmployeeCss) +
 							'container'.classNames(EmployeeIndexCss) +
-							'd-flex justify-content-space-between margin-top-40'.classNames()
+							'd-flex justify-content-space-between'.classNames()
 						}
 					>
 						<div className={'font-size-24 font-weight-600 color-text'.classNames()}>
@@ -217,9 +281,15 @@ export function AddEmployeeManually({departments={}}) {
 								'd-flex align-items-center font-size-15 line-height-20 font-weight-500 color-text'.classNames()
 							}
 						>
-							<span className={''.classNames(AddEmployeeCss) + ''.classNames()}>{active_index + 1}</span>/
-							<span className={''.classNames(AddEmployeeCss) + ''.classNames()}>{steps.length}</span>
-							<span className={'margin-left-4'.classNames()}>completed</span>
+							<span className={''.classNames(AddEmployeeCss)}>
+								{__(active_index + 1)}
+							</span>/
+							<span className={''.classNames(AddEmployeeCss)}>
+								{__(steps.length)}
+							</span>
+							<span className={'margin-left-4'.classNames()}>
+								{__('completed')}
+							</span>
 							<span
 								className={
 									'complete-progressbar-bar'.classNames(AddEmployeeCss) + 'margin-left-10'.classNames()
@@ -227,13 +297,14 @@ export function AddEmployeeManually({departments={}}) {
 							>
 								<span
 									style={{ width: `${(60 / steps.length) * (active_index + 1)}px` }}
-									className={'upgradeable-progressbar-bar'.classNames(AddEmployeeCss) + ''.classNames()}
+									className={'upgradeable-progressbar-bar'.classNames(AddEmployeeCss)}
 								></span>
 							</span>
 						</div>
 					</div>
 
 					<div
+						ref={form_ref}
 						className={
 							'd-flex flex-wrap-wrap'.classNames() +
 							'container'.classNames(EmployeeIndexCss) +
@@ -276,7 +347,7 @@ export function AddEmployeeManually({departments={}}) {
 								<FormActionButtons
 									nextText={'Save & Continue'}
 									onBack={active_index>0 ? () => navigateTab(-1) : null}
-									onNext={updateEmployee}
+									onNext={()=>updateEmployee()}
 									disabledNext={state.saving}
 									loading={state.saving}
 								/>
