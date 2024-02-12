@@ -84,7 +84,7 @@ export function Header({
                     <Link
                         to={job_permalink + 'apply/'}
                         target="_blank"
-                        className={'button button-primary button-outlined button-small'.classNames()}
+                        className={'button button-primary button-outlined button-small white-space-nowrap'.classNames()}
                     >
                         {__('Add Candidates')}
                     </Link>

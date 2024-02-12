@@ -326,7 +326,7 @@ export function Apply({ job = {}, settings={}, social_links=[] }) {
 			</div>
 		</div>
 
-		<Conditional show={is_segment}>
+		<Conditional show={is_segment && steps.length>1}>
 			<div
 				className={
 					'sequence'.classNames(style) +

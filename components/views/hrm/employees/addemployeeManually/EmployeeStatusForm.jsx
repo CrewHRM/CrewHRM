@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useState } from 'react'
 import { useParams } from 'react-router-dom';
 
 import { __ } from 'crewhrm-materials/helpers.jsx';
@@ -13,6 +13,7 @@ import {ContextAddEmlpoyeeManually} from './index.jsx';
 import AddEmployeeCss from './AddManually.module.scss';
 import EmployeeIndexCss from '../index.module.scss';
 import { DateField } from 'crewhrm-materials/date-time.jsx';
+import { DepartmentDropDown } from '../../job-editor/job-details/sections/title-description.jsx';
 
 export default function EmployeeStatusForm() {
 	
@@ -25,6 +26,11 @@ export default function EmployeeStatusForm() {
 	} = useContext(ContextAddEmlpoyeeManually);
 
 	const {user_id} = useParams();
+
+	// Store departments in state in favour of triggering change on adding new
+	const [state, setState] = useState({
+		departments: [...departments]
+	});
 	
 	const addReportingPerson=(user)=>{
 		onChange({
@@ -113,17 +119,19 @@ export default function EmployeeStatusForm() {
 							{__('Department')}
 							<span className={'color-error'.classNames()}>*</span>
 						</div>
-						<DropDown
+						<DepartmentDropDown
 							value={values.department_id}
 							onChange={v=>onChange('department_id', v)}
-							required={true}
+							departments={state.departments}
 							showErrorsAlways={showErrorsAlways}
-							options={departments.map(dep=>{
-								return {
-									id: dep.department_id,
-									label: dep.department_name
-								}
-							})}
+							required={true}
+							onAddDepartment={d=>{
+								onChange('department_id', d.id);
+								setState({
+									...state,
+									departments: d.items
+								});
+							}}
 						/>
 					</div>
 				</div>

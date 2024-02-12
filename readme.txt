@@ -125,6 +125,8 @@ You can email us using the contact form on our website to share feature ideas wi
 = v1.0.8 -> Feb 12, 2024 =
 
 * New: Employee Profile
+* Fix: Missing icons
+* Update: UI enhancements and optimizations
 
 = v1.0.7 -> Feb 09, 2024 =
 

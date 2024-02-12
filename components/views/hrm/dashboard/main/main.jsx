@@ -33,6 +33,7 @@ function CreateJobIntro({orientation="vertical"}) {
 		<Link
 			to="/dashboard/jobs/editor/new/"
 			className={'button button-primary button-medium'.classNames()}
+			style={{width: 'auto'}}
 		>
 			{__('Create A New Job')}
 		</Link>

@@ -103,18 +103,10 @@ export function AddItemModal({ endpoint, closeModal, onAdd, item_label }) {
     );
 }
 
-export function TitleAndDescription() {
-    const { values, onChange, session } = useContext(ContextJobEditor);
-    const { departments=[] } = useContext(ContextBackendDashboard);
-
-    const title_allowed_length = 200;
-    const job_title_length = values.job_title?.length || 0;
-
+export function DepartmentDropDown({value, onChange, tabindex, departments, onAddDepartment, showErrorsAlways=false, required=false}) {
+	
 	const [state, setState] = useState({
-		add_department: false,
-		slug_editor: false,
-		departments: departments,
-		job_slug: values.job_slug,
+		add_department: false
 	});
 
     const toggleDepartmentModal = (show) => {
@@ -124,6 +116,52 @@ export function TitleAndDescription() {
         });
     };
 
+	return <>
+		{
+			!state.add_department ? null : 
+			<AddItemModal 
+				endpoint='addDepartment'
+				item_label={__('Department')}
+				closeModal={()=>toggleDepartmentModal(false)}
+				onAdd={v=>{
+					onAddDepartment(v);
+					toggleDepartmentModal(false);
+				}} 
+			/>
+		}
+
+		<DropDown
+			value={value}
+			onChange={onChange}
+			tabindex={tabindex}
+			addText={__('Add Depertment')}
+			textClassName={'font-size-17 font-weight-500 line-height-25 color-text-light'.classNames()}
+			onAddClick={()=>toggleDepartmentModal(true)}
+			showErrorsAlways={showErrorsAlways}
+			required={required}
+			options={departments.map(d=>{
+				return {
+					id: d.department_id, 
+					label: d.department_name
+				}
+			})}
+		/>
+	</> 
+}
+
+export function TitleAndDescription() {
+    const { values, onChange, session } = useContext(ContextJobEditor);
+    const { departments=[] } = useContext(ContextBackendDashboard);
+
+    const title_allowed_length = 200;
+    const job_title_length = values.job_title?.length || 0;
+
+	const [state, setState] = useState({
+		slug_editor: false,
+		departments: departments,
+		job_slug: values.job_slug,
+	});
+
     const onAddDepartment = ({ id, items: departments }) => {
         // Send the new id to the parent caller
 		onChange('department_id', id);
@@ -131,7 +169,6 @@ export function TitleAndDescription() {
         // Update state with the new list, and close modal
         setState({
             ...state,
-            add_department: false,
             departments
         });
     };
@@ -145,15 +182,6 @@ export function TitleAndDescription() {
 
     return (
         <>
-			{
-				!state.add_department ? null : 
-				<AddItemModal 
-					endpoint='addDepartment'
-					item_label={__('Department')}
-					onAdd={onAddDepartment} 
-					closeModal={()=>toggleDepartmentModal(false)} />
-			}
-
             {/* Form intro */}
             <div className={'d-flex margin-bottom-30'.classNames()}>
                 <div className={'flex-1'.classNames()}>
@@ -217,6 +245,7 @@ export function TitleAndDescription() {
 								<a 
 									href={values.job_permalink} 
 									target='_blank'
+									className={'width-auto'.classNames()}
 								>
 									{window[data_pointer].careers_url}{state.slug_editor ? null : <><strong>{values.job_slug}</strong>/</>}
 								</a>
@@ -266,20 +295,13 @@ export function TitleAndDescription() {
                                 {__('Department')}
                                 <span className={'color-error'.classNames()}>*</span>
                             </span>
-                            <DropDown
-                                value={values.department_id}
-                                onChange={(v) => onChange('department_id', v)}
-                                tabindex={2}
-                                addText={__('Add Depertment')}
-                                textClassName={'font-size-17 font-weight-500 line-height-25 color-text-light'.classNames()}
-                                onAddClick={()=>toggleDepartmentModal(true)}
-                                options={state.departments.map(d=>{
-									return {
-										id: d.department_id, 
-										label: d.department_name
-									}
-								})}
-                            />
+							<DepartmentDropDown 
+								value={values.department_id} 
+								onChange={(v) => onChange('department_id', v)}
+								tabindex={2}
+								departments={state.departments}
+								onAddDepartment={onAddDepartment}
+							/>
                         </div>
                         <div className={'flex-1 margin-left-10'.classNames()}>
                             <span className={field_label_class}>{__('Internal Job code')}</span>
