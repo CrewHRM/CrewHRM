@@ -144,7 +144,7 @@ class Stage {
 	 */
 	public static function getStagesByJobId( $job_id ) {
 		$is_singular = ! is_array( $job_id );
-		$ids_in      = _Array::getArray( $job_id, true, 0 );
+		$ids_in      = array_values( _Array::getArray( $job_id, true, 0 ) );
 		$ids_places  = _String::getPlaceHolders( $ids_in );
 
 		global $wpdb;
@@ -352,7 +352,7 @@ class Stage {
 
 		// Prepare arguments
 		$is_singular = ! is_array( $job_id );
-		$job_ids     = _Array::getArray( $job_id, true );
+		$job_ids     = array_values( _Array::getArray( $job_id, true ) );
 		if ( empty( $job_ids ) ) {
 			return array();
 		}

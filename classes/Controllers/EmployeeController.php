@@ -108,9 +108,11 @@ class EmployeeController {
 	public static function getEmployeeList( array $filters = array() ) {
 
 		$users = User::getUsers(
-			array(
-				...$filters,
-				'role' => User::ROLE_EMPLOYEE,
+			array_merge(
+				$filters,
+				array(
+					'role' => User::ROLE_EMPLOYEE,
+				)
 			)
 		);
 

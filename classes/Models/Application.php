@@ -123,7 +123,7 @@ class Application {
 	 */
 	public static function deleteApplication( $application_id ) {
 
-		$ids        = _Array::getArray( $application_id, true, 0 );
+		$ids        = array_values( _Array::getArray( $application_id, true, 0 ) );
 		$ids_places = _String::getPlaceHolders( $ids );
 
 		global $wpdb;
@@ -297,7 +297,7 @@ class Application {
 		// Prepare disqualified IDs to get or not get applicant by
 		$negate_in       = $get_qualified ? ' NOT ' : '';
 		$disq_ids        = self::getDisqualifiedAppIDs( $job_id, $disq_stage_id );
-		$disq_ids        = _Array::getArray( $disq_ids, false, 0 );
+		$disq_ids        = array_values( _Array::getArray( $disq_ids, false, 0 ) );
 		$disq_ids_places = _String::getPlaceHolders( $disq_ids );
 
 		// Run query and get the application IDs
@@ -325,7 +325,7 @@ class Application {
 		}
 
 		// Get data now by the IDs as it's complicated to get all together
-		$application_ids = _Array::getArray( $application_ids, false, 0 );
+		$application_ids = array_values( _Array::getArray( $application_ids, false, 0 ) );
 		$ids_places      = _String::getPlaceHolders( $application_ids );
 
 		// Get the resutls

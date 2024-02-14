@@ -76,7 +76,7 @@ class Department {
 		}
 
 		// Prepare IDs to delete stages by
-		$current_ids = _Array::getArray( $current_ids, false, 0 );
+		$current_ids = array_values( _Array::getArray( $current_ids, false, 0 ) );
 		$ids_places  = _String::getPlaceHolders( $current_ids );
 
 		global $wpdb;

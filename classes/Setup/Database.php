@@ -24,6 +24,22 @@ class Database {
 	public function __construct() {
 		$this->preloadTablesNames();
 		add_action( 'crewhrm_activated', array( $this, 'importDB' ) );
+		add_action( 'upgrader_process_complete', array( $this, 'importDBOnUpdate', 10, 2 ) );
+	}
+
+	/**
+	 * Trigger import db function on plugin update
+	 *
+	 * @param object $upgrader_object
+	 * @param array $options
+	 * @return void
+	 */
+	public function importDBOnUpdate( $upgrader_object, $options ) {
+		if ( 'plugin' === $options['type'] && 'update' === $options['action'] ) {
+			if ( in_array( Main::$configs->basename, $options['plugins'] ) ) {
+				$this->importDB();
+			}
+		}
 	}
 
 	/**

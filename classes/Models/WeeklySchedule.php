@@ -86,6 +86,7 @@ class WeeklySchedule {
 
 		// Delete all slots except remaings
 		if ( ! empty( $remaining_ids ) ) {
+			$remaining_ids = array_values( $remaining_ids );
 			$ids_places    = _String::getPlaceHolders( $remaining_ids );
 			$where_clause .= $wpdb->prepare( " AND schedule_id NOT IN ({$ids_places})", ...$remaining_ids );
 		}

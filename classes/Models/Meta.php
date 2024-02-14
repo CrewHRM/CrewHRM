@@ -206,6 +206,7 @@ class Meta {
 
 		global $wpdb;
 
+		$object_ids = array_values( $object_ids );
 		$ids_places = _String::getPlaceHolders( $object_ids );
 		$meta_key   = $meta_key ? esc_sql( $meta_key ) : null;
 		$key_clause = $meta_key ? $wpdb->prepare( ' AND meta_key=%s', $meta_key ) : '';
@@ -232,7 +233,7 @@ class Meta {
 		global $wpdb;
 
 		$objects    = _Array::appendColumn( $objects, 'meta', (object) array() );
-		$obj_ids    = _Array::getArray( array_keys( $objects ), false, 0 );
+		$obj_ids    = array_values( _Array::getArray( array_keys( $objects ), false, 0 ) );
 		$ids_places = _String::getPlaceHolders( $obj_ids );
 
 		$where_clause = '';

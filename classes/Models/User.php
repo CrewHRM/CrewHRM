@@ -81,7 +81,7 @@ class User {
 		global $wpdb;
 
 		$keyword    = esc_sql( $keyword );
-		$skip_ids   = _Array::getArray( $skip_ids, false, 0 );
+		$skip_ids   = array_values( _Array::getArray( $skip_ids, false, 0 ) );
 		$ids_places = _String::getPlaceHolders( $skip_ids );
 
 		$role_clause = ! empty( $role ) ? $wpdb->prepare( ' AND _meta.meta_value=%s', $role ) : '';
@@ -179,27 +179,29 @@ class User {
 		$meta = self::getMeta( $user_id );
 
 		// Get employment data
-		$employment = Employment::getLatestEmployment( $user_id );
+		$employment = Employment::getLatestEmployment( $user_id, array() );
 
 		// Get address
 		$address = ! empty( $meta['address_id'] ) ? Address::getAddressById( $meta['address_id'], array() ) : array();
 
-		return array(
-			'user_id'          => $user_id,
-			'user_id'          => $user_id,
-			'first_name'       => $user->first_name,
-			'last_name'        => $user->last_name,
-			'user_email'       => $user->user_email,
-			'display_name'     => $user->display_name,
-			'avatar_url'       => get_avatar_url( $user_id ),
-			'weekly_schedules' => $employment ? WeeklySchedule::getSchedule( $employment['employment_id'] ) : null,
-			'department_name'  => $employment ? Department::getDepartmentNameById( $employment['department_id'] ) : null,
-			'reporting_person' => $employment ? Employment::getMinimalInfo( $employment['reporting_person_user_id'] ?? 0 ) : null,
-			'subordinates'     => Employment::getSubordinates( $user_id ),
-			'employments'      => Employment::getEmployments( $user_id ),
-			...$meta,
-			...( $employment ?? array() ),
-			...$address,
+		return array_merge(
+			array(
+				'user_id'          => $user_id,
+				'user_id'          => $user_id,
+				'first_name'       => $user->first_name,
+				'last_name'        => $user->last_name,
+				'user_email'       => $user->user_email,
+				'display_name'     => $user->display_name,
+				'avatar_url'       => get_avatar_url( $user_id ),
+				'weekly_schedules' => $employment ? WeeklySchedule::getSchedule( $employment['employment_id'] ) : null,
+				'department_name'  => $employment ? Department::getDepartmentNameById( $employment['department_id'] ) : null,
+				'reporting_person' => $employment ? Employment::getMinimalInfo( $employment['reporting_person_user_id'] ?? 0 ) : null,
+				'subordinates'     => Employment::getSubordinates( $user_id ),
+				'employments'      => Employment::getEmployments( $user_id ),
+			),
+			$meta,
+			$employment,
+			$address
 		);
 	}
 
@@ -426,36 +428,37 @@ class User {
 		// Update meta data that can't be added in user table or anything native by WP
 		self::updateMeta(
 			$user_id,
-			array(
-				'employee_id'                => $data['employee_id'], // Mandatory. Duplicate checking is supposed to be done in the earlier callstack.
-				'user_phone'                 => $data['user_phone'] ?? null,
-				'birth_date'                 => $data['birth_date'] ?? null,
-				'gender'                     => $data['gender'] ?? null,
-				'marital_status'             => $data['marital_status'] ?? null,
-				'fathers_name'               => $data['fathers_name'] ?? null,
-				'mothers_name'               => $data['mothers_name'] ?? null,
-				'driving_license_number'     => $data['driving_license_number'] ?? null,
-				'nid_number'                 => $data['nid_number'] ?? null,
-				'blood_group'                => $data['blood_group'] ?? null,
-				'educational_info'           => $filtered_educations,
-				'address_id'                 => $address_id,
-				'experience_level'           => $data['experience_level'] ?? null,
-				'employee_benefits'          => $data['employee_benefits'] ?? (object) array(),
-				'employee_leaves'            => $data['employee_leaves'] ?? (object) array(),
-				'employee_documents'         => $data['employee_documents'] ?? null,
-				'employee_trainings'         => $data['employee_trainings'] ?? null,
+			array_merge(
+				array(
+					'employee_id'                => $data['employee_id'], // Mandatory. Duplicate checking is supposed to be done in the earlier callstack.
+					'user_phone'                 => $data['user_phone'] ?? null,
+					'birth_date'                 => $data['birth_date'] ?? null,
+					'gender'                     => $data['gender'] ?? null,
+					'marital_status'             => $data['marital_status'] ?? null,
+					'fathers_name'               => $data['fathers_name'] ?? null,
+					'mothers_name'               => $data['mothers_name'] ?? null,
+					'driving_license_number'     => $data['driving_license_number'] ?? null,
+					'nid_number'                 => $data['nid_number'] ?? null,
+					'blood_group'                => $data['blood_group'] ?? null,
+					'educational_info'           => $filtered_educations,
+					'address_id'                 => $address_id,
+					'experience_level'           => $data['experience_level'] ?? null,
+					'employee_benefits'          => $data['employee_benefits'] ?? (object) array(),
+					'employee_leaves'            => $data['employee_leaves'] ?? (object) array(),
+					'employee_documents'         => $data['employee_documents'] ?? null,
+					'employee_trainings'         => $data['employee_trainings'] ?? null,
 
-				'enable_signing_bonus'       => $data['enable_signing_bonus'] ?? false,
-				'signing_bonus_amount'       => $data['signing_bonus_amount'] ?? '',
+					'enable_signing_bonus'       => $data['enable_signing_bonus'] ?? false,
+					'signing_bonus_amount'       => $data['signing_bonus_amount'] ?? '',
 
-				'enable_other_bonus'         => $data['enable_other_bonus'] ?? false,
-				'other_bonus_amount'         => $data['other_bonus_amount'] ?? '',
+					'enable_other_bonus'         => $data['enable_other_bonus'] ?? false,
+					'other_bonus_amount'         => $data['other_bonus_amount'] ?? '',
 
-				'offer_equity_compensation'  => $data['offer_equity_compensation'] ?? false,
-				'equity_compensation_amount' => $data['equity_compensation_amount'] ?? '',
-
-				...$emergency,
-				...$links,
+					'offer_equity_compensation'  => $data['offer_equity_compensation'] ?? false,
+					'equity_compensation_amount' => $data['equity_compensation_amount'] ?? '',
+				),
+				$emergency,
+				$links
 			)
 		);
 

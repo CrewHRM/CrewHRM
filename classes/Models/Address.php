@@ -64,7 +64,7 @@ class Address {
 	 * @return void
 	 */
 	public static function deleteAddress( $address_id ) {
-		$ids        = _Array::getArray( $address_id, true, 0 );
+		$ids        = array_values( _Array::getArray( $address_id, true, 0 ) );
 		$ids_places = _String::getPlaceHolders( $ids );
 
 		global $wpdb;
