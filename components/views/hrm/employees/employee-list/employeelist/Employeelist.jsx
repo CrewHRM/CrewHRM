@@ -272,6 +272,7 @@ export default function Employeelist() {
 													employment_type,
 													employment_status,
 													address={},
+													employee_id,
 													hire_date,
 												} = employee;
 
@@ -287,7 +288,9 @@ export default function Employeelist() {
 																checked={false}
 																onChange={() => 0}
 															/>
-															<div className={'color-text-light'.classNames()}>001</div>
+															<div className={'color-text-light'.classNames()}>
+																{employee_id}
+															</div>
 															<div
 																className={'d-flex align-items-center column-gap-10'.classNames()}
 															>

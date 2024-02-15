@@ -325,6 +325,7 @@ class User {
 				'avatar_url'        => get_avatar_url( $user['user_id'] ),
 				'email'             => $user['user_email'],
 				'display_name'      => $user['display_name'],
+				'employee_id'       => $meta['employee_id'],
 				'employment_status' => $user['employment_status'] ?? null,
 				'designation'       => $user['designation'] ?? null,
 				'department_name'   => ! empty( $user['department_id'] ) ? Department::getDepartmentNameById( $user['department_id'] ) : null,
@@ -478,7 +479,7 @@ class User {
 
 		global $wpdb;
 		$count = (int) $wpdb->get_var(
-			"SELECT COUNT(meta_id) FROM {$wpdb->employee_meta} WHERE meta_key='employee_id'"
+			"SELECT COUNT(meta_id) FROM {$wpdb->crewhrm_employee_meta} WHERE meta_key='employee_id'"
 		);
 
 		$id     = $count + 1;

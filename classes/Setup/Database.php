@@ -16,6 +16,8 @@ use CrewHRM\Models\Settings;
  */
 class Database {
 
+	const DB_VERSION_KEY = 'crewhrm_db_version';
+
 	/**
 	 * Constructor that registeres hook to deploy database on plugin activation
 	 *
@@ -24,21 +26,20 @@ class Database {
 	public function __construct() {
 		$this->preloadTablesNames();
 		add_action( 'crewhrm_activated', array( $this, 'importDB' ) );
-		add_action( 'upgrader_process_complete', array( $this, 'importDBOnUpdate', 10, 2 ) );
+		add_action( 'admin_init', array( $this, 'importDBOnUpdate' ), 0 );
 	}
 
 	/**
 	 * Trigger import db function on plugin update
 	 *
-	 * @param object $upgrader_object
-	 * @param array $options
 	 * @return void
 	 */
-	public function importDBOnUpdate( $upgrader_object, $options ) {
-		if ( 'plugin' === $options['type'] && 'update' === $options['action'] ) {
-			if ( in_array( Main::$configs->basename, $options['plugins'] ) ) {
-				$this->importDB();
-			}
+	public function importDBOnUpdate() {
+
+		$last_version = get_option( self::DB_VERSION_KEY );
+		
+		if ( empty( $last_version ) || version_compare( $last_version, Main::$configs->version, '<' ) ) {
+			$this->importDB();
 		}
 	}
 
@@ -49,11 +50,13 @@ class Database {
 	 */
 	public function importDB() {
 		// Import Database SQL file
-		$sql_path = Main::$configs->dir . 'dist' . DIRECTORY_SEPARATOR . 'libraries' . DIRECTORY_SEPARATOR . 'db.sql';
+		$sql_path = Main::$configs->dir . 'dist/libraries/db.sql';
 		DB::import( file_get_contents( $sql_path ) );
 
 		// Import default business types
 		Settings::importBusinessTypes();
+	
+		update_option( self::DB_VERSION_KEY, Main::$configs->version, true );
 	}
 
 	/**
