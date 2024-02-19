@@ -119,6 +119,8 @@ Yes, you can translate the plugin into any language you want. You can use the Lo
 We have posted walkthrough videos on the [Crew HRM YouTube Channel](https://www.youtube.com/@crewhrm). If you have requests for video tutorials and discuss different ideas, please feel free to comment on any video or use the contact form on our website.
 = How can I suggest new features? =
 You can email us using the contact form on our website to share feature ideas with helpful screenshots, sketches, etc.
+=How can I report security bugs?=
+You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team helps validate, triage, and handle any security vulnerabilities. [Report a security vulnerability.](https://patchstack.com/database/vdp/hr-management)
 
 == Changelog ==
 
