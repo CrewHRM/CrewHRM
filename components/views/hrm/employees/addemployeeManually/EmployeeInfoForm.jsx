@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 
 import { __, getRandomString } from 'crewhrm-materials/helpers.jsx';
-import { genders, marital_statuses, blood_groups } from 'crewhrm-materials/data.jsx';
+import { genders, marital_statuses, blood_groups, patterns } from 'crewhrm-materials/data.jsx';
 import { DropDown } from 'crewhrm-materials/dropdown/dropdown.jsx';
 import { TextField } from 'crewhrm-materials/text-field/text-field.jsx';
 import { FileUpload } from 'crewhrm-materials/file-upload/file-upload.jsx';
@@ -50,7 +50,7 @@ export const social_fields = {
 export default function EmployeeInfoForm() {
 
 	const [setshowAdditionalInfo, setSetshowAdditionalInfo] = useState(false);
-	const { onChange, values={}, regex={}, showErrorsAlways } = useContext(ContextAddEmlpoyeeManually);
+	const { onChange, values={}, regex={}, showErrorsAlways, expand_additional_section } = useContext(ContextAddEmlpoyeeManually);
 	const [expand, setExpand] = useState(false);
 
 	const [avatar_preview, setAvatarPreview] = useState(null);
@@ -346,7 +346,7 @@ export default function EmployeeInfoForm() {
 				<ShowMore expand={expand} />
 			</div>
 
-			{setshowAdditionalInfo && (
+			{(setshowAdditionalInfo || expand_additional_section) ?
 				<>
 					<div
 						className={
@@ -544,6 +544,9 @@ export default function EmployeeInfoForm() {
 											value={values[`social_link_${social}`] || ''}
 											image={social_fields[social]}
 											type="url"
+											required={false}
+											regex={patterns.url}
+											showErrorsAlways={showErrorsAlways}
 											onChange={(v) => onChange(`social_link_${social}`, v)}
 										/>
 									</div>
@@ -557,8 +560,8 @@ export default function EmployeeInfoForm() {
 							</span>
 						</div> */}
 					</div>
-				</>
-			)}
+				</> : null
+			}
 		</>
 	);
 }

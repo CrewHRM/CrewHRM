@@ -146,20 +146,30 @@ export function EmployeeProfileSingle() {
 					</div>
 					<div>
 						<div className={'margin-bottom-30'.classNames() + 'employee-nameplate'.classNames(ProfileCss)}>
-							<div className={'color-text font-size-28 font-weight-600 margin-bottom-10'.classNames()}>
-								{employee.display_name} {employee.country_code ? <span>{getFlag(employee.country_code)}</span> : null}
-							</div>
-							{
-								isEmpty(meta) ? null :
-								<div
-									className={
-										'd-flex column-gap-15 color-text-light font-size-13 line-height-24 margin-bottom-10'.classNames() +
-										'basic-info'.classNames(ProfileCss)
-									}
-								>
-									{meta}
+							<div className={'d-flex align-items-flex-end column-gap-15'.classNames()}>
+								<div className={'employee-profile-img-mobile'.classNames(ProfileCss)}>
+									<img 
+										src={employee.avatar_url} 
+										style={{width: '140px', height: 'auto'}}
+									/>
 								</div>
-							}
+								<div className={'flex-1'.classNames()}>
+									<div className={'color-text font-size-28 font-weight-600 margin-bottom-10'.classNames()}>
+										{employee.display_name} {employee.country_code ? <span>{getFlag(employee.country_code)}</span> : null}
+									</div>
+									{
+										isEmpty(meta) ? null :
+										<div
+											className={
+												'd-flex column-gap-15 color-text-light font-size-13 line-height-24 margin-bottom-10'.classNames() +
+												'basic-info'.classNames(ProfileCss)
+											}
+										>
+											{meta}
+										</div>
+									}
+								</div>
+							</div>
 						</div>
 						<div
 							className={
@@ -219,11 +229,12 @@ export function EmployeeProfileSingle() {
 									<span className={'color-text-light font-size-15'.classNames()}>
 										{__('Email address')}
 									</span>
-									<span
+									<a
 										className={'color-text font-size-15 line-height-23'.classNames()}
+										href={`mailto:${employee.user_email}`}
 									>
 										{employee.user_email}
-									</span>
+									</a>
 								</>
 								
 								{
@@ -232,11 +243,12 @@ export function EmployeeProfileSingle() {
 										<span className={'color-text-light font-size-15'.classNames()}>
 											{__('Phone number')}
 										</span>
-										<span
+										<a
 											className={'color-text font-size-15 line-height-23'.classNames()}
+											href={`tel:${employee.user_phone}`}
 										>
-											{__(employee.user_phone)}
-										</span>
+											{employee.user_phone}
+										</a>
 									</>
 								}
 								
@@ -481,22 +493,24 @@ export function EmployeeProfileSingle() {
 									<span className={'color-text-light font-size-15'.classNames()}>
 										{__('Email')}
 									</span>
-									<span
+									<a
 										className={'color-text font-size-15 line-height-23'.classNames()}
+										href={`mailto:${employee.emergency_email}`}
 									>
 										{employee.emergency_email}
-									</span>
+									</a>
 								</>
 								
 								<>
 									<span className={'color-text-light font-size-15'.classNames()}>
 										{__('Phone')}
 									</span>
-									<span
+									<a
 										className={'color-text font-size-15 line-height-23'.classNames()}
+										href={`tel:${employee.emergency_phone}`}
 									>
 										{employee.emergency_phone}
-									</span>
+									</a>
 								</>
 
 								<>

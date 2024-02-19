@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useEffect, useRef, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 
-import { __ } from 'crewhrm-materials/helpers.jsx';
+import { __, isEmpty } from 'crewhrm-materials/helpers.jsx';
 import { FormActionButtons } from 'crewhrm-materials/form-action.jsx';
 import { StickyBar } from 'crewhrm-materials/sticky-bar.jsx';
 import { Tabs } from 'crewhrm-materials/tabs/tabs.jsx';
@@ -8,6 +9,8 @@ import { request } from 'crewhrm-materials/request.jsx';
 import {ContextToast} from 'crewhrm-materials/toast/toast.jsx';
 import {InitState} from 'crewhrm-materials/init-state.jsx';
 import { LoadingIcon } from 'crewhrm-materials/loading-icon/loading-icon.jsx';
+import { patterns } from 'crewhrm-materials/data.jsx';
+import { isAddressValid } from 'crewhrm-materials/address-fields.jsx';
 
 import AddEmployeeCss from './AddManually.module.scss';
 import EmployeeStatusForm from './EmployeeStatusForm.jsx';
@@ -15,12 +18,9 @@ import EmployeeInfoForm from './EmployeeInfoForm.jsx';
 import EmployeeContractDetailsForm from './EmployeeContractDetailsForm.jsx';
 import AdditionalOptionForm from './AdditionalOptionForm.jsx';
 import EmployeeBenefitForm from './EmployeeBenefitForm.jsx';
-import { useNavigate, useParams } from 'react-router-dom';
 
 import EmployeeIndexCss from '../index.module.scss';
 import CongratsAddEmployee from './CongratsAddEmployee.jsx';
-import { patterns } from 'crewhrm-materials/data.jsx';
-import { isAddressValid } from 'crewhrm-materials/address-fields.jsx';
 
 export const ContextAddEmlpoyeeManually = createContext();
 
@@ -68,7 +68,6 @@ export function AddEmployeeManually({departments={}}) {
 	} = useParams();
 
 	const user_id = ( isNaN(_user_id) || !_user_id ) ? 0 : _user_id;
-
 	const form_ref = useRef();
 
 	const [state, setState] = useState({
@@ -77,6 +76,7 @@ export function AddEmployeeManually({departments={}}) {
 		last_step_passed: false,
 		error_message: null,
 		showErrorsAlways: false,
+		expand_additional_section: false,
 		values: {}
 	});
 
@@ -125,6 +125,7 @@ export function AddEmployeeManually({departments={}}) {
 		const {regex={}} = steps.find(s=>s.id===active_tab);
 
 		let show_errors = false;
+		let expand_additional_section = false;
 
 		for ( let name in regex ) {
 			const value = state.values[name];
@@ -140,9 +141,21 @@ export function AddEmployeeManually({departments={}}) {
 			show_errors = true;
 		}
 
+		// Validate social links exceptionally
+		for ( let k in state.values ) {
+			if ( k.indexOf('social_link_')!==0 || isEmpty( state.values[k] ) || patterns.url.test(state.values[k]) ) {
+				continue;
+			}
+
+			expand_additional_section = true;
+			show_errors = true;
+			break;
+		}
+
 		setState({
 			...state,
-			showErrorsAlways: show_errors
+			showErrorsAlways: show_errors,
+			expand_additional_section
 		});
 
 		return !show_errors;
@@ -240,7 +253,8 @@ export function AddEmployeeManually({departments={}}) {
 			values: state.values, 
 			departments,
 			regex: steps.find(s=>s.id===active_tab)?.regex || {},
-			showErrorsAlways: state.showErrorsAlways
+			showErrorsAlways: state.showErrorsAlways,
+			expand_additional_section: state.expand_additional_section
 		}}
 	>
 		<StickyBar title={__('People Manually')} canBack={true}>
