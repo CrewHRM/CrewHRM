@@ -257,7 +257,7 @@ export function AddEmployeeManually({departments={}}) {
 			expand_additional_section: state.expand_additional_section
 		}}
 	>
-		<StickyBar title={__('People Manually')} canBack={true}>
+		<StickyBar title={user_id ? __('Edit employee') : __('Add new employee')} canBack={true}>
 			<div className={'d-flex align-items-center column-gap-30'.classNames()}>
 				<div className={'d-inline-block'.classNames()}>
 					<button
@@ -265,7 +265,7 @@ export function AddEmployeeManually({departments={}}) {
 						className={'button button-primary'.classNames()}
 						disabled={state.saving}
 					>
-						{__('Update')} <LoadingIcon show={state.saving}/>
+						{user_id ? __('Update') : __('Add')} <LoadingIcon show={state.saving}/>
 					</button>
 				</div>
 			</div>

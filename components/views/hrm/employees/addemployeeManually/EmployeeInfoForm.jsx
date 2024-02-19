@@ -343,7 +343,7 @@ export default function EmployeeInfoForm() {
 					setSetshowAdditionalInfo(!setshowAdditionalInfo);
 				}}
 			>
-				<ShowMore expand={expand} />
+				<ShowMore expand={expand} text={__('Show additional options')}/>
 			</div>
 
 			{(setshowAdditionalInfo || expand_additional_section) ?
@@ -414,7 +414,7 @@ export default function EmployeeInfoForm() {
 						<div className={'d-flex margin-top-20 cursor-pointer'.classNames()} onClick={addEducation}>
 							<img src={AddImg} alt="" />
 							<span className={'font-size-15 font-weight-500 line-height-24 margin-left-5'.classNames()}>
-								{__('Add another')}
+								{__('Add more')}
 							</span>
 						</div>
 					</div>
