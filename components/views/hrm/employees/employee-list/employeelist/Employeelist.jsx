@@ -1,18 +1,19 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
-import { __, getAddress, isEmpty } from 'crewhrm-materials/helpers.jsx';
+import { __ } from 'crewhrm-materials/helpers.jsx';
 import { request } from 'crewhrm-materials/request.jsx';
-import { DropDown, Options } from 'crewhrm-materials/dropdown/dropdown';
+import { Options } from 'crewhrm-materials/dropdown/dropdown';
 import { TextField } from 'crewhrm-materials/text-field/text-field.jsx';
 import { Pagination } from 'crewhrm-materials/pagination/pagination.jsx';
 import { ToggleSwitch } from 'crewhrm-materials/toggle-switch/ToggleSwitch.jsx';
 import { LoadingIcon } from 'crewhrm-materials/loading-icon/loading-icon.jsx';
 import { ContextToast } from 'crewhrm-materials/toast/toast.jsx';
+import { countries_object, employment_statuses, employment_types } from 'crewhrm-materials/data.jsx';
 
 import EmployeelistCss from './employeelist.module.scss';
 import SearchImg from '../img/search-normal-add-8.svg';
-import { countries_object, employment_statuses, employment_types } from 'crewhrm-materials/data';
+import empty_img from '../img/empty.png';
 
 const options = [
 	{
@@ -68,7 +69,7 @@ export default function Employeelist() {
 	col_configs = col_configs ? JSON.parse(col_configs) : {};
 	
 	const [state, setState] = useState({
-		fetching: false,
+		fetching: true,
 		isActivePopup: false,
 		column_configs: col_configs,
 		column_configs_input: col_configs,
@@ -227,13 +228,30 @@ export default function Employeelist() {
 							/>
 						</div>
 					</div>
-					<div className={'margin-top-20'.classNames() + 'data-table'.classNames(EmployeelistCss)}>
-						<div className={'main-table'.classNames(EmployeelistCss)}>
-							{
-								(!state.fetching && !state.employees.length) ? 
-								<div>
-									{__('No Employee found')}
-								</div> :
+					{
+						(!state.fetching && !state.employees.length) ? 
+						<div className={'text-align-center'.classNames()} style={{padding: '130px 0'}}>
+							<img 
+								src={empty_img} 
+								style={{width: '180px', height: 'auto'}}
+								className={'margin-bottom-20'.classNames()}/>
+
+							<span className={'d-block font-size-17 font-weight-500 color-text-light margin-bottom-20'.classNames()}>
+								{__('No employee added yet')}
+							</span>
+
+							<div className={'d-inline-block'.classNames()}>
+								<Link 
+									to='/employees/invite/' 
+									className={'button button-primary'.classNames()}
+								>
+									{__('Add New Employee')}
+								</Link>
+							</div>
+						</div> 
+						:
+						<div className={'margin-top-20'.classNames() + 'data-table'.classNames(EmployeelistCss)}>
+							<div className={'main-table'.classNames(EmployeelistCss)}>
 								<table>
 									<thead>
 										<tr>
@@ -353,11 +371,11 @@ export default function Employeelist() {
 										}
 									</tbody>
 								</table>
-							}
-							
-							<LoadingIcon show={state.fetching} center={true}/>
+								<LoadingIcon show={state.fetching} center={true}/>
+							</div>
 						</div>
-					</div>
+					}
+					
 					{
 						(state.segmentation?.page_count || 0 ) < 2 ? null :
 						<div

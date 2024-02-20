@@ -265,7 +265,7 @@ export function AddEmployeeManually({departments={}}) {
 						className={'button button-primary'.classNames()}
 						disabled={state.saving}
 					>
-						{user_id ? __('Update') : __('Add')} <LoadingIcon show={state.saving}/>
+						{user_id ? __('Update Employee') : __('Add Employee')} <LoadingIcon show={state.saving}/>
 					</button>
 				</div>
 			</div>
