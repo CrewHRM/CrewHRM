@@ -319,6 +319,8 @@ function OptionFields({fields=[], vertical, separator, is_group=false}) {
 									<ListManager
 										addText={add_text}
 										mode="stack"
+										id_key="id"
+										label_key="label"
 										list={(values[name] || []).map(item=>{
 											return {
 												id: item[key_map.id || 'id'],

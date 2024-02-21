@@ -70,7 +70,7 @@ export function HiringFlow() {
                 label_key="stage_name"
                 list={list_manager_stages}
                 onChange={(hiring_flow) => onChange('hiring_flow', hiring_flow)}
-                readOnyAfter={[{ stage_id: 'a', stage_name: __('Hired') }]}
+                readOnlyAfter={[{ stage_id: 'a', stage_name: __('Hired') }]}
                 className={'margin-bottom-50'.classNames()}
                 deleteItem={setDeleteState}
                 addText={__('Add Stage')}
