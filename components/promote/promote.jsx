@@ -58,9 +58,6 @@ export function Promote({content, className='', style: cssStyle={}, children}) {
 						{__('Already Purchased?')}
 					</a>
 				</div>
-				<div className={'text-align-center padding-8 font-size-14 font-weight-500 letter-spacing--3 color-white'.classNames() + 'footer'.classNames(style)}>
-					{__('Get 50% off regular price, Automatically applied at checkout')}
-				</div>
 			</div>
 		</div>
 	</div>

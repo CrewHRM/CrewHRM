@@ -15,7 +15,7 @@ import AddEmployeeCss from './AddManually.module.scss';
 
 export default function EmployeeContractDetailsForm() {
 
-	const { onChange, values={} } = useContext(ContextAddEmlpoyeeManually);
+	const { onChange, values={}, showErrorsAlways, regex={} } = useContext(ContextAddEmlpoyeeManually);
 	const {salary_currency='USD'} = values;
 	const use_custom_weekly_schedule = values.use_custom_weekly_schedule ? true : false;
 	const is_provisional = values.is_provisional ? true : false;
@@ -79,6 +79,8 @@ export default function EmployeeContractDetailsForm() {
 								onChange={(v) => onChange('employment_type', v)}
 								fullWidth={true}
 								className={'margin-bottom-30'.classNames()}
+								showErrorsAlways={showErrorsAlways}
+								required={true}
 							/>
 
 							{
@@ -94,7 +96,10 @@ export default function EmployeeContractDetailsForm() {
 										<TextField 
 											placeholder={__('ex. 30')} 
 											value={values.weekly_working_hour || ''} 
-											onChange={(v) => onChange('weekly_working_hour', (v || '').replace(/\D/g, ''))} />
+											onChange={(v) => onChange('weekly_working_hour', (v || '').replace(/\D/g, ''))}
+											showErrorsAlways={showErrorsAlways}
+											regex={regex.weekly_working_hour}
+										/>
 									</div>
 								</div>
 							}

@@ -46,6 +46,10 @@ const steps = [
 	{
 		id: 'contract-details',
 		label: __('Contract Details'),
+		regex: {
+			employment_type: /\S+/,
+			weekly_working_hour: /^[1-9]+$/
+		}
 	},
 	{
 		id: 'benefits',
@@ -130,7 +134,12 @@ export function AddEmployeeManually({departments={}}) {
 		for ( let name in regex ) {
 			const value = state.values[name];
 
-			if ( regex[name] instanceof RegExp && !regex[name].test(value) ) {
+			// weekly_working_hour is mandatory when the employement type is either full time or part time.
+			if ( name==='weekly_working_hour' && ['full_time', 'part_time'].indexOf(state.values.employment_type)===-1 ) {
+				continue;
+			}
+
+			if ( regex[name] instanceof RegExp && (value===null || value==undefined || !regex[name].test(value) ) ) {
 				show_errors = true;
 				break;
 			}

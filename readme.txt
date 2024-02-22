@@ -124,11 +124,12 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 == Changelog ==
 
-= v1.0.8 -> Feb 12, 2024 =
+= v1.0.8 -> Feb 22, 2024 =
 
 * New: Employee Profile
+* New: Employee user role
 * Fix: Missing icons
-* Update: UI enhancements and optimizations
+* Update: Overall UI enhancements
 
 = v1.0.7 -> Feb 09, 2024 =
 
