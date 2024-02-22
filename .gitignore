@@ -1,5 +1,6 @@
 .DS_STORE
 node_modules/
+svn-push/
 dist/*
 !dist/libraries/
 dist/libraries/pro/*

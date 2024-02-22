@@ -8,7 +8,7 @@ var gulp = require('gulp'),
     path = require('path'),
 	rename = require("gulp-rename"),
 	sass = require('gulp-sass')(require('node-sass'));
-    build_name = 'crewhrm-' + require('./package.json').version + '.zip';
+    build_name = 'hr-management-' + require('./package.json').version + '.zip';
 
 var onError = function (err) {
     notify.onError({
@@ -125,6 +125,7 @@ gulp.task('copy', function () {
             '!./dist/**/*.map',
             '!./dist/**/*.txt',
             '!./node_modules/**',
+            '!./svn-push/**',
             '!./tests/**',
 
             '!./vendor/**',
@@ -134,6 +135,7 @@ gulp.task('copy', function () {
 			
             '!./**/*.zip',
             '!./readme.md',
+            '!./release.sh',
             '!.DS_Store',
             '!./**/.DS_Store',
             '!./LICENSE.txt',

@@ -39,6 +39,7 @@
     "url": "https://github.com/CrewHRM/CrewHRM/issues"
   },
   "homepage": "https://github.com/CrewHRM/CrewHRM#readme",
+  "svn": "https://plugins.svn.wordpress.org/hr-management",
   "dependencies": {
     "@babel/core": "^7.22.10",
     "@babel/preset-env": "^7.22.10",
