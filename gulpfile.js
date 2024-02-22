@@ -69,8 +69,8 @@ function i18n_makepot(target_dir) {
 }
 
 function i18n_makepot_init(callback) {
-	i18n_makepot(path.resolve(__dirname) );
-	i18n_makepot(path.resolve(__dirname + '/../CrewHRM-Pro') );
+	i18n_makepot(path.resolve(__dirname + '/components') );
+	i18n_makepot(path.resolve(__dirname + '/../CrewHRM-Pro/components') );
 	i18n_makepot(path.resolve(__dirname + '/../Materials') );
 
 	if ( typeof callback === 'function' ) {
@@ -80,7 +80,7 @@ function i18n_makepot_init(callback) {
 
 gulp.task('makepot', function () {
     return gulp
-        .src(['**/*.php', '../CrewHRM-Pro/**/*.php'])
+        .src(['./classes/**/*.php', '../CrewHRM-Pro/classes/**/*.php'])
         .pipe(
             plumber({
                 errorHandler: onError
