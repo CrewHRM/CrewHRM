@@ -187,7 +187,6 @@ class User {
 		return array_merge(
 			array(
 				'user_id'          => $user_id,
-				'user_id'          => $user_id,
 				'first_name'       => $user->first_name,
 				'last_name'        => $user->last_name,
 				'user_email'       => $user->user_email,
@@ -627,5 +626,32 @@ class User {
 	public static function getUserIdByEmail( $email ) {
 		global $wpdb;
 		return ( new Field( $wpdb->users ) )->getField( array( 'user_email' => $email ), 'ID' );
+	}
+	
+	/**
+	 * Get user ID by activation key
+	 *
+	 * @param string $activation_key The user email
+	 *
+	 * @return void
+	 */
+	public static function getUserIdByActivationKey( $key ) {
+		global $wpdb;
+		return ( new Field( $wpdb->users ) )->getField( array( 'user_activation_key' => $key ), 'ID' );
+	}
+
+	/**
+	 * Clear the user activation key
+	 *
+	 * @param int $user_id
+	 * @return void
+	 */
+	public static function clearActivationKey( $user_id ) {
+		global $wpdb;
+		$wpdb->update(
+			$wpdb->users,
+			array('user_activation_key' => ''),
+			array('ID' => $user_id)
+		);
 	}
 }

@@ -123,7 +123,15 @@ class Employment {
 		global $wpdb;
 		$latest_employment = $wpdb->get_row(
 			$wpdb->prepare(
-				"SELECT employment_id, designation FROM {$wpdb->crewhrm_employments} WHERE employee_user_id=%d ORDER BY employment_id DESC LIMIT 1",
+				"SELECT 
+					employment_id, 
+					designation 
+				FROM 
+					{$wpdb->crewhrm_employments} 
+				WHERE 
+					employee_user_id=%d 
+				ORDER BY employment_id 
+				DESC LIMIT 1",
 				$user_id
 			),
 			ARRAY_A

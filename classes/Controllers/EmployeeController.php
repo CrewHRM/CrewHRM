@@ -43,6 +43,11 @@ class EmployeeController {
 			wp_send_json_error( array( 'message' => esc_html__( 'Required fields missing', 'crewhrm' ) ) );
 		}
 
+		// To Do: Allow existing email for new manual entry if no emaployment is linked already.
+		// To Do: Restrict email field edit once an employment is created
+		// To Do: Add activation key during creating new
+		// To Do: Send email, and onboard through email link
+
 		// Show warning for existing email
 		$mail_user_id = User::getUserIdByEmail( $employee['user_email'] );
 		if ( ! empty( $mail_user_id ) && $mail_user_id !== ( $employee['user_id'] ?? null ) ) {

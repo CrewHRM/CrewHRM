@@ -61,7 +61,6 @@ class Addon {
 			$file_name      = $addons_dir . $addon_dir_name . DIRECTORY_SEPARATOR . 'index.php';
 
 			if ( file_exists( $file_name ) ) {
-				// To Do: Create addons page, and load only those are enabled
 				include_once $file_name;
 			}
 		}
