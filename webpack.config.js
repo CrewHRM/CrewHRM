@@ -79,6 +79,7 @@ module.exports = (env, options) => {
                 hrm: './components/views/hrm/index.jsx',
                 careers: './components/views/careers/index.jsx',
                 settings: './components/views/settings/index.jsx',
+                'employee-dashboard': './components/views/employee-dashboard/employee-dashboard.jsx',
                 'blocks-editor': './components/blocks/editor.jsx',
                 'blocks-viewer': './components/blocks/viewer.jsx'
             }

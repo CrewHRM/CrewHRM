@@ -1,0 +1,29 @@
+.profile-img {
+	position: relative;
+	width: max-content;
+	
+	.image {
+		width: 120px;
+		height: 140px;
+		padding: 20px;
+		border-radius: 10px;
+		background-size: cover;
+		background-position: center center;
+		border: 7px solid white;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		background-color: white;
+
+		&:not(.has-image) {
+			border-color: rgba(211, 211, 211, 0.33);
+		}
+	}
+
+	.upload-icon {
+		position: absolute;
+		width: max-content;
+		bottom: -28px;
+		right: -10px;
+	}
+}
