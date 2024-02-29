@@ -1,18 +1,10 @@
 import React from 'react';
 
 import { __ } from 'crewhrm-materials/helpers.jsx';
+import { relationships } from 'crewhrm-materials/data.jsx';
 import { DropDown } from 'crewhrm-materials/dropdown/dropdown.jsx';
 import { TextField } from 'crewhrm-materials/text-field/text-field.jsx';
 import {AddressFields} from 'crewhrm-materials/address-fields.jsx';
-
-const emergency_relationships = {
-	parent: __('Parent'),
-	sibling: __('Sibling'),
-	spouse: __('Spouse'),
-	friend: __('Friend'),
-	colleague: __('Colleague'),
-	other: __('Other')
-}
 
 export function EmergencyContactField(props) {
 
@@ -41,10 +33,10 @@ export function EmergencyContactField(props) {
 					value={values.emergency_relationship}
 					placeholder="Select"
 					onChange={(v) => onChange('emergency_relationship', v)}
-					options={Object.keys(emergency_relationships).map((rel) => {
+					options={Object.keys(relationships).map((rel) => {
 						return { 
 							id: rel, 
-							label: emergency_relationships[rel]
+							label: relationships[rel]
 						};
 					})}
 				/>
