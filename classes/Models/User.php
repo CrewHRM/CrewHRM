@@ -599,8 +599,30 @@ class User {
 			$meta[ $_key ] = get_user_meta( $user_id, $_key, true );
 		}
 
+		// Add leading zero to employee if it is numeric
 		if ( ! empty( $meta['employee_id'] ) ) {
 			$meta['employee_id'] = self::padStringEmployeeId( $meta['employee_id'] );
+		}
+
+		// Assign dynamic document and traning file meta data
+		$resource_keys = array( 'employee_trainings', 'employee_documents' );
+		foreach ( $resource_keys as $_r_key ) {
+			if ( ! is_array( $meta[ $_r_key ] ?? null ) ) {
+				$meta[ $_r_key ] = array();
+				continue;
+			}
+
+			foreach ( $meta[ $_r_key ] as $index => $file_info ) {
+				$meta[ $_r_key ][ $index ] = array_merge(
+					$file_info,
+					array(
+						'title'       => get_the_title( $file_info['id'] ),
+						'description' => get_the_content( null, false, $file_info['id'] ),
+						'permalink'   => wp_get_attachment_url( $file_info['id'] ),
+						'mime_type'   => get_post_mime_type( $file_info['id'] ),
+					)
+				);
+			}
 		}
 
 		return $key ? ( $meta[ $key ] ?? $fallback ) : $meta;
