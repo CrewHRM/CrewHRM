@@ -22,7 +22,7 @@ var onError = function (err) {
 
 var added_texts = [];
 const regex = /__\(\s*'([^']*)'\s*\)/g;
-const js_files = ['hrm', 'careers', 'settings', 'addons-page'].map((f) => 'dist/' + f + '.js:1').join(', ');
+
 function i18n_makepot(target_dir) {
     const parent_dir = target_dir || __dirname;
     var translation_texts = '';
@@ -56,16 +56,18 @@ function i18n_makepot(target_dir) {
 
                 added_texts.push(text);
                 translation_texts +=
-                    '\n#: ' + js_files + '\nmsgid "' + text + '"\nmsgstr ""' + '\n';
+                    `\n#: dist/libraries/translation-loader.js:1\nmsgid "${text}"\nmsgstr ""\n`;
             }
         }
     });
 
+	const file_path = __dirname + '/languages/hr-management.pot';
+
     // Finally append the texts to the pot file
-    fs.appendFileSync(
-        __dirname + '/languages/hr-management.pot',
-        translation_texts.replaceAll('../CrewHRM-Pro/', '../hr-management-pro/')
-    );
+    fs.appendFileSync(file_path, translation_texts);
+
+	const data = fs.readFileSync(file_path, 'utf8');
+	fs.writeFileSync(file_path, data.replace('../CrewHRM-Pro/', '../hr-management-pro/'), 'utf8');
 }
 
 function i18n_makepot_init(callback) {
