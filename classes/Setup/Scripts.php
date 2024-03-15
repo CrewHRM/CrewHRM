@@ -29,8 +29,8 @@ class Scripts {
 		add_action( 'wp_enqueue_scripts', array( $this, 'frontendScripts' ), 11 );
 
 		// Register script translations
-		add_action( 'admin_enqueue_scripts', array( $this, 'scriptTranslation' ), 100 );
-		add_action( 'wp_enqueue_scripts', array( $this, 'scriptTranslation' ), 100 );
+		add_action( 'admin_enqueue_scripts', array( $this, 'scriptTranslation' ), 9 );
+		add_action( 'wp_enqueue_scripts', array( $this, 'scriptTranslation' ), 9 );
 
 		// Color pallete
 		add_action( 'wp_head', array( $this, 'loadVariables' ), 1000 );
@@ -93,15 +93,17 @@ class Scripts {
 	}
 
 	/**
-	 * load text domain script after all enqueue_scripts
+	 * Load script translations
+	 *
+	 * @return void
 	 */
 	public function scriptTranslation() {
+
 		$domain = Main::$configs->text_domain;
 		$dir    = Main::$configs->dir . 'languages/';
-		wp_set_script_translations( 'crewhrm-hrm', $domain, $dir );
-		wp_set_script_translations( 'crewhrm-settings', $domain, $dir );
-		wp_set_script_translations( 'crewhrm-addons-script', $domain, $dir );
-		wp_set_script_translations( 'crewhrm-careers', $domain, $dir );
+
+		wp_enqueue_script( 'crewhrm-translations', Main::$configs->dist_url . 'libraries/translation-loader.js', array( 'jquery' ), Main::$configs->version, true );
+		wp_set_script_translations( 'crewhrm-translations', $domain, $dir );
 	}
 
 	/**

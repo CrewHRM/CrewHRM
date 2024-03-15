@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 
 import { __ } from 'crewhrm-materials/helpers.jsx';
 import ShowMore from 'crewhrm-materials/ShowMore/ShowMore.jsx';
