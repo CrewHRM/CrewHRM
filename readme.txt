@@ -124,7 +124,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 == Changelog ==
 
-= v1.0.9 -> March 13, 2024 =
+= v1.0.9 -> March 12, 2024 =
 
 * Fix: Translation issues fixed
 
