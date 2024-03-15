@@ -1,6 +1,6 @@
 const fs = require('fs');
 const path = require('path');
-const { getAddonsBuildStructure, getMailTemplates } = require('../../../CrewHRM-Pro/components/builders/addons');
+const { getAddonsBuildStructure, getMailTemplates } = require('./addons');
 
 /* --------- Get pro addons --------- */
 const pro_addons = getAddonsBuildStructure();

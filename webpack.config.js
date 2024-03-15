@@ -1,7 +1,7 @@
 const { readdirSync, lstatSync, unlinkSync, existsSync } = require('fs');
 const path = require('path');
 const TerserPlugin = require('terser-webpack-plugin');
-const { getAddonsBuildStructure } = require('../CrewHRM-Pro/components/builders/addons');
+const { getAddonsBuildStructure } = require('./components/builders/addons');
 
 module.exports = (env, options) => {
     const mode = options.mode || 'development';
