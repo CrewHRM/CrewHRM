@@ -264,6 +264,10 @@ class User {
 			$where_clause .= $wpdb->prepare( ' AND _user.display_name LIKE %s', "%{$wpdb->esc_like( $args['search'] )}%" );
 		}
 
+		if ( ! empty( $args['employee_status'] ) ) {
+			$where_clause .= $wpdb->prepare( ' AND _employment.employment_status = %s', "{$wpdb->esc_like( $args['employee_status'] )}" );
+		}
+
 		$users = $wpdb->get_results(
 			$wpdb->prepare(
 				"SELECT 
@@ -303,6 +307,7 @@ class User {
 				FROM 
 					{$wpdb->users} _user 
 					INNER JOIN {$wpdb->usermeta} _meta ON _user.ID=_meta.user_id AND _meta.meta_key=%s AND _meta.meta_value=%s
+					LEFT JOIN {$wpdb->crewhrm_employments} _employment ON _employment.employee_user_id=_user.ID
 				WHERE 
 					1=1 
 					{$where_clause}",
