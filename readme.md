@@ -6,6 +6,9 @@ Please send pull requests if you find security issues or want to help us fix bug
 
 To discuss ideas with us in private, please use the contact form on our website https://getcrewhrm.com/contact/
 
+## Production Deployment
+Download production build from [WordPress Plugin Directory](https://wordpress.org/plugins/hr-management/) or [Github Releases](https://github.com/CrewHRM/CrewHRM/releases/).
+
 ## Development environment setup
 - Open terminal at <kbd>~/wp-content/plugins/</kbd> directory
 - Run <kbd>git clone https://github.com/CrewHRM/CrewHRM.git</kbd>
