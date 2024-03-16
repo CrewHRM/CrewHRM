@@ -9,13 +9,16 @@ import addemployeeUserPlusImg from 'crewhrm-materials/static/images/addemployee-
 import EmployeeIndexCss from '../index.module.scss';
 import employeecss from './employee.module.scss';
 
+const {has_pro} = window[data_pointer];
+
 const channels = [
-	/* {
-		route: '/employee/invite/viaemail/',
+	{
+		route: '/employee/invite/',
 		label: __('Invite via email'),
 		description: __('Invite one or more new staff members to create their account'),
-		icon: addemployeeMailImg
-	}, */
+		icon: addemployeeMailImg,
+		render: has_pro
+	},
 	{
 		route: '/employees/profile/new/edit/',
 		label: __('Add manually'),
@@ -70,7 +73,10 @@ export default function AddEmployee() {
 				<div className={'employee-invitation-links'.classNames(employeecss)}>
 					{
 						channels.map((channel, index)=>{
-							return <Link key={index} to={channel.route}>
+							
+							const {render=true} = channel;
+
+							return !render ? null : <Link key={index} to={channel.route}>
 								<div
 									className={
 										'single-employee-invitation-link'.classNames(employeecss) +
