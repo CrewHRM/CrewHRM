@@ -37,6 +37,16 @@ class User {
 	const META_KEY_CREW_FLAG = 'crewhrm_user_role';
 
 	/**
+	 * Meta key for employee activation
+	 */
+	const META_KEY_FOR_TOKEN = 'crewhrm-employee-activation-key';
+
+	/**
+	 * The get parameter to accept onboarding token through.
+	 */
+	const ONBOARDING_GET_KEY = 'onboarding-token';
+
+	/**
 	 * Validate if a user has required role
 	 *
 	 * @param int          $user_id The user ID to validate rule
@@ -356,15 +366,18 @@ class User {
 	 * @param array $data User data array
 	 * @param array $avatar_image
 	 *
-	 * @return int
+	 * @return int The user ID, created or updated one.
 	 */
 	public static function createOrUpdateEmployee( $data, $avatar_image ) {
 
+		global $wpdb;
+
 		$user_id   = ! empty( $data['user_id'] ) ? $data['user_id'] : null;
 		$full_name = $data['first_name'] . ' ' . $data['last_name'];
+		$is_new    = empty( $user_id ) || empty( get_user_meta( $user_id, self::META_KEY_CREW_FLAG, true ) );
 
 		// Create new user if
-		if ( ! $user_id ) {
+		if ( empty( $user_id ) ) {
 			$user_id = wp_create_user(
 				self::getUniqueUsername( $full_name ),
 				wp_generate_password(),
@@ -375,13 +388,14 @@ class User {
 				return false;
 			}
 
+			// Set activation key
+			update_user_meta( $user_id, self::META_KEY_FOR_TOKEN, $user_id . '_' . _String::getRandomString() );
+
 			// Set the role for newly created user
-			if ( ! empty( $data['role'] ) ) {
-				( new \WP_User( $user_id ) )->set_role( $data['role'] );
-				update_user_meta( $user_id, self::META_KEY_CREW_FLAG, $data['role'] );
-			}
+			( new \WP_User( $user_id ) )->set_role( self::ROLE_EMPLOYEE );
 		}
 
+		// Update the user
 		wp_update_user(
 			array(
 				'ID'           => $user_id,
@@ -393,7 +407,7 @@ class User {
 		);
 
 		// Set profile pic
-		if ( ! empty( $avatar_image['tmp_name'] ) ) {
+		if ( is_array( $avatar_image ) && ! empty( $avatar_image['tmp_name'] ) ) {
 			self::setProfilePic( $user_id, $avatar_image );
 		}
 
@@ -435,7 +449,7 @@ class User {
 			$user_id,
 			array_merge(
 				array(
-					'employee_id'                => $data['employee_id'], // Mandatory. Duplicate checking is supposed to be done in the earlier callstack.
+					'employee_id'                => ! empty( $data['employee_id'] ) ? $data['employee_id'] : self::getUniqueEmployeeId(), // Mandatory. Duplicate checking is supposed to be done in the earlier callstack.
 					'user_phone'                 => $data['user_phone'] ?? null,
 					'birth_date'                 => $data['birth_date'] ?? null,
 					'gender'                     => $data['gender'] ?? null,
@@ -470,6 +484,16 @@ class User {
 		/**
 		 * If not custom weekly schedule, delete the schedule from table, later it will use from settings
 		 */
+
+		if ( $is_new ) {
+
+			// Set employee flag
+			update_user_meta( $user_id, self::META_KEY_CREW_FLAG, self::ROLE_EMPLOYEE );
+
+			do_action( 'crewhrm_employee_profile_created', $user_id );
+		} else {
+			do_action( 'crewhrm_employee_profile_updated', $user_id );
+		}
 
 		return $user_id;
 	}
@@ -664,7 +688,21 @@ class User {
 	 */
 	public static function getUserIdByActivationKey( $key ) {
 		global $wpdb;
-		return ( new Field( $wpdb->users ) )->getField( array( 'user_activation_key' => $key ), 'ID' );
+		$user_id = $wpdb->get_var(
+			$wpdb->prepare(
+				"SELECT 
+					_user.ID
+				FROM
+					{$wpdb->users} _user
+					INNER JOIN {$wpdb->usermeta} _meta ON _user.ID=_meta.user_id AND _meta.meta_key=%s
+				WHERE
+					_meta.meta_value=%s
+				LIMIT 1",
+				self::META_KEY_FOR_TOKEN,
+				$key
+			)
+		);
+		return ! empty( $user_id ) ? ( int ) $user_id : null;
 	}
 
 	/**
@@ -674,11 +712,6 @@ class User {
 	 * @return void
 	 */
 	public static function clearActivationKey( $user_id ) {
-		global $wpdb;
-		$wpdb->update(
-			$wpdb->users,
-			array('user_activation_key' => ''),
-			array('ID' => $user_id)
-		);
+		delete_user_meta( $user_id, self::META_KEY_FOR_TOKEN );
 	}
 }

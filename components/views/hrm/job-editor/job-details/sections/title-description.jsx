@@ -134,7 +134,7 @@ export function DepartmentDropDown({value, onChange, tabindex, departments, onAd
 			value={value}
 			onChange={onChange}
 			tabindex={tabindex}
-			addText={__('Add Depertment')}
+			addText={__('Add Department')}
 			textClassName={'font-size-17 font-weight-500 line-height-25 color-text-light'.classNames()}
 			onAddClick={()=>toggleDepartmentModal(true)}
 			showErrorsAlways={showErrorsAlways}

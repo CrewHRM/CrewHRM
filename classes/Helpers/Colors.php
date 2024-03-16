@@ -66,13 +66,14 @@ class Colors {
 	 *
 	 * @return array
 	 */
-	public static function getColors() {
+	public static function getColors( $key = null, $fallback = null ) {
 
 		$colors = self::$base_colors;
 
 		// Provide some necessary opacity
 		$colors['secondary-15'] = self::hexToRgba( $colors['secondary'], 0.15 );
+		$colors = apply_filters( 'crewhrm_color_palette', $colors );
 
-		return apply_filters( 'crewhrm_color_palette', $colors );
+		return $key ? ( $colors[ $key ] ?? $fallback ) : $colors;
 	}
 }

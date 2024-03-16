@@ -92,7 +92,13 @@ class Employment {
 
 		$rows = $wpdb->get_results(
 			$wpdb->prepare(
-				"SELECT * FROM {$wpdb->crewhrm_employments} WHERE employee_user_id=%d ORDER BY employment_id DESC {$limit}",
+				"SELECT 
+					* 
+				FROM 
+					{$wpdb->crewhrm_employments} 
+				WHERE 
+					employee_user_id=%d 
+				ORDER BY employment_id DESC {$limit}",
 				$user_id
 			),
 			ARRAY_A

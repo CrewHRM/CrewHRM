@@ -22,8 +22,10 @@ class MailPreview {
 	);
 
 	/**
-	 * Load mail contents in browser
-	 *
+	 * Load mail contents in browser, for development only.
+	 * e.g http://localhost:10043/wp-admin/admin-ajax.php?action=crewhrm_previewDevMail&nonce=1d27b5027b&nonce_action=_crewhrm_2024_03_16
+	 * Get the nonce and action from crewmat object in browser console and replace in the URL when you test.
+	 * 
 	 * @param string $template The mail template to preview
 	 * @return void
 	 */

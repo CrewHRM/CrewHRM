@@ -5,7 +5,7 @@ Tags: Recruitment, job manager, job listing, job board, job management, job list
 Requires at least: 5.3
 Tested up to: 6.4.3
 Requires PHP: 7.4
-Stable tag: 1.0.9
+Stable tag: 1.1.0
 License: GPLv3
 License URI: https://opensource.org/licenses/GPL-3.0
 
@@ -123,6 +123,13 @@ You can email us using the contact form on our website to share feature ideas wi
 You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team helps validate, triage, and handle any security vulnerabilities. [Report a security vulnerability.](https://patchstack.com/database/vdp/hr-management)
 
 == Changelog ==
+
+= v1.1.0 -> March 20, 2024 =
+
+* New: Employee invitation (Pro)
+* New: Employee onboarding (Pro)
+* New: Employee profile (Pro)
+* Update: Overall enhancements and optimizations
 
 = v1.0.9 -> March 12, 2024 =
 

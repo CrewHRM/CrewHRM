@@ -1,17 +1,27 @@
 import React, { useState } from 'react';
+
+import { patterns } from 'crewhrm-materials/data.jsx';
+import { request } from 'crewhrm-materials/request.jsx';
 import { __, data_pointer } from 'crewhrm-materials/helpers.jsx';
 import { StickyBar } from 'crewhrm-materials/sticky-bar.jsx';
+import { LoadingIcon } from 'crewhrm-materials/loading-icon/loading-icon.jsx';
+import { ContextToast } from 'crewhrm-materials/toast/toast.jsx';
 import imgsrc from 'crewhrm-materials/static/images/addemployee-img-subscribe-5.png';
 import closeSvg from 'crewhrm-materials/static/images/teaminvite-img-6.svg';
+
 import EmployeeIndexCss from './../index.module.scss';
 import employeecss from './employee.module.scss';
+import { useContext } from 'react';
 
 export default function EmployeeInvite() {
-	const [emailList, setEmailList] = useState(['nuralam862@gmail.com']);
+	
+	const {ajaxToast} = useContext(ContextToast);
+	const [emailList, setEmailList] = useState([]);
 	const [inputEmail, setInputEmail] = useState('');
+	const [inviting, setInviting] = useState(false);
 
 	function handleKeydown(event) {
-		if (event.key == 'Enter') {
+		if (event.key == 'Enter' && patterns.email.test( inputEmail ) && emailList.indexOf(inputEmail) === -1 ) {
 			setEmailList((prevEmaillist) => [...prevEmaillist, inputEmail]);
 			setInputEmail('');
 		}
@@ -19,6 +29,17 @@ export default function EmployeeInvite() {
 
 	function detachEmail(emailToremove) {
 		setEmailList(emailList.filter((email) => email !== emailToremove));
+	}
+
+	const inviteEmail=()=>{
+		setInviting(true);
+		request('inviteEmployeeViaEmail', {emails: emailList}, resp=>{
+			setInviting(false);
+			ajaxToast(resp);
+			if (resp.success) {
+				setInputEmail('');
+			}
+		});
 	}
 
 	return (
@@ -71,6 +92,7 @@ export default function EmployeeInvite() {
 						))}
 						<input
 							type="text"
+							placeholder={__('Enter email')}
 							value={inputEmail}
 							onChange={(e) => setInputEmail(e.target.value)}
 							onKeyDown={handleKeydown}
@@ -78,13 +100,11 @@ export default function EmployeeInvite() {
 					</div>
 
 					<button
-						href={''}
-						className={
-							'button button-primary button-large margin-top-20 text-align-center'.classNames() +
-							''.classNames(employeecss)
-						}
+						className={'button button-primary button-large margin-top-20 text-align-center'.classNames()}
+						onClick={inviteEmail}
+						disabled={inviting || !emailList.length}
 					>
-						{__('Invite')}
+						{__('Invite')} <LoadingIcon show={inviting}/>
 					</button>
 				</div>
 			</div>

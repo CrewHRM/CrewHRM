@@ -27,6 +27,11 @@ function i18n_makepot(target_dir) {
     const parent_dir = target_dir || __dirname;
     var translation_texts = '';
 
+	// Do not process if the directory not found
+	if ( !fs.existsSync(parent_dir) ) {
+		return;
+	}
+
     // Loop through JS files inside js directory
     fs.readdirSync(parent_dir).forEach(function (file_name) {
         var full_path = parent_dir + '/' + file_name;
