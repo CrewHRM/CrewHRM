@@ -10,11 +10,13 @@ import { ToggleSwitch } from 'crewhrm-materials/toggle-switch/ToggleSwitch.jsx';
 import { LoadingIcon } from 'crewhrm-materials/loading-icon/loading-icon.jsx';
 import { ContextToast } from 'crewhrm-materials/toast/toast.jsx';
 import { countries_object, employment_statuses, employment_types } from 'crewhrm-materials/data.jsx';
+import { DropDown } from 'crewhrm-materials/dropdown/dropdown.jsx';
 
 import EmployeelistCss from './employeelist.module.scss';
 import SearchImg from '../img/search-normal-add-8.svg';
 import empty_img from '../img/empty.png';
 
+export const employment_status_keys = Object.keys(employment_statuses);
 const options = [
 	{
 		name: 'edit',
@@ -76,6 +78,7 @@ export default function Employeelist() {
 		employees: [],
 		segmentation: {},
 		filters: {
+			employee_status: null,
 			search: '',
 			page: 1
 		}
@@ -100,6 +103,25 @@ export default function Employeelist() {
 			isActivePopup
 		});
 	}
+
+	const onChange = (key, value) => {
+		const {filters={}} = state;
+
+		fetchEmployees({
+			...filters,
+			[key]: value,
+			page: name=='page' ? value : 1
+		});
+
+        /*setState({
+            ...state,
+            filters: {
+                ...state.filters,
+                [key]: value,
+                page: key === 'page' ? value : 1
+            }
+        });*/
+    };
 
 	const setFilter=(name, value)=>{
 		
@@ -187,6 +209,27 @@ export default function Employeelist() {
 								icon_position={'right'}
 							/>
 						</div>
+							
+						<div className={'filter-dropdown'.classNames(EmployeelistCss)} style={{ minWidth: '113px' }}>
+							<DropDown
+								className={'padding-vertical-8 padding-horizontal-15'.classNames()}
+								placeholder={__('All Status')}
+								value={state.filters.employee_status}
+								onChange={(v) => onChange('employee_status', v)}
+								options={[
+									{ id: 0, label: __('All Status') },
+									...employment_status_keys.map((key) => {
+										return {
+											id: key,
+											label: employment_statuses[key]
+										};
+									})
+								]}
+								variant="borderless"
+								iconSizeClass={'font-size-18'.classNames()}
+							/>
+						</div>
+
 						{/* <div className={'filter-dropdown'.classNames(EmployeelistCss)}>
 							<DropDown
 								theme="filter"
