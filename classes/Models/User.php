@@ -278,6 +278,13 @@ class User {
 			$where_clause .= $wpdb->prepare( ' AND _employment.employment_status = %s', "{$wpdb->esc_like( $args['employee_status'] )}" );
 		}
 
+		if( self::validateRole(get_current_user_id(), self::ROLE_EMPLOYEE) ) {
+			$department_id = self::getDepartmentByEmployeeId(get_current_user_id());
+			
+			$where_clause .= $wpdb->prepare( ' AND _employment.department_id = %s', "{$wpdb->esc_like( $department_id )}" );
+			$where_clause .= $wpdb->prepare( ' AND _employment.employee_user_id = %s', "{$wpdb->esc_like( get_current_user_id() )}" );
+		}
+
 		$users = $wpdb->get_results(
 			$wpdb->prepare(
 				"SELECT 
@@ -713,5 +720,17 @@ class User {
 	 */
 	public static function clearActivationKey( $user_id ) {
 		delete_user_meta( $user_id, self::META_KEY_FOR_TOKEN );
+	}
+
+	/**
+	 * Get department by employee ID
+	 *
+	 * @param string $employee_id The employee id
+	 *
+	 * @return void
+	 */
+	public static function getDepartmentByEmployeeId( $employee_id ) {
+		global $wpdb;
+		return ( new Field( $wpdb->crewhrm_employments ) )->getField( array( 'employee_user_id' => $employee_id ), 'department_id' );
 	}
 }

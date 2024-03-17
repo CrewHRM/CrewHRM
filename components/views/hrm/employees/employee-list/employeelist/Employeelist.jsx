@@ -104,27 +104,7 @@ export default function Employeelist() {
 		});
 	}
 
-	const onChange = (key, value) => {
-		const {filters={}} = state;
-
-		fetchEmployees({
-			...filters,
-			[key]: value,
-			page: name=='page' ? value : 1
-		});
-
-        /*setState({
-            ...state,
-            filters: {
-                ...state.filters,
-                [key]: value,
-                page: key === 'page' ? value : 1
-            }
-        });*/
-    };
-
 	const setFilter=(name, value)=>{
-		
 		const {filters={}} = state;
 		
 		fetchEmployees({
@@ -215,7 +195,7 @@ export default function Employeelist() {
 								className={'padding-vertical-8 padding-horizontal-15'.classNames()}
 								placeholder={__('All Status')}
 								value={state.filters.employee_status}
-								onChange={(v) => onChange('employee_status', v)}
+								onChange={(v) => setFilter('employee_status', v)}
 								options={[
 									{ id: 0, label: __('All Status') },
 									...employment_status_keys.map((key) => {
