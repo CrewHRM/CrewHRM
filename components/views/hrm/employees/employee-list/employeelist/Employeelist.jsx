@@ -104,15 +104,25 @@ export default function Employeelist() {
 		});
 	}
 
-	const setFilter=(name, value)=>{
-		const {filters={}} = state;
+	// const setFilter=(name, value)=>{
+	// 	const {filters={}} = state;
 		
-		fetchEmployees({
-			...filters,
-			[name]: value,
-			page: name=='page' ? value : 1
-		});
-	}
+	// 	fetchEmployees({
+	// 		...filters,
+	// 		[name]: value,
+	// 		page: name=='page' ? value : 1
+	// 	});
+	// }
+
+	const setFilter = (name, value) => {
+		const { filters={} } = state;
+		const updatedFilters = {
+		  ...filters,
+		  [name]: value,
+		  page: name === 'page' ? value : 1
+		};
+		setState({ ...state, filters: updatedFilters });
+	};
 
 	const employeeAction = (action, employee)=>{
 
@@ -171,7 +181,7 @@ export default function Employeelist() {
 
 	useEffect(()=>{
 		fetchEmployees();
-	}, []);
+	}, [state.filters]);
 
 	const column_keys = Object.keys(columns).filter(c_id=>state.column_configs[c_id] ?? true);
 
@@ -197,7 +207,7 @@ export default function Employeelist() {
 								value={state.filters.employee_status}
 								onChange={(v) => setFilter('employee_status', v)}
 								options={[
-									{ id: 0, label: __('All Status') },
+									{ label: __('All Status') },
 									...employment_status_keys.map((key) => {
 										return {
 											id: key,

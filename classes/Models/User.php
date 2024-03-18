@@ -275,14 +275,14 @@ class User {
 		}
 
 		if ( ! empty( $args['employee_status'] ) ) {
-			$where_clause .= $wpdb->prepare( ' AND _employment.employment_status = %s', "{$wpdb->esc_like( $args['employee_status'] )}" );
+			$where_clause .= $wpdb->prepare( ' AND _employment.employment_status = %s', $args['employee_status'] );
 		}
 
 		if( self::validateRole(get_current_user_id(), self::ROLE_EMPLOYEE) ) {
 			$department_id = self::getDepartmentByEmployeeId(get_current_user_id());
-			
-			$where_clause .= $wpdb->prepare( ' AND _employment.department_id = %s', "{$wpdb->esc_like( $department_id )}" );
-			$where_clause .= $wpdb->prepare( ' AND _employment.employee_user_id = %s', "{$wpdb->esc_like( get_current_user_id() )}" );
+
+			$where_clause .= $wpdb->prepare( ' AND _employment.department_id = %s', $department_id );
+			$where_clause .= $wpdb->prepare( ' AND _employment.employee_user_id = %s', get_current_user_id() );
 		}
 
 		$users = $wpdb->get_results(
