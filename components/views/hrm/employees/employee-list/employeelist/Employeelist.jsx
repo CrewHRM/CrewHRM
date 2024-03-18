@@ -16,7 +16,7 @@ import EmployeelistCss from './employeelist.module.scss';
 import SearchImg from '../img/search-normal-add-8.svg';
 import empty_img from '../img/empty.png';
 
-export const employment_status_keys = Object.keys(employment_statuses);
+const employment_status_keys = Object.keys(employment_statuses);
 const options = [
 	{
 		name: 'edit',
@@ -65,6 +65,7 @@ const columns = {
 export default function Employeelist() {
 	const {ajaxToast} = useContext(ContextToast);
 	const navigate = useNavigate();
+	const [keyWord, setKeyword] = useState('');
 
 	// Get the column configurations from local storage
 	let col_configs = window.localStorage.getItem('crewhrm_employees_column_configs');
@@ -114,15 +115,15 @@ export default function Employeelist() {
 	// 	});
 	// }
 
-	const setFilter = (name, value) => {
-		const { filters={} } = state;
-		const updatedFilters = {
-		  ...filters,
-		  [name]: value,
-		  page: name === 'page' ? value : 1
-		};
-		setState({ ...state, filters: updatedFilters });
-	};
+	// const setFilter = (name, value) => {
+	// 	const { filters={} } = state;
+	// 	const updatedFilters = {
+	// 	  ...filters,
+	// 	  [name]: value,
+	// 	  page: name === 'page' ? value : 1
+	// 	};
+	// 	setState({ ...state, filters: updatedFilters });
+	// };
 
 	const employeeAction = (action, employee)=>{
 
@@ -147,15 +148,28 @@ export default function Employeelist() {
 		window.localStorage.setItem('crewhrm_employees_column_configs', JSON.stringify(state.column_configs_input));
 	}
 
-	const fetchEmployees=(filters={})=>{
+	const setFilter = (name, value) => {
+        setState({
+            ...state,
+            filters: {
+                ...state.filters,
+                [name]: value,
+                page: name === 'page' ? value : 1
+            }
+        });
+    };
+
+	const fetchEmployees=(f = {})=>{
 
 		setState({
 			...state,
 			fetching: true,
-			filters
+			// filters
 		});
 
-		request('getEmployeeList', {filters}, resp=>{
+		const { filters } = state;
+
+		request('getEmployeeList', {filters : { ...filters, ...f}}, resp=>{
 			
 			const {
 				success= false,
@@ -168,7 +182,7 @@ export default function Employeelist() {
 			setState({
 				...state,
 				fetching: false,
-				filters,
+				// filters,
 				employees,
 				segmentation
 			});
@@ -207,7 +221,6 @@ export default function Employeelist() {
 								value={state.filters.employee_status}
 								onChange={(v) => setFilter('employee_status', v)}
 								options={[
-									{ label: __('All Status') },
 									...employment_status_keys.map((key) => {
 										return {
 											id: key,
