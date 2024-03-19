@@ -274,6 +274,17 @@ class User {
 			$where_clause .= $wpdb->prepare( ' AND _user.display_name LIKE %s', "%{$wpdb->esc_like( $args['search'] )}%" );
 		}
 
+		if ( ! empty( $args['employee_status'] ) ) {
+			$where_clause .= $wpdb->prepare( ' AND _employment.employment_status = %s', $args['employee_status'] );
+		}
+
+		if( self::validateRole(get_current_user_id(), self::ROLE_EMPLOYEE) ) {
+			$department_id = self::getDepartmentByEmployeeId(get_current_user_id());
+
+			$where_clause .= $wpdb->prepare( ' AND _employment.department_id = %s', $department_id );
+			$where_clause .= $wpdb->prepare( ' AND _employment.employee_user_id = %s', get_current_user_id() );
+		}
+
 		$users = $wpdb->get_results(
 			$wpdb->prepare(
 				"SELECT 
@@ -313,6 +324,7 @@ class User {
 				FROM 
 					{$wpdb->users} _user 
 					INNER JOIN {$wpdb->usermeta} _meta ON _user.ID=_meta.user_id AND _meta.meta_key=%s AND _meta.meta_value=%s
+					LEFT JOIN {$wpdb->crewhrm_employments} _employment ON _employment.employee_user_id=_user.ID
 				WHERE 
 					1=1 
 					{$where_clause}",
@@ -708,5 +720,17 @@ class User {
 	 */
 	public static function clearActivationKey( $user_id ) {
 		delete_user_meta( $user_id, self::META_KEY_FOR_TOKEN );
+	}
+
+	/**
+	 * Get department by employee ID
+	 *
+	 * @param string $employee_id The employee id
+	 *
+	 * @return void
+	 */
+	public static function getDepartmentByEmployeeId( $employee_id ) {
+		global $wpdb;
+		return ( new Field( $wpdb->crewhrm_employments ) )->getField( array( 'employee_user_id' => $employee_id ), 'department_id' );
 	}
 }

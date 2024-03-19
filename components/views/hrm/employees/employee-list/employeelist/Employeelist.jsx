@@ -10,11 +10,13 @@ import { ToggleSwitch } from 'crewhrm-materials/toggle-switch/ToggleSwitch.jsx';
 import { LoadingIcon } from 'crewhrm-materials/loading-icon/loading-icon.jsx';
 import { ContextToast } from 'crewhrm-materials/toast/toast.jsx';
 import { countries_object, employment_statuses, employment_types } from 'crewhrm-materials/data.jsx';
+import { DropDown } from 'crewhrm-materials/dropdown/dropdown.jsx';
 
 import EmployeelistCss from './employeelist.module.scss';
 import SearchImg from '../img/search-normal-add-8.svg';
 import empty_img from '../img/empty.png';
 
+const employment_status_keys = Object.keys(employment_statuses);
 const options = [
 	{
 		name: 'edit',
@@ -63,6 +65,7 @@ const columns = {
 export default function Employeelist() {
 	const {ajaxToast} = useContext(ContextToast);
 	const navigate = useNavigate();
+	const [keyWord, setKeyword] = useState('');
 
 	// Get the column configurations from local storage
 	let col_configs = window.localStorage.getItem('crewhrm_employees_column_configs');
@@ -76,6 +79,7 @@ export default function Employeelist() {
 		employees: [],
 		segmentation: {},
 		filters: {
+			employee_status: null,
 			search: '',
 			page: 1
 		}
@@ -98,17 +102,6 @@ export default function Employeelist() {
 		setState({
 			...state, 
 			isActivePopup
-		});
-	}
-
-	const setFilter=(name, value)=>{
-		
-		const {filters={}} = state;
-		
-		fetchEmployees({
-			...filters,
-			[name]: value,
-			page: name=='page' ? value : 1
 		});
 	}
 
@@ -135,15 +128,28 @@ export default function Employeelist() {
 		window.localStorage.setItem('crewhrm_employees_column_configs', JSON.stringify(state.column_configs_input));
 	}
 
-	const fetchEmployees=(filters={})=>{
+	const setFilter = (name, value) => {
+        setState({
+            ...state,
+            filters: {
+                ...state.filters,
+                [name]: value,
+                page: name === 'page' ? value : 1
+            }
+        });
+    };
+
+	const fetchEmployees=(f = {})=>{
 
 		setState({
 			...state,
 			fetching: true,
-			filters
+			// filters
 		});
 
-		request('getEmployeeList', {filters}, resp=>{
+		const { filters } = state;
+
+		request('getEmployeeList', {filters : { ...filters, ...f}}, resp=>{
 			
 			const {
 				success= false,
@@ -156,7 +162,7 @@ export default function Employeelist() {
 			setState({
 				...state,
 				fetching: false,
-				filters,
+				// filters,
 				employees,
 				segmentation
 			});
@@ -169,7 +175,7 @@ export default function Employeelist() {
 
 	useEffect(()=>{
 		fetchEmployees();
-	}, []);
+	}, [state.filters]);
 
 	const column_keys = Object.keys(columns).filter(c_id=>state.column_configs[c_id] ?? true);
 
@@ -187,6 +193,26 @@ export default function Employeelist() {
 								icon_position={'right'}
 							/>
 						</div>
+							
+						<div className={'filter-dropdown'.classNames(EmployeelistCss)} style={{ minWidth: '113px' }}>
+							<DropDown
+								className={'padding-vertical-8 padding-horizontal-15'.classNames()}
+								placeholder={__('All Status')}
+								value={state.filters.employee_status}
+								onChange={(v) => setFilter('employee_status', v)}
+								options={[
+									...employment_status_keys.map((key) => {
+										return {
+											id: key,
+											label: employment_statuses[key]
+										};
+									})
+								]}
+								variant="borderless"
+								iconSizeClass={'font-size-18'.classNames()}
+							/>
+						</div>
+
 						{/* <div className={'filter-dropdown'.classNames(EmployeelistCss)}>
 							<DropDown
 								theme="filter"

@@ -22,7 +22,7 @@ class EmployeeController {
 			'nopriv' => true,
 		),
 		'getEmployeeList'        => array(
-			'role' => 'administrator',
+			'role' => ['administrator', User::ROLE_EMPLOYEE],
 		),
 		'changeEmploymentStatus' => array(
 			'role' => 'administrator',
