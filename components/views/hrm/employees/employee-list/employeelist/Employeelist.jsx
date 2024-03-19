@@ -105,26 +105,6 @@ export default function Employeelist() {
 		});
 	}
 
-	// const setFilter=(name, value)=>{
-	// 	const {filters={}} = state;
-		
-	// 	fetchEmployees({
-	// 		...filters,
-	// 		[name]: value,
-	// 		page: name=='page' ? value : 1
-	// 	});
-	// }
-
-	// const setFilter = (name, value) => {
-	// 	const { filters={} } = state;
-	// 	const updatedFilters = {
-	// 	  ...filters,
-	// 	  [name]: value,
-	// 	  page: name === 'page' ? value : 1
-	// 	};
-	// 	setState({ ...state, filters: updatedFilters });
-	// };
-
 	const employeeAction = (action, employee)=>{
 
 		switch(action) {
