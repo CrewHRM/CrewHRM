@@ -93,7 +93,7 @@ class EmployeeController {
 	public static function fetchEmployee( int $user_id ) {
 
 		// Validate access
-		if ( get_current_user_id() != $user_id && ! User::validateRole( get_current_user_id(), apply_filters( 'crewhrm_hr_roles', array( 'administrator' ) ) ) ) {
+		if ( get_current_user_id() != $user_id && ! User::hasAdministrativeRole( get_current_user_id() ) ) {
 			wp_send_json_error( array( 'message' => __( 'Access denied!', 'crewhrm' ) ) );
 		}
 

@@ -59,27 +59,26 @@ export default function AdditionalOptionForm() {
 								</div>
 								<FileUpload
 									maxlength={1000}
-									WpMedia={{mime_type: undefined}}
+									WpMedia={{mime_type: ['application/pdf', 'video/*']}}
 									onChange={files=>addFromMediaPicker(type, files)}
 									layoutComp={({onClick})=>{
 										return <div
-												className={'d-flex align-items-center justify-content-end column-gap-5 cursor-pointer'.classNames()}
-												onClick={onClick}
+											className={'d-flex align-items-center justify-content-end column-gap-5 cursor-pointer'.classNames()}
+											onClick={onClick}
+										>
+											<i
+												className={'ch-icon ch-icon-folder-add font-size-20 color-text cursor-pointer'.classNames()}
+												onClick={() => null}
+												style={{ color: '#236BFE' }}
+											></i>
+											<div
+												className={'color-primary font-size-15 line-height-18 font-weight-500'.classNames()}
+												style={{ color: '#236BFE' }}
 											>
-												<i
-													className={'ch-icon ch-icon-folder-add font-size-20 color-text cursor-pointer'.classNames()}
-													onClick={() => null}
-													style={{ color: '#236BFE' }}
-												></i>
-												<div
-													className={'color-primary font-size-15 line-height-18 font-weight-500'.classNames()}
-													style={{ color: '#236BFE' }}
-												>
-													{__('Upload')}
-												</div>
+												{__('Upload')}
 											</div>
-									}}/>
-								
+										</div>
+								}}/>
 							</div>
 							<div className={'d-flex margin-top-15'.classNames()}>
 								<div className={'flex-1'.classNames()}>

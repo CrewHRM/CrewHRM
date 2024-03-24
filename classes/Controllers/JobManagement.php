@@ -168,7 +168,7 @@ class JobManagement {
 
 		// Determine if the current user can visit the job
 		$can_visit  = ! empty( $job );
-		$privileged = User::validateRole( get_current_user_id(), apply_filters( 'crewhrm_hr_roles', array( 'administrator' ) ) );
+		$privileged = User::hasAdministrativeRole( get_current_user_id() );
 
 		// Only admin and hr manager(pro) can visit the job even if not published
 		if ( $can_visit && 'publish' !== $job['job_status'] ) {

@@ -153,12 +153,30 @@ class User {
 	 * @return string
 	 */
 	public static function getAdminMenuRole( $user_id ) {
-		$user_roles     = self::getUserRoles( $user_id );
-		$required_roles = apply_filters( 'crewhrm_hr_roles', array( 'administrator' ) );
-		$has_role       = array_values( array_intersect( $required_roles, $user_roles ) );
+		$user_roles = self::getUserRoles( $user_id );
+		$has_role   = array_values( array_intersect( self::getAdministrativeRoles(), $user_roles ) );
 
 		// Return any of the common rules. No matter administrator or hr-manager. Both will allow accessing crew features.
 		return $has_role[0] ?? null;
+	}
+
+	/**
+	 * Get the roles array that has administrative access in CrewHRM
+	 *
+	 * @return array
+	 */
+	public static function getAdministrativeRoles() {
+		return apply_filters( 'crewhrm_hr_roles', array( 'administrator' ) );
+	}
+
+	/**
+	 * Check if a user has administrative role
+	 *
+	 * @param int $user_id
+	 * @return boolean
+	 */
+	public static function hasAdministrativeRole( $user_id ) {
+		return self::validateRole( $user_id, self::getAdministrativeRoles() );
 	}
 
 	/**

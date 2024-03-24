@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Feb 15, 2024 at 11:30 PM
+-- Generation Time: Mar 24, 2024 at 12:24 AM
 -- Server version: 8.0.16
 -- PHP Version: 8.1.23
 
@@ -234,6 +234,27 @@ CREATE TABLE IF NOT EXISTS `wp_crewhrm_jobs` (
   PRIMARY KEY (`job_id`),
   UNIQUE KEY `job_slug` (`job_slug`),
   KEY `job_status` (`job_status`,`department_id`,`salary_basis`,`employment_type`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `wp_crewhrm_leaves`
+--
+
+CREATE TABLE IF NOT EXISTS `wp_crewhrm_leaves` (
+  `leave_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `start_date` date NOT NULL,
+  `end_date` date NOT NULL,
+  `request_note` text COLLATE utf8mb4_unicode_520_ci,
+  `rejection_note` text COLLATE utf8mb4_unicode_520_ci,
+  `leave_status` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci NOT NULL COMMENT 'pending, cancelled, approved, rejected',
+  `leave_type` varchar(20) COLLATE utf8mb4_unicode_520_ci NOT NULL COMMENT 'sick, parental, maternity, paternity, annual etc. Also unpaid, however unpaid has special usage in backend functionalities. ',
+  `employee_user_id` bigint(20) UNSIGNED NOT NULL,
+  `reviewer_id` bigint(20) UNSIGNED DEFAULT NULL,
+  `request_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `action_date` timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (`leave_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 -- --------------------------------------------------------
