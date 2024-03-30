@@ -4,11 +4,11 @@ import {MountPoint} from 'crewhrm-materials/mountpoint.jsx';
 import {addAction} from 'crewhrm-materials/hooks.jsx';
 import {mountExternal} from 'crewhrm-materials/render-external.jsx';
 
-import { BasicUserInfo } from "../hrm/employees/addemployeeManually/segments/basic-info/basic-user-info.jsx";
-import { EducationInfo } from "../hrm/employees/addemployeeManually/segments/education.jsx";
-import { OtherInfo } from "../hrm/employees/addemployeeManually/segments/other-info.jsx";
-import { SocialFields } from "../hrm/employees/addemployeeManually/segments/social-fields.jsx";
-import { EmergencyContactField } from "../hrm/employees/addemployeeManually/segments/emergency-contact.jsx";
+import { BasicUserInfo } from "../hrm/employees/add/manually/segments/basic-info/basic-user-info.jsx";
+import { EducationInfo } from "../hrm/employees/add/manually/segments/education.jsx";
+import { OtherInfo } from "../hrm/employees/add/manually/segments/other-info.jsx";
+import { SocialFields } from "../hrm/employees/add/manually/segments/social-fields.jsx";
+import { EmergencyContactField } from "../hrm/employees/add/manually/segments/emergency-contact.jsx";
 
 addAction(
 	'employee_onboarding_basic_info',

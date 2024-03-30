@@ -114,14 +114,7 @@ class EmployeeController {
 	 */
 	public static function getEmployeeList( array $filters = array() ) {
 
-		$users = User::getUsers(
-			array_merge(
-				$filters,
-				array(
-					'role' => User::ROLE_EMPLOYEE,
-				)
-			)
-		);
+		$users = User::getUsers( $filters );
 
 		wp_send_json_success(
 			array(

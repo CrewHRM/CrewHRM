@@ -281,15 +281,23 @@ class User {
 	 */
 	public static function getUsers( array $args ) {
 
-		$limit  = 20;
+		$limit  = DB::getLimit( $args['limit'] ?? null );
 		$page   = Utilities::getInt( $args['page'] ?? 1, 1 );
 		$offset = ( $page - 1 ) * $limit;
+		$role   = $args['role'] ?? self::ROLE_EMPLOYEE;
 
 		global $wpdb;
 
 		$where_clause = '';
+
+		// Search employee by keyword
 		if ( ! empty( $args['search'] ) ) {
 			$where_clause .= $wpdb->prepare( ' AND _user.display_name LIKE %s', "%{$wpdb->esc_like( $args['search'] )}%" );
+		}
+
+		// Get by department ID
+		if ( ! empty( $args['department_id'] ) ) {
+			$where_clause .= $wpdb->prepare( ' AND _employment.department_id=%d', $args['department_id'] );
 		}
 
 		$users = $wpdb->get_results(
@@ -317,7 +325,7 @@ class User {
 				OFFSET 
 					%d",
 				self::META_KEY_CREW_FLAG,
-				$args['role'],
+				$role,
 				$limit,
 				$offset
 			),
@@ -331,11 +339,12 @@ class User {
 				FROM 
 					{$wpdb->users} _user 
 					INNER JOIN {$wpdb->usermeta} _meta ON _user.ID=_meta.user_id AND _meta.meta_key=%s AND _meta.meta_value=%s
+					LEFT JOIN {$wpdb->crewhrm_employments} _employment ON _employment.employee_user_id=_user.ID
 				WHERE 
 					1=1 
 					{$where_clause}",
 				self::META_KEY_CREW_FLAG,
-				$args['role']
+				$role
 			)
 		);
 
@@ -359,6 +368,7 @@ class User {
 				'employment_type'   => $user['employment_type'] ?? null,
 				'hire_date'         => $user['hire_date'] ?? null,
 				'address'           => ! empty( $meta['address_id'] ) ? Address::getAddressById( $meta['address_id'] ) : null,
+				'social_links'      => self::getSocialLinks( $user['user_id'] )
 			);
 		}
 
@@ -509,6 +519,28 @@ class User {
 		}
 
 		return $user_id;
+	}
+
+	/**
+	 * Get social links by user ID
+	 *
+	 * @param int $user_id
+	 * @return array
+	 */
+	public static function getSocialLinks( $user_id ) {
+
+		// Get user meta
+		$meta    = self::getMeta( $user_id );
+		$socials = array();
+
+		// Loop through meta and extract social links
+		foreach ( $meta as $key => $value ) {
+			if ( strpos( $key, 'social_link_' ) === 0 ) {
+				$socials[ str_replace( 'social_link_', '', $key ) ] = $value;
+			}
+		}
+		
+		return $socials;
 	}
 
 	/**
