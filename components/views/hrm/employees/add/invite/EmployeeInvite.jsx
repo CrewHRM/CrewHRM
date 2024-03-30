@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 
 import { patterns } from 'crewhrm-materials/data.jsx';
 import { request } from 'crewhrm-materials/request.jsx';
@@ -9,9 +9,7 @@ import { ContextToast } from 'crewhrm-materials/toast/toast.jsx';
 import imgsrc from 'crewhrm-materials/static/images/addemployee-img-subscribe-5.png';
 import closeSvg from 'crewhrm-materials/static/images/teaminvite-img-6.svg';
 
-import EmployeeIndexCss from './../index.module.scss';
-import employeecss from './employee.module.scss';
-import { useContext } from 'react';
+import employeecss from '../employee.module.scss';
 
 export default function EmployeeInvite() {
 	
@@ -58,7 +56,7 @@ export default function EmployeeInvite() {
 			</StickyBar>
 			<div
 				className={
-					'employee-invitation-wrapper'.classNames(EmployeeIndexCss) + 'padding-horizontal-50'.classNames()
+					'employee-invitation-wrapper'.classNames(employeecss) + 'padding-horizontal-50'.classNames()
 				}
 			>
 				<div
@@ -77,7 +75,7 @@ export default function EmployeeInvite() {
 						{__('To invite team members write their email addresses and click on invite.')}
 					</div>
 				</div>
-				<div className={'employee-invitation-area'.classNames(EmployeeIndexCss)}>
+				<div className={'employee-invitation-area'.classNames(employeecss)}>
 					<div className={'employee-invitation-textarea'.classNames(employeecss)}>
 						{emailList.map((email, index) => (
 							<div

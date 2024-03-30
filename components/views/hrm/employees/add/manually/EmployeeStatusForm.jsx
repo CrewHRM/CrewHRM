@@ -10,10 +10,10 @@ import { attendance_types } from 'crewhrm-materials/data.jsx';
 import { InstantSearch } from 'crewhrm-materials/instant-search.jsx';
 
 import {ContextAddEmlpoyeeManually} from './index.jsx';
-import AddEmployeeCss from './AddManually.module.scss';
-import EmployeeIndexCss from '../index.module.scss';
 import { DateField } from 'crewhrm-materials/date-time.jsx';
-import { DepartmentDropDown } from '../../job-editor/job-details/sections/title-description.jsx';
+import { DepartmentDropDown } from '../../../job-editor/job-details/sections/title-description.jsx';
+
+import AddEmployeeCss from './AddManually.module.scss';
 
 export default function EmployeeStatusForm() {
 	
@@ -197,7 +197,7 @@ export default function EmployeeStatusForm() {
 							<div
 								className={
 									'd-flex align-items-center column-gap-5 padding-horizontal-10 padding-vertical-5'.classNames() +
-									'person-card width-max-content'.classNames(EmployeeIndexCss)
+									'person-card width-max-content'.classNames(AddEmployeeCss)
 								}
 							>
 								<img 

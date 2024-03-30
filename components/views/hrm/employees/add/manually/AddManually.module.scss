@@ -1,3 +1,28 @@
+.container {
+	max-width: 1416px;
+	margin: 0 auto;
+	padding: 0 50px;
+}
+
+.width-max-content {
+	width: max-content;
+}
+
+.border {
+	border-radius: 10px;
+	border: 1.5px solid #e3e5e8;
+	background: #fff;
+}
+
+.person-card {
+	border-radius: 5px;
+	border: 1.5px solid #e3e5e8;
+	background: #fff;
+	img {
+		width: 25px;
+	}
+}
+
 .addemployee-manually-wrapper {
 	margin: 90px auto;
 	gap: 72px 40px;

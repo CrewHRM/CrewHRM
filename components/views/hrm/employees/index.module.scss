@@ -7,15 +7,9 @@
 .employee-invitation-title {
 	margin-bottom: 70px;
 }
-.employee-invitation-wrapper {
-	padding-top: 40px;
-	padding-bottom: 170px;
-}
+
 .width-min-content {
 	width: min-content;
-}
-.width-max-content {
-	width: max-content;
 }
 .crew-hrm-border {
 	border-radius: 10px;
@@ -23,20 +17,3 @@
 	background: #fff;
 }
 
-.person-card {
-	border-radius: 5px;
-	border: 1.5px solid #e3e5e8;
-	background: #fff;
-	img {
-		width: 25px;
-	}
-}
-
-.employee-invitation-wrapper {
-	.employee-invitation-area {
-		display: flex;
-		flex-direction: column;
-		max-width: 500px;
-		margin: 0 auto;
-	}
-}

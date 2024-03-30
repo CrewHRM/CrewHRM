@@ -19,7 +19,6 @@ import EmployeeContractDetailsForm from './EmployeeContractDetailsForm.jsx';
 import AdditionalOptionForm from './AdditionalOptionForm.jsx';
 import EmployeeBenefitForm from './EmployeeBenefitForm.jsx';
 
-import EmployeeIndexCss from '../index.module.scss';
 import CongratsAddEmployee from './CongratsAddEmployee.jsx';
 
 export const ContextAddEmlpoyeeManually = createContext();
@@ -291,7 +290,7 @@ export function AddEmployeeManually({departments={}}) {
 					<div
 						className={
 							'addemployee-manually-top'.classNames(AddEmployeeCss) +
-							'container'.classNames(EmployeeIndexCss) +
+							'container'.classNames(AddEmployeeCss) +
 							'd-flex justify-content-space-between'.classNames()
 						}
 					>
@@ -330,7 +329,7 @@ export function AddEmployeeManually({departments={}}) {
 						ref={form_ref}
 						className={
 							'd-flex flex-wrap-wrap'.classNames() +
-							'container'.classNames(EmployeeIndexCss) +
+							'container'.classNames(AddEmployeeCss) +
 							'addemployee-manually-wrapper'.classNames(AddEmployeeCss)
 						}
 					>

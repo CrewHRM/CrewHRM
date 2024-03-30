@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
-// import { Link } from 'react-router-dom';
+
 import { __, data_pointer } from 'crewhrm-materials/helpers.jsx';
 import { StickyBar } from 'crewhrm-materials/sticky-bar.jsx';
 import imgsrc from 'crewhrm-materials/static/images/addemployee-img-subscribe-5.png';
 import propic from 'crewhrm-materials/static/images/addemployee-user-profile-demo.svg';
-import EmployeeIndexCss from '../index.module.scss';
-import employeecss from './employee.module.scss';
 import { DropDown } from 'crewhrm-materials/dropdown/dropdown';
+
+import EmployeeIndexCss from '../../index.module.scss';
+import employeecss from './../employee.module.scss';
 
 export default function AddEmployeeHirelist() {
 	// eslint-disable-next-line no-unused-vars
@@ -30,7 +31,7 @@ export default function AddEmployeeHirelist() {
 			</StickyBar>
 			<div
 				className={
-					'employee-invitation-wrapper'.classNames(EmployeeIndexCss) + 'padding-horizontal-50'.classNames()
+					'employee-invitation-wrapper'.classNames(employeecss) + 'padding-horizontal-50'.classNames()
 				}
 			>
 				<div
@@ -49,7 +50,7 @@ export default function AddEmployeeHirelist() {
 						{__('Pick a job post and a newly hired member.')}
 					</div>
 				</div>
-				<div className={'employee-invitation-area'.classNames(EmployeeIndexCss)}>
+				<div className={'employee-invitation-area'.classNames(employeecss)}>
 					<div className={'employee-invitationlist-dropdown'}>
 						<DropDown
 							value={selectedPost}

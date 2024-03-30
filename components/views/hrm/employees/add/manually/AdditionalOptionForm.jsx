@@ -5,8 +5,8 @@ import { InstantSearch } from 'crewhrm-materials/instant-search.jsx';
 import { FileUpload } from 'crewhrm-materials/file-upload/file-upload.jsx';
 
 import { ContextAddEmlpoyeeManually } from './index.jsx';
+
 import AddEmployeeCss from './AddManually.module.scss';
-import EmployeeIndexCss from '../index.module.scss';
 
 const doc_types = {
 	employee_documents: __('Documents'),
@@ -101,7 +101,7 @@ export default function AdditionalOptionForm() {
 												key={media.id}
 												className={
 													'd-flex align-items-center column-gap-10 padding-horizontal-10 padding-vertical-5'.classNames() +
-													'person-card width-max-content'.classNames(EmployeeIndexCss)
+													'person-card width-max-content'.classNames(AddEmployeeCss)
 												}
 											>
 												<a 

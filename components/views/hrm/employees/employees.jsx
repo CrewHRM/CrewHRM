@@ -4,11 +4,11 @@ import { HashRouter, Navigate, Routes, Route } from 'react-router-dom';
 import ScrollToTop from 'crewhrm-materials/scrollToTop/ScrollToTop.jsx';
 import {data_pointer} from 'crewhrm-materials/helpers.jsx';
 
-import EmployeeInvite from './addemployee/EmployeeInvite.jsx';
-import {AddEmployeeManually} from './addemployeeManually/index.jsx';
-import AddEmployee from './addemployee/addemployee.jsx';
-import AddEmployeeHirelist from './addemployee/AddEmployeeHirelist.jsx';
-import { EmployeeDashboard } from './employee-list/EmployeeDashboard.jsx';
+import EmployeeInvite from './add/invite/EmployeeInvite.jsx';
+import {AddEmployeeManually} from './add/manually/index.jsx';
+import AddEmployee from './add/addemployee.jsx';
+import AddEmployeeHirelist from './add/hire/AddEmployeeHirelist.jsx';
+import { EmployeeDashboard } from './list/list.jsx';
 import { EmployeeProfileSingle } from './profile/Profile.jsx';
 
 const {has_pro} = window[data_pointer];
@@ -20,7 +20,7 @@ export function Employees(props) {
 
 				{/* Main emlpoyee list screen */}
 				<Route
-					path="/employees/"
+					path="/employees/list/:tab_name?/"
 					element={
 						<EmployeeDashboard/>
 					}
@@ -78,7 +78,7 @@ export function Employees(props) {
 					</>
 				}
 				
-				<Route path={'*'} element={<Navigate to="/employees/" replace />} />
+				<Route path={'*'} element={<Navigate to="/employees/list/" replace />} />
 			</Routes>
 		</HashRouter>
 }

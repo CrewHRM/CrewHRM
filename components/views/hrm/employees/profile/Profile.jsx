@@ -9,7 +9,7 @@ import { InitState } from 'crewhrm-materials/init-state.jsx';
 import { attendance_types, employment_statuses } from 'crewhrm-materials/data';
 import { ContextToast } from 'crewhrm-materials/toast/toast.jsx';
 import { LoadingIcon } from 'crewhrm-materials/loading-icon/loading-icon.jsx';
-import { social_fields } from '../addemployeeManually/EmployeeInfoForm.jsx';
+import { social_fields } from '../add/manually/EmployeeInfoForm.jsx';
 
 import ProfileCss from './profile.module.scss';
 

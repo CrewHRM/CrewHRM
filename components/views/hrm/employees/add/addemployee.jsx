@@ -1,12 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+
 import { __, data_pointer } from 'crewhrm-materials/helpers.jsx';
 import { StickyBar } from 'crewhrm-materials/sticky-bar.jsx';
 import imgsrc from 'crewhrm-materials/static/images/addemployee-img-1.png';
-import addemployeeBriefcaseImg from 'crewhrm-materials/static/images/addemployee-briefcase-img-2.svg';
 import addemployeeMailImg from 'crewhrm-materials/static/images/addemployee-mail-img-3.svg';
 import addemployeeUserPlusImg from 'crewhrm-materials/static/images/addemployee-user-plus-img-4.svg';
-import EmployeeIndexCss from '../index.module.scss';
+
 import employeecss from './employee.module.scss';
 
 const {has_pro} = window[data_pointer];
@@ -50,7 +50,7 @@ export default function AddEmployee() {
 			</StickyBar>
 			<div
 				className={
-					'employee-invitation-wrapper employee-invitation-link-wrapper'.classNames(EmployeeIndexCss) +
+					'employee-invitation-wrapper'.classNames(employeecss) +
 					'padding-horizontal-50'.classNames()
 				}
 			>

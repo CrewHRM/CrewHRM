@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import currenctSymbols from 'currency-symbol-map/map';
 
 import { __ } from 'crewhrm-materials/helpers.jsx';
@@ -6,15 +6,14 @@ import { TextField } from 'crewhrm-materials/text-field/text-field.jsx';
 import { ToggleSwitch } from 'crewhrm-materials/toggle-switch/ToggleSwitch.jsx';
 
 import { ContextAddEmlpoyeeManually } from './index.jsx';
-import { BenifitsBuilder } from '../../../modules/benifits-builder/benifits-builder.jsx';
+import { BenifitsBuilder } from '../../../../modules/benifits-builder/benifits-builder.jsx';
+import { LeaveBuilder } from '../../../../modules/leave-builder/leave-builder.jsx';
 
 import AddEmployeeCss from './AddManually.module.scss';
-import EmployeeIndexCss from '../index.module.scss';
-import { LeaveBuilder } from '../../../modules/leave-builder/leave-builder.jsx';
 
 export default function EmployeeBenefitForm() {
+
 	const { values={}, onChange } = useContext(ContextAddEmlpoyeeManually);
-	const [toggle, setToggle] = useState(true);
 	const {salary_currency='USD'} = values;
 	const currency_symbol = currenctSymbols[salary_currency];
 
@@ -27,7 +26,7 @@ export default function EmployeeBenefitForm() {
 					>
 						{__('Bonus & Compensation')}
 					</div>
-					<div className={'padding-15'.classNames() + 'crew-hrm-border'.classNames(EmployeeIndexCss)}>
+					<div className={'padding-15'.classNames() + 'border'.classNames(AddEmployeeCss)}>
 						<div className={'d-flex justify-content-space-between'.classNames()}>
 							<div className={''.classNames()}>
 								<div className={'font-size-17 font-weight-500 color-text margin-bottom-5'.classNames()}>
@@ -61,7 +60,7 @@ export default function EmployeeBenefitForm() {
 					</div>
 					<div
 						className={
-							'padding-15 margin-top-20'.classNames() + 'crew-hrm-border'.classNames(EmployeeIndexCss)
+							'padding-15 margin-top-20'.classNames() + 'border'.classNames(AddEmployeeCss)
 						}
 					>
 						<div className={'d-flex justify-content-space-between'.classNames()}>
@@ -97,7 +96,7 @@ export default function EmployeeBenefitForm() {
 					</div>
 					<div
 						className={
-							'padding-15 margin-top-20'.classNames() + 'crew-hrm-border'.classNames(EmployeeIndexCss)
+							'padding-15 margin-top-20'.classNames() + 'border'.classNames(AddEmployeeCss)
 						}
 					>
 						<div className={'d-flex justify-content-space-between'.classNames()}>
