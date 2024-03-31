@@ -27,6 +27,9 @@ class EmployeeController {
 		'changeEmploymentStatus' => array(
 			'role' => 'administrator',
 		),
+		'getEmployeeListMetaData' => array(
+			'role' => 'administrator',
+		),
 	);
 
 	/**
@@ -142,5 +145,19 @@ class EmployeeController {
 		}
 
 		wp_send_json_error( array( 'message' => __( 'Employment not found to change status' ) ) );
+	}
+
+	/**
+	 * Get employee list meta data, for example total employee, pending leave count (provided from pro) and so on
+	 *
+	 * @return void
+	 */
+	public static function getEmployeeListMetaData() {
+
+		$data = array(
+			'employee' => Employment::getTotalEmployeeCount()
+		);
+
+		wp_send_json_success( apply_filters( 'crewhrm_employee_list_tab_content_count', $data ) );
 	}
 }

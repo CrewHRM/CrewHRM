@@ -250,7 +250,7 @@ export function Employeelist() {
 						</div> 
 						:
 						<div className={'margin-top-20 overflow-auto'.classNames()}>
-							<table className={'table-horizontal-scrollable'.classNames()}>
+							<table className={'table-flat'.classNames()}>
 								<thead>
 									<tr>
 										<th>

@@ -208,4 +208,26 @@ class Employment {
 
 		return $users;
 	}
+
+	/**
+	 * Get total employee count by status
+	 *
+	 * @return int
+	 */
+	public static function getTotalEmployeeCount( $status = 'active' ) {
+		
+		global $wpdb;
+
+		$where = '';
+
+		if ( ! empty( $status ) ) {
+			$where .= $wpdb->prepare( ' AND employment_status=%s', $status );
+		}
+
+		$count = $wpdb->get_var(
+			"SELECT COUNT(DISTINCT employee_user_id) FROM {$wpdb->crewhrm_employments} WHERE 1=1 {$where}"
+		);
+
+		return ( int ) $count;
+	}
 }

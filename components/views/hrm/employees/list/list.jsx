@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 
 import { __ } from 'crewhrm-materials/helpers.jsx';
@@ -8,11 +8,15 @@ import { applyFilters } from 'crewhrm-materials/hooks.jsx';
 import { RenderExternal } from 'crewhrm-materials/render-external.jsx';
 
 import {Employeelist} from './employee/Employeelist.jsx';
+import { request } from 'crewhrm-materials/request.jsx';
 
 export function EmployeeDashboard() {
 
 	const {tab_name='employee'} = useParams();
 	const navigate = useNavigate();
+	const [state, setState] = useState({
+		meta_data: {}
+	});
 
 	const steps = applyFilters(
 		'employee_list_pages',
@@ -36,6 +40,19 @@ export function EmployeeDashboard() {
 		}
 	);
 
+	const getMetaData=()=>{
+		request('getEmployeeListMetaData', {}, resp=>{
+			
+			setState({
+				...state,
+				meta_data: resp.data
+			});
+		});
+	}
+
+	useEffect(()=>{
+		getMetaData();
+	}, []);
 
 	const Comp = steps[tab_name]?.component;
 
@@ -61,14 +78,14 @@ export function EmployeeDashboard() {
 				tabs={Object.keys(steps).map(s=>{
 					return {
 						id: s,
-						label: steps[s].label
+						label: `${steps[s].label}${state.meta_data[s] ? ` (${state.meta_data[s]})` : ``}`
 					}
 				})}
 			/>
 			
 			{
 				Comp ? 
-				<RenderExternal component={Comp}/> : 
+				<RenderExternal component={Comp} payload={{tab_name}}/> : 
 				<span className={'color-error'.classNames()}>
 					{__('Component not found')}
 				</span>
