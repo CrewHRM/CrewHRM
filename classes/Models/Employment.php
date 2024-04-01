@@ -214,7 +214,7 @@ class Employment {
 	 *
 	 * @return int
 	 */
-	public static function getTotalEmployeeCount( $status = 'active' ) {
+	public static function getTotalEmployeeCount( $status = 'active', $department_id = null ) {
 		
 		global $wpdb;
 
@@ -222,6 +222,10 @@ class Employment {
 
 		if ( ! empty( $status ) ) {
 			$where .= $wpdb->prepare( ' AND employment_status=%s', $status );
+		}
+
+		if ( ! empty( $department_id ) ) {
+			$where .= $wpdb->prepare( ' AND department_id=%d', $department_id );
 		}
 
 		$count = $wpdb->get_var(

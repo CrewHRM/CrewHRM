@@ -332,6 +332,8 @@ class User {
 			ARRAY_A
 		);
 
+		$users = _Array::castRecursive( $users );
+
 		$total_count = (int) $wpdb->get_var(
 			$wpdb->prepare(
 				"SELECT 
@@ -392,8 +394,6 @@ class User {
 	 * @return int The user ID, created or updated one.
 	 */
 	public static function createOrUpdateEmployee( $data, $avatar_image ) {
-
-		global $wpdb;
 
 		$user_id   = ! empty( $data['user_id'] ) ? $data['user_id'] : null;
 		$full_name = $data['first_name'] . ' ' . $data['last_name'];

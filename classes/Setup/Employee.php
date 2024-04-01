@@ -15,6 +15,11 @@ use CrewHRM\Models\User;
 class Employee {
 
 	/**
+	 * Avatar size
+	 */
+	const AVATAR_SIZE = 'crewhrm-employee-avatar';
+
+	/**
 	 * Register hooks
 	 *
 	 * @return void
@@ -22,6 +27,16 @@ class Employee {
 	public function __construct() {
 		add_action( 'init', array( $this, 'addEmployeeRole' ) );
 		add_filter( 'get_avatar_url', array( $this, 'avatarUrl' ), 10, 3 );
+		add_action( 'init', array( $this, 'registerAvatarSize' ) );
+	}
+
+	/**
+	 * Register custom size for crew avatar url
+	 *
+	 * @return void
+	 */
+	public function registerAvatarSize() {
+		add_image_size( self::AVATAR_SIZE, 512, 512, true );
 	}
 
 	/**
@@ -53,7 +68,7 @@ class Employee {
 		if ( is_numeric( $user_id ) ) {
 			$avatar_id = User::getMeta( $user_id, User::META_KEY_AVATAR );
 			if ( ! empty( $avatar_id ) ) {
-				$url = wp_get_attachment_url( $avatar_id );
+				$url = wp_get_attachment_image_url( $avatar_id, self::AVATAR_SIZE );
 			}
 		}
 
