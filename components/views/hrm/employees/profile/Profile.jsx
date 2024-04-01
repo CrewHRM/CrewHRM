@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 
+import { social_icons as social_fields } from 'crewhrm-materials/data.jsx';
 import { DropDown } from 'crewhrm-materials/dropdown/dropdown';
 import { __, data_pointer, formatDate, getAddress, getFlag, isEmpty, convertOffsetToTimezone } from 'crewhrm-materials/helpers.jsx';
 import { StickyBar } from 'crewhrm-materials/sticky-bar.jsx';
@@ -9,7 +10,6 @@ import { InitState } from 'crewhrm-materials/init-state.jsx';
 import { attendance_types, employment_statuses } from 'crewhrm-materials/data';
 import { ContextToast } from 'crewhrm-materials/toast/toast.jsx';
 import { LoadingIcon } from 'crewhrm-materials/loading-icon/loading-icon.jsx';
-import { social_fields } from '../add/manually/EmployeeInfoForm.jsx';
 
 import ProfileCss from './profile.module.scss';
 
@@ -137,7 +137,7 @@ export function EmployeeProfileSingle() {
 								</div>
 								<div className={'flex-1'.classNames()}>
 									<div className={'color-text font-size-28 font-weight-600 margin-bottom-10'.classNames()}>
-										{employee.display_name} {employee.country_code ? <span>{getFlag(employee.country_code)}</span> : null}
+										{employee.display_name} {employee.country_code ? <span title={employee.country_code}>{getFlag(employee.country_code)}</span> : null}
 									</div>
 									{
 										isEmpty(meta) ? null :

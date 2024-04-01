@@ -106,6 +106,8 @@ class WeeklySchedule {
 
 		global $wpdb;
 
+		// To Do: If custom date not enabled, then get directly from settings.
+
 		$where_clause = $employment_id === null ? ' employment_id IS NULL' : $wpdb->prepare( ' employment_id=%d', $employment_id );
 
 		$slots = $wpdb->get_results(

@@ -143,7 +143,7 @@ export function Employeelist() {
 			filters
 		});
 
-		request('getEmployeeList', {filters}, resp=>{
+		request('getEmployeeList', {filters, is_admin: true}, resp=>{
 			
 			const {
 				success= false,
@@ -175,8 +175,8 @@ export function Employeelist() {
 
 	return (
 		<>
-			<div className={''.classNames() + 'employeelist-wrapper'.classNames(EmployeelistCss)}>
-				<div className={''.classNames() + 'data-table-wrapper'.classNames(EmployeelistCss)}>
+			<div className={'employeelist-wrapper'.classNames(EmployeelistCss)}>
+				<div className={'data-table-wrapper'.classNames(EmployeelistCss)}>
 					<div className={'margin-top-40'.classNames() + ' data-table-filter'.classNames(EmployeelistCss)}>
 						<div className={'searchbox'.classNames(EmployeelistCss)}>
 							<TextField
@@ -255,11 +255,6 @@ export function Employeelist() {
 									<tr>
 										<th>
 											<div className={'first-column'.classNames()}>
-												<input
-													type="checkbox"
-													checked={false}
-													onChange={() => 0}
-												/>
 												<span>{__('ID')}</span>
 												<span>{__('Name')}</span>
 											</div>
@@ -299,11 +294,6 @@ export function Employeelist() {
 														className={'table-stikcy-glasseffect'.classNames()}
 													></div>
 													<div className={'first-column'.classNames()}>
-														<input
-															type="checkbox"
-															checked={false}
-															onChange={() => 0}
-														/>
 														<div className={'color-text-light'.classNames()}>
 															{employee_id}
 														</div>

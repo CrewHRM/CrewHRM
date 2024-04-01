@@ -279,12 +279,11 @@ class User {
 	 * @param array $args
 	 * @return array
 	 */
-	public static function getUsers( array $args ) {
+	public static function getEmployeeUsers( array $args ) {
 
 		$limit  = DB::getLimit( $args['limit'] ?? null );
 		$page   = Utilities::getInt( $args['page'] ?? 1, 1 );
 		$offset = ( $page - 1 ) * $limit;
-		$role   = $args['role'] ?? self::ROLE_EMPLOYEE;
 
 		global $wpdb;
 
@@ -300,32 +299,39 @@ class User {
 			$where_clause .= $wpdb->prepare( ' AND _employment.department_id=%d', $args['department_id'] );
 		}
 
+		// Employment status filter
+		if ( ! empty( $args['employment_status'] ) ) {
+			$where_clause .= $wpdb->prepare( ' AND _employment.employment_status=%s', $args['employment_status'] );
+		}
+
 		$users = $wpdb->get_results(
 			$wpdb->prepare(
 				"SELECT 
 					_user.ID AS user_id,
 					_user.display_name,
 					_user.user_email,
+					_employment.employment_id,
 					_employment.designation,
 					_employment.employment_status,
 					_employment.department_id,
 					_employment.employment_type,
-					_employment.hire_date
+					_employment.hire_date,
+					_employment.reporting_person_user_id
 				FROM 
 					{$wpdb->users} _user 
 					INNER JOIN {$wpdb->usermeta} _meta ON _user.ID=_meta.user_id AND _meta.meta_key=%s AND _meta.meta_value=%s
-					LEFT JOIN {$wpdb->crewhrm_employments} _employment ON _employment.employee_user_id=_user.ID
+					INNER JOIN {$wpdb->crewhrm_employments} _employment ON _employment.employee_user_id=_user.ID
 				WHERE 
 					1=1 
 					{$where_clause}
 				ORDER BY 
-					_user.user_registered DESC
+					_employment.employment_id DESC
 				LIMIT 
 					%d 
 				OFFSET 
 					%d",
 				self::META_KEY_CREW_FLAG,
-				$role,
+				self::ROLE_EMPLOYEE,
 				$limit,
 				$offset
 			),
@@ -346,7 +352,7 @@ class User {
 					1=1 
 					{$where_clause}",
 				self::META_KEY_CREW_FLAG,
-				$role
+				self::ROLE_EMPLOYEE
 			)
 		);
 
@@ -356,13 +362,16 @@ class User {
 		$users_array = array();
 		foreach ( $users as $user ) {
 
-			$meta = self::getMeta( $user['user_id'] );
+			$meta       = self::getMeta( $user['user_id'] );
+			$address    = ! empty( $meta['address_id'] ) ? Address::getAddressById( $meta['address_id'], array() ) : array();
+			$local_time = ! empty( $address['timezone'] ) ? ( new \DateTime( 'now', new \DateTimeZone( $address['timezone'] ) ) )->format( 'H:i a' ) : null;
 
 			$users_array[] = array(
 				'user_id'           => $user['user_id'],
 				'avatar_url'        => get_avatar_url( $user['user_id'] ),
 				'email'             => $user['user_email'],
 				'display_name'      => $user['display_name'],
+				'employment_id'     => $user['employment_id'],
 				'employee_id'       => $meta['employee_id'],
 				'employment_status' => $user['employment_status'] ?? null,
 				'designation'       => $user['designation'] ?? null,
@@ -370,7 +379,9 @@ class User {
 				'employment_type'   => $user['employment_type'] ?? null,
 				'hire_date'         => $user['hire_date'] ?? null,
 				'address'           => ! empty( $meta['address_id'] ) ? Address::getAddressById( $meta['address_id'] ) : null,
-				'social_links'      => self::getSocialLinks( $user['user_id'] )
+				'social_links'      => self::getSocialLinks( $user['user_id'] ),
+				'local_time'        => $local_time,
+				'reporting_person'  => ! empty( $user['reporting_person_user_id'] ) ? Employment::getMinimalInfo( $user['reporting_person_user_id'] ) : null
 			);
 		}
 
@@ -489,6 +500,7 @@ class User {
 					'employee_leaves'            => $data['employee_leaves'] ?? (object) array(),
 					'employee_documents'         => $data['employee_documents'] ?? null,
 					'employee_trainings'         => $data['employee_trainings'] ?? null,
+					'use_custom_weekly_schedule' => $data['use_custom_weekly_schedule'] ?? false,
 
 					'enable_signing_bonus'       => $data['enable_signing_bonus'] ?? false,
 					'signing_bonus_amount'       => $data['signing_bonus_amount'] ?? '',
@@ -503,10 +515,6 @@ class User {
 				$links
 			)
 		);
-
-		/**
-		 * If not custom weekly schedule, delete the schedule from table, later it will use from settings
-		 */
 
 		if ( $is_new ) {
 

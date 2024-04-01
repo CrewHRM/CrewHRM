@@ -22,7 +22,7 @@ class EmployeeController {
 			'nopriv' => true,
 		),
 		'getEmployeeList'        => array(
-			'role' => 'administrator',
+
 		),
 		'changeEmploymentStatus' => array(
 			'role' => 'administrator',
@@ -115,9 +115,37 @@ class EmployeeController {
 	 * @param array $filters
 	 * @return void
 	 */
-	public static function getEmployeeList( array $filters = array() ) {
+	public static function getEmployeeList( array $filters = array(), bool $is_admin = false ) {
 
-		$users = User::getUsers( $filters );
+		$user_id = get_current_user_id();
+		$administrative = User::hasAdministrativeRole( $user_id );
+
+		if ( ( $is_admin && ! $administrative ) || ( ! $administrative && ! User::validateRole( $user_id, User::ROLE_EMPLOYEE ) ) ) {
+			wp_send_json_error( array( 'message' => __( 'Access denied!', 'crewhrm' ) ) );
+		}
+
+		$users = User::getEmployeeUsers( $filters );
+
+		// Remove sensitive data if it is not admin access
+		if ( ! $is_admin ) {
+
+			$keep = array(
+				'user_id', 
+				'avatar_url', 
+				'display_name',
+				'designation',
+				'department_name',
+				'employee_id',
+			);
+
+			foreach ( $users['users'] as $index => $user ) {
+				foreach ( $user as $col => $val ) {
+					if ( ! in_array( $col, $keep ) ) {
+						unset( $users['users'][ $index ][ $col ] );
+					}
+				}
+			}
+		}
 
 		wp_send_json_success(
 			array(

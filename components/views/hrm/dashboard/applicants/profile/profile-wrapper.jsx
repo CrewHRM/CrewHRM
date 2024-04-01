@@ -179,6 +179,7 @@ export function Profile({ has_applications }) {
                             {application.first_name} {application.last_name}
                             <span
                                 className={'d-inline-block margin-left-4 font-size-15 vertical-align-middle'.classNames()}
+								title={application.address?.country_code}
                             >
                                 {getFlag(application.address?.country_code)}
                             </span>

@@ -3,16 +3,6 @@ import React, { useContext, useState, useEffect } from 'react';
 import { __ } from 'crewhrm-materials/helpers.jsx';
 import ShowMore from 'crewhrm-materials/ShowMore/ShowMore.jsx';
 
-import LinkedInIcon from 'crewhrm-materials/static/images/social-img/crew-linkedin-icon.svg';
-import FacebookIcon from 'crewhrm-materials/static/images/social-img/crew-facebook-icon.svg';
-import TwitterIcon from 'crewhrm-materials/static/images/social-img/crew-twitter-icon.svg';
-import GithubIcon from 'crewhrm-materials/static/images/social-img/crew-github-icon.svg';
-import YoutubeIcon from 'crewhrm-materials/static/images/social-img/crew-youtube-icon-icon.svg';
-import WordpresskIcon from 'crewhrm-materials/static/images/social-img/crew-wordpress-icon.svg';
-import MediumIcon from 'crewhrm-materials/static/images/social-img/crew-medium-icon.svg';
-import DribbleIcon from 'crewhrm-materials/static/images/social-img/crew-dribble-icon.svg';
-import BehanceIcon from 'crewhrm-materials/static/images/social-img/crew-behance-icon.svg';
-
 import { ContextAddEmlpoyeeManually } from './index.jsx';
 import { BasicUserInfo } from './segments/basic-info/basic-user-info.jsx';
 
@@ -22,18 +12,6 @@ import { SocialFields } from './segments/social-fields.jsx';
 import { EmergencyContactField } from './segments/emergency-contact.jsx';
 
 import AddEmployeeCss from './AddManually.module.scss';
-
-export const social_fields = {
-	linkedin: LinkedInIcon,
-	twitter: TwitterIcon,
-	facebook: FacebookIcon,
-	github: GithubIcon,
-	medium: MediumIcon,
-	dribble: DribbleIcon,
-	behance: BehanceIcon,
-	wordpress: WordpresskIcon,
-	youtube: YoutubeIcon
-}
 
 export default function EmployeeInfoForm() {
 

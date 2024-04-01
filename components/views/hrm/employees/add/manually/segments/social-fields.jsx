@@ -1,9 +1,8 @@
 import React from 'react';
 
 import { __ } from 'crewhrm-materials/helpers.jsx';
-import { patterns } from 'crewhrm-materials/data.jsx';
+import { patterns, social_icons as social_fields } from 'crewhrm-materials/data.jsx';
 import { TextField } from 'crewhrm-materials/text-field/text-field.jsx';
-import { social_fields } from '../EmployeeInfoForm';
 
 export function SocialFields(props) {
 
