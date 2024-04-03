@@ -47,6 +47,21 @@ class User {
 	const ONBOARDING_GET_KEY = 'onboarding-token';
 
 	/**
+	 * The meta key to store completed onboarding step names
+	 */
+	const ONBOARDING_COMPLETED_STEP_KEY = 'onboarding_completed_steps';
+
+	/**
+	 * Currently supported onboarding steps
+	 */
+	const ONBOARDING_STEPS = array(
+		'personal_info',
+		'emergency_contact',
+		'payment_method',
+		'supporting_documents'
+	);
+
+	/**
 	 * Validate if a user has required role
 	 *
 	 * @param int          $user_id The user ID to validate rule
@@ -502,6 +517,9 @@ class User {
 					'employee_trainings'         => $data['employee_trainings'] ?? null,
 					'use_custom_weekly_schedule' => $data['use_custom_weekly_schedule'] ?? false,
 
+					'payment_method'             => $data['payment_method'] ?? null,
+					'payment_method_details'     => $data['payment_method_details'] ?? array(),
+
 					'enable_signing_bonus'       => $data['enable_signing_bonus'] ?? false,
 					'signing_bonus_amount'       => $data['signing_bonus_amount'] ?? '',
 
@@ -670,7 +688,13 @@ class User {
 	public static function getMeta( $user_id, $key = null, $fallback = null ) {
 
 		// Get Crew meta data
-		$meta = Meta::employee( $user_id )->getMeta();
+		$meta = Meta::employee( $user_id )->getMeta( $key );
+
+		// Return singular meta data
+		if ( ! empty( $key ) ) {
+			return $meta;
+		}
+
 		$meta = ! is_array( $meta ) ? array() : $meta;
 
 		// Get WP specific meta data
@@ -766,5 +790,31 @@ class User {
 	 */
 	public static function clearActivationKey( $user_id ) {
 		delete_user_meta( $user_id, self::META_KEY_FOR_TOKEN );
+	}
+
+	/**
+	 * Save completed step name
+	 *
+	 * @param int $user_id
+	 * @param string $new_step
+	 * @return array
+	 */
+	public static function updatedCompletedSteps( $user_id, $new_step ) {
+		$existing = self::getCompletedSteps( $user_id );
+		if ( ! in_array( $new_step, $existing ) ) {
+			$existing[] = $new_step;
+			self::updateMeta( $user_id, self::ONBOARDING_COMPLETED_STEP_KEY, $existing );
+		}
+		return $existing;
+	}
+
+	/**
+	 * Get completed steps names
+	 *
+	 * @param int $user_id
+	 * @return array
+	 */
+	public static function getCompletedSteps( $user_id ) {
+		return _Array::getArray( self::getMeta( $user_id, self::ONBOARDING_COMPLETED_STEP_KEY ) );
 	}
 }

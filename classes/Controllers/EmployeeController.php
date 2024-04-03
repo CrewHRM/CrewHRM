@@ -19,7 +19,7 @@ class EmployeeController {
 
 		),
 		'fetchEmployee'          => array(
-			'nopriv' => true,
+
 		),
 		'getEmployeeList'        => array(
 
@@ -39,7 +39,7 @@ class EmployeeController {
 	 *
 	 * @return void
 	 */
-	public static function updateEmployee( array $employee, array $avatar_image = array(), bool $is_admin = false ) {
+	public static function updateEmployee( array $employee, array $avatar_image = array(), bool $is_admin = false, string $onboarding_step = '' ) {
 
 		$current_user_id = get_current_user_id();
 
@@ -49,7 +49,7 @@ class EmployeeController {
 		}
 
 		// Check if required fields provided
-		if ( empty( $employee['first_name'] ) || empty( $employee['last_name'] ) || empty( $employee['user_email'] ) ) {
+		if ( empty( $employee['first_name'] ) || empty( $employee['last_name'] ) || ( $is_admin && empty( $employee['user_email'] ) ) ) {
 			wp_send_json_error( array( 'message' => esc_html__( 'Required fields missing', 'crewhrm' ) ) );
 		}
 
@@ -64,8 +64,8 @@ class EmployeeController {
 		// To Do: Send email, and onboard through email link
 
 		// Show warning for existing email
-		$mail_user_id = User::getUserIdByEmail( $employee['user_email'] );
-		if ( $is_admin && ! empty( $mail_user_id ) && $mail_user_id !== ( $employee['user_id'] ?? null ) ) {
+		$mail_user_id = $is_admin ? User::getUserIdByEmail( $employee['user_email'] ) : null;
+		if ( ! empty( $mail_user_id ) && $mail_user_id !== ( $employee['user_id'] ?? null ) ) {
 			wp_send_json_error( array( 'message' => esc_html__( 'The email is associated with another account already', 'crewhrm' ) ) );
 		}
 
@@ -91,10 +91,17 @@ class EmployeeController {
 			wp_send_json_error( array( 'message' => esc_html__( 'Something went wrong!', 'crewhrm' ) ) );
 		}
 
+		// Update completed step array
+		$completed_steps = array();
+		if ( ! $is_admin && ! empty( $onboarding_step ) ) {
+			$completed_steps = User::updatedCompletedSteps( $current_user_id, $onboarding_step );
+		}
+		
 		wp_send_json_success(
 			array(
-				'user_id'  => $user_id,
-				'employee' => User::getUserInfo( $user_id ),
+				'user_id'         => $user_id,
+				'employee'        => User::getUserInfo( $user_id ),
+				'completed_steps' => $completed_steps
 			)
 		);
 	}
@@ -115,7 +122,12 @@ class EmployeeController {
 		$employee = User::getUserInfo( $user_id );
 
 		if ( ! empty( $employee ) ) {
-			wp_send_json_success( array( 'employee' => $employee ) );
+			wp_send_json_success(
+				array( 
+					'employee' => $employee, 
+					'completed_steps' => User::getCompletedSteps( $user_id )
+				) 
+			);
 		} else {
 			wp_send_json_error( array( 'message' => esc_html__( 'Employee not found', 'crewhrm' ) ) );
 		}
