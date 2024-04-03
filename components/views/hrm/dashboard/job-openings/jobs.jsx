@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
-import { __, data_pointer, formatDate, getAddress, sprintf } from 'crewhrm-materials/helpers.jsx';
+import { __ } from 'crewhrm-materials/helpers.jsx';
 import { StatusDot } from 'crewhrm-materials/status-dot/status-dots.jsx';
 import { Options } from 'crewhrm-materials/dropdown/dropdown.jsx';
 import { ShareModal } from 'crewhrm-materials/share-modal.jsx';

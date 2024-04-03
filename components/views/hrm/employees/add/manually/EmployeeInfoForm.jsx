@@ -1,15 +1,15 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState } from 'react';
 
 import { __ } from 'crewhrm-materials/helpers.jsx';
 import ShowMore from 'crewhrm-materials/ShowMore/ShowMore.jsx';
 
-import { ContextAddEmlpoyeeManually } from './index.jsx';
-import { BasicUserInfo } from './segments/basic-info/basic-user-info.jsx';
+import { BasicUserInfo } from 'crewhrm-materials/onboarding-modules/basic-info/basic-user-info.jsx';
+import { EducationInfo } from 'crewhrm-materials/onboarding-modules/education.jsx';
+import { OtherInfo } from 'crewhrm-materials/onboarding-modules/other-info.jsx';
+import { SocialFields } from 'crewhrm-materials/onboarding-modules/social-fields.jsx';
+import { EmergencyContactField } from 'crewhrm-materials/onboarding-modules/emergency-contact.jsx';
 
-import { EducationInfo } from './segments/education.jsx';
-import { OtherInfo } from './segments/other-info.jsx';
-import { SocialFields } from './segments/social-fields.jsx';
-import { EmergencyContactField } from './segments/emergency-contact.jsx';
+import { ContextAddEmlpoyeeManually } from './index.jsx';
 
 import AddEmployeeCss from './AddManually.module.scss';
 

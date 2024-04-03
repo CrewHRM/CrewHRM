@@ -189,7 +189,7 @@ export function AddEmployeeManually({departments={}}) {
 		const {avatar_image} = values;
 		delete values.avatar_image;
 
-		request('updateEmployee', {employee: {...values, user_id}, avatar_image}, resp=>{
+		request('updateEmployee', {employee: {...values, user_id}, avatar_image, is_admin: true}, resp=>{
 			const {
 				success,
 				data: {

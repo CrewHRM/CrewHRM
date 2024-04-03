@@ -38,9 +38,6 @@ class Scripts {
 
 		// Load text domain
 		add_action( 'init', array( $this, 'loadTextDomain' ) );
-
-		// Script to add components to employee frontend dashboard
-		add_action( 'crewhrm_pro_employee_dashboard_scripts', array( $this, 'loadScriptForEmployee' ) );
 	}
 
 	/**
@@ -194,14 +191,5 @@ class Scripts {
 	 */
 	public function loadTextDomain() {
 		load_plugin_textdomain( Main::$configs->text_domain, false, Main::$configs->dir . 'languages' );
-	}
-
-	/**
-	 * Load employee frotnend dashboard scirpts
-	 *
-	 * @return void
-	 */
-	public function loadScriptForEmployee() {
-		wp_enqueue_script( 'crewhrm-hrm-employee-dashboard-patch', Main::$configs->dist_url . 'employee-dashboard.js', array( 'jquery', 'wp-i18n' ), Main::$configs->version, true );
 	}
 }

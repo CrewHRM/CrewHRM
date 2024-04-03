@@ -16,7 +16,7 @@ class EmployeeController {
 
 	const PREREQUISITES = array(
 		'updateEmployee'         => array(
-			'role' => 'administrator',
+
 		),
 		'fetchEmployee'          => array(
 			'nopriv' => true,
@@ -39,11 +39,23 @@ class EmployeeController {
 	 *
 	 * @return void
 	 */
-	public static function updateEmployee( array $employee, array $avatar_image = array() ) {
+	public static function updateEmployee( array $employee, array $avatar_image = array(), bool $is_admin = false ) {
+
+		$current_user_id = get_current_user_id();
+
+		// If acting as admin but not admin then show error
+		if ( $is_admin && ! User::hasAdministrativeRole( $current_user_id ) ) {
+			wp_send_json_error( array( 'message' => __( 'Access denied!', 'crewhrm' ) ) );
+		}
 
 		// Check if required fields provided
 		if ( empty( $employee['first_name'] ) || empty( $employee['last_name'] ) || empty( $employee['user_email'] ) ) {
 			wp_send_json_error( array( 'message' => esc_html__( 'Required fields missing', 'crewhrm' ) ) );
+		}
+
+		// If it is onboarding by end user, use current user ID as the employee
+		if ( ! $is_admin ) {
+			$employee['user_id'] = $current_user_id;
 		}
 
 		// To Do: Allow existing email for new manual entry if no emaployment is linked already.
@@ -53,7 +65,7 @@ class EmployeeController {
 
 		// Show warning for existing email
 		$mail_user_id = User::getUserIdByEmail( $employee['user_email'] );
-		if ( ! empty( $mail_user_id ) && $mail_user_id !== ( $employee['user_id'] ?? null ) ) {
+		if ( $is_admin && ! empty( $mail_user_id ) && $mail_user_id !== ( $employee['user_id'] ?? null ) ) {
 			wp_send_json_error( array( 'message' => esc_html__( 'The email is associated with another account already', 'crewhrm' ) ) );
 		}
 
