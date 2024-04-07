@@ -8,7 +8,7 @@ import { DropDown } from 'crewhrm-materials/dropdown/dropdown.jsx';
 import { DateField } from 'crewhrm-materials/date-time.jsx';
 import { TagField } from 'crewhrm-materials/tag-field/tag-field.jsx';
 
-import { WeeklyScheduleEditor } from '../../../../modules/weekly-schedule-editor/weekly-schedule-editor.jsx';
+import { WeeklyScheduleEditor } from 'crewhrm-materials/onboarding-modules/weekly-schedule-editor/weekly-schedule-editor.jsx';
 import { ContextAddEmlpoyeeManually } from './index.jsx';
 
 import AddEmployeeCss from './AddManually.module.scss';

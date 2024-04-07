@@ -128,7 +128,8 @@ function OptionFields({fields=[], vertical, separator, is_group=false}) {
 					min, 
 					max, 
 					disabled,
-					WpMedia
+					WpMedia,
+					component: Comp
 				} = field;
 
 				const show_separator = separator && !is_group && i !== fields.length - 1;
@@ -156,6 +157,16 @@ function OptionFields({fields=[], vertical, separator, is_group=false}) {
 						} ${when ? 'fade-in' : ''}`.classNames()}
 						ref={highlight_field===name ? highlight_ref : null}
 					>
+						{
+							!Comp ? null : 
+							<>
+								<div className={'flex-1'.classNames()}>{label_text}</div>
+								<div>
+									<RenderExternal component={Comp} payload={{onChange, value: values[name]}}/>
+								</div>
+							</>
+						}
+						
 						{/* Toggle switch option */}
 						{
 							type !== 'switch' ? null :

@@ -6,8 +6,8 @@ import { TextField } from 'crewhrm-materials/text-field/text-field.jsx';
 import { ToggleSwitch } from 'crewhrm-materials/toggle-switch/ToggleSwitch.jsx';
 
 import { ContextAddEmlpoyeeManually } from './index.jsx';
-import { BenifitsBuilder } from '../../../../modules/benifits-builder/benifits-builder.jsx';
-import { LeaveBuilder } from '../../../../modules/leave-builder/leave-builder.jsx';
+import { BenifitsBuilder } from 'crewhrm-materials/onboarding-modules/benifits-builder/benifits-builder.jsx';
+import { LeaveBuilder } from 'crewhrm-materials/onboarding-modules/leave-builder/leave-builder.jsx';
 
 import AddEmployeeCss from './AddManually.module.scss';
 
