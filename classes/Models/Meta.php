@@ -54,6 +54,17 @@ class Meta {
 	}
 
 	/**
+	 * Provide an instance of employment meta
+	 *
+	 * @param int $employment_id Employment ID to return meta instance for
+	 * @return Meta
+	 */
+	public static function employment( $employment_id ) {
+		global $wpdb;
+		return new self( $wpdb->crewhrm_employment_meta, $employment_id );
+	}
+
+	/**
 	 * Provide an instance of employee meta
 	 *
 	 * @param int $user_id Job ID to return meta instance for

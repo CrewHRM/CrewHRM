@@ -234,4 +234,53 @@ class Employment {
 
 		return ( int ) $count;
 	}
+
+	/**
+	 * Update crew meta for the employment
+	 *
+	 * @param int    $employment_id
+	 * @param string $key
+	 * @param mixed  $value
+	 * @return void
+	 */
+	public static function updateMeta( $employment_id, $key, $value = null ) {
+
+		// Get existing meta
+		$meta = self::getMeta( $employment_id );
+
+		if ( is_array( $key ) ) {
+			// Update bulk meta data array
+			$meta = array_merge( $meta, $key );
+
+		} else {
+			// Update single meta
+			$meta[ $key ] = $value;
+		}
+
+		Meta::employment( $employment_id )->updateBulkMeta( $meta );
+	}
+
+	/**
+	 * Get crew meta data for employment
+	 *
+	 * @param int    $employment_id
+	 * @param string $key
+	 * @param mixed  $fallback
+	 *
+	 * @return mixed
+	 */
+	public static function getMeta( $employment_id, $key = null, $fallback = null ) {
+
+		// Get Crew meta data
+		$meta = Meta::employment( $employment_id )->getMeta( $key );
+
+		// Return singular meta data
+		if ( ! empty( $key ) ) {
+			return $meta;
+		}
+
+		$meta = ! is_array( $meta ) ? array() : $meta;
+
+		return $key ? ( $meta[ $key ] ?? $fallback ) : $meta;
+	}
 }

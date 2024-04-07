@@ -222,7 +222,8 @@ class User {
 		$meta = self::getMeta( $user_id );
 
 		// Get employment data
-		$employment = Employment::getLatestEmployment( $user_id, array() );
+		$employment      = Employment::getLatestEmployment( $user_id, array() );
+		$employment_meta = $employment ? Employment::getMeta( $employment['employment_id'] ) : array();
 
 		// Get address
 		$address = ! empty( $meta['address_id'] ) ? Address::getAddressById( $meta['address_id'], array() ) : array();
@@ -243,6 +244,7 @@ class User {
 			),
 			$meta,
 			$employment,
+			$employment_meta,
 			$address
 		);
 	}
@@ -510,27 +512,31 @@ class User {
 					'blood_group'                => $data['blood_group'] ?? null,
 					'educational_info'           => $filtered_educations,
 					'address_id'                 => $address_id,
-					'experience_level'           => $data['experience_level'] ?? null,
-					'employee_benefits'          => $data['employee_benefits'] ?? (object) array(),
-					'employee_leaves'            => $data['employee_leaves'] ?? (object) array(),
-					'employee_documents'         => $data['employee_documents'] ?? null,
-					'employee_trainings'         => $data['employee_trainings'] ?? null,
-					'use_custom_weekly_schedule' => $data['use_custom_weekly_schedule'] ?? false,
-
 					'payment_method'             => $data['payment_method'] ?? null,
 					'payment_method_details'     => $data['payment_method_details'] ?? array(),
 
-					'enable_signing_bonus'       => $data['enable_signing_bonus'] ?? false,
-					'signing_bonus_amount'       => $data['signing_bonus_amount'] ?? '',
-
-					'enable_other_bonus'         => $data['enable_other_bonus'] ?? false,
-					'other_bonus_amount'         => $data['other_bonus_amount'] ?? '',
-
-					'offer_equity_compensation'  => $data['offer_equity_compensation'] ?? false,
-					'equity_compensation_amount' => $data['equity_compensation_amount'] ?? '',
 				),
 				$emergency,
 				$links
+			)
+		);
+
+		// Update contract/employment specific meta data.
+		Employment::updateMeta(
+			$employment_id,
+			array(
+				'experience_level'           => $data['experience_level'] ?? null,
+				'employee_benefits'          => $data['employee_benefits'] ?? (object) array(),
+				'employee_leaves'            => $data['employee_leaves'] ?? (object) array(),
+				'employee_documents'         => $data['employee_documents'] ?? null,
+				'employee_trainings'         => $data['employee_trainings'] ?? null,
+				'use_custom_weekly_schedule' => $data['use_custom_weekly_schedule'] ?? false,
+				'enable_signing_bonus'       => $data['enable_signing_bonus'] ?? false,
+				'signing_bonus_amount'       => $data['signing_bonus_amount'] ?? '',
+				'enable_other_bonus'         => $data['enable_other_bonus'] ?? false,
+				'other_bonus_amount'         => $data['other_bonus_amount'] ?? '',
+				'offer_equity_compensation'  => $data['offer_equity_compensation'] ?? false,
+				'equity_compensation_amount' => $data['equity_compensation_amount'] ?? '',
 			)
 		);
 

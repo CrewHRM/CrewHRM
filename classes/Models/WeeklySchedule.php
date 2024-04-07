@@ -106,19 +106,6 @@ class WeeklySchedule {
 
 		global $wpdb;
 
-		// To Do: If custom date not enabled, then get directly from settings.
-
-		$where_clause = $employment_id === null ? ' employment_id IS NULL' : $wpdb->prepare( ' employment_id=%d', $employment_id );
-
-		$slots = $wpdb->get_results(
-			"SELECT * FROM {$wpdb->crewhrm_weekly_schedules} WHERE {$where_clause}",
-			ARRAY_A
-		);
-
-		if ( empty( $slots ) ) {
-			return null;
-		}
-
 		$schedules = array(
 			'monday'    => array(
 				'enable' => false,
@@ -149,6 +136,31 @@ class WeeklySchedule {
 				'slots'  => (object) array(),
 			),
 		);
+
+		// If custom date not enabled then get from global settings
+		$use_custom = Employment::getMeta( $employment_id, 'use_custom_weekly_schedule' );
+		if ( ! $use_custom ) {
+
+			// If setting has schedule, use it.
+			$setting_schedule = Settings::getSetting( 'employee_default_working_hours' );
+			if ( ! empty( $setting_schedule ) ) {
+				$schedules = $setting_schedule;
+			}
+
+			// As custom schedule not enabled, return either from setting or empty schedule
+			return $schedules;
+		}
+
+		$where_clause = $employment_id === null ? ' employment_id IS NULL' : $wpdb->prepare( ' employment_id=%d', $employment_id );
+
+		$slots = $wpdb->get_results(
+			"SELECT * FROM {$wpdb->crewhrm_weekly_schedules} WHERE {$where_clause}",
+			ARRAY_A
+		);
+
+		if ( empty( $slots ) ) {
+			return null;
+		}
 
 		foreach ( $slots as $slot ) {
 			$schedule_id                              = $slot['schedule_id'];

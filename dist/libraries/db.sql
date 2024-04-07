@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Mar 24, 2024 at 12:24 AM
+-- Generation Time: Apr 07, 2024 at 08:44 PM
 -- Server version: 8.0.16
 -- PHP Version: 8.1.23
 
@@ -138,7 +138,7 @@ CREATE TABLE IF NOT EXISTS `wp_crewhrm_employments` (
   `designation` varchar(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
   `department_id` bigint(20) UNSIGNED DEFAULT NULL,
   `employment_type` varchar(20) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT 'full_time, part_time, contract, temporary or trainee',
-  `employment_status` varchar(10) COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT 'active, inactive, resigned, on_leave, laid_off or terminated',
+  `employment_status` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci DEFAULT NULL COMMENT 'active, inactive, resigned, laid_off or terminated',
   `annual_gross_salary` bigint(20) UNSIGNED DEFAULT NULL,
   `salary_currency` varchar(5) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci DEFAULT NULL,
   `reporting_person_user_id` bigint(20) UNSIGNED DEFAULT NULL COMMENT 'The user ID of reporting person. Ideally the reporting person is also an employee.',
@@ -150,6 +150,20 @@ CREATE TABLE IF NOT EXISTS `wp_crewhrm_employments` (
   `weekly_working_hour` tinyint(3) UNSIGNED DEFAULT NULL,
   `hire_date` date DEFAULT NULL,
   PRIMARY KEY (`employment_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `wp_crewhrm_employment_meta`
+--
+
+CREATE TABLE IF NOT EXISTS `wp_crewhrm_employment_meta` (
+  `meta_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
+  `object_id` bigint(20) UNSIGNED NOT NULL,
+  `meta_key` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci NOT NULL,
+  `meta_value` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci NOT NULL,
+  PRIMARY KEY (`meta_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 
 -- --------------------------------------------------------

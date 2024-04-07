@@ -70,40 +70,40 @@ export default function AddEmployee() {
 						{__('New team members show up here after completing onboarding. Ready to begin')}
 					</div>
 				</div>
-				<div className={'employee-invitation-links'.classNames(employeecss)}>
+				<div className={'employee-invitation-links'.classNames(employeecss) + 'd-flex flex-direction-column row-gap-20'.classNames()}>
 					{
 						channels.map((channel, index)=>{
 							
 							const {render=true} = channel;
 
-							return !render ? null : <Link key={index} to={channel.route}>
-								<div
-									className={
-										'single-employee-invitation-link'.classNames(employeecss) +
-										'bg-color-white border-radius-5'.classNames()
-									}
-								>
-									<div>
-										<div
-											className={
-												'font-size-17 font-weight-600 color-text'.classNames() +
-												'employee-invitation-link-item-title'
-											}
-										>
-											{channel.label}
-										</div>
-										<div
-											className={
-												'font-size-13 font-weight-400 color-text-light'.classNames() +
-												'employee-invitation-link-item-text'.classNames(employeecss)
-											}
-										>
-											{channel.description}
-										</div>
+							return !render ? null : <Link 
+								key={index} 
+								to={channel.route} 
+								className={
+									'single-employee-invitation-link'.classNames(employeecss) +
+									'bg-color-white border-radius-5'.classNames()
+								}
+							>
+								<div>
+									<div
+										className={
+											'font-size-17 font-weight-600 color-text'.classNames() +
+											'employee-invitation-link-item-title'
+										}
+									>
+										{channel.label}
 									</div>
-									<div>
-										<img src={channel.icon} alt="" />
+									<div
+										className={
+											'font-size-13 font-weight-400 color-text-light'.classNames() +
+											'employee-invitation-link-item-text'.classNames(employeecss)
+										}
+									>
+										{channel.description}
 									</div>
+								</div>
+								<div>
+									<img src={channel.icon} alt="" />
 								</div>
 							</Link>
 						})

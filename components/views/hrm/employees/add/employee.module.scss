@@ -1,14 +1,10 @@
 .employee-invitation-links {
-	> a {
-		display: block;
-	}
-	> a:not(:first-child) {
-		margin-top: 20px;
-	}
+	
 	.single-employee-invitation-link {
 		cursor: pointer;
 		display: flex;
 		max-width: 500px;
+		width: 100%;
 		padding: 20px;
 		align-items: center;
 		justify-content: space-between;

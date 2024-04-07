@@ -83,6 +83,7 @@ class Database {
 		$wpdb->crewhrm_pipeline         = $prefix . 'pipeline';
 		$wpdb->crewhrm_stages           = $prefix . 'stages';
 		$wpdb->crewhrm_employments      = $prefix . 'employments';
+		$wpdb->crewhrm_employment_meta  = $prefix . 'employment_meta';
 		$wpdb->crewhrm_employee_meta    = $prefix . 'employee_meta';
 		$wpdb->crewhrm_weekly_schedules = $prefix . 'weekly_schedules';
 		$wpdb->crewhrm_leaves           = $prefix . 'leaves';
