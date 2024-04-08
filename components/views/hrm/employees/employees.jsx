@@ -48,7 +48,7 @@ export function Employees(props) {
 
 				{/* Employee invite screen with multiple options like manual, email, from hirelist. Manual invite will show the editor in fact. */}
 				<Route
-					path="/employees/invite/"
+					path="/employees/new/"
 					element={
 						<>
 							<AddEmployee />
@@ -60,7 +60,7 @@ export function Employees(props) {
 					!has_pro ? null :
 					<>
 						<Route
-							path="/employee/invite/"
+							path="/employees/new/invite/"
 							element={
 								<>
 									<EmployeeInvite />
@@ -68,7 +68,7 @@ export function Employees(props) {
 							}
 						/>
 						<Route
-							path="/employee/invite/hirelist"
+							path="/employees/new/import/"
 							element={
 								<>
 									<AddEmployeeHirelist />

@@ -124,6 +124,7 @@ function OptionFields({fields=[], vertical, separator, is_group=false}) {
 					when, 
 					direction, 
 					hint, 
+					hint2,
 					placeholder, 
 					min, 
 					max, 
@@ -191,6 +192,7 @@ function OptionFields({fields=[], vertical, separator, is_group=false}) {
 										onChange={(v) => onChange(name, v, field)}
 										placeholder={placeholder}
 									/>
+									<small>{hint2 ? hint2(values[name] || 'custom-path') : null}</small>
 								</div>
 							</>
 						)) ||

@@ -1,4 +1,5 @@
 import React, { useState, useContext } from 'react';
+import {Link} from 'react-router-dom';
 
 import { patterns } from 'crewhrm-materials/data.jsx';
 import { request } from 'crewhrm-materials/request.jsx';
@@ -45,12 +46,12 @@ export default function EmployeeInvite() {
 			<StickyBar title={__('People')} canBack={true}>
 				<div className={'d-flex align-items-center column-gap-30'.classNames()}>
 					<div className={'d-inline-block'.classNames()}>
-						<a
-							href={`${window[data_pointer].admin_url}=${window[data_pointer].app_name}#/dashboard/jobs/editor/new/`}
+						<Link
+							to={`/employees/new/`}
 							className={'button button-primary'.classNames()}
 						>
-							{__('Update')}
-						</a>
+							{__('Add New Employee')}
+						</Link>
 					</div>
 				</div>
 			</StickyBar>
@@ -61,8 +62,7 @@ export default function EmployeeInvite() {
 			>
 				<div
 					className={
-						'd-flex flex-direction-column align-items-center margin-bottom-30'.classNames() +
-						''.classNames()
+						'd-flex flex-direction-column align-items-center margin-bottom-30'.classNames()
 					}
 				>
 					<img className={'margin-bottom-15'.classNames()} src={imgsrc} />

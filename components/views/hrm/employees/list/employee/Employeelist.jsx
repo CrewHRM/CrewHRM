@@ -241,7 +241,7 @@ export function Employeelist() {
 
 							<div className={'d-inline-block'.classNames()}>
 								<Link 
-									to='/employees/invite/' 
+									to='/employees/new/' 
 									className={'button button-primary'.classNames()}
 								>
 									{__('Add New Employee')}

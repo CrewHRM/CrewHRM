@@ -33,7 +33,7 @@ export default function CongratsAddEmployee() {
 					>
 						<span
 							style={{ width: `${(60 / 5) * (4 + 1)}px` }}
-							className={`upgradeable-progressbar-bar ${4}`.classNames(AddEmployeeCss) + ''.classNames()}
+							className={`upgradeable-progressbar-bar ${4}`.classNames(AddEmployeeCss)}
 						></span>
 					</span>
 				</div>

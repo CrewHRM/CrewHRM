@@ -95,7 +95,7 @@ export default function EmployeeStatusForm() {
 					</div>
 				</div>
 				<div className={'flex-1'.classNames()}>
-					<div className={''.classNames()}>
+					<div>
 						<div
 							className={'color-text font-size-15 line-height-18 margin-top-20 margin-bottom-14  font-weight-500'.classNames()}
 						>

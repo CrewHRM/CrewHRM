@@ -3,12 +3,35 @@ import currencyToSymbolMap from 'currency-symbol-map/map'
 
 import { __, data_pointer } from 'crewhrm-materials/helpers.jsx';
 import { applyFilters } from 'crewhrm-materials/hooks.jsx';
-
 import { patterns } from 'crewhrm-materials/data.jsx';
-import { Promote } from '../../../promote/promote';
-
+import { WeeklyScheduleEditor } from 'crewhrm-materials/onboarding-modules/weekly-schedule-editor/weekly-schedule-editor.jsx';
+import { LeaveBuilder } from 'crewhrm-materials/onboarding-modules/leave-builder/leave-builder.jsx';
+import { BenifitsBuilder } from 'crewhrm-materials/onboarding-modules/benifits-builder/benifits-builder.jsx';
 import zoom_svg from 'crewhrm-materials/static/images/brands/zoom.svg';
 import meet_svg from 'crewhrm-materials/static/images/brands/meet.svg';
+
+import { Promote } from '../../../promote/promote.jsx';
+
+function DefaultHours({onChange, value}) {
+	return <WeeklyScheduleEditor 
+		onChange={schedule=>onChange('employee_default_working_hours', schedule)}
+		value={value || {}}
+	/>
+}
+
+function DefaultLeaves({onChange, value}) {
+	return <LeaveBuilder
+		onChange={leaves=>onChange('employee_default_leaves', leaves)}
+		leaves={value || {}}
+	/>
+}
+
+function DefaultBenefits({onChange, value}) {
+	return <BenifitsBuilder
+		onChange={benefits=>onChange('employee_default_benefits', benefits)}
+		benefits={value || {}}
+	/>
+}
 
 export const settings_fields = applyFilters(
 	'crewhrm_setting_fields',
@@ -118,6 +141,54 @@ export const settings_fields = applyFilters(
 					icon: 'ch-icon ch-icon-paperclip-2',
 					overflow: false,
 					component: ()=>window[data_pointer].has_pro ? <i>{__('Please enable Attachment addon first')}</i> : <Promote content="attachment_settings"/>
+				},
+				employee: {
+					label: __('Employee'),
+					icon: 'ch-icon ch-icon-profile-2user',
+					sections: {
+						schedule:{
+							label: __('Working hours'),
+							description: __('Configure default working hours'),
+							separator: true,
+							vertical: true,
+							fields: [
+								{
+									name: 'employee_default_working_hours',
+									label: __('Default Working Hours'),
+									direction: 'column',
+									component: DefaultHours
+								},
+							]
+						},
+						leaves:{
+							label: __('Leaves'),
+							description: __('Configure default leaves'),
+							separator: true,
+							vertical: true,
+							fields: [
+								{
+									name: 'employee_default_leaves',
+									label: __('Default Leaves'),
+									direction: 'column',
+									component: DefaultLeaves
+								},
+							]
+						},
+						benefits:{
+							label: __('Benefits'),
+							description: __('Configure default benefits'),
+							separator: true,
+							vertical: true,
+							fields: [
+								{
+									name: 'employee_default_benefits',
+									label: __('Default Benefits'),
+									direction: 'column',
+									component: DefaultBenefits
+								},
+							]
+						}
+					}
 				}
 			}
 		},

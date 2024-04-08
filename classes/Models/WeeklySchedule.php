@@ -138,8 +138,7 @@ class WeeklySchedule {
 		);
 
 		// If custom date not enabled then get from global settings
-		$use_custom = Employment::getMeta( $employment_id, 'use_custom_weekly_schedule' );
-		if ( ! $use_custom ) {
+		if ( ! Employment::getMeta( $employment_id, 'use_custom_weekly_schedule' ) ) {
 
 			// If setting has schedule, use it.
 			$setting_schedule = Settings::getSetting( 'employee_default_working_hours' );

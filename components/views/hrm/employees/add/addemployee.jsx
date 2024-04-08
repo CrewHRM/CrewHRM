@@ -13,7 +13,7 @@ const {has_pro} = window[data_pointer];
 
 const channels = [
 	{
-		route: '/employee/invite/',
+		route: '/employees/new/invite/',
 		label: __('Invite via email'),
 		description: __('Invite one or more new staff members to create their account'),
 		icon: addemployeeMailImg,
@@ -26,7 +26,7 @@ const channels = [
 		icon: addemployeeUserPlusImg
 	},
 	/* {
-		route: '/employee/invite/hirelist/',
+		route: '/employees/new/import/',
 		label: __('Select from the hire list'),
 		description: __('Add info about the new member manually'),
 		icon: addemployeeBriefcaseImg
@@ -56,8 +56,7 @@ export default function AddEmployee() {
 			>
 				<div
 					className={
-						'd-flex flex-direction-column align-items-center margin-bottom-30'.classNames() +
-						''.classNames()
+						'd-flex flex-direction-column align-items-center margin-bottom-30'.classNames()
 					}
 				>
 					<img className={'margin-bottom-15'.classNames()} src={imgsrc} />

@@ -36,8 +36,7 @@ export default function AddEmployeeHirelist() {
 			>
 				<div
 					className={
-						'd-flex flex-direction-column align-items-center margin-bottom-30'.classNames() +
-						''.classNames()
+						'd-flex flex-direction-column align-items-center margin-bottom-30'.classNames()
 					}
 				>
 					<img className={'margin-bottom-15'.classNames()} src={imgsrc} />

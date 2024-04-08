@@ -102,7 +102,7 @@ export function EmployeeProfileSingle() {
 			<div className={'d-flex align-items-center column-gap-30'.classNames()}>
 				<div className={'d-inline-block'.classNames()}>
 					<a
-						href={`${window[data_pointer].admin_url}=crewhrm-employee#/employee/invite/`}
+						href={`${window[data_pointer].admin_url}=crewhrm-employee#/employees/new/invite/`}
 						className={'button button-primary'.classNames()}
 					>
 						{__('Add New Employee')}

@@ -61,7 +61,7 @@ export function EmployeeDashboard() {
 			<div className={'d-flex align-items-center column-gap-30'.classNames()}>
 				<div className={'d-inline-block'.classNames()}>
 					<Link
-						to={`/employees/invite/`}
+						to={`/employees/new/`}
 						className={'button button-primary'.classNames()}
 					>
 						{__('Add New Employee')}

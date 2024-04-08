@@ -55,13 +55,11 @@ module.exports.syncDirectory=function(sourceDir, targetDir) {
 		.on('unlink', (path) => syncDirectory());
 
 	function syncDirectory() {
-		// console.log('Syncing directories...');
 		exec(rsyncCommand, (error, stdout, stderr) => {
 			if (error) {
 				console.error(`Error syncing directories: ${error}`);
 			} else {
 				removeFilesNotInSource(sourceDir, targetDir);
-				// console.log('Materials directories synced successfully');
 			}
 		});
 	}

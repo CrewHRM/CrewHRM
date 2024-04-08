@@ -20,7 +20,7 @@ export default function EmployeeBenefitForm() {
 	return (
 		<>
 			<div className={'employeeinfo-form-wrapper'.classNames(AddEmployeeCss)}>
-				<div className={''.classNames() + 'employeeinfo-form'.classNames(AddEmployeeCss)}>
+				<div className={'employeeinfo-form'.classNames(AddEmployeeCss)}>
 					<div
 						className={'font-size-20 font-weight-500 line-height-24 color-text margin-bottom-25'.classNames()}
 					>
@@ -28,7 +28,7 @@ export default function EmployeeBenefitForm() {
 					</div>
 					<div className={'padding-15'.classNames() + 'border'.classNames(AddEmployeeCss)}>
 						<div className={'d-flex justify-content-space-between'.classNames()}>
-							<div className={''.classNames()}>
+							<div>
 								<div className={'font-size-17 font-weight-500 color-text margin-bottom-5'.classNames()}>
 									{__('Signning Bonus')}
 								</div>
@@ -64,7 +64,7 @@ export default function EmployeeBenefitForm() {
 						}
 					>
 						<div className={'d-flex justify-content-space-between'.classNames()}>
-							<div className={''.classNames()}>
+							<div>
 								<div className={'font-size-17 font-weight-500 color-text margin-bottom-5'.classNames()}>
 									{__('Offer other bonuses?')}
 								</div>
@@ -100,7 +100,7 @@ export default function EmployeeBenefitForm() {
 						}
 					>
 						<div className={'d-flex justify-content-space-between'.classNames()}>
-							<div className={''.classNames()}>
+							<div>
 								<div className={'font-size-17 font-weight-500 color-text margin-bottom-5'.classNames()}>
 									{__('Offer equity compensation?')}
 								</div>
