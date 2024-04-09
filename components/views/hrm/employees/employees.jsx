@@ -4,10 +4,10 @@ import { HashRouter, Navigate, Routes, Route } from 'react-router-dom';
 import ScrollToTop from 'crewhrm-materials/scrollToTop/ScrollToTop.jsx';
 import {data_pointer} from 'crewhrm-materials/helpers.jsx';
 
-import EmployeeInvite from './add/invite/EmployeeInvite.jsx';
-import {AddEmployeeManually} from './add/manually/index.jsx';
-import AddEmployee from './add/addemployee.jsx';
-import AddEmployeeHirelist from './add/hire/AddEmployeeHirelist.jsx';
+import EmployeeInvite from './new/invite/EmployeeInvite.jsx';
+import {AddEmployeeManually} from './new/add/index.jsx';
+import AddEmployee from './new/addemployee.jsx';
+import AddEmployeeHirelist from './new/import/AddEmployeeHirelist.jsx';
 import { EmployeeDashboard } from './list/list.jsx';
 import { EmployeeProfileSingle } from './profile/Profile.jsx';
 
