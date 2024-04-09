@@ -421,7 +421,7 @@ class User {
 	 *
 	 * @return int The user ID, created or updated one.
 	 */
-	public static function createOrUpdateEmployee( $data, $avatar_image ) {
+	public static function createOrUpdateEmployee( $data, $avatar_image, $photo_id_card = null, $certificates = null ) {
 
 		$user_id   = ! empty( $data['user_id'] ) ? $data['user_id'] : null;
 		$full_name = $data['first_name'] . ' ' . $data['last_name'];
@@ -460,6 +460,37 @@ class User {
 		// Set profile pic
 		if ( is_array( $avatar_image ) && ! empty( $avatar_image['tmp_name'] ) ) {
 			self::setProfilePic( $user_id, $avatar_image );
+		}
+
+		// Set photo id card
+		$file_manager = new FileManager( $user_id, 'employee' );
+		if ( is_array( $photo_id_card ) && ! empty( $photo_id_card['tmp_name'] ) ) {
+
+			$attachment_id = $file_manager->uploadFile( $photo_id_card );
+
+			// Store the file ID as employee meta
+			if ( $attachment_id ) {
+				self::updateMeta( $user_id, 'photo_id_card_file_id', $attachment_id );
+			}
+		}
+
+		// Store educational certificate files
+		if ( is_array( $certificates ) ) {
+			
+			$educational_files = array();
+
+			foreach ( $certificates as $cert_file ) {
+				if ( is_array( $cert_file ) && ! empty( $cert_file['tmp_name'] ) ) {
+
+					$attachment_id = $file_manager->uploadFile( $cert_file );
+					
+					if ( $attachment_id ) {
+						$educational_files[] = $attachment_id;
+					}
+				}
+			}
+			
+			self::updateMeta( $user_id, 'educational_certificate_file_ids', $educational_files );
 		}
 
 		// Update employment data

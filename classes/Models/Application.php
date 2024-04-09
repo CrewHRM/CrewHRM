@@ -90,7 +90,7 @@ class Application {
 
 		// Insert resume
 		if ( 'resume' === $field_name ) {
-			$resume_id = FileManager::uploadFile( $application_id, $file );
+			$resume_id = ( new FileManager( $application_id, 'application' ) )->uploadFile( $file );
 			if ( ! empty( $resume_id ) ) {
 				global $wpdb;
 				$wpdb->update(

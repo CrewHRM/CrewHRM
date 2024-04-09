@@ -5,7 +5,7 @@
 
 namespace CrewHRM\Controllers;
 
-use CrewHRM\Models\Address;
+use CrewHRM\Helpers\File;
 use CrewHRM\Models\Employment;
 use CrewHRM\Models\User;
 
@@ -39,7 +39,7 @@ class EmployeeController {
 	 *
 	 * @return void
 	 */
-	public static function updateEmployee( array $employee, array $avatar_image = array(), bool $is_admin = false, string $onboarding_step = '' ) {
+	public static function updateEmployee( array $employee, array $avatar_image = array(), array $educational_certificates = array(), array $photo_id_card = array(), bool $is_admin = false, string $onboarding_step = '' ) {
 
 		$current_user_id = get_current_user_id();
 
@@ -60,8 +60,6 @@ class EmployeeController {
 
 		// To Do: Allow existing email for new manual entry if no emaployment is linked already.
 		// To Do: Restrict email field edit once an employment is created
-		// To Do: Add activation key during creating new
-		// To Do: Send email, and onboard through email link
 
 		// Show warning for existing email
 		$mail_user_id = $is_admin ? User::getUserIdByEmail( $employee['user_email'] ) : null;
@@ -82,9 +80,11 @@ class EmployeeController {
 				wp_send_json_error( array( 'message' => __( 'The employee ID exists', 'crewhrm' ) ) );
 			}
 		}
+
+		$educational_certificates = File::organizeUploadedHierarchy( $educational_certificates );
 		
 		// Create or update the user now
-		$user_id = User::createOrUpdateEmployee( $employee, $avatar_image );
+		$user_id = User::createOrUpdateEmployee( $employee, $avatar_image, $photo_id_card, $educational_certificates );
 
 		// If fails
 		if ( empty( $user_id ) || ! is_numeric( $user_id ) ) {

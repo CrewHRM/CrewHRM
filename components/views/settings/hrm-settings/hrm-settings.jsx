@@ -30,8 +30,6 @@ function Wrapper({ children }) {
     };
 
 	const dispatcher=(k, v)=>{
-		// Find t
-		console.log(k, v);
 		onChange(k, v)
 	}
 
