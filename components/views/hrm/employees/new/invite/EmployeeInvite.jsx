@@ -3,41 +3,38 @@ import {Link} from 'react-router-dom';
 
 import { patterns } from 'crewhrm-materials/data.jsx';
 import { request } from 'crewhrm-materials/request.jsx';
-import { __, data_pointer } from 'crewhrm-materials/helpers.jsx';
+import { __ } from 'crewhrm-materials/helpers.jsx';
 import { StickyBar } from 'crewhrm-materials/sticky-bar.jsx';
 import { LoadingIcon } from 'crewhrm-materials/loading-icon/loading-icon.jsx';
 import { ContextToast } from 'crewhrm-materials/toast/toast.jsx';
 import imgsrc from 'crewhrm-materials/static/images/addemployee-img-subscribe-5.png';
-import closeSvg from 'crewhrm-materials/static/images/teaminvite-img-6.svg';
 
 import employeecss from '../employee.module.scss';
 
 export default function EmployeeInvite() {
 	
 	const {ajaxToast} = useContext(ContextToast);
-	const [emailList, setEmailList] = useState([]);
-	const [inputEmail, setInputEmail] = useState('');
-	const [inviting, setInviting] = useState(false);
 
-	function handleKeydown(event) {
-		if (event.key == 'Enter' && patterns.email.test( inputEmail ) && emailList.indexOf(inputEmail) === -1 ) {
-			setEmailList((prevEmaillist) => [...prevEmaillist, inputEmail]);
-			setInputEmail('');
-		}
-	}
-
-	function detachEmail(emailToremove) {
-		setEmailList(emailList.filter((email) => email !== emailToremove));
-	}
-
+	const [state, setState] = useState({
+		email: '',
+		inviting: false
+	});
+	
 	const inviteEmail=()=>{
-		setInviting(true);
-		request('inviteEmployeeViaEmail', {emails: emailList}, resp=>{
-			setInviting(false);
+		
+		setState({
+			...state,
+			inviting: true
+		});
+
+		request('inviteEmployeeViaEmail', {email: state.email}, resp=>{
+			setState({
+				...state,
+				inviting: false,
+				email: resp.success ? '' : state.email
+			});
+
 			ajaxToast(resp);
-			if (resp.success) {
-				setInputEmail('');
-			}
 		});
 	}
 
@@ -77,32 +74,20 @@ export default function EmployeeInvite() {
 				</div>
 				<div className={'employee-invitation-area'.classNames(employeecss)}>
 					<div className={'employee-invitation-textarea'.classNames(employeecss)}>
-						{emailList.map((email, index) => (
-							<div
-								className={'invited-email'.classNames(employeecss) + 'd-flex column-gap-5'.classNames()}
-								key={index}
-							>
-								<span className={'font-size-15 font-weight-500 color-text'.classNames()}>{email}</span>
-								<span onClick={() => detachEmail(email)}>
-									<img src={closeSvg} alt="" />
-								</span>
-							</div>
-						))}
 						<input
 							type="text"
 							placeholder={__('Enter email')}
-							value={inputEmail}
-							onChange={(e) => setInputEmail(e.target.value)}
-							onKeyDown={handleKeydown}
+							value={state.email}
+							onChange={(e) => setState({...state, email: e.currentTarget.value})}
 						/>
 					</div>
 
 					<button
 						className={'button button-primary button-large margin-top-20 text-align-center'.classNames()}
 						onClick={inviteEmail}
-						disabled={inviting || !emailList.length}
+						disabled={state.inviting || !state.email || !patterns.email.test(state.email)}
 					>
-						{__('Invite')} <LoadingIcon show={inviting}/>
+						{__('Invite')} <LoadingIcon show={state.inviting}/>
 					</button>
 				</div>
 			</div>
