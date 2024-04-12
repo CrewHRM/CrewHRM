@@ -288,4 +288,34 @@ class Employment {
 
 		return $key ? ( $meta[ $key ] ?? $fallback ) : $meta;
 	}
+
+	/**
+	 * Delete employment by args
+	 *
+	 * @param array $args
+	 * @return void
+	 */
+	/* public static function deleteEmployment( array $args ) {
+
+		global $wpdb;
+		
+		$where = array();
+
+		// Delete by user id
+		if ( ! empty( $args['user_id'] ) ) {
+			$where['employee_user_id'] = $args['user_id'];
+		}
+
+		// Delete by employment id
+		if ( ! empty( $args['employment_id'] ) ) {
+			$where['employment_id'] = $args['employment_id'];
+		}
+
+		if ( ! empty( $where ) ) {
+			$wpdb->delete(
+				$wpdb->crewhrm_employments,
+				$where
+			);
+		}
+	} */
 }

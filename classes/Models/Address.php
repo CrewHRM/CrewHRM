@@ -34,7 +34,7 @@ class Address {
 		);
 
 		// Return 0 if all field is empty
-		if ( count( $_address ) === count( array_filter( $_address, 'empty' ) ) ) {
+		if ( count( $_address ) === count( array_filter( $_address, function( $value ){ return empty( $value ); } ) ) ) {
 			return 0;
 		}
 

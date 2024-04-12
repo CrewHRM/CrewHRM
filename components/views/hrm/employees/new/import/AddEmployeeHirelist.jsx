@@ -65,7 +65,7 @@ export default function AddEmployeeHirelist() {
 			loading_applications: true
 		});
 
-		request('getApplicationsByJob', {job_id: state.selected_job}, resp=>{
+		request('getApplicationsByJob', {job_id: state.selected_job, non_user_only: true}, resp=>{
 			const {
 				data: {
 					applications = []
@@ -92,13 +92,21 @@ export default function AddEmployeeHirelist() {
 			adding: true
 		});
 
-		/* request('importApplicationAsEmployee', {application_ids, job_id}, resp=>{
+		request('importApplicationAsEmployee', {application_ids, job_id}, resp=>{
+
 			setState({
 				...state,
-				adding: false
+				adding: false,
+				selected_applications: resp.success ? [] : state.selected_applications
 			});
+
 			ajaxToast(resp);
-		}); */
+
+			// Get updated hired list if import is successful, so imported ones will no longer be in the list.
+			if ( resp.success ) {
+				getHiredList();
+			}
+		});
 	}
 
 	const toggleSelection=(application_id, add)=>{
@@ -195,7 +203,7 @@ export default function AddEmployeeHirelist() {
 													{
 														state.selected_job ? 
 														<div className={'text-align-center color-error'.classNames()}>
-															{__('No application found in this job')}
+															{__('No hired application found outstanding')}
 														</div>
 														:
 														<div className={'text-align-center'.classNames()}>
@@ -282,11 +290,11 @@ export default function AddEmployeeHirelist() {
 								{
 									isEmpty(state.applications) ? null :
 									<button
-										disabled={!state.selected_applications.length}
+										disabled={!state.selected_applications.length || state.adding}
 										className={'button button-primary button-large margin-top-20 text-align-center'.classNames()}
 										onClick={addAsEmployee}
 									>
-										{__('Add as Employee')}
+										{__('Add as Employee')} <LoadingIcon show={state.adding}/>
 									</button>
 								}
 							</div>

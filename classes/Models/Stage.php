@@ -343,9 +343,9 @@ class Stage {
 	}
 
 	/**
-	 * Get stages nad application counts for job/s
+	 * Get stages and application counts for job/s
 	 *
-	 * @param int|array $job_id Job ID
+	 * @param int|array $job_id Job ID or array of IDs
 	 * @return array
 	 */
 	public static function getStageStatsByJobId( $job_id ) {
@@ -459,8 +459,21 @@ class Stage {
 	 * @return int
 	 */
 	public static function getDisqualifyId( $job_id ) {
+		return self::getStageIdByName( $job_id, '_disqualified_' );
+	}
+
+	/**
+	 * Get stage ID by stage name
+	 *
+	 * @param int $job_id
+	 * @param string $stage_name
+	 * @return int
+	 */
+	public static function getStageIdByName( $job_id, $stage_name ) {
+		
 		global $wpdb;
-		$disq_id = $wpdb->get_var(
+
+		$stg_id = $wpdb->get_var(
 			$wpdb->prepare(
 				"SELECT 
 					stage_id 
@@ -468,12 +481,13 @@ class Stage {
 					{$wpdb->crewhrm_stages} 
 				WHERE 
 					job_id=%d 
-					AND stage_name='_disqualified_'",
-				$job_id
+					AND stage_name=%s",
+				$job_id,
+				$stage_name
 			)
 		);
 
-		return $disq_id ? (int) $disq_id : 0;
+		return $stg_id ? (int) $stg_id : 0;
 	}
 
 	/**

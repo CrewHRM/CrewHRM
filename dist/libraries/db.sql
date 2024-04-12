@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Apr 07, 2024 at 08:44 PM
+-- Generation Time: Apr 12, 2024 at 09:46 PM
 -- Server version: 8.0.16
 -- PHP Version: 8.1.23
 
@@ -162,7 +162,7 @@ CREATE TABLE IF NOT EXISTS `wp_crewhrm_employment_meta` (
   `meta_id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT,
   `object_id` bigint(20) UNSIGNED NOT NULL,
   `meta_key` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci NOT NULL,
-  `meta_value` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci NOT NULL,
+  `meta_value` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_520_ci,
   PRIMARY KEY (`meta_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
 

@@ -291,6 +291,37 @@ class User {
 	}
 
 	/**
+	 * Delete a user, usually used through user deletion hook
+	 *
+	 * @param int $user_id
+	 * @return void
+	 */
+	/* public static function deleteUser( $user_id ) {
+
+		global $wpdb;
+
+		// Delete employment
+		Employment::deleteEmployment( array( 'user_id' => $user_id ) );
+
+		// Delete employee meta
+		Meta::employee( $user_id )->deleteMeta();
+
+		// Delete comments
+		// Comme
+	} */
+
+	/**
+	 * Replace user ID to another one
+	 *
+	 * @param int $user_id
+	 * @param int $assign_to
+	 * @return void
+	 */
+	public static function replaceUser( $user_id, $assign_to ) {
+
+	}
+
+	/**
 	 * Get employee list
 	 *
 	 * @param array $args

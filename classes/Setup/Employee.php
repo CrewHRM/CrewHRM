@@ -28,6 +28,7 @@ class Employee {
 		add_action( 'init', array( $this, 'addEmployeeRole' ) );
 		add_filter( 'get_avatar_url', array( $this, 'avatarUrl' ), 10, 3 );
 		add_action( 'init', array( $this, 'registerAvatarSize' ) );
+		// add_action( 'delete_user', array( $this, 'deleteUserInfo' ), 10, 2 );
 	}
 
 	/**
@@ -74,4 +75,20 @@ class Employee {
 
 		return $url;
 	}
+
+	/**
+	 * When a user is about to be deleted
+	 *
+	 * @param int $user_id
+	 * @param int|null $assign_to
+	 * @return void
+	 */
+	/* public function deleteUserInfo( $user_id, $assign_to ) {
+
+		if ( empty( $assign_to ) ) {
+			User::deleteEmployee( $user_id );
+		} else {
+			User::
+		}
+	} */
 }

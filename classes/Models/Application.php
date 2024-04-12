@@ -294,6 +294,11 @@ class Application {
 			$where_clause .= $wpdb->prepare( ' AND app.stage_id=%d', $stage_id );
 		}
 
+		// Whether to get non user only
+		if ( ( $args['non_user_only'] ?? false ) === true ) {
+			$where_clause .= ' AND _user.ID IS NULL';
+		}
+
 		// Prepare disqualified IDs to get or not get applicant by
 		$negate_in       = $get_qualified ? ' NOT ' : '';
 		$disq_ids        = self::getDisqualifiedAppIDs( $job_id, $disq_stage_id );
@@ -307,6 +312,7 @@ class Application {
 					app.application_id 
 				FROM {$wpdb->crewhrm_applications} app
 					LEFT JOIN {$wpdb->crewhrm_stages} stage ON app.stage_id=stage.stage_id 
+					LEFT JOIN {$wpdb->users} _user ON app.email=_user.user_email 
 				WHERE 
 					{$where_clause} 
 					AND app.application_id {$negate_in} IN ({$disq_ids_places})

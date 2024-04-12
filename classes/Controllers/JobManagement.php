@@ -56,8 +56,17 @@ class JobManagement {
 	 * @param integer $job_id
 	 * @return void
 	 */
-	public static function getApplicationsByJob( int $job_id ) {
-		wp_send_json_success( array( 'applications' => Application::getApplications( array( 'job_id' => $job_id ) ) ) );
+	public static function getApplicationsByJob( int $job_id, bool $non_user_only = false ) {
+
+		$args = array( 
+			'job_id' => $job_id,
+			'non_user_only' => $non_user_only,
+			'stage_id' => Stage::getStageIdByName( $job_id, '_hired_' )
+		);
+
+		$apps = Application::getApplications( $args );
+
+		wp_send_json_success( array( 'applications' => $apps ) );
 	}
 
 	/**
@@ -290,6 +299,7 @@ class JobManagement {
 	 * @return void
 	 */
 	public static function getJobViewDashboard( int $job_id ) {
+		
 		$stats = Stage::getStageStatsByJobId( $job_id );
 
 		wp_send_json_success(
