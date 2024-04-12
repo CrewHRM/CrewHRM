@@ -8,6 +8,7 @@
 namespace CrewHRM\Controllers;
 
 use CrewHRM\Helpers\_Array;
+use CrewHRM\Models\Application;
 use CrewHRM\Models\Job;
 use CrewHRM\Models\Meta;
 use CrewHRM\Models\Settings;
@@ -23,6 +24,8 @@ class JobManagement {
 			'role' => array( 'administrator' ),
 		),
 		'getJobsDashboard'    => array(),
+		'getJobsDashboardMinimal'    => array(),
+		'getApplicationsByJob'    => array(),
 		'singleJobAction'     => array(),
 		'getSingleJobView'    => array(
 			'nopriv' => true,
@@ -37,6 +40,25 @@ class JobManagement {
 			'role' => 'administrator',
 		),
 	);
+
+	/**
+	 * Get all jobs minimal data to show for dropdown
+	 *
+	 * @return void
+	 */
+	public static function getJobsDashboardMinimal() {
+		wp_send_json_success( array( 'jobs' => Job::getJobsMinimal() ) );
+	}
+
+	/**
+	 * Get applications by job ID
+	 *
+	 * @param integer $job_id
+	 * @return void
+	 */
+	public static function getApplicationsByJob( int $job_id ) {
+		wp_send_json_success( array( 'applications' => Application::getApplications( array( 'job_id' => $job_id ) ) ) );
+	}
 
 	/**
 	 * Create or update a job

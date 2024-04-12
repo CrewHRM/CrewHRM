@@ -421,7 +421,7 @@ class User {
 	 *
 	 * @return int The user ID, created or updated one.
 	 */
-	public static function createOrUpdateEmployee( $data, $avatar_image, $photo_id_card = null, $certificates = null ) {
+	public static function createOrUpdateEmployee( $data, $avatar_image = null, $photo_id_card = null, $certificates = null ) {
 
 		$user_id   = ! empty( $data['user_id'] ) ? $data['user_id'] : null;
 		$full_name = $data['first_name'] . ' ' . $data['last_name'];

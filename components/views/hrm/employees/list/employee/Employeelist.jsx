@@ -367,8 +367,7 @@ export function Employeelist() {
 						(state.segmentation?.page_count || 0 ) < 2 ? null :
 						<div
 							className={
-								'd-flex align-items-center justify-content-center margin-top-40'.classNames() +
-								'data-table-pagination'.classNames(EmployeelistCss)
+								'd-flex align-items-center justify-content-center margin-top-40'.classNames()
 							}
 						>
 							<Pagination

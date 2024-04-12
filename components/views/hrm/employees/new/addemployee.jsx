@@ -6,6 +6,7 @@ import { StickyBar } from 'crewhrm-materials/sticky-bar.jsx';
 import imgsrc from 'crewhrm-materials/static/images/addemployee-img-1.png';
 import addemployeeMailImg from 'crewhrm-materials/static/images/addemployee-mail-img-3.svg';
 import addemployeeUserPlusImg from 'crewhrm-materials/static/images/addemployee-user-plus-img-4.svg';
+import addemployeeBriefcaseImg from 'crewhrm-materials/static/images/addemployee-briefcase-img-2.svg';
 
 import employeecss from './employee.module.scss';
 
@@ -25,12 +26,13 @@ const channels = [
 		description: __('Add info about the new staff member manually'),
 		icon: addemployeeUserPlusImg
 	},
-	/* {
+	{
 		route: '/employees/new/import/',
 		label: __('Select from the hire list'),
 		description: __('Add info about the new member manually'),
-		icon: addemployeeBriefcaseImg
-	} */
+		icon: addemployeeBriefcaseImg,
+		render: has_pro
+	}
 ];
 
 export default function AddEmployee() {

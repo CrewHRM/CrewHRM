@@ -22,6 +22,7 @@ class Address {
 	 * @return int Address ID
 	 */
 	public static function createUpdateAddress( array $address ) {
+		
 		$_address = array(
 			'unit_flat'      => $address['unit_flat'] ?? null,
 			'street_address' => $address['street_address'] ?? '',
@@ -31,6 +32,11 @@ class Address {
 			'country_code'   => $address['country_code'] ?? '',
 			'timezone'       => $address['timezone'] ?? null,
 		);
+
+		// Return 0 if all field is empty
+		if ( count( $_address ) === count( array_filter( $_address, 'empty' ) ) ) {
+			return 0;
+		}
 
 		global $wpdb;
 		$address_id = $address['address_id'] ?? null;

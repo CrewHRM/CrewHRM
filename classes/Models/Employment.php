@@ -281,6 +281,11 @@ class Employment {
 
 		$meta = ! is_array( $meta ) ? array() : $meta;
 
+		/* if ( $key === 'employee_leaves' ) {
+			$value = $meta[ $key ];
+			
+		} */
+
 		return $key ? ( $meta[ $key ] ?? $fallback ) : $meta;
 	}
 }
