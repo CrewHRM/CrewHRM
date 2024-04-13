@@ -1,14 +1,13 @@
 import React, { useContext } from 'react';
 import currenctSymbols from 'currency-symbol-map/map';
 
-import { __ } from 'crewhrm-materials/helpers.jsx';
+import { __, data_pointer } from 'crewhrm-materials/helpers.jsx';
 import { TextField } from 'crewhrm-materials/text-field/text-field.jsx';
 import { ToggleSwitch } from 'crewhrm-materials/toggle-switch/ToggleSwitch.jsx';
-
-import { ContextAddEmlpoyeeManually } from './index.jsx';
 import { BenifitsBuilder } from 'crewhrm-materials/onboarding-modules/benifits-builder/benifits-builder.jsx';
 import { LeaveBuilder } from 'crewhrm-materials/onboarding-modules/leave-builder/leave-builder.jsx';
 
+import { ContextAddEmlpoyeeManually } from './index.jsx';
 import AddEmployeeCss from './AddManually.module.scss';
 
 export default function EmployeeBenefitForm() {
@@ -136,23 +135,54 @@ export default function EmployeeBenefitForm() {
 					<div
 						className={'font-size-20 font-weight-500 line-height-24 color-text margin-bottom-25'.classNames()}
 					>
-						{__('Benefits')}
+						{__('Benefits')} <a 
+							target='_blank' 
+							href={window[data_pointer].permalinks.settings_employee} 
+							className={'ch-icon ch-icon-settings-gear font-size-14'.classNames()}
+						/>
 					</div>
 
-					<BenifitsBuilder 
-						benefits={values.employee_benefits || {}} 
-						onChange={v=>onChange('employee_benefits', v)}/>
+					<label className={'d-flex align-items-center column-gap-10 cursor-pointer'.classNames()}>
+						<input 
+							type='checkbox' 
+							onChange={e=>onChange('use_custom_benefits', e.currentTarget.checked)}
+							checked={values.use_custom_benefits ? true : false}
+						/> {__('Add custom benefits')}
+					</label>
+
+					{
+						!values.use_custom_benefits ? null :
+						<BenifitsBuilder 
+							benefits={values.employee_benefits || {}} 
+							onChange={v=>onChange('employee_benefits', v)}/>
+					}
 				</div>
 
 				<div className={'margin-top-30'.classNames() + 'employeeinfo-form'.classNames(AddEmployeeCss)}>
 					<div
 						className={'font-size-20 font-weight-500 line-height-24 color-text margin-bottom-25'.classNames()}
 					>
-						{__('Leave')}
+						{__('Leave')} <a 
+							target='_blank' 
+							href={window[data_pointer].permalinks.settings_employee} 
+							className={'ch-icon ch-icon-settings-gear font-size-14'.classNames()}
+						/>
 					</div>
-					<LeaveBuilder
-						leaves={values.employee_leaves || {}}
-						onChange={leaves=>onChange('employee_leaves', leaves)}/>
+
+					<label className={'d-flex align-items-center column-gap-10 cursor-pointer'.classNames()}>
+						<input 
+							type='checkbox' 
+							onChange={e=>onChange('use_custom_leaves', e.currentTarget.checked)}
+							checked={values.use_custom_leaves ? true : false}
+						/> {__('Add custom leaves')}
+					</label>
+					
+					{
+						!values.use_custom_leaves ? null :
+						<LeaveBuilder
+							leaves={values.employee_leaves || {}}
+							onChange={leaves=>onChange('employee_leaves', leaves)}/>
+					}
 				</div>
 			</div>
 		</>

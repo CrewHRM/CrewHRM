@@ -40,6 +40,8 @@ export function EmployeeDashboard() {
 		}
 	);
 
+	const step_keys = Object.keys(steps);
+
 	const getMetaData=()=>{
 		request('getEmployeeListMetaData', {}, resp=>{
 			
@@ -71,17 +73,20 @@ export function EmployeeDashboard() {
 		</StickyBar>
 		
 		<div className={'container'.classNames()} style={{ paddingTop: '40px' }}>
-			<Tabs
-				active={tab_name}
-				theme="transparent"
-				onNavigate={(active_tab) =>navigate(`/employees/list/${active_tab==='employee' ? '' : active_tab+'/'}`)}
-				tabs={Object.keys(steps).map(s=>{
-					return {
-						id: s,
-						label: `${steps[s].label}${state.meta_data[s] ? ` (${state.meta_data[s]})` : ``}`
-					}
-				})}
-			/>
+			{
+				step_keys.length<2 ? null :
+				<Tabs
+					active={tab_name}
+					theme="transparent"
+					onNavigate={(active_tab) =>navigate(`/employees/list/${active_tab==='employee' ? '' : active_tab+'/'}`)}
+					tabs={step_keys.map(s=>{
+						return {
+							id: s,
+							label: `${steps[s].label}${state.meta_data[s] ? ` (${state.meta_data[s]})` : ``}`
+						}
+					})}
+				/>
+			}
 			
 			{
 				Comp ? 

@@ -247,7 +247,7 @@ export function TitleAndDescription() {
 									target='_blank'
 									className={'width-auto'.classNames()}
 								>
-									{window[data_pointer].careers_url}{state.slug_editor ? null : <><strong>{values.job_slug}</strong>/</>}
+									{window[data_pointer].permalinks.careers}{state.slug_editor ? null : <><strong>{values.job_slug}</strong>/</>}
 								</a>
 
 								{

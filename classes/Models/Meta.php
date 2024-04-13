@@ -92,7 +92,7 @@ class Meta {
 	 * @param string $meta_key Optional meta key to get specific. Otherwise all.
 	 * @return mixed
 	 */
-	public function getMeta( $meta_key = null ) {
+	public function getMeta( $meta_key = null, $fallback = null ) {
 		global $wpdb;
 
 		$is_singular  = ! empty( $meta_key );
@@ -118,7 +118,7 @@ class Meta {
 
 		$_meta = _Array::castRecursive( $_meta );
 
-		return $is_singular ? ( $_meta[ $meta_key ] ?? null ) : $_meta;
+		return $is_singular ? ( $_meta[ $meta_key ] ?? $fallback ) : $_meta;
 	}
 
 	/**

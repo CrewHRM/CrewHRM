@@ -593,6 +593,8 @@ class User {
 				'employee_documents'         => $data['employee_documents'] ?? null,
 				'employee_trainings'         => $data['employee_trainings'] ?? null,
 				'use_custom_weekly_schedule' => $data['use_custom_weekly_schedule'] ?? false,
+				'use_custom_benefits'        => $data['use_custom_benefits'] ?? false,
+				'use_custom_leaves'          => $data['use_custom_leaves'] ?? false,
 				'enable_signing_bonus'       => $data['enable_signing_bonus'] ?? false,
 				'signing_bonus_amount'       => $data['signing_bonus_amount'] ?? '',
 				'enable_other_bonus'         => $data['enable_other_bonus'] ?? false,

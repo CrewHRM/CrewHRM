@@ -272,21 +272,50 @@ class Employment {
 	public static function getMeta( $employment_id, $key = null, $fallback = null ) {
 
 		// Get Crew meta data
-		$meta = Meta::employment( $employment_id )->getMeta( $key );
+		$meta = Meta::employment( $employment_id )->getMeta( $key, $fallback );
 
 		// Return singular meta data
 		if ( ! empty( $key ) ) {
-			return $meta;
+			return self::applyMetaDefaults( $employment_id, $key, $meta );
 		}
 
 		$meta = ! is_array( $meta ) ? array() : $meta;
 
-		/* if ( $key === 'employee_leaves' ) {
+		foreach ( $meta as $_key => $_value ) {
+			$meta[ $_key ] = self::applyMetaDefaults( $employment_id, $_key, $_value ) ;
+		}
+
+		if ( $key === 'employee_leaves' ) {
 			$value = $meta[ $key ];
 			
-		} */
+		}
 
-		return $key ? ( $meta[ $key ] ?? $fallback ) : $meta;
+		return $meta;
+	}
+
+	/**
+	 * Set some meta data defaults
+	 *
+	 * @param string $key
+	 * @param mixed $value
+	 * @return void
+	 */
+	private static function applyMetaDefaults( $employee_id, $key, $value ) {
+
+		if ( $key === 'employee_leaves' ) {
+			if ( ! self::getMeta( $employee_id, 'use_custom_leaves' ) ) {
+				// Get leaves from settings
+				$value = Settings::getSetting( 'employee_default_leaves' );
+			}
+
+		} else if ( $key === 'employee_benefits' ) {
+			if ( ! self::getMeta( $employee_id, 'use_custom_benefits' ) ) {
+				// Get leaves from settings
+				$value = Settings::getSetting( 'employee_default_benefits' );
+			}		
+		}
+
+		return $value;
 	}
 
 	/**
