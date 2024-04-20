@@ -3,7 +3,7 @@ Contributors: jayedul, badsha_eee, risatrajin
 Donate Link: https://getcrewhrm.com/pricing/
 Tags: Recruitment, job manager, job listing, job board, job management, job lists, job list, job, jobs, company, hiring, employment, employer, employees, candidate, freelance, internship, job listings, positions, board, application, hiring, listing, recruiting
 Requires at least: 5.3
-Tested up to: 6.4.3
+Tested up to: 6.5
 Requires PHP: 7.4
 Stable tag: 1.0.9
 License: GPLv3
@@ -37,7 +37,7 @@ Experience Crew HRM firsthand with our live demo. Please take a look at how it s
 [Click Here to Visit the Demo Site](https://demo.getcrewhrm.com/)
 
 ==💬Get In Touch with Crew HRM==
-Please reach out to us for any questions or support to make sure you make the most out of Crew HRM.
+Please get in touch with us with any questions or for support to make sure you make the most out of Crew HRM.
 [Click Here to Contact Us](https://getcrewhrm.com/contact/)
 
 ===The pro version of the plugin includes additional features, such as:===
@@ -48,6 +48,8 @@ Please reach out to us for any questions or support to make sure you make the mo
 * **Custom Fields:** Add different fields to ask questions that would help you screen the candidates better.
 * **Email Communications:** Communicate with the applicants from the review screen and get notifications about different events in the system.
 * **Custom Attachment Support:** Allow different file formats to be uploaded when designers and creative professionals apply to your job post.
+* **Employee Portal:** The employee portal launches in the frontend of the website without any header or footer. It would give an app-like user experience. You can totally use this feature like SaaS applications. The employees can manage their leave requests, update information, add their bank account and payment information and everything else necessary.
+* **Leave Management:** This feature is divided into several parts. You can create global leave policies in the settings, apply the leave policies applicable to each employee and override them to make exceptions. Employees can request leaves from their frontend profile after logging in. The system keeps a clear account of the pending, used and unused leaves and displays them in the profile. The HR Manager can review leave requests from the employee list in the WordPress Admin Dashboard. S/he can accept or reject the requests from there.
 
 This WordPress HRM plugin is the perfect solution for any business that wants to streamline its hiring process and attract the best talent.
 
