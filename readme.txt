@@ -3,7 +3,7 @@ Contributors: jayedul, badsha_eee, risatrajin
 Donate Link: https://getcrewhrm.com/pricing/
 Tags: Recruitment, job manager, job listing, job board, job management, job lists, job list, job, jobs, company, hiring, employment, employer, employees, candidate, freelance, internship, job listings, positions, board, application, hiring, listing, recruiting
 Requires at least: 5.3
-Tested up to: 6.5
+Tested up to: 6.5.2
 Requires PHP: 7.4
 Stable tag: 1.1.0
 License: GPLv3
@@ -124,11 +124,13 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 == Changelog ==
 
-= v1.1.0 -> March 20, 2024 =
+= v1.1.0 -> April 20, 2024 =
 
 * New: Employee invitation (Pro)
 * New: Employee onboarding (Pro)
+* New: Employee import from hired list (Pro)
 * New: Employee profile (Pro)
+* New: Leave, benefits, working hours default settings
 * Update: Overall enhancements and optimizations
 
 = v1.0.9 -> March 12, 2024 =

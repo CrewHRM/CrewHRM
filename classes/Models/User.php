@@ -49,7 +49,7 @@ class User {
 	/**
 	 * The meta key to store completed onboarding step names
 	 */
-	const ONBOARDING_COMPLETED_STEP_KEY = 'onboarding_completed_steps';
+	const ONBOARDING_COMPLETED_STEP_KEY = 'onboarding-completed-steps';
 
 	/**
 	 * Currently supported onboarding steps

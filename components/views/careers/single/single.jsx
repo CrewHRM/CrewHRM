@@ -205,7 +205,7 @@ export function Single({ base_permalink, settings={} }) {
 						content={getAddress(state.job || {})}
 					/>
 					<RenderMeta
-						icon={'ch-icon ch-icon-briefcase'}
+						icon={'ch-icon ch-icon-briefcase-2'}
 						hint={__('Job Type')}
 						contentClass={'white-space-nowrap'.classNames()}
 						content={employment_types[employment_type]}

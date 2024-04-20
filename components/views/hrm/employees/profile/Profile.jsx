@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 
 import { social_icons as social_fields } from 'crewhrm-materials/data.jsx';
-import { DropDown } from 'crewhrm-materials/dropdown/dropdown';
+import { DropDown } from 'crewhrm-materials/dropdown/dropdown.jsx';
 import { __, data_pointer, formatDate, getAddress, getFlag, isEmpty, convertOffsetToTimezone } from 'crewhrm-materials/helpers.jsx';
 import { StickyBar } from 'crewhrm-materials/sticky-bar.jsx';
 import { request } from 'crewhrm-materials/request.jsx';
@@ -10,6 +10,7 @@ import { InitState } from 'crewhrm-materials/init-state.jsx';
 import { attendance_types, employment_statuses } from 'crewhrm-materials/data';
 import { ContextToast } from 'crewhrm-materials/toast/toast.jsx';
 import { LoadingIcon } from 'crewhrm-materials/loading-icon/loading-icon.jsx';
+import { DoAction } from 'crewhrm-materials/mountpoint.jsx';
 
 import ProfileCss from './profile.module.scss';
 
@@ -507,6 +508,8 @@ export function EmployeeProfileSingle() {
 								</>
 							</div>
 						</div>
+
+						<DoAction action='profile_view_admin' payload={{employee, style: ProfileCss}}/>
 					</div>
 					<div
 						className={

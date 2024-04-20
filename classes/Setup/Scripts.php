@@ -140,10 +140,10 @@ class Scripts {
 				'white_label'     => Utilities::getWhiteLabel(),
 				'action_hooks'    => array(),
 				'filter_hooks'    => array(),
+				'mountpoints'     => ( object ) array(),
 				'home_url'        => get_home_url(),
 				'dist_url'        => Main::$configs->dist_url,
 				'plugin_url'      => Main::$configs->url,
-				'ajaxurl'         => admin_url( 'admin-ajax.php' ),
 				'colors'          => $dynamic_colors,
 				'reserved_stages' => array_keys( Stage::$reserved_stages ),
 				'nonce_action'    => $nonce_action,
@@ -158,7 +158,8 @@ class Scripts {
 				'text_domain'     => Main::$configs->text_domain,
 				'currency_code'   => Settings::getSetting( 'company_currency' ),
 				'permalinks'      => array(
-					'careers' => Job::getCareersPageUrl(),
+					'ajaxurl'           => admin_url( 'admin-ajax.php' ),
+					'careers'           => Job::getCareersPageUrl(),
 					'settings_employee' => add_query_arg( array( 'page' => Admin::SLUG_SETTINGS ), admin_url( 'admin.php' ) ) . '#/settings/recruitment/employee/'
 				),
 				'company_address' => array(
