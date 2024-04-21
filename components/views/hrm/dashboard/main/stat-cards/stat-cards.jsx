@@ -1,7 +1,6 @@
-import React, { useContext } from 'react';
+import React from 'react';
 
 import { __ } from 'crewhrm-materials/helpers.jsx';
-import { ContextBackendDashboard } from '../../../dashboard/home.jsx';
 
 import icon_learning from 'crewhrm-materials/static/images/Icon-learning.svg';
 import icon_users from 'crewhrm-materials/static/images/Icon-users.svg';
@@ -10,15 +9,14 @@ import icon_time from 'crewhrm-materials/static/images/Icon-time.svg';
 
 import style from './cards.module.scss';
 
-export function StatCards({ className = '' }) {
+export function StatCards({ applicationStats={}, className = '' }) {
+	
     const {
-        applicationStats: {
-            total_jobs = 0,
-            total_applications = 0,
-            total_pending_applications = 0,
-            total_hired = 0
-        }
-    } = useContext(ContextBackendDashboard);
+		total_jobs = 0,
+		total_applications = 0,
+		total_pending_applications = 0,
+		total_hired = 0
+    } = applicationStats;
 
     const card_stats = [
         {

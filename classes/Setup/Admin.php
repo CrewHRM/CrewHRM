@@ -21,7 +21,6 @@ use CrewHRM\Models\User;
 class Admin {
 	const SLUG_SETTINGS        = 'crewhrm-settings';
 	const MOUNTPOINT_SETTINGS  = 'crewhrm_settings';
-	const MOUNTPOINT_DASHBOARD = 'crewhrm_dashboard';
 	const PAGE_SLUG_CALENDAR   = 'crewhrm-event-calendar';
 	const PAGE_SLUG_ALL_JOBS   = 'crewhrm-all-jobs';
 	const PAGE_SLUG_EMPLOYEE   = 'crewhrm-employees';
@@ -151,13 +150,12 @@ class Admin {
 	public function mainPage() {
 		$application_overview = Application::getApplicationStats();
 		echo '<div 
-				id="' . esc_attr( self::MOUNTPOINT_DASHBOARD ) . '" 
-				data-departments="' . esc_attr( wp_json_encode( Department::getDepartments() ) ) . '"
+				id="crewhrm_dashboard" 
 				data-application-stats="' . esc_attr( wp_json_encode( $application_overview ) ) . '"></div>';
 	}
 
 	/**
-	 * Provide HTML content for all jobs page
+	 * Provide HTML content for 'all jobs' page
 	 *
 	 * @return void
 	 */
@@ -166,7 +164,7 @@ class Admin {
 	}
 
 	/**
-	 * Provide HTML content for all jobs page
+	 * Provide HTML content for 'employees' page
 	 *
 	 * @return void
 	 */

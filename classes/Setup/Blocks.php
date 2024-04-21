@@ -7,9 +7,7 @@
 
 namespace CrewHRM\Setup;
 
-use CrewHRM\Helpers\Utilities;
 use CrewHRM\Main;
-use CrewHRM\Models\Department;
 
 /**
  * Block registrar class
@@ -21,7 +19,6 @@ class Blocks {
 	public function __construct() {
 		if ( function_exists( 'register_block_type' ) ) {
 			add_action( 'init', array( $this, 'registerBlock' ) );
-			add_filter( 'crewhrm_frontend_data', array( $this, 'addDepartmentsToVariables' ) );
 		}
 	}
 
@@ -45,19 +42,5 @@ class Blocks {
 				'editor_script' => 'crewhrm-block-editor',
 			)
 		);
-	}
-
-	/**
-	 * Add departments array to JS variable as it is necessary for careers block in gutenberg editor
-	 *
-	 * @param array $data Existing JS variables
-	 *
-	 * @return array
-	 */
-	public function addDepartmentsToVariables( array $data ) {
-		if ( Utilities::isGutenbergEditor() && ! isset( $data['departments'] ) ) {
-			$data['departments'] = Department::getDepartments();
-		}
-		return $data;
 	}
 }

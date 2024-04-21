@@ -10,10 +10,10 @@ namespace CrewHRM\Setup;
 use CrewHRM\Helpers\Colors;
 use CrewHRM\Helpers\Utilities;
 use CrewHRM\Main;
+use CrewHRM\Models\Department;
 use CrewHRM\Models\Job;
 use CrewHRM\Models\Settings;
 use CrewHRM\Models\Stage;
-use CrewHRM\Models\User;
 
 /**
  * Script handler class
@@ -157,6 +157,7 @@ class Scripts {
 				'is_frontend'     => ! is_admin(),
 				'text_domain'     => Main::$configs->text_domain,
 				'currency_code'   => Settings::getSetting( 'company_currency' ),
+				'departments'     => Department::getDepartments(),
 				'permalinks'      => array(
 					'ajaxurl'           => admin_url( 'admin-ajax.php' ),
 					'careers'           => Job::getCareersPageUrl(),

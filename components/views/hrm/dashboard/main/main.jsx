@@ -40,14 +40,14 @@ function CreateJobIntro({orientation="vertical"}) {
 	</IntroCard>
 }
 
-export function DahboardMain() {
+export function DahboardMain({applicationStats}) {
     return (
         <div
             data-crew="hrm-main"
             className={'height-p-100'.classNames() + 'wrapper'.classNames(style)}
         >
             <div className={'sidebar'.classNames(style)}>
-                <StatCards className={'margin-bottom-20'.classNames()} />
+                <StatCards className={'margin-bottom-20'.classNames()} applicationStats={applicationStats}/>
 				<div className={'position-relative border-radius-5 overflow-hidden'.classNames()}>
 					<RenderExternal component={applyFilters('crewhrm_dashboard_vertical_card', ()=><Promote content="calendar_widget"/>)}/>
 				</div>
