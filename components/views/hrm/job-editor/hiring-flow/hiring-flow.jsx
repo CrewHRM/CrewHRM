@@ -42,7 +42,7 @@ export function HiringFlow() {
         });
 
     return (
-        <div data-crew="hiring-flow-builder" className={'hiring'.classNames(style)}>
+        <div data-cylector="hiring-flow-builder" className={'hiring'.classNames(style)}>
             {
 				!deleteID ? null : (
                 <DeletionConfirm

@@ -8,8 +8,6 @@ import { Applications } from './applicants/applicants.jsx';
 import { StickyBar } from 'crewhrm-materials/sticky-bar.jsx';
 import { __ } from 'crewhrm-materials/helpers.jsx';
 
-export const ContextBackendDashboard = createContext();
-
 export function DashboardBar({title=__('Dashboard'), canBack}) {
     return (
         <>

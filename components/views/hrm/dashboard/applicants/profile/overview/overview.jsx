@@ -10,7 +10,7 @@ import style from './overview.module.scss';
 export function OverView({ overview=[] }) {
     
     return (
-        <div data-crew="overview" className={'overview'.classNames(style)}>
+        <div data-cylector="overview" className={'overview'.classNames(style)}>
             {overview.map((q, i) => {
                 const { id, label, text, text_options = [] } = q;
 
@@ -32,7 +32,7 @@ export function OverView({ overview=[] }) {
 						
 						<Conditional show={text_options}>
 							<div
-								data-crew="skills"
+								data-cylector="skills"
 								className={'d-flex flex-wrap-wrap flex-direction-row row-gap-15 column-gap-15'.classNames()}
 							>
 								{(text_options || []).map((o) => {

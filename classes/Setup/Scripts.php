@@ -122,7 +122,7 @@ class Scripts {
 		}
 		?>
 		<style>
-			[id^="crewhrm_"],[id^="crewhrm-"],[data-crew="root"]{
+			[id^="crewhrm_"],[id^="crewhrm-"],[data-cylector="root"]{
 				<?php echo esc_html( $_colors ); ?>
 			}
 		</style>

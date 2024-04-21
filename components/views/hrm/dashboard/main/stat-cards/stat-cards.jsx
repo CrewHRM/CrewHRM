@@ -10,7 +10,7 @@ import icon_time from 'crewhrm-materials/static/images/Icon-time.svg';
 import style from './cards.module.scss';
 
 export function StatCards({ applicationStats={}, className = '' }) {
-	
+
     const {
 		total_jobs = 0,
 		total_applications = 0,
@@ -43,7 +43,7 @@ export function StatCards({ applicationStats={}, className = '' }) {
 
     return (
         <div
-            data-crew="hrm-stat"
+            data-cylector="hrm-stat"
             className={'card-wrapper'.classNames(style) + className}
         >
             {card_stats.map((stat) => {

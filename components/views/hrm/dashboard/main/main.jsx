@@ -43,7 +43,7 @@ function CreateJobIntro({orientation="vertical"}) {
 export function DahboardMain({applicationStats}) {
     return (
         <div
-            data-crew="hrm-main"
+            data-cylector="hrm-main"
             className={'height-p-100'.classNames() + 'wrapper'.classNames(style)}
         >
             <div className={'sidebar'.classNames(style)}>

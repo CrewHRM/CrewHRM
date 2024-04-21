@@ -113,7 +113,7 @@ export function Sidebar({ hasApplications }) {
 
     return (
         <div
-            data-crew="application-sidebar"
+            data-cylector="application-sidebar"
             className={'sidebar'.classNames(style) + 'position-sticky'.classNames()}
             style={{ top: '120px' }}
         >
@@ -135,7 +135,7 @@ export function Sidebar({ hasApplications }) {
 
             <Line />
 
-            <div data-crew="list" className={'list'.classNames(style)}>
+            <div data-cylector="list" className={'list'.classNames(style)}>
                 {state.applications.map((application, i) => {
                     let {
                         first_name,

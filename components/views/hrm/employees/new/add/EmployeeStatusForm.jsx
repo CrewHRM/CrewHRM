@@ -20,18 +20,12 @@ export default function EmployeeStatusForm() {
 	const { 
 		onChange, 
 		values={}, 
-		departments=[],
 		regex={},
 		showErrorsAlways
 	} = useContext(ContextAddEmlpoyeeManually);
 
 	const {user_id} = useParams();
 
-	// Store departments in state in favour of triggering change on adding new
-	const [state, setState] = useState({
-		departments: [...departments]
-	});
-	
 	const addReportingPerson=(user)=>{
 		onChange({
 			reporting_person: user ? {avatar_url: user.thumbnail_url, display_name: user.label} : null,
@@ -122,16 +116,8 @@ export default function EmployeeStatusForm() {
 						<DepartmentDropDown
 							value={values.department_id}
 							onChange={v=>onChange('department_id', v)}
-							departments={state.departments}
 							showErrorsAlways={showErrorsAlways}
 							required={true}
-							onAddDepartment={d=>{
-								onChange('department_id', d.id);
-								setState({
-									...state,
-									departments: d.items
-								});
-							}}
 						/>
 					</div>
 				</div>

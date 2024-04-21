@@ -17,8 +17,7 @@ import { RenderExternal } from 'crewhrm-materials/render-external.jsx';
 import { TextEditor } from 'crewhrm-materials/text-editor/text-editor.jsx';
 
 import { settings_fields } from '../field-structure.jsx';
-import { ContextSettings } from '../hrm-settings.jsx';
-import { ContextBackendDashboard } from '../../../hrm/dashboard/home.jsx';
+import { ContextSettings, ContextSettingsPage } from '../hrm-settings.jsx';
 import { AddItemModal } from '../../../hrm/job-editor/job-details/sections/title-description.jsx';
 
 import style from './options.module.scss';
@@ -36,7 +35,7 @@ function OptionFields({fields=[], vertical, separator, is_group=false}) {
 		onChange, 
 	} = useContext(ContextSettings);
 
-    const { resources = {}, updateResources } = useContext(ContextBackendDashboard);
+    const { resources = {}, updateResources } = useContext(ContextSettingsPage);
 	
 	const highlight_ref = useRef();
 	const highlight_field = new URL(window.location.href).searchParams.get("highlight");

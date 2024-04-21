@@ -14,7 +14,7 @@ export function Documents({ application }) {
 	const has_cover_letter = !isEmpty(cover_letter);
 
     return (
-        <div data-crew="documents">
+        <div data-cylector="documents">
 			<Slot name="application_documents_view" payload={{application}}>
 				<Conditional show={has_cover_letter}>
 					<span

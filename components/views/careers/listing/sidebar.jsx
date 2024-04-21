@@ -166,7 +166,7 @@ export function CareersSidebar({ is_mobile, setFilter, filters, jobs_country_cod
 	}
 
     return (
-        <div data-crew="sidebar" className={'sidebar'.classNames(style)}>
+        <div data-cylector="sidebar" className={'sidebar'.classNames(style)}>
             <div>
 				{is_mobile? <MobileFilter  {...prop_drill}/> : <Filters {...prop_drill}/>}
 				

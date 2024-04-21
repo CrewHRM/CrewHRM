@@ -203,7 +203,7 @@ export function JobOpenings(props) {
             </Conditional>
 
             <div
-                data-crew="job-openings"
+                data-cylector="job-openings"
                 className={'jobs'.classNames(style) + className}
             >
                 <FilterBar
@@ -220,7 +220,7 @@ export function JobOpenings(props) {
                 </Conditional>
 
                 <Conditional show={state.jobs.length}>
-                    <div data-crew="jobs-dashboard">
+                    <div data-cylector="jobs-dashboard">
                         {state.jobs.map((job) => {
                             const {
                                 job_id,
@@ -400,7 +400,7 @@ export function JobOpenings(props) {
 export function JobOpeningsFullView(props) {
     return (
         <div
-            data-crew="job-openings-full-view"
+            data-cylector="job-openings-full-view"
             className={'padding-30'.classNames()}
             style={{ maxWidth: '988px', margin: '0 auto' }}
         >

@@ -96,7 +96,7 @@ export function Listing({ open_in_new, settings = {}, filters={} }) {
     return (
         <>
             {
-				!settings.header ? null : <div data-crew="careers-header">
+				!settings.header ? null : <div data-cylector="careers-header">
                     <CoverImage
                         src={settings.hero_image_url}
                         style={settings.hero_image_url ? { minHeight: '355px' } : {}}
@@ -112,7 +112,7 @@ export function Listing({ open_in_new, settings = {}, filters={} }) {
 			}
 
             <div
-                data-crew="job-listing"
+                data-cylector="job-listing"
                 className={`listing ${is_mobile ? 'mobile' : ''}`.classNames(style)}
 				ref={reff_wrapper}
             >
@@ -127,7 +127,7 @@ export function Listing({ open_in_new, settings = {}, filters={} }) {
                 </Conditional>
 
                 <div
-                    data-crew="listing"
+                    data-cylector="listing"
                     className={'content-area'.classNames(style) + 'flex-1'.classNames()}
                 >
                     <Conditional show={settings.search}>
@@ -157,7 +157,7 @@ export function Listing({ open_in_new, settings = {}, filters={} }) {
 
                     <Conditional show={!state.no_more}>
                         <div
-                            data-crew="loading"
+                            data-cylector="loading"
                             className={'text-align-center'.classNames()}
                         >
                             <LoadingIcon show={state.loading} />

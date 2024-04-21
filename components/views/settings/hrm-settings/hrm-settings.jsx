@@ -9,11 +9,11 @@ import { ContextHistoryFields, HistoryFields, UndoRedo } from 'crewhrm-materials
 import { ContextToast } from 'crewhrm-materials/toast/toast.jsx';
 import { LoadingIcon } from 'crewhrm-materials/loading-icon/loading-icon.jsx';
 
-import { ContextBackendDashboard } from '../../hrm/dashboard/home.jsx';
 import { Options } from './options/options.jsx';
 import { Segments } from './segments/segments.jsx';
 import { settings_fields } from './field-structure.jsx';
 
+export const ContextSettingsPage = createContext();
 export const ContextSettings = createContext();
 
 function Wrapper({ children }) {
@@ -72,7 +72,7 @@ export function HRMSettings({ resources, settings }) {
 		});
 	}
 
-    return <ContextBackendDashboard.Provider value={{ resources: state.resources, updateResources }}>
+    return <ContextSettingsPage.Provider value={{ resources: state.resources, updateResources }}>
 		<WpDashboardFullPage>
 			<HistoryFields defaultValues={settings || {}}>
 				<HashRouter>
@@ -100,5 +100,5 @@ export function HRMSettings({ resources, settings }) {
 				</HashRouter>
 			</HistoryFields>
 		</WpDashboardFullPage>
-	</ContextBackendDashboard.Provider>
+	</ContextSettingsPage.Provider>
 }

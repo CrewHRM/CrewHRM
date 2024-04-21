@@ -144,7 +144,7 @@ export function ApplicationForm() {
             </Conditional>
 
             <div
-                data-crew="application-builder"
+                data-cylector="application-builder"
                 className={'application'.classNames(style)}
             >
                 <span
@@ -180,7 +180,7 @@ export function ApplicationForm() {
 
                     return (
                         <div
-                            data-crew="section"
+                            data-cylector="section"
                             key={section_name}
                             className={'section-container'.classNames(style)}
                         >
@@ -211,7 +211,7 @@ export function ApplicationForm() {
                                                 id: field_id, // Just to make sure it requires id
                                                 rendered: (
                                                     <div
-                                                        data-crew="fields"
+                                                        data-cylector="fields"
                                                         key={field_id}
                                                         className={
                                                             'single-row'.classNames(style) +
