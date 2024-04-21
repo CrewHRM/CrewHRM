@@ -14,7 +14,7 @@ import { Promote } from '../../../promote/promote.jsx';
 
 function DefaultHours({onChange, value}) {
 	return <WeeklyScheduleEditor 
-		onChange={schedule=>onChange('employee_default_working_hours', schedule)}
+		onChange={schedule=>{onChange('employee_default_working_hours', schedule)}}
 		value={value || {}}
 	/>
 }

@@ -126,7 +126,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 == Changelog ==
 
-= v1.1.0 -> April 20, 2024 =
+= v1.1.0 -> April 22, 2024 =
 
 * New: Employee invitation (Pro)
 * New: Employee onboarding (Pro)
