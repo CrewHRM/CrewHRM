@@ -69,7 +69,6 @@ export function HRMSettings({ resources, settings={} }) {
     return <WpDashboardFullPage>
 		<StickyBar canBack={sub_title ? true : false} title={title}>
 			<div className={'d-flex align-items-center column-gap-30'.classNames()}>
-				{/* <UndoRedo /> */}
 				<button
 					className={'button button-primary'.classNames()}
 					onClick={saveSettings}
