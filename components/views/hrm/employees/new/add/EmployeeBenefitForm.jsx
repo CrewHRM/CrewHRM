@@ -133,7 +133,7 @@ export default function EmployeeBenefitForm() {
 
 				<div className={'margin-top-30'.classNames() + 'employeeinfo-form'.classNames(AddEmployeeCss)}>
 					<div
-						className={'font-size-20 font-weight-500 line-height-24 color-text margin-bottom-25'.classNames()}
+						className={'font-size-20 font-weight-500 line-height-24 color-text margin-bottom-15'.classNames()}
 					>
 						{__('Benefits')} <a 
 							target='_blank' 
@@ -141,6 +141,10 @@ export default function EmployeeBenefitForm() {
 							className={'ch-icon ch-icon-settings-gear font-size-14'.classNames()}
 						/>
 					</div>
+
+					<span className={'d-block margin-bottom-20 font-size-14 color-text-light'.classNames()}>
+						{__('The benefits policy from global settings will apply automatically. You can review the global settings by clicking the gear icon above. If you want to offer custom benefits, please check the box below. Additional options will appear.')}
+					</span>
 
 					<label className={'d-flex align-items-center column-gap-10 cursor-pointer'.classNames()}>
 						<input 
@@ -160,7 +164,7 @@ export default function EmployeeBenefitForm() {
 
 				<div className={'margin-top-30'.classNames() + 'employeeinfo-form'.classNames(AddEmployeeCss)}>
 					<div
-						className={'font-size-20 font-weight-500 line-height-24 color-text margin-bottom-25'.classNames()}
+						className={'font-size-20 font-weight-500 line-height-24 color-text margin-bottom-15'.classNames()}
 					>
 						{__('Leave')} <a 
 							target='_blank' 
@@ -168,6 +172,10 @@ export default function EmployeeBenefitForm() {
 							className={'ch-icon ch-icon-settings-gear font-size-14'.classNames()}
 						/>
 					</div>
+
+					<span className={'d-block margin-bottom-20 font-size-14 color-text-light'.classNames()}>
+						{__('The leaves policy from global settings will apply automatically. You can review the global settings by clicking the gear icon above. If you want to offer custom leaves, please check the box below. Additional options will appear.')}
+					</span>
 
 					<label className={'d-flex align-items-center column-gap-10 cursor-pointer'.classNames()}>
 						<input 

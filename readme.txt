@@ -132,7 +132,12 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 * New: Employee onboarding (Pro)
 * New: Employee import from hired list (Pro)
 * New: Employee profile (Pro)
+* New: Leave request (Pro)
 * New: Leave, benefits, working hours default settings
+* New: Employee portal link in admin menu
+* Fix: Department dropdown empty issue
+* Fix: Custom question answer not showing in application review
+* Fix: Job type icon missing in single job post
 * Update: Overall enhancements and optimizations
 
 = v1.0.9 -> March 12, 2024 =
