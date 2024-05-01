@@ -12,6 +12,8 @@ import { Options } from './options/options.jsx';
 import { Segments } from './segments/segments.jsx';
 import { settings_fields } from './field-structure.jsx';
 
+import validator from 'validator';
+
 export const ContextSettingsPage = createContext();
 
 export function HRMSettings({ resources, settings={} }) {
@@ -35,10 +37,25 @@ export function HRMSettings({ resources, settings={} }) {
 		});
 	}
 
-	const onChange=(name, v)=>{
+	const validateFields=(v,field)=>{
+		let isValid = true;
+
+		if(v && field.type=='email'){
+			isValid = validator.isEmail(v)
+		}else if(v && field.type == 'teltext'){
+			isValid = validator.isMobilePhone(v)
+		}else if(v && field.type == 'url'){
+			isValid = validator.isURL(v)
+		}
+
+		return isValid;
+	}
+
+	const onChange=(name, v, field)=>{
+		const isValid = validateFields(v,field);
 		setState({
 			...state,
-			can_go_next: true,
+			can_go_next: isValid,
 			settings: {
 				...state.settings,
 				[name]: v
@@ -57,6 +74,7 @@ export function HRMSettings({ resources, settings={} }) {
             ajaxToast(resp);
 			setState({
 				...state,
+				can_go_next: false,
 				saving: false
 			});
         });
@@ -80,7 +98,7 @@ export function HRMSettings({ resources, settings={} }) {
 		</StickyBar>
 
 		<div className={'padding-horizontal-15 overflow-auto'.classNames()}>
-			<ContextSettingsPage.Provider value={{ resources: state.resources, updateResources, values: state.settings, onChange }}>
+			<ContextSettingsPage.Provider value={{ resources: state.resources, updateResources, values: state.settings, onChange, validateFields }}>
 				<HashRouter>
 					<Routes>
 						<Route

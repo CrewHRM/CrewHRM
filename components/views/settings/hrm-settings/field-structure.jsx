@@ -262,14 +262,16 @@ export const settings_fields = applyFilters(
 									{
 										name: 'phone_number',
 										label: __('Phone'),
-										type: 'text',
-										placeholder: '123456789'
+										type: 'teltext',
+										placeholder: '123456789',
+										regex: patterns.phone
 									},
 									{
 										name: 'mobile_number',
 										label: __('Mobile'),
-										type: 'text',
-										placeholder: '123456789'
+										type: 'teltext',
+										placeholder: '123456789',
+										regex: patterns.phone
 									}
 								],
 								[
@@ -286,7 +288,8 @@ export const settings_fields = applyFilters(
 										name: 'other_email',
 										label: __('Secondary Email'),
 										type: 'email',
-										placeholder: '@company.com'
+										placeholder: '@company.com',
+										regex: patterns.email
 									}
 								],
 								{
