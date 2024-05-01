@@ -36,7 +36,7 @@ function i18n_makepot(target_dir) {
     fs.readdirSync(parent_dir).forEach(function (file_name) {
         var full_path = parent_dir + '/' + file_name;
 
-		if ( full_path.indexOf('node_modules')>-1 || full_path.indexOf('vendor')>-1 ) {
+		if ( full_path.indexOf('node_modules')>-1 || full_path.indexOf('vendor')>-1 || full_path.indexOf('.git')>-1 ) {
 			return;
 		}
 

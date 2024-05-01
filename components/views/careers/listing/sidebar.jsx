@@ -31,7 +31,7 @@ function Filters({_setFilter, filterList, filters}) {
 									className={`d-block font-size-14 cursor-pointer margin-bottom-18 font-weight-500 ${is_active ? 'color-text' : 'color-text-light'}`.classNames()}
 									onClick={() => _setFilter(filter_key, id)}
 								>
-									{label} {count ? `(${count})` : null}
+									{__(label)} {count ? `(${count})` : null}
 								</span>
 							);
 						})

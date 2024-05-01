@@ -58,7 +58,7 @@ export function CareersLoop({ jobs=[], open_in_new }) {
                         {meta.map((m, i) => {
                             return (
                                 <span key={i}>
-                                    {m}
+                                    {__(m)}
                                     <Conditional show={i < meta.length - 1}>
                                         <span
                                             className={'d-inline-block padding-horizontal-4'.classNames()}
