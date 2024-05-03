@@ -126,7 +126,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 == Changelog ==
 
-= v1.1.0 -> April 22, 2024 =
+= v1.1.0 -> May 3, 2024 =
 
 * New: Employee invitation (Pro)
 * New: Employee onboarding (Pro)
@@ -139,6 +139,8 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 * Fix: Custom question answer not showing in application review
 * Fix: Job type icon missing in single job post
 * Update: Overall enhancements and optimizations
+* Fix: Job share modal copy link not always working
+* Fix: Missing translatable strings
 
 = v1.0.9 -> March 12, 2024 =
 
