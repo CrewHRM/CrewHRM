@@ -338,7 +338,7 @@ export function JobOpenings(props) {
 														key={index}
 														className={'d-inline-block font-size-15 font-weight-400 color-text-light'.classNames()}
 													>
-														{data}
+														{__(data)}
 													</span>
                                                 })}
                                             </div>

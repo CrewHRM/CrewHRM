@@ -10,13 +10,13 @@ import { Conditional } from 'crewhrm-materials/conditional.jsx';
 import { AddressFields } from 'crewhrm-materials/address-fields.jsx';
 import { RadioCheckbox } from 'crewhrm-materials/radio-checkbox.jsx';
 
-export function RenderField({ field={}, onChange=()=>{}, values = {}, showErrorsAlways}) {
-	
-	if ( Array.isArray(field) ) {
+export function RenderField({ field = {}, onChange = () => { }, values = {}, showErrorsAlways }) {
+
+	if (Array.isArray(field)) {
 		return <div className={'d-flex align-items-center column-gap-20'.classNames()}>
-			{field.map(f=>{
+			{field.map(f => {
 				return <div key={f.name} className={'flex-1'.classNames()}>
-					<RenderField {...{field:f, onChange, values, showErrorsAlways}}/>
+					<RenderField {...{ field: f, onChange, values, showErrorsAlways }} />
 				</div>
 			})}
 		</div>
@@ -65,7 +65,7 @@ export function RenderField({ field={}, onChange=()=>{}, values = {}, showErrors
 				<Conditional show={['text', 'url', 'email', 'textarea'].indexOf(type) > -1}>
 					<TextField
 						value={values[name] || ''}
-						type={type==='textarea' ? 'textarea' : type}
+						type={type === 'textarea' ? 'textarea' : type}
 						placeholder={placeholder}
 						onChange={v => onChange(name, v)}
 						regex={regex}
@@ -87,7 +87,7 @@ export function RenderField({ field={}, onChange=()=>{}, values = {}, showErrors
 				<Conditional show={type == 'dropdown'}>
 					<DropDown
 						value={values[name]}
-						options={options}
+						options={(typeof options === 'object') ? options.map(item => ({...item, label: __(item.label)})): options}
 						placeholder={placeholder}
 						onChange={(value) => onChange(name, value)}
 						required={required}
@@ -110,9 +110,9 @@ export function RenderField({ field={}, onChange=()=>{}, values = {}, showErrors
 						name={name}
 						value={values[name]}
 						options={options || []}
-						onChange={value=>onChange(name, value)}
+						onChange={value => onChange(name, value)}
 						required={required}
-						showErrorsAlways={showErrorsAlways}/>
+						showErrorsAlways={showErrorsAlways} />
 				</Conditional>
 
 				<Conditional show={type == 'file'}>
@@ -127,13 +127,13 @@ export function RenderField({ field={}, onChange=()=>{}, values = {}, showErrors
 						showErrorsAlways={showErrorsAlways}
 					/>
 				</Conditional>
-				
-				<Conditional show={type==='address'}>
-					<AddressFields 
-						values={values} 
+
+				<Conditional show={type === 'address'}>
+					<AddressFields
+						values={values}
 						onChange={onChange}
 						showErrorsAlways={showErrorsAlways}
-						required={required}/>
+						required={required} />
 				</Conditional>
 			</div>
 		</Conditional>

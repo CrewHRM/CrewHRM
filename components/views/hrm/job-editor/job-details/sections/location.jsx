@@ -36,7 +36,7 @@ export function Location() {
                         options={Object.keys(attendance_types).map((a) => {
                             return {
                                 id: a,
-                                label: attendance_types[a]
+                                label: __(attendance_types[a])
                             };
                         })}
                     />

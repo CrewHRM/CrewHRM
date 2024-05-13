@@ -33,7 +33,7 @@ export function Experience() {
                             value={values.experience_level}
                             onChange={(v) => onChange('experience_level', v)}
                             options={Object.keys(experience_levels).map((l) => {
-                                return { id: l, label: experience_levels[l] };
+                                return { id: l, label: __(experience_levels[l]) };
                             })}
                         />
                     </div>

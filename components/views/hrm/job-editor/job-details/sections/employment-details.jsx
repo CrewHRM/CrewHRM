@@ -35,7 +35,7 @@ export function EmploymentDetails(props) {
                         options={Object.keys(employment_types).map((type) => {
                             return {
                                 id: type,
-                                label: employment_types[type]
+                                label: __(employment_types[type])
                             };
                         })}
                         onChange={(type) => onChange('employment_type', type)}

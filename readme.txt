@@ -138,9 +138,9 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 * Fix: Department dropdown empty issue
 * Fix: Custom question answer not showing in application review
 * Fix: Job type icon missing in single job post
-* Update: Overall enhancements and optimizations
 * Fix: Job share modal copy link not always working
 * Fix: Missing translatable strings
+* Update: Overall enhancements and optimizations
 
 = v1.0.9 -> March 12, 2024 =
 

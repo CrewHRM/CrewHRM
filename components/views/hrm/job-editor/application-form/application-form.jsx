@@ -168,7 +168,7 @@ export function ApplicationForm() {
                     const options_array = Object.keys(options).map((option_name) => {
                         return {
                             id: option_name,
-                            label: options[option_name].label,
+                            label: __(options[option_name].label),
                             icon:
                                 options[option_name].icon.classNames() +
                                 'font-size-24 color-text'.classNames()
@@ -187,7 +187,7 @@ export function ApplicationForm() {
                             <strong
                                 className={'d-block font-size-17 font-weight-600 color-text margin-bottom-10'.classNames()}
                             >
-                                {label}
+                                {__(label)}
                             </strong>
 
                             {(_input_fields.length && (

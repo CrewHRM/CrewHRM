@@ -39,13 +39,15 @@ export function HRMSettings({ resources, settings={} }) {
 
 	const validateFields=(v,field)=>{
 		let isValid = true;
-
-		if(v && field.type=='email'){
-			isValid = validator.isEmail(v)
-		}else if(v && field.type == 'teltext'){
-			isValid = validator.isMobilePhone(v)
-		}else if(v && field.type == 'url'){
-			isValid = validator.isURL(v)
+		
+		if( v && field ){
+			if(field.type=='email'){
+				isValid = validator.isEmail(v)
+			}else if(field.type == 'teltext'){
+				isValid = validator.isMobilePhone(v)
+			}else if(field.type == 'url'){
+				isValid = validator.isURL(v)
+			}
 		}
 
 		return isValid;

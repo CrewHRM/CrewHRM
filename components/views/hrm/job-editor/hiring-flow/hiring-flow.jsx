@@ -37,7 +37,7 @@ export function HiringFlow() {
             // Convert keys to adjust with react list manager
             return {
                 stage_id: f.stage_id,
-                stage_name: f.stage_name
+                stage_name: __(f.stage_name)
             };
         });
 
@@ -53,7 +53,7 @@ export function HiringFlow() {
                     moveTo={list_manager_stages
                         .filter((f) => f.stage_id !== deleteID)
                         .map((f) => {
-                            return { id: f.stage_id, label: f.stage_name };
+                            return { id: f.stage_id, label: __(f.stage_name) };
                         })}
                 />)
 			}
