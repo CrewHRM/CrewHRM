@@ -3,7 +3,6 @@ import { Helmet } from 'react-helmet';
 import { Link, useParams, useSearchParams } from 'react-router-dom';
 
 import { __, formatDate, getAddress, getLocalFromUnix, parseParams } from 'crewhrm-materials/helpers.jsx';
-import { DangerouslySet } from 'crewhrm-materials/dangerously-set.jsx';
 import { request } from 'crewhrm-materials/request.jsx';
 import { LoadingIcon } from 'crewhrm-materials/loading-icon/loading-icon.jsx';
 import { Conditional } from 'crewhrm-materials/conditional.jsx';
@@ -234,9 +233,9 @@ export function Single({ base_permalink, settings={} }) {
 						>
 							{__('About Company')}
 						</span>
-						<DangerouslySet className={'font-weight-400 color-black'.classNames()}>
-							{state.about_company}
-						</DangerouslySet>
+
+						<div className={'font-weight-400 color-black'.classNames()} dangerouslySetInnerHTML={{__html: state.about_company}}></div>
+
 					</div>
 				) : null}
 
@@ -247,9 +246,7 @@ export function Single({ base_permalink, settings={} }) {
 						>
 							{__('Job Description')}
 						</span>
-						<DangerouslySet className={'font-weight-400 color-black'.classNames()}>
-							{job_description}
-						</DangerouslySet>
+						<div className={'font-weight-400 color-black'.classNames()} dangerouslySetInnerHTML={{__html: job_description}}></div>
 					</div>
 				) : null}
 

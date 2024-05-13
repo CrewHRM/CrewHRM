@@ -7,7 +7,6 @@ import { JobOpenings } from '../job-openings/jobs.jsx';
 import { IntroCard } from 'crewhrm-materials/intro-card/intro-card.jsx';
 import { RenderExternal } from 'crewhrm-materials/render-external.jsx';
 import { applyFilters } from 'crewhrm-materials/hooks.jsx';
-// import { DangerouslySet } from 'crewhrm-materials/dangerously-set.jsx';
 
 import { Promote } from '../../../../promote/promote.jsx';
 

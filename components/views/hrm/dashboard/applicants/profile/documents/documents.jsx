@@ -2,7 +2,6 @@ import React from 'react';
 import { ExpandableContent } from 'crewhrm-materials/expandable-content/expandable-content.jsx';
 import { __, replaceUrlsWithAnchors, isEmpty } from 'crewhrm-materials/helpers.jsx';
 import { Line } from 'crewhrm-materials/line/line.jsx';
-import { DangerouslySet } from 'crewhrm-materials/dangerously-set.jsx';
 import { PDFViewer } from 'crewhrm-materials/pdf-viewer/pdf-viewer.jsx';
 import { Conditional } from 'crewhrm-materials/conditional.jsx';
 import { Slot } from 'crewhrm-materials/mountpoint.jsx';
@@ -23,11 +22,9 @@ export function Documents({ application }) {
 						{__('COVER LETTER')}
 					</span>
 					<ExpandableContent>
-						<DangerouslySet
+						<div 
 							className={'d-block font-size-15 font-weight-400 line-height-22 letter-spacing--15 color-text'.classNames()}
-						>
-							{replaceUrlsWithAnchors(cover_letter)}
-						</DangerouslySet>
+							dangerouslySetInnerHTML={{__html: replaceUrlsWithAnchors(cover_letter)}}></div>
 					</ExpandableContent>
 				</Conditional>
 				
