@@ -58,11 +58,14 @@ rm -rf ./svn-push/tmp/
 mkdir -p ./svn-push/$DIRECTORY_NAME/tags/$VERSION/
 cp -r ./svn-push/$DIRECTORY_NAME/trunk/* ./svn-push/$DIRECTORY_NAME/tags/$VERSION/
 
-# 5. Add missing files into svn
-svn add --force ./svn-push/$DIRECTORY_NAME --username $SVN_USERNAME --password $SVN_PASSWORD
+# 5. Add, delete files from svn as per status
+cd ./svn-push/$DIRECTORY_NAME/
+svn add --force trunk/*
+svn add --force tags/*
+svn status | awk '/^\?/ {print $2}' | xargs svn add
+svn status | awk '$1 == "!" {print $2}' | xargs -r svn delete
 
 # 6. Commit finally
-cd ./svn-push/$DIRECTORY_NAME/
 svn commit -m "Adding $DIRECTORY_NAME plugin version $VERSION" --username $SVN_USERNAME --password $SVN_PASSWORD
 cd ../../
 
