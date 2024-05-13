@@ -77,7 +77,9 @@ function i18n_makepot(target_dir) {
 
 function i18n_makepot_init(callback) {
 	i18n_makepot(path.resolve(__dirname + '/components') );
+	i18n_makepot(path.resolve(__dirname + '/addons') );
 	i18n_makepot(path.resolve(__dirname + '/../CrewHRM-Pro/components') );
+	i18n_makepot(path.resolve(__dirname + '/../CrewHRM-Pro/addons') );
 	i18n_makepot(path.resolve(__dirname + '/../Materials') );
 
 	if ( typeof callback === 'function' ) {
@@ -101,6 +103,13 @@ gulp.task('makepot', function () {
         )
         .pipe(gulp.dest('languages/hr-management.pot'));
 });
+
+/**
+ * Translate
+ */
+gulp.task('translate', gulp.series('makepot', function(callback) {
+    i18n_makepot_init(callback);
+}));
 
 /**
  * Build

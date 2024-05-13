@@ -2,9 +2,12 @@ const path = require('path');
 const fs = require('fs');
 const { syncDirectory } = require('./sync-directory');
 
-const materials_path = path.resolve('../Materials');
-const materials_path_node = path.resolve('./node_modules/crewhrm-materials');
+const materialsPath = path.resolve('../Materials');
+const materialsPathNode = path.resolve('./node_modules/crewhrm-materials');
 
-if ( fs.existsSync(materials_path) && fs.existsSync(materials_path_node) ) {
-	syncDirectory('./node_modules/crewhrm-materials', '../Materials');
+if (fs.existsSync(materialsPath) && fs.existsSync(materialsPathNode)) {
+	console.log('Watching for changes in ../Materials directory...');
+	syncDirectory(materialsPath, materialsPathNode);
+} else {
+	console.error('One or both directories do not exist.');
 }
