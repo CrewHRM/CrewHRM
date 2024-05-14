@@ -55,7 +55,7 @@ export function Salary() {
                                 options={Intl.supportedValuesOf('currency').map((c) => {
                                     return { 
 										id: c, 
-										label: c 
+										label: __(c) 
 									};
                                 })}
                             />
