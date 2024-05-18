@@ -22,18 +22,27 @@ class FileManager {
 	public static $crewhrm_meta_key = 'crewhrm_application_file';
 
 	/**
-	 * Specify where to store files
+	 * The directory to store file
 	 *
 	 * @var string
 	 */
-	public static $custom_dir = 'crewhrm-application-files';
+	private $dir;
 
 	/**
 	 * Replacable file id to make available in upload_dir hook callback
 	 *
 	 * @var int
 	 */
-	public static $content_id = 0;
+	private $content_id = 0;
+
+	public function __construct( $content_id, $file_of ) {
+
+		$this->content_id = $content_id;
+
+		// For now either employee or application.
+		// Employee means the files is of employee user, application means it is related to job application rather.
+		$this->dir = $file_of === 'employee' ? 'crewhrm-employee-files' : 'crewhrm-application-files';
+	}
 
 	/**
 	 * Alter upload directory by hook
@@ -41,9 +50,9 @@ class FileManager {
 	 * @param array $upload Dir configs
 	 * @return array
 	 */
-	public static function customUploadDirectory( $upload ) {
+	public function customUploadDirectory( $upload ) {
 		// Define the new upload directory
-		$upload_dir = '/' . self::$custom_dir . '/' . self::$content_id;
+		$upload_dir = '/' . $this->dir . '/' . $this->content_id;
 
 		// Get the current upload directory path and URL
 		$upload_path = $upload['basedir'] . $upload_dir;
@@ -60,16 +69,15 @@ class FileManager {
 	/**
 	 * Create custom directory for files
 	 *
-	 * @param int $content_id Create directory for specific content, ideally job application.
 	 * @return void
 	 */
-	private static function createUploadDir( $content_id ) {
+	private function createUploadDir() {
 
 		$wp_upload_dir = wp_upload_dir(); // Get the path and URL of the wp-uploads directory
 
 		// Create the full path of the custom directory
-		$custom_dir_path = $wp_upload_dir['basedir'] . '/' . self::$custom_dir . '/' . $content_id;
-		$htaccess_path   = $wp_upload_dir['basedir'] . '/' . self::$custom_dir . '/.htaccess';
+		$custom_dir_path = $wp_upload_dir['basedir'] . '/' . $this->dir . '/' . $this->content_id;
+		$htaccess_path   = $wp_upload_dir['basedir'] . '/' . $this->dir . '/.htaccess';
 
 		// Create the directory if it doesn't exist
 		if ( ! is_dir( $custom_dir_path ) ) {
@@ -87,23 +95,19 @@ class FileManager {
 	/**
 	 * Process upload of a file using native WP methods
 	 *
-	 * @param int   $content_id The content/application ID to upload file for
 	 * @param array $file File array with size, tmp_name etc.
 	 * @return int|null
 	 */
-	public static function uploadFile( $content_id, array $file ) {
-
-		// Store to make available in upload_dir hook handler
-		self::$content_id = $content_id;
+	public function uploadFile( array $file ) {
 
 		// File id place holder
 		$attachment_id = null;
 
 		// Create necessary directory if not created already
-		self::createUploadDir( $content_id );
+		self::createUploadDir();
 
 		// Add filters
-		add_filter( 'upload_dir', array( __CLASS__, 'customUploadDirectory' ) );
+		add_filter( 'upload_dir', array( $this, 'customUploadDirectory' ) );
 
 		// Alter the name and handle upload
 		$upload = wp_handle_upload( $file, array( 'test_form' => false ) );
@@ -123,7 +127,7 @@ class FileManager {
 			// Generate meta data for the file
 			$attachment_data = wp_generate_attachment_metadata( $attachment_id, $upload['file'] );
 			wp_update_attachment_metadata( $attachment_id, $attachment_data );
-			update_post_meta( $attachment_id, self::$crewhrm_meta_key, $content_id );
+			update_post_meta( $attachment_id, self::$crewhrm_meta_key, $this->content_id );
 		} else {
 			$attachment_id = null;
 		}

@@ -27,11 +27,16 @@ function i18n_makepot(target_dir) {
     const parent_dir = target_dir || __dirname;
     var translation_texts = '';
 
+	// Do not process if the directory not found
+	if ( !fs.existsSync(parent_dir) ) {
+		return;
+	}
+
     // Loop through JS files inside js directory
     fs.readdirSync(parent_dir).forEach(function (file_name) {
         var full_path = parent_dir + '/' + file_name;
 
-		if ( full_path.indexOf('node_modules')>-1 || full_path.indexOf('vendor')>-1 ) {
+		if ( full_path.indexOf('node_modules')>-1 || full_path.indexOf('vendor')>-1 || full_path.indexOf('.git')>-1 ) {
 			return;
 		}
 
@@ -71,8 +76,10 @@ function i18n_makepot(target_dir) {
 }
 
 function i18n_makepot_init(callback) {
-	i18n_makepot(path.resolve(__dirname) );
-	i18n_makepot(path.resolve(__dirname + '/../CrewHRM-Pro') );
+	i18n_makepot(path.resolve(__dirname + '/components') );
+	i18n_makepot(path.resolve(__dirname + '/addons') );
+	i18n_makepot(path.resolve(__dirname + '/../CrewHRM-Pro/components') );
+	i18n_makepot(path.resolve(__dirname + '/../CrewHRM-Pro/addons') );
 	i18n_makepot(path.resolve(__dirname + '/../Materials') );
 
 	if ( typeof callback === 'function' ) {
@@ -82,7 +89,7 @@ function i18n_makepot_init(callback) {
 
 gulp.task('makepot', function () {
     return gulp
-        .src(['**/*.php', '../CrewHRM-Pro/**/*.php'])
+        .src(['./classes/**/*.php', '../CrewHRM-Pro/classes/**/*.php'])
         .pipe(
             plumber({
                 errorHandler: onError
@@ -96,6 +103,13 @@ gulp.task('makepot', function () {
         )
         .pipe(gulp.dest('languages/hr-management.pot'));
 });
+
+/**
+ * Translate
+ */
+gulp.task('translate', gulp.series('makepot', function(callback) {
+    i18n_makepot_init(callback);
+}));
 
 /**
  * Build
@@ -131,6 +145,8 @@ gulp.task('copy', function () {
             '!./tests/**',
 
             '!./vendor/**',
+
+            '!./__MACOSX',
 
             '!.github',
             '!.git',

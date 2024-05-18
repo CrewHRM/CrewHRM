@@ -85,12 +85,12 @@ function AddonsPage({addons={}, addonStates={}}) {
 			<div className={'margin-auto'.classNames()} style={{maxWidth: '989px'}}>
 
 				{
-					applyFilters(
-						'crewhrm_addon_page_pro_upgrade_bar', 
-						<div className={'padding-vertical-30 margin-top-30'.classNames()}>
-							<UpgraderBar/>
-						</div>
-					)
+					// applyFilters(
+					// 	'crewhrm_addon_page_pro_upgrade_bar', 
+					// 	<div className={'padding-vertical-30 margin-top-30'.classNames()}>
+					// 		<UpgraderBar/>
+					// 	</div>
+					// )
 				}
 				
 				<ResponsiveLayout columnWidth={236}>

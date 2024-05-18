@@ -1,6 +1,6 @@
 {
   "name": "crewhrm",
-  "version": "1.0.9",
+  "version": "1.1.0",
   "description": "HR Management System",
   "main": "index.js",
   "scripts": {
@@ -10,6 +10,7 @@
     "build": "npm run pro-addons && npm run compile && gulp build",
     "watch": "npm run pro-addons && concurrently \"npm run sync-materials\" \"webpack --watch --mode=development\"",
     "watch-core": "npm run pro-addons && webpack --watch --mode=development",
+    "translate": "gulp translate",
     "lint": "eslint ./components/**/*.jsx",
     "lint:fix": "eslint --fix ./components/**/*.jsx",
     "cypress:open": "cypress open --config-file tests/cypress/config.config.js",
@@ -51,7 +52,7 @@
     "babel-loader": "^9.1.3",
     "chokidar": "^3.5.3",
     "concurrently": "^8.2.2",
-    "crewhrm-materials": "bitbucket:jayedulk/crewhrm-materials",
+    "crewhrm-materials": "bitbucket:sh_shouvo/materials",
     "css-loader": "^6.8.1",
     "css-minimizer-webpack-plugin": "^5.0.1",
     "currency-symbol-map": "^5.1.0",

@@ -1,0 +1,62 @@
+.employee-invitation-links {
+	
+	.single-employee-invitation-link {
+		cursor: pointer;
+		display: flex;
+		max-width: 500px;
+		width: 100%;
+		padding: 20px;
+		align-items: center;
+		justify-content: space-between;
+		gap: 8px;
+		border-radius: 10px;
+		border: 1px solid #e3e5e8;
+		background: #fff;
+		margin: 0 auto;
+		.employee-invitation-link-item-text {
+			padding-top: 7px;
+		}
+	}
+}
+
+.employee-invitation-textarea {
+	width: 100%;
+	padding: 15px;
+	border-radius: 10px;
+	border: 1px solid #e3e5e8;
+	background: #fff;
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+	gap: 10px;
+	.invited-email {
+		border-radius: 5px;
+		border: 1px solid #e3e5e8;
+		background: #fff;
+		padding: 2px 4px 2px 9px;
+	}
+	input {
+		min-width: 100px;
+		width: 100%;
+		max-width: 100%;
+		display: inline-block;
+		flex-grow: 1;
+		flex-shrink: 1;
+		flex-basis: 0%;
+		min-height: 20px;
+		height: 24px;
+		border: 0;
+	}
+}
+
+.employee-invitation-wrapper {
+	padding-top: 40px;
+	padding-bottom: 170px;
+
+	.employee-invitation-area {
+		display: flex;
+		flex-direction: column;
+		max-width: 500px;
+		margin: 0 auto;
+	}
+}

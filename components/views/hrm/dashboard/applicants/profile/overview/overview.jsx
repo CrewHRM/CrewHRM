@@ -2,7 +2,6 @@ import React from 'react';
 
 import { __, replaceUrlsWithAnchors } from 'crewhrm-materials/helpers.jsx';
 import { Line } from 'crewhrm-materials/line/line.jsx';
-import { DangerouslySet } from 'crewhrm-materials/dangerously-set.jsx';
 import { Conditional } from 'crewhrm-materials/conditional.jsx';
 
 import style from './overview.module.scss';
@@ -10,7 +9,7 @@ import style from './overview.module.scss';
 export function OverView({ overview=[] }) {
     
     return (
-        <div data-crew="overview" className={'overview'.classNames(style)}>
+        <div data-cylector="overview" className={'overview'.classNames(style)}>
             {overview.map((q, i) => {
                 const { id, label, text, text_options = [] } = q;
 
@@ -23,16 +22,13 @@ export function OverView({ overview=[] }) {
                         </span>
 
 						<Conditional show={text}>
-							<DangerouslySet
-								className={'d-block font-size-15 font-weight-400 line-height-22 letter-spacing--15 color-text'.classNames()}
-							>
-								{replaceUrlsWithAnchors(text || '')}
-							</DangerouslySet>
+							<div className={'d-block font-size-15 font-weight-400 line-height-22 letter-spacing--15 color-text'.classNames()}
+								dangerouslySetInnerHTML={{__html: replaceUrlsWithAnchors(text || '')}}></div>
 						</Conditional>
 						
 						<Conditional show={text_options}>
 							<div
-								data-crew="skills"
+								data-cylector="skills"
 								className={'d-flex flex-wrap-wrap flex-direction-row row-gap-15 column-gap-15'.classNames()}
 							>
 								{(text_options || []).map((o) => {

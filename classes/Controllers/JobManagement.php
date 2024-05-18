@@ -8,6 +8,7 @@
 namespace CrewHRM\Controllers;
 
 use CrewHRM\Helpers\_Array;
+use CrewHRM\Models\Application;
 use CrewHRM\Models\Job;
 use CrewHRM\Models\Meta;
 use CrewHRM\Models\Settings;
@@ -23,6 +24,8 @@ class JobManagement {
 			'role' => array( 'administrator' ),
 		),
 		'getJobsDashboard'    => array(),
+		'getJobsDashboardMinimal'    => array(),
+		'getApplicationsByJob'    => array(),
 		'singleJobAction'     => array(),
 		'getSingleJobView'    => array(
 			'nopriv' => true,
@@ -37,6 +40,34 @@ class JobManagement {
 			'role' => 'administrator',
 		),
 	);
+
+	/**
+	 * Get all jobs minimal data to show for dropdown
+	 *
+	 * @return void
+	 */
+	public static function getJobsDashboardMinimal() {
+		wp_send_json_success( array( 'jobs' => Job::getJobsMinimal() ) );
+	}
+
+	/**
+	 * Get applications by job ID
+	 *
+	 * @param integer $job_id
+	 * @return void
+	 */
+	public static function getApplicationsByJob( int $job_id, bool $non_user_only = false ) {
+
+		$args = array( 
+			'job_id' => $job_id,
+			'non_user_only' => $non_user_only,
+			'stage_id' => Stage::getStageIdByName( $job_id, '_hired_' )
+		);
+
+		$apps = Application::getApplications( $args );
+
+		wp_send_json_success( array( 'applications' => $apps ) );
+	}
 
 	/**
 	 * Create or update a job
@@ -168,7 +199,7 @@ class JobManagement {
 
 		// Determine if the current user can visit the job
 		$can_visit  = ! empty( $job );
-		$privileged = User::validateRole( get_current_user_id(), apply_filters( 'crewhrm_hr_roles', array( 'administrator' ) ) );
+		$privileged = User::hasAdministrativeRole( get_current_user_id() );
 
 		// Only admin and hr manager(pro) can visit the job even if not published
 		if ( $can_visit && 'publish' !== $job['job_status'] ) {
@@ -268,6 +299,7 @@ class JobManagement {
 	 * @return void
 	 */
 	public static function getJobViewDashboard( int $job_id ) {
+		
 		$stats = Stage::getStageStatsByJobId( $job_id );
 
 		wp_send_json_success(

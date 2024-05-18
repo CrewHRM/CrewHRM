@@ -31,7 +31,7 @@ function Filters({_setFilter, filterList, filters}) {
 									className={`d-block font-size-14 cursor-pointer margin-bottom-18 font-weight-500 ${is_active ? 'color-text' : 'color-text-light'}`.classNames()}
 									onClick={() => _setFilter(filter_key, id)}
 								>
-									{label} {count ? `(${count})` : null}
+									{__(label)} {count ? `(${__(count)})` : null}
 								</span>
 							);
 						})
@@ -91,7 +91,7 @@ function MobileFilter({_setFilter, filterList, filters}) {
 			</div>
 		}
 
-		<div className={'d-flex align-items-center column-gap-10'.classNames()}>
+		<div className={'d-flex align-items-center flex-direction-row flex-wrap-wrap row-gap-10 column-gap-10'.classNames()}>
 			<div 
 				className={`filter-control ${Object.keys(filters).length>1 ? 'has-change' : ''}`.classNames(style)} 
 				onClick={()=>setFilter(true)}
@@ -144,7 +144,7 @@ export function CareersSidebar({ is_mobile, setFilter, filters, jobs_country_cod
             })
         },
         employment_type: {
-            section_label: 'Job Type',
+            section_label: __('Job Type'),
             selection_type: 'list',
             options: Object.keys(employment_types).map((type) => {
                 return {
@@ -166,7 +166,7 @@ export function CareersSidebar({ is_mobile, setFilter, filters, jobs_country_cod
 	}
 
     return (
-        <div data-crew="sidebar" className={'sidebar'.classNames(style)}>
+        <div data-cylector="sidebar" className={'sidebar'.classNames(style)}>
             <div>
 				{is_mobile? <MobileFilter  {...prop_drill}/> : <Filters {...prop_drill}/>}
 				

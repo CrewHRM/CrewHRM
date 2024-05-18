@@ -116,7 +116,7 @@ export function Activity() {
     }, [session, application_id]);
 
     return (
-        <div data-crew="activity" className={'activities'.classNames(style)}>
+        <div data-cylector="activity" className={'activities'.classNames(style)}>
 			<LoadingIcon show={state.loading} center={true}/>
             {state.pipeline.map((activity, i) => {
                 let { avatar_url, type } = activity;

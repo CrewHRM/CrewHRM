@@ -1,21 +1,20 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import { __ } from 'crewhrm-materials/helpers.jsx';
+import { __, data_pointer } from 'crewhrm-materials/helpers.jsx';
 import { DropDown } from 'crewhrm-materials/dropdown/dropdown.jsx';
 import { TextField } from 'crewhrm-materials/text-field/text-field.jsx';
 import { Conditional } from 'crewhrm-materials/conditional.jsx';
 import { LoadingIcon } from 'crewhrm-materials/loading-icon/loading-icon.jsx';
 import { statuses } from 'crewhrm-materials/data.jsx';
 
-import { ContextBackendDashboard } from '../../../dashboard/home.jsx';
-
 import style from '../jobs.module.scss';
 
 export const status_keys = Object.keys(statuses);
 
 export function FilterBar({ is_overview, filters = {}, onChange, fetching }) {
-    const { departments = [] } = useContext(ContextBackendDashboard);
+	
+    const { departments = [] } = window[data_pointer];
 	const [keyWord, setKeyword] = useState('');
 	
 	useEffect(()=>onChange('search', keyWord), [keyWord]);

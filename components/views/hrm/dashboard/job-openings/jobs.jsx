@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
-import { __, data_pointer, formatDate, getAddress, sprintf } from 'crewhrm-materials/helpers.jsx';
+import { __ } from 'crewhrm-materials/helpers.jsx';
 import { StatusDot } from 'crewhrm-materials/status-dot/status-dots.jsx';
 import { Options } from 'crewhrm-materials/dropdown/dropdown.jsx';
 import { ShareModal } from 'crewhrm-materials/share-modal.jsx';
@@ -203,7 +203,7 @@ export function JobOpenings(props) {
             </Conditional>
 
             <div
-                data-crew="job-openings"
+                data-cylector="job-openings"
                 className={'jobs'.classNames(style) + className}
             >
                 <FilterBar
@@ -220,7 +220,7 @@ export function JobOpenings(props) {
                 </Conditional>
 
                 <Conditional show={state.jobs.length}>
-                    <div data-crew="jobs-dashboard">
+                    <div data-cylector="jobs-dashboard">
                         {state.jobs.map((job) => {
                             const {
                                 job_id,
@@ -338,7 +338,7 @@ export function JobOpenings(props) {
 														key={index}
 														className={'d-inline-block font-size-15 font-weight-400 color-text-light'.classNames()}
 													>
-														{data}
+														{__(data)}
 													</span>
                                                 })}
                                             </div>
@@ -400,7 +400,7 @@ export function JobOpenings(props) {
 export function JobOpeningsFullView(props) {
     return (
         <div
-            data-crew="job-openings-full-view"
+            data-cylector="job-openings-full-view"
             className={'padding-30'.classNames()}
             style={{ maxWidth: '988px', margin: '0 auto' }}
         >

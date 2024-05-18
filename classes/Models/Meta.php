@@ -54,6 +54,17 @@ class Meta {
 	}
 
 	/**
+	 * Provide an instance of employment meta
+	 *
+	 * @param int $employment_id Employment ID to return meta instance for
+	 * @return Meta
+	 */
+	public static function employment( $employment_id ) {
+		global $wpdb;
+		return new self( $wpdb->crewhrm_employment_meta, $employment_id );
+	}
+
+	/**
 	 * Provide an instance of employee meta
 	 *
 	 * @param int $user_id Job ID to return meta instance for
@@ -81,7 +92,7 @@ class Meta {
 	 * @param string $meta_key Optional meta key to get specific. Otherwise all.
 	 * @return mixed
 	 */
-	public function getMeta( $meta_key = null ) {
+	public function getMeta( $meta_key = null, $fallback = null ) {
 		global $wpdb;
 
 		$is_singular  = ! empty( $meta_key );
@@ -107,7 +118,7 @@ class Meta {
 
 		$_meta = _Array::castRecursive( $_meta );
 
-		return $is_singular ? ( $_meta[ $meta_key ] ?? null ) : $_meta;
+		return $is_singular ? ( $_meta[ $meta_key ] ?? $fallback ) : $_meta;
 	}
 
 	/**

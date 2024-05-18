@@ -5,8 +5,8 @@ import { InstantSearch } from 'crewhrm-materials/instant-search.jsx';
 import { FileUpload } from 'crewhrm-materials/file-upload/file-upload.jsx';
 
 import { ContextAddEmlpoyeeManually } from './index.jsx';
+
 import AddEmployeeCss from './AddManually.module.scss';
-import EmployeeIndexCss from '../index.module.scss';
 
 const doc_types = {
 	employee_documents: __('Documents'),
@@ -59,27 +59,26 @@ export default function AdditionalOptionForm() {
 								</div>
 								<FileUpload
 									maxlength={1000}
-									WpMedia={{mime_type: undefined}}
+									WpMedia={{mime_type: ['application/pdf', 'video/*']}}
 									onChange={files=>addFromMediaPicker(type, files)}
 									layoutComp={({onClick})=>{
 										return <div
-												className={'d-flex align-items-center justify-content-end column-gap-5 cursor-pointer'.classNames()}
-												onClick={onClick}
+											className={'d-flex align-items-center justify-content-end column-gap-5 cursor-pointer'.classNames()}
+											onClick={onClick}
+										>
+											<i
+												className={'ch-icon ch-icon-folder-add font-size-20 color-text cursor-pointer'.classNames()}
+												onClick={() => null}
+												style={{ color: '#236BFE' }}
+											></i>
+											<div
+												className={'color-primary font-size-15 line-height-18 font-weight-500'.classNames()}
+												style={{ color: '#236BFE' }}
 											>
-												<i
-													className={'ch-icon ch-icon-folder-add font-size-20 color-text cursor-pointer'.classNames()}
-													onClick={() => null}
-													style={{ color: '#236BFE' }}
-												></i>
-												<div
-													className={'color-primary font-size-15 line-height-18 font-weight-500'.classNames()}
-													style={{ color: '#236BFE' }}
-												>
-													{__('Upload')}
-												</div>
+												{__('Upload')}
 											</div>
-									}}/>
-								
+										</div>
+								}}/>
 							</div>
 							<div className={'d-flex margin-top-15'.classNames()}>
 								<div className={'flex-1'.classNames()}>
@@ -102,7 +101,7 @@ export default function AdditionalOptionForm() {
 												key={media.id}
 												className={
 													'd-flex align-items-center column-gap-10 padding-horizontal-10 padding-vertical-5'.classNames() +
-													'person-card width-max-content'.classNames(EmployeeIndexCss)
+													'person-card width-max-content'.classNames(AddEmployeeCss)
 												}
 											>
 												<a 

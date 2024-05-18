@@ -3,7 +3,6 @@ import { Helmet } from 'react-helmet';
 import { Link, useParams, useSearchParams } from 'react-router-dom';
 
 import { __, formatDate, getAddress, getLocalFromUnix, parseParams } from 'crewhrm-materials/helpers.jsx';
-import { DangerouslySet } from 'crewhrm-materials/dangerously-set.jsx';
 import { request } from 'crewhrm-materials/request.jsx';
 import { LoadingIcon } from 'crewhrm-materials/loading-icon/loading-icon.jsx';
 import { Conditional } from 'crewhrm-materials/conditional.jsx';
@@ -86,10 +85,10 @@ function RenderMeta({ icon, hint, content, afterContent='', contentClass='' }) {
             <span
                 className={'d-block font-size-13 font-weight-500 line-height-25 color-text-light margin-top-8 margin-bottom-2'.classNames()}
             >
-                {hint}
+                {__(hint)}
             </span>
             <span className={'font-size-17 font-weight-500 line-height-25 color-text'.classNames() + contentClass}>
-                {content} {afterContent}
+                {__(content)} {__(afterContent)}
             </span>
         </div>
     ) : null;
@@ -205,7 +204,7 @@ export function Single({ base_permalink, settings={} }) {
 						content={getAddress(state.job || {})}
 					/>
 					<RenderMeta
-						icon={'ch-icon ch-icon-briefcase'}
+						icon={'ch-icon ch-icon-briefcase-2'}
 						hint={__('Job Type')}
 						contentClass={'white-space-nowrap'.classNames()}
 						content={employment_types[employment_type]}
@@ -214,7 +213,7 @@ export function Single({ base_permalink, settings={} }) {
 						icon={'ch-icon ch-icon-empty-wallet'}
 						hint={__('Salary')}
 						content={(salary_a || '') + (salary_b ? '-' + salary_b : '')}
-						afterContent={(currency || '') + ' ' + (salary_types[salary_basis] ? ' / ' + salary_types[salary_basis] : '')}
+						afterContent={(currency || '') + ' ' + (salary_types[salary_basis] ? ' / ' + __(salary_types[salary_basis]) : '')}
 						contentClass={'white-space-nowrap'.classNames()}
 					/>
 					<div className={'align-self-center'.classNames()}>
@@ -234,9 +233,9 @@ export function Single({ base_permalink, settings={} }) {
 						>
 							{__('About Company')}
 						</span>
-						<DangerouslySet className={'font-weight-400 color-black'.classNames()}>
-							{state.about_company}
-						</DangerouslySet>
+
+						<div className={'font-weight-400 color-black'.classNames()} dangerouslySetInnerHTML={{__html: state.about_company}}></div>
+
 					</div>
 				) : null}
 
@@ -247,9 +246,7 @@ export function Single({ base_permalink, settings={} }) {
 						>
 							{__('Job Description')}
 						</span>
-						<DangerouslySet className={'font-weight-400 color-black'.classNames()}>
-							{job_description}
-						</DangerouslySet>
+						<div className={'font-weight-400 color-black'.classNames()} dangerouslySetInnerHTML={{__html: job_description}}></div>
 					</div>
 				) : null}
 

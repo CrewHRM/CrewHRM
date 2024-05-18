@@ -7,7 +7,6 @@ import { JobOpenings } from '../job-openings/jobs.jsx';
 import { IntroCard } from 'crewhrm-materials/intro-card/intro-card.jsx';
 import { RenderExternal } from 'crewhrm-materials/render-external.jsx';
 import { applyFilters } from 'crewhrm-materials/hooks.jsx';
-// import { DangerouslySet } from 'crewhrm-materials/dangerously-set.jsx';
 
 import { Promote } from '../../../../promote/promote.jsx';
 
@@ -40,14 +39,14 @@ function CreateJobIntro({orientation="vertical"}) {
 	</IntroCard>
 }
 
-export function DahboardMain() {
+export function DahboardMain({applicationStats}) {
     return (
         <div
-            data-crew="hrm-main"
+            data-cylector="hrm-main"
             className={'height-p-100'.classNames() + 'wrapper'.classNames(style)}
         >
             <div className={'sidebar'.classNames(style)}>
-                <StatCards className={'margin-bottom-20'.classNames()} />
+                <StatCards className={'margin-bottom-20'.classNames()} applicationStats={applicationStats}/>
 				<div className={'position-relative border-radius-5 overflow-hidden'.classNames()}>
 					<RenderExternal component={applyFilters('crewhrm_dashboard_vertical_card', ()=><Promote content="calendar_widget"/>)}/>
 				</div>

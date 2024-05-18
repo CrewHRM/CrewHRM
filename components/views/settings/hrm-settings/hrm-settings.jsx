@@ -5,63 +5,26 @@ import { WpDashboardFullPage } from 'crewhrm-materials/backend-dashboard-contain
 import { StickyBar } from 'crewhrm-materials/sticky-bar.jsx';
 import { __ } from 'crewhrm-materials/helpers.jsx';
 import { request } from 'crewhrm-materials/request.jsx';
-import { ContextHistoryFields, HistoryFields, UndoRedo } from 'crewhrm-materials/undo-redo.jsx';
 import { ContextToast } from 'crewhrm-materials/toast/toast.jsx';
 import { LoadingIcon } from 'crewhrm-materials/loading-icon/loading-icon.jsx';
 
-import { ContextBackendDashboard } from '../../hrm/dashboard/home.jsx';
 import { Options } from './options/options.jsx';
 import { Segments } from './segments/segments.jsx';
 import { settings_fields } from './field-structure.jsx';
 
-export const ContextSettings = createContext();
+import validator from 'validator';
 
-function Wrapper({ children }) {
-    const { can_go_next, values = {}, onChange } = useContext(ContextHistoryFields);
-    const { ajaxToast } = useContext(ContextToast);
-	const [savingState, setSavingState] = useState(false);
+export const ContextSettingsPage = createContext();
 
-    const saveSettings = () => {
-		setSavingState(true);
-        request('saveSettings', { settings: values }, (resp) => {
-            ajaxToast(resp);
-			setSavingState(false);
-        });
-    };
+export function HRMSettings({ resources, settings={} }) {
 
-	const dispatcher=(k, v)=>{
-		// Find t
-		console.log(k, v);
-		onChange(k, v)
-	}
-
-    const { segment, sub_segment } = useParams();
-    const sub_title = settings_fields[segment]?.segments[sub_segment]?.label;
-    const title = __('Settings') + (sub_title ? ' > ' + sub_title : '');
-
-    return <ContextSettings.Provider value={{ values, onChange: dispatcher }}>
-		<StickyBar canBack={sub_title ? true : false} title={title}>
-			<div className={'d-flex align-items-center column-gap-30'.classNames()}>
-				{/* <UndoRedo /> */}
-				<button
-					className={'button button-primary'.classNames()}
-					onClick={saveSettings}
-					disabled={!can_go_next}
-				>
-					{__('Save Changes')} <LoadingIcon show={savingState}/>
-				</button>
-			</div>
-		</StickyBar>
-		<div className={'padding-horizontal-15 overflow-auto'.classNames()}>
-			{children}
-		</div>
-	</ContextSettings.Provider>
-}
-
-export function HRMSettings({ resources, settings }) {
+	const {ajaxToast} = useContext(ContextToast);
 
 	const [state, setState] = useState({
-		resources: resources
+		can_go_next: false,
+		saving: false,
+		resources: resources,
+		settings
 	});
 
 	const updateResources=(res={})=>{
@@ -74,33 +37,86 @@ export function HRMSettings({ resources, settings }) {
 		});
 	}
 
-    return <ContextBackendDashboard.Provider value={{ resources: state.resources, updateResources }}>
-		<WpDashboardFullPage>
-			<HistoryFields defaultValues={settings || {}}>
+	const validateFields=(v,field)=>{
+		let isValid = true;
+		
+		if( v && field ){
+			if(field.type=='email'){
+				isValid = validator.isEmail(v)
+			}else if(field.type == 'teltext'){
+				isValid = validator.isMobilePhone(v)
+			}else if(field.type == 'url'){
+				isValid = validator.isURL(v)
+			}
+		}
+
+		return isValid;
+	}
+
+	const onChange=(name, v, field)=>{
+		const isValid = validateFields(v,field);
+		setState({
+			...state,
+			can_go_next: isValid,
+			settings: {
+				...state.settings,
+				[name]: v
+			}
+		});
+	}
+
+    const saveSettings = () => {
+		
+		setState({
+			...state,
+			saving: true
+		});
+
+        request('saveSettings', { settings: state.settings }, (resp) => {
+            ajaxToast(resp);
+			setState({
+				...state,
+				can_go_next: false,
+				saving: false
+			});
+        });
+    };
+
+    const { segment, sub_segment } = useParams();
+    const sub_title = settings_fields[segment]?.segments[sub_segment]?.label;
+    const title = __('Settings') + (sub_title ? ' > ' + sub_title : '');
+
+    return <WpDashboardFullPage>
+		<StickyBar canBack={sub_title ? true : false} title={title}>
+			<div className={'d-flex align-items-center column-gap-30'.classNames()}>
+				<button
+					className={'button button-primary'.classNames()}
+					onClick={saveSettings}
+					disabled={!state.can_go_next}
+				>
+					{__('Save Changes')} <LoadingIcon show={state.saving}/>
+				</button>
+			</div>
+		</StickyBar>
+
+		<div className={'padding-horizontal-15 overflow-auto'.classNames()}>
+			<ContextSettingsPage.Provider value={{ resources: state.resources, updateResources, values: state.settings, onChange, validateFields }}>
 				<HashRouter>
 					<Routes>
 						<Route
 							path="/settings/"
-							element={
-								<Wrapper>
-									<Segments />
-								</Wrapper>
-							}
+							element={<Segments />}
 						/>
 
 						<Route
 							path="/settings/:segment/:sub_segment/"
-							element={
-								<Wrapper>
-									<Options />
-								</Wrapper>
-							}
+							element={<Options />}
 						/>
 
 						<Route path={'*'} element={<Navigate to="/settings/" replace />} />
 					</Routes>
 				</HashRouter>
-			</HistoryFields>
-		</WpDashboardFullPage>
-	</ContextBackendDashboard.Provider>
+			</ContextSettingsPage.Provider>
+		</div>
+	</WpDashboardFullPage>
 }

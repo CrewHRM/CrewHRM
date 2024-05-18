@@ -38,7 +38,7 @@ export function Salary() {
                         options={Object.keys(salary_types).map((type) => {
                             return { 
 								id: type, 
-								label: salary_types[type] 
+								label: __(salary_types[type])
 							};
                         })}
                     />
@@ -55,7 +55,7 @@ export function Salary() {
                                 options={Intl.supportedValuesOf('currency').map((c) => {
                                     return { 
 										id: c, 
-										label: c 
+										label: __(c) 
 									};
                                 })}
                             />

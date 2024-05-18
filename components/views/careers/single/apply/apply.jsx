@@ -307,7 +307,7 @@ export function Apply({ job = {}, settings={}, social_links=[] }) {
 		</> 
     }
 
-    return <div data-crew="job-application" className={'apply'.classNames(style)} ref={wrapper}>
+    return <div data-cylector="job-application" className={'apply'.classNames(style)} ref={wrapper}>
 		<Helmet>
 			<title>{job_title} - {__('Apply')}</title>
 		</Helmet>
@@ -343,7 +343,7 @@ export function Apply({ job = {}, settings={}, social_links=[] }) {
 			</div>
 		</Conditional>
 
-		<div data-crew="job-application-form" className={'form'.classNames(style)}>
+		<div data-cylector="job-application-form" className={'form'.classNames(style)}>
 			<Conditional show={is_segment}>
 				<span
 					className={'d-block font-size-20 font-weight-600 color-text margin-bottom-30'.classNames()}

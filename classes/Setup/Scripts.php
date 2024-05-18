@@ -10,10 +10,10 @@ namespace CrewHRM\Setup;
 use CrewHRM\Helpers\Colors;
 use CrewHRM\Helpers\Utilities;
 use CrewHRM\Main;
+use CrewHRM\Models\Department;
 use CrewHRM\Models\Job;
 use CrewHRM\Models\Settings;
 use CrewHRM\Models\Stage;
-use CrewHRM\Models\User;
 
 /**
  * Script handler class
@@ -122,7 +122,7 @@ class Scripts {
 		}
 		?>
 		<style>
-			[id^="crewhrm_"],[id^="crewhrm-"],[data-crew="root"]{
+			[id^="crewhrm_"],[id^="crewhrm-"],[data-cylector="root"]{
 				<?php echo esc_html( $_colors ); ?>
 			}
 		</style>
@@ -140,11 +140,10 @@ class Scripts {
 				'white_label'     => Utilities::getWhiteLabel(),
 				'action_hooks'    => array(),
 				'filter_hooks'    => array(),
+				'mountpoints'     => ( object ) array(),
 				'home_url'        => get_home_url(),
 				'dist_url'        => Main::$configs->dist_url,
 				'plugin_url'      => Main::$configs->url,
-				'ajaxurl'         => admin_url( 'admin-ajax.php' ),
-				'careers_url'     => Job::getCareersPageUrl(),
 				'colors'          => $dynamic_colors,
 				'reserved_stages' => array_keys( Stage::$reserved_stages ),
 				'nonce_action'    => $nonce_action,
@@ -158,6 +157,12 @@ class Scripts {
 				'is_frontend'     => ! is_admin(),
 				'text_domain'     => Main::$configs->text_domain,
 				'currency_code'   => Settings::getSetting( 'company_currency' ),
+				'departments'     => Department::getDepartments(),
+				'permalinks'      => array(
+					'ajaxurl'           => admin_url( 'admin-ajax.php' ),
+					'careers'           => Job::getCareersPageUrl(),
+					'settings_employee' => add_query_arg( array( 'page' => Admin::SLUG_SETTINGS ), admin_url( 'admin.php' ) ) . '#/settings/recruitment/employee/'
+				),
 				'company_address' => array(
 					'street_address' => Settings::getSetting( 'street_address', '' ),
 					'city'           => Settings::getSetting( 'city', '' ),

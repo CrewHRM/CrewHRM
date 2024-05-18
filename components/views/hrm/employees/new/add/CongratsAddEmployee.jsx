@@ -5,14 +5,13 @@ import CrewHrmLogo from 'crewhrm-materials/static/images/crew-hrm-logo.png';
 import Congrats from 'crewhrm-materials/static/images/thank-you.png';
 
 import AddEmployeeCss from './AddManually.module.scss';
-import EmployeeIndexCss from '../index.module.scss';
 
 export default function CongratsAddEmployee() {
 	return (
 		<div style={{ backgroundColor: '#fff', height: '110vh', padding: '40px 0px 40px', marginTop: '-40px' }}>
 			<div
 				className={
-					'container'.classNames(EmployeeIndexCss) +
+					'container'.classNames(AddEmployeeCss) +
 					'd-flex justify-content-space-between margin-top-40'.classNames()
 				}
 			>
@@ -34,7 +33,7 @@ export default function CongratsAddEmployee() {
 					>
 						<span
 							style={{ width: `${(60 / 5) * (4 + 1)}px` }}
-							className={`upgradeable-progressbar-bar ${4}`.classNames(AddEmployeeCss) + ''.classNames()}
+							className={`upgradeable-progressbar-bar ${4}`.classNames(AddEmployeeCss)}
 						></span>
 					</span>
 				</div>

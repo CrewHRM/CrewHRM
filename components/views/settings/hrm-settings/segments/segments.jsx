@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { __ } from 'crewhrm-materials/helpers.jsx';
 import { settings_fields } from '../field-structure.jsx';
 import style from './segments.module.scss';
 import { Link } from 'react-router-dom';
@@ -20,12 +21,12 @@ export function Segments() {
                         <span
                             className={'d-block font-size-17 font-weight-600 color-text margin-bottom-10'.classNames()}
                         >
-                            {label}
+                            {__(label)}
                         </span>
                         <span
                             className={'d-block font-size-14 font-weight-400 line-height-22 letter-spacing--14 color-text-light margin-bottom-10'.classNames()}
                         >
-                            {description}
+                            {__(description)}
                         </span>
 
                         <div
@@ -59,7 +60,7 @@ export function Segments() {
                                             <span
                                                 className={'d-block font-size-15 font-weight-500 line-height-25 color-text'.classNames()}
                                             >
-                                                {label}
+                                                {__(label)}
                                             </span>
                                         </div>
                                         <div>

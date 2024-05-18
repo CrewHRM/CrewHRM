@@ -7,6 +7,7 @@
 
 namespace CrewHRM\Models;
 
+use CrewHRM\Helpers\_Number;
 use CrewHRM\Main;
 
 /**
@@ -151,5 +152,29 @@ class DB {
 				}
 			}
 		}
+	}
+
+
+	/**
+	 * Get limit for queries
+	 *
+	 * @param int|null $limit The limit to prepare
+	 * @return int
+	 */
+	public static function getLimit( $limit = null ) {
+		if ( ! is_numeric( $limit ) ) {
+			$limit = 20;
+		}
+		return apply_filters( 'crewhrm_query_result_count', _Number::getInt( $limit, 1 ) );
+	}
+
+	/**
+	 * Get page num to get results for
+	 *
+	 * @param int|null $page The page to prepare
+	 * @return int
+	 */
+	public static function getPage( $page = null ) {
+		return _Number::getInt( $page, 1 );
 	}
 }

@@ -37,6 +37,31 @@ class User {
 	const META_KEY_CREW_FLAG = 'crewhrm_user_role';
 
 	/**
+	 * Meta key for employee activation
+	 */
+	const META_KEY_FOR_TOKEN = 'crewhrm-employee-activation-key';
+
+	/**
+	 * The get parameter to accept onboarding token through.
+	 */
+	const ONBOARDING_GET_KEY = 'onboarding-token';
+
+	/**
+	 * The meta key to store completed onboarding step names
+	 */
+	const ONBOARDING_COMPLETED_STEP_KEY = 'onboarding-completed-steps';
+
+	/**
+	 * Currently supported onboarding steps
+	 */
+	const ONBOARDING_STEPS = array(
+		'personal_info',
+		'emergency_contact',
+		'payment_method',
+		'supporting_documents'
+	);
+
+	/**
 	 * Validate if a user has required role
 	 *
 	 * @param int          $user_id The user ID to validate rule
@@ -143,12 +168,30 @@ class User {
 	 * @return string
 	 */
 	public static function getAdminMenuRole( $user_id ) {
-		$user_roles     = self::getUserRoles( $user_id );
-		$required_roles = apply_filters( 'crewhrm_hr_roles', array( 'administrator' ) );
-		$has_role       = array_values( array_intersect( $required_roles, $user_roles ) );
+		$user_roles = self::getUserRoles( $user_id );
+		$has_role   = array_values( array_intersect( self::getAdministrativeRoles(), $user_roles ) );
 
 		// Return any of the common rules. No matter administrator or hr-manager. Both will allow accessing crew features.
 		return $has_role[0] ?? null;
+	}
+
+	/**
+	 * Get the roles array that has administrative access in CrewHRM
+	 *
+	 * @return array
+	 */
+	public static function getAdministrativeRoles() {
+		return apply_filters( 'crewhrm_hr_roles', array( 'administrator' ) );
+	}
+
+	/**
+	 * Check if a user has administrative role
+	 *
+	 * @param int $user_id
+	 * @return boolean
+	 */
+	public static function hasAdministrativeRole( $user_id ) {
+		return self::validateRole( $user_id, self::getAdministrativeRoles() );
 	}
 
 	/**
@@ -179,14 +222,14 @@ class User {
 		$meta = self::getMeta( $user_id );
 
 		// Get employment data
-		$employment = Employment::getLatestEmployment( $user_id, array() );
+		$employment      = Employment::getLatestEmployment( $user_id, array() );
+		$employment_meta = $employment ? Employment::getMeta( $employment['employment_id'] ) : array();
 
 		// Get address
 		$address = ! empty( $meta['address_id'] ) ? Address::getAddressById( $meta['address_id'], array() ) : array();
 
 		return array_merge(
 			array(
-				'user_id'          => $user_id,
 				'user_id'          => $user_id,
 				'first_name'       => $user->first_name,
 				'last_name'        => $user->last_name,
@@ -201,6 +244,7 @@ class User {
 			),
 			$meta,
 			$employment,
+			$employment_meta,
 			$address
 		);
 	}
@@ -247,22 +291,65 @@ class User {
 	}
 
 	/**
+	 * Delete a user, usually used through user deletion hook
+	 *
+	 * @param int $user_id
+	 * @return void
+	 */
+	/* public static function deleteUser( $user_id ) {
+
+		global $wpdb;
+
+		// Delete employment
+		Employment::deleteEmployment( array( 'user_id' => $user_id ) );
+
+		// Delete employee meta
+		Meta::employee( $user_id )->deleteMeta();
+
+		// Delete comments
+		// Comme
+	} */
+
+	/**
+	 * Replace user ID to another one
+	 *
+	 * @param int $user_id
+	 * @param int $assign_to
+	 * @return void
+	 */
+	public static function replaceUser( $user_id, $assign_to ) {
+
+	}
+
+	/**
 	 * Get employee list
 	 *
 	 * @param array $args
 	 * @return array
 	 */
-	public static function getUsers( array $args ) {
+	public static function getEmployeeUsers( array $args ) {
 
-		$limit  = 20;
+		$limit  = DB::getLimit( $args['limit'] ?? null );
 		$page   = Utilities::getInt( $args['page'] ?? 1, 1 );
 		$offset = ( $page - 1 ) * $limit;
 
 		global $wpdb;
 
 		$where_clause = '';
+
+		// Search employee by keyword
 		if ( ! empty( $args['search'] ) ) {
 			$where_clause .= $wpdb->prepare( ' AND _user.display_name LIKE %s', "%{$wpdb->esc_like( $args['search'] )}%" );
+		}
+
+		// Get by department ID
+		if ( ! empty( $args['department_id'] ) ) {
+			$where_clause .= $wpdb->prepare( ' AND _employment.department_id=%d', $args['department_id'] );
+		}
+
+		// Employment status filter
+		if ( ! empty( $args['employment_status'] ) ) {
+			$where_clause .= $wpdb->prepare( ' AND _employment.employment_status=%s', $args['employment_status'] );
 		}
 
 		$users = $wpdb->get_results(
@@ -271,31 +358,35 @@ class User {
 					_user.ID AS user_id,
 					_user.display_name,
 					_user.user_email,
+					_employment.employment_id,
 					_employment.designation,
 					_employment.employment_status,
 					_employment.department_id,
 					_employment.employment_type,
-					_employment.hire_date
+					_employment.hire_date,
+					_employment.reporting_person_user_id
 				FROM 
 					{$wpdb->users} _user 
 					INNER JOIN {$wpdb->usermeta} _meta ON _user.ID=_meta.user_id AND _meta.meta_key=%s AND _meta.meta_value=%s
-					LEFT JOIN {$wpdb->crewhrm_employments} _employment ON _employment.employee_user_id=_user.ID
+					INNER JOIN {$wpdb->crewhrm_employments} _employment ON _employment.employee_user_id=_user.ID
 				WHERE 
 					1=1 
 					{$where_clause}
 				ORDER BY 
-					_user.user_registered DESC
+					_employment.employment_id DESC
 				LIMIT 
 					%d 
 				OFFSET 
 					%d",
 				self::META_KEY_CREW_FLAG,
-				$args['role'],
+				self::ROLE_EMPLOYEE,
 				$limit,
 				$offset
 			),
 			ARRAY_A
 		);
+
+		$users = _Array::castRecursive( $users );
 
 		$total_count = (int) $wpdb->get_var(
 			$wpdb->prepare(
@@ -304,11 +395,12 @@ class User {
 				FROM 
 					{$wpdb->users} _user 
 					INNER JOIN {$wpdb->usermeta} _meta ON _user.ID=_meta.user_id AND _meta.meta_key=%s AND _meta.meta_value=%s
+					LEFT JOIN {$wpdb->crewhrm_employments} _employment ON _employment.employee_user_id=_user.ID
 				WHERE 
 					1=1 
 					{$where_clause}",
 				self::META_KEY_CREW_FLAG,
-				$args['role']
+				self::ROLE_EMPLOYEE
 			)
 		);
 
@@ -318,13 +410,16 @@ class User {
 		$users_array = array();
 		foreach ( $users as $user ) {
 
-			$meta = self::getMeta( $user['user_id'] );
+			$meta       = self::getMeta( $user['user_id'] );
+			$address    = ! empty( $meta['address_id'] ) ? Address::getAddressById( $meta['address_id'], array() ) : array();
+			$local_time = ! empty( $address['timezone'] ) ? ( new \DateTime( 'now', new \DateTimeZone( $address['timezone'] ) ) )->format( 'H:i a' ) : null;
 
 			$users_array[] = array(
 				'user_id'           => $user['user_id'],
 				'avatar_url'        => get_avatar_url( $user['user_id'] ),
 				'email'             => $user['user_email'],
 				'display_name'      => $user['display_name'],
+				'employment_id'     => $user['employment_id'],
 				'employee_id'       => $meta['employee_id'],
 				'employment_status' => $user['employment_status'] ?? null,
 				'designation'       => $user['designation'] ?? null,
@@ -332,6 +427,9 @@ class User {
 				'employment_type'   => $user['employment_type'] ?? null,
 				'hire_date'         => $user['hire_date'] ?? null,
 				'address'           => ! empty( $meta['address_id'] ) ? Address::getAddressById( $meta['address_id'] ) : null,
+				'social_links'      => self::getSocialLinks( $user['user_id'] ),
+				'local_time'        => $local_time,
+				'reporting_person'  => ! empty( $user['reporting_person_user_id'] ) ? Employment::getMinimalInfo( $user['reporting_person_user_id'] ) : null
 			);
 		}
 
@@ -352,15 +450,16 @@ class User {
 	 * @param array $data User data array
 	 * @param array $avatar_image
 	 *
-	 * @return int
+	 * @return int The user ID, created or updated one.
 	 */
-	public static function createOrUpdateEmployee( $data, $avatar_image ) {
+	public static function createOrUpdateEmployee( $data, $avatar_image = null, $photo_id_card = null, $certificates = null ) {
 
 		$user_id   = ! empty( $data['user_id'] ) ? $data['user_id'] : null;
 		$full_name = $data['first_name'] . ' ' . $data['last_name'];
+		$is_new    = empty( $user_id ) || empty( get_user_meta( $user_id, self::META_KEY_CREW_FLAG, true ) );
 
 		// Create new user if
-		if ( ! $user_id ) {
+		if ( empty( $user_id ) ) {
 			$user_id = wp_create_user(
 				self::getUniqueUsername( $full_name ),
 				wp_generate_password(),
@@ -371,13 +470,14 @@ class User {
 				return false;
 			}
 
+			// Set activation key
+			update_user_meta( $user_id, self::META_KEY_FOR_TOKEN, $user_id . '_' . _String::getRandomString() );
+
 			// Set the role for newly created user
-			if ( ! empty( $data['role'] ) ) {
-				( new \WP_User( $user_id ) )->set_role( $data['role'] );
-				update_user_meta( $user_id, self::META_KEY_CREW_FLAG, $data['role'] );
-			}
+			( new \WP_User( $user_id ) )->set_role( self::ROLE_EMPLOYEE );
 		}
 
+		// Update the user
 		wp_update_user(
 			array(
 				'ID'           => $user_id,
@@ -389,8 +489,39 @@ class User {
 		);
 
 		// Set profile pic
-		if ( ! empty( $avatar_image['tmp_name'] ) ) {
+		if ( is_array( $avatar_image ) && ! empty( $avatar_image['tmp_name'] ) ) {
 			self::setProfilePic( $user_id, $avatar_image );
+		}
+
+		// Set photo id card
+		$file_manager = new FileManager( $user_id, 'employee' );
+		if ( is_array( $photo_id_card ) && ! empty( $photo_id_card['tmp_name'] ) ) {
+
+			$attachment_id = $file_manager->uploadFile( $photo_id_card );
+
+			// Store the file ID as employee meta
+			if ( $attachment_id ) {
+				self::updateMeta( $user_id, 'photo_id_card_file_id', $attachment_id );
+			}
+		}
+
+		// Store educational certificate files
+		if ( is_array( $certificates ) ) {
+			
+			$educational_files = array();
+
+			foreach ( $certificates as $cert_file ) {
+				if ( is_array( $cert_file ) && ! empty( $cert_file['tmp_name'] ) ) {
+
+					$attachment_id = $file_manager->uploadFile( $cert_file );
+					
+					if ( $attachment_id ) {
+						$educational_files[] = $attachment_id;
+					}
+				}
+			}
+			
+			self::updateMeta( $user_id, 'educational_certificate_file_ids', $educational_files );
 		}
 
 		// Update employment data
@@ -431,7 +562,7 @@ class User {
 			$user_id,
 			array_merge(
 				array(
-					'employee_id'                => $data['employee_id'], // Mandatory. Duplicate checking is supposed to be done in the earlier callstack.
+					'employee_id'                => ! empty( $data['employee_id'] ) ? $data['employee_id'] : self::getUniqueEmployeeId(), // Mandatory. Duplicate checking is supposed to be done in the earlier callstack.
 					'user_phone'                 => $data['user_phone'] ?? null,
 					'birth_date'                 => $data['birth_date'] ?? null,
 					'gender'                     => $data['gender'] ?? null,
@@ -443,31 +574,69 @@ class User {
 					'blood_group'                => $data['blood_group'] ?? null,
 					'educational_info'           => $filtered_educations,
 					'address_id'                 => $address_id,
-					'experience_level'           => $data['experience_level'] ?? null,
-					'employee_benefits'          => $data['employee_benefits'] ?? (object) array(),
-					'employee_leaves'            => $data['employee_leaves'] ?? (object) array(),
-					'employee_documents'         => $data['employee_documents'] ?? null,
-					'employee_trainings'         => $data['employee_trainings'] ?? null,
+					'payment_method'             => $data['payment_method'] ?? null,
+					'payment_method_details'     => $data['payment_method_details'] ?? array(),
 
-					'enable_signing_bonus'       => $data['enable_signing_bonus'] ?? false,
-					'signing_bonus_amount'       => $data['signing_bonus_amount'] ?? '',
-
-					'enable_other_bonus'         => $data['enable_other_bonus'] ?? false,
-					'other_bonus_amount'         => $data['other_bonus_amount'] ?? '',
-
-					'offer_equity_compensation'  => $data['offer_equity_compensation'] ?? false,
-					'equity_compensation_amount' => $data['equity_compensation_amount'] ?? '',
 				),
 				$emergency,
 				$links
 			)
 		);
 
-		/**
-		 * If not custom weekly schedule, delete the schedule from table, later it will use from settings
-		 */
+		// Update contract/employment specific meta data.
+		Employment::updateMeta(
+			$employment_id,
+			array(
+				'experience_level'           => $data['experience_level'] ?? null,
+				'employee_benefits'          => $data['employee_benefits'] ?? (object) array(),
+				'employee_leaves'            => $data['employee_leaves'] ?? (object) array(),
+				'employee_documents'         => $data['employee_documents'] ?? null,
+				'employee_trainings'         => $data['employee_trainings'] ?? null,
+				'use_custom_weekly_schedule' => $data['use_custom_weekly_schedule'] ?? false,
+				'use_custom_benefits'        => $data['use_custom_benefits'] ?? false,
+				'use_custom_leaves'          => $data['use_custom_leaves'] ?? false,
+				'enable_signing_bonus'       => $data['enable_signing_bonus'] ?? false,
+				'signing_bonus_amount'       => $data['signing_bonus_amount'] ?? '',
+				'enable_other_bonus'         => $data['enable_other_bonus'] ?? false,
+				'other_bonus_amount'         => $data['other_bonus_amount'] ?? '',
+				'offer_equity_compensation'  => $data['offer_equity_compensation'] ?? false,
+				'equity_compensation_amount' => $data['equity_compensation_amount'] ?? '',
+			)
+		);
+
+		if ( $is_new ) {
+
+			// Set employee flag
+			update_user_meta( $user_id, self::META_KEY_CREW_FLAG, self::ROLE_EMPLOYEE );
+
+			do_action( 'crewhrm_employee_profile_created', $user_id );
+		} else {
+			do_action( 'crewhrm_employee_profile_updated', $user_id );
+		}
 
 		return $user_id;
+	}
+
+	/**
+	 * Get social links by user ID
+	 *
+	 * @param int $user_id
+	 * @return array
+	 */
+	public static function getSocialLinks( $user_id ) {
+
+		// Get user meta
+		$meta    = self::getMeta( $user_id );
+		$socials = array();
+
+		// Loop through meta and extract social links
+		foreach ( $meta as $key => $value ) {
+			if ( strpos( $key, 'social_link_' ) === 0 ) {
+				$socials[ str_replace( 'social_link_', '', $key ) ] = $value;
+			}
+		}
+		
+		return $socials;
 	}
 
 	/**
@@ -589,7 +758,13 @@ class User {
 	public static function getMeta( $user_id, $key = null, $fallback = null ) {
 
 		// Get Crew meta data
-		$meta = Meta::employee( $user_id )->getMeta();
+		$meta = Meta::employee( $user_id )->getMeta( $key );
+
+		// Return singular meta data
+		if ( ! empty( $key ) ) {
+			return $meta;
+		}
+
 		$meta = ! is_array( $meta ) ? array() : $meta;
 
 		// Get WP specific meta data
@@ -600,8 +775,30 @@ class User {
 			$meta[ $_key ] = get_user_meta( $user_id, $_key, true );
 		}
 
+		// Add leading zero to employee if it is numeric
 		if ( ! empty( $meta['employee_id'] ) ) {
 			$meta['employee_id'] = self::padStringEmployeeId( $meta['employee_id'] );
+		}
+
+		// Assign dynamic document and traning file meta data
+		$resource_keys = array( 'employee_trainings', 'employee_documents' );
+		foreach ( $resource_keys as $_r_key ) {
+			if ( ! is_array( $meta[ $_r_key ] ?? null ) ) {
+				$meta[ $_r_key ] = array();
+				continue;
+			}
+
+			foreach ( $meta[ $_r_key ] as $index => $file_info ) {
+				$meta[ $_r_key ][ $index ] = array_merge(
+					$file_info,
+					array(
+						'title'       => get_the_title( $file_info['id'] ),
+						'description' => get_the_content( null, false, $file_info['id'] ),
+						'permalink'   => wp_get_attachment_url( $file_info['id'] ),
+						'mime_type'   => get_post_mime_type( $file_info['id'] ),
+					)
+				);
+			}
 		}
 
 		return $key ? ( $meta[ $key ] ?? $fallback ) : $meta;
@@ -627,5 +824,67 @@ class User {
 	public static function getUserIdByEmail( $email ) {
 		global $wpdb;
 		return ( new Field( $wpdb->users ) )->getField( array( 'user_email' => $email ), 'ID' );
+	}
+	
+	/**
+	 * Get user ID by activation key
+	 *
+	 * @param string $activation_key The user email
+	 *
+	 * @return void
+	 */
+	public static function getUserIdByActivationKey( $key ) {
+		global $wpdb;
+		$user_id = $wpdb->get_var(
+			$wpdb->prepare(
+				"SELECT 
+					_user.ID
+				FROM
+					{$wpdb->users} _user
+					INNER JOIN {$wpdb->usermeta} _meta ON _user.ID=_meta.user_id AND _meta.meta_key=%s
+				WHERE
+					_meta.meta_value=%s
+				LIMIT 1",
+				self::META_KEY_FOR_TOKEN,
+				$key
+			)
+		);
+		return ! empty( $user_id ) ? ( int ) $user_id : null;
+	}
+
+	/**
+	 * Clear the user activation key
+	 *
+	 * @param int $user_id
+	 * @return void
+	 */
+	public static function clearActivationKey( $user_id ) {
+		delete_user_meta( $user_id, self::META_KEY_FOR_TOKEN );
+	}
+
+	/**
+	 * Save completed step name
+	 *
+	 * @param int $user_id
+	 * @param string $new_step
+	 * @return array
+	 */
+	public static function updatedCompletedSteps( $user_id, $new_step ) {
+		$existing = self::getCompletedSteps( $user_id );
+		if ( ! in_array( $new_step, $existing ) ) {
+			$existing[] = $new_step;
+			self::updateMeta( $user_id, self::ONBOARDING_COMPLETED_STEP_KEY, $existing );
+		}
+		return $existing;
+	}
+
+	/**
+	 * Get completed steps names
+	 *
+	 * @param int $user_id
+	 * @return array
+	 */
+	public static function getCompletedSteps( $user_id ) {
+		return _Array::getArray( self::getMeta( $user_id, self::ONBOARDING_COMPLETED_STEP_KEY ) );
 	}
 }

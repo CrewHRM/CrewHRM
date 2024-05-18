@@ -17,8 +17,7 @@ import { RenderExternal } from 'crewhrm-materials/render-external.jsx';
 import { TextEditor } from 'crewhrm-materials/text-editor/text-editor.jsx';
 
 import { settings_fields } from '../field-structure.jsx';
-import { ContextSettings } from '../hrm-settings.jsx';
-import { ContextBackendDashboard } from '../../../hrm/dashboard/home.jsx';
+import { ContextSettingsPage } from '../hrm-settings.jsx';
 import { AddItemModal } from '../../../hrm/job-editor/job-details/sections/title-description.jsx';
 
 import style from './options.module.scss';
@@ -33,10 +32,10 @@ function OptionFields({fields=[], vertical, separator, is_group=false}) {
 
     const { 
 		values = {}, 
-		onChange, 
-	} = useContext(ContextSettings);
-
-    const { resources = {}, updateResources } = useContext(ContextBackendDashboard);
+		onChange,
+		resources = {}, 
+		updateResources 
+	} = useContext(ContextSettingsPage);
 	
 	const highlight_ref = useRef();
 	const highlight_field = new URL(window.location.href).searchParams.get("highlight");
@@ -124,11 +123,14 @@ function OptionFields({fields=[], vertical, separator, is_group=false}) {
 					when, 
 					direction, 
 					hint, 
+					hint2,
 					placeholder, 
 					min, 
 					max, 
 					disabled,
-					WpMedia
+					WpMedia,
+					regex=null,
+					component: Comp
 				} = field;
 
 				const show_separator = separator && !is_group && i !== fields.length - 1;
@@ -156,6 +158,16 @@ function OptionFields({fields=[], vertical, separator, is_group=false}) {
 						} ${when ? 'fade-in' : ''}`.classNames()}
 						ref={highlight_field===name ? highlight_ref : null}
 					>
+						{
+							!Comp ? null : 
+							<>
+								<div className={'flex-1'.classNames()}>{label_text}</div>
+								<div>
+									<RenderExternal component={Comp} payload={{onChange, value: values[name]}}/>
+								</div>
+							</>
+						}
+						
 						{/* Toggle switch option */}
 						{
 							type !== 'switch' ? null :
@@ -171,15 +183,18 @@ function OptionFields({fields=[], vertical, separator, is_group=false}) {
 						}
 
 						{/* Text input field */}
-						{(['text', 'url', 'email'].indexOf(type)>-1 && (
+						{(['text', 'url', 'email', 'teltext'].indexOf(type)>-1 && (
 							<>
 								<div className={'flex-1'.classNames()}>{label_text}</div>
 								<div className={'flex-1'.classNames()}>
 									<TextField
+										type={type}
 										value={values[name] || ''}
 										onChange={(v) => onChange(name, v, field)}
 										placeholder={placeholder}
+										regex={regex}
 									/>
+									<small>{hint2 ? hint2(values[name] || 'custom-path') : null}</small>
 								</div>
 							</>
 						)) ||
@@ -357,6 +372,22 @@ function OptionFields({fields=[], vertical, separator, is_group=false}) {
 	</>
 }
 
+
+function Wrapper({children, overflow, width, useWrapper}) {
+
+	const wrapper_attrs = {
+		className: `position-relative ${overflow ? '' : 'overflow-hidden'} padding-30 bg-color-white box-shadow-thin`.classNames(),
+		style: {borderRadius: '5px'}
+	}
+
+	return !useWrapper ? children : <div className={'section'.classNames(style)} style={{width}}>
+		<div {...wrapper_attrs}>
+			{children}
+		</div>
+	</div>
+}
+
+
 export function Options() {
 
     const {
@@ -372,29 +403,22 @@ export function Options() {
 		useWrapper=true 
 	} = settings_fields?.[segment]?.segments?.[sub_segment] || {};
 
-	const wrapper_attrs = {
-		className: `position-relative ${overflow ? '' : 'overflow-hidden'} padding-30 bg-color-white box-shadow-thin`.classNames(),
-		style: {borderRadius: '5px'}
-	}
-
-	function Wrapper({children}) {
-		return !useWrapper ? children : <div className={'section'.classNames(style)} style={{width}}>
-			<div {...wrapper_attrs}>
-				{children}
-			</div>
-		</div>
+	const wrapper_props = {
+		overflow, 
+		width, 
+		useWrapper 
 	}
 
 	return <div style={{marginTop: '79px', marginBottom: '79px'}}>
 		{
-			component ? <Wrapper>
+			component ? <Wrapper {...wrapper_props}>
 					<RenderExternal component={component}/>
 				</Wrapper>
 				:
 				Object.keys(sections).map(section_name=>{
 					const {fields=[], vertical, separator} = sections[section_name];
 
-					return <Wrapper key={section_name}>
+					return <Wrapper key={section_name} {...wrapper_props}>
 						<OptionFields {...{fields, vertical, separator}}/>
 					</Wrapper>
 				})

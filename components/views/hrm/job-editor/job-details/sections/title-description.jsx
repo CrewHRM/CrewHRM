@@ -11,7 +11,6 @@ import { ContextToast } from 'crewhrm-materials/toast/toast.jsx';
 import { LoadingIcon } from 'crewhrm-materials/loading-icon/loading-icon.jsx';
 
 import { field_label_class, section_title_class } from '../job-details.jsx';
-import { ContextBackendDashboard } from '../../../dashboard/home.jsx';
 import { ContextJobEditor } from '../../index.jsx';
 
 import style from '../details.module.scss';
@@ -103,9 +102,12 @@ export function AddItemModal({ endpoint, closeModal, onAdd, item_label }) {
     );
 }
 
-export function DepartmentDropDown({value, onChange, tabindex, departments, onAddDepartment, showErrorsAlways=false, required=false}) {
+export function DepartmentDropDown({value, onChange, tabindex, showErrorsAlways=false, required=false}) {
 	
+	const {departments=[]} = window[data_pointer];
+
 	const [state, setState] = useState({
+		departments: departments,
 		add_department: false
 	});
 
@@ -124,8 +126,14 @@ export function DepartmentDropDown({value, onChange, tabindex, departments, onAd
 				item_label={__('Department')}
 				closeModal={()=>toggleDepartmentModal(false)}
 				onAdd={v=>{
-					onAddDepartment(v);
-					toggleDepartmentModal(false);
+					
+					onChange(v.id);
+
+					setState({
+						...state,
+						add_department: false,
+						departments: v.items
+					})
 				}} 
 			/>
 		}
@@ -139,7 +147,7 @@ export function DepartmentDropDown({value, onChange, tabindex, departments, onAd
 			onAddClick={()=>toggleDepartmentModal(true)}
 			showErrorsAlways={showErrorsAlways}
 			required={required}
-			options={departments.map(d=>{
+			options={state.departments.map(d=>{
 				return {
 					id: d.department_id, 
 					label: d.department_name
@@ -150,28 +158,16 @@ export function DepartmentDropDown({value, onChange, tabindex, departments, onAd
 }
 
 export function TitleAndDescription() {
+	
     const { values, onChange, session } = useContext(ContextJobEditor);
-    const { departments=[] } = useContext(ContextBackendDashboard);
 
     const title_allowed_length = 200;
     const job_title_length = values.job_title?.length || 0;
 
 	const [state, setState] = useState({
 		slug_editor: false,
-		departments: departments,
 		job_slug: values.job_slug,
 	});
-
-    const onAddDepartment = ({ id, items: departments }) => {
-        // Send the new id to the parent caller
-		onChange('department_id', id);
-
-        // Update state with the new list, and close modal
-        setState({
-            ...state,
-            departments
-        });
-    };
 
 	useEffect(()=>{
 		setState({
@@ -247,7 +243,7 @@ export function TitleAndDescription() {
 									target='_blank'
 									className={'width-auto'.classNames()}
 								>
-									{window[data_pointer].careers_url}{state.slug_editor ? null : <><strong>{values.job_slug}</strong>/</>}
+									{window[data_pointer].permalinks.careers}{state.slug_editor ? null : <><strong>{values.job_slug}</strong>/</>}
 								</a>
 
 								{
@@ -299,8 +295,6 @@ export function TitleAndDescription() {
 								value={values.department_id} 
 								onChange={(v) => onChange('department_id', v)}
 								tabindex={2}
-								departments={state.departments}
-								onAddDepartment={onAddDepartment}
 							/>
                         </div>
                         <div className={'flex-1 margin-left-10'.classNames()}>

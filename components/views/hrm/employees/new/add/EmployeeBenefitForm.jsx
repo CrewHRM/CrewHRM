@@ -1,35 +1,33 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import currenctSymbols from 'currency-symbol-map/map';
 
-import { __ } from 'crewhrm-materials/helpers.jsx';
+import { __, data_pointer } from 'crewhrm-materials/helpers.jsx';
 import { TextField } from 'crewhrm-materials/text-field/text-field.jsx';
 import { ToggleSwitch } from 'crewhrm-materials/toggle-switch/ToggleSwitch.jsx';
+import { BenifitsBuilder } from 'crewhrm-materials/onboarding-modules/benifits-builder/benifits-builder.jsx';
+import { LeaveBuilder } from 'crewhrm-materials/onboarding-modules/leave-builder/leave-builder.jsx';
 
 import { ContextAddEmlpoyeeManually } from './index.jsx';
-import { BenifitsBuilder } from '../../../modules/benifits-builder/benifits-builder.jsx';
-
 import AddEmployeeCss from './AddManually.module.scss';
-import EmployeeIndexCss from '../index.module.scss';
-import { LeaveBuilder } from '../../../modules/leave-builder/leave-builder.jsx';
 
 export default function EmployeeBenefitForm() {
+
 	const { values={}, onChange } = useContext(ContextAddEmlpoyeeManually);
-	const [toggle, setToggle] = useState(true);
 	const {salary_currency='USD'} = values;
 	const currency_symbol = currenctSymbols[salary_currency];
 
 	return (
 		<>
 			<div className={'employeeinfo-form-wrapper'.classNames(AddEmployeeCss)}>
-				<div className={''.classNames() + 'employeeinfo-form'.classNames(AddEmployeeCss)}>
+				<div className={'employeeinfo-form'.classNames(AddEmployeeCss)}>
 					<div
 						className={'font-size-20 font-weight-500 line-height-24 color-text margin-bottom-25'.classNames()}
 					>
 						{__('Bonus & Compensation')}
 					</div>
-					<div className={'padding-15'.classNames() + 'crew-hrm-border'.classNames(EmployeeIndexCss)}>
+					<div className={'padding-15'.classNames() + 'border'.classNames(AddEmployeeCss)}>
 						<div className={'d-flex justify-content-space-between'.classNames()}>
-							<div className={''.classNames()}>
+							<div>
 								<div className={'font-size-17 font-weight-500 color-text margin-bottom-5'.classNames()}>
 									{__('Signning Bonus')}
 								</div>
@@ -61,11 +59,11 @@ export default function EmployeeBenefitForm() {
 					</div>
 					<div
 						className={
-							'padding-15 margin-top-20'.classNames() + 'crew-hrm-border'.classNames(EmployeeIndexCss)
+							'padding-15 margin-top-20'.classNames() + 'border'.classNames(AddEmployeeCss)
 						}
 					>
 						<div className={'d-flex justify-content-space-between'.classNames()}>
-							<div className={''.classNames()}>
+							<div>
 								<div className={'font-size-17 font-weight-500 color-text margin-bottom-5'.classNames()}>
 									{__('Offer other bonuses?')}
 								</div>
@@ -97,11 +95,11 @@ export default function EmployeeBenefitForm() {
 					</div>
 					<div
 						className={
-							'padding-15 margin-top-20'.classNames() + 'crew-hrm-border'.classNames(EmployeeIndexCss)
+							'padding-15 margin-top-20'.classNames() + 'border'.classNames(AddEmployeeCss)
 						}
 					>
 						<div className={'d-flex justify-content-space-between'.classNames()}>
-							<div className={''.classNames()}>
+							<div>
 								<div className={'font-size-17 font-weight-500 color-text margin-bottom-5'.classNames()}>
 									{__('Offer equity compensation?')}
 								</div>
@@ -135,25 +133,64 @@ export default function EmployeeBenefitForm() {
 
 				<div className={'margin-top-30'.classNames() + 'employeeinfo-form'.classNames(AddEmployeeCss)}>
 					<div
-						className={'font-size-20 font-weight-500 line-height-24 color-text margin-bottom-25'.classNames()}
+						className={'font-size-20 font-weight-500 line-height-24 color-text margin-bottom-15'.classNames()}
 					>
-						{__('Benefits')}
+						{__('Benefits')} <a 
+							target='_blank' 
+							href={window[data_pointer].permalinks.settings_employee} 
+							className={'ch-icon ch-icon-settings-gear font-size-14'.classNames()}
+						/>
 					</div>
 
-					<BenifitsBuilder 
-						benefits={values.employee_benefits || {}} 
-						onChange={v=>onChange('employee_benefits', v)}/>
+					<span className={'d-block margin-bottom-20 font-size-14 color-text-light'.classNames()}>
+						{__('The benefits policy from global settings will apply automatically. You can review the global settings by clicking the gear icon above. If you want to offer custom benefits, please check the box below. Additional options will appear.')}
+					</span>
+
+					<label className={'d-flex align-items-center column-gap-10 cursor-pointer'.classNames()}>
+						<input 
+							type='checkbox' 
+							onChange={e=>onChange('use_custom_benefits', e.currentTarget.checked)}
+							checked={values.use_custom_benefits ? true : false}
+						/> {__('Add custom benefits')}
+					</label>
+
+					{
+						!values.use_custom_benefits ? null :
+						<BenifitsBuilder 
+							benefits={values.employee_benefits || {}} 
+							onChange={v=>onChange('employee_benefits', v)}/>
+					}
 				</div>
 
 				<div className={'margin-top-30'.classNames() + 'employeeinfo-form'.classNames(AddEmployeeCss)}>
 					<div
-						className={'font-size-20 font-weight-500 line-height-24 color-text margin-bottom-25'.classNames()}
+						className={'font-size-20 font-weight-500 line-height-24 color-text margin-bottom-15'.classNames()}
 					>
-						{__('Leave')}
+						{__('Leave')} <a 
+							target='_blank' 
+							href={window[data_pointer].permalinks.settings_employee} 
+							className={'ch-icon ch-icon-settings-gear font-size-14'.classNames()}
+						/>
 					</div>
-					<LeaveBuilder
-						leaves={values.employee_leaves || {}}
-						onChange={leaves=>onChange('employee_leaves', leaves)}/>
+
+					<span className={'d-block margin-bottom-20 font-size-14 color-text-light'.classNames()}>
+						{__('The leaves policy from global settings will apply automatically. You can review the global settings by clicking the gear icon above. If you want to offer custom leaves, please check the box below. Additional options will appear.')}
+					</span>
+
+					<label className={'d-flex align-items-center column-gap-10 cursor-pointer'.classNames()}>
+						<input 
+							type='checkbox' 
+							onChange={e=>onChange('use_custom_leaves', e.currentTarget.checked)}
+							checked={values.use_custom_leaves ? true : false}
+						/> {__('Add custom leaves')}
+					</label>
+					
+					{
+						!values.use_custom_leaves ? null :
+						<LeaveBuilder
+							leaves={values.employee_leaves || {}}
+							onChange={leaves=>onChange('employee_leaves', leaves)}/>
+					}
 				</div>
 			</div>
 		</>

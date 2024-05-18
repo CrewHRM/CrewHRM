@@ -92,7 +92,13 @@ class Employment {
 
 		$rows = $wpdb->get_results(
 			$wpdb->prepare(
-				"SELECT * FROM {$wpdb->crewhrm_employments} WHERE employee_user_id=%d ORDER BY employment_id DESC {$limit}",
+				"SELECT 
+					* 
+				FROM 
+					{$wpdb->crewhrm_employments} 
+				WHERE 
+					employee_user_id=%d 
+				ORDER BY employment_id DESC {$limit}",
 				$user_id
 			),
 			ARRAY_A
@@ -123,7 +129,15 @@ class Employment {
 		global $wpdb;
 		$latest_employment = $wpdb->get_row(
 			$wpdb->prepare(
-				"SELECT employment_id, designation FROM {$wpdb->crewhrm_employments} WHERE employee_user_id=%d ORDER BY employment_id DESC LIMIT 1",
+				"SELECT 
+					employment_id, 
+					designation 
+				FROM 
+					{$wpdb->crewhrm_employments} 
+				WHERE 
+					employee_user_id=%d 
+				ORDER BY employment_id 
+				DESC LIMIT 1",
 				$user_id
 			),
 			ARRAY_A
@@ -194,4 +208,143 @@ class Employment {
 
 		return $users;
 	}
+
+	/**
+	 * Get total employee count by status
+	 *
+	 * @return int
+	 */
+	public static function getTotalEmployeeCount( $status = 'active', $department_id = null ) {
+		
+		global $wpdb;
+
+		$where = '';
+
+		if ( ! empty( $status ) ) {
+			$where .= $wpdb->prepare( ' AND employment_status=%s', $status );
+		}
+
+		if ( ! empty( $department_id ) ) {
+			$where .= $wpdb->prepare( ' AND department_id=%d', $department_id );
+		}
+
+		$count = $wpdb->get_var(
+			"SELECT COUNT(DISTINCT employee_user_id) FROM {$wpdb->crewhrm_employments} WHERE 1=1 {$where}"
+		);
+
+		return ( int ) $count;
+	}
+
+	/**
+	 * Update crew meta for the employment
+	 *
+	 * @param int    $employment_id
+	 * @param string $key
+	 * @param mixed  $value
+	 * @return void
+	 */
+	public static function updateMeta( $employment_id, $key, $value = null ) {
+
+		// Get existing meta
+		$meta = self::getMeta( $employment_id );
+
+		if ( is_array( $key ) ) {
+			// Update bulk meta data array
+			$meta = array_merge( $meta, $key );
+
+		} else {
+			// Update single meta
+			$meta[ $key ] = $value;
+		}
+
+		Meta::employment( $employment_id )->updateBulkMeta( $meta );
+	}
+
+	/**
+	 * Get crew meta data for employment
+	 *
+	 * @param int    $employment_id
+	 * @param string $key
+	 * @param mixed  $fallback
+	 *
+	 * @return mixed
+	 */
+	public static function getMeta( $employment_id, $key = null, $fallback = null ) {
+
+		// Get Crew meta data
+		$meta = Meta::employment( $employment_id )->getMeta( $key, $fallback );
+
+		// Return singular meta data
+		if ( ! empty( $key ) ) {
+			return self::applyMetaDefaults( $employment_id, $key, $meta );
+		}
+
+		$meta = ! is_array( $meta ) ? array() : $meta;
+
+		foreach ( $meta as $_key => $_value ) {
+			$meta[ $_key ] = self::applyMetaDefaults( $employment_id, $_key, $_value ) ;
+		}
+
+		if ( $key === 'employee_leaves' ) {
+			$value = $meta[ $key ];
+			
+		}
+
+		return $meta;
+	}
+
+	/**
+	 * Set some meta data defaults
+	 *
+	 * @param string $key
+	 * @param mixed $value
+	 * @return void
+	 */
+	private static function applyMetaDefaults( $employee_id, $key, $value ) {
+
+		if ( $key === 'employee_leaves' ) {
+			if ( ! self::getMeta( $employee_id, 'use_custom_leaves' ) ) {
+				// Get leaves from settings
+				$value = Settings::getSetting( 'employee_default_leaves' );
+			}
+
+		} else if ( $key === 'employee_benefits' ) {
+			if ( ! self::getMeta( $employee_id, 'use_custom_benefits' ) ) {
+				// Get leaves from settings
+				$value = Settings::getSetting( 'employee_default_benefits' );
+			}		
+		}
+
+		return $value;
+	}
+
+	/**
+	 * Delete employment by args
+	 *
+	 * @param array $args
+	 * @return void
+	 */
+	/* public static function deleteEmployment( array $args ) {
+
+		global $wpdb;
+		
+		$where = array();
+
+		// Delete by user id
+		if ( ! empty( $args['user_id'] ) ) {
+			$where['employee_user_id'] = $args['user_id'];
+		}
+
+		// Delete by employment id
+		if ( ! empty( $args['employment_id'] ) ) {
+			$where['employment_id'] = $args['employment_id'];
+		}
+
+		if ( ! empty( $where ) ) {
+			$wpdb->delete(
+				$wpdb->crewhrm_employments,
+				$where
+			);
+		}
+	} */
 }

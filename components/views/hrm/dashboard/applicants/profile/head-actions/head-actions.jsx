@@ -132,11 +132,11 @@ export function HeadActions({ application }) {
 	
     return (
         <div
-            data-crew="application"
+            data-cylector="application"
             className={'head'.classNames(style) + 'border-radius-6 margin-bottom-13'.classNames()}
         >
             <div
-                data-crew="action"
+                data-cylector="action"
                 className={'d-flex align-items-center box-shadow-thin padding-vertical-15 padding-horizontal-30'.classNames()}
             >
                 <div className={'flex-1 d-flex align-items-center column-gap-24'.classNames()}>

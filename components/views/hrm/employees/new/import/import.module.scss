@@ -1,0 +1,61 @@
+.employee-invitation-employeelist {
+	.each-employee {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		padding: 12px 15px;
+
+		&.selected {
+			border: 1.5px solid var(--crewmat-color-text);
+		}
+
+		&:not(:first-child) {
+			margin-top: 7px;
+		}
+		.each-employee-info {
+			display: flex;
+			gap: 15px;
+			.each-employee-propic {
+			}
+			.each-employee-info-details {
+				.each-employee-info-name {
+					letter-spacing: -0.15px;
+				}
+				.each-employee-info-email {
+					letter-spacing: -0.13px;
+				}
+			}
+		}
+		.each-employee-action-icon {
+			border: 2px solid #000;
+			width: 24px;
+			height: 24px;
+			border-radius: 50%;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			padding: 2px;
+			cursor: pointer;
+
+			> span {
+				width: 10px;
+				height: 2px;
+				background-color: #000;
+				display: block;
+				position: absolute;
+				
+				&.for-plus {
+					transform: rotate(90deg);
+				}
+			}
+
+			&.each-employee-action-icon-minus {
+				border: 2px solid #ea4545;
+
+				span {
+					background-color: #ea4545;
+				}
+			}
+		}
+	}
+}

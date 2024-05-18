@@ -10,28 +10,22 @@ import { attendance_types } from 'crewhrm-materials/data.jsx';
 import { InstantSearch } from 'crewhrm-materials/instant-search.jsx';
 
 import {ContextAddEmlpoyeeManually} from './index.jsx';
-import AddEmployeeCss from './AddManually.module.scss';
-import EmployeeIndexCss from '../index.module.scss';
 import { DateField } from 'crewhrm-materials/date-time.jsx';
-import { DepartmentDropDown } from '../../job-editor/job-details/sections/title-description.jsx';
+import { DepartmentDropDown } from '../../../job-editor/job-details/sections/title-description.jsx';
+
+import AddEmployeeCss from './AddManually.module.scss';
 
 export default function EmployeeStatusForm() {
 	
 	const { 
 		onChange, 
 		values={}, 
-		departments=[],
 		regex={},
 		showErrorsAlways
 	} = useContext(ContextAddEmlpoyeeManually);
 
 	const {user_id} = useParams();
 
-	// Store departments in state in favour of triggering change on adding new
-	const [state, setState] = useState({
-		departments: [...departments]
-	});
-	
 	const addReportingPerson=(user)=>{
 		onChange({
 			reporting_person: user ? {avatar_url: user.thumbnail_url, display_name: user.label} : null,
@@ -95,7 +89,7 @@ export default function EmployeeStatusForm() {
 					</div>
 				</div>
 				<div className={'flex-1'.classNames()}>
-					<div className={''.classNames()}>
+					<div>
 						<div
 							className={'color-text font-size-15 line-height-18 margin-top-20 margin-bottom-14  font-weight-500'.classNames()}
 						>
@@ -122,16 +116,8 @@ export default function EmployeeStatusForm() {
 						<DepartmentDropDown
 							value={values.department_id}
 							onChange={v=>onChange('department_id', v)}
-							departments={state.departments}
 							showErrorsAlways={showErrorsAlways}
 							required={true}
-							onAddDepartment={d=>{
-								onChange('department_id', d.id);
-								setState({
-									...state,
-									departments: d.items
-								});
-							}}
 						/>
 					</div>
 				</div>
@@ -197,7 +183,7 @@ export default function EmployeeStatusForm() {
 							<div
 								className={
 									'd-flex align-items-center column-gap-5 padding-horizontal-10 padding-vertical-5'.classNames() +
-									'person-card width-max-content'.classNames(EmployeeIndexCss)
+									'person-card width-max-content'.classNames(AddEmployeeCss)
 								}
 							>
 								<img 

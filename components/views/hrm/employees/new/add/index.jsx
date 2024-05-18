@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 
-import { __, isEmpty } from 'crewhrm-materials/helpers.jsx';
+import { __, isEmpty, data_pointer } from 'crewhrm-materials/helpers.jsx';
 import { FormActionButtons } from 'crewhrm-materials/form-action.jsx';
 import { StickyBar } from 'crewhrm-materials/sticky-bar.jsx';
 import { Tabs } from 'crewhrm-materials/tabs/tabs.jsx';
@@ -12,15 +12,14 @@ import { LoadingIcon } from 'crewhrm-materials/loading-icon/loading-icon.jsx';
 import { patterns } from 'crewhrm-materials/data.jsx';
 import { isAddressValid } from 'crewhrm-materials/address-fields.jsx';
 
-import AddEmployeeCss from './AddManually.module.scss';
 import EmployeeStatusForm from './EmployeeStatusForm.jsx';
 import EmployeeInfoForm from './EmployeeInfoForm.jsx';
 import EmployeeContractDetailsForm from './EmployeeContractDetailsForm.jsx';
 import AdditionalOptionForm from './AdditionalOptionForm.jsx';
 import EmployeeBenefitForm from './EmployeeBenefitForm.jsx';
-
-import EmployeeIndexCss from '../index.module.scss';
 import CongratsAddEmployee from './CongratsAddEmployee.jsx';
+
+import AddEmployeeCss from './AddManually.module.scss';
 
 export const ContextAddEmlpoyeeManually = createContext();
 
@@ -61,8 +60,9 @@ const steps = [
 	},
 ];
 
-export function AddEmployeeManually({departments={}}) {
+export function AddEmployeeManually() {
 
+	const {departments={}} = window[data_pointer];
 	const navigate = useNavigate();
 	const {ajaxToast} = useContext(ContextToast);
 
@@ -190,7 +190,7 @@ export function AddEmployeeManually({departments={}}) {
 		const {avatar_image} = values;
 		delete values.avatar_image;
 
-		request('updateEmployee', {employee: {...values, user_id}, avatar_image}, resp=>{
+		request('updateEmployee', {employee: {...values, user_id}, avatar_image, is_admin: true}, resp=>{
 			const {
 				success,
 				data: {
@@ -291,7 +291,7 @@ export function AddEmployeeManually({departments={}}) {
 					<div
 						className={
 							'addemployee-manually-top'.classNames(AddEmployeeCss) +
-							'container'.classNames(EmployeeIndexCss) +
+							'container'.classNames(AddEmployeeCss) +
 							'd-flex justify-content-space-between'.classNames()
 						}
 					>
@@ -330,7 +330,7 @@ export function AddEmployeeManually({departments={}}) {
 						ref={form_ref}
 						className={
 							'd-flex flex-wrap-wrap'.classNames() +
-							'container'.classNames(EmployeeIndexCss) +
+							'container'.classNames(AddEmployeeCss) +
 							'addemployee-manually-wrapper'.classNames(AddEmployeeCss)
 						}
 					>

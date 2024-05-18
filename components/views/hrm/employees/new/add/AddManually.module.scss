@@ -1,3 +1,28 @@
+.container {
+	max-width: 1416px;
+	margin: 0 auto;
+	padding: 0 50px;
+}
+
+.width-max-content {
+	width: max-content;
+}
+
+.border {
+	border-radius: 10px;
+	border: 1.5px solid #e3e5e8;
+	background: #fff;
+}
+
+.person-card {
+	border-radius: 5px;
+	border: 1.5px solid #e3e5e8;
+	background: #fff;
+	img {
+		width: 25px;
+	}
+}
+
 .addemployee-manually-wrapper {
 	margin: 90px auto;
 	gap: 72px 40px;
@@ -12,36 +37,6 @@
 		background: #fff;
 		box-shadow: 0px 1px 2px 0px rgba(16, 39, 68, 0.08);
 		padding: 30px;
-		.profile-img {
-			margin-top: -80px;
-			position: relative;
-			width: max-content;
-			
-			.image {
-				width: 120px;
-				height: 140px;
-				padding: 20px;
-				border-radius: 10px;
-				background-size: cover;
-				background-position: center center;
-				border: 7px solid white;
-				display: flex;
-				align-items: center;
-				justify-content: center;
-				background-color: white;
-
-				&:not(.has-image) {
-					border-color: rgba(211, 211, 211, 0.33);
-				}
-			}
-
-			.upload-icon {
-				position: absolute;
-				width: max-content;
-				bottom: -28px;
-				right: -10px;
-			}
-		}
 	}
 }
 
