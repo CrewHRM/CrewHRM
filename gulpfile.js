@@ -146,6 +146,8 @@ gulp.task('copy', function () {
 
             '!./vendor/**',
 
+            '!./__MACOSX',
+
             '!.github',
             '!.git',
 			
