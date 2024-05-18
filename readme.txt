@@ -3,7 +3,7 @@ Contributors: jayedul, badsha_eee, risatrajin
 Donate Link: https://getcrewhrm.com/pricing/
 Tags: Recruitment, job manager, job listing, job board, job management, job lists, job list, job, jobs, company, hiring, employment, employer, employees, candidate, freelance, internship, job listings, positions, board, application, hiring, listing, recruiting
 Requires at least: 5.3
-Tested up to: 6.5.2
+Tested up to: 6.5.3
 Requires PHP: 7.4
 Stable tag: 1.1.0
 License: GPLv3
