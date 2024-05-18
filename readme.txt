@@ -1,5 +1,5 @@
 === Job Manager and Recruitment Board for Employers and Candidates - Crew HRM ===
-Contributors: jayedul, badsha_eee, risatrajin
+Contributors: jayedul, badsha_eee, risatrajin, sabbirshouvo
 Donate Link: https://getcrewhrm.com/pricing/
 Tags: Recruitment, job manager, job listing, job board, job management, job lists, job list, job, jobs, company, hiring, employment, employer, employees, candidate, freelance, internship, job listings, positions, board, application, hiring, listing, recruiting
 Requires at least: 5.3
