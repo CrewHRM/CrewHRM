@@ -85,10 +85,10 @@ function RenderMeta({ icon, hint, content, afterContent='', contentClass='' }) {
             <span
                 className={'d-block font-size-13 font-weight-500 line-height-25 color-text-light margin-top-8 margin-bottom-2'.classNames()}
             >
-                {hint}
+                {__(hint)}
             </span>
             <span className={'font-size-17 font-weight-500 line-height-25 color-text'.classNames() + contentClass}>
-                {content} {afterContent}
+                {__(content)} {__(afterContent)}
             </span>
         </div>
     ) : null;
@@ -213,7 +213,7 @@ export function Single({ base_permalink, settings={} }) {
 						icon={'ch-icon ch-icon-empty-wallet'}
 						hint={__('Salary')}
 						content={(salary_a || '') + (salary_b ? '-' + salary_b : '')}
-						afterContent={(currency || '') + ' ' + (salary_types[salary_basis] ? ' / ' + salary_types[salary_basis] : '')}
+						afterContent={(currency || '') + ' ' + (salary_types[salary_basis] ? ' / ' + __(salary_types[salary_basis]) : '')}
 						contentClass={'white-space-nowrap'.classNames()}
 					/>
 					<div className={'align-self-center'.classNames()}>
