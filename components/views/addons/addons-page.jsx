@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import {createRoot} from 'react-dom/client';
+import { createRoot } from 'react-dom/client';
 
 import { MountPoint } from "crewhrm-materials/mountpoint.jsx";
 import { __, getElementDataSet, data_pointer } from "crewhrm-materials/helpers.jsx";
@@ -16,34 +16,34 @@ import { ToggleSwitch } from "crewhrm-materials/toggle-switch/ToggleSwitch.jsx";
 function UpgraderBar() {
 	return <div className={'d-flex align-items-center column-gap-6 border-radius-5 border-1 b-color-primary padding-8'.classNames()}>
 		<div className={'flex-1 font-size-14 font-weight-400 letter-spacing-2 color-text'.classNames()}>
-			<i className={'ch-icon ch-icon-flash d-inline-block vertical-align-middle font-size-24 color-secondary margin-right-6 '.classNames()}/>
+			<i className={'ch-icon ch-icon-flash d-inline-block vertical-align-middle font-size-24 color-secondary margin-right-6 '.classNames()} />
 			Get a 50% discount on the PRO license and <span className={'font-weight-600'.classNames()}>enjoy full access to all add-ons!</span>
 		</div>
 		<div>
-			<a href="https://getcrewhrm.com/pricing/" target="_blank" className={'button button-secondary'.classNames()} style={{padding: '5.5px 15px'}}>
+			<a href="https://getcrewhrm.com/pricing/" target="_blank" className={'button button-secondary'.classNames()} style={{ padding: '5.5px 15px' }}>
 				{__('Upgrade now')}
 			</a>
 		</div>
 	</div>
 }
 
-function AddonsPage({addons={}, addonStates={}}) {
+function AddonsPage({ addons = {}, addonStates = {} }) {
 
-	const {ajaxToast} = useContext(ContextToast);
+	const { ajaxToast } = useContext(ContextToast);
 	const [loadingState, setLoadingState] = useState({});
 	const [state, setState] = useState({
 		addons,
 		addonStates
 	});
 
-	const toggleState=(id, enabled)=>{
+	const toggleState = (id, enabled) => {
 		setLoadingState({
 			...loadingState,
 			[id]: true
 		});
 
-		request('toggleAddonState', {addon_id: id, new_state: enabled}, resp=>{
-			if ( !resp.success ) {
+		request('toggleAddonState', { addon_id: id, new_state: enabled }, resp => {
+			if (!resp.success) {
 				// Show error message if toggle failed
 				ajaxToast(resp);
 
@@ -82,7 +82,7 @@ function AddonsPage({addons={}, addonStates={}}) {
 		</StickyBar>
 
 		<div className={'padding-15'.classNames()}>
-			<div className={'margin-auto'.classNames()} style={{maxWidth: '989px'}}>
+			<div className={'margin-auto'.classNames()} style={{ maxWidth: '989px' }}>
 
 				{
 					// applyFilters(
@@ -92,35 +92,35 @@ function AddonsPage({addons={}, addonStates={}}) {
 					// 	</div>
 					// )
 				}
-				
+
 				<ResponsiveLayout columnWidth={236}>
-					{Object.keys(state.addons).map(id=>{
+					{Object.keys(state.addons).map(id => {
 						const {
-							plugin_name: addon_name='', 
-							description, 
-							crewhrm_id, 
+							plugin_name: addon_name = '',
+							description,
+							crewhrm_id,
 							crewhrm_free_addon = false,
-							locked, 
+							locked,
 							thumbnail_url
 						} = state.addons[id];
-						
+
 						const enabled = state.addonStates[crewhrm_id] ? true : false;
 						const loading = loadingState[id] ? true : false;
 
 						return <div key={id} className={'d-flex flex-direction-column justify-content-space-between position-relative height-p-100 b-color-tertiary border-radius-5 padding-vertical-30 padding-horizontal-20 bg-color-white'.classNames()}>
-							<Conditional show={locked}>
-								<i className={'ch-icon ch-icon-lock position-absolute right-15 top-15 color-text-light font-size-18'.classNames()}></i>
-							</Conditional>
+							{locked ?
+								<i className={'ch-icon ch-icon-lock position-absolute right-15 top-15 color-text-light font-size-18'.classNames()}></i> : null
+							}
 
-							<Conditional show={crewhrm_free_addon}>
-								<span className={'position-absolute right-15 top-15 font-size-12 font-weight-400 color-white bg-color-secondary'.classNames()} style={{borderRadius: '50px', padding: '0 8px'}}>
+							{crewhrm_free_addon ?
+								<span className={'position-absolute right-15 top-15 font-size-12 font-weight-400 color-white bg-color-secondary'.classNames()} style={{ borderRadius: '50px', padding: '0 8px' }}>
 									{__('FREE')}
-								</span>
-							</Conditional>
+								</span> : null
+							}
 
 							<div className={'margin-bottom-15'.classNames()}>
-								<img src={thumbnail_url} className={'width-p-100 height-auto d-block margin-auto margin-bottom-15'.classNames()} style={{maxWidth: '160px'}}/>
-								
+								<img src={thumbnail_url} className={'width-p-100 height-auto d-block margin-auto margin-bottom-15'.classNames()} style={{ maxWidth: '160px' }} />
+
 								<strong className={'d-block margin-bottom-15 font-size-20 font-weight-600 color-text'.classNames()}>
 									{addon_name.replace('Crew HRM - ', '')}
 								</strong>
@@ -128,31 +128,31 @@ function AddonsPage({addons={}, addonStates={}}) {
 									{description}
 								</div>
 							</div>
-							
+
 							<div>
-								<Conditional show={locked}>
+								{locked ?
 									<a href="https://getcrewhrm.com/pricing/" target="_blank" className={'d-block text-align-center button button-primary button-outlined width-p-100 d-block'.classNames()}>
 										{__('Unlock Now')}
-									</a>
-								</Conditional>
+									</a> : null
+								}
 
-								<Conditional show={!locked}>
-									<div className={'d-flex align-items-center border-top-1 b-color-tertiary'.classNames()} style={{paddingTop: '15px'}}>
+								{!locked ?
+									<div className={'d-flex align-items-center border-top-1 b-color-tertiary'.classNames()} style={{ paddingTop: '15px' }}>
 										<div className={'flex-1 d-flex align-items-center'.classNames()}>
 											<span className={'font-size-14 font-weight-400 letter-spacing--3 color-text-light'.classNames()}>
 												{enabled ? __('Activated') : __('Deactivated')}
 											</span>
 											&nbsp;&nbsp;
-											<LoadingIcon show={loading}/>
+											<LoadingIcon show={loading} />
 										</div>
 										<div>
-											<ToggleSwitch 
-												checked={enabled} 
-												onChange={checked=>toggleState(id, checked)}
-												disabled={loading}/>
+											<ToggleSwitch
+												checked={enabled}
+												onChange={checked => toggleState(id, checked)}
+												disabled={loading} />
 										</div>
-									</div>
-								</Conditional>
+									</div> : null
+								}
 							</div>
 						</div>
 					})}
@@ -163,11 +163,11 @@ function AddonsPage({addons={}, addonStates={}}) {
 }
 
 const el = document.getElementById('crewhrm_addons_page');
-if ( el ) {
+if (el) {
 	createRoot(el).render(
 		<MountPoint>
 			<WpDashboardFullPage>
-				<AddonsPage {...getElementDataSet(el)}/>
+				<AddonsPage {...getElementDataSet(el)} />
 			</WpDashboardFullPage>
 		</MountPoint>
 	);

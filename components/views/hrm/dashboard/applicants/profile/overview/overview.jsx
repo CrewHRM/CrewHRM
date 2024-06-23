@@ -6,27 +6,27 @@ import { Conditional } from 'crewhrm-materials/conditional.jsx';
 
 import style from './overview.module.scss';
 
-export function OverView({ overview=[] }) {
-    
-    return (
-        <div data-cylector="overview" className={'overview'.classNames(style)}>
-            {overview.map((q, i) => {
-                const { id, label, text, text_options = [] } = q;
+export function OverView({ overview = [] }) {
 
-                return (
-                    <div key={id}>
-                        <span
-                            className={'d-block font-size-17 font-weight-500 line-height-24 letter-spacing--17 color-text margin-bottom-1'.classNames()}
-                        >
-                            {label}
-                        </span>
+	return (
+		<div data-cylector="overview" className={'overview'.classNames(style)}>
+			{overview.map((q, i) => {
+				const { id, label, text, text_options = [] } = q;
 
-						<Conditional show={text}>
+				return (
+					<div key={id}>
+						<span
+							className={'d-block font-size-17 font-weight-500 line-height-24 letter-spacing--17 color-text margin-bottom-1'.classNames()}
+						>
+							{label}
+						</span>
+
+						{text ?
 							<div className={'d-block font-size-15 font-weight-400 line-height-22 letter-spacing--15 color-text'.classNames()}
-								dangerouslySetInnerHTML={{__html: replaceUrlsWithAnchors(text || '')}}></div>
-						</Conditional>
-						
-						<Conditional show={text_options}>
+								dangerouslySetInnerHTML={{ __html: replaceUrlsWithAnchors(text || '') }}></div> : null
+						}
+
+						{text_options ?
 							<div
 								data-cylector="skills"
 								className={'d-flex flex-wrap-wrap flex-direction-row row-gap-15 column-gap-15'.classNames()}
@@ -45,16 +45,16 @@ export function OverView({ overview=[] }) {
 										</div>
 									);
 								})}
-							</div>
-						</Conditional>
-						
-                        <Line
-                            show={i < overview.length - 1}
-                            className={'margin-top-20 margin-bottom-20'.classNames()}
-                        />
-                    </div>
-                );
-            })}
-        </div>
-    );
+							</div> : null
+						}
+
+						<Line
+							show={i < overview.length - 1}
+							className={'margin-top-20 margin-bottom-20'.classNames()}
+						/>
+					</div>
+				);
+			})}
+		</div>
+	);
 }

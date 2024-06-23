@@ -13,11 +13,11 @@ import style from '../jobs.module.scss';
 export const status_keys = Object.keys(statuses);
 
 export function FilterBar({ is_overview, filters = {}, onChange, fetching }) {
-	
+
     const { departments = [] } = window[data_pointer];
-	const [keyWord, setKeyword] = useState('');
-	
-	useEffect(()=>onChange('search', keyWord), [keyWord]);
+    const [keyWord, setKeyword] = useState('');
+
+    useEffect(() => onChange('search', keyWord), [keyWord]);
 
     return (
         <div
@@ -27,7 +27,7 @@ export function FilterBar({ is_overview, filters = {}, onChange, fetching }) {
             }
         >
             <div className={'flex-1 d-flex align-items-center white-space-nowrap'.classNames()}>
-                <Conditional show={!is_overview}>
+                {!is_overview ?
                     <Link to="/dashboard/">
                         <i
                             className={
@@ -35,8 +35,8 @@ export function FilterBar({ is_overview, filters = {}, onChange, fetching }) {
                                 'back-icon'.classNames(style)
                             }
                         ></i>
-                    </Link>
-                </Conditional>
+                    </Link> : null
+                }
 
                 <span
                     className={
@@ -48,7 +48,7 @@ export function FilterBar({ is_overview, filters = {}, onChange, fetching }) {
                     }
                 >
                     {__('Job Openings')}
-					<LoadingIcon show={fetching} className={'margin-left-5'.classNames()} />
+                    <LoadingIcon show={fetching} className={'margin-left-5'.classNames()} />
                 </span>
             </div>
             <div className={'d-flex align-items-center justify-content-end flex-wrap-wrap column-gap-15'.classNames()}>
@@ -72,7 +72,7 @@ export function FilterBar({ is_overview, filters = {}, onChange, fetching }) {
                             })
                         ]}
                         variant="borderless"
-						iconSizeClass={'font-size-18'.classNames()}
+                        iconSizeClass={'font-size-18'.classNames()}
                     />
                 </div>
                 <div className={'d-inline-block'.classNames()} style={{ minWidth: '113px' }}>
@@ -92,14 +92,13 @@ export function FilterBar({ is_overview, filters = {}, onChange, fetching }) {
                             })
                         ]}
                         variant="borderless"
-						iconSizeClass={'font-size-18'.classNames()}
+                        iconSizeClass={'font-size-18'.classNames()}
                     />
                 </div>
                 <div className={'d-inline-block'.classNames()}>
                     <TextField
-                        className={`border-radius-5 border-1 height-34 padding-8 b-color-tertiary ${
-                            is_overview ? 'bg-color-transparent' : ' bg-color-white'
-                        }`.classNames()}
+                        className={`border-radius-5 border-1 height-34 padding-8 b-color-tertiary ${is_overview ? 'bg-color-transparent' : ' bg-color-white'
+                            }`.classNames()}
                         iconClass={'ch-icon ch-icon-search-normal-1 font-size-18 color-text cursor-pointer'.classNames()}
                         icon_position="right"
                         expandable={true}

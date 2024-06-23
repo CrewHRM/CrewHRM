@@ -7,38 +7,38 @@ import { employment_types } from 'crewhrm-materials/data.jsx';
 
 import style from './listing.module.scss';
 
-export function CareersLoop({ jobs=[], open_in_new }) {
+export function CareersLoop({ jobs = [], open_in_new }) {
     const [state, setState] = useState({
         hovered_job: null
     });
 
     return jobs.map((job) => {
-        const { 
-			job_id, 
-			job_title, 
-			job_permalink,
-			employment_type, 
-			city, 
-			province, 
-			street_address, 
-			country_code 
-		} = job;
+        const {
+            job_id,
+            job_title,
+            job_permalink,
+            employment_type,
+            city,
+            province,
+            street_address,
+            country_code
+        } = job;
 
         const meta = [
             getAddress({
-				city, 
-				province: !city ? province : null,
-				street_address: (!city && !province) ? street_address : null,
-				country_code
-			}),
+                city,
+                province: !city ? province : null,
+                street_address: (!city && !province) ? street_address : null,
+                country_code
+            }),
             employment_types[employment_type]
         ].filter((m) => m);
 
         return (
             <Link
                 key={job_id}
-				to={job_permalink}
-				target={open_in_new ? '_blank' : ''}
+                to={job_permalink}
+                target={open_in_new ? '_blank' : ''}
                 onMouseOver={() => setState({ ...state, hovered_job: job_id })}
                 onMouseOut={() => setState({ ...state, hovered_job: null })}
                 className={
@@ -59,13 +59,13 @@ export function CareersLoop({ jobs=[], open_in_new }) {
                             return (
                                 <span key={i}>
                                     {__(m)}
-                                    <Conditional show={i < meta.length - 1}>
+                                    {i < meta.length - 1 ?
                                         <span
                                             className={'d-inline-block padding-horizontal-4'.classNames()}
                                         >
                                             &middot;
-                                        </span>
-                                    </Conditional>
+                                        </span> : null
+                                    }
                                 </span>
                             );
                         })}

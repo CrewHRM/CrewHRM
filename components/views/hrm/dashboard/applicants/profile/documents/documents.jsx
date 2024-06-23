@@ -7,32 +7,34 @@ import { Conditional } from 'crewhrm-materials/conditional.jsx';
 import { Slot } from 'crewhrm-materials/mountpoint.jsx';
 
 export function Documents({ application }) {
-    const { cover_letter, documents = {} } = application;
-    const { resume_url } = documents;
+	const { cover_letter, documents = {} } = application;
+	const { resume_url } = documents;
 
 	const has_cover_letter = !isEmpty(cover_letter);
 
-    return (
-        <div data-cylector="documents">
-			<Slot name="application_documents_view" payload={{application}}>
-				<Conditional show={has_cover_letter}>
-					<span
-						className={'d-block font-size-17 font-weight-600 line-height-24 letter-spacing--17 color-text margin-bottom-10'.classNames()}
-					>
-						{__('COVER LETTER')}
-					</span>
-					<ExpandableContent>
-						<div 
-							className={'d-block font-size-15 font-weight-400 line-height-22 letter-spacing--15 color-text'.classNames()}
-							dangerouslySetInnerHTML={{__html: replaceUrlsWithAnchors(cover_letter)}}></div>
-					</ExpandableContent>
-				</Conditional>
-				
+	return (
+		<div data-cylector="documents">
+			<Slot name="application_documents_view" payload={{ application }}>
+				{has_cover_letter ?
+					<>
+						<span
+							className={'d-block font-size-17 font-weight-600 line-height-24 letter-spacing--17 color-text margin-bottom-10'.classNames()}
+						>
+							{__('COVER LETTER')}
+						</span>
+						<ExpandableContent>
+							<div
+								className={'d-block font-size-15 font-weight-400 line-height-22 letter-spacing--15 color-text'.classNames()}
+								dangerouslySetInnerHTML={{ __html: replaceUrlsWithAnchors(cover_letter) }}></div>
+						</ExpandableContent>
+					</> : null
+				}
+
 				{resume_url ? (
 					<>
-						<Conditional show={has_cover_letter}>
-							<Line className={'margin-top-20 margin-bottom-20'.classNames()} />
-						</Conditional>
+						{has_cover_letter ?
+							<Line className={'margin-top-20 margin-bottom-20'.classNames()} /> : null
+						}
 						<span
 							className={'d-block font-size-17 font-weight-600 line-height-24 letter-spacing--17 color-text margin-bottom-10'.classNames()}
 						>
@@ -42,6 +44,6 @@ export function Documents({ application }) {
 					</>
 				) : null}
 			</Slot>
-        </div>
-    );
+		</div>
+	);
 }
