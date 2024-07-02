@@ -126,7 +126,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 == Changelog ==
 
-= v1.1.1 -> Jun 24, 2024 =
+= v1.1.1 -> Jul 2, 2024 =
 
 * Fix: Welcome screen appears everytime plugin is deactivated and re-activated
 * Update: Overall enhancements and optimizations
