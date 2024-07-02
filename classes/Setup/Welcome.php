@@ -39,7 +39,7 @@ class Welcome {
 	 */
 	public function showWelcome( $plugin, $network_wide = null ) {
 		if ( Main::$configs->basename === $plugin && ! get_option( self::FLAG_NAME ) ) {
-			// update_option( self::FLAG_NAME, time() );
+			update_option( self::FLAG_NAME, time() );
 			wp_safe_redirect( admin_url( 'admin.php?page=' . self::PAGE_SLUG ) );
 			exit;
 		}

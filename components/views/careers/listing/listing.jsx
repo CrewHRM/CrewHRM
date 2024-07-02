@@ -12,13 +12,13 @@ import { Conditional } from 'crewhrm-materials/conditional.jsx';
 
 import style from './listing.module.scss';
 
-export function Listing({ open_in_new, settings = {}, filters={} }) {
+export function Listing({ open_in_new, settings = {}, filters = {} }) {
     const [searchParam, setSearchParam] = useSearchParams();
     const queryParams = parseParams(searchParam);
-    const current_page = parseInt( queryParams.page || 1 );
+    const current_page = parseInt(queryParams.page || 1);
 
-	const reff_wrapper = useRef();
-	const [is_mobile, setMobile] = useState(false);
+    const reff_wrapper = useRef();
+    const [is_mobile, setMobile] = useState(false);
 
     const [state, setState] = useState({
         jobs: [],
@@ -69,34 +69,34 @@ export function Listing({ open_in_new, settings = {}, filters={} }) {
         });
     };
 
-	const setLayout=()=>{
-		if ( reff_wrapper?.current ) {
-			setMobile(reff_wrapper.current.offsetWidth<560);
-		}
-	}
+    const setLayout = () => {
+        if (reff_wrapper?.current) {
+            setMobile(reff_wrapper.current.offsetWidth < 560);
+        }
+    }
 
     // When URL state changes, put the filters in state
     useEffect(() => {
         getJobs();
     }, [searchParam]);
 
-	useEffect(()=>{
-		// Set initial filter, in favour of shortcode and blocks actually
-		if ( ! isEmpty( filters ) ) {
-			setFilter(filters);
-		}
+    useEffect(() => {
+        // Set initial filter, in favour of shortcode and blocks actually
+        if (!isEmpty(filters)) {
+            setFilter(filters);
+        }
 
-		// Set responsive layout and register event
-		setLayout();
-		window.addEventListener('resize', setLayout);
-		return ()=>window.removeEventListener('resize', setLayout);
-	}, []);
-	
+        // Set responsive layout and register event
+        setLayout();
+        window.addEventListener('resize', setLayout);
+        return () => window.removeEventListener('resize', setLayout);
+    }, []);
+
 
     return (
         <>
             {
-				!settings.header ? null : <div data-cylector="careers-header">
+                !settings.header ? null : <div data-cylector="careers-header">
                     <CoverImage
                         src={settings.hero_image_url}
                         style={settings.hero_image_url ? { minHeight: '355px' } : {}}
@@ -109,53 +109,53 @@ export function Listing({ open_in_new, settings = {}, filters={} }) {
                         </span>
                     </CoverImage>
                 </div>
-			}
+            }
 
             <div
                 data-cylector="job-listing"
                 className={`listing ${is_mobile ? 'mobile' : ''}`.classNames(style)}
-				ref={reff_wrapper}
+                ref={reff_wrapper}
             >
-                <Conditional show={settings.sidebar}>
+                {settings.sidebar ?
                     <CareersSidebar
                         filters={queryParams}
                         setFilter={setFilter}
                         jobs_country_codes={settings.country_codes}
                         departments={state.departments}
-						is_mobile={is_mobile}
-                    />
-                </Conditional>
+                        is_mobile={is_mobile}
+                    /> : null
+                }
 
                 <div
                     data-cylector="listing"
                     className={'content-area'.classNames(style) + 'flex-1'.classNames()}
                 >
-                    <Conditional show={settings.search}>
+                    {settings.search ?
                         <TextField
                             placeholder={__('Search Keywords')}
                             iconClass={'ch-icon ch-icon-search-normal-1'.classNames()}
                             value={queryParams.search || ''}
-                            onChange={(v) => setFilter( 'search', v )}
-                        />
-                    </Conditional>
+                            onChange={(v) => setFilter('search', v)}
+                        /> : null
+                    }
 
-                    <Conditional show={!state.loading && !state.jobs.length}>
+                    {!state.loading && !state.jobs.length ?
                         <div
                             className={'text-align-center font-size-12 font-weight-500 letter-spacing--12 padding-15 color-text-light'.classNames()}
                         >
                             {__('No Job Found!')}
-                        </div>
-                    </Conditional>
+                        </div> : null
+                    }
 
-					<Conditional show={state.jobs.length}>
-						<div className={'font-size-12 font-weight-500 letter-spacing--12 padding-15 color-text-light'.classNames()}>
-							{__('Jobs')}
-						</div>
-					</Conditional>
-					
+                    {state.jobs.length ?
+                        <div className={'font-size-12 font-weight-500 letter-spacing--12 padding-15 color-text-light'.classNames()}>
+                            {__('Jobs')}
+                        </div> : null
+                    }
+
                     <CareersLoop jobs={state.jobs} open_in_new={open_in_new} />
 
-                    <Conditional show={!state.no_more}>
+                    {!state.no_more ?
                         <div
                             data-cylector="loading"
                             className={'text-align-center'.classNames()}
@@ -165,9 +165,8 @@ export function Listing({ open_in_new, settings = {}, filters={} }) {
                                 className={`font-size-13 font-weight-400 line-height-21 color-text-light margin-top-8`.classNames()}
                             >
                                 <span
-                                    className={`${
-                                        !state.loading ? 'cursor-pointer hover-underline' : ''
-                                    }`.classNames()}
+                                    className={`${!state.loading ? 'cursor-pointer hover-underline' : ''
+                                        }`.classNames()}
                                     onClick={() =>
                                         state.loading ? 0 : setFilter('page', current_page + 1)
                                     }
@@ -179,8 +178,8 @@ export function Listing({ open_in_new, settings = {}, filters={} }) {
                                         : __('Load More')}
                                 </span>
                             </div>
-                        </div>
-                    </Conditional>
+                        </div> : null
+                    }
                 </div>
             </div>
         </>

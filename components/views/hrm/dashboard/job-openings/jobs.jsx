@@ -156,7 +156,7 @@ export function JobOpenings(props) {
                         });
                     },
                     confirmText: __('Yes'),
-					mode: action === 'delete' ? 'danger' : 'normal'
+                    mode: action === 'delete' ? 'danger' : 'normal'
                 });
                 break;
         }
@@ -195,12 +195,12 @@ export function JobOpenings(props) {
 
     return (
         <>
-            <Conditional show={state.share_link}>
+            {state.share_link ?
                 <ShareModal
                     url={state.share_link}
                     closeModal={() => setState({ ...state, share_link: null })}
-                />
-            </Conditional>
+                /> : null
+            }
 
             <div
                 data-cylector="job-openings"
@@ -215,11 +215,9 @@ export function JobOpenings(props) {
                     }}
                 />
 
-                <Conditional show={!state.jobs.length && !state.fetching}>
+                {!state.jobs.length && !state.fetching ?
                     <NoJob />
-                </Conditional>
-
-                <Conditional show={state.jobs.length}>
+                    :
                     <div data-cylector="jobs-dashboard">
                         {state.jobs.map((job) => {
                             const {
@@ -232,17 +230,17 @@ export function JobOpenings(props) {
                                 employment_type,
                                 vacancy,
                                 application_deadline,
-								job_permalink,
+                                job_permalink,
                                 stats: { candidates = 0, stages: application_stages = {} }
                             } = job;
 
-							// Combine meta data andfilter before rendering
+                            // Combine meta data andfilter before rendering
                             const meta_data = [
                                 department_name,
                                 employment_types[employment_type],
-                            ].filter(d=>d);
+                            ].filter(d => d);
 
-							// Determine dot color per job status
+                            // Determine dot color per job status
                             const {
                                 color: status_color,
                                 label: status_label = __('Unknown Status')
@@ -284,7 +282,7 @@ export function JobOpenings(props) {
                                                 className={'d-inline-flex align-items-center column-gap-10'.classNames()}
                                             >
                                                 {state.action ? (
-                                                    <LoadingIcon/>
+                                                    <LoadingIcon />
                                                 ) : (
                                                     <i
                                                         className={
@@ -323,8 +321,8 @@ export function JobOpenings(props) {
                                                     <StatusDot color={status_color} />
                                                 </div>
                                                 <a
-													href={job_permalink}
-													target='_blank'
+                                                    href={job_permalink}
+                                                    target='_blank'
                                                     className={'d-block color-text font-size-20 font-weight-600 hover-underline'.classNames()}
                                                 >
                                                     {job_title}
@@ -335,11 +333,11 @@ export function JobOpenings(props) {
                                             >
                                                 {meta_data.map((data, index) => {
                                                     return <span
-														key={index}
-														className={'d-inline-block font-size-15 font-weight-400 color-text-light'.classNames()}
-													>
-														{__(data)}
-													</span>
+                                                        key={index}
+                                                        className={'d-inline-block font-size-15 font-weight-400 color-text-light'.classNames()}
+                                                    >
+                                                        {__(data)}
+                                                    </span>
                                                 })}
                                             </div>
                                         </div>
@@ -362,15 +360,15 @@ export function JobOpenings(props) {
                                             </Options>
                                         </div>
                                     </div>
-									<StatsRow stats={stats} />
+                                    <StatsRow stats={stats} />
                                 </div>
                             );
                         })}
                     </div>
-                </Conditional>
+                }
 
                 {/* Show view all button when it is loaded in dashboard as summary */}
-                <Conditional show={is_overview && state.jobs.length}>
+                {is_overview && state.jobs.length ?
                     <Link
                         to="/dashboard/jobs/"
                         className={
@@ -379,19 +377,19 @@ export function JobOpenings(props) {
                         }
                     >
                         {__('View All Jobs')}
-                    </Link>
-                </Conditional>
+                    </Link> : null
+                }
 
                 {/* Show pagination when it is loaded as a single view */}
-                <Conditional show={!is_overview}>
+                {!is_overview ?
                     <div className={'d-flex justify-content-end'.classNames()}>
                         <Pagination
                             onChange={(page) => onChange('page', page)}
                             pageNumber={state.filters.page}
                             pageCount={state.segmentation?.page_count || 1}
                         />
-                    </div>
-                </Conditional>
+                    </div> : null
+                }
             </div>
         </>
     );
