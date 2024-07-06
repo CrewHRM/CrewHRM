@@ -1,15 +1,15 @@
-=== Job Manager and Recruitment Board for Employers and Candidates - Crew HRM ===
+=== Employee, Leave and Recruitment Management System - Crew HRM ===
 Contributors: jayedul, badsha_eee, risatrajin, sabbirshouvo
 Donate Link: https://getcrewhrm.com/pricing/
-Tags: Recruitment, job manager, job listing, job board, job management, job lists, job list, job, jobs, company, hiring, employment, employer, employees, candidate, freelance, internship, job listings, positions, board, application, hiring, listing, recruiting
-Requires at least: 5.3
-Tested up to: 6.5.3
+Tags: Recruitment, hiring, employee, job listing, hiring
+Requires at least: 6.3
+Tested up to: 6.5
 Requires PHP: 7.4
 Stable tag: 1.1.1
 License: GPLv3
 License URI: https://opensource.org/licenses/GPL-3.0
 
-Online job boards, career pages with job listings, and hiring or recruiting great talent is a breeze with Crew HRM. More features are coming soon!
+Creating a great-looking career page for job listings and hiring or recruiting great talent is a breeze with Crew HRM. This WordPress HRM plugin will manage your employee records, leave applications, and onboarding process.
 
 == Description ==
 Crew HRM is designed for job posting and recruitment management. It features a centralized dashboard for managing hiring processes, easy job posting, resume uploads, and detailed candidate profiles. Collaborative tools for team review, notes, and built-in email communication for efficient candidate evaluation. Advanced features include interview scheduling, activity tracking, and Google reCAPTCHA for secure applications. The pro version offers Google Meet and Zoom integration for virtual interviews, customizable application form fields, and enhanced email communications.
@@ -37,7 +37,7 @@ Experience Crew HRM firsthand with our live demo. Please take a look at how it s
 [Click Here to Visit the Demo Site](https://demo.getcrewhrm.com/)
 
 ==💬Get In Touch with Crew HRM==
-Please get in touch with us with any questions or for support to make sure you make the most out of Crew HRM.
+Please contact us with any questions or for support to make sure you make the most out of Crew HRM.
 [Click Here to Contact Us](https://getcrewhrm.com/contact/)
 
 ===The pro version of the plugin includes additional features, such as:===
@@ -48,13 +48,13 @@ Please get in touch with us with any questions or for support to make sure you m
 * **Custom Fields:** Add different fields to ask questions that would help you screen the candidates better.
 * **Email Communications:** Communicate with the applicants from the review screen and get notifications about different events in the system.
 * **Custom Attachment Support:** Allow different file formats to be uploaded when designers and creative professionals apply to your job post.
-* **Employee Portal:** The employee portal launches in the frontend of the website without any header or footer. It would give an app-like user experience. You can totally use this feature like SaaS applications. The employees can manage their leave requests, update information, add their bank account and payment information and everything else necessary.
-* **Leave Management:** This feature is divided into several parts. You can create global leave policies in the settings, apply the leave policies applicable to each employee and override them to make exceptions. Employees can request leaves from their frontend profile after logging in. The system keeps a clear account of the pending, used and unused leaves and displays them in the profile. The HR Manager can review leave requests from the employee list in the WordPress Admin Dashboard. S/he can accept or reject the requests from there.
+* **Employee Portal:** The employee portal launches on the website's front end without any header or footer. It would give an app-like user experience. You can use this feature like SaaS applications. The employees can manage their leave requests, update information, add their bank account and payment information, and everything else necessary.
+* **Leave Management:** This feature is divided into several parts. You can create global leave policies in the settings, apply the leave policies applicable to each employee, and override them to make exceptions. Employees can request leaves from their frontend profile after logging in. The system keeps a clear account of the pending, used, and unused leaves and displays them in the profile. The HR Manager can review leave requests from the employee list in the WordPress Admin Dashboard. S/he can accept or reject the requests from there.
 
 This WordPress HRM plugin is the perfect solution for any business that wants to streamline its hiring process and attract the best talent.
 
 == Who Can Use Crew HRM? ==
-* **Small to medium scale businesses** can use this plugin to supercharge their hiring process.
+* **Small to medium-scale businesses** can use this plugin to supercharge their hiring process.
 * **Freelancers** can use the plugin for their client projects and take advantage of the whitelabeling feature.
 * **Web Development Agencies** can offer this as an alternative to SaaS solutions to their clients to save costs without compromising features and reliability.
 * **Companies located in the European region** can significantly benefit by using this plugin as it will help them retain ownership of the data and store them within the European region. You can comply with the GDPR directives as you can easily remove applicant data.
@@ -86,15 +86,15 @@ You can visit [CrewHRM Documentation](https://getcrewhrm.com/docs/) to learn abo
 
 If you have any questions or problems using this plugin, don't hesitate to get in touch with us from here https://getcrewhrm.com/contact/
 
-Please note that this plugin is developed using React.js. If you want to access the non-minified files for this plugin, you can do so from [here](https://github.com/CrewHRM/CrewHRM)
+Just so you know, this plugin is developed using React.js. If you want to access the non-minified files for this plugin, you can do so from [here](https://github.com/CrewHRM/CrewHRM)
 
 == Screenshots ==
 
 1. Birds-eye view of the entire recruitment process from the dashboard
 2. Robust job creation form.
 3. Customize the hiring stages as you please.
-4. PDF and Doc file uploades for resume and cover letter.
-5. See all the information with PDF and Doc files. No need to download!
+4. Upload the PDF and Doc files for the resume and cover letter.
+5. See all the information in the PDF and Doc files. There is no need to download it!
 6. Beautiful looking career page.
 7. Automatic confirmation email for applicants.
 
@@ -128,7 +128,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 = v1.1.1 -> Jul 2, 2024 =
 
-* Fix: Welcome screen appears everytime plugin is deactivated and re-activated
+* Fix: Welcome screen appears every time plugin is deactivated and re-activated
 * Update: Overall enhancements and optimizations
 
 = v1.1.0 -> May 3, 2024 =
@@ -141,7 +141,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 * New: Leave, benefits, working hours default settings
 * New: Employee portal link in admin menu
 * Fix: Department dropdown empty issue
-* Fix: Custom question answer not showing in application review
+* Fix: Custom question answer not showing in the application review
 * Fix: Job type icon missing in single job post
 * Fix: Job share modal copy link not always working
 * Fix: Missing translatable strings
