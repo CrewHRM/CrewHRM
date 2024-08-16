@@ -151,7 +151,7 @@ class _String {
 
 			} else {
 				// Maybe unserialize
-				$value = maybe_unserialize( $value );
+				$value = self::maybe_unserialize( $value );
 			}
 		}
 
@@ -180,5 +180,38 @@ class _String {
 	public static function consolidate( string $input_string, $replace_newlines = false ) {
 		$pattern = $replace_newlines ? '/[\s\t\r\n]+/' : '/[\s\t]+/';
 		return preg_replace( $pattern, ' ', trim( $input_string ) );
+	}
+
+	/**
+	 * Safely unserialize data, blocking object deserialization for security.
+	 *
+	 * @param mixed $data The data to be checked and potentially unserialized.
+	 * @return mixed The unserialized data, or the original data if not serialized or if an object is detected.
+	 */
+	public static function maybe_unserialize( $data ) {
+		// Check if the data is serialized
+		if ( is_serialized( $data ) ) {
+			// Trim the data to remove any extra whitespace
+			$data = trim( $data );
+	
+			// Check if the serialized data starts with 'O:', indicating an object
+			if ( preg_match( '/^O:\d+:"[a-zA-Z0-9_]+":\d+:\{/', $data ) ) {
+				// If it's a serialized object, return the original data to block object deserialization
+				return $data;
+			}
+	
+			// Unserialize the data but prevent objects from being unserialized
+			$unserialized_data = @unserialize( $data, ['allowed_classes' => false] );
+	
+			// If unserialization fails or returns false (but not due to 'b:0;' which is valid false), return the original data
+			if ( $unserialized_data === false && $data !== 'b:0;' ) {
+				return $data;
+			}
+	
+			return $unserialized_data;
+		}
+	
+		// If not serialized, return the original data
+		return $data;
 	}
 }

@@ -113,7 +113,7 @@ class Meta {
 		foreach ( $results as $result ) {
 
 			// Store values per meta key in the array
-			$_meta[ $result['meta_key'] ] = maybe_unserialize( $result['meta_value'] );
+			$_meta[ $result['meta_key'] ] = _String::maybe_unserialize( $result['meta_value'] );
 		}
 
 		$_meta = _Array::castRecursive( $_meta );
@@ -263,7 +263,7 @@ class Meta {
 
 		foreach ( $meta as $m ) {
 			$_key   = $m['meta_key'];
-			$_value = maybe_unserialize( $m['meta_value'] );
+			$_value = _String::maybe_unserialize( $m['meta_value'] );
 
 			$obj_id                            = (int) $m['object_id'];
 			$objects[ $obj_id ]['meta']->$_key = $_value;

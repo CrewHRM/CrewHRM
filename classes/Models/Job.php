@@ -201,7 +201,7 @@ class Job {
 		$job = _Array::castRecursive( $job );
 
 		// Unserialize application form
-		$job['application_form'] = _Array::getArray( maybe_unserialize( $job['application_form'] ) );
+		$job['application_form'] = _Array::getArray( _String::maybe_unserialize( $job['application_form'] ) );
 		$job['salary']           = ( $job['salary_a'] ?? '' ) . ( ( ! empty( $job['salary_a'] ) && ! empty( $job['salary_b'] ) ) ? '-' . $job['salary_b'] : '' );
 
 		// Assign address
@@ -244,7 +244,7 @@ class Job {
 			)
 		);
 
-		return maybe_unserialize( $field_value );
+		return _String::maybe_unserialize( $field_value );
 	}
 
 	/**
@@ -367,7 +367,7 @@ class Job {
 			$jobs[ $index ]['job_permalink'] = self::getJobPermalink( $job['job_id'] );
 
 			// Prepare application form
-			$jobs[ $index ]['application_form'] = _Array::getArray( maybe_unserialize( $job['application_form'] ) );
+			$jobs[ $index ]['application_form'] = _Array::getArray( _String::maybe_unserialize( $job['application_form'] ) );
 		}
 
 		return $jobs;

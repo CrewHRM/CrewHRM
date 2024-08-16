@@ -25,6 +25,20 @@ class Application {
 	public static function createApplication( array $application ) {
 		global $wpdb;
 
+		// Rejct the application submission if PHP Object Injection attempt is noticed.
+		$injectionFound = !empty(array_filter($application, function($input) {
+			return strpos($input, 'O:') !== false;
+		}));
+
+		if($injectionFound){
+			wp_send_json_error(
+				array(
+					'notice' => esc_html__( 'You shouldn\'t try to do PHP Object Injection!', 'hr-management' ),
+				)
+			);
+			exit;
+		}
+
 		// Create address first to insert the id in application row
 		$address_id = Address::createUpdateAddress( $application );
 
