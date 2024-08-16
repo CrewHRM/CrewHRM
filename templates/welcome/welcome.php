@@ -18,7 +18,7 @@ if ( ! defined( 'ABSPATH' ) ) { exit;
 			@import url("https://fonts.googleapis.com/css?family=Figtree:400,500,700,600");
 		</style>
 
-		<script>
+		<script data-nowprocket>
 			window.crew_data = {
 				subscriber_host: "<?php echo 'development' === Main::$configs->mode ? 'http://localhost:10028' : 'https://getcrewhrm.com'; ?>/wp-admin/admin-ajax.php"
 			}

@@ -182,7 +182,7 @@ class Scripts {
 		$pointer = preg_replace( '/[^a-zA-Z0-9_]/', '', $pointer );
 
 		?>
-		<script>
+		<script data-nowprocket>
 			window.<?php echo $pointer; ?> = <?php echo wp_json_encode( $data ); ?>;
 			window.<?php echo $pointer; ?>pro = window.<?php echo $pointer; ?>;
 		</script>
