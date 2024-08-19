@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Load svn credentials
+source .wpsvn
+
 # Remove the svn-push directory
 rm -rf ./svn-push/
 
