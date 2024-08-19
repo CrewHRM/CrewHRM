@@ -33,7 +33,7 @@ class Application {
 		if($injectionFound){
 			wp_send_json_error(
 				array(
-					'notice' => esc_html__( 'You shouldn\'t try to do PHP Object Injection!', 'hr-management' ),
+					'notice' => esc_html__( 'You should not try to do PHP Object Injection!', 'hr-management' ),
 				)
 			);
 			exit;
