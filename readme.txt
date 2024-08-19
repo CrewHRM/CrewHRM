@@ -9,7 +9,7 @@ Stable tag: 1.1.2
 License: GPLv3
 License URI: https://opensource.org/licenses/GPL-3.0
 
-Creating a great-looking career page for job listings and hiring or recruiting great talent is a breeze with Crew HRM. This WordPress HRM plugin will manage your employee records, leave applications, and onboarding process.
+Create career pages for job listings, hiring or recruiting great talent with Crew HRM. It helps manage employee info, leave requests, onboarding
 
 == Description ==
 Crew HRM is designed for job posting and recruitment management. It features a centralized dashboard for managing hiring processes, easy job posting, resume uploads, and detailed candidate profiles. Collaborative tools for team review, notes, and built-in email communication for efficient candidate evaluation. Advanced features include interview scheduling, activity tracking, and Google reCAPTCHA for secure applications. The pro version offers Google Meet and Zoom integration for virtual interviews, customizable application form fields, and enhanced email communications.
