@@ -126,7 +126,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 == Changelog ==
 
-= v1.1.2 -> Jul 19, 2024 =
+= v1.1.2 -> Aug 19, 2024 =
 
 * Fix: Security issue with PHP Object Injection
 * Fix: Issue with WP Rocket
