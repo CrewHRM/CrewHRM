@@ -129,7 +129,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 = v1.1.4 -> Sep 15, 2024 =
 
 * Fix: Settings page missing back button
-* Fix: Saving wrong salary when salar is very big.
+* Fix: Saving wrong salary when salary is very big
 * Update: Overall enhancements and optimizations 
 
 = v1.1.3 -> Aug 21, 2024 =
