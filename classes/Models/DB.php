@@ -29,11 +29,16 @@ class DB {
 	/**
 	 * Remove unnecessary things from the SQL
 	 *
+	 * Supports only
+	 * 
+	 * 1. CREATE TABLE
+	 * 2. ALTER TABLE
+	 * 
 	 * @param string $sql The raw exported SQL file
 	 * @return array
 	 */
 	private static function purgeSQL( string $sql ) {
-		$pattern = '/(CREATE TABLE .*?);/si';
+		$pattern = '/(CREATE TABLE .*?;|ALTER TABLE .*?;)/si';
 		preg_match_all( $pattern, $sql, $matches );
 
 		return $matches[0];
@@ -74,32 +79,59 @@ class DB {
 	 */
 	private static function getInspected( array $queries ) {
 		foreach ( $queries as $index => $query ) {
-
-			// Pick table name
-			preg_match( '/CREATE TABLE IF NOT EXISTS `(.*)`/', $query, $matches );
-			$table_name = $matches[1];
-
-			// Pick column definitions
-			$lines   = explode( PHP_EOL, $query );
-			$columns = array();
-			foreach ( $lines as $line ) {
-
-				$line = trim( $line );
-				if ( empty( $line ) || ! ( strpos( $line, '`' ) === 0 ) ) {
-					continue;
+			if ( strpos( $query, 'CREATE TABLE' ) === 0 ) {
+				// For CREATE TABLE queries
+				preg_match( '/CREATE TABLE IF NOT EXISTS `(.*)`/', $query, $matches );
+				$table_name = $matches[1] ?? '';
+	
+				$lines   = explode( PHP_EOL, $query );
+				$columns = array();
+				foreach ( $lines as $line ) {
+					$line = trim( $line );
+					if ( empty( $line ) || strpos( $line, '`' ) !== 0 ) {
+						continue;
+					}
+	
+					$column_name = substr( $line, 1, strpos( $line, '`', 2 ) - 1 );
+					$columns[ $column_name ] = trim( $line, ',' );
 				}
-
-				$column_name             = substr( $line, 1, strpos( $line, '`', 2 ) - 1 );
-				$columns[ $column_name ] = trim( $line, ',' );
+	
+				$queries[ $index ] = array(
+					'query'   => $query,
+					'table'   => $table_name,
+					'columns' => $columns,
+					'type'    => 'CREATE'
+				);
+			} elseif ( strpos( $query, 'ALTER TABLE' ) === 0 ) {
+				// For ALTER TABLE queries
+				preg_match( '/ALTER TABLE `(.*?)`/', $query, $matches );
+				$table_name = $matches[1] ?? '';
+	
+				$columns = array();
+	
+				// Extract column modifications
+				preg_match_all( '/\s*(ADD|MODIFY|DROP)\s*(COLUMN)?\s*`([^`]+)`\s*(.*?)(?:,|$)/i', $query, $matches, PREG_SET_ORDER );
+				foreach ( $matches as $match ) {
+					$operation = strtoupper($match[1]);
+					$column_name = $match[3];
+					$column_definition = isset($match[4]) ? trim($match[4]) : '';
+	
+					// Store column modifications
+					$columns[ $column_name ] = array(
+						'operation' => $operation,
+						'definition' => $column_definition
+					);
+				}
+	
+				$queries[ $index ] = array(
+					'query'   => $query,
+					'table'   => $table_name,
+					'columns' => $columns,
+					'type'    => 'ALTER'
+				);
 			}
-
-			$queries[ $index ] = array(
-				'query'   => $query,
-				'table'   => $table_name,
-				'columns' => $columns,
-			);
 		}
-
+	
 		return $queries;
 	}
 
@@ -125,35 +157,41 @@ class DB {
 		$queries = self::purgeSQL( $sql );
 		$queries = self::applyDynamics( $queries );
 		$queries = self::getInspected( $queries );
-
+	
 		// Load helper methods if not loaded already
 		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
-
+	
 		global $wpdb;
-
+	
 		foreach ( $queries as $query ) {
-			dbDelta( $query['query'] );
+			if ($query['type'] === 'CREATE') {
+				// Use dbDelta for CREATE TABLE queries
+				dbDelta( $query['query'] );
+			} elseif ($query['type'] === 'ALTER') {
+				// Add missing columns to the table
+				// Because the previous dbDelta just creates new table if not exists already
+				// So missing columns doesn't get created automatically.
+				$current_columns = $wpdb->get_col(
+					$wpdb->prepare(
+						'SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = %s',
+						$query['table']
+					)
+				);
 
-			// Add missing columns to the table
-			// Because the previous dbDelta just creates new table if not exists already
-			// So missing columns doesn't get created automatically.
-			$current_columns = $wpdb->get_col(
-				$wpdb->prepare(
-					'SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = %s',
-					$query['table']
-				)
-			);
-
-			// Loop through the columns in latest SQL file
-			foreach ( $query['columns'] as $column => $column_definition ) {
-				// Add the columns if not in the database
-				if ( ! in_array( $column, $current_columns ) ) {
-					$wpdb->query( "ALTER TABLE {$query['table']} ADD {$column_definition}" );
+				// Loop through the columns in latest SQL file
+				foreach ( $query['columns'] as $column_name => $column_info ) {
+					// Determine if column needs to be added or modified
+					if ( $column_info['operation'] === 'ADD' && ! in_array( $column_name, $current_columns ) ) {
+						$wpdb->query( "ALTER TABLE {$query['table']} ADD {$column_info['definition']}" );
+					} elseif ( $column_info['operation'] === 'MODIFY' && in_array( $column_name, $current_columns ) ) {
+						$wpdb->query( "ALTER TABLE {$query['table']} MODIFY `{$column_name}` {$column_info['definition']}" );
+					} elseif ( $column_info['operation'] === 'DROP' && in_array( $column_name, $current_columns ) ) {
+						$wpdb->query( "ALTER TABLE {$query['table']} DROP COLUMN `{$column_name}`" );
+					}
 				}
 			}
 		}
 	}
-
 
 	/**
 	 * Get limit for queries

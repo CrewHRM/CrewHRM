@@ -1,6 +1,6 @@
 {
   "name": "crewhrm",
-  "version": "1.1.3",
+  "version": "1.1.4",
   "description": "HR Management System",
   "main": "index.js",
   "scripts": {
@@ -18,7 +18,8 @@
     "env:start": "wp-env start",
     "env:stop": "wp-env stop",
     "mocha": "npx mochawesome-merge ./tests/cypress/reports/*.json -o tests/cypress/reports/mochawesome.json && rm -rf ./tests/cypress/reports/mochawesome-*.json && npx mochawesome-json-to-md -p ./tests/cypress/reports/mochawesome.json -o ./tests/cypress/reports/mochawesome.md && npx mochawesome-report-generator tests/cypress/reports/mochawesome.json -o tests/cypress/reports/",
-    "tag": "PACKAGE_VERSION=$(cat package.json | grep \\\"version\\\" | head -1 | awk -F: '{ print $2 }' | sed 's/[\",]//g' | tr -d '[[:space:]]') && git tag $PACKAGE_VERSION && git push --tags"
+    "tag": "PACKAGE_VERSION=$(cat package.json | grep \\\"version\\\" | head -1 | awk -F: '{ print $2 }' | sed 's/[\",]//g' | tr -d '[[:space:]]') && git tag $PACKAGE_VERSION && git push --tags",
+    "release": "./release.sh hr-management-$npm_package_version.zip"
   },
   "repository": {
     "type": "git",
@@ -46,6 +47,7 @@
     "@babel/core": "^7.22.10",
     "@babel/preset-env": "^7.22.10",
     "@babel/preset-react": "^7.22.5",
+    "@hello-pangea/dnd": "^16.6.0",
     "@react-pdf-viewer/core": "^3.12.0",
     "@react-pdf-viewer/default-layout": "^3.12.0",
     "@wordpress/env": "^8.6.0",
@@ -75,7 +77,6 @@
     "path": "^0.12.7",
     "pdfjs-dist": "^3.9.179",
     "react": "^18.2.0",
-    "react-beautiful-dnd": "^13.1.1",
     "react-dom": "^18.2.0",
     "react-draft-wysiwyg": "^1.15.0",
     "react-google-recaptcha": "^3.1.0",

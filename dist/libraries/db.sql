@@ -317,6 +317,17 @@ CREATE TABLE IF NOT EXISTS `wp_crewhrm_weekly_schedules` (
   PRIMARY KEY (`schedule_id`),
   KEY `week_day` (`week_day`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_520_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Alter structure for table `wp_crewhrm_jobs`
+--
+
+ALTER TABLE `wp_crewhrm_jobs` MODIFY `salary_a` INT UNSIGNED;
+
+ALTER TABLE `wp_crewhrm_jobs` MODIFY `salary_b` INT UNSIGNED;
+
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
