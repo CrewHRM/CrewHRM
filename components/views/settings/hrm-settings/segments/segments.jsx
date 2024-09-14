@@ -1,11 +1,24 @@
-import React from 'react';
+import React, { useContext, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 
 import { __ } from 'crewhrm-materials/helpers.jsx';
 import { settings_fields } from '../field-structure.jsx';
 import style from './segments.module.scss';
 import { Link } from 'react-router-dom';
+import { ContextSettingsPage } from '../hrm-settings.jsx';
 
 export function Segments() {
+    const {
+        segment,
+        sub_segment
+    } = useParams();
+
+    const { updatePageNavigation } = useContext(ContextSettingsPage);
+
+    useEffect(() => {
+        updatePageNavigation({ segment, sub_segment });
+    }, [segment, sub_segment]);
+
     return (
         <div
             className={
@@ -40,21 +53,20 @@ export function Segments() {
                                     <Link
                                         key={segment_key}
                                         to={`/settings/${key}/${segment_key}/`}
-                                        className={`d-flex align-items-center column-gap-10 cursor-pointer padding-vertical-10 padding-horizontal-15 ${
-                                            !is_last ? 'border-bottom-1-5 b-color-tertiary' : ''
-                                        } color-hover-parent`.classNames()}
+                                        className={`d-flex align-items-center column-gap-10 cursor-pointer padding-vertical-10 padding-horizontal-15 ${!is_last ? 'border-bottom-1-5 b-color-tertiary' : ''
+                                            } color-hover-parent`.classNames()}
                                     >
                                         <div>
-											{
-												icon.indexOf('http')>-1 ? 
-													<img className={'width-24 height-auto'.classNames()} src={icon}/> : 
-													<i
-														className={
-															icon.classNames() +
-															'font-size-24 color-secondary'.classNames()
-														}
-													></i>
-											}
+                                            {
+                                                icon.indexOf('http') > -1 ?
+                                                    <img className={'width-24 height-auto'.classNames()} src={icon} /> :
+                                                    <i
+                                                        className={
+                                                            icon.classNames() +
+                                                            'font-size-24 color-secondary'.classNames()
+                                                        }
+                                                    ></i>
+                                            }
                                         </div>
                                         <div className={'flex-1'.classNames()}>
                                             <span

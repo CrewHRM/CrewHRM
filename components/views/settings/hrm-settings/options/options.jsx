@@ -23,20 +23,20 @@ import { AddItemModal } from '../../../hrm/job-editor/job-details/sections/title
 import style from './options.module.scss';
 
 const label_class =
-    'd-block font-size-15 font-weight-500 line-height-24 letter-spacing--16 color-text'.classNames();
+	'd-block font-size-15 font-weight-500 line-height-24 letter-spacing--16 color-text'.classNames();
 
 const hint_class =
-    'd-block margin-top-3 font-size-15 font-weight-400 line-height-24 letter-spacing--15 color-text-light'.classNames();
+	'd-block margin-top-3 font-size-15 font-weight-400 line-height-24 letter-spacing--15 color-text-light'.classNames();
 
-function OptionFields({fields=[], vertical, separator, is_group=false}) {
+function OptionFields({ fields = [], vertical, separator, is_group = false }) {
 
-    const { 
-		values = {}, 
+	const {
+		values = {},
 		onChange,
-		resources = {}, 
-		updateResources 
+		resources = {},
+		updateResources
 	} = useContext(ContextSettingsPage);
-	
+
 	const highlight_ref = useRef();
 	const highlight_field = new URL(window.location.href).searchParams.get("highlight");
 
@@ -44,92 +44,92 @@ function OptionFields({fields=[], vertical, separator, is_group=false}) {
 		modal_for: null,
 	});
 
-	const itemAdderFor=(field=null)=>{
+	const itemAdderFor = (field = null) => {
 		setState({
 			...state,
 			modal_for: field
 		});
 	}
 
-    const onAddItem = ({ id, items }) => {
+	const onAddItem = ({ id, items }) => {
 
-		const {modal_for} = state;
-		const {name} = modal_for;
+		const { modal_for } = state;
+		const { name } = modal_for;
 
-		updateResources({[name]: items});
+		updateResources({ [name]: items });
 		onChange(name, id, modal_for);
 
-		setState({...state, modal_for: null});
-    };
+		setState({ ...state, modal_for: null });
+	};
 
-	useEffect(()=>{
-		if ( highlight_ref?.current ) {
+	useEffect(() => {
+		if (highlight_ref?.current) {
 			highlight_ref.current.scrollIntoView(true);
 			highlight_ref.current.classList.add('highlight'.classNames(style).split(' ')[0] || '');
 		}
 	}, [highlight_ref]);
 
-    const satisfyLogic = (when) => {
-        const pointer = when[0];
-        const operator = when.length > 2 ? when[1] : '===';
-        const operand = when[when.length > 2 ? 2 : 1];
-        const value = values[pointer];
+	const satisfyLogic = (when) => {
+		const pointer = when[0];
+		const operator = when.length > 2 ? when[1] : '===';
+		const operand = when[when.length > 2 ? 2 : 1];
+		const value = values[pointer];
 
-        let _return;
+		let _return;
 
-        switch (operator) {
-            case '===':
-                _return = value === operand;
-                break;
+		switch (operator) {
+			case '===':
+				_return = value === operand;
+				break;
 
-            case '==':
-                _return = value == operand;
-                break;
-        }
+			case '==':
+				_return = value == operand;
+				break;
+		}
 
-        return _return;
-    };
+		return _return;
+	};
 
-    return <>
+	return <>
 		{
 			!state.modal_for ? null :
-			<AddItemModal 
-				endpoint={'addSettingItem_'+state.modal_for.name}
-				item_label={state.modal_for.label}
-				onAdd={onAddItem} 
-				closeModal={()=>itemAdderFor(null)} />
+				<AddItemModal
+					endpoint={'addSettingItem_' + state.modal_for.name}
+					item_label={state.modal_for.label}
+					onAdd={onAddItem}
+					closeModal={() => itemAdderFor(null)} />
 		}
 
 		{
 			fields.map((field, i) => {
 				// Render grouped fields in same line horizontally
-				if ( Array.isArray(field) ) {
+				if (Array.isArray(field)) {
 					return <div key={i} className={'d-flex align-items-end column-gap-20'.classNames()}>
-						{field.map(f=>{
+						{field.map(f => {
 							return <div key={f.name} className={'flex-1'.classNames()}>
-								<OptionFields fields={[f]} is_group={true} vertical={true}/>
-							</div> 
+								<OptionFields fields={[f]} is_group={true} vertical={true} />
+							</div>
 						})}
 					</div>
 				}
 
-				const { 
+				const {
 					name,
-					label, 
-					type, 
-					add_text=__('Add New'),
-					key_map={},
-					options, 
-					when, 
-					direction, 
-					hint, 
+					label,
+					type,
+					add_text = __('Add New'),
+					key_map = {},
+					options,
+					when,
+					direction,
+					hint,
 					hint2,
-					placeholder, 
-					min, 
-					max, 
+					placeholder,
+					min,
+					max,
 					disabled,
 					WpMedia,
-					regex=null,
+					regex = null,
 					component: Comp
 				} = field;
 
@@ -149,41 +149,39 @@ function OptionFields({fields=[], vertical, separator, is_group=false}) {
 				return (
 					<div
 						key={name}
-						className={`${vertical ? '' : 'd-flex'} ${
-							direction === 'column'
-								? 'flex-direction-column'
-								: 'flex-direction-row align-items-center'
-						} flex-wrap-wrap ${
-							show_separator ? 'padding-vertical-25 border-bottom-1 b-color-tertiary' : 'padding-vertical-10'
-						} ${when ? 'fade-in' : ''}`.classNames()}
-						ref={highlight_field===name ? highlight_ref : null}
+						className={`${vertical ? '' : 'd-flex'} ${direction === 'column'
+							? 'flex-direction-column'
+							: 'flex-direction-row align-items-center'
+							} flex-wrap-wrap ${show_separator ? 'padding-vertical-25 border-bottom-1 b-color-tertiary' : 'padding-vertical-10'
+							} ${when ? 'fade-in' : ''}`.classNames()}
+						ref={highlight_field === name ? highlight_ref : null}
 					>
 						{
-							!Comp ? null : 
-							<>
-								<div className={'flex-1'.classNames()}>{label_text}</div>
-								<div>
-									<RenderExternal component={Comp} payload={{onChange, value: values[name]}}/>
-								</div>
-							</>
+							!Comp ? null :
+								<>
+									<div className={'flex-1'.classNames()}>{label_text}</div>
+									<div>
+										<RenderExternal component={Comp} payload={{ onChange, value: values[name] }} />
+									</div>
+								</>
 						}
-						
+
 						{/* Toggle switch option */}
 						{
 							type !== 'switch' ? null :
-							<>
-								<div className={'flex-1'.classNames()}>{label_text}</div>
-								<div>
-									<ToggleSwitch
-										checked={values[name] ? true : false}
-										onChange={(enabled) => onChange(name, enabled, field)}
-									/>
-								</div>
-							</>
+								<>
+									<div className={'flex-1'.classNames()}>{label_text}</div>
+									<div>
+										<ToggleSwitch
+											checked={values[name] ? true : false}
+											onChange={(enabled) => onChange(name, enabled, field)}
+										/>
+									</div>
+								</>
 						}
 
 						{/* Text input field */}
-						{(['text', 'url', 'email', 'teltext'].indexOf(type)>-1 && (
+						{(['text', 'url', 'email', 'teltext'].indexOf(type) > -1 && (
 							<>
 								<div className={'flex-1'.classNames()}>{label_text}</div>
 								<div className={'flex-1'.classNames()}>
@@ -262,32 +260,32 @@ function OptionFields({fields=[], vertical, separator, is_group=false}) {
 
 						{
 							type !== 'dropdown' ? null :
-							<>
-								<div className={'flex-5'.classNames()}>{label_text}</div>
-								<div className={'flex-2'.classNames()}>
-									<DropDown
-										value={values[name]}
-										onChange={(v) => onChange(name, v, field)}
-										options={typeof options === 'string' ? resources[options] : options}
-										placeholder={placeholder}
-										clearable={false}
-										addText={field.can_add ? __('Add New') : null}
-										onAddClick={field.can_add ? ()=>itemAdderFor(field) : null}
-									/>
-								</div>
-							</>
+								<>
+									<div className={'flex-5'.classNames()}>{label_text}</div>
+									<div className={'flex-2'.classNames()}>
+										<DropDown
+											value={values[name]}
+											onChange={(v) => onChange(name, v, field)}
+											options={typeof options === 'string' ? resources[options] : options}
+											placeholder={placeholder}
+											clearable={false}
+											addText={field.can_add ? __('Add New') : null}
+											onAddClick={field.can_add ? () => itemAdderFor(field) : null}
+										/>
+									</div>
+								</>
 						}
 
-						{type==='address' ? <>
+						{type === 'address' ? <>
 							<div className={'flex-5'.classNames()}>{label_text}</div>
 							<div>
-								<AddressFields 
-									values={values} 
-									onChange={onChange}/>
+								<AddressFields
+									values={values}
+									onChange={onChange} />
 							</div>
 						</> : null}
 
-						{type=='company_logo' ? 
+						{type == 'company_logo' ?
 							<div
 								className={'d-flex align-items-end column-gap-28 margin-bottom-32'.classNames()}
 								style={{ marginTop: '-70px' }}
@@ -306,11 +304,11 @@ function OptionFields({fields=[], vertical, separator, is_group=false}) {
 									</span>
 
 									<FileUpload
-										onChange={(company_logo) => onChange('company_logo', company_logo, field )}
-										WpMedia={{ 
-											width: 200, 
-											height: 200, 
-											mime_type: 'image/*' 
+										onChange={(company_logo) => onChange('company_logo', company_logo, field)}
+										WpMedia={{
+											width: 200,
+											height: 200,
+											mime_type: 'image/*'
 										}}
 										layoutComp={({ onClick }) => {
 											return (
@@ -327,7 +325,7 @@ function OptionFields({fields=[], vertical, separator, is_group=false}) {
 							</div> : null
 						}
 
-						{type==='list' ? 
+						{type === 'list' ?
 							<>
 								<div className={'flex-5'.classNames()}>{label_text}</div>
 								<div>
@@ -336,13 +334,13 @@ function OptionFields({fields=[], vertical, separator, is_group=false}) {
 										mode="stack"
 										id_key="id"
 										label_key="label"
-										list={(values[name] || []).map(item=>{
+										list={(values[name] || []).map(item => {
 											return {
 												id: item[key_map.id || 'id'],
 												label: item[key_map.label || 'label']
 											}
 										})}
-										onChange={(items) => onChange(name, items.map(item=>{
+										onChange={(items) => onChange(name, items.map(item => {
 											return {
 												[key_map.id || 'id']: item.id,
 												[key_map.label || 'label']: item.label
@@ -355,15 +353,15 @@ function OptionFields({fields=[], vertical, separator, is_group=false}) {
 
 						{
 							type !== 'textarea_rich' ? null :
-							<>
-								<div className={'flex-5'.classNames()}>{label_text}</div>
-								<div>
-									<TextEditor 
-										value={values[name]}
-										placeholder={placeholder}
-										onChange={v=>onChange(name, v)}/>
-								</div>
-							</>
+								<>
+									<div className={'flex-5'.classNames()}>{label_text}</div>
+									<div>
+										<TextEditor
+											value={values[name]}
+											placeholder={placeholder}
+											onChange={v => onChange(name, v)} />
+									</div>
+								</>
 						}
 					</div>
 				);
@@ -373,14 +371,14 @@ function OptionFields({fields=[], vertical, separator, is_group=false}) {
 }
 
 
-function Wrapper({children, overflow, width, useWrapper}) {
+function Wrapper({ children, overflow, width, useWrapper }) {
 
 	const wrapper_attrs = {
 		className: `position-relative ${overflow ? '' : 'overflow-hidden'} padding-30 bg-color-white box-shadow-thin`.classNames(),
-		style: {borderRadius: '5px'}
+		style: { borderRadius: '5px' }
 	}
 
-	return !useWrapper ? children : <div className={'section'.classNames(style)} style={{width}}>
+	return !useWrapper ? children : <div className={'section'.classNames(style)} style={{ width }}>
 		<div {...wrapper_attrs}>
 			{children}
 		</div>
@@ -390,36 +388,42 @@ function Wrapper({children, overflow, width, useWrapper}) {
 
 export function Options() {
 
-    const {
-		segment, 
-		sub_segment 
+	const {
+		segment,
+		sub_segment
 	} = useParams();
 
-    const {
-		sections={}, 
-		component, 
-		overflow=true, 
-		width='582px', 
-		useWrapper=true 
+	const {
+		sections = {},
+		component,
+		overflow = true,
+		width = '582px',
+		useWrapper = true
 	} = settings_fields?.[segment]?.segments?.[sub_segment] || {};
 
 	const wrapper_props = {
-		overflow, 
-		width, 
-		useWrapper 
+		overflow,
+		width,
+		useWrapper
 	}
 
-	return <div style={{marginTop: '79px', marginBottom: '79px'}}>
+	const { updatePageNavigation } = useContext(ContextSettingsPage);
+
+	useEffect(() => {
+		updatePageNavigation({ segment, sub_segment });
+	}, [segment, sub_segment]);
+
+	return <div style={{ marginTop: '79px', marginBottom: '79px' }}>
 		{
 			component ? <Wrapper {...wrapper_props}>
-					<RenderExternal component={component}/>
-				</Wrapper>
+				<RenderExternal component={component} />
+			</Wrapper>
 				:
-				Object.keys(sections).map(section_name=>{
-					const {fields=[], vertical, separator} = sections[section_name];
+				Object.keys(sections).map(section_name => {
+					const { fields = [], vertical, separator } = sections[section_name];
 
 					return <Wrapper key={section_name} {...wrapper_props}>
-						<OptionFields {...{fields, vertical, separator}}/>
+						<OptionFields {...{ fields, vertical, separator }} />
 					</Wrapper>
 				})
 		}
