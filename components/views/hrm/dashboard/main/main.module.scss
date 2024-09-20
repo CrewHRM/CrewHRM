@@ -1,6 +1,6 @@
 .wrapper {
     max-width: 1366px;
-    margin: 0 auto;
+    margin: 0 auto 0 0;
 	
     .sidebar, .content-area {
         float: left;
@@ -10,6 +10,7 @@
         width: 461px;
         padding: 36px;
         background-color: #e3e5e8;
+        height: 100%;
     }
 
     .content-area {
