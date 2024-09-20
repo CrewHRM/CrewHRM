@@ -88,7 +88,7 @@ export const sections_fields = applyFilters('job_application_fields', {
                     {
                         name: 'phone',
                         label: __('Phone'),
-                        type: 'text',
+                        type: 'phone',
                         required: true,
                         placeholder: '123456789',
 						regex: patterns.phone

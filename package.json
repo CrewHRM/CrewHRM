@@ -1,6 +1,6 @@
 {
   "name": "crewhrm",
-  "version": "1.1.4",
+  "version": "1.1.5",
   "description": "HR Management System",
   "main": "index.js",
   "scripts": {
@@ -73,7 +73,6 @@
     "gulp-wp-pot": "^2.5.0",
     "gulp-zip": "^5.1.0",
     "html-to-draftjs": "^1.5.0",
-    "node-sass": "^9.0.0",
     "path": "^0.12.7",
     "pdfjs-dist": "^3.9.179",
     "react": "^18.2.0",
@@ -82,9 +81,11 @@
     "react-google-recaptcha": "^3.1.0",
     "react-google-recaptcha-v3": "^1.10.1",
     "react-helmet": "^6.1.0",
+    "react-international-phone": "^4.3.0",
     "react-paginate": "^8.2.0",
     "react-router-dom": "^6.14.2",
     "rsync": "^0.6.1",
+    "sass": "^1.79.1",
     "sass-loader": "^13.3.2",
     "style-loader": "^3.3.3",
     "terser-webpack-plugin": "^5.3.9",

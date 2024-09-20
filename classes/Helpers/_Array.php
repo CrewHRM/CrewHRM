@@ -222,8 +222,6 @@ class _Array {
 		$result['url']      = plugin_dir_url( $path );
 		$result['dist_url'] = $result['url'] . 'dist/';
 
-		$result = self::castRecursive( $result );
-
 		return ARRAY_A === $ret_type ? $result : (object) $result;
 	}
 

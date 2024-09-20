@@ -6,9 +6,9 @@ import { DateField } from 'crewhrm-materials/date-time.jsx';
 import { ExpandableContent } from 'crewhrm-materials/expandable-content/expandable-content.jsx';
 import { TextEditor } from 'crewhrm-materials/text-editor/text-editor.jsx';
 import { TextField } from 'crewhrm-materials/text-field/text-field.jsx';
-import { Conditional } from 'crewhrm-materials/conditional.jsx';
 import { AddressFields } from 'crewhrm-materials/address-fields.jsx';
 import { RadioCheckbox } from 'crewhrm-materials/radio-checkbox.jsx';
+import { PhoneField } from 'crewhrm-materials/phone-field/phone-field.jsx';
 
 export function RenderField({ field = {}, onChange = () => { }, values = {}, showErrorsAlways }) {
 
@@ -133,6 +133,15 @@ export function RenderField({ field = {}, onChange = () => { }, values = {}, sho
 					onChange={onChange}
 					showErrorsAlways={showErrorsAlways}
 					required={required} /> : null
+			}
+
+			{type === 'phone' ?
+				<PhoneField
+					defaultCountry="ua"
+					value={values[name] || ''}
+					onChange={v => onChange(name, v)}
+					required={required}
+				/> : null
 			}
 		</div> : null
 }
