@@ -1,5 +1,6 @@
 import React, { useContext, useRef, useState } from 'react';
 import { Helmet } from 'react-helmet';
+import { PhoneNumberUtil } from 'google-libphonenumber';
 
 import { Tabs } from 'crewhrm-materials/tabs/tabs.jsx';
 import { FormActionButtons } from 'crewhrm-materials/form-action.jsx';
@@ -59,6 +60,8 @@ export function Apply({ job = {}, settings = {}, social_links = [] }) {
 
 	const { addToast, ajaxToast } = useContext(ContextToast);
 
+	const phoneUtil = PhoneNumberUtil.getInstance();
+
 	const wrapper = useRef();
 	const step_index = steps.findIndex((s) => s.id === state.active_tab);
 	const step = steps[step_index];
@@ -75,6 +78,7 @@ export function Apply({ job = {}, settings = {}, social_links = [] }) {
 	const onChange = (name, v) => {
 		setState({
 			...state,
+			selectedCountry: name === 'country_code' ? v.toLowerCase() : state.selectedCountry,
 			values: {
 				...state.values,
 				[name]: v,
@@ -253,6 +257,14 @@ export function Apply({ job = {}, settings = {}, social_links = [] }) {
 		});
 	};
 
+	const isPhoneValid = (phone) => {
+		try {
+			return phoneUtil.isValidNumber(phoneUtil.parseAndKeepRawInput(phone));
+		} catch (error) {
+			return false;
+		}
+	};
+
 	const isNextEnabled = (fields = []) => {
 		let _enabled = true;
 
@@ -277,11 +289,15 @@ export function Apply({ job = {}, settings = {}, social_links = [] }) {
 			}
 
 			const { name, required } = fields[i];
-			const { regex: validate_pattern = patterns[name] } = fields[i];
+			const { regex: validate_pattern } = fields[i];
 			const value = state.values[name];
 			const is_empty = isEmpty(value);
 
 			if (required && is_empty) {
+				_enabled = false;
+			}
+
+			if (name === 'phone' && !isPhoneValid(value)) {
 				_enabled = false;
 			}
 
@@ -371,7 +387,8 @@ export function Apply({ job = {}, settings = {}, social_links = [] }) {
 						field={f}
 						values={state.values}
 						onChange={onChange}
-						showErrorsAlways={state.showErrorsAlways} />
+						showErrorsAlways={state.showErrorsAlways}
+						selectedCountry={state.selectedCountry} />
 				</div>
 			))}
 

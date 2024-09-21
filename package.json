@@ -1,6 +1,6 @@
 {
   "name": "crewhrm",
-  "version": "1.1.5",
+  "version": "1.1.6",
   "description": "HR Management System",
   "main": "index.js",
   "scripts": {
@@ -18,7 +18,7 @@
     "env:start": "wp-env start",
     "env:stop": "wp-env stop",
     "mocha": "npx mochawesome-merge ./tests/cypress/reports/*.json -o tests/cypress/reports/mochawesome.json && rm -rf ./tests/cypress/reports/mochawesome-*.json && npx mochawesome-json-to-md -p ./tests/cypress/reports/mochawesome.json -o ./tests/cypress/reports/mochawesome.md && npx mochawesome-report-generator tests/cypress/reports/mochawesome.json -o tests/cypress/reports/",
-    "tag": "PACKAGE_VERSION=$(cat package.json | grep \\\"version\\\" | head -1 | awk -F: '{ print $2 }' | sed 's/[\",]//g' | tr -d '[[:space:]]') && git tag $PACKAGE_VERSION && git push --tags",
+    "gtag": "PACKAGE_VERSION=$(cat package.json | grep \\\"version\\\" | head -1 | awk -F: '{ print $2 }' | sed 's/[\",]//g' | tr -d '[[:space:]]') && git tag $PACKAGE_VERSION && git push --tags",
     "release": "./release.sh hr-management-$npm_package_version.zip"
   },
   "repository": {
@@ -65,6 +65,7 @@
     "draft-js": "^0.11.7",
     "draftjs-to-html": "^0.9.1",
     "fs": "^0.0.1-security",
+    "google-libphonenumber": "^3.2.38",
     "gulp": "^4.0.2",
     "gulp-clean": "^0.4.0",
     "gulp-plumber": "^1.2.1",

@@ -10,7 +10,7 @@ import { AddressFields } from 'crewhrm-materials/address-fields.jsx';
 import { RadioCheckbox } from 'crewhrm-materials/radio-checkbox.jsx';
 import { PhoneField } from 'crewhrm-materials/phone-field/phone-field.jsx';
 
-export function RenderField({ field = {}, onChange = () => { }, values = {}, showErrorsAlways }) {
+export function RenderField({ field = {}, onChange = () => { }, values = {}, showErrorsAlways, selectedCountry }) {
 
 	if (Array.isArray(field)) {
 		return <div className={'d-flex align-items-center column-gap-20'.classNames()}>
@@ -137,9 +137,10 @@ export function RenderField({ field = {}, onChange = () => { }, values = {}, sho
 
 			{type === 'phone' ?
 				<PhoneField
-					defaultCountry="ua"
+					defaultCountry={selectedCountry}
 					value={values[name] || ''}
 					onChange={v => onChange(name, v)}
+					showErrorsAlways={showErrorsAlways}
 					required={required}
 				/> : null
 			}
