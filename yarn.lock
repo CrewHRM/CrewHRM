@@ -3159,8 +3159,8 @@ core-util-is@~1.0.0:
   integrity sha512-ZQBvi1DcpJ4GDqanjucZ2Hj3wEO5pZDS89BWbkcrvdxksJorwUDDZamX9ldFkp9aw2lmBDLgkObEA4DWNJ9FYQ==
 
 "crewhrm-materials@bitbucket:sh_shouvo/materials":
-  version "1.0.2"
-  resolved "git+ssh://git@bitbucket.org/sh_shouvo/materials.git#65f6c81b6512cefd06d1cdc213f6256d6386d0f4"
+  version "1.0.3"
+  resolved "git+ssh://git@bitbucket.org/sh_shouvo/materials.git#0730a7c7b815c13fbe0e77d73ea54af6439be9c9"
 
 cross-fetch@^3.0.4:
   version "3.1.8"
