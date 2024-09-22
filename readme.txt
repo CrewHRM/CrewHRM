@@ -129,6 +129,7 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 = v1.1.6 -> Sep 21, 2024 =
 
 * Fix: Phone Number validation
+* Update: Update dependancies to latest version
 * Update: Overall enhancements and optimizations
 
 = v1.1.5 -> Sep 20, 2024 =
