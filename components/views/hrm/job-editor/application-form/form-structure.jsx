@@ -91,7 +91,6 @@ export const sections_fields = applyFilters('job_application_fields', {
                         type: 'phone',
                         required: true,
                         placeholder: '123456789',
-						regex: patterns.phone
                     }
                 ]
             },
@@ -103,7 +102,7 @@ export const sections_fields = applyFilters('job_application_fields', {
                     {
                         name: 'email',
                         label: __('Email'),
-                        type: 'text',
+                        type: 'email',
                         required: true,
                         placeholder: '@company.com',
 						regex: patterns.email

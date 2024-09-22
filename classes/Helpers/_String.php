@@ -129,7 +129,9 @@ class _String {
 
 		if ( is_string( $value ) ) {
 
-			if ( is_numeric( $value ) ) {
+			if (preg_match('/^0+\d*$/', $value)) {
+				$value = $value;
+			} elseif ( is_numeric( $value ) ) {
 				// Cast number
 				$value = self::isFloat( $value ) ? (float) $value : (int) $value;
 

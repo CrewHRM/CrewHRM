@@ -3159,8 +3159,8 @@ core-util-is@~1.0.0:
   integrity sha512-ZQBvi1DcpJ4GDqanjucZ2Hj3wEO5pZDS89BWbkcrvdxksJorwUDDZamX9ldFkp9aw2lmBDLgkObEA4DWNJ9FYQ==
 
 "crewhrm-materials@bitbucket:sh_shouvo/materials":
-  version "1.0.1"
-  resolved "git+ssh://git@bitbucket.org/sh_shouvo/materials.git#52edfeca966a8aab02f2a1444978025867d0b904"
+  version "1.0.3"
+  resolved "git+ssh://git@bitbucket.org/sh_shouvo/materials.git#0730a7c7b815c13fbe0e77d73ea54af6439be9c9"
 
 cross-fetch@^3.0.4:
   version "3.1.8"
@@ -5085,6 +5085,11 @@ glogg@^1.0.0:
   integrity sha512-5mwUoSuBk44Y4EshyiqcH95ZntbDdTQqA3QYSrxmzj28Ai0vXBGMH1ApSANH14j2sIRtqCEyg6PfsuP7ElOEDA==
   dependencies:
     sparkles "^1.0.0"
+
+google-libphonenumber@^3.2.38:
+  version "3.2.38"
+  resolved "https://registry.yarnpkg.com/google-libphonenumber/-/google-libphonenumber-3.2.38.tgz#5adb0c8ff807d84d4d46b9536d0116d00d85f137"
+  integrity sha512-t/K0dsVmA0gMMVLJgcMeB9g1Ar4ANVWfkY+AJGSdfyJ2Ay7Bu8ceLYpUlC6FZSilZgaF1qbkM9tZydGBEBHqAg==
 
 gopd@^1.0.1:
   version "1.0.1"
@@ -7406,7 +7411,7 @@ path@^0.12.7:
     process "^0.11.1"
     util "^0.10.3"
 
-pdfjs-dist@^3.9.179:
+pdfjs-dist@3.11.174:
   version "3.11.174"
   resolved "https://registry.yarnpkg.com/pdfjs-dist/-/pdfjs-dist-3.11.174.tgz#5ff47b80f2d58c8dd0d74f615e7c6a7e7e704c4b"
   integrity sha512-TdTZPf1trZ8/UFu5Cx/GXB7GZM30LT+wWUNfsi6Bq8ePLnb+woNKtDymI2mxZYBpMbonNFqKmiz684DIfnd8dA==

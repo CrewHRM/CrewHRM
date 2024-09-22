@@ -1,11 +1,11 @@
 === Employee, Leave and Recruitment Management System - Crew HRM ===
-Contributors: jayedul, badsha_eee, risatrajin, sabbirshouvo
+Contributors: sabbirshouvo, jayedul, badsha_eee, risatrajin
 Donate Link: https://getcrewhrm.com/pricing/
 Tags: Recruitment, hiring, employee, job listing, hiring
 Requires at least: 6.3
 Tested up to: 6.6
 Requires PHP: 7.4
-Stable tag: 1.1.5
+Stable tag: 1.1.6
 License: GPLv3
 License URI: https://opensource.org/licenses/GPL-3.0
 
@@ -125,6 +125,12 @@ You can email us using the contact form on our website to share feature ideas wi
 You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team helps validate, triage, and handle any security vulnerabilities. [Report a security vulnerability.](https://patchstack.com/database/vdp/hr-management)
 
 == Changelog ==
+
+= v1.1.6 -> Sep 22, 2024 =
+
+* Fix: Phone Number validation
+* Update: Update dependancies to latest version
+* Update: Overall enhancements and optimizations
 
 = v1.1.5 -> Sep 20, 2024 =
 

@@ -7,7 +7,7 @@ var gulp = require('gulp'),
     fs = require('fs'),
     path = require('path'),
 	rename = require("gulp-rename"),
-	sass = require('gulp-sass')(require('node-sass'));
+	sass = require('gulp-sass')(require('sass'));
     build_name = 'hr-management-' + require('./package.json').version + '.zip';
 
 var onError = function (err) {
