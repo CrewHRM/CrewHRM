@@ -27,7 +27,7 @@ class Application {
 
 		// Rejct the application submission if PHP Object Injection attempt is noticed.
 		$injectionFound = !empty(array_filter($application, function($input) {
-			return strpos($input, 'O:') !== false;
+			return self::containsOI($input);
 		}));
 
 		if($injectionFound){
@@ -78,6 +78,31 @@ class Application {
 
 		return $app_id;
 	}
+
+
+	/**
+	 * Checks whether the input contains signs of potential object injection.
+	 * 
+	 * This function detects object injection attempts by looking for the serialized
+	 * object marker (`O:`) within a string or an array of inputs. It recursively checks
+	 * arrays to ensure no nested object injection payloads are present.
+	 *
+	 * @param mixed $input The input to check, which can be a string or an array of strings.
+	 * 
+	 * @return bool Returns true if the input contains potential object injection, false otherwise.
+	 */
+	private static function containsOI($input) {
+        if (is_string($input)) {
+            return strpos($input, 'O:') !== false;
+        } elseif (is_array($input)) {
+            foreach ($input as $item) {
+                if (self::containsOI($item)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
 
 	/**
 	 * Mark an application as completed
