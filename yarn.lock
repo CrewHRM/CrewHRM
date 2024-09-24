@@ -3159,8 +3159,8 @@ core-util-is@~1.0.0:
   integrity sha512-ZQBvi1DcpJ4GDqanjucZ2Hj3wEO5pZDS89BWbkcrvdxksJorwUDDZamX9ldFkp9aw2lmBDLgkObEA4DWNJ9FYQ==
 
 "crewhrm-materials@bitbucket:sh_shouvo/materials":
-  version "1.0.3"
-  resolved "git+ssh://git@bitbucket.org/sh_shouvo/materials.git#0730a7c7b815c13fbe0e77d73ea54af6439be9c9"
+  version "1.0.4"
+  resolved "git+ssh://git@bitbucket.org/sh_shouvo/materials.git#a2e00fe5d843a839fff4a79b107a27d5b0e28804"
 
 cross-fetch@^3.0.4:
   version "3.1.8"
@@ -4559,6 +4559,11 @@ file-entry-cache@^6.0.1:
   integrity sha512-7Gps/XWymbLk2QLYK4NzpMOrYjMhdIxXuIvy2QBsLE6ljuodKvdkWs/cpyJJ3CVIVpH0Oi1Hvg1ovbMzLdFBBg==
   dependencies:
     flat-cache "^3.0.4"
+
+file-type-checker@^1.1.2:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/file-type-checker/-/file-type-checker-1.1.2.tgz#d573741273d1223431ce1e00700b26ce3759d5fb"
+  integrity sha512-HodBNiinBQNHQfXhXzAuHkU2udHF3LFS6PAOEZqxW+BjotZVCaMR7ckpTTnvLi718dbzRavnjRX0kbSb5pJG3g==
 
 file-uri-to-path@1.0.0:
   version "1.0.0"
