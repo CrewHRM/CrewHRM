@@ -126,11 +126,11 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 
 == Changelog ==
 
-= v1.1.8 -> Sep 24, 2024 =
+= v1.1.8 -> Dec 03, 2024 =
 
 * Update: PhoneField auto detect user country from browser Timezone
 * Update: Add extra layer of validation on resume & Attachment uploads
-* Update: Overall enhancements and optimizations
+* Update: Overall enhancements and security optimizations
 
 = v1.1.7 -> Sep 22, 2024 =
 
