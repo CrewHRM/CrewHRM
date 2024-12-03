@@ -129,7 +129,7 @@ class _String {
 
 		if ( is_string( $value ) ) {
 
-			if (preg_match('/^0+\d*$/', $value)) {
+			if (preg_match('/^0+[1-9]\d*$/', $value)) {
 				$value = $value;
 			} elseif ( is_numeric( $value ) ) {
 				// Cast number

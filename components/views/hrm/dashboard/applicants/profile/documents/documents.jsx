@@ -8,7 +8,7 @@ import { Slot } from 'crewhrm-materials/mountpoint.jsx';
 
 export function Documents({ application }) {
 	const { cover_letter, documents = {} } = application;
-	const { resume_url } = documents;
+	const { resume_url, resume_mimetype } = documents;
 
 	const has_cover_letter = !isEmpty(cover_letter);
 
@@ -40,10 +40,19 @@ export function Documents({ application }) {
 						>
 							{__('RESUME')}
 						</span>
-						<PDFViewer src={resume_url} />
+
+						{resume_mimetype === "application/pdf" ?
+							<PDFViewer src={resume_url} />
+							:
+							<>
+								{__('Not a PDF file.')} < a href={src} target="_blank" rel="noreferrer">
+									{__('Download Instead.')}
+								</a>
+							</>
+						}
 					</>
 				) : null}
 			</Slot>
-		</div>
+		</div >
 	);
 }

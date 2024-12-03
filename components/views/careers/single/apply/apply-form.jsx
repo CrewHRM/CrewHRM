@@ -9,6 +9,7 @@ import { TextField } from 'crewhrm-materials/text-field/text-field.jsx';
 import { AddressFields } from 'crewhrm-materials/address-fields.jsx';
 import { RadioCheckbox } from 'crewhrm-materials/radio-checkbox.jsx';
 import { PhoneField } from 'crewhrm-materials/phone-field/phone-field.jsx';
+import { getTzCountry } from 'crewhrm-materials/data';
 
 export function RenderField({ field = {}, onChange = () => { }, values = {}, showErrorsAlways, selectedCountry }) {
 
@@ -36,6 +37,11 @@ export function RenderField({ field = {}, onChange = () => { }, values = {}, sho
 		enabled,
 		regex
 	} = field;
+
+	let defaultCountry = "";
+	if (getTzCountry()) {
+		defaultCountry = getTzCountry();
+	}
 
 	return enabled ?
 		<div data-cylector="single-field">
@@ -137,7 +143,8 @@ export function RenderField({ field = {}, onChange = () => { }, values = {}, sho
 
 			{type === 'phone' ?
 				<PhoneField
-					defaultCountry={selectedCountry}
+					defaultCountry={defaultCountry}
+					addressCountry={selectedCountry}
 					value={values[name] || ''}
 					onChange={v => onChange(name, v)}
 					showErrorsAlways={showErrorsAlways}

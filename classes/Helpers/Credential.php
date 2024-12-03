@@ -66,11 +66,21 @@ class Credential {
 	/**
 	 * Instance for recaptcha credential
 	 *
-	 * @param integer $department_id The department ID to store zoom credentials to
+	 * @param integer $department_id The department ID to store recaptcha credentials to
 	 * @return self
 	 */
 	public static function recaptcha( $department_id = 0 ) {
 		return new self( 'crewhrm-recaptcha-credentials', $department_id );
+	}
+
+	/**
+	 * Instance for teams
+	 *
+	 * @param integer $department_id The department ID to store teams credentials to
+	 * @return self
+	 */
+	public static function teams( $department_id = 0 ) {
+		return new self( 'crewhrm-teams-credentials', $department_id );
 	}
 
 	/**

@@ -1,6 +1,6 @@
 {
   "name": "crewhrm",
-  "version": "1.1.6",
+  "version": "1.1.8",
   "description": "HR Management System",
   "main": "index.js",
   "scripts": {
@@ -64,6 +64,7 @@
     "cypress-mochawesome-reporter": "^3.5.1",
     "draft-js": "^0.11.7",
     "draftjs-to-html": "^0.9.1",
+    "file-type-checker": "^1.1.2",
     "fs": "^0.0.1-security",
     "google-libphonenumber": "^3.2.38",
     "gulp": "^4.0.2",
