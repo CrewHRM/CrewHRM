@@ -138,6 +138,12 @@ You can report security bugs through the Patchstack Vulnerability Disclosure Pro
 * Update: Update dependancies to latest version
 * Update: Overall enhancements and optimizations
 
+= v1.1.6 -> Sep 22, 2024 =
+
+* Fix: Phone Number validation
+* Update: Update dependancies to latest version
+* Update: Overall enhancements and optimizations
+
 = v1.1.5 -> Sep 20, 2024 =
 
 * New: Phone number input with country select
