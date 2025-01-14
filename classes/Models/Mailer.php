@@ -67,6 +67,8 @@ class Mailer {
 
 		$enabled_events = Settings::getSetting( 'outgoing_email_events' );
 
+		$enabled_events = apply_filters( 'crewhrm_outgoing_email_events', $enabled_events );
+
 		foreach ( $event_s as $event ) {
 			$is_enabled = is_array( $enabled_events ) ? in_array( $event, $enabled_events, true ) : false;
 
@@ -89,7 +91,7 @@ class Mailer {
 		$subject     = $this->applyDynamics( $this->args['subject'] ?? '', $dynamics, $this->event );
 		$to          = $this->args['to'] ?? '';
 		$attachments = $this->args['attachments'] ?? array();
-		$body        = $this->wrapWithLayout( $this->event, $dynamics );
+		$body        = $this->wrapWithLayout( $this->event, $dynamics, $this->args['email_content'] ?? '' );
 		$headers     = array(
 			'Content-Type: text/html; charset=UTF-8',
 		);
@@ -196,21 +198,24 @@ class Mailer {
 	 * @param array  $dynamics Dynamic values to apply to the template
 	 * @return string
 	 */
-	private function wrapWithLayout( string $template, array $dynamics ) {
-
-		$mail_templates = self::getMailTemplates( true );
-
-		if ( empty( $mail_templates[ $template ] ) ) {
-			return false;
-		}
-
+	private function wrapWithLayout( string $template, array $dynamics, string $email_content ) {
 		// Replace parameters in the template
-		ob_start();
-		include $mail_templates[ $template ]['path'];
+		if(!empty($email_content)){
+			$contents = $email_content;
+		}else{
+			// Early return if template missing
+			$mail_templates = self::getMailTemplates( true );
+			if ( empty( $mail_templates[ $template ] ) ) {
+				return false;
+			}
 
-		$contents = ob_get_clean();
+			ob_start();
+			include $mail_templates[ $template ]['path'];
+
+			$contents = ob_get_clean();
+		}
+		
 		$contents = apply_filters( 'crewhrm_email_content_before_dynamics', $contents, $template, $dynamics );
-
 		$contents = $this->applyDynamics( $contents, $dynamics, $template );
 		$contents = apply_filters( 'crewhrm_email_content_after_dynamics', $contents, $template, $dynamics );
 
