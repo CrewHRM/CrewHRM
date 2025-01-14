@@ -92,14 +92,11 @@ export function HRMSettings({ resources, settings = {} }) {
 	const sub_title = settings_fields[segment]?.segments[sub_segment]?.label;
 	const title = __('Settings') + (sub_title ? ' > ' + sub_title : '');
 
-	console.log(pageNavigation);
-	
-
-
 	return <WpDashboardFullPage>
 		<StickyBar canBack={sub_title ? true : false} title={title}>
 			<div className={'d-flex align-items-center column-gap-30'.classNames()}>
 				<button
+					id='crewhrm-settings-save-button'
 					className={'button button-primary'.classNames()}
 					onClick={saveSettings}
 					disabled={!state.can_go_next}
