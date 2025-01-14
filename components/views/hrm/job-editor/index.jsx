@@ -57,10 +57,10 @@ function getFieldsToSave(sections_fields, section_name) {
     // Loop through the sections
     for (let section in sections_fields) {
 
-		// Add support of specific section name
-		if ( section_name && section!==section_name ) {
-			continue;
-		}
+        // Add support of specific section name
+        if (section_name && section !== section_name) {
+            continue;
+        }
 
         // Spread section properties into new object
         _new[section] = { ...sections_fields[section] };
@@ -89,58 +89,58 @@ function getFieldsToSave(sections_fields, section_name) {
     return _new;
 }
 
-function justifyFields( section_fields, application_form ) {
+function justifyFields(section_fields, application_form) {
 
-	// Remove obsolete sections from saved form
-	let _application_form = filterObject(application_form, (value, key)=>{
-		return section_fields[key] ? true : false;
-	});
+    // Remove obsolete sections from saved form
+    let _application_form = filterObject(application_form, (value, key) => {
+        return section_fields[key] ? true : false;
+    });
 
-	// Remove obsolete singular fields from saved form except questions as it is managed by addon
-	for ( let section_name in _application_form ) {
-		const {fields=[]} = _application_form[section_name];
-		_application_form[section_name].fields = fields.filter(field=>{
-			return section_name=='questions' || section_fields[section_name].fields.find(f=>f.id===field.id)
-		});
-	}
+    // Remove obsolete singular fields from saved form except questions as it is managed by addon
+    for (let section_name in _application_form) {
+        const { fields = [] } = _application_form[section_name];
+        _application_form[section_name].fields = fields.filter(field => {
+            return ['questions', 'ko_questions'].includes(section_name) || section_fields[section_name].fields.find(f => f.id === field.id)
+        });
+    }
 
-	// Add outstanding section to saved form
-	for ( let section_name in sections_fields ) {
-		if ( !_application_form[section_name] ) {
-			_application_form = {
-				..._application_form, 
-				...getFieldsToSave(section_fields, section_name)
-			}
-		}
+    // Add outstanding section to saved form
+    for (let section_name in sections_fields) {
+        if (!_application_form[section_name]) {
+            _application_form = {
+                ..._application_form,
+                ...getFieldsToSave(section_fields, section_name)
+            }
+        }
 
-		// Add outstanding singular fields to saved form
-		if ( section_name !== 'questions' ) {
-			const {fields=[]} = section_fields[section_name];
-			const {fields: _fields=[]} = _application_form[section_name];
+        // Add outstanding singular fields to saved form
+        if (!['questions','ko_questions'].includes(section_name)) {
+            const { fields = [] } = section_fields[section_name];
+            const { fields: _fields = [] } = _application_form[section_name];
 
-			// Loop through run time form fields
-			runtime_loop: for ( let i=0; i<fields.length; i++ ) {
+            // Loop through run time form fields
+            runtime_loop: for (let i = 0; i < fields.length; i++) {
 
-				// Loop through saved form fields
-				for( let n=0; n<_fields.length; n++ ) {
-					if ( fields[i].id === _fields[n].id ) {
-						continue runtime_loop;
-					}
-				}
+                // Loop through saved form fields
+                for (let n = 0; n < _fields.length; n++) {
+                    if (fields[i].id === _fields[n].id) {
+                        continue runtime_loop;
+                    }
+                }
 
-				// As it is reached here, the field is outstanding and not in saved form
-				if ( ! Array.isArray( _application_form[section_name].fields ) ) {
-					_application_form[section_name].fields = [];
-				}
-				
-				delete fields[i].form;
-				
-				_application_form[section_name].fields = [..._fields, fields[i]];
-			}
-		}
-	}
+                // As it is reached here, the field is outstanding and not in saved form
+                if (!Array.isArray(_application_form[section_name].fields)) {
+                    _application_form[section_name].fields = [];
+                }
 
-	return _application_form;
+                delete fields[i].form;
+
+                _application_form[section_name].fields = [..._fields, fields[i]];
+            }
+        }
+    }
+
+    return _application_form;
 }
 
 let timer;
@@ -161,7 +161,7 @@ export function JobEditor() {
         session: null,
         mounted: false,
         values: {},
-		show_congrats: false
+        show_congrats: false
     });
 
     const [active_tab, setTab] = useState('job-details');
@@ -171,7 +171,7 @@ export function JobEditor() {
     const is_next_disabled =
         steps[active_index]?.required?.filter((f) => isEmpty(state.values[f]))?.length > 0;
 
-    const onChange = (name, value, trigger_save=false) => {
+    const onChange = (name, value, trigger_save = false) => {
         setState({
             ...state,
             edit_session: trigger_save ? true : getRandomString(),
@@ -193,14 +193,14 @@ export function JobEditor() {
 
     const saveJob = (auto, job_status) => {
         // Save only if the required fields are filled no matter if it is auto or manual save
-		// And no other request is in progress
+        // And no other request is in progress
         if (is_next_disabled || state.saving_mode) {
             return;
         }
 
         setState({
             ...state,
-			edit_session: null,
+            edit_session: null,
             saving_mode: auto ? 'auto' : 'manual'
         });
 
@@ -211,30 +211,30 @@ export function JobEditor() {
             }
         };
 
-        request('updateJob', addKsesPrefix( payload, 'job_description' ), (resp) => {
+        request('updateJob', addKsesPrefix(payload, 'job_description'), (resp) => {
             const {
                 success,
-                data: { 
-					message,
-					job_id, 
-					job_slug,
-					address_id, 
-					stage_ids = {},
-					job_permalink 
-				}
+                data: {
+                    message,
+                    job_id,
+                    job_slug,
+                    address_id,
+                    stage_ids = {},
+                    job_permalink
+                }
             } = resp;
 
-			if (auto && !success) {
-				// Show response message toast if auto draft failed
-				ajaxToast(resp);
-			}
-			
+            if (auto && !success) {
+                // Show response message toast if auto draft failed
+                ajaxToast(resp);
+            }
+
             const new_state = {
                 ...state,
-				edit_session: null,
+                edit_session: null,
                 saving_mode: null,
-				show_congrats: !auto && success,
-				job_permalink
+                show_congrats: !auto && success,
+                job_permalink
             };
 
             // Add job id and address id to the job object
@@ -251,9 +251,9 @@ export function JobEditor() {
                     ...state.values,
                     hiring_flow,
                     job_id: job_id || state.values.job_id,
-					job_slug: job_slug || state.values.job_slug,
+                    job_slug: job_slug || state.values.job_slug,
                     address_id: address_id || state.values.address_id,
-					job_status: payload.job.job_status
+                    job_status: payload.job.job_status
                 };
 
                 // Replace url state with job ID if it was new previously. So reload will be supported.
@@ -280,7 +280,7 @@ export function JobEditor() {
 
     const getJob = () => {
 
-		if (is_new) {
+        if (is_new) {
             // As it is new, just use predefined template at mount time
             setState({
                 ...state,
@@ -289,10 +289,10 @@ export function JobEditor() {
                     job_id: 0,
                     hiring_flow,
                     application_form: getFieldsToSave(sections_fields),
-					street_address: window[data_pointer].company_address.street_address,
-					zip_code: window[data_pointer].company_address.zip_code,
-					country_code: window[data_pointer].company_address.country_code,
-					currency: window[data_pointer].currency_code || 'USD'
+                    street_address: window[data_pointer].company_address.street_address,
+                    zip_code: window[data_pointer].company_address.zip_code,
+                    country_code: window[data_pointer].company_address.country_code,
+                    currency: window[data_pointer].currency_code || 'USD'
                 }
             });
             return;
@@ -315,8 +315,8 @@ export function JobEditor() {
                     ...job,
                     hiring_flow: isEmpty(job.hiring_flow) ? hiring_flow : job.hiring_flow,
                     application_form: isEmpty(job.application_form)
-                        ? getFieldsToSave( sections_fields )
-                        : justifyFields( sections_fields, job.application_form )
+                        ? getFieldsToSave(sections_fields)
+                        : justifyFields(sections_fields, job.application_form)
                 },
                 session: getRandomString(),
                 autosaved_job,
@@ -337,9 +337,9 @@ export function JobEditor() {
             return;
         }
 
-		const immediate = state.edit_session===true;
+        const immediate = state.edit_session === true;
 
-		window.clearTimeout(timer);
+        window.clearTimeout(timer);
         timer = window.setTimeout(() => {
             saveJob(true, immediate ? state.values.job_status : undefined);
         }, immediate ? 0 : 3000);
@@ -362,16 +362,16 @@ export function JobEditor() {
                     ...state,
                     autosaved_job: null,
                     values: {
-						...state.autosaved_job,
-						application_form: justifyFields(sections_fields, state.autosaved_job.application_form )
-					}
+                        ...state.autosaved_job,
+                        application_form: justifyFields(sections_fields, state.autosaved_job.application_form)
+                    }
                 });
 
                 closeWarning();
             },
             confirmText: __('Restore'),
             closeText: __('No'),
-			mode: 'normal'
+            mode: 'normal'
         });
     }, [state.autosaved_job]);
 
@@ -388,14 +388,14 @@ export function JobEditor() {
     }
 
     return <>
-		{
-			!state.show_congrats ? null : 
-				<Congrats 
-					job_permalink={state.job_permalink} 
-					onClose={()=>setState({...state, show_congrats: false})}/>
-		}
-        
-		<ContextJobEditor.Provider
+        {
+            !state.show_congrats ? null :
+                <Congrats
+                    job_permalink={state.job_permalink}
+                    onClose={() => setState({ ...state, show_congrats: false })} />
+        }
+
+        <ContextJobEditor.Provider
             value={{
                 values: state.values,
                 onChange,
@@ -411,10 +411,10 @@ export function JobEditor() {
                     <div key="log" className={'text-align-center'.classNames()}>
                         <div className={'d-inline-block'.classNames()}>
                             {
-								window[data_pointer].white_label.app_logo_extended
-									? <img src={window[data_pointer].white_label.app_logo_extended} style={{width: 'autp', height: '30px'}}/> 
-									: <LogoExtended height={16} />
-							}
+                                window[data_pointer].white_label.app_logo_extended
+                                    ? <img src={window[data_pointer].white_label.app_logo_extended} style={{ width: 'autp', height: '30px' }} />
+                                    : <LogoExtended height={16} />
+                            }
                         </div>
                     </div>,
                     <div
@@ -461,11 +461,10 @@ export function JobEditor() {
                                     ...s,
                                     label: (
                                         <span
-                                            className={`font-size-15 font-weight-400 letter-spacing--3 ${
-                                                s.id == active_tab
+                                            className={`font-size-15 font-weight-400 letter-spacing--3 ${s.id == active_tab
                                                     ? 'color-text'
                                                     : 'color-text-light'
-                                            }`.classNames()}
+                                                }`.classNames()}
                                         >
                                             {s.label}
                                         </span>

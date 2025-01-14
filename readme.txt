@@ -5,7 +5,7 @@ Tags: Recruitment, hiring, employee, job listing, hiring
 Requires at least: 6.3
 Tested up to: 6.7.1
 Requires PHP: 7.4
-Stable tag: 1.1.8
+Stable tag: 1.1.9
 License: GPLv3
 License URI: https://opensource.org/licenses/GPL-3.0
 
@@ -125,6 +125,12 @@ You can email us using the contact form on our website to share feature ideas wi
 You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team helps validate, triage, and handle any security vulnerabilities. [Report a security vulnerability.](https://patchstack.com/database/vdp/hr-management)
 
 == Changelog ==
+
+= v1.1.9 -> Jan 14, 2025 =
+
+* New: So many new filter and hooks
+* Update: Core now allows sideloading addons from plugin.
+* Update: Overall enhancements and optimizations
 
 = v1.1.8 -> Dec 03, 2024 =
 

@@ -181,10 +181,15 @@ class Scripts {
 		$pointer = strtolower( "CrewMat_{$matches[1]}_{$matches[3]}" );
 		$pointer = preg_replace( '/[^a-zA-Z0-9_]/', '', $pointer );
 
+		// Prepare Extension variable name
+		$pointer_extension = strtolower( "CrewMat_{$matches[1]}_crewhrmextension" );
+		$pointer_extension = preg_replace( '/[^a-zA-Z0-9_]/', '', $pointer_extension );
+
 		?>
 		<script data-nowprocket>
 			window.<?php echo $pointer; ?> = <?php echo wp_json_encode( $data ); ?>;
 			window.<?php echo $pointer; ?>pro = window.<?php echo $pointer; ?>;
+			window.<?php echo $pointer_extension; ?> = window.<?php echo $pointer; ?>;
 		</script>
 		<?php
 	}

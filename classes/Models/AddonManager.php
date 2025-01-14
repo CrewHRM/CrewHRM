@@ -47,5 +47,11 @@ class AddonManager {
 		$addons_settings              = self::getAddonsStates();
 		$addons_settings[ $addon_id ] = $new_state;
 		Settings::saveSettings( array( self::SETTING_NAME => $addons_settings ), true );
+
+		if($new_state){
+			do_action("{$addon_id}_activate");
+		}else{
+			do_action("{$addon_id}_deactivate");
+		}
 	}
 }
