@@ -5,6 +5,8 @@ import { __, getRandomString } from 'crewhrm-materials/helpers.jsx';
 import { DropDown } from 'crewhrm-materials/dropdown/dropdown.jsx';
 import { ToggleSwitch } from 'crewhrm-materials/toggle-switch/ToggleSwitch.jsx';
 import { Line } from 'crewhrm-materials/line/line.jsx';
+import StarToggle from './star-toggle';
+import { request } from 'crewhrm-materials/request.jsx';
 
 const question_types = {
     textarea: __('Paragraph'),
@@ -22,7 +24,8 @@ export function FieldEditorModal(props) {
     const [state, setState] = useState({
         last_id: null,
         exclude_focus: (props.field?.field_options || []).map((f) => f.id),
-        field: props.field || {}
+        field: props.field || {},
+        ko_templates: []
     });
 
     const { type: field_type, field_options = [], id: field_id } = state.field;
@@ -74,6 +77,18 @@ export function FieldEditorModal(props) {
         });
     };
 
+    const fetchEmailTemplates = async () => {
+        return new Promise((resolve, reject) => {
+            request('getAutoRejectEmailTemplates', {}, (resp) => {
+                if (resp) {
+                    resolve(resp);
+                } else {
+                    reject(new Error('Failed to fetch email templates'));
+                }
+            });
+        });
+    }
+
     useEffect(() => {
         const { last_id, exclude_focus } = state;
         if (!last_id || exclude_focus.indexOf(last_id) > -1) {
@@ -92,6 +107,56 @@ export function FieldEditorModal(props) {
             });
         }
     }, [state.field.field_options]);
+
+    useEffect(() => {
+        const fetchTemplates = async () => {
+            try {
+                const resp = await fetchEmailTemplates();
+                if (resp?.success) {
+                    const templates = resp.data?.templates || [];
+                    setState((prevState) => ({
+                        ...prevState,
+                        ko_templates: templates,
+                    }));
+                } else {
+                    console.error('Invalid response from fetchEmailTemplates:', resp);
+                }
+            } catch (error) {
+                console.error('Error fetching email templates:', error);
+            }
+        };
+        if (props.pointer && props.pointer == 'ko_questions') {
+            onChange('type', 'radio');
+
+            const timer = setTimeout(fetchTemplates, 200);
+            return () => clearTimeout(timer);
+        }
+    }, [props.pointer]);
+
+    const handleStarToggle = (id, isFilled) => {
+        setState((prevState) => {
+            const currentExpected = prevState.field?.expected || [];
+
+            let updatedExpected;
+            if (isFilled) {
+                // Add ID if filled and not already present
+                updatedExpected = currentExpected.includes(id)
+                    ? currentExpected
+                    : [...currentExpected, id];
+            } else {
+                // Remove ID if not filled
+                updatedExpected = currentExpected.filter((existingId) => existingId !== id);
+            }
+
+            return {
+                ...prevState,
+                field: {
+                    ...prevState.field,
+                    expected: updatedExpected,
+                },
+            };
+        });
+    };
 
     const need_options = option_able.indexOf(field_type) > -1;
     const btn_disabled =
@@ -118,19 +183,33 @@ export function FieldEditorModal(props) {
                 className={'d-flex align-items-center margin-bottom-15'.classNames()}
             >
                 <div className={'flex-4'.classNames()}>
-                    <DropDown
-                        className={'padding-vertical-14 padding-horizontal-15 border-radius-10 border-1 b-color-text font-size-15 font-weight-600 color-text'.classNames()}
-                        nested={true}
-                        placeholder={__('Select Question Type')}
-                        value={field_type}
-                        onChange={(value) => onChange('type', value)}
-						clearable={false}
-                        options={Object.keys(question_types).map((t) => {
-                            return { id: t, label: question_types[t] };
-                        })}
-                        variant='primary'
-                        size="md"
-                    />
+                    {props.pointer && props.pointer !== 'ko_questions' ? (
+                        <DropDown
+                            className={'padding-vertical-14 padding-horizontal-15 border-radius-10 border-1 b-color-text font-size-15 font-weight-600 color-text'.classNames()}
+                            nested={true}
+                            placeholder={__('Select Question Type')}
+                            value={field_type}
+                            onChange={(value) => onChange('type', value)}
+                            clearable={false}
+                            options={Object.keys(question_types).map((t) => {
+                                return { id: t, label: question_types[t] };
+                            })}
+                            variant='primary'
+                            size="md"
+                        />
+                    ) :
+                        <DropDown
+                            className={'padding-vertical-14 padding-horizontal-15 border-radius-10 border-1 b-color-text font-size-15 font-weight-600 color-text'.classNames()}
+                            nested={true}
+                            placeholder={__('Select Email Template')}
+                            value={state.field.email_template}
+                            onChange={(value) => onChange('email_template', value)}
+                            clearable={false}
+                            options={state.ko_templates}
+                            variant='primary'
+                            size="md"
+                        />
+                    }
                 </div>
                 <div
                     className={'flex-5 d-flex align-items-center justify-content-end column-gap-8'.classNames()}
@@ -191,11 +270,14 @@ export function FieldEditorModal(props) {
                                             }
                                         />
                                     </div>
-                                    <div>
-                                        <i
-                                            className={'ch-icon ch-icon-trash font-size-24 color-error cursor-pointer'.classNames()}
-                                            onClick={() => deleteOption(id)}
-                                        ></i>
+                                    <div className={'d-flex align-items-center column-gap-20'.classNames()}>
+                                        <StarToggle id={id} initialState={state.field?.expected?.includes(id)} onToggle={handleStarToggle} />
+                                        <div>
+                                            <i
+                                                className={'ch-icon ch-icon-trash font-size-24 color-error cursor-pointer'.classNames()}
+                                                onClick={() => deleteOption(id)}
+                                            ></i>
+                                        </div>
                                     </div>
                                 </div>
                             );
