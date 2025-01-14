@@ -133,6 +133,7 @@ export function ApplicationForm() {
             <Conditional show={state.pointer}>
 				<ErrorBoundary>
 					<FieldEditorModal
+                        pointer={state.pointer?.section_name}
 						field={
 							values.application_form[state.pointer?.section_name]?.fields?.[
 								state.pointer?.field_index
