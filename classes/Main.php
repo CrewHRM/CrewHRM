@@ -83,6 +83,8 @@ class Main {
 		new Shortcode();
 		new Employee();
 
+		do_action( 'crewhrm_loaded' );
+		
 		// Set pro flag
 		add_action(
 			'crewhrm_pro_loaded',
