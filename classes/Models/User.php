@@ -335,6 +335,9 @@ class User {
 
 		global $wpdb;
 
+		// WordPress Table Collate
+		$wp_collate = $wpdb->collate;
+
 		$where_clause = '';
 
 		// Search employee by keyword
@@ -368,7 +371,7 @@ class User {
 				FROM 
 					{$wpdb->users} _user 
 					INNER JOIN {$wpdb->usermeta} _meta ON _user.ID=_meta.user_id AND _meta.meta_key=%s AND _meta.meta_value=%s
-					INNER JOIN {$wpdb->crewhrm_employments} _employment ON _employment.employee_user_id=_user.ID
+					INNER JOIN {$wpdb->crewhrm_employments} _employment ON _employment.employee_user_id COLLATE $wp_collate=_user.ID
 				WHERE 
 					1=1 
 					{$where_clause}
@@ -395,7 +398,7 @@ class User {
 				FROM 
 					{$wpdb->users} _user 
 					INNER JOIN {$wpdb->usermeta} _meta ON _user.ID=_meta.user_id AND _meta.meta_key=%s AND _meta.meta_value=%s
-					LEFT JOIN {$wpdb->crewhrm_employments} _employment ON _employment.employee_user_id=_user.ID
+					LEFT JOIN {$wpdb->crewhrm_employments} _employment ON _employment.employee_user_id COLLATE $wp_collate=_user.ID
 				WHERE 
 					1=1 
 					{$where_clause}",

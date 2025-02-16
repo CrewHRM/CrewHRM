@@ -182,6 +182,10 @@ class Employment {
 	public static function getSubordinates( $user_id ) {
 
 		global $wpdb;
+
+		// WordPress Table Collate
+		$wp_collate = $wpdb->collate;
+
 		$users = $wpdb->get_results(
 			$wpdb->prepare(
 				"SELECT 
@@ -189,7 +193,7 @@ class Employment {
 					_user.display_name
 				FROM 
 					{$wpdb->crewhrm_employments} _employee
-					INNER JOIN {$wpdb->users} _user ON _employee.employee_user_id=_user.ID
+					INNER JOIN {$wpdb->users} _user ON _employee.employee_user_id COLLATE $wp_collate=_user.ID
 				WHERE
 					_employee.reporting_person_user_id=%d
 				ORDER BY
