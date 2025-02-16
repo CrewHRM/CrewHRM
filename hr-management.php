@@ -4,10 +4,10 @@
  * Plugin URI: https://getcrewhrm.com/pricing/
  * Description: Post jobs on your site and hire talent - all inside your website for free!
  * Author: Crew HRM
- * Version: 1.1.9
+ * Version: 1.2.0
  * Author URI: https://getcrewhrm.com
  * Requires at least: 5.3
- * Tested up to: 6.6
+ * Tested up to: 6.7.2
  * Requires PHP: 7.4
  * License: GPLv3
  * License URI: https://opensource.org/licenses/GPL-3.0

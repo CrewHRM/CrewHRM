@@ -310,6 +310,9 @@ class Application {
 	public static function getApplications( array $args, $count_only = false ) {
 		global $wpdb;
 
+		// WordPress Table Collate
+		$wp_collate = $wpdb->collate;
+
 		// Prepare arguments
 		$job_id        = $args['job_id'];
 		$stage_id      = $args['stage_id'] ?? null; // To get applications from specific stage like Assessment, Interview etc.
@@ -351,7 +354,7 @@ class Application {
 					app.application_id 
 				FROM {$wpdb->crewhrm_applications} app
 					LEFT JOIN {$wpdb->crewhrm_stages} stage ON app.stage_id=stage.stage_id 
-					LEFT JOIN {$wpdb->users} _user ON app.email=_user.user_email 
+					LEFT JOIN {$wpdb->users} _user ON app.email COLLATE $wp_collate=_user.user_email
 				WHERE 
 					{$where_clause} 
 					AND app.application_id {$negate_in} IN ({$disq_ids_places})

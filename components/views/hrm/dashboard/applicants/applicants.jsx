@@ -45,16 +45,17 @@ export function Applications() {
                     candidates
                 }
             } = resp;
-
-            setState({
-                ...state,
-                fetching: false,
-                error_message: !success ? message : null,
-                job,
-                stages,
-                job_list,
-                candidates,
-                mounted: true
+            setState(prevState => {
+                return {
+                    ...prevState,
+                    fetching: false,
+                    error_message: !success ? message : null,
+                    job,
+                    stages: [...stages],
+                    job_list,
+                    candidates,
+                    mounted: true
+                }
             });
         });
     };
@@ -97,18 +98,18 @@ export function Applications() {
 
                 <div className={'content-area'.classNames(style)}>
                     <div className={'sidebar-wrapper'.classNames(style)}>
-						<ErrorBoundary>
-							<Sidebar
-								hasApplications={(has_applications) =>
-									setState({ ...state, has_applications })
-								}
-							/>
-						</ErrorBoundary>
+                        <ErrorBoundary>
+                            <Sidebar
+                                hasApplications={(has_applications) =>
+                                    setState({ ...state, has_applications })
+                                }
+                            />
+                        </ErrorBoundary>
                     </div>
                     <div className={'profile-wrapper'.classNames(style)}>
-						<ErrorBoundary>
-                        	<Profile has_applications={state.has_applications} />
-						</ErrorBoundary>
+                        <ErrorBoundary>
+                            <Profile has_applications={state.has_applications} />
+                        </ErrorBoundary>
                     </div>
                 </div>
             </div>

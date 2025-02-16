@@ -45,6 +45,10 @@ class Pipeline {
 	 */
 	public static function getPipeLine( $application_id ) {
 		global $wpdb;
+
+		// WordPress Table Collate
+		$wp_collate = $wpdb->collate;
+
 		$pipeline = array();
 
 		// -------------- First of all get the apply date and info --------------
@@ -78,7 +82,7 @@ class Pipeline {
 				FROM 
 					{$wpdb->crewhrm_pipeline} pipe
 					LEFT JOIN {$wpdb->crewhrm_stages} stage ON pipe.stage_id=stage.stage_id
-					LEFT JOIN {$wpdb->users} _user ON pipe.action_taker_id=_user.ID
+					LEFT JOIN {$wpdb->users} _user ON pipe.action_taker_id COLLATE $wp_collate=_user.ID
 				WHERE
 					pipe.application_id=%d",
 				$application_id
