@@ -34,6 +34,7 @@ module.exports = (env, options) => {
                 {
                     test: /\.(js|jsx)$/,
                     loader: 'babel-loader',
+                    // exclude: path.resolve(__dirname, 'node_modules/pdfjs-dist/'),
                     options: { presets: ['@babel/env', '@babel/preset-react'] }
                 },
                 {

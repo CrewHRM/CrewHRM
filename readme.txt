@@ -3,9 +3,9 @@ Contributors: sabbirshouvo, jayedul, badsha_eee, risatrajin
 Donate Link: https://getcrewhrm.com/pricing/
 Tags: Recruitment, hiring, employee, job listing, hiring
 Requires at least: 6.3
-Tested up to: 6.7.2
+Tested up to: 6.8.1
 Requires PHP: 7.4
-Stable tag: 1.2.0
+Stable tag: 1.2.1
 License: GPLv3
 License URI: https://opensource.org/licenses/GPL-3.0
 
