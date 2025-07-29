@@ -3,9 +3,9 @@ Contributors: sabbirshouvo, jayedul, badsha_eee, risatrajin
 Donate Link: https://getcrewhrm.com/pricing/
 Tags: Recruitment, hiring, employee, job listing, hiring
 Requires at least: 6.3
-Tested up to: 6.8.1
+Tested up to: 6.8.2
 Requires PHP: 7.4
-Stable tag: 1.2.1
+Stable tag: 1.2.2
 License: GPLv3
 License URI: https://opensource.org/licenses/GPL-3.0
 
@@ -125,6 +125,18 @@ You can email us using the contact form on our website to share feature ideas wi
 You can report security bugs through the Patchstack Vulnerability Disclosure Program. The Patchstack team helps validate, triage, and handle any security vulnerabilities. [Report a security vulnerability.](https://patchstack.com/database/vdp/hr-management)
 
 == Changelog ==
+
+= v1.2.2 -> Jul 29, 2025 =
+
+* Fix: file upload mime_type check failed when to mime_type list is provided.
+* Fix: Company logo not being uploaded and saved
+* Update: Compatibility with latest WordPress version.
+* Update: Overall enhancements and optimizations
+
+= v1.2.1 -> May 10, 2025 =
+
+* Update: Compatibility with latest WordPress version.
+* Update: Overall enhancements and optimizations
 
 = v1.2.0 -> Feb 15, 2025 =
 
